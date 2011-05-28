@@ -1,8 +1,8 @@
-package org.salespoint.core.data.products;
+package org.salespointframework.core.products;
 
 import java.util.Set;
 
-import org.salespoint.core.data.money.Money;
+import org.salespointframework.core.money.Money;
 
 public abstract class ProductType {
 	private Set<ProductFeatureType> featureTypes;

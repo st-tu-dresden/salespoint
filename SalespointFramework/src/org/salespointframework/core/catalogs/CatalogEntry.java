@@ -1,4 +1,4 @@
-package org.salespoint.core.data.catalogs;
+package org.salespointframework.core.catalogs;
 
 import java.util.Arrays;
 import java.util.HashSet;

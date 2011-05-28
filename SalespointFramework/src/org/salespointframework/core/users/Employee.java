@@ -1,4 +1,4 @@
-package org.salespoint.core.data.users;
+package org.salespointframework.core.users;
 
 public interface Employee extends User {
 

@@ -1,4 +1,4 @@
-package org.salespoint.core.data.products;
+package org.salespointframework.core.products;
 
 import java.util.Set;
 import java.util.HashSet;

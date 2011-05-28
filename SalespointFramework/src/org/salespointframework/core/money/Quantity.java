@@ -1,5 +1,4 @@
-package org.salespoint.core.data.money;
-
+package org.salespointframework.core.money;
 
 // TODO nur vorübergehend in diesem Package
 public class Quantity implements Comparable<Quantity> {

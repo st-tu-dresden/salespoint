@@ -1,4 +1,4 @@
-package org.salespoint.core.data.products;
+package org.salespointframework.core.products;
 
 public abstract class MeasuredProductInstance<T extends MeasuredProductType> extends ProductInstance<T> {
 

@@ -1,6 +1,6 @@
-package org.salespoint.core.data.products;
+package org.salespointframework.core.products;
 
-import org.salespoint.core.data.money.Money;
+import org.salespointframework.core.money.Money;
 
 
 public class ProductFeature {

@@ -1,4 +1,4 @@
-package org.salespoint.core.data.products;
+package org.salespointframework.core.products;
 
 public abstract class ProductInstance<T extends ProductType> {
 	private T productType;

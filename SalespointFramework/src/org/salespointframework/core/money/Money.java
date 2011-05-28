@@ -1,4 +1,4 @@
-package org.salespoint.core.data.money;
+package org.salespointframework.core.money;
 
 public class Money extends Quantity {
 
