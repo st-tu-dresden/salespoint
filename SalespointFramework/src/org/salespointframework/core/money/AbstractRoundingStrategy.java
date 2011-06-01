@@ -2,9 +2,9 @@ package org.salespointframework.core.money;
 
 public abstract class AbstractRoundingStrategy implements RoundingStrategy {
 
-	private int numberOfDigits;
-	private int roundingDigit;
-	private int roundingStep;
+	protected int numberOfDigits;
+	protected int roundingDigit;
+	protected int roundingStep;
 
 	public AbstractRoundingStrategy(int numberOfDigits, int roundingDigit, int roundingStep) {
 		this.numberOfDigits = numberOfDigits;
