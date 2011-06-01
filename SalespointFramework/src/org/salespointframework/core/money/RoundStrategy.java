@@ -12,9 +12,7 @@ import org.salespointframework.core.money.AbstractRoundingStrategy;
 @Entity
 
 public class RoundStrategy extends AbstractRoundingStrategy implements Serializable {
-	@Id
-	@GeneratedValue
-	private long id;	
+	@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;	
 	private static final long serialVersionUID = 1L;
 
 	public RoundStrategy(int numberOfDigits, int roundingDigit, int roundingStep) {
