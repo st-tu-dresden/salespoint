@@ -1,16 +1,29 @@
 package org.salespointframework.core.money;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Quantity implements Comparable<Quantity> {
 
-	@Id
-	private long id;
+	@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
 	
 	private float amount;
 	private Metric metric;
+	private RoundingStrategy roundingStrategy;
+	
+	/** Protected class constructor is required for JPA/Hibernate.
+	 * Use parameterized Constructor instead.
+	 */
+	protected Quantity() {};
+	
+	protected Quantity(float amount, Metric metric, RoundingStrategy roundingStrategy) {
+		this.amount = amount;
+		this.metric = metric;
+		this.roundingStrategy = roundingStrategy;
+	}
 	
 	public Metric getMetric() {
 		return metric;
@@ -60,4 +73,11 @@ public class Quantity implements Comparable<Quantity> {
 		return this;
 	}
 
+	public float getAmount() {
+		return amount;
+	}
+	
+	public void setAmount(float amount) {
+		this.amount = amount;
+	}
 }
