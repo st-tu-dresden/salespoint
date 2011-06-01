@@ -7,6 +7,7 @@
   		<class>org.salespointframework.core.money.Metric</class>
   		<class>org.salespointframework.core.money.Money</class>
   		<class>org.salespointframework.core.money.Quantity</class>
+  		<class>org.salespointframework.core.money.RoundDownStrategy</class>
   		<properties>
     		<property name="hibernate.hbm2ddl.auto"
       		value="create-drop"/>
