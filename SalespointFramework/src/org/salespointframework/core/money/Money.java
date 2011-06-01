@@ -1,7 +1,6 @@
 package org.salespointframework.core.money;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Entity
 public class Money extends Quantity {
@@ -18,5 +17,9 @@ public class Money extends Quantity {
 	public int hashCode() {
 		// TODO Auto-generated method stub
 		return super.hashCode(); 
+	}
+
+	public Currency getCurrency() {
+		return currency;
 	}
 }
