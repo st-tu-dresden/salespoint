@@ -1,9 +1,10 @@
-package org.salespointframework.core.products;
+package org.salespointframework.core.products.features;
 
 import java.util.Set;
 import java.util.HashSet;
 
 import java.util.Arrays;
+
 
 public class ProductFeatureType {
 	

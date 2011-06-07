@@ -1,4 +1,4 @@
-package org.salespointframework.core.products;
+package org.salespointframework.core.products.features;
 
 import org.salespointframework.core.money.Money;
 

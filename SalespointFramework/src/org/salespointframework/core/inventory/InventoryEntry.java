@@ -1,5 +1,8 @@
 package org.salespointframework.core.inventory;
 
-public class InventoryEntry {
+import org.salespointframework.core.products.ProductInstance;
+import org.salespointframework.core.products.ProductType;
 
+public interface InventoryEntry<T extends ProductInstance<ProductType>> {
+	
 }

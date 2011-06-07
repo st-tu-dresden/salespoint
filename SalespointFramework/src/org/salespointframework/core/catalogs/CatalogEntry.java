@@ -1,25 +1,9 @@
 package org.salespointframework.core.catalogs;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import org.salespointframework.core.products.ProductType;
 
-public class CatalogEntry {
-	private String description;
-	private Set<String> categories;
-	
-	public CatalogEntry(String description, String... categories) {
-		this.description = description;
-		this.categories = new HashSet<String>(Arrays.asList(categories));
-	}
-	
-	
-	String getDescription() { 
-		return description;
-	}
-	
-	// TODO Dau
-	Iterable<String> getCategories() {
-		return categories;
-	}
+public interface CatalogEntry<T extends ProductType> {
+	String getDescription();
+	Iterable<String> getCategories();
+	Iterable<T> getProductTypes();
 }

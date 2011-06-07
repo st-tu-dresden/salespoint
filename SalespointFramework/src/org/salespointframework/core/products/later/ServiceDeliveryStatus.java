@@ -1,4 +1,4 @@
-package org.salespointframework.core.products;
+package org.salespointframework.core.products.later;
 
 public enum ServiceDeliveryStatus {
 	SCHEDULED, EXECUTING, CANCELLED, COMPLETED
