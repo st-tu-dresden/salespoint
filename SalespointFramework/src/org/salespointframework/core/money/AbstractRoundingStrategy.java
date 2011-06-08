@@ -1,5 +1,7 @@
 package org.salespointframework.core.money;
 
+import java.math.BigDecimal;
+
 public abstract class AbstractRoundingStrategy implements RoundingStrategy {
 
 	protected int numberOfDigits;
@@ -13,5 +15,5 @@ public abstract class AbstractRoundingStrategy implements RoundingStrategy {
 	}
 	
 	@Override
-	abstract public Quantity round(Quantity quantity);
+	abstract public BigDecimal round(BigDecimal amount);
 }

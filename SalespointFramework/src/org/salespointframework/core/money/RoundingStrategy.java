@@ -1,5 +1,7 @@
 package org.salespointframework.core.money;
 
+import java.math.BigDecimal;
+
 public interface RoundingStrategy {
-	public Quantity round(Quantity quantity);
+	public BigDecimal round(BigDecimal amount);
 }

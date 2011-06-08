@@ -1,6 +1,8 @@
 package org.salespointframework.core.money;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 import javax.persistence.*;
 
 import org.salespointframework.core.money.AbstractRoundingStrategy;
@@ -19,15 +21,8 @@ public class RoundDownStrategy extends AbstractRoundingStrategy implements Seria
 	}
 
 	@Override
-	public Quantity round(Quantity quantity) {
-		int precision = 1;
-		
-		while(numberOfDigits-- > 0)
-			precision *= 10;
-		
-		quantity.setAmount((float) Math.floor(quantity.getAmount() * precision)/precision);
-		
-		return quantity;
+	public BigDecimal round(BigDecimal amount) {
+		return amount.setScale(numberOfDigits, BigDecimal.ROUND_DOWN);
 	}
    
 }

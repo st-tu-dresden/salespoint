@@ -1,6 +1,7 @@
 package org.salespointframework.core.money;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.*;
 import org.salespointframework.core.money.AbstractRoundingStrategy;
@@ -20,9 +21,8 @@ public class RoundStrategy extends AbstractRoundingStrategy implements Serializa
 	}
 
 	@Override
-	public Quantity round(Quantity quantity) {
-		// TODO Auto-generated method stub
-		return null;
+	public BigDecimal round(BigDecimal amount) {
+		return amount;
 	}
    
 }
