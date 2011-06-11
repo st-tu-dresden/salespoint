@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faceted-project>
-  <runtime name="JBoss 6.0 Runtime"/>
+  <runtime name="Apache Tomcat v7.0"/>
   <fixed facet="jpt.jpa"/>
   <fixed facet="java"/>
   <fixed facet="jst.utility"/>

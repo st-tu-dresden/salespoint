@@ -16,7 +16,11 @@ public abstract class AbstractProductInstance<T extends ProductType> implements 
 
 	@Override
 	public Money getPrice() {
-		// TODO Auto-generated method stub
-		return null;
+		return productType.getPrice();
+	}
+
+	@Override
+	public String getName() {
+		return productType.getName();
 	}
 }

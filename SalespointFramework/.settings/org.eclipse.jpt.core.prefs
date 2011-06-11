@@ -1,3 +1,4 @@
-#Sun May 22 17:40:49 CEST 2011
+#Sat Jun 11 18:58:44 CEST 2011
 eclipse.preferences.version=1
-org.eclipse.jpt.core.platform=generic2_0
+org.eclipse.jpt.core.discoverAnnotatedClasses=true
+org.eclipse.jpt.core.platform=eclipselink2_0

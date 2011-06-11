@@ -1,7 +1,7 @@
 <root>
   <facet id="jpt.jpa">
     <node name="libprov">
-      <attribute name="provider-id" value="runtime-library-provider"/>
+      <attribute name="provider-id" value="eclipselink2_0-user-library-provider"/>
     </node>
   </facet>
 </root>
