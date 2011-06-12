@@ -1,14 +1,22 @@
 package org.salespointframework.core.catalogs;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
+
+import org.salespointframework.core.database.Database;
 import org.salespointframework.core.products.ProductType;
 
 public class AbstractProductCatalog<T extends ProductType> implements ProductCatalog<T> {
 
+	EntityManagerFactory emf = Database.getInstance().getEntityManagerFactory();
+	
 	//JPA
 	Class<T> clazz;
 	
 	public AbstractProductCatalog(Class<T> clazz) {
 		this.clazz = clazz;
+		
 	}
 	
 	
@@ -24,7 +32,8 @@ public class AbstractProductCatalog<T extends ProductType> implements ProductCat
 
 	@Override
 	public T findProductTypeByProductIdentifier(int productIdentifier) {
-		return null;
+		EntityManager em = emf.createEntityManager();
+		return em.find(clazz, productIdentifier);
 	}
 
 	@Override
@@ -34,7 +43,9 @@ public class AbstractProductCatalog<T extends ProductType> implements ProductCat
 
 	@Override
 	public Iterable<T> findProductTypesByCategory(String category) {
-		return null;
+		EntityManager em = emf.createEntityManager();
+		TypedQuery<T> tquery = em.createQuery("",clazz);
+		return tquery.getResultList();
 	}
 
 	@Override
