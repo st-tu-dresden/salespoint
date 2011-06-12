@@ -14,6 +14,10 @@ public abstract class AbstractRoundingStrategy implements RoundingStrategy {
 		this.roundingStep = roundingStep;
 	}
 	
+	protected AbstractRoundingStrategy() {
+		
+	}
+	
 	@Override
 	abstract public BigDecimal round(BigDecimal amount);
 }

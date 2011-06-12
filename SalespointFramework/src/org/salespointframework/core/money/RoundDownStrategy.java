@@ -19,6 +19,10 @@ public class RoundDownStrategy extends AbstractRoundingStrategy implements Seria
 	public RoundDownStrategy(int numberOfDigits, int roundingDigit, int roundingStep) {
 		super(numberOfDigits, roundingDigit, roundingStep);
 	}
+	
+	protected RoundDownStrategy() {
+		
+	}
 
 	@Override
 	public BigDecimal round(BigDecimal amount) {
