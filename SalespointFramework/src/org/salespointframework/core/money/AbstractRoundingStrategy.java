@@ -14,6 +14,7 @@ public abstract class AbstractRoundingStrategy implements RoundingStrategy {
 		this.roundingStep = roundingStep;
 	}
 	
+	@Deprecated	
 	protected AbstractRoundingStrategy() {
 		
 	}

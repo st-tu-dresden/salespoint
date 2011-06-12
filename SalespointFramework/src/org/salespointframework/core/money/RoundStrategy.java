@@ -15,6 +15,7 @@ public class RoundStrategy extends AbstractRoundingStrategy implements Serializa
 	@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;	
 	private static final long serialVersionUID = 1L;
 
+	@Deprecated
 	protected RoundStrategy() {
 		
 	}

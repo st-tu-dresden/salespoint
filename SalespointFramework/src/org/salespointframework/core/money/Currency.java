@@ -17,15 +17,16 @@ public class Currency extends Metric {
 	 * This constructor is required for JPA/Hibernate.
 	 * To instantiate objects, use public constructors instead.
 	 */
+	@Deprecated
 	protected Currency() {};
 	
 	/** Class constructor 
 	 * 
 	 * @param name                        Name of this currency, e.g. "Euro"
 	 * @param alphabeticCode              Alphabetic representation of this currency, e.g. "EUR"
-	 * @param majorUnitSymbol             Symbol denoting the major unit of this currency, e.g. "Û"
+	 * @param majorUnitSymbol             Symbol denoting the major unit of this currency, e.g. "ï¿½"
 	 * @param minorUnitSymbol             Symbol denoting the minor unit of this currency, e.g. "ct"
-	 * @param ratioOfMinorUnitToMajorUnit Ratio of the minor unit to the major unit, e.g. 100ct are 1Û so 100.
+	 * @param ratioOfMinorUnitToMajorUnit Ratio of the minor unit to the major unit, e.g. 100ct are 1ï¿½ so 100.
 	 * @param definition                  Definition of this currency, e.g. "the euro is the official currency of the eurozone."
 	 */
 	public Currency(String name, String alphabeticCode, String majorUnitSymbol,

@@ -20,6 +20,7 @@ public class RoundDownStrategy extends AbstractRoundingStrategy implements Seria
 		super(numberOfDigits, roundingDigit, roundingStep);
 	}
 	
+	@Deprecated
 	protected RoundDownStrategy() {
 		
 	}

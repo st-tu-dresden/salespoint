@@ -18,6 +18,7 @@ public class Metric {
 	/** Default class constructor is used by JPA/Hibernate. For Object creation use
 	 * parameterized public constructors instead.
 	 */
+	@Deprecated
 	protected Metric() {};
 	
 	/** Class constructor specifying name, symbol and definition.

@@ -7,6 +7,13 @@ public class Money extends Quantity {
 
 	private Currency currency;
 	
+	
+	// TODO -> protected
+	@Deprecated
+	public Money() {
+		
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
