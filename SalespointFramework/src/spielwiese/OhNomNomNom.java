@@ -9,7 +9,7 @@ import org.salespointframework.core.money.Money;
 public class OhNomNomNom {
 
 	@BeforeClass
-	public void setUp() {
+	public static void setUp() {
 		Database.getInstance().initializeEntityManagerFactory("SalespointFramework");
 	}
 	
