@@ -6,8 +6,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 
-// TODO Name ändern
-// Singleton ist IMO nötig, da alles EntityManager von EINER Factory kommen sollten
+// TODO Name Ã¤ndern
+// Singleton ist IMO nÃ¶tig, da ALLE EntityManager von der SELBEN Factory kommen sollten
 public class Database {
 
 	private EntityManagerFactory emf;
@@ -21,7 +21,7 @@ public class Database {
 	// TODO 
 	// laut Doku wird keine Exception geworfen, genauer checken
 	// http://download.oracle.com/javaee/6/api/javax/persistence/Persistence.html#createEntityManagerFactory(java.lang.String)
-	// also gehe ich davon aus, dass da einfach null bei einem Fehler zurück kommt
+	// also gehe ich davon aus, dass da einfach null bei einem Fehler zurÃ¼ck kommt
 	
 	public boolean initializeEntityManagerFactory(String persistenceUnitName) {
 		emf = Persistence.createEntityManagerFactory(persistenceUnitName);

@@ -1,4 +1,4 @@
-package org.salespointframework.core.products.later;
+package org.salespointframework.core.product.later;
 
 
 public abstract class AbstractServiceInstance<T extends ServiceType> implements ServiceInstance<T> {

@@ -1,7 +1,7 @@
 package org.salespointframework.core.inventory;
 
-import org.salespointframework.core.products.ProductInstance;
-import org.salespointframework.core.products.ProductType;
+import org.salespointframework.core.product.ProductInstance;
+import org.salespointframework.core.product.ProductType;
 
 //TODO public interface Inventory<T1 extends InventoryEntry<T2>, T2 extends ProductInstance<T3>, T3 extends ProductType> {
 

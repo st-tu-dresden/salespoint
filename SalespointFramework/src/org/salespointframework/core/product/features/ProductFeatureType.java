@@ -1,4 +1,4 @@
-package org.salespointframework.core.products.features;
+package org.salespointframework.core.product.features;
 
 import java.util.Set;
 import java.util.HashSet;
