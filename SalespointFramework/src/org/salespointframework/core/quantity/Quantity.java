@@ -1,4 +1,4 @@
-package org.salespointframework.core.money;
+package org.salespointframework.core.quantity;
 
 import java.math.BigDecimal;
 
@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 
 /**
  * 
@@ -15,7 +17,7 @@ import javax.persistence.Id;
  * 'Something' is specified using a <code>Metric</code>.
  * A <code>RoundingStrategy</code> accommodates amounts
  * that do not fit the value set of a given metric 
- * (Think of money: 0.0001ï¿½ has no meaning in the real
+ * (Think of money: 0.0001Û has no meaning in the real
  * world). The <code>roundingStrategy</code> is applied
  * to <code>amount</code> in the class constructor. This
  * way, every instance has a valid <code>amount</code>.
@@ -33,7 +35,6 @@ public class Quantity implements Comparable<Quantity> {
 	/** Protected class constructor is required for JPA/Hibernate.
 	 * Use parameterized Constructor instead.
 	 */
-	@Deprecated
 	protected Quantity() {};
 	
 	/** Parameterized class constructor.
@@ -133,9 +134,12 @@ public class Quantity implements Comparable<Quantity> {
 	public boolean equals(Object obj) {
 		if(!(obj instanceof Quantity))
 			return false;
-		else
-		//FIXME 
-		return amount == ((Quantity)obj).amount;
+		else {
+			Quantity q = (Quantity)obj;
+			return roundingStrategy.equals(q.roundingStrategy)
+						&& amount.equals(q.amount)
+						&& metric.equals(metric);
+		}
 	}
 	
 	@Override
@@ -145,7 +149,7 @@ public class Quantity implements Comparable<Quantity> {
 
 	@Override
 	public int hashCode() {
-		return super.hashCode();
+		return amount.hashCode();
 	}
 	
 	/** Sums two quantities up.

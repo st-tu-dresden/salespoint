@@ -1,4 +1,4 @@
-package org.salespointframework.core.money;
+package org.salespointframework.core.quantity.rounding;
 
 import java.math.BigDecimal;
 

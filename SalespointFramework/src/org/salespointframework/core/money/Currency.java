@@ -3,6 +3,8 @@ package org.salespointframework.core.money;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import org.salespointframework.core.quantity.Metric;
+
 @Entity
 @DiscriminatorValue("CURRENCY")
 public class Currency extends Metric {

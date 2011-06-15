@@ -2,6 +2,8 @@ package org.salespointframework.core.money;
 
 import javax.persistence.Entity;
 
+import org.salespointframework.core.quantity.Quantity;
+
 @Entity
 public class Money extends Quantity {
 

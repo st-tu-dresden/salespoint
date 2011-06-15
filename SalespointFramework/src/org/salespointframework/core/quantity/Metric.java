@@ -1,4 +1,4 @@
-package org.salespointframework.core.money;
+package org.salespointframework.core.quantity;
 
 import javax.persistence.Entity;
 import javax.persistence.DiscriminatorValue;
@@ -18,7 +18,6 @@ public class Metric {
 	/** Default class constructor is used by JPA/Hibernate. For Object creation use
 	 * parameterized public constructors instead.
 	 */
-	@Deprecated
 	protected Metric() {};
 	
 	/** Class constructor specifying name, symbol and definition.
@@ -66,5 +65,22 @@ public class Metric {
 	 */
 	public String getDefinition() {
 		return definition;
+	}
+	
+	/** Compares this <code>Metric</code> to <code>obj</code>.
+	 * 
+	 * Returns <code>false</code> if <code>obj</code> is not an instance of <code>Metric</code>.
+	 * Otherwise, two <code>Metric</code>s are equal, if their symbols and names are equal.
+	 * 
+	 * @param obj the Object to which <code>this</code> is compared.
+	 */
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Metric))
+			return false;
+		else {
+			Metric m = (Metric) obj;
+			return symbol.equals(m.symbol)
+						&& name.equals(m.name);
+		}
 	}
 }
