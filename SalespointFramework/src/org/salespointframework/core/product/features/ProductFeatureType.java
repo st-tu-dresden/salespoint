@@ -5,6 +5,8 @@ import java.util.HashSet;
 
 import java.util.Arrays;
 
+import org.salespointframework.util.SalespointIterable;
+
 
 public class ProductFeatureType {
 	
@@ -34,9 +36,8 @@ public class ProductFeatureType {
 		possibleValues = new HashSet<ProductFeature>(Arrays.asList(productFeatures));
 	}
 	
-	// TODO Dausicher machen
 	public Iterable<ProductFeature> getPossibleValues() {
-		return possibleValues;
+		return new SalespointIterable<ProductFeature>(possibleValues);
 	}
 	
 }

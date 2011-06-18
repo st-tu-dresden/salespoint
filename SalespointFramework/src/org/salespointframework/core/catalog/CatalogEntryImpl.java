@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.salespointframework.core.product.ProductType;
+import org.salespointframework.util.SalespointIterable;
 
 public class CatalogEntryImpl<T extends ProductType> implements CatalogEntry<T> {
 	private String description;
@@ -21,10 +22,9 @@ public class CatalogEntryImpl<T extends ProductType> implements CatalogEntry<T> 
 		return description;
 	}
 	
-	// TODO cast verhindern
 	@Override
 	public Iterable<String> getCategories() {
-		return categories;
+		return new SalespointIterable<String>(categories);
 	}
 
 

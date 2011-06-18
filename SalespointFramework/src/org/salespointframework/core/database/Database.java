@@ -8,15 +8,11 @@ import javax.persistence.Persistence;
 
 // TODO Name ändern
 // Singleton ist IMO nötig, da ALLE EntityManager von der SELBEN Factory kommen sollten
-public class Database {
-
+// enum Singleton pattern -> awesome
+public enum Database {
+	INSTANCE;
+	
 	private EntityManagerFactory emf;
-	
-	private static final Database INSTANCE = new Database();
-	
-	public static Database getInstance() {
-		return INSTANCE;
-	}
 	
 	// TODO 
 	// laut Doku wird keine Exception geworfen, genauer checken

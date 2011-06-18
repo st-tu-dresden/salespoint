@@ -8,6 +8,7 @@ import javax.persistence.Id;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.features.ProductFeatureType;
+import org.salespointframework.util.SalespointIterable;
 
 @Entity
 public abstract class AbstractProductType implements ProductType {
@@ -38,8 +39,8 @@ public abstract class AbstractProductType implements ProductType {
 			return false;
 		}
 	}
-	public boolean equals(ProductType productType) {
-		return this.productIdentifier == productType.getProductIdentifier(); 
+	public boolean equals(AbstractProductType productType) {
+		return this.productIdentifier == productType.productIdentifier;
 	}
 	
 	@Override
@@ -57,9 +58,8 @@ public abstract class AbstractProductType implements ProductType {
 		return name;
 	}
 
-	//TODO cast-sicher machen
 	public Iterable<ProductFeatureType> getFeatureTypes() {
-		return featureTypes;
+		return new SalespointIterable<ProductFeatureType>(featureTypes);
 	}
 
 	@Override
