@@ -22,18 +22,18 @@ public class ProductFeatureType {
 		return description;
 	}
 	
-	public boolean addFeature(ProductFeature productFeature) {
-		return possibleValues.add(productFeature);
+	public boolean addFeature(ProductFeature p) {
+		return possibleValues.add(p);
 	}
 	
-	public boolean removeFeature(ProductFeature productFeature) {
-		return possibleValues.remove(productFeature);
+	public boolean removeFeature(ProductFeature p) {
+		return possibleValues.remove(p);
 	}
 	
-	public ProductFeatureType(String name, String description, ProductFeature... productFeatures) {
+	public ProductFeatureType(String name, String description, Set <ProductFeature> p) {
 		this.name = name;
 		this.description = description;
-		possibleValues = new HashSet<ProductFeature>(Arrays.asList(productFeatures));
+		this.possibleValues = new HashSet<ProductFeature>(Arrays.asList(p));
 	}
 	
 	public Iterable<ProductFeature> getPossibleValues() {
