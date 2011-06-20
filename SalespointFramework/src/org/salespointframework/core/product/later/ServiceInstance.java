@@ -4,4 +4,5 @@ import org.salespointframework.core.product.ProductInstance;
 
 public interface ServiceInstance<T extends ServiceType> extends ProductInstance<T> {
 
+	ServiceDeliveryStatus getServiceDeliveryStatus();
 }
