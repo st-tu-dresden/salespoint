@@ -19,6 +19,9 @@ public class RoundUpStrategy extends AbstractRoundingStrategy implements Seriali
 	
 	private static final long serialVersionUID = 1L;
 	
+	@Deprecated
+	protected RoundUpStrategy() {};
+	
 	public RoundUpStrategy(int numberOfDigits) {
 		super(numberOfDigits, 0, 0);
 	}

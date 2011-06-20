@@ -18,6 +18,9 @@ public class RoundDownStrategy extends AbstractRoundingStrategy implements Seria
 	@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
 	private static final long serialVersionUID = 1L;
 	
+	@Deprecated
+	protected RoundDownStrategy() {};
+	
 	public RoundDownStrategy(int numberOfDigits) {
 		super(numberOfDigits, 0, 0);
 	}

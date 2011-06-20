@@ -19,6 +19,9 @@ public class RoundCeilStrategy extends AbstractRoundingStrategy implements Seria
 	
 	private static final long serialVersionUID = 1L;
 	
+	@Deprecated
+	protected RoundCeilStrategy() {};
+	
 	public RoundCeilStrategy(int numberOfDigits) {
 		super(numberOfDigits, 0, 0);
 	}

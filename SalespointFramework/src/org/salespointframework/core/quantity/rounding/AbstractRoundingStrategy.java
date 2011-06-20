@@ -8,6 +8,9 @@ public abstract class AbstractRoundingStrategy implements RoundingStrategy {
 	protected int roundingDigit;
 	protected int roundingStep;
 
+	@Deprecated
+	protected AbstractRoundingStrategy() {};
+	
 	public AbstractRoundingStrategy(int numberOfDigits, int roundingDigit, int roundingStep) {
 		this.numberOfDigits = numberOfDigits;
 		this.roundingDigit = roundingDigit;

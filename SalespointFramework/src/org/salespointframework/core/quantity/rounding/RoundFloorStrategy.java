@@ -19,6 +19,9 @@ public class RoundFloorStrategy extends AbstractRoundingStrategy implements Seri
 	
 	private static final long serialVersionUID = 1L;
 	
+	@Deprecated
+	protected RoundFloorStrategy() {};
+	
 	public RoundFloorStrategy(int numberOfDigits) {
 		super(numberOfDigits, 0, 0);
 	}
