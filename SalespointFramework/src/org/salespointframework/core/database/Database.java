@@ -5,6 +5,8 @@ import java.util.Map;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.salespointframework.util.Objects;
+
 
 // TODO Name ändern
 // Singleton ist IMO nötig, da ALLE EntityManager von der SELBEN Factory kommen sollten
@@ -20,12 +22,15 @@ public enum Database {
 	// also gehe ich davon aus, dass da einfach null bei einem Fehler zurück kommt
 	
 	public boolean initializeEntityManagerFactory(String persistenceUnitName) {
+		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName");
 		emf = Persistence.createEntityManagerFactory(persistenceUnitName);
 		return emf != null ? true : false; 
 	}
 	
 	public boolean initializeEntityManagerFactory(String persistenceUnitName, @SuppressWarnings("rawtypes") Map properties)
 	{
+		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName");
+		Objects.requireNonNull(properties, "properties");
 		emf = Persistence.createEntityManagerFactory(persistenceUnitName, properties);
 		return emf != null ? true : false;
 	}

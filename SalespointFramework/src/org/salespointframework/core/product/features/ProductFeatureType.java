@@ -37,7 +37,7 @@ public class ProductFeatureType {
 	}
 	
 	public Iterable<ProductFeature> getPossibleValues() {
-		return new SalespointIterable<ProductFeature>(possibleValues);
+		return SalespointIterable.from(possibleValues);
 	}
 	
 }

@@ -3,6 +3,7 @@ package org.salespointframework.core.product;
 import javax.persistence.*;
 
 import org.salespointframework.core.money.Money;
+import org.salespointframework.util.Objects;
 
 // TODO equals und hashCode überschreiben
 
@@ -14,7 +15,7 @@ public abstract class AbstractProductInstance<T extends AbstractProductType> imp
 	private int serialNumber;
 	
 	// TODO richtig?
-	//@OneToOne
+	//@ManyToOne
 	private T productType;
 	
 	@Deprecated
@@ -23,7 +24,7 @@ public abstract class AbstractProductInstance<T extends AbstractProductType> imp
 	}
 	
 	public AbstractProductInstance(T productType) {
-		this.productType = productType;
+		this.productType = Objects.requireNonNull(productType, "productType");
 	}
 
 	@Override

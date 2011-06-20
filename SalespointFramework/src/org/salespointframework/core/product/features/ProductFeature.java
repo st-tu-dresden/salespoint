@@ -1,6 +1,7 @@
 package org.salespointframework.core.product.features;
 
 import org.salespointframework.core.money.Money;
+import org.salespointframework.util.Objects;
 
 
 public class ProductFeature {
@@ -8,8 +9,9 @@ public class ProductFeature {
 	private Money price;
 	
 	public ProductFeature(String feature, Money price) {
-		this.feature = feature;
-		this.price = price;
+		this.feature =  Objects.requireNonNull(feature, "feature");
+		this.price = Objects.requireNonNull(price, "price");
+		
 	}
 	
 	public String getFeature() {
@@ -17,10 +19,10 @@ public class ProductFeature {
 	}
 
 	public Money getPrice() {
-		
 		return price;
 	}
 
+	// TODO
 	@Override
 	public boolean equals(Object obj) {
 		ProductFeature other = (ProductFeature) obj;

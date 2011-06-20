@@ -5,15 +5,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.salespointframework.core.product.ProductType;
+import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
+// TODO abstract und internal?
 public class CatalogEntryImpl<T extends ProductType> implements CatalogEntry<T> {
 	private String description;
 	private Set<String> categories;
 	
 	// TODO nullchecks
 	public CatalogEntryImpl(String description, String... categories) {
-		this.description = description;
+		this.description = Objects.requireNonNull(description, "description");
+		Objects.requireNonNull(categories, "categories");
 		this.categories = new HashSet<String>(Arrays.asList(categories));		
 	}
 	
@@ -24,7 +27,7 @@ public class CatalogEntryImpl<T extends ProductType> implements CatalogEntry<T> 
 	
 	@Override
 	public Iterable<String> getCategories() {
-		return new SalespointIterable<String>(categories);
+		return SalespointIterable.from(categories);
 	}
 
 

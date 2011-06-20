@@ -1,29 +1,32 @@
 package org.salespointframework.util;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 
 // verhindert Iterable -> Collection Casts 
 // denn Iterable/Iterator ist readonly, Collection ist es nicht
-public class SalespointIterable<T> implements Iterable<T> {
+public final class SalespointIterable<T> implements Iterable<T> {
 
 	private Iterable<T> source;
 	
-	public SalespointIterable(T[] source) {
-		this.source = Arrays.asList(source);
+	private SalespointIterable(Iterable<T> source) {
+		this.source = Objects.requireNonNull(source, "source"); 
 	}
 	
-	public SalespointIterable(Collection<T> source) {
-		this.source = source;
+	public static <T> SalespointIterable<T> from(Iterable<T> source) {
+		return new SalespointIterable<T>(source);
+	}
+
+	private SalespointIterable(T[] source) {
+		Arrays.asList(Objects.requireNonNull(source, "source"));
 	}
 	
-	public SalespointIterable(Iterable<T> source) {
-		this.source = source;
+	public static <T> SalespointIterable<T> from(T[] source) {
+		return new SalespointIterable<T>(source);
 	}
 
 	@Override
-	public Iterator<T> iterator() {
+	public final Iterator<T> iterator() {
 		return source.iterator();
 	}
 }
