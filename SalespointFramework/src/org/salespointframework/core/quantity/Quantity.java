@@ -17,7 +17,7 @@ import org.salespointframework.core.quantity.rounding.RoundingStrategy;
  * 'Something' is specified using a <code>Metric</code>.
  * A <code>RoundingStrategy</code> accommodates amounts
  * that do not fit the value set of a given metric 
- * (Think of money: 0.0001Û has no meaning in the real
+ * (Think of money: 0.0001ï¿½ has no meaning in the real
  * world). The <code>roundingStrategy</code> is applied
  * to <code>amount</code> in the class constructor. This
  * way, every instance has a valid <code>amount</code>.
@@ -28,9 +28,9 @@ public class Quantity implements Comparable<Quantity> {
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
 	
-	private BigDecimal amount;
-	private Metric metric;
-	private RoundingStrategy roundingStrategy;
+	protected BigDecimal amount;
+	protected Metric metric;
+	protected RoundingStrategy roundingStrategy;
 	
 	/** Protected class constructor is required for JPA/Hibernate.
 	 * Use parameterized Constructor instead.
