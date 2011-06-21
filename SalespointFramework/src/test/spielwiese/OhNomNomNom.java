@@ -1,4 +1,4 @@
-package spielwiese;
+package test.spielwiese;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -22,7 +22,7 @@ public class OhNomNomNom {
 	public void blablu() {
 		EntityManager em = emf.createEntityManager();
 		
-		Keks keks = new Keks("bla", new Money());
+		Keks keks = new Keks("bla", new Money(5));
 		KeksCatalog catalog = new KeksCatalog(em);
 		catalog.addProductType(keks);
 		assertEquals(keks, catalog.findProductTypeByProductIdentifier(keks.getProductIdentifier()));

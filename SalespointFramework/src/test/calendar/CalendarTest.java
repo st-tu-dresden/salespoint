@@ -1,4 +1,4 @@
-package tests.calendar;
+package test.calendar;
 
 import static org.junit.Assert.assertEquals;
 

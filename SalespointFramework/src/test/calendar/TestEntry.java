@@ -1,4 +1,4 @@
-package tests.calendar;
+package test.calendar;
 
 import javax.persistence.Entity;
 

@@ -1,4 +1,4 @@
-package tests.rounding;
+package test.rounding;
 
 import static org.junit.Assert.*;
 

@@ -1,4 +1,4 @@
-package spielwiese;
+package test.spielwiese;
 
 import javax.persistence.Entity;
 
