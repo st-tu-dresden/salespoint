@@ -4,18 +4,18 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 /**
- * Entity implementation class for Entity: PaymentMethod
- *
+ * A <code>PaymentMethod</code> specifies a medium by which a payment has or
+ * will be made.
+ * 
  */
 @Entity
-
 public abstract class PaymentMethod implements Serializable {
-	@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	long id;
+
 	private static final long serialVersionUID = 1L;
 
-	protected PaymentMethod() {
-		super();
-	}
-   
+	protected PaymentMethod() {}
+
 }

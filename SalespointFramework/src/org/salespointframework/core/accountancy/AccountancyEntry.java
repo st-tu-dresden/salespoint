@@ -30,7 +30,7 @@ public class AccountancyEntry implements Serializable {
 	public AccountancyEntry(String s) {
 		this.s = Objects.requireNonNull(s, "s");
 	}
-	
+
 	public String toString() {
 		return s;
 	}
