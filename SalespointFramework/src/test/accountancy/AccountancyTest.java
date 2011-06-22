@@ -44,7 +44,11 @@ public class AccountancyTest {
 	public void select() {
 		Iterable<AccountancyEntry> i = a.getEntries(from, to);
 		
+		//TODO not really a test, because the Iterable is always non-null.
+		//Instead, we need to test for non-emptyness of the Iterable, or three
+		//elements.
 		assertNotNull(i);
+
 		for(AccountancyEntry e : i) {
 			System.out.println(e.toString());
 		}
