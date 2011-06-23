@@ -11,7 +11,7 @@ public class TestCalendar extends AbstractCalendar<TestEntry> {
     }
 
     @Override
-    public Class<TestEntry> getClassOfContent() {
+    public Class<TestEntry> getClassPLZ() {
         return TestEntry.class;
     }
 

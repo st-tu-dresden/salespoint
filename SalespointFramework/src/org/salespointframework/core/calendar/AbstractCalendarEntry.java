@@ -61,7 +61,7 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
      * @param end End time and date.
      * @throws IllegalArgumentException The {@link IllegalArgumentException} will be thrown, if the end lays before the start of a calendar entry.
      */
-    public AbstractCalendarEntry(User owner, String title, DateTime start, DateTime end) throws IllegalArgumentException {
+    public AbstractCalendarEntry(User owner, String title, DateTime start, DateTime end) {
         if (start.isAfter(end))
             throw new IllegalArgumentException("An calendar entry cannot end before it starts." );
         

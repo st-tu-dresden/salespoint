@@ -34,10 +34,4 @@ public interface Calendar<T extends CalendarEntry> {
      * @param id of the entry that should be removed from calendar
      */
     void delete(int id);
-    
-    /**
-     * Returns the class of the calendar entries
-     * @return
-     */
-    Class<T> getClassOfContent();
 }

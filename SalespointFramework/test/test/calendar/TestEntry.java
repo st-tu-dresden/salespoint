@@ -13,7 +13,7 @@ public class TestEntry extends AbstractCalendarEntry {
     protected TestEntry() {
     }
     
-    public TestEntry(User owner, String title, DateTime start, DateTime end) throws IllegalArgumentException {
+    public TestEntry(User owner, String title, DateTime start, DateTime end) {
         super(owner, title, start, end);
     }
 }

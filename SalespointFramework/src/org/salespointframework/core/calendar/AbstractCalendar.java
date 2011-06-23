@@ -2,13 +2,15 @@ package org.salespointframework.core.calendar;
 
 import javax.persistence.EntityManager;
 
+import org.salespointframework.core.database.ICanHasClass;
+
 /**
  * 
  * @author stanley
  *
  * @param <T>
  */
-public abstract class AbstractCalendar<T extends CalendarEntry> implements Calendar<T> {
+public abstract class AbstractCalendar<T extends CalendarEntry> implements Calendar<T>, ICanHasClass<T> {
 
     private EntityManager em;
     
@@ -25,7 +27,7 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
     @SuppressWarnings("boxing")
     @Override
     public T getEntryByID(int id) {
-        return em.find(this.getClassOfContent(), id);
+        return em.find(this.getClassPLZ(), id);
     }
     
     @Override
