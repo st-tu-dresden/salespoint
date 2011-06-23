@@ -27,7 +27,7 @@ public class Accountancy implements Serializable {
 		entityManager.getTransaction().commit();
 	}
 	
-	public void addEntries(SalespointIterable<AccountancyEntry> accountancyEntries) {
+	public void addEntries(Iterable<AccountancyEntry> accountancyEntries) {
 		Objects.requireNonNull(accountancyEntries, "accountancyEntries");
 		entityManager.getTransaction().begin();
 		for(AccountancyEntry e : accountancyEntries)

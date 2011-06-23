@@ -13,7 +13,7 @@ public final class SalespointIterable<T> implements Iterable<T> {
 		this.source = Objects.requireNonNull(source, "source"); 
 	}
 	
-	public static <T> SalespointIterable<T> from(Iterable<T> source) {
+	public static <T> Iterable<T> from(Iterable<T> source) {
 		return new SalespointIterable<T>(source);
 	}
 
@@ -21,7 +21,7 @@ public final class SalespointIterable<T> implements Iterable<T> {
 		Arrays.asList(Objects.requireNonNull(source, "source"));
 	}
 	
-	public static <T> SalespointIterable<T> from(T[] source) {
+	public static <T> Iterable<T> from(T[] source) {
 		return new SalespointIterable<T>(source);
 	}
 
