@@ -1,19 +1,27 @@
 package org.salespointframework.core.product.features;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.Map;
 
-import java.util.Arrays;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 import org.salespointframework.util.SalespointIterable;
 
-
+// TODO umbenennen
+@Entity
 public class ProductFeatureType {
+	
+	@SuppressWarnings("unused")
+	@Id
+	@GeneratedValue
+	private int id;
 	
 	private String name;
 	private String description;
 	
-	private Set<ProductFeature> possibleValues;
+	// Name -> Feature
+	private Map<String, ProductFeature> possibleValues;
 	
 	public String getName() {
 		return name;
@@ -21,23 +29,36 @@ public class ProductFeatureType {
 	public String getDescription() {
 		return description;
 	}
-	
-	public boolean addFeature(ProductFeature productFeature) {
-		return possibleValues.add(productFeature);
+
+	public void addFeature(ProductFeature productFeature) {
+		possibleValues.put(productFeature.getName(), productFeature);
 	}
 	
-	public boolean removeFeature(ProductFeature productFeature) {
-		return possibleValues.remove(productFeature);
+	// TODO String (name) statt ProductFeature?
+	public void removeFeature(ProductFeature productFeature) {
+		possibleValues.remove(productFeature.getName());
 	}
 	
+	public ProductFeature getProductFeature(String name) {
+		return possibleValues.get(name);
+	}
+	
+	@Deprecated
+	protected ProductFeatureType() { }
+	
+	// TODO Validierung
 	public ProductFeatureType(String name, String description, ProductFeature... productFeatures) {
 		this.name = name;
 		this.description = description;
-		possibleValues = new HashSet<ProductFeature>(Arrays.asList(productFeatures));
+		
+		for(ProductFeature pf : productFeatures) {
+			this.addFeature(pf);
+		}
+		
 	}
 	
 	public Iterable<ProductFeature> getPossibleValues() {
-		return SalespointIterable.from(possibleValues);
+		return SalespointIterable.from(possibleValues.values());
 	}
 	
 }

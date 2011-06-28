@@ -20,6 +20,9 @@ import org.salespointframework.core.quantity.rounding.RoundDownStrategy;
 @Entity
 public class Money extends Quantity {
 
+	// FIXME richtig so Hannes? (sinnvolle convenience)
+	public static final Money ZERO = new Money(0);
+	
 	{
 		metric = new Metric("Euro", "€", "");
 		roundingStrategy = new RoundDownStrategy(4);

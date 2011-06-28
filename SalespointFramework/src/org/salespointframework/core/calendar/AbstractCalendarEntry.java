@@ -15,8 +15,9 @@ import org.salespointframework.core.users.User;
  *
  */
 @Entity
-public abstract class AbstractCalendarEntry implements CalendarEntry {
-
+public /* abstract */  class AbstractCalendarEntry implements CalendarEntry {
+	/* Eclipse Link Bug entdeckt >__<, man verzeihe mir den Comment */
+	
     @Id
     @GeneratedValue
     private int calendarEntryIdentifier;

@@ -1,5 +1,6 @@
 package org.salespointframework.core.product;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -7,12 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.product.features.ProductFeature;
 import org.salespointframework.core.product.features.ProductFeatureType;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
 @Entity
-public abstract class AbstractProductType implements ProductType {
+public class AbstractProductType implements ProductType {
 	
 	@Id
 	@GeneratedValue
@@ -20,12 +22,15 @@ public abstract class AbstractProductType implements ProductType {
 	
 	protected String name;
 	protected Money price;
-	protected Set<ProductFeatureType> featureTypes;
+	
+	//TODO Map?
+	protected Set<ProductFeatureType> featureTypes = new HashSet<ProductFeatureType>() ;
 	
 	@Deprecated
 	protected AbstractProductType() {
 		
 	}
+	
 	
 	public AbstractProductType(String name, Money price) {
 		this.name = Objects.requireNonNull(name, "name");
@@ -60,12 +65,14 @@ public abstract class AbstractProductType implements ProductType {
 		return name;
 	}
 
-	public Iterable<ProductFeatureType> getFeatureTypes() {
+	@Override
+	public Iterable<ProductFeatureType> getProductFeatureTypes() {
 		return SalespointIterable.from(featureTypes);
 	}
-
+	
 	@Override
 	public int getProductIdentifier() {
 		return productIdentifier;
 	}
+	
 }

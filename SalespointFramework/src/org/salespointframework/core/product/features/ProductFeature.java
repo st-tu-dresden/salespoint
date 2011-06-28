@@ -1,31 +1,56 @@
 package org.salespointframework.core.product.features;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Objects;
 
-
+@Entity
 public class ProductFeature {
-	private String feature;
+
+	@Id
+	@GeneratedValue
+	@SuppressWarnings("unused")
+	private int id;
+	
+	private String name;
 	private Money price;
 	
-	public ProductFeature(String feature, Money price) {
-		this.feature =  Objects.requireNonNull(feature, "feature");
+	@Deprecated
+	protected ProductFeature() { }
+	
+	private ProductFeature(String name, Money price) {
+		this.name = Objects.requireNonNull(name, "name");
 		this.price = Objects.requireNonNull(price, "price");
-		
 	}
 	
-	public String getFeature() {
-		return feature;
+	public static ProductFeature create(String name, Money price)  {
+		return new ProductFeature(name, price);
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 	public Money getPrice() {
 		return price;
 	}
-
-	// TODO
+	
+	
 	@Override
-	public boolean equals(Object obj) {
-		ProductFeature other = (ProductFeature) obj;
-		return this.feature.equals(other.getFeature()) && this.price.equals(other.getPrice());
-	};
+	public boolean equals(Object other) {
+		if(other instanceof ProductFeature) {
+			return this.equals((ProductFeature) other);
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean equals(ProductFeature other) {
+		return this == other || (this.name.equals(other.name) && this.price.equals(other.price));
+	}
+	// TODO hashcode
+	
 }

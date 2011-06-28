@@ -1,9 +1,14 @@
 package org.salespointframework.core.product;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.*;
 
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.product.features.ProductFeature;
 import org.salespointframework.util.Objects;
+import org.salespointframework.util.SalespointIterable;
 
 // TODO equals und hashCode überschreiben
 
@@ -18,15 +23,27 @@ public abstract class AbstractProductInstance<T extends AbstractProductType> imp
 	//@ManyToOne
 	private T productType;
 	
+	private Money price;
+	
+	private Map<String, ProductFeature> productFeatures = new HashMap<String, ProductFeature>();
+	
 	@Deprecated
-	protected AbstractProductInstance() {
-		
-	}
+	protected AbstractProductInstance() { }
 	
 	public AbstractProductInstance(T productType) {
 		this.productType = Objects.requireNonNull(productType, "productType");
+		
+		calculatePrice();
 	}
 
+	
+	private void calculatePrice() {
+		price = productType.getPrice();
+		for(ProductFeature pt : productFeatures.values()) {
+			price.add(pt.getPrice());
+		}
+	}
+	
 	@Override
 	public T getProductType() { 
 		return productType;
@@ -34,7 +51,7 @@ public abstract class AbstractProductInstance<T extends AbstractProductType> imp
 
 	@Override
 	public Money getPrice() {
-		return productType.getPrice();
+		return price;
 	}
 
 	@Override
@@ -46,4 +63,15 @@ public abstract class AbstractProductInstance<T extends AbstractProductType> imp
 	public int getSerialNumber() {
 		return serialNumber;
 	}
+
+	@Override
+	public Iterable<ProductFeature> getProductTypes() {
+		return SalespointIterable.from(productFeatures.values());
+	}
+	
+	@Override
+	public ProductFeature getProductFeature(String name) {
+		return productFeatures.get(name);
+	}
+
 }
