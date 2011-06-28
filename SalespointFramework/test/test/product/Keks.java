@@ -1,4 +1,4 @@
-package test.spielwiese;
+package test.product;
 
 import javax.persistence.Entity;
 
@@ -13,7 +13,7 @@ public class Keks extends AbstractProductType {
 		
 	}
 	
-	public Keks(String name, Money price ) {
+	public Keks(String name, Money price) {
 		super(name, price);
 	}
 
