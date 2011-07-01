@@ -11,7 +11,6 @@ import org.joda.time.DateTime;
  * 
  */
 @Entity
-@DiscriminatorValue("<None>")
 public class Payment implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,6 +21,7 @@ public class Payment implements Serializable {
 	/**
 	 * A method of payment associated with a particular payment
 	 */
+	@OneToOne(cascade=CascadeType.ALL)
 	protected PaymentMethod paymentMethod;
 
 	/**

@@ -9,12 +9,11 @@ import org.salespointframework.core.accountancy.payment.PaymentMethod;
  *
  */
 @Entity
-
 public class Cash extends PaymentMethod implements Serializable {
-
-	
 	private static final long serialVersionUID = 1L;
 
+	public static final Cash CASH = new Cash();
+	
 	public Cash() {
 		super();
 	}
