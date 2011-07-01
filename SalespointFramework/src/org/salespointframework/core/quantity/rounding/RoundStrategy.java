@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Entity
 
 public class RoundStrategy extends AbstractRoundingStrategy implements Serializable, RoundingStrategy {
-	@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;	
+	//@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;	
 	private static final long serialVersionUID = 1L;
 	
 	@Deprecated

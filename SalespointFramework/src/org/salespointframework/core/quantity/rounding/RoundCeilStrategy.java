@@ -15,7 +15,7 @@ import javax.persistence.*;
  * 
  */
 public class RoundCeilStrategy extends AbstractRoundingStrategy implements Serializable, RoundingStrategy {
-	@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
+	//@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
 	
 	private static final long serialVersionUID = 1L;
 	

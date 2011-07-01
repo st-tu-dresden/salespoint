@@ -15,7 +15,7 @@ import javax.persistence.*;
  * This effectively truncates the number at the specified numberOfDigits.
  */
 public class RoundDownStrategy extends AbstractRoundingStrategy implements Serializable, RoundingStrategy {
-	@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
+	//@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
 	private static final long serialVersionUID = 1L;
 	
 	@Deprecated

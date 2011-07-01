@@ -7,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@DiscriminatorValue("METRIC")
 public class Metric {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
 	
