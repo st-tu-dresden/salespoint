@@ -3,11 +3,13 @@ package test.accountancy;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.accountancy.payment.Cash;
+import org.salespointframework.core.accountancy.payment.Payment;
 import org.salespointframework.core.database.Database;
 
 public class MoneyTest {
@@ -43,13 +45,15 @@ public class MoneyTest {
 	
 	@Test
 	public void CashTest() {
+		Cash c = new Cash();
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-		em.persist(Cash.CASH);
+		em.persist(new Payment(Cash.CASH, new DateTime()));
 		em.getTransaction().commit();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		em.persist(Cash.CASH);
+		//c = new Cash();
+		em.merge(new Payment(Cash.CASH, new DateTime()));
 		em.getTransaction().commit();
 	}
 }
