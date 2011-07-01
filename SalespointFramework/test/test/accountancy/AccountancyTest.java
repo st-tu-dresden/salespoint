@@ -13,11 +13,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.accountancy.AccountancyEntry;
+import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.database.Database;
 
 public class AccountancyTest {
-	private EntityManagerFactory emf = Database.INSTANCE
-			.getEntityManagerFactory();
 	private Accountancy a;
 	
 	private DateTime from;
@@ -30,9 +29,9 @@ public class AccountancyTest {
 
 	@Before
 	public void testSetup() {
-		a = new Accountancy(emf.createEntityManager());
+		a = new Accountancy();
 		for (int year = 2000; year < 2005; year++) {
-			a.addEntry(new AccountancyEntry(String.valueOf(year)));
+			a.addEntry(new ProductPaymentEntry());
 			if(year == 2001)
 				from = new DateTime();
 			if(year == 2004)
@@ -52,6 +51,22 @@ public class AccountancyTest {
 		for(AccountancyEntry e : i) {
 			System.out.println(e.toString());
 		}
+	}
+	
+	@Test
+	public void doubleAdd() {
+		Accountancy a = new Accountancy();
+		AccountancyEntry e = new ProductPaymentEntry();
+		a.addEntry(e);
+		System.out.println(new DateTime());
+		try {
+			Thread.sleep(10*1000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		a.addEntry(e);
+		System.out.println(new DateTime());
 	}
 
 }
