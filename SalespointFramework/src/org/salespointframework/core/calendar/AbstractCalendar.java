@@ -27,7 +27,7 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
     @SuppressWarnings("boxing")
     @Override
     public T getEntryByID(int id) {
-        return em.find(this.getClassPLZ(), id);
+        return em.find(this.getContentClass(), id);
     }
     
     @Override

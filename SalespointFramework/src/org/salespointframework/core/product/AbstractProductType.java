@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.features.ProductFeature;
 import org.salespointframework.core.product.features.ProductFeatureType;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
@@ -17,10 +16,7 @@ import org.salespointframework.util.SalespointIterable;
 public class AbstractProductType implements ProductType {
 	
 	@Id
-	@GeneratedValue
-	private int productIdentifier;
-	
-	protected String name;
+	protected String productIdentifier;
 	protected Money price;
 	
 	//TODO Map?
@@ -32,8 +28,8 @@ public class AbstractProductType implements ProductType {
 	}
 	
 	
-	public AbstractProductType(String name, Money price) {
-		this.name = Objects.requireNonNull(name, "name");
+	public AbstractProductType(String productIdentifier, Money price) {
+		this.productIdentifier = Objects.requireNonNull(productIdentifier, "productIdentifier");
 		this.price = Objects.requireNonNull(price, "price");
 	}
 	
@@ -46,23 +42,18 @@ public class AbstractProductType implements ProductType {
 		}
 	}
 	
-	public boolean equals(AbstractProductType productType) {
-		return this.productIdentifier == productType.productIdentifier;
+	public boolean equals(AbstractProductType other) {
+		return this.productIdentifier.equals(other.productIdentifier);
 	}
 	
 	@Override
 	public int hashCode() {
-		return Integer.valueOf(productIdentifier).hashCode();
+		return productIdentifier.hashCode();
 	}
 	
 	@Override	
 	public Money getPrice() {
 		return price;
-	}
-	
-	@Override
-	public String getName() {
-		return name;
 	}
 
 	@Override
@@ -71,7 +62,7 @@ public class AbstractProductType implements ProductType {
 	}
 	
 	@Override
-	public int getProductIdentifier() {
+	public String getProductIdentifier() {
 		return productIdentifier;
 	}
 	

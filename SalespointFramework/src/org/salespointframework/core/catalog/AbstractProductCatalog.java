@@ -23,15 +23,15 @@ public abstract class AbstractProductCatalog<T extends AbstractProductType> impl
 	}
 	
 	@Override
-	public boolean removeProductType(int productIdentifier) {
+	public boolean removeProductType(String productIdentifier) {
 		//TODO Errors
 		entityManager.remove(this.findProductTypeByProductIdentifier(productIdentifier));
 		return false;
 	}
 
 	@Override
-	public T findProductTypeByProductIdentifier(int productIdentifier) {
-		return entityManager.find(this.getClassPLZ(), productIdentifier);
+	public T findProductTypeByProductIdentifier(String productIdentifier) {
+		return entityManager.find(this.getContentClass(), productIdentifier);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public abstract class AbstractProductCatalog<T extends AbstractProductType> impl
 	@Override
 	public Iterable<T> findProductTypesByCategory(String category) {
 		Objects.requireNonNull(category, "category");
-		TypedQuery<T> tquery = entityManager.createQuery("",this.getClassPLZ());
+		TypedQuery<T> tquery = entityManager.createQuery("",this.getContentClass());
 		return tquery.getResultList();
 	}
 

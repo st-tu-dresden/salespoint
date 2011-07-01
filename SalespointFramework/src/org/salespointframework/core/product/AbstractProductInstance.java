@@ -55,17 +55,12 @@ public abstract class AbstractProductInstance<T extends AbstractProductType> imp
 	}
 
 	@Override
-	public String getName() {
-		return productType.getName();
-	}
-
-	@Override
 	public int getSerialNumber() {
 		return serialNumber;
 	}
 
 	@Override
-	public Iterable<ProductFeature> getProductTypes() {
+	public Iterable<ProductFeature> getProductFeatures() {
 		return SalespointIterable.from(productFeatures.values());
 	}
 	
