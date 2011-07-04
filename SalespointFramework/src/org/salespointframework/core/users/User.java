@@ -19,8 +19,7 @@ public interface User {
 	 * @param newPassword the Password you want to give the User
 	 * @param oldPassword the Password the User already has (should be checked)
 	 */
-	public boolean changePassword(String newPassword, String oldPassword);
-	
+		
 	/**
 	 * 
 	 * @return the users name

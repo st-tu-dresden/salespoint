@@ -1,5 +1,9 @@
 package org.salespointframework.core.users;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import org.salespointframework.core.money.Money;
 
 /**
@@ -7,9 +11,22 @@ import org.salespointframework.core.money.Money;
  * @author Christopher Bellmann
  *
  */
+@Entity
 public abstract class AbstractEmployee extends AbstractUser implements Employee {
 	
+	@Id
+	@GeneratedValue
+	@SuppressWarnings("unused")
+	private int id;
+	
 	private Money salary;
+	
+	
+	@Deprecated
+	public AbstractEmployee(){
+		super();
+	}
+	
 	
 	/**
 	 * creates a new Employee

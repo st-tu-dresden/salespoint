@@ -1,9 +1,24 @@
 package org.salespointframework.core.users;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+
+@Entity
 public class AbstractUser {
+	
+	@Id
+	@GeneratedValue
+	@SuppressWarnings("unused")
+	private int id;
 	
 	private String username;
 	private String password;
+	
+	@Deprecated
+	protected AbstractUser() {}
+
 	
 	public AbstractUser(String username, String password) {
 		this.username=username;
@@ -27,6 +42,7 @@ public class AbstractUser {
 		}
 		return false;
 	}
+	
 	
 	public String getUsername(){
 		return username;
