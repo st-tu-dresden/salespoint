@@ -12,7 +12,7 @@ import org.salespointframework.util.SalespointIterable;
 
 // TODO equals und hashCode überschreiben
 
-//@Entity
+@MappedSuperclass
 public abstract class AbstractProductInstance<T extends AbstractProductType> implements ProductInstance<T> {
 	
 	@Id

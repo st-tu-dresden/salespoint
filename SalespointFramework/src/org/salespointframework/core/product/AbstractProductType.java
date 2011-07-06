@@ -6,13 +6,14 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.features.ProductFeatureType;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
-@Entity
+@MappedSuperclass
 public class AbstractProductType implements ProductType {
 	
 	@Id
