@@ -1,8 +1,13 @@
 package org.salespointframework.core.calendar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
 import org.salespointframework.core.database.ICanHasClass;
+import org.salespointframework.util.Filter;
+import org.salespointframework.util.Objects;
 
 /**
  * 
@@ -13,15 +18,28 @@ import org.salespointframework.core.database.ICanHasClass;
 public abstract class AbstractCalendar<T extends CalendarEntry> implements Calendar<T>, ICanHasClass<T> {
 
     private EntityManager em;
+
+    public static final CalendarEntryCapability CAP_OWNER = new CalendarEntryCapability("Owner");
+    public static final CalendarEntryCapability CAP_SHARE = new CalendarEntryCapability("Share");
+    public static final CalendarEntryCapability CAP_READ = new CalendarEntryCapability("Read");
+    public static final CalendarEntryCapability CAP_CHANGE = new CalendarEntryCapability("Change");
+    public static final CalendarEntryCapability CAP_REMOVE = new CalendarEntryCapability("Remove");
     
     public AbstractCalendar(EntityManager em) {
+        Objects.requireNonNull(em, "em");
         this.em = em;
     }
     
     @Override
-    public Iterable<T> getEntries() {
-        // TODO getEntries (Auto-generated method stub)
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Iterable<T> getEntries(Filter<T> filter) {
+        List<T> entries = new ArrayList<T>();
+        
+        for (T entry : entries) {
+            if (filter.invoke(entry).equals(new Boolean(true)))
+                entries.add(entry);
+        }
+        
+        return entries;
     }
 
     @SuppressWarnings("boxing")
@@ -31,12 +49,13 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
     }
     
     @Override
-    public void add(T entry) {
+    public void addEntry(T entry) {
+        Objects.requireNonNull(entry, "entry");
         em.persist(entry);
     }
 
     @Override
-    public void delete(int calendarEntryIdentifier) {
+    public void deleteEntry(int calendarEntryIdentifier) {
         em.remove(this.getEntryByID(calendarEntryIdentifier));
     }
 }

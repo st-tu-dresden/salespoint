@@ -1,11 +1,16 @@
 package org.salespointframework.core.calendar;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.users.User;
+import org.salespointframework.util.Objects;
 
 /**
  * 
@@ -15,30 +20,41 @@ import org.salespointframework.core.users.User;
  *
  */
 @Entity
-public /* abstract */  class AbstractCalendarEntry implements CalendarEntry {
-	/* Eclipse Link Bug entdeckt >__<, man verzeihe mir den Comment */
+public abstract  class AbstractCalendarEntry implements CalendarEntry {
 	
     @Id
     @GeneratedValue
     private int calendarEntryIdentifier;
     
+    protected Map<User, List<CalendarEntryCapability>> capabilities = new HashMap<User, List<CalendarEntryCapability>>();
+    
+    /**
+     * Description of this calendar entry. May be empty.
+     */ 
     protected String description;
     
     /**
      * The start date and time for this entry.
      */
-    protected DateTime startTime;
+    protected long startTime;
+    
     /**
      * The end date and time for this entry.
      */
-    protected DateTime endTime;
+    protected long endTime;
+    
+    /**
+     * Title of this entry.
+     */
     protected String title;
+    
     /**
      * Represents how often this entry should be repeated.
      * For determining the time between two repetitions, see {@link repeatedStep}
      * 
      */
     protected int repeatCount;
+    
     /**
      * Represents the time in millis between two repetitions of this entry.
      * For determining how often an entry should be repeated, see {@link repeatedCount}
@@ -63,12 +79,17 @@ public /* abstract */  class AbstractCalendarEntry implements CalendarEntry {
      * @throws IllegalArgumentException The {@link IllegalArgumentException} will be thrown, if the end lays before the start of a calendar entry.
      */
     public AbstractCalendarEntry(User owner, String title, DateTime start, DateTime end) {
+        Objects.requireNonNull(owner, "owner");
+        Objects.requireNonNull(title, "title");
+        Objects.requireNonNull(start, "start");
+        Objects.requireNonNull(end, "end");
+        
         if (start.isAfter(end))
             throw new IllegalArgumentException("An calendar entry cannot end before it starts." );
         
         this.title = title;
-        this.startTime = start;
-        this.endTime = end;
+        this.startTime = start.getMillis();
+        this.endTime = end.getMillis();
         
         description = "";
         repeatCount = 0;
@@ -98,27 +119,83 @@ public /* abstract */  class AbstractCalendarEntry implements CalendarEntry {
     }
     
     @Override
-    public String getOwner() {
-        return null; //FIXME
-    }
-    
-    @Override
     public String getTitle() {
         return title;
     }
     
     @Override
     public DateTime getStart() {
-        return startTime;
+        return new DateTime(startTime);
     }
     
     @Override
     public DateTime getEnd() {
-        return endTime;
+        return new DateTime(endTime);
     }
     
     @Override
     public int getID() {
         return calendarEntryIdentifier; 
     }
+
+    @Override
+    public void setStart(DateTime start) {
+        Objects.requireNonNull(start, "start");
+        if (start.getMillis() >= endTime)
+            throw new IllegalArgumentException("An calendar entry cannot start after it ends." );
+        
+        this.startTime = start.getMillis();
+    }
+
+    @Override
+    public void setEnd(DateTime end) {
+        Objects.requireNonNull(end, "end");
+        if (end.getMillis() <= startTime)
+            throw new IllegalArgumentException("An calendar entry cannot end before it starts." );
+        
+        this.endTime = end.getMillis();
+    }
+
+    @Override
+    public void setTitle(String title) {
+        Objects.requireNonNull(title, "title");
+        this.title = title;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        Objects.requireNonNull(description, "description");
+        this.description = description;
+    }
+
+    //TODO think about how to realize on-to-many relationship between two other entities (user <--> cap)
+    @Override
+    public String getOwner() {
+        return null; //FIXME
+    }
+    
+    @Override
+    public void addCapability(User user, CalendarEntryCapability capability) {
+        Objects.requireNonNull(user, "user");
+        Objects.requireNonNull(capability, "capability");
+    }
+
+    @Override
+    public void removeCapability(User user, CalendarEntryCapability capability) {
+        Objects.requireNonNull(user, "user");
+        Objects.requireNonNull(capability, "capability");
+    }
+
+    public Iterable<CalendarEntryCapability> getCapabilitiesByUser(User user) {
+        Objects.requireNonNull(user, "user");
+        throw new UnsupportedOperationException("Not supported yet");
+        
+        
+    }
+    
+    public Iterable<User> getUsersByCapability(CalendarEntryCapability capability) {
+        Objects.requireNonNull(capability, "capability");
+        throw new UnsupportedOperationException("Not supported yet");
+    }
+    
 }

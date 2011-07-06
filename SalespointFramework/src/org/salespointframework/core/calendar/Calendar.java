@@ -1,5 +1,7 @@
 package org.salespointframework.core.calendar;
 
+import org.salespointframework.util.Filter;
+
 /**
  * 
  * Calendar manages a set of calendar entries.
@@ -14,7 +16,7 @@ public interface Calendar<T extends CalendarEntry> {
      * Return all Entries
      * @return {@link Iterable} of all entries that match the filter criteria 
      */
-    Iterable<T> getEntries();
+    Iterable<T> getEntries(Filter<T> filter);
     
     /**
      * Return the calendar entry which has the given id or null if no entry exists with this id
@@ -27,11 +29,11 @@ public interface Calendar<T extends CalendarEntry> {
      * Adds the given entry to the calendar 
      * @param entry the entry that should be added to the calendar
      */
-    void add(T entry);
+    void addEntry(T entry);
     
     /**
      * Deletes the entry with the given id
      * @param id of the entry that should be removed from calendar
      */
-    void delete(int id);
+    void deleteEntry(int id);
 }

@@ -9,10 +9,10 @@ import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.database.Database;
-import org.salespointframework.core.users.User;
+import org.salespointframework.core.users.AbstractEmployee;
 
 public class CalendarTest {
-    
+
     private EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
     
     @BeforeClass
@@ -22,15 +22,37 @@ public class CalendarTest {
     
     @Test
     public void addEntry() {
+        
         EntityManager em = emf.createEntityManager();
         
-        // FIXME
-        /*
-        TestEntry entry = new TestEntry(new User() {}, "TestEntry", new DateTime(), new DateTime().plusHours(5));
+        TestEntry entry = new TestEntry(new Worker(), "TestEntry_1", new DateTime(), new DateTime().plusHours(5));
+        
+        
         TestCalendar calendar = new TestCalendar(em);
-        calendar.add(entry);
+        calendar.addEntry(entry);
+        
+//        entry.addCapability(new Worker(), CalendarEntryCapability.OWNER);
+        
         assertEquals(entry,calendar.getEntryByID(entry.getID()));
-        */
     }
     
+    @Test
+    public void modifyEntry() {
+        EntityManager em = emf.createEntityManager();
+        
+        TestEntry entry = new TestEntry(new Worker(), "TestEntry_2", new DateTime(), new DateTime().plusMinutes(180));
+        TestCalendar calendar = new TestCalendar(em);
+        calendar.addEntry(entry);
+        
+        assertEquals(entry,calendar.getEntryByID(entry.getID()));
+        
+        calendar.getEntryByID(entry.getID()).setTitle("New Title");
+        
+        assertEquals(calendar.getEntryByID(entry.getID()).getTitle(), "New Title");
+    }
+    
+    
+    
+    class Worker extends AbstractEmployee {        
+    }
 }
