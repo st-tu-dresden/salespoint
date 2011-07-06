@@ -3,6 +3,7 @@ package org.salespointframework.core.users;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 import org.salespointframework.core.money.Money;
 
@@ -11,8 +12,8 @@ import org.salespointframework.core.money.Money;
  * @author Christopher Bellmann
  *
  */
-@Entity
-public class AbstractEmployee extends AbstractUser implements Employee {
+@MappedSuperclass
+public abstract class AbstractEmployee extends AbstractUser implements Employee {
 	private Money salary;
 	
 	

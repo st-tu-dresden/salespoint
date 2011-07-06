@@ -3,9 +3,10 @@ package org.salespointframework.core.users;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 
-@Entity
+@MappedSuperclass
 public class AbstractUser {
 	
 	@Id
