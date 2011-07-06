@@ -15,7 +15,7 @@ public class ArgumentNullException extends IllegalArgumentException {
 	}
 	
 	public ArgumentNullException(String paramName) {
-		super(paramName + "must be not null");
+		super(paramName + " must be not null");
 		this.paramName = paramName;
 	}
 	
