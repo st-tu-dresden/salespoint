@@ -13,7 +13,7 @@ public class KeksCatalog extends AbstractProductCatalog<Keks> {
 	}
 
 	@Override
-	public Class<Keks> getClassPLZ() {
+	public Class<Keks> getContentClass() {
 		return Keks.class;
 	}
 
