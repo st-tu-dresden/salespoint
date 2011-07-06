@@ -1,5 +1,6 @@
 package org.salespointframework.core.product.features;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
@@ -17,11 +18,12 @@ public class ProductFeatureType {
 	@GeneratedValue
 	private int id;
 	
+	//TODO  @Id
 	private String name;
 	private String description;
 	
 	// Name -> Feature
-	private Map<String, ProductFeature> possibleValues;
+	private Map<String, ProductFeature> possibleValues = new HashMap<String, ProductFeature>();
 	
 	public String getName() {
 		return name;
