@@ -12,13 +12,7 @@ import org.salespointframework.core.money.Money;
  *
  */
 @Entity
-public abstract class AbstractEmployee extends AbstractUser implements Employee {
-	
-	@Id
-	@GeneratedValue
-	@SuppressWarnings("unused")
-	private int id;
-	
+public class AbstractEmployee extends AbstractUser implements Employee {
 	private Money salary;
 	
 	
