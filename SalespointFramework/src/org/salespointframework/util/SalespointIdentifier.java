@@ -12,13 +12,17 @@ import javax.persistence.*;
 @Entity
 public class SalespointIdentifier {
 	@Id
-	private UUID id;
+	private String id;
 
 	public SalespointIdentifier() {
-		id = UUID.randomUUID();
+		id = UUID.randomUUID().toString();
 	}
 
 	public String getIdentifier() {
-		return id.toString();
+		return id;
+	}
+	
+	public String toString() {
+		return id;
 	}
 }
