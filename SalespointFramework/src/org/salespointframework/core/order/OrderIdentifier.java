@@ -14,5 +14,5 @@ public class OrderIdentifier extends SalespointIdentifier {
 	public OrderIdentifier() {
 		super();
 	}
-   
+	
 }
