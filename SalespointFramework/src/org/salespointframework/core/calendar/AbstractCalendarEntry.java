@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.users.User;
@@ -19,8 +20,8 @@ import org.salespointframework.util.Objects;
  * @author stanley
  *
  */
-@Entity
-public abstract  class AbstractCalendarEntry implements CalendarEntry {
+@MappedSuperclass
+public abstract class AbstractCalendarEntry implements CalendarEntry {
 	
     @Id
     @GeneratedValue

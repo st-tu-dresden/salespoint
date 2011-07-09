@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.database.Database;
+import org.salespointframework.core.money.Money;
 import org.salespointframework.core.users.AbstractEmployee;
 
 public class CalendarTest {
@@ -53,6 +54,12 @@ public class CalendarTest {
     
     
     
-    class Worker extends AbstractEmployee {        
+    class Worker extends AbstractEmployee {
+
+		@Override
+		public void changeSalary(Money salary) {
+			// TODO Auto-generated method stub
+			
+		}        
     }
 }
