@@ -1,6 +1,8 @@
 package org.salespointframework.core.order;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,10 +14,15 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.joda.time.DateTime;
+import org.salespointframework.core.order.actions.OrderAction;
+import org.salespointframework.util.Objects;
+import org.salespointframework.util.SalespointIterable;
+
 @Entity
 public class OrderEntry {
 	@Id
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	private OrderIdentifier orderIdentifier;
 	// @GeneratedValue(strategy = GenerationType.AUTO)
 	// private long id;
@@ -23,10 +30,30 @@ public class OrderEntry {
 	// Do NOT fucking touch!
 	@Column(name = "TimeStamp", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
+	@SuppressWarnings("unused")
 	private Date timeStamp;
 
-	public OrderEntry() {
+	private Date dateCreated;
+	private String salesChannel;
+	private String termsAndConditions;
+	private List<OrderAction> orderAction;
+
+	public OrderEntry(String salesChannel, String termsAndCondidtions) {
 		orderIdentifier = new OrderIdentifier();
+		dateCreated = new Date();
+		this.salesChannel = Objects
+				.requireNonNull(salesChannel, "salesChannel");
+		this.termsAndConditions = Objects.requireNonNull(termsAndConditions,
+				"termsAndConditions");
+		orderAction = new ArrayList<OrderAction>();
+	}
+
+	public OrderEntry(String salesChannel) {
+		this(Objects.requireNonNull(salesChannel, "salesChannel"), "");
+	}
+		
+	public OrderEntry() {
+		this("", "");
 	}
 
 	public String toString() {
@@ -38,6 +65,34 @@ public class OrderEntry {
 	 */
 	public OrderIdentifier getOrderIdentifier() {
 		return orderIdentifier;
+	}
+
+	/**
+	 * @return the dateCreated
+	 */
+	public DateTime getDateCreated() {
+		return new DateTime(dateCreated);
+	}
+
+	/**
+	 * @return the salesChannel
+	 */
+	public String getSalesChannel() {
+		return salesChannel;
+	}
+
+	/**
+	 * @return the termsAndConditions
+	 */
+	public String getTermsAndConditions() {
+		return termsAndConditions;
+	}
+
+	/**
+	 * @return the orderAction
+	 */
+	public Iterable<OrderAction> getOrderAction() {
+		return SalespointIterable.from(orderAction);
 	}
 
 }
