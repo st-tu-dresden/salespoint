@@ -36,8 +36,11 @@ public class OrderEntry {
 	private Date dateCreated;
 	private String salesChannel;
 	private String termsAndConditions;
-	private List<OrderAction> orderAction;
-
+	private List<OrderAction> orderActions;
+	private List<OrderLine> orderLines;
+	private List<ChargeLine> chargeLines;
+	private OrderEntryStatus status;
+	
 	public OrderEntry(String salesChannel, String termsAndCondidtions) {
 		orderIdentifier = new OrderIdentifier();
 		dateCreated = new Date();
@@ -45,7 +48,9 @@ public class OrderEntry {
 				.requireNonNull(salesChannel, "salesChannel");
 		this.termsAndConditions = Objects.requireNonNull(termsAndConditions,
 				"termsAndConditions");
-		orderAction = new ArrayList<OrderAction>();
+		orderActions = new ArrayList<OrderAction>();
+		orderLines = new ArrayList<OrderLine>();
+		status = OrderEntryStatus.INITIALIZED;
 	}
 
 	public OrderEntry(String salesChannel) {
@@ -92,7 +97,7 @@ public class OrderEntry {
 	 * @return the orderAction
 	 */
 	public Iterable<OrderAction> getOrderAction() {
-		return SalespointIterable.from(orderAction);
+		return SalespointIterable.from(orderActions);
 	}
 
 }
