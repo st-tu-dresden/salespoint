@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.OneToMany;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
@@ -22,6 +23,7 @@ public class OrderLine {
 	@Id
 	private OrderLineIdentifier identifier;
 
+	@OneToMany
 	private List<ChargeLine> chargeLines;
 	// private ProductIdentifier productType;
 	// private SerialNumber serialNumber;
