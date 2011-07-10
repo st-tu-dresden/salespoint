@@ -13,6 +13,7 @@ import org.salespointframework.util.SalespointIterable;
  * <code>AccountancyEntries</code>.
  * 
  * @author hannesweisbach
+ * @author Thomas Dedek
  * 
  */
 public class Accountancy implements Serializable {
@@ -87,6 +88,57 @@ public class Accountancy implements Serializable {
 				.createEntityManager()
 				.createQuery(
 						"SELECT e FROM AccountancyEntry e WHERE e.timeStamp BETWEEN :from and :to",
+						AccountancyEntry.class);
+		q.setParameter("from", from.toDate(), TemporalType.TIMESTAMP);
+		q.setParameter("to", to.toDate(), TemporalType.TIMESTAMP);
+
+		return SalespointIterable.from(q.getResultList());
+	}
+	
+	/**
+	 * Returns all <code>AccountancyEntry</code>s with the specified <code>accountancyType</code>. If no entries
+	 * with this AccountancyType exist, an empty Iterable is returned.
+	 * 
+	 * @param accountancyType
+	 *            AccountancyType of the requested Entrys
+	 * @return an unmodifiable Iterable containing all entries with the specified AccountancyType
+	 */
+	public Iterable<AccountancyEntry> getEntries(String accountancyType) {
+		Objects.requireNonNull(accountancyType, "accountancyType");
+
+		TypedQuery<AccountancyEntry> q = emf
+				.createEntityManager()
+				.createQuery(
+						"SELECT e FROM AccountancyEntry e WHERE e.accountancyType = '" + accountancyType + "'",
+						AccountancyEntry.class);
+
+		return SalespointIterable.from(q.getResultList());
+	}
+	
+	/**
+	 * Returns all <code>AccountancyEntry</code>s in between the dates
+	 * <code>from</code> and <code>to</code> with the specified <code>accountancyType</code>, including from and to. So every
+	 * entry with an time stamp <= to and >= from is returned. If no entries
+	 * within the specified time span exist, an empty Iterable is returned.
+	 * 
+	 * @param from
+	 *            time stamp denoting the start of the requested time period
+	 * @param to
+	 *            time stamp denoting the end of the requested time period
+	 * @param accountancyType
+	 *            AccountancyType of the requested Entrys
+	 * @return an unmodifiable Iterable containing all entries between from and
+	 *         to with the specified AccountancyType
+	 */
+	public Iterable<AccountancyEntry> getEntries(DateTime from, DateTime to, String accountancyType) {
+		Objects.requireNonNull(from, "from");
+		Objects.requireNonNull(to, "to");
+		Objects.requireNonNull(accountancyType, "accountancyType");
+
+		TypedQuery<AccountancyEntry> q = emf
+				.createEntityManager()
+				.createQuery(
+						"SELECT e FROM AccountancyEntry e WHERE e.accountancyType = '" + accountancyType + "' and e.timeStamp BETWEEN :from and :to",
 						AccountancyEntry.class);
 		q.setParameter("from", from.toDate(), TemporalType.TIMESTAMP);
 		q.setParameter("to", to.toDate(), TemporalType.TIMESTAMP);
