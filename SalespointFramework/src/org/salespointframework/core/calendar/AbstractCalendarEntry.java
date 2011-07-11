@@ -1,10 +1,10 @@
 package org.salespointframework.core.calendar;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -26,8 +26,8 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
     @Id
     @GeneratedValue
     private int calendarEntryIdentifier;
-    
-    protected Map<User, List<CalendarEntryCapability>> capabilities = new HashMap<User, List<CalendarEntryCapability>>();
+
+    protected Map<User, CapabilityList> capabilities = new HashMap<User,CapabilityList>();
     
     /**
      * Description of this calendar entry. May be empty.
@@ -171,32 +171,64 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
 
     //TODO think about how to realize on-to-many relationship between two other entities (user <--> cap)
     @Override
-    public String getOwner() {
-        return null; //FIXME
+    public User getOwner() {
+        for (User user : capabilities.keySet()) {
+            if (capabilities.get(user).contains(CalendarEntryCapability.OWNER)) {
+                return user;
+            }
+        }
+        return null;
     }
     
     @Override
     public void addCapability(User user, CalendarEntryCapability capability) {
         Objects.requireNonNull(user, "user");
         Objects.requireNonNull(capability, "capability");
+        
+        CapabilityList capList = null;
+        
+        if ((capList = capabilities.get(user))==null) {
+            capList = new CapabilityList();
+            capabilities.put(user, capList);
+        } else {
+            if (capList.contains(capability))
+                return;
+        }
+        
+        capList.add(capability);
     }
 
     @Override
     public void removeCapability(User user, CalendarEntryCapability capability) {
         Objects.requireNonNull(user, "user");
         Objects.requireNonNull(capability, "capability");
+        
+        CapabilityList capList = null;
+        
+        if ((capList = capabilities.get(user))!=null) {
+            capList.remove(capability);
+            if (capList.isEmpty())
+                capabilities.remove(user);
+        }
     }
 
     public Iterable<CalendarEntryCapability> getCapabilitiesByUser(User user) {
         Objects.requireNonNull(user, "user");
-        throw new UnsupportedOperationException("Not supported yet");
         
-        
+        return capabilities.get(user);
     }
     
     public Iterable<User> getUsersByCapability(CalendarEntryCapability capability) {
         Objects.requireNonNull(capability, "capability");
-        throw new UnsupportedOperationException("Not supported yet");
+        
+        List<User> users = new LinkedList<User>();
+        
+        for (User user : capabilities.keySet()) {
+            if (capabilities.get(user).contains(capability))
+                users.add(user);
+        }
+        
+        return users;
     }
     
 }

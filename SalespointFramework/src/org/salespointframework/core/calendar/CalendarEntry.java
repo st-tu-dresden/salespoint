@@ -38,7 +38,7 @@ public interface CalendarEntry {
      * Returns the owner this entry
      * @return owner
      */
-    String getOwner();
+    User getOwner();
     
     /**
      * Returns the id of this entry

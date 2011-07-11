@@ -19,12 +19,6 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
 
     private EntityManager em;
 
-    public static final CalendarEntryCapability CAP_OWNER = new CalendarEntryCapability("Owner");
-    public static final CalendarEntryCapability CAP_SHARE = new CalendarEntryCapability("Share");
-    public static final CalendarEntryCapability CAP_READ = new CalendarEntryCapability("Read");
-    public static final CalendarEntryCapability CAP_CHANGE = new CalendarEntryCapability("Change");
-    public static final CalendarEntryCapability CAP_REMOVE = new CalendarEntryCapability("Remove");
-    
     public AbstractCalendar(EntityManager em) {
         Objects.requireNonNull(em, "em");
         this.em = em;
