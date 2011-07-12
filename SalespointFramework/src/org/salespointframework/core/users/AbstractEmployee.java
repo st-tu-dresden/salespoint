@@ -32,14 +32,14 @@ public abstract class AbstractEmployee extends AbstractUser implements Employee 
 		super(username, password);
 	}
 	
-	
+	@Override
 	public Money getSalary(){
 		return salary;
 	}
 	
-	
-	public void changeSalery(Money salery){
-		this.salary=salery;
+	@Override
+	public void changeSalary(Money salary){
+		this.salary=salary;
 	}
 
 	

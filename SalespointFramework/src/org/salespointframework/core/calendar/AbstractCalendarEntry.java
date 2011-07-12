@@ -95,6 +95,9 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
         description = "";
         repeatCount = 0;
         repeatStep = 0;
+        
+        for (CalendarEntryCapability cap : CalendarEntryCapability.values())
+            addCapability(owner, cap);
     }
     
     @Override
