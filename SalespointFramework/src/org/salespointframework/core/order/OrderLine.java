@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
@@ -31,6 +33,7 @@ public class OrderLine {
 	private String comment;
 	private int numberOrdered;
 	private Money unitPrice;
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date expectedDeliveryDate;
 
 	@Deprecated

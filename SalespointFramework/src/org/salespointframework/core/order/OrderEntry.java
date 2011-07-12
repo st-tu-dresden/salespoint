@@ -33,6 +33,7 @@ public class OrderEntry {
 	@SuppressWarnings("unused")
 	private Date timeStamp;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateCreated;
 	private String salesChannel;
 	private String termsAndConditions;
@@ -41,7 +42,7 @@ public class OrderEntry {
 	private List<ChargeLine> chargeLines;
 	private OrderEntryStatus status;
 	
-	public OrderEntry(String salesChannel, String termsAndCondidtions) {
+	public OrderEntry(String salesChannel, String termsAndConditions) {
 		orderIdentifier = new OrderIdentifier();
 		dateCreated = new Date();
 		this.salesChannel = Objects
