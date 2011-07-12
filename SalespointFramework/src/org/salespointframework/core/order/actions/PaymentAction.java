@@ -23,6 +23,7 @@ public class PaymentAction extends OrderAction {
 	private InvoiceIdentifier invoiceIdentifier;
 	@OneToOne(cascade=CascadeType.ALL)
 	private OrderPayment orderPayment;
+	//TODO: does a PaymentAction really need a reference to a ProductPaymentEntry?
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="paymentAction", targetEntity=ProductPaymentEntry.class)
 	private ProductPaymentEntry productPaymentEntry;
 
@@ -34,5 +35,13 @@ public class PaymentAction extends OrderAction {
 		this.orderPayment = Objects.requireNonNull(orderPayment, "orderPAyment");
 		this.productPaymentEntry = new ProductPaymentEntry(this);
 	}
+
+	/**
+	 * @return the productPaymentEntry
+	 */
+	public ProductPaymentEntry getProductPaymentEntry() {
+		return productPaymentEntry;
+	}
+	
 
 }
