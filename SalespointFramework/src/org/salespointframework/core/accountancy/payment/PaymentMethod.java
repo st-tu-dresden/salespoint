@@ -9,7 +9,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
-public /*abstract */ class PaymentMethod implements Serializable {
+public abstract  class PaymentMethod implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	long id;
