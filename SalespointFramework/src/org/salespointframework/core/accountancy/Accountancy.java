@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -97,11 +98,7 @@ public class Accountancy implements Serializable {
 		CriteriaQuery<AccountancyEntry> q = cb
 				.createQuery(AccountancyEntry.class);
 		Root<AccountancyEntry> r = q.from(AccountancyEntry.class);
-		// FIXME: whoa, reflection. may fail at runtime.
-		// fix with typesafe jpa using canonical metamodels
-		// http://www.ibm.com/developerworks/java/library/j-typesafejpa/
-		Expression<Date> a = r.get("timeStamp");
-		Predicate p = cb.between(a, from.toDate(), to.toDate());
+		Predicate p = cb.between(r.get(AccountancyEntry_.timeStamp), from.toDate(), to.toDate());
 		q.where(p);
 		TypedQuery<AccountancyEntry> tq = em.createQuery(q);
 
@@ -124,8 +121,7 @@ public class Accountancy implements Serializable {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> q = cb.createQuery(clazz);
 		Root<T> r = q.from(clazz);
-		Predicate p1 = r.type().in(clazz);
-		q.where(p1);
+		q.where(r.type().in(clazz));
 		TypedQuery<T> tq = em.createQuery(q);
 
 		return SalespointIterable.from(tq.getResultList());
@@ -151,7 +147,8 @@ public class Accountancy implements Serializable {
 	 * @return an unmodifiable Iterable containing all entries between from and
 	 *         to of type T
 	 */
-	public <T> Iterable<T> getEntries(Class<T> clazz, DateTime from, DateTime to) {
+	public <T extends AccountancyEntry> Iterable<T> getEntries(Class<T> clazz,
+			DateTime from, DateTime to) {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
 		Objects.requireNonNull(clazz, "clazz");
@@ -159,11 +156,11 @@ public class Accountancy implements Serializable {
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> q = cb.createQuery(clazz);
-		Root<T> r = q.from(clazz);
+		Root<T> entry = q.from(clazz);
 
-		Expression<Date> a = r.get("timeStamp");
-		Predicate p = r.type().in(clazz);
-		Predicate p1 = cb.between(a, from.toDate(), to.toDate());
+		Predicate p = entry.type().in(clazz);
+		Predicate p1 = cb.between(entry.get(AccountancyEntry_.timeStamp),
+				from.toDate(), to.toDate());
 
 		q.where(cb.and(p, p1));
 		TypedQuery<T> tq = em.createQuery(q);
