@@ -1,7 +1,15 @@
 package org.salespointframework.core.accountancy;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.Date;
+
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.database.Database;
@@ -84,66 +92,83 @@ public class Accountancy implements Serializable {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
 
-		TypedQuery<AccountancyEntry> q = emf
-				.createEntityManager()
-				.createQuery(
-						"SELECT e FROM AccountancyEntry e WHERE e.timeStamp BETWEEN :from and :to",
-						AccountancyEntry.class);
-		q.setParameter("from", from.toDate(), TemporalType.TIMESTAMP);
-		q.setParameter("to", to.toDate(), TemporalType.TIMESTAMP);
+		EntityManager em = emf.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<AccountancyEntry> q = cb
+				.createQuery(AccountancyEntry.class);
+		Root<AccountancyEntry> r = q.from(AccountancyEntry.class);
+		// FIXME: whoa, reflection. may fail at runtime.
+		// fix with typesafe jpa using canonical metamodels
+		// http://www.ibm.com/developerworks/java/library/j-typesafejpa/
+		Expression<Date> a = r.get("timeStamp");
+		Predicate p = cb.between(a, from.toDate(), to.toDate());
+		q.where(p);
+		TypedQuery<AccountancyEntry> tq = em.createQuery(q);
 
-		return SalespointIterable.from(q.getResultList());
+		return SalespointIterable.from(tq.getResultList());
 	}
-	
+
 	/**
-	 * Returns all <code>AccountancyEntry</code>s with the specified <code>accountancyType</code>. If no entries
-	 * with this AccountancyType exist, an empty Iterable is returned.
+	 * Returns all <code>AccountancyEntry</code>s of the specified type
+	 * <code>class</code>. If no entries of the specified type exist, an empty
+	 * Iterable is returned.
 	 * 
-	 * @param accountancyType
-	 *            AccountancyType of the requested Entrys
-	 * @return an unmodifiable Iterable containing all entries with the specified AccountancyType
+	 * @param clazz
+	 *            The type of the entries.
+	 * @return an unmodifiable Iterable containing all entries of type clazz
 	 */
-	public Iterable<AccountancyEntry> getEntries(String accountancyType) {
-		Objects.requireNonNull(accountancyType, "accountancyType");
+	public <T> Iterable<T> getEntries(Class<T> clazz) {
+		Objects.requireNonNull(clazz, "clazz");
 
-		TypedQuery<AccountancyEntry> q = emf
-				.createEntityManager()
-				.createQuery(
-						"SELECT e FROM AccountancyEntry e WHERE e.accountancyType = '" + accountancyType + "'",
-						AccountancyEntry.class);
+		EntityManager em = emf.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<T> q = cb.createQuery(clazz);
+		Root<T> r = q.from(clazz);
+		Predicate p1 = r.type().in(clazz);
+		q.where(p1);
+		TypedQuery<T> tq = em.createQuery(q);
 
-		return SalespointIterable.from(q.getResultList());
+		return SalespointIterable.from(tq.getResultList());
 	}
-	
+
 	/**
 	 * Returns all <code>AccountancyEntry</code>s in between the dates
-	 * <code>from</code> and <code>to</code> with the specified <code>accountancyType</code>, including from and to. So every
-	 * entry with an time stamp <= to and >= from is returned. If no entries
-	 * within the specified time span exist, an empty Iterable is returned.
+	 * <code>from</code> and <code>to</code> of the specified class type
+	 * <code>clazz</code>, including from and to. So every entry with an time
+	 * stamp <= to and >= from is returned. If no entries within the specified
+	 * time span exist, or no entries of the specified class type exist, an
+	 * empty Iterable is returned.
+	 * 
+	 * @param <T>
+	 *            type of the requested entries
 	 * 
 	 * @param from
 	 *            time stamp denoting the start of the requested time period
 	 * @param to
 	 *            time stamp denoting the end of the requested time period
-	 * @param accountancyType
-	 *            AccountancyType of the requested Entrys
+	 * @param clazz
+	 *            class type of the requested entries
 	 * @return an unmodifiable Iterable containing all entries between from and
-	 *         to with the specified AccountancyType
+	 *         to of type T
 	 */
-	public Iterable<AccountancyEntry> getEntries(DateTime from, DateTime to, String accountancyType) {
+	public <T> Iterable<T> getEntries(Class<T> clazz, DateTime from, DateTime to) {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
-		Objects.requireNonNull(accountancyType, "accountancyType");
+		Objects.requireNonNull(clazz, "clazz");
 
-		TypedQuery<AccountancyEntry> q = emf
-				.createEntityManager()
-				.createQuery(
-						"SELECT e FROM AccountancyEntry e WHERE e.accountancyType = '" + accountancyType + "' and e.timeStamp BETWEEN :from and :to",
-						AccountancyEntry.class);
-		q.setParameter("from", from.toDate(), TemporalType.TIMESTAMP);
-		q.setParameter("to", to.toDate(), TemporalType.TIMESTAMP);
+		EntityManager em = emf.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<T> q = cb.createQuery(clazz);
+		Root<T> r = q.from(clazz);
 
-		return SalespointIterable.from(q.getResultList());
+		Expression<Date> a = r.get("timeStamp");
+		Predicate p = r.type().in(clazz);
+		Predicate p1 = cb.between(a, from.toDate(), to.toDate());
+
+		q.where(cb.and(p, p1));
+		TypedQuery<T> tq = em.createQuery(q);
+
+		return SalespointIterable.from(tq.getResultList());
 	}
 
 }
