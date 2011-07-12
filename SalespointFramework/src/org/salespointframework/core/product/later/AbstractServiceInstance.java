@@ -1,30 +1,65 @@
 package org.salespointframework.core.product.later;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.time.ShopTime;
+import org.salespointframework.util.Objects;
 
 
 public abstract class AbstractServiceInstance<T extends ServiceType> implements ServiceInstance<T> {
 	
-	private DateTime start;
-	private DateTime end;
+	
+
+	private T serviceType;
+	
+	private DateTime scheduledStart;
+	private DateTime scheduledEnd;
 	private ServiceDeliveryStatus serviceDeliveryStatus;
 	
-	public AbstractServiceInstance(T productType) {
-
+	@Deprecated
+	public AbstractServiceInstance(){}
+	
+	public AbstractServiceInstance(T serviceType, DateTime start, DateTime end) {
+		this.serviceType = Objects.requireNonNull(serviceType, "serviceType");
+		this.scheduledStart = start;
+		this.scheduledEnd = end;
+		this.serviceDeliveryStatus = ServiceDeliveryStatus.SCHEDULED;
 	}
 	
+	@Override
 	public DateTime getStart(){
-		return this.start;
+		return this.scheduledStart;
 	}
-	public DateTime getEnd(){
-		return this.end;
-	}
-	public ServiceDeliveryStatus getServiceDeliveryStatus(){
-		return this.serviceDeliveryStatus;
-		}
 	
-
-
-
+	@Override
+	public DateTime getEnd(){
+		return this.scheduledEnd;
+	}
+	
+	@Override
+	public ServiceDeliveryStatus getServiceDeliveryStatus(){
+		if (this.serviceDeliveryStatus == ServiceDeliveryStatus.CANCELLED){}
+		else{
+				if(ShopTime.INSTANCE.getDateTime().isBefore(scheduledStart)){
+					this.serviceDeliveryStatus = ServiceDeliveryStatus.SCHEDULED;
+				}
+				else {	if(ShopTime.INSTANCE.getDateTime().isAfter(scheduledEnd)){
+							this.serviceDeliveryStatus = ServiceDeliveryStatus.COMPLETED;
+							}
+				
+						else{this.serviceDeliveryStatus = ServiceDeliveryStatus.EXECUTING;
+							}
+				}
+		}
+		return this.serviceDeliveryStatus;
+	}
+	
+	public void cancelServiceInstance(){
+		this.scheduledEnd = ShopTime.INSTANCE.getDateTime();
+		this.serviceDeliveryStatus = ServiceDeliveryStatus.CANCELLED;
+	}
+	
+	public T getServiceType(){
+		return this.serviceType;
+	}
 
 }
