@@ -10,4 +10,6 @@ public interface ServiceInstance<T extends ServiceType> extends ProductInstance<
 	DateTime getEnd();
 	DateTime getScheduledStart();
 	DateTime getScheduledEnd();
+	T getServiceType();
+	void cancelServiceInstance();
 }
