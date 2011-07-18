@@ -37,11 +37,11 @@ public class ProductCatalogTest {
 		
 	}
 	
-	//@Test
+	@Test
 	public void testFindById() {
 		EntityManager em = emf.createEntityManager();
 		
-		Keks keks1 = new Keks("bla", Money.ZERO);
+		Keks keks1 = new Keks("bla",new Money(0));
 		KeksCatalog catalog = new KeksCatalog(em);
 		
 		
@@ -55,4 +55,6 @@ public class ProductCatalogTest {
 		
 		assertEquals(keks1, keks2);
 	}
+	
+	//@Test
 }
