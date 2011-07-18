@@ -6,7 +6,7 @@ import org.salespointframework.core.product.features.ProductFeature;
 public interface ProductInstance<T extends ProductType> {
 	Money getPrice();
 	T getProductType();
-	int getSerialNumber();
+	long getSerialNumber();
 	Iterable<ProductFeature> getProductFeatures(); 
 	ProductFeature getProductFeature(String name); //TODO notwendig?
 }

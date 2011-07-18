@@ -17,10 +17,10 @@ public abstract class AbstractProductInstance<T extends AbstractProductType> imp
 	
 	@Id
 	@GeneratedValue
-	private int serialNumber;
+	private long serialNumber;
 	
 	// TODO richtig?
-	//@ManyToOne
+	//@OneToOne
 	private T productType;
 	
 	private Money price;
@@ -55,7 +55,7 @@ public abstract class AbstractProductInstance<T extends AbstractProductType> imp
 	}
 
 	@Override
-	public int getSerialNumber() {
+	public long getSerialNumber() {
 		return serialNumber;
 	}
 

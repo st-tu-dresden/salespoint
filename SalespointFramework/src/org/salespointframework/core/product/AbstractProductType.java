@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.features.ProductFeatureType;
@@ -18,6 +18,8 @@ public class AbstractProductType implements ProductType {
 	
 	@Id
 	protected String productIdentifier;
+	protected String name;
+	@OneToOne
 	protected Money price;
 	
 	//TODO Map?
@@ -28,9 +30,14 @@ public class AbstractProductType implements ProductType {
 		
 	}
 	
+	// TODO public oder protected?
+	protected AbstractProductType(String productIdentifier, Money price) {
+		this(productIdentifier, productIdentifier, price);
+	}
 	
-	public AbstractProductType(String productIdentifier, Money price) {
+	protected AbstractProductType(String productIdentifier, String name, Money price) {
 		this.productIdentifier = Objects.requireNonNull(productIdentifier, "productIdentifier");
+		this.name = Objects.requireNonNull(name, "name");
 		this.price = Objects.requireNonNull(price, "price");
 	}
 	
@@ -65,6 +72,13 @@ public class AbstractProductType implements ProductType {
 	@Override
 	public String getProductIdentifier() {
 		return productIdentifier;
+	}
+
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
