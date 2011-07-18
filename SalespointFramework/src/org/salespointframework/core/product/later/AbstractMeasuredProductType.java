@@ -18,14 +18,13 @@ public abstract class AbstractMeasuredProductType extends AbstractProductType {
 public AbstractMeasuredProductType(){
 		
 	}
-
+	/**
+     * Parameterized constructor with 
+     * @param name The name of this MeasuredProductType
+     * @param price The price of the quantity of this MeasuredProductType
+     * @param quantityOnHand The quantity of this MeasuredProductType, which is available.
+     */
 public AbstractMeasuredProductType(String name, Money price, Quantity quantityOnHand){
-	super(name, price);
-	this.quantityOnHand = Objects.requireNonNull(quantityOnHand, "quantityOnHand");
-	this.preferredMetric = quantityOnHand.getMetric();
-}
-
-public AbstractMeasuredProductType(String name, Money price, Quantity quantityOnHand, Set<Metric> possibleMetrics){
 	super(name, price);
 	this.quantityOnHand = Objects.requireNonNull(quantityOnHand, "quantityOnHand");
 	this.preferredMetric = quantityOnHand.getMetric();
@@ -42,5 +41,11 @@ public Metric getPreferredMetric(){
 public Money getUnitPrice(){
 	Money m = new Money(quantityOnHand.getAmount());
 	return (Money) this.getPrice().divide(m);
+}
+
+public void reduceQuantityOnHand(Quantity quantity){
+	if (quantityOnHand.compareTo(quantity)>0)
+        throw new IllegalArgumentException("There isn't enough quantity of this product available.");
+	quantityOnHand = quantityOnHand.subtract(quantity);
 }
 }
