@@ -47,6 +47,14 @@ public class OrderManager {
 		em.getTransaction().commit();
 	}
 
+	/**
+	 * Returns the <code>OrderEntry</code>s whith the specified
+	 * <code>orderIdentifier</code>.
+	 * 
+	 * @param orderIdentifier
+	 *            Denoting the identifier of the requested OrderEntry.
+	 * @return The requested OrderEntry
+	 */
 	public OrderEntry findOrder(OrderIdentifier orderIdentifier) {
 		Objects.requireNonNull(orderIdentifier, "orderIdentifier");
 
