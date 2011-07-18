@@ -19,13 +19,14 @@ public AbstractMeasuredProductType(){
 		
 	}
 	/**
-     * Parameterized constructor with 
+     * Parameterized constructor with
+     * @param productIdentifier The id of this MeasuredProductType 
      * @param name The name of this MeasuredProductType
      * @param price The price of the quantity of this MeasuredProductType
      * @param quantityOnHand The quantity of this MeasuredProductType, which is available.
      */
-public AbstractMeasuredProductType(String name, Money price, Quantity quantityOnHand){
-	super(name, price);
+public AbstractMeasuredProductType(String productIdentifier, String name, Money price, Quantity quantityOnHand){
+	super(productIdentifier, name, price);
 	this.quantityOnHand = Objects.requireNonNull(quantityOnHand, "quantityOnHand");
 	this.preferredMetric = quantityOnHand.getMetric();
 }
