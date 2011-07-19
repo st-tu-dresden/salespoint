@@ -1,7 +1,6 @@
 package org.salespointframework.core.users;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
@@ -9,13 +8,12 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public class AbstractUser {
 	
+
 	@Id
-	@GeneratedValue
-	@SuppressWarnings("unused")
-	private int id;
-	
 	private String username;
 	private String password;
+	@SuppressWarnings("unused")
+	private boolean deleted=false;
 	
 	@Deprecated
 	protected AbstractUser() {}

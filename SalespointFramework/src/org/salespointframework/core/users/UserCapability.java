@@ -1,14 +1,19 @@
 package org.salespointframework.core.users;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  * A UserCapability is identified by a name and nothing else.
- * You connect your Capabilities to the User in your UserManager.
- * See UserManager for details.
+ * You connect your Capabilities to the User in your {@link UserManager}.
+ * @see UserManager
  * @author Christopher Bellmann
  *
  */
+@Entity
 public class UserCapability {
 	
+	@Id
 	private String name;
 	
 	/**
