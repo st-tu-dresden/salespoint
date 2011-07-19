@@ -16,6 +16,9 @@ public class UserCapability {
 	@Id
 	private String name;
 	
+	@Deprecated
+	public UserCapability(){};
+	
 	/**
 	 * Creates a new UserCapability
 	 * @param name name you want the give the Capability

@@ -1,6 +1,5 @@
 package org.salespointframework.core.users;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
@@ -10,7 +9,7 @@ public class AbstractUser {
 	
 
 	@Id
-	private String username;
+	private String userId;
 	private String password;
 	@SuppressWarnings("unused")
 	private boolean deleted=false;
@@ -20,7 +19,7 @@ public class AbstractUser {
 
 	
 	public AbstractUser(String username, String password) {
-		this.username=username;
+		this.userId=username;
 		this.password=password;
 	}
 
@@ -43,8 +42,8 @@ public class AbstractUser {
 	}
 	
 	
-	public String getUsername(){
-		return username;
+	public String getUserId(){
+		return userId;
 	}
 
 }

@@ -14,17 +14,12 @@ public interface User {
 	 */
 	public boolean verifyPassword(String password);
 	
-	/**
-	 * Changes Password of the User to newPassword if oldPassword is correct
-	 * @param newPassword the Password you want to give the User
-	 * @param oldPassword the Password the User already has (should be checked)
-	 */
 		
 	/**
 	 * 
-	 * @return the users name
+	 * @return the users name/ID
 	 */
-	public String getUsername();
+	public String getUserId();
 
 }
 
