@@ -33,7 +33,7 @@ public class OrderTest {
 
 	@Before
 	public void testSetup() {
-		om = new OrderManager(emf.createEntityManager());
+		om = new OrderManager();
 		OrderEntry oe;
 		for (int year = 2000; year < 2005; year++) {
 			oe = new OrderEntry();
