@@ -19,12 +19,14 @@ public abstract class AbstractProductInstance<T extends AbstractProductType> imp
 	@GeneratedValue
 	private long serialNumber;
 	
-	// TODO richtig?
-	//@OneToOne
+	// TODO richtig? target muss Entity sein >__<
+	//@OneToOne(cascade = CascadeType.PERSIST)
 	private T productType;
 	
+	@OneToOne(cascade = CascadeType.PERSIST)
 	private Money price;
 	
+	//TODO annot
 	private Map<String, ProductFeature> productFeatures = new HashMap<String, ProductFeature>();
 	
 	@Deprecated
@@ -37,7 +39,7 @@ public abstract class AbstractProductInstance<T extends AbstractProductType> imp
 	}
 
 	
-	private void calculatePrice() {
+	protected void calculatePrice() {
 		price = productType.getPrice();
 		for(ProductFeature pt : productFeatures.values()) {
 			price.add(pt.getPrice());

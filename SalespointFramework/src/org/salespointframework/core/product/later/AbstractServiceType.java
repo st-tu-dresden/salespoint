@@ -13,12 +13,12 @@ public abstract class AbstractServiceType extends AbstractProductType{
 	public AbstractServiceType(){
 	}
 	
-	public AbstractServiceType(String productIdentifier, String name, Money price){
-		super(productIdentifier, name, price);
+	public AbstractServiceType( String name, Money price){
+		super( name, price);
 	}
 	
-	public AbstractServiceType(String productIdentifier, String name, Money price, DateTime start, DateTime end){
-		super(productIdentifier, name, price);
+	public AbstractServiceType(String name, Money price, DateTime start, DateTime end){
+		super( name, price);
 		this.startOfPeriodOfOperation=start;
 		this.endOfPeriodOfOperation=end;
 	}

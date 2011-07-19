@@ -25,8 +25,8 @@ public AbstractMeasuredProductType(){
      * @param price The price of the quantity of this MeasuredProductType
      * @param quantityOnHand The quantity of this MeasuredProductType, which is available.
      */
-public AbstractMeasuredProductType(String productIdentifier, String name, Money price, Quantity quantityOnHand){
-	super(productIdentifier, name, price);
+public AbstractMeasuredProductType(String name, Money price, Quantity quantityOnHand){
+	super( name, price);
 	this.quantityOnHand = Objects.requireNonNull(quantityOnHand, "quantityOnHand");
 	this.preferredMetric = quantityOnHand.getMetric();
 }

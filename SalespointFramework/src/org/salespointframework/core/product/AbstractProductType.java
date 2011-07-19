@@ -3,7 +3,9 @@ package org.salespointframework.core.product;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
@@ -17,9 +19,11 @@ import org.salespointframework.util.SalespointIterable;
 public class AbstractProductType implements ProductType {
 	
 	@Id
+	@GeneratedValue
 	protected String productIdentifier;
 	protected String name;
-	@OneToOne
+	
+	@OneToOne(cascade = CascadeType.PERSIST)
 	protected Money price;
 	
 	//TODO Map?
@@ -31,12 +35,8 @@ public class AbstractProductType implements ProductType {
 	}
 	
 	// TODO public oder protected?
-	protected AbstractProductType(String productIdentifier, Money price) {
-		this(productIdentifier, productIdentifier, price);
-	}
-	
-	protected AbstractProductType(String productIdentifier, String name, Money price) {
-		this.productIdentifier = Objects.requireNonNull(productIdentifier, "productIdentifier");
+	protected AbstractProductType(String name, Money price) {
+		//this.productIdentifier = Objects.requireNonNull(productIdentifier, "productIdentifier");
 		this.name = Objects.requireNonNull(name, "name");
 		this.price = Objects.requireNonNull(price, "price");
 	}
