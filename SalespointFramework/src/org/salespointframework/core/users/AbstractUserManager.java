@@ -24,11 +24,13 @@ public class AbstractUserManager<T extends User>{
 	/**
 	 * adds an User to the Usermanager if not exists and persists it
 	 * @param user User you want to add
+	 * @throws DuplicateUserException 
 	 */
-	public boolean addUser(User user){
+	public boolean addUser(User user) throws DuplicateUserException{
 		Objects.requireNonNull(user, "addUser");
 		if (entityManager.contains(user)){
-			return false;
+			throw new DuplicateUserException();
+			
 		}
 		else{
 			entityManager.persist(user);

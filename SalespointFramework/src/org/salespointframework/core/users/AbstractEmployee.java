@@ -22,11 +22,11 @@ public abstract class AbstractEmployee extends AbstractUser implements Employee 
 	
 	/**
 	 * creates a new Employee
-	 * @param username of the Employee
+	 * @param userId (username) of the Employee 
 	 * @param first password of the Employee
 	 */
-	public AbstractEmployee(String username, String password){
-		super(username, password);
+	public AbstractEmployee(String userId, String password){
+		super(userId, password);
 	}
 	
 	@Override
