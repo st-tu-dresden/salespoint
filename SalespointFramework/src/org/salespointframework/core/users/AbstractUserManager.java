@@ -3,40 +3,49 @@ package org.salespointframework.core.users;
 import java.util.Collection;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 
+import org.salespointframework.core.database.Database;
+import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
 
 public class AbstractUserManager<T extends User>{
 	
-	//noch gut was zu tun!
-	
+		
 	@PersistenceUnit
 	private EntityManager entityManager;
 	
-	public AbstractUserManager(){
-		
+	public AbstractUserManager(EntityManager entityManager){
+		this.entityManager= entityManager;
 	}
 
 	
 	/**
 	 * adds an User to the Usermanager if not exists and persists it
 	 * @param user User you want to add
+	 * @return 
 	 * @throws DuplicateUserException 
 	 */
-	public boolean addUser(User user) throws DuplicateUserException{
+	public boolean addUser(User user) {
 		Objects.requireNonNull(user, "addUser");
 		if (entityManager.contains(user)){
-			throw new DuplicateUserException();
-			
+			throw new DuplicateUserException(user.getUserId());			
 		}
-		else{
-			entityManager.persist(user);
-			return true;
-		}
+		entityManager.persist(user);
+		return true;
+		
 	}
+	
+	public static <T> T requireNonNull(T object, String paramName) {
+		if(object == null) {
+			throw new ArgumentNullException(paramName);
+		}
+		return object;
+	}
+	
 	
 	/**
 	 * adds a UserCapability to an User

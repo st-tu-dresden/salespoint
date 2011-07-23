@@ -3,6 +3,8 @@ package org.salespointframework.core.users;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import org.salespointframework.util.Objects;
+
 
 @MappedSuperclass
 public class AbstractUser {
@@ -18,8 +20,10 @@ public class AbstractUser {
 	protected AbstractUser() {}
 
 	
-	public AbstractUser(String username, String password) {
-		this.userId=username;
+	public AbstractUser(String userId, String password) {
+		Objects.requireNonNull(userId, "CreateUser_userId");
+		Objects.requireNonNull(password, "CreateUser_password");
+		this.userId=userId;
 		this.password=password;
 	}
 
