@@ -62,7 +62,10 @@ public class OrderLine {
 	}
 
 	/**
-	 * @return the chargeLines
+	 * This Method returns the Embedded List of ChargeLines from this OrderLine.
+	 * This list has to be used to add/remove/edit the ChargeLines for changes that have to be persistent.
+	 *   
+	 * @return the editable List of ChargeLines from this OrderLine 
 	 */
 	public List<ChargeLine> getChargeLines() {
 		return chargeLines;
@@ -94,6 +97,22 @@ public class OrderLine {
 	 */
 	public Money getUnitPrice() {
 		return unitPrice;
+	}
+	
+	/**
+	 * Calculates the total price of this OrderLine. The number of ordered objects and ChargeLines are included in the calculation.
+	 * 
+	 * @return the total price of this OrderLine
+	 */
+	public Money getOrderLinePrice() {
+		Money price = new Money(this.unitPrice.getAmount(), this.unitPrice.getMetric());
+		price = (Money) price.multiply(new Money(this.numberOrdered));
+		
+		for(ChargeLine cl : this.chargeLines) {
+			price = (Money) price.add(cl.getAmount());
+		}
+		
+		return price;
 	}
 
 	/**
