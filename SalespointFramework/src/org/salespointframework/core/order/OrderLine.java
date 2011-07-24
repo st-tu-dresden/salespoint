@@ -1,13 +1,12 @@
 package org.salespointframework.core.order;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Id;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -17,15 +16,16 @@ import org.salespointframework.util.Objects;
 
 /**
  * 
- * @author hannesweisbach
+ * @author Thomas Dedek
  * 
  */
 @Entity
 public class OrderLine {
+	
 	@Id
 	private OrderLineIdentifier identifier;
 
-	@OneToMany
+	@ElementCollection
 	private List<ChargeLine> chargeLines;
 	// private ProductIdentifier productType;
 	// private SerialNumber serialNumber;
@@ -48,8 +48,8 @@ public class OrderLine {
 		this.numberOrdered = numberOrdered;
 		this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
 		this.identifier = new OrderLineIdentifier();
-		this.expectedDeliveryDate = Objects.requireNonNull(
-				expectedDeliveryDate, "expectedDeliveryDate").toDate();
+		this.expectedDeliveryDate = Objects.requireNonNull(expectedDeliveryDate, "expectedDeliveryDate").toDate();
+		this.chargeLines = new ArrayList<ChargeLine>(); 
 		//this.serialNumber = Objects.requireNonNull(serialNumber, "serialNumber");
 		//this.productType = Objects.requireNonNull(productType, "productType");
 	}
@@ -103,4 +103,35 @@ public class OrderLine {
 		return new DateTime(expectedDeliveryDate);
 	}
 	
+	/**
+	 * Increments the number of the ordered objects in this OrderLine. 
+	 * This method doesn't change anything, if the given number is less than or equal to 0.
+	 * 
+	 * @param number
+	 *            the number of ordered objects that shall to be added.  
+	 */
+	public void incrementNumberOrdered(int number) {
+		
+		if(number <= 0) return;
+		this.numberOrdered += number;
+	}
+	
+	/**
+	 * Decrements the number of the ordered objects in this OrderLine. 
+	 * This method doesn't change anything, if the given number is less than or equal to 0.
+	 * The number of ordered objects cannot fall below 0.
+	 * 
+	 * @param number
+	 *            the number of ordered objects that shall to be substituted.  
+	 */
+	public void decrementNumberOrdered(int number) {
+		
+		if(number <= 0) return;
+		if(number > this.numberOrdered) this.numberOrdered = 0;
+		else {
+			this.numberOrdered -= number;
+		}
+		
+		return;
+	}
 }

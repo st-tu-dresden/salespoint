@@ -40,7 +40,7 @@ public class OrderManager {
 	 * 
 	 * @param order The <code>OrderEntry</code> which shall be added.
 	 */
-	public void addOrder(OrderEntry order) {
+	public void addOrder(Order order) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		em.persist(order);
@@ -55,15 +55,15 @@ public class OrderManager {
 	 *            Denoting the identifier of the requested OrderEntry.
 	 * @return The requested OrderEntry
 	 */
-	public OrderEntry findOrder(OrderIdentifier orderIdentifier) {
+	public Order findOrder(OrderIdentifier orderIdentifier) {
 		Objects.requireNonNull(orderIdentifier, "orderIdentifier");
 
 		EntityManager em = emf.createEntityManager();
 		
-		TypedQuery<OrderEntry> q = em
+		TypedQuery<Order> q = em
 				.createQuery(
 						"SELECT o FROM OrderEntry o WHERE o.orderIdentifier == :orderIdentifier",
-						OrderEntry.class);
+						Order.class);
 		q.setParameter("orderIdentifier", orderIdentifier);
 
 		return q.getSingleResult();
@@ -83,16 +83,16 @@ public class OrderManager {
 	 * @return an unmodifiable Iterable containing all OrderEntries between from and
 	 *         to
 	 */
-	public Iterable<OrderEntry> findOrders(DateTime from, DateTime to) {
+	public Iterable<Order> findOrders(DateTime from, DateTime to) {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
 
 		EntityManager em = emf.createEntityManager();
 		
-		TypedQuery<OrderEntry> q = em
+		TypedQuery<Order> q = em
 				.createQuery(
 						"SELECT o FROM OrderEntry o WHERE o.timeStamp BETWEEN :from and :to",
-						OrderEntry.class);
+						Order.class);
 		q.setParameter("from", from.toDate(), TemporalType.TIMESTAMP);
 		q.setParameter("to", to.toDate(), TemporalType.TIMESTAMP);
 
@@ -109,15 +109,15 @@ public class OrderManager {
 	 *            Denoting the OrderEntryStatus on which the OrderEntrys will be requested.
 	 * @return an unmodifiable Iterable containing all OrderEntries whith the specified OrderEntryStatus
 	 */
-	public Iterable<OrderEntry> findOrders(OrderEntryStatus status) {
+	public Iterable<Order> findOrders(OrderStatus status) {
 		Objects.requireNonNull(status, "status");
 
 		EntityManager em = emf.createEntityManager();
 		
-		TypedQuery<OrderEntry> q = em
+		TypedQuery<Order> q = em
 				.createQuery(
 						"SELECT o FROM OrderEntry o WHERE o.status == :status",
-						OrderEntry.class);
+						Order.class);
 		q.setParameter("status", status);
 
 		return SalespointIterable.from(q.getResultList());
@@ -135,7 +135,7 @@ public class OrderManager {
 		EntityManager em = emf.createEntityManager();
 		
 		em.getTransaction().begin();
-		em.remove(em.find(OrderEntry.class,
+		em.remove(em.find(Order.class,
 				orderIdentifier.getIdentifier()));
 		em.getTransaction().commit();
 	}
@@ -147,7 +147,7 @@ public class OrderManager {
 	 * 
 	 * @param orderEntry The <code>OrderEntry</code> which shall be removed.
 	 */
-	public void remove(OrderEntry orderEntry) {
+	public void remove(Order orderEntry) {
 		Objects.requireNonNull(orderEntry, "orderEntry");
 		
 		EntityManager em = emf.createEntityManager();

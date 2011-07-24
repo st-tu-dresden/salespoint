@@ -1,6 +1,6 @@
 package org.salespointframework.core.order;
 
-public enum OrderEntryStatus {
+public enum OrderStatus {
 	INITIALIZED,
 	OPEN,
 	CLOSED,

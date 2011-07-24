@@ -7,9 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,7 +18,8 @@ import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
 @Entity
-public class OrderEntry {
+public class Order {
+	
 	@Id
 	@OneToOne(cascade = CascadeType.ALL)
 	private OrderIdentifier orderIdentifier;
@@ -39,10 +38,10 @@ public class OrderEntry {
 	private String termsAndConditions;
 	private List<OrderAction> orderActions;
 	private List<OrderLine> orderLines;
-	private List<ChargeLine> chargeLines;
-	private OrderEntryStatus status;
+	//private List<ChargeLine> chargeLines;
+	private OrderStatus status;
 	
-	public OrderEntry(String salesChannel, String termsAndConditions) {
+	public Order(String salesChannel, String termsAndConditions) {
 		orderIdentifier = new OrderIdentifier();
 		dateCreated = new Date();
 		this.salesChannel = Objects
@@ -51,14 +50,14 @@ public class OrderEntry {
 				"termsAndConditions");
 		orderActions = new ArrayList<OrderAction>();
 		orderLines = new ArrayList<OrderLine>();
-		status = OrderEntryStatus.INITIALIZED;
+		status = OrderStatus.INITIALIZED;
 	}
 
-	public OrderEntry(String salesChannel) {
+	public Order(String salesChannel) {
 		this(Objects.requireNonNull(salesChannel, "salesChannel"), "");
 	}
 		
-	public OrderEntry() {
+	public Order() {
 		this("", "");
 	}
 
