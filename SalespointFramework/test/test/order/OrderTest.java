@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.accountancy.AccountancyEntry;
 import org.salespointframework.core.database.Database;
-import org.salespointframework.core.order.OrderEntry;
+import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderIdentifier;
 import org.salespointframework.core.order.OrderManager;
 
@@ -34,9 +34,9 @@ public class OrderTest {
 	@Before
 	public void testSetup() {
 		om = new OrderManager();
-		OrderEntry oe;
+		Order oe;
 		for (int year = 2000; year < 2005; year++) {
-			oe = new OrderEntry();
+			oe = new Order();
 			oi.add(oe.getOrderIdentifier());
 			om.addOrder(oe);
 			if(year == 2001)
@@ -48,14 +48,14 @@ public class OrderTest {
 
 	
 	public void select() {
-		Iterable<OrderEntry> i = om.findOrders(from, to);
+		Iterable<Order> i = om.findOrders(from, to);
 		
 		//TODO not really a test, because the Iterable is always non-null.
 		//Instead, we need to test for non-emptyness of the Iterable, or three
 		//elements.
 		assertNotNull(i);
 
-		for(OrderEntry e : i) {
+		for(Order e : i) {
 			System.out.println(e.toString());
 		}
 	}
