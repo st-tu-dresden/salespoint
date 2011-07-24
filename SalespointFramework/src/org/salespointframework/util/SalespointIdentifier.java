@@ -7,6 +7,7 @@ import javax.persistence.*;
 /**
  * 
  * @author hannesweisbach
+ * @author Thomas Dedek
  * 
  */
 @Entity
@@ -25,4 +26,15 @@ public class SalespointIdentifier {
 	public String toString() {
 		return id;
 	}
+	
+	@Override
+    public boolean equals(Object obj) {
+		
+        if (obj == this) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof SalespointIdentifier)) return false;
+        
+        SalespointIdentifier si = (SalespointIdentifier) obj;
+        return this.getIdentifier().equals(si.getIdentifier());
+    }
 }
