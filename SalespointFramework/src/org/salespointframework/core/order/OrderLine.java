@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.ElementCollection;
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -25,13 +27,14 @@ public class OrderLine {
 	@Id
 	private OrderLineIdentifier identifier;
 
-	@ElementCollection
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<ChargeLine> chargeLines;
 	// private ProductIdentifier productType;
 	// private SerialNumber serialNumber;
 	private String description;
 	private String comment;
 	private int numberOrdered;
+	@OneToOne(cascade = CascadeType.ALL)
 	private Money unitPrice;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date expectedDeliveryDate;

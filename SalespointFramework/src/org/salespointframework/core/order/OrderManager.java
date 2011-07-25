@@ -156,4 +156,24 @@ public class OrderManager {
 		em.remove(orderEntry);
 		em.getTransaction().commit();
 	}
+	
+	/**
+	 * Commits changes from the given <code>OrderEntry</code> to the database.
+	 * 
+	 * @param orderEntry The <code>OrderEntry</code> which shall be updated.
+	 */
+	public void update(OrderEntry orderEntry) {
+		Objects.requireNonNull(orderEntry, "orderEntry");
+		
+		EntityManager em = emf.createEntityManager();
+		
+		OrderEntry oe = em.find(OrderEntry.class, orderEntry.getOrderIdentifier());
+		
+		if(oe == null) return;
+		else {
+			em.getTransaction().begin();
+			em.merge(orderEntry);
+			em.getTransaction().commit();
+		}
+	}
 }

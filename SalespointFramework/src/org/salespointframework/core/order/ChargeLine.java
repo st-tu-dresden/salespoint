@@ -1,6 +1,7 @@
 package org.salespointframework.core.order;
 
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Objects;
@@ -10,8 +11,11 @@ import org.salespointframework.util.Objects;
  * @author Thomas Dedek
  * 
  */
-@Embeddable
+@Entity
 public class ChargeLine {
+	
+	@Id
+	private OrderLineIdentifier identifier;
 
 	private Money amount;
 	private String description;
@@ -22,7 +26,7 @@ public class ChargeLine {
 	protected ChargeLine() {}
 	
 	public ChargeLine(Money amount, String description, String comment) {
-		//this.identifier = Objects.requireNonNull(identifier, "identifier");
+		this.identifier = new OrderLineIdentifier();
 		this.amount = Objects.requireNonNull(amount, "amount");
 		this.description = Objects.requireNonNull(description, "description");
 		this.comment = Objects.requireNonNull(comment, "comment");
@@ -52,5 +56,12 @@ public class ChargeLine {
 	 */
 	public String getComment() {
 		return comment;
+	}
+
+	/**
+	 * @return the identifier
+	 */
+	public OrderLineIdentifier getIdentifier() {
+		return identifier;
 	}
 }
