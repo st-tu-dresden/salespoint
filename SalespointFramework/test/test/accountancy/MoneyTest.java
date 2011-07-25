@@ -1,5 +1,7 @@
 package test.accountancy;
 
+import java.math.BigDecimal;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -53,7 +55,7 @@ public class MoneyTest {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		//c = new Cash();
-		em.merge(new Payment(Cash.CASH, new DateTime()));
+		em.persist(new Payment(Cash.CASH, new DateTime()));
 		em.getTransaction().commit();
 	}
 }
