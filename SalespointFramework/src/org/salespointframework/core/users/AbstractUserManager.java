@@ -1,18 +1,15 @@
 package org.salespointframework.core.users;
 
-import java.util.Collection;
-
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import javax.persistence.TypedQuery;
 
-import org.salespointframework.core.database.Database;
-import org.salespointframework.util.ArgumentNullException;
+import org.salespointframework.core.database.ICanHasClass;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
 
-public class AbstractUserManager<T extends User>{
+public abstract class AbstractUserManager<T extends User> implements ICanHasClass<T>{
 	
 		
 	@PersistenceUnit
@@ -29,9 +26,9 @@ public class AbstractUserManager<T extends User>{
 	 * @return 
 	 * @throws DuplicateUserException 
 	 */
-	public boolean addUser(User user) {
+	public boolean addUser(T user) {
 		Objects.requireNonNull(user, "addUser");
-		if (entityManager.contains(user)){
+		if (entityManager.find(user.getClass(), user.getUserId()) != null){
 			throw new DuplicateUserException(user.getUserId());			
 		}
 		entityManager.persist(user);
@@ -46,7 +43,7 @@ public class AbstractUserManager<T extends User>{
 	 * @param userCapability the Capapbility you want to give to the User
 	 * @return true if successful 
 	 */
-	public boolean addCapability(User user, UserCapability userCapability){
+	public boolean addCapability(T user, UserCapability userCapability){
 		Objects.requireNonNull(user, "addCapability_User");
 		Objects.requireNonNull(userCapability, "addCapability_userCapability");
 		if (!entityManager.contains(user)){
@@ -67,7 +64,7 @@ public class AbstractUserManager<T extends User>{
 	 * @param userCapability the Capapbility you want to give to the User
 	 * @return true if successful 
 	 */
-	public boolean removeCapability(User user, UserCapability userCapability){
+	public boolean removeCapability(T user, UserCapability userCapability){
 		Objects.requireNonNull(user, "removeCapability_User");
 		Objects.requireNonNull(userCapability, "removeCapability_userCapability");
 		if (!entityManager.contains(user)){
@@ -89,7 +86,7 @@ public class AbstractUserManager<T extends User>{
 	 * @param userCapability the cabability you want to check to User for
 	 * @return true if User has Capability
 	 */
-	public boolean hasCapability(User user,UserCapability userCapability){
+	public boolean hasCapability(T user,UserCapability userCapability){
 		boolean i=true; //nur zür überbrückung!
 		if(i){//TODO: check
 			return true;
@@ -97,20 +94,18 @@ public class AbstractUserManager<T extends User>{
 		return false;
 	}
 	
-	public Iterable<User> getAllUsers(){
-		Collection<User> users= entityManager.createQuery("").getResultList();
-		
-		return SalespointIterable.from(users);
+	public Iterable<T> getUsers(){
+		Class<T> cc = this.getContentClass();
+		TypedQuery<T> users = entityManager.createQuery("Select t from " + cc.getCanonicalName() + " t",cc);
+		return SalespointIterable.from(users.getResultList());
 	}
 	
 	
-	public User getUserByUsername(String username){
-		return entityManager.find(User.class, username);
+	public T getUserById(String userId){
+		return entityManager.find(this.getContentClass(), userId);
 	}
 
-
-
-
+	
 	
 	
 }
