@@ -9,11 +9,11 @@ import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
 // TODO abstract und internal?
+// TODO ganze Klasse überdenken
 public class CatalogEntryImpl<T extends ProductType> implements CatalogEntry<T> {
 	private String description;
 	private Set<String> categories;
 	
-	// TODO nullchecks
 	public CatalogEntryImpl(String description, String... categories) {
 		this.description = Objects.requireNonNull(description, "description");
 		Objects.requireNonNull(categories, "categories");

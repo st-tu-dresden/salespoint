@@ -66,6 +66,6 @@ public class ProductFeatureTest {
 	}
 	
 
-	// TODO hashcode?
+	// TODO hashcode check
 	
 }

@@ -10,20 +10,14 @@ import org.salespointframework.core.product.features.ProductFeature;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
-// TODO equals und hashCode überschreiben
-
 @MappedSuperclass
-public abstract class AbstractProductInstance<T extends AbstractProductType> implements ProductInstance {
+public abstract class AbstractProductInstance implements ProductInstance {
 	
 	@Id
 	@OneToOne(cascade = CascadeType.ALL)
 	private SerialNumber serialNumber;
 	
 	private ProductIdentifier productIdentifier;
-	
-	// TODO richtig? target muss Entity sein >__<
-	//@OneToOne(cascade = CascadeType.PERSIST)
-	//private T productType;
 	
 	@OneToOne(cascade = CascadeType.PERSIST)
 	private Money price;
@@ -34,10 +28,10 @@ public abstract class AbstractProductInstance<T extends AbstractProductType> imp
 	@Deprecated
 	protected AbstractProductInstance() { }
 	
-	public AbstractProductInstance(T productType) {
-		this.productIdentifier = Objects.requireNonNull(productType, "productType").productIdentifier;
-	
-		this.price = productType.price;
+	public AbstractProductInstance(ProductType productType) {
+		this.productIdentifier = Objects.requireNonNull(productType, "productType").getProductIdentifier();
+		this.price = productType.getPrice();
+		this.serialNumber = new SerialNumber();
 		
 		calculatePrice();
 	}
@@ -86,6 +80,11 @@ public abstract class AbstractProductInstance<T extends AbstractProductType> imp
 		if(other == null) return false;
 		if(other == this) return true;
 		return this.productIdentifier.equals(other.getSerialNumber());
+	}
+	
+	@Override
+	public int hashCode() {
+		return productIdentifier.hashCode();
 	}
 
 }

@@ -41,16 +41,21 @@ public class ProductFeature {
 	
 	@Override
 	public boolean equals(Object other) {
-		if(other instanceof ProductFeature) {
-			return this.equals((ProductFeature) other);
-		} else {
-			return false;
-		}
+		if(other == null) return false;
+		if(other == this) return true;
+		if(!(other instanceof ProductFeature)) return false;
+		return this.equals((ProductFeature)other);
 	}
 	
 	public boolean equals(ProductFeature other) {
+		if(other == null) return false;
+		if(other == this) return true;
 		return this == other || (this.name.equals(other.name) && this.price.equals(other.price));
 	}
-	// TODO hashcode
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, price);
+	}
 	
 }

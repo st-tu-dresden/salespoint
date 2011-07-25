@@ -26,7 +26,7 @@ public final class Objects {
 		return object;
 	}
 	
-	public int hash(Objects... values) {
+	public static int hash(Object... values) {
 		return Arrays.hashCode(values);
 	}
 }

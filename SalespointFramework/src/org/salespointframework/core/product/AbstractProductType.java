@@ -4,8 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
@@ -34,11 +32,11 @@ public class AbstractProductType implements ProductType {
 		
 	}
 	
-	// TODO public oder protected?
-	protected AbstractProductType(String name, Money price) {
+	public AbstractProductType(String name, Money price) {
 		//this.productIdentifier = Objects.requireNonNull(productIdentifier, "productIdentifier");
 		this.name = Objects.requireNonNull(name, "name");
 		this.price = Objects.requireNonNull(price, "price");
+		this.productIdentifier = new ProductIdentifier();
 	}
 	
 	@Override
@@ -78,8 +76,7 @@ public class AbstractProductType implements ProductType {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 	
 }

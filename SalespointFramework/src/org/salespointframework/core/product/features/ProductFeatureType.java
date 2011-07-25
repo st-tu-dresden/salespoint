@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
 // TODO umbenennen
@@ -50,11 +51,12 @@ public class ProductFeatureType {
 	
 	// TODO Validierung
 	public ProductFeatureType(String name, String description, ProductFeature... productFeatures) {
-		this.name = name;
-		this.description = description;
+		this.name = Objects.requireNonNull(name, "name");
+		this.description = Objects.requireNonNull(description, "description");
+		Objects.requireNonNull(productFeatures, "productFeatures");
 		
 		for(ProductFeature pf : productFeatures) {
-			this.addFeature(pf);
+			if(pf != null) this.addFeature(pf);
 		}
 		
 	}
