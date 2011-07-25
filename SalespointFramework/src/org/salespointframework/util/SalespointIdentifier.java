@@ -18,23 +18,36 @@ public class SalespointIdentifier {
 	public SalespointIdentifier() {
 		id = UUID.randomUUID().toString();
 	}
-
+	
+	public SalespointIdentifier(String id) {
+		this.id = id;
+	}
+	
 	public String getIdentifier() {
 		return id;
 	}
 	
+	@Override
 	public String toString() {
 		return id;
 	}
 	
 	@Override
-    public boolean equals(Object obj) {
-		
-        if (obj == this) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof SalespointIdentifier)) return false;
-        
-        SalespointIdentifier si = (SalespointIdentifier) obj;
-        return this.getIdentifier().equals(si.getIdentifier());
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (other == null) return false;
+        if (!(other instanceof SalespointIdentifier)) return false;
+        return this.equals((SalespointIdentifier) other);
     }
+	
+	public boolean equals(SalespointIdentifier other) {
+        if (other == this) return true;
+        if (other == null) return false;
+		return this.getIdentifier().equals(other.getIdentifier());
+	}
+	
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
 }
