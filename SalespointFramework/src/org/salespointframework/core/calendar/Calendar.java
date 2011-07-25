@@ -5,28 +5,29 @@ import org.salespointframework.util.Filter;
 /**
  * 
  * Calendar manages a set of calendar entries.
- * 
- * @author stanley
  *
  * @param <T> Type of calendar entries (extends {@link org.salespointframework.core.calendar.CalendarEntry})
+ * 
+ * @author stanley
  */
 public interface Calendar<T extends CalendarEntry> {
     
     /**
      * Returns all Entries that match the filter criteria.
-     * If no entries were found an empty {@link Iterable} will be returned, not null;
      * 
+     * @param filter The filter that defines the filter criteria. 
      * 
      * @return Iterable of all entries that match the filter criteria
      * 
-     * @see {@link Filter}
+     * @see Filter
      */
     Iterable<T> getEntries(Filter<T> filter);
     
     /**
-     * Returns the calendar entry which has the given id or null if no entry exists with this id.
+     * Returns the calendar entry which has the given id or <code>null</code> if no entry exists with this id.
+     * 
      * @param id of the entry that should be returned
-     * @return the entry with the given id or null
+     * @return the entry with the given id or <code>null</code>
      */
     T getEntryByID(long id);
     
