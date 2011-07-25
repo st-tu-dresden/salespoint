@@ -114,7 +114,7 @@ public class OrderManager implements IOrderManager {
 		
 		em.getTransaction().begin();
 		em.remove(em.find(OrderEntry.class,
-				orderIdentifier.getIdentifier()));
+				orderIdentifier));
 		em.getTransaction().commit();
 	}
 
