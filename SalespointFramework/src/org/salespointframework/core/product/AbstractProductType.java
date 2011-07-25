@@ -18,7 +18,8 @@ public class AbstractProductType implements ProductType {
 	
 	@Id
 	@OneToOne(cascade = CascadeType.ALL)
-	protected ProductIdentifier productIdentifier;
+	private ProductIdentifier productIdentifier;
+	
 	protected String name;
 	
 	@OneToOne(cascade = CascadeType.PERSIST)

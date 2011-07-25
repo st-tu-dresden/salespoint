@@ -49,7 +49,7 @@ public abstract class AbstractProductCatalog<T extends AbstractProductType> impl
 	@Override
 	public Iterable<T> getProductTypes() {
 		Class<T> cc = this.getContentClass();
-		TypedQuery<T> tquery = entityManager.createQuery("Select t from " + cc.getCanonicalName() + " t",cc);
+		TypedQuery<T> tquery = entityManager.createQuery("Select t from " + cc.getSimpleName() + " t",cc);
 		return SalespointIterable.from(tquery.getResultList());
 	}
 	
