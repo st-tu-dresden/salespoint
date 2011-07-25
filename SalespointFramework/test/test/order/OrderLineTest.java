@@ -79,7 +79,7 @@ public class OrderLineTest {
             assertTrue(cl.getDescription().equals("cl1description")
                     || cl.getDescription().equals("cl2description"));
             assertTrue(cl.getComment().equals("cl1comment")
-                    || cl.getDescription().equals("cl2comment"));
+                    || cl.getComment().equals("cl2comment"));
         }
 	}
 
