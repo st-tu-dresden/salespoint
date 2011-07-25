@@ -19,8 +19,8 @@ import org.salespointframework.util.SalespointIterable;
 public class AbstractProductType implements ProductType {
 	
 	@Id
-	@GeneratedValue
-	protected String productIdentifier;
+	@OneToOne(cascade = CascadeType.ALL)
+	protected ProductIdentifier productIdentifier;
 	protected String name;
 	
 	@OneToOne(cascade = CascadeType.PERSIST)
@@ -42,16 +42,17 @@ public class AbstractProductType implements ProductType {
 	}
 	
 	@Override
-	public boolean equals(Object productType) {
-		if(productType instanceof ProductType) {
-			return this.equals((AbstractProductType)productType);
-		} else {
-			return false;
-		}
+	public boolean equals(Object other) {
+		if(other == null) return false;
+		if(other == this) return true;
+		if(!(other instanceof ProductType)) return false;
+		return this.equals((ProductType)other);
 	}
 	
-	public boolean equals(AbstractProductType other) {
-		return this.productIdentifier.equals(other.productIdentifier);
+	public boolean equals(ProductType other) {
+		if(other == null) return false;
+		if(other == this) return true;
+		return this.productIdentifier.equals(other.getProductIdentifier());
 	}
 	
 	@Override
@@ -70,7 +71,7 @@ public class AbstractProductType implements ProductType {
 	}
 	
 	@Override
-	public String getProductIdentifier() {
+	public ProductIdentifier getProductIdentifier() {
 		return productIdentifier;
 	}
 

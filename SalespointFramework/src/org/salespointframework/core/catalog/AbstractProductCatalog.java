@@ -8,6 +8,7 @@ import javax.persistence.criteria.Root;
 
 import org.salespointframework.core.database.ICanHasClass;
 import org.salespointframework.core.product.AbstractProductType;
+import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
@@ -27,13 +28,13 @@ public abstract class AbstractProductCatalog<T extends AbstractProductType> impl
 	}
 	
 	@Override
-	public void removeProductType(String productIdentifier) {
+	public void removeProductType(ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		entityManager.remove(this.findProductTypeByProductIdentifier(productIdentifier));
 	}
 
 	@Override
-	public T findProductTypeByProductIdentifier(String productIdentifier) {
+	public T findProductTypeByProductIdentifier(ProductIdentifier productIdentifier) {
 		return entityManager.find(this.getContentClass(), productIdentifier);
 	}
 
