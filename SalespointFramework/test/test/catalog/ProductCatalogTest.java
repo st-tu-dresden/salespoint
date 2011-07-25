@@ -10,7 +10,7 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.ArgumentNullException;
 
-import test.product.Keks;
+import test.product.KeksProduct;
 
 public class ProductCatalogTest {
 
@@ -41,7 +41,7 @@ public class ProductCatalogTest {
 	public void testFindById() {
 		EntityManager em = emf.createEntityManager();
 		
-		Keks keks1 = new Keks("bla",new Money(0));
+		KeksProduct keks1 = new KeksProduct("bla",new Money(0));
 		KeksCatalog catalog = new KeksCatalog(em);
 		
 		
@@ -51,7 +51,7 @@ public class ProductCatalogTest {
 		
 		em.getTransaction().commit();
 		
-		Keks keks2 = catalog.findProductTypeByProductIdentifier(keks1.getProductIdentifier());
+		KeksProduct keks2 = catalog.findProductTypeByProductIdentifier(keks1.getProductIdentifier());
 		
 		assertEquals(keks1, keks2);
 	}

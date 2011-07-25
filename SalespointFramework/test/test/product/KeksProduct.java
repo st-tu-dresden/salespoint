@@ -6,14 +6,14 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.AbstractProductType;
 
 @Entity
-public class Keks extends AbstractProductType {
+public class KeksProduct extends AbstractProductType {
 
 	@Deprecated
-	protected Keks() {
+	protected KeksProduct() {
 		
 	}
 	
-	public Keks(String name, Money price) {
+	public KeksProduct(String name, Money price) {
 		super(name, price);
 	}
 
