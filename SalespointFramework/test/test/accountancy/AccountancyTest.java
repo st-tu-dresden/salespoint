@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.accountancy.Accountancy;
-import org.salespointframework.core.accountancy.AccountancyEntry;
+import org.salespointframework.core.accountancy.AbstractAccountancyEntry;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.accountancy.SomeOtherEntry;
 import org.salespointframework.core.accountancy.payment.Cash;
@@ -62,14 +62,14 @@ public class AccountancyTest {
 
 	@Test
 	public void select() {
-		Iterable<AccountancyEntry> i = a.getEntries(from, to);
+		Iterable<AbstractAccountancyEntry> i = a.getEntries(from, to);
 		
 		//TODO not really a test, because the Iterable is always non-null.
 		//Instead, we need to test for non-emptyness of the Iterable, or three
 		//elements.
 		assertNotNull(i);
 		System.out.println("Entries from " + from + " to " + to + ":");
-		for(AccountancyEntry e : i) {
+		for(AbstractAccountancyEntry e : i) {
 			System.out.println(e.toString());
 		}
 	}
@@ -79,7 +79,7 @@ public class AccountancyTest {
 		a.addEntry(new SomeOtherEntry());
 		System.out.println("AccountancyEntries: ");
 		Iterable<ProductPaymentEntry> i = a.getEntries(ProductPaymentEntry.class, from, to);
-		for(AccountancyEntry e : i) {
+		for(AbstractAccountancyEntry e : i) {
 			System.out.println(e.toString());
 		}
 		System.out.println("SomeOtherEntry:");
@@ -94,7 +94,7 @@ public class AccountancyTest {
 	public void doubleAdd() {
 		Accountancy a = new Accountancy();
 		PaymentAction pa = new PaymentAction(new OrderPayment(Cash.CASH, new DateTime(), "me", "you" ));
-		AccountancyEntry e = new ProductPaymentEntry(pa);
+		AbstractAccountancyEntry e = new ProductPaymentEntry(pa);
 		a.addEntry(e);
 		System.out.println(new DateTime());
 		try {

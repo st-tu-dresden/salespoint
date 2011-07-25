@@ -51,7 +51,7 @@ public class Accountancy implements Serializable {
 	 *            <code>AccountancyEntry</code> which should be added to the
 	 *            <code>Accountancy</code>
 	 */
-	public void addEntry(AccountancyEntry accountancyEntry) {
+	public void addEntry(AbstractAccountancyEntry accountancyEntry) {
 		EntityManager em = emf.createEntityManager();
 		Objects.requireNonNull(accountancyEntry, "accountancyEntry");
 		em.getTransaction().begin();
@@ -67,11 +67,11 @@ public class Accountancy implements Serializable {
 	 * 
 	 * @param accountancyEntries
 	 */
-	public void addEntries(Iterable<AccountancyEntry> accountancyEntries) {
+	public void addEntries(Iterable<AbstractAccountancyEntry> accountancyEntries) {
 		EntityManager em = emf.createEntityManager();
 		Objects.requireNonNull(accountancyEntries, "accountancyEntries");
 		em.getTransaction().begin();
-		for (AccountancyEntry e : accountancyEntries)
+		for (AbstractAccountancyEntry e : accountancyEntries)
 			em.persist(e);
 		em.getTransaction().commit();
 	}
@@ -89,18 +89,18 @@ public class Accountancy implements Serializable {
 	 * @return an unmodifiable Iterable containing all entries between from and
 	 *         to
 	 */
-	public Iterable<AccountancyEntry> getEntries(DateTime from, DateTime to) {
+	public Iterable<AbstractAccountancyEntry> getEntries(DateTime from, DateTime to) {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<AccountancyEntry> q = cb
-				.createQuery(AccountancyEntry.class);
-		Root<AccountancyEntry> r = q.from(AccountancyEntry.class);
-		Predicate p = cb.between(r.get(AccountancyEntry_.timeStamp), from.toDate(), to.toDate());
+		CriteriaQuery<AbstractAccountancyEntry> q = cb
+				.createQuery(AbstractAccountancyEntry.class);
+		Root<AbstractAccountancyEntry> r = q.from(AbstractAccountancyEntry.class);
+		Predicate p = cb.between(r.get(AbstractAccountancyEntry_.timeStamp), from.toDate(), to.toDate());
 		q.where(p);
-		TypedQuery<AccountancyEntry> tq = em.createQuery(q);
+		TypedQuery<AbstractAccountancyEntry> tq = em.createQuery(q);
 
 		return SalespointIterable.from(tq.getResultList());
 	}
@@ -147,7 +147,7 @@ public class Accountancy implements Serializable {
 	 * @return an unmodifiable Iterable containing all entries between from and
 	 *         to of type T
 	 */
-	public <T extends AccountancyEntry> Iterable<T> getEntries(Class<T> clazz,
+	public <T extends AbstractAccountancyEntry> Iterable<T> getEntries(Class<T> clazz,
 			DateTime from, DateTime to) {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
@@ -159,7 +159,7 @@ public class Accountancy implements Serializable {
 		Root<T> entry = q.from(clazz);
 
 		Predicate p = entry.type().in(clazz);
-		Predicate p1 = cb.between(entry.get(AccountancyEntry_.timeStamp),
+		Predicate p1 = cb.between(entry.get(AbstractAccountancyEntry_.timeStamp),
 				from.toDate(), to.toDate());
 
 		q.where(cb.and(p, p1));

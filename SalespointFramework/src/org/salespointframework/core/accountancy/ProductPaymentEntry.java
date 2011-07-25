@@ -2,7 +2,7 @@ package org.salespointframework.core.accountancy;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import org.salespointframework.core.accountancy.AccountancyEntry;
+import org.salespointframework.core.accountancy.AbstractAccountancyEntry;
 import org.salespointframework.core.order.actions.OrderAction;
 import org.salespointframework.core.order.actions.PaymentAction;
 import org.salespointframework.util.Objects;
@@ -13,7 +13,7 @@ import org.salespointframework.util.Objects;
  * @author hannesweisbach
  */
 @Entity
-public class ProductPaymentEntry extends AccountancyEntry implements
+public class ProductPaymentEntry extends AbstractAccountancyEntry implements
 		Serializable {
 
 	private static final long serialVersionUID = 1L;

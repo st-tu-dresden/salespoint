@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.accountancy.Accountancy;
-import org.salespointframework.core.accountancy.AccountancyEntry;
+import org.salespointframework.core.accountancy.AbstractAccountancyEntry;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.order.OrderEntry;
 import org.salespointframework.core.order.OrderIdentifier;

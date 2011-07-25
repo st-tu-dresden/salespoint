@@ -9,7 +9,7 @@ import org.joda.time.DateTime;
 
 /**
  * This class represents an accountancy entries. The
- * <code>AccountancyEntry</code> is not intended to be directly used. Instead,
+ * <code>AbstractAccountancyEntry</code> is not intended to be directly used. Instead,
  * it should be sub-classed to define specific entry types for an accountancy,
  * for example a <code>ProductPaymentEntry</code>.
  * 
@@ -17,7 +17,7 @@ import org.joda.time.DateTime;
  * 
  */
 @Entity
-public class AccountancyEntry implements Serializable {
+public abstract class AbstractAccountancyEntry implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@SuppressWarnings("unused")
@@ -32,7 +32,7 @@ public class AccountancyEntry implements Serializable {
 	 * Do not use it.
 	 */
 	@Deprecated
-	public AccountancyEntry() {
+	public AbstractAccountancyEntry() {
 		timeStamp = new Date();
 	};
 	
