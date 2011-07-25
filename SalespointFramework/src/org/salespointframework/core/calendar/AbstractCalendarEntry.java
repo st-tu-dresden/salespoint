@@ -5,12 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.joda.time.DateTime;
-import org.salespointframework.core.users.User;
 import org.salespointframework.util.Objects;
 
 /**
@@ -25,9 +25,10 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
 	
     @Id
     @GeneratedValue
-    private int calendarEntryIdentifier;
+    private long calendarEntryIdentifier;
 
-    protected Map<User, CapabilityList> capabilities = new HashMap<User,CapabilityList>();
+    @ElementCollection
+    protected Map<String, CapabilityList> capabilities = new HashMap<String, CapabilityList>();    
     
     /**
      * Description of this calendar entry. May be empty.
@@ -73,13 +74,13 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
     
     /**
      * Basic contructor with 
-     * @param owner The user, who created this entry.
+     * @param owner The id of the user, who created this entry.
      * @param title The title of this entry.
      * @param start Start time and date.
      * @param end End time and date.
-     * @throws IllegalArgumentException The {@link IllegalArgumentException} will be thrown, if the end lays before the start of a calendar entry.
+     * @throws IllegalArgumentException The {@link IllegalArgumentException} will be thrown, if the begin is not before the end of this calendar entry.
      */
-    public AbstractCalendarEntry(User owner, String title, DateTime start, DateTime end) {
+    public AbstractCalendarEntry(String owner, String title, DateTime start, DateTime end) {
         Objects.requireNonNull(owner, "owner");
         Objects.requireNonNull(title, "title");
         Objects.requireNonNull(start, "start");
@@ -107,6 +108,11 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
         return false;
     }
     
+    /**
+     * 
+     * @param entry
+     * @return
+     */
     public boolean equals(CalendarEntry entry) {
         return this.hashCode() == entry.hashCode();
     }
@@ -114,7 +120,7 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
     @Override
     public int hashCode() {
         //TODO think about this...
-        return calendarEntryIdentifier;
+        return (int) calendarEntryIdentifier;
     }
     
     @Override
@@ -138,7 +144,7 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
     }
     
     @Override
-    public int getID() {
+    public long getID() {
         return calendarEntryIdentifier; 
     }
 
@@ -174,17 +180,17 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
 
     //TODO think about how to realize on-to-many relationship between two other entities (user <--> cap)
     @Override
-    public User getOwner() {
-        for (User user : capabilities.keySet()) {
-            if (capabilities.get(user).contains(CalendarEntryCapability.OWNER)) {
-                return user;
+    public String getOwner() {
+        for (String userId : capabilities.keySet()) {
+            if (capabilities.get(userId).contains(CalendarEntryCapability.OWNER)) {
+                return userId;
             }
         }
         return null;
     }
     
     @Override
-    public void addCapability(User user, CalendarEntryCapability capability) {
+    public void addCapability(String user, CalendarEntryCapability capability) {
         Objects.requireNonNull(user, "user");
         Objects.requireNonNull(capability, "capability");
         
@@ -202,10 +208,13 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
     }
 
     @Override
-    public void removeCapability(User user, CalendarEntryCapability capability) {
+    public void removeCapability(String user, CalendarEntryCapability capability) {
         Objects.requireNonNull(user, "user");
         Objects.requireNonNull(capability, "capability");
         
+        if (capability == CalendarEntryCapability.OWNER)
+            throw new IllegalArgumentException("Capability 'OWNER' cannot be removed.");
+            
         CapabilityList capList = null;
         
         if ((capList = capabilities.get(user))!=null) {
@@ -215,18 +224,18 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
         }
     }
 
-    public Iterable<CalendarEntryCapability> getCapabilitiesByUser(User user) {
+    public Iterable<CalendarEntryCapability> getCapabilitiesByUser(String user) {
         Objects.requireNonNull(user, "user");
         
         return capabilities.get(user);
     }
     
-    public Iterable<User> getUsersByCapability(CalendarEntryCapability capability) {
+    public Iterable<String> getUsersByCapability(CalendarEntryCapability capability) {
         Objects.requireNonNull(capability, "capability");
         
-        List<User> users = new LinkedList<User>();
+        List<String> users = new LinkedList<String>();
         
-        for (User user : capabilities.keySet()) {
+        for (String user : capabilities.keySet()) {
             if (capabilities.get(user).contains(capability))
                 users.add(user);
         }

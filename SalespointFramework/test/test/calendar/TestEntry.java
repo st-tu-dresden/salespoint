@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.calendar.AbstractCalendarEntry;
-import org.salespointframework.core.users.User;
 
 @Entity
 public class TestEntry extends AbstractCalendarEntry {
@@ -13,7 +12,7 @@ public class TestEntry extends AbstractCalendarEntry {
     protected TestEntry() {
     }
     
-    public TestEntry(User owner, String title, DateTime start, DateTime end) {
+    public TestEntry(String owner, String title, DateTime start, DateTime end) {
         super(owner, title, start, end);
     }
 }

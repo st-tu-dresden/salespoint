@@ -1,6 +1,7 @@
 package org.salespointframework.core.calendar;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.users.AbstractUser;
 import org.salespointframework.core.users.User;
 
 /**
@@ -35,23 +36,23 @@ public interface CalendarEntry {
     String getDescription();
     
     /**
-     * Returns the owner this entry
+     * Returns the user-id of the owner of this entry
      * @return owner
      */
-    User getOwner();
+    String getOwner();
     
     /**
      * Returns the id of this entry
      * @return ID
      */
-    int getID();
+    long getID();
     
     void setStart(DateTime start);
     void setEnd(DateTime end);
     void setTitle(String title);
     void setDescription(String description);
     
-    void addCapability(User user, CalendarEntryCapability capability);
-    void removeCapability(User user, CalendarEntryCapability capability);
+    void addCapability(String user, CalendarEntryCapability capability);
+    void removeCapability(String user, CalendarEntryCapability capability);
 
 }
