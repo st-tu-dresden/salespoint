@@ -18,7 +18,7 @@ import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
 @Entity
-public class Order {
+public class OrderEntry {
 	
 	@Id
 	@OneToOne(cascade = CascadeType.ALL)
@@ -41,7 +41,7 @@ public class Order {
 	//private List<ChargeLine> chargeLines;
 	private OrderStatus status;
 	
-	public Order(String salesChannel, String termsAndConditions) {
+	public OrderEntry(String salesChannel, String termsAndConditions) {
 		orderIdentifier = new OrderIdentifier();
 		dateCreated = new Date();
 		this.salesChannel = Objects
@@ -53,11 +53,11 @@ public class Order {
 		status = OrderStatus.INITIALIZED;
 	}
 
-	public Order(String salesChannel) {
+	public OrderEntry(String salesChannel) {
 		this(Objects.requireNonNull(salesChannel, "salesChannel"), "");
 	}
 		
-	public Order() {
+	public OrderEntry() {
 		this("", "");
 	}
 
