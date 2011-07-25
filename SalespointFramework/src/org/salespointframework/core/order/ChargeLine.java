@@ -20,7 +20,6 @@ public class ChargeLine {
 	private Money amount;
 	private String description;
 	private String comment;
-	//private OrderLineIdentifier identifier;
 	
 	@Deprecated
 	protected ChargeLine() {}

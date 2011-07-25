@@ -19,7 +19,7 @@ import org.salespointframework.util.SalespointIterable;
  * 
  */
 
-public class OrderManager {
+public class OrderManager implements IOrderManager {
 	private EntityManagerFactory emf;
 
 	
@@ -34,12 +34,10 @@ public class OrderManager {
 	}
 
 	
-	/**
-	 * Add an <code>OrderEntry</code> to this
-	 * <code>OrderManager</code> and persists them to underlying database.
-	 * 
-	 * @param order The <code>OrderEntry</code> which shall be added.
+	/* (non-Javadoc)
+	 * @see org.salespointframework.core.order.IOrderManager#addOrder(org.salespointframework.core.order.OrderEntry)
 	 */
+	@Override
 	public void addOrder(OrderEntry order) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -47,14 +45,10 @@ public class OrderManager {
 		em.getTransaction().commit();
 	}
 
-	/**
-	 * Returns the <code>OrderEntry</code>s whith the specified
-	 * <code>orderIdentifier</code>.
-	 * 
-	 * @param orderIdentifier
-	 *            Denoting the identifier of the requested OrderEntry.
-	 * @return The requested OrderEntry
+	/* (non-Javadoc)
+	 * @see org.salespointframework.core.order.IOrderManager#findOrder(org.salespointframework.core.order.OrderIdentifier)
 	 */
+	@Override
 	public OrderEntry findOrder(OrderIdentifier orderIdentifier) {
 		Objects.requireNonNull(orderIdentifier, "orderIdentifier");
 
@@ -70,19 +64,10 @@ public class OrderManager {
 	}
 
 	
-	/**
-	 * Returns all <code>OrderEntry</code>s in between the dates
-	 * <code>from</code> and <code>to</code>, including from and to. So every
-	 * entry with an time stamp <= to and >= from is returned. If no entries
-	 * within the specified time span exist, an empty Iterable is returned.
-	 * 
-	 * @param from
-	 *            time stamp denoting the start of the requested time period
-	 * @param to
-	 *            time stamp denoting the end of the requested time period
-	 * @return an unmodifiable Iterable containing all OrderEntries between from and
-	 *         to
+	/* (non-Javadoc)
+	 * @see org.salespointframework.core.order.IOrderManager#findOrders(org.joda.time.DateTime, org.joda.time.DateTime)
 	 */
+	@Override
 	public Iterable<OrderEntry> findOrders(DateTime from, DateTime to) {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
@@ -100,15 +85,10 @@ public class OrderManager {
 	}
 	
 	
-	/**
-	 * Returns all <code>OrderEntry</code>s having the OrderEntryStatus
-	 * <code>status</code>. If no entries
-	 * with the specified status exist, an empty Iterable is returned.
-	 * 
-	 * @param status
-	 *            Denoting the OrderEntryStatus on which the OrderEntrys will be requested.
-	 * @return an unmodifiable Iterable containing all OrderEntries whith the specified OrderEntryStatus
+	/* (non-Javadoc)
+	 * @see org.salespointframework.core.order.IOrderManager#findOrders(org.salespointframework.core.order.OrderStatus)
 	 */
+	@Override
 	public Iterable<OrderEntry> findOrders(OrderStatus status) {
 		Objects.requireNonNull(status, "status");
 
@@ -123,12 +103,10 @@ public class OrderManager {
 		return SalespointIterable.from(q.getResultList());
 	}
 
-	/**
-	 * Remove an <code>OrderEntry</code> from this
-	 * <code>OrderManager</code> and the underlying database.
-	 * 
-	 * @param orderIdentifier The Identifier of the <code>OrderEntry</code> which shall be removed.
+	/* (non-Javadoc)
+	 * @see org.salespointframework.core.order.IOrderManager#remove(org.salespointframework.core.order.OrderIdentifier)
 	 */
+	@Override
 	public void remove(OrderIdentifier orderIdentifier) {
 		Objects.requireNonNull(orderIdentifier, "orderIdentifier");
 		
@@ -141,12 +119,10 @@ public class OrderManager {
 	}
 
 	
-	/**
-	 * Remove an <code>OrderEntry</code> from this
-	 * <code>OrderManager</code> and the underlying database.
-	 * 
-	 * @param orderEntry The <code>OrderEntry</code> which shall be removed.
+	/* (non-Javadoc)
+	 * @see org.salespointframework.core.order.IOrderManager#remove(org.salespointframework.core.order.OrderEntry)
 	 */
+	@Override
 	public void remove(OrderEntry orderEntry) {
 		Objects.requireNonNull(orderEntry, "orderEntry");
 		
@@ -157,11 +133,10 @@ public class OrderManager {
 		em.getTransaction().commit();
 	}
 	
-	/**
-	 * Commits changes from the given <code>OrderEntry</code> to the database.
-	 * 
-	 * @param orderEntry The <code>OrderEntry</code> which shall be updated.
+	/* (non-Javadoc)
+	 * @see org.salespointframework.core.order.IOrderManager#update(org.salespointframework.core.order.OrderEntry)
 	 */
+	@Override
 	public void update(OrderEntry orderEntry) {
 		Objects.requireNonNull(orderEntry, "orderEntry");
 		

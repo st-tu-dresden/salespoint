@@ -14,12 +14,13 @@ import org.junit.Test;
 import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.accountancy.AbstractAccountancyEntry;
 import org.salespointframework.core.database.Database;
+import org.salespointframework.core.order.IOrderManager;
 import org.salespointframework.core.order.OrderEntry;
 import org.salespointframework.core.order.OrderIdentifier;
 import org.salespointframework.core.order.OrderManager;
 
 public class OrderTest {
-	private OrderManager om;
+	private IOrderManager om;
 	private List<OrderIdentifier> oi = new ArrayList<OrderIdentifier>();
 	private EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 	
