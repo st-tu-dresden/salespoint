@@ -20,7 +20,6 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	@AttributeOverride(name="id", column=@Column(name="PRODUCT_ID"))
 	private ProductIdentifier productIdentifier;
 	
-	@OneToOne(cascade = CascadeType.PERSIST)
 	private Money price;
 	
 	//TODO annot

@@ -10,7 +10,7 @@ import javax.persistence.*;
  * Entity implementation class for Entity: RoundUpStrategy
  *
  */
-@Entity
+//@Entity
 /**Round a value up, i.e. away from zero.
  * 
  */
@@ -18,10 +18,10 @@ public class RoundUpStrategy extends AbstractRoundingStrategy implements Seriali
 	//@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
 	
 	private static final long serialVersionUID = 1L;
-	
+	/*
 	@Deprecated
 	protected RoundUpStrategy() {};
-	
+	*/
 	public RoundUpStrategy(int numberOfDigits) {
 		super(numberOfDigits, 0, 0);
 	}

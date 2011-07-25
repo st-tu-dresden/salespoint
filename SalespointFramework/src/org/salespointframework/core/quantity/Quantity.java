@@ -1,5 +1,6 @@
 package org.salespointframework.core.quantity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.CascadeType;
@@ -27,25 +28,29 @@ import org.salespointframework.core.quantity.rounding.RoundingStrategy;
  * @author hannesweisbach
  * 
  */
-@Entity
-public class Quantity implements Comparable<Quantity> {
 
+public class Quantity implements Comparable<Quantity>, Serializable {
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5292263711685595615L;
+	/*
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	long id;
-
+*/
 	protected BigDecimal amount;
-	@OneToOne(cascade = CascadeType.ALL, targetEntity = Metric.class)
+//	@OneToOne(cascade = CascadeType.ALL, targetEntity = Metric.class)
 	protected Metric metric;
-	@OneToOne(cascade = CascadeType.ALL, targetEntity = AbstractRoundingStrategy.class)
+//	@OneToOne(cascade = CascadeType.ALL, targetEntity = AbstractRoundingStrategy.class)
 	protected RoundingStrategy roundingStrategy;
 
 	/**
 	 * Protected class constructor is required for JPA/Hibernate. Use
 	 * parameterized Constructor instead.
 	 */
-	protected Quantity() {
-	};
+//	protected Quantity() {
+//	};
 
 	/**
 	 * Parameterized class constructor. <code>amount</code> is immediately

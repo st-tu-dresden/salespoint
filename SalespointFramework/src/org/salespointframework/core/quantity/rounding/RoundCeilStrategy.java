@@ -10,7 +10,7 @@ import javax.persistence.*;
  * Entity implementation class for Entity: RoundCeilingStrategy
  *
  */
-@Entity
+//@Entity
 /** Rounds towards positive infinity.
  * 
  */
@@ -18,10 +18,10 @@ public class RoundCeilStrategy extends AbstractRoundingStrategy implements Seria
 	//@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
 	
 	private static final long serialVersionUID = 1L;
-	
+	/*
 	@Deprecated
 	protected RoundCeilStrategy() {};
-	
+	*/
 	public RoundCeilStrategy(int numberOfDigits) {
 		super(numberOfDigits, 0, 0);
 	}

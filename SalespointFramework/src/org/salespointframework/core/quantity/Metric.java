@@ -1,14 +1,21 @@
 package org.salespointframework.core.quantity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
-public class Metric {
-	@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
+/**
+ * 
+ * @author hannesweisbach
+ *
+ */
+//@Entity
+public class Metric implements Serializable {
+//	@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
 	
 	private String name;
 	private String symbol;
@@ -17,7 +24,7 @@ public class Metric {
 	/** Default class constructor is used by JPA/Hibernate. For Object creation use
 	 * parameterized public constructors instead.
 	 */
-	protected Metric() {};
+//	protected Metric() {};
 	
 	/** Class constructor specifying name, symbol and definition.
 	 * 

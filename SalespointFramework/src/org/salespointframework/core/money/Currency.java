@@ -5,9 +5,12 @@ import javax.persistence.Entity;
 
 import org.salespointframework.core.quantity.Metric;
 
+/*
 @Entity
 @DiscriminatorValue("CURRENCY")
+*/
 public class Currency extends Metric {
+	
 	
 	private String alphabeticCode;
 	private String majorUnitSymbol;
@@ -19,9 +22,10 @@ public class Currency extends Metric {
 	 * This constructor is required for JPA/Hibernate.
 	 * To instantiate objects, use public constructors instead.
 	 */
+/*
 	@Deprecated
 	protected Currency() {};
-	
+	*/
 	/** Class constructor 
 	 * 
 	 * @param name                        Name of this currency, e.g. "Euro"

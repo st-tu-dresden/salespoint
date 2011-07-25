@@ -2,11 +2,14 @@ package org.salespointframework.core.money;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.quantity.rounding.RoundDownStrategy;
+import org.salespointframework.core.quantity.rounding.RoundingStrategy;
+import org.salespointframework.util.Objects;
 
 /**
  * The <code>Money</code> class represents the Euro currency. A suitable
@@ -19,23 +22,21 @@ import org.salespointframework.core.quantity.rounding.RoundDownStrategy;
  * @author hannesweisbach
  * 
  */
-@Entity
+// @Entity
 public class Money extends Quantity {
+	// @Embedded
+	public static final Metric EURO = new Metric("Euro", "€", "");
+	public static final RoundingStrategy MONETARY_ROUNDING = new RoundDownStrategy(
+			4);
 	public static final Money ZERO = new Money(0);
-
-	{
-		metric = new Metric("Euro", "€", "");
-		roundingStrategy = new RoundDownStrategy(4);
-	}
 
 	/**
 	 * Parameterless constructor, do not use. This constructor is required by
 	 * the persistence layer and may not be used by application developers.
 	 */
-	@Deprecated
-	protected Money() {
-	}
-
+	/*
+	 * @Deprecated protected Money() { }
+	 */
 	/**
 	 * Creates a new <code>Money</code> instance from an amount and a metric.
 	 * 
@@ -45,9 +46,8 @@ public class Money extends Quantity {
 	 *            metric (currency) to be used for this instance.
 	 */
 	public Money(BigDecimal amount, Metric metric) {
-		if (metric != null)
-			this.metric = metric;
-		this.amount = amount;
+		super(Objects.requireNonNull(amount, "amount"), Objects.requireNonNull(
+				metric, "metric"), MONETARY_ROUNDING);
 	}
 
 	/**
@@ -59,7 +59,8 @@ public class Money extends Quantity {
 	 *            metric (currency) to be used for this instance.
 	 */
 	public Money(int amount, Metric metric) {
-		this(BigDecimal.valueOf(amount), metric);
+		this(BigDecimal.valueOf(amount), Objects.requireNonNull(metric,
+				"metric"));
 	}
 
 	/**
@@ -71,7 +72,9 @@ public class Money extends Quantity {
 	 *            metric (currency) to be used for this instance.
 	 */
 	public Money(double amount, Metric metric) {
-		this(BigDecimal.valueOf(amount), metric);
+		this(BigDecimal.valueOf(amount), Objects.requireNonNull(metric,
+				"metric"));
+		// this(BigDecimal.valueOf(amount), metric);
 	}
 
 	/**
@@ -82,7 +85,7 @@ public class Money extends Quantity {
 	 *            the amount of money represented by <code>this</code>
 	 */
 	public Money(BigDecimal amount) {
-		this.amount = amount;
+		this(Objects.requireNonNull(amount, "amount"), EURO);
 	}
 
 	/**
@@ -92,7 +95,7 @@ public class Money extends Quantity {
 	 *            the amount of money represented by <code>this</code>
 	 */
 	public Money(long amount) {
-		this.amount = BigDecimal.valueOf(amount);
+		this(BigDecimal.valueOf(amount));
 	}
 
 	/**
@@ -103,7 +106,7 @@ public class Money extends Quantity {
 	 *            the amount of money represented by <code>this</code>¸
 	 */
 	public Money(double amount) {
-		this.amount = BigDecimal.valueOf(amount);
+		this(BigDecimal.valueOf(amount));
 	}
 
 	/**

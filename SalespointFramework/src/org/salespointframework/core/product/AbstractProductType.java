@@ -21,7 +21,6 @@ public class AbstractProductType implements ProductType {
 	protected ProductIdentifier productIdentifier;
 	protected String name;
 	
-	@OneToOne(cascade = CascadeType.PERSIST)
 	protected Money price;
 	
 	//TODO Map?

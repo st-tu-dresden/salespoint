@@ -47,7 +47,6 @@ public class OrderLine {
 	private String description;
 	private String comment;
 	private int numberOrdered;
-	@OneToOne(cascade = CascadeType.ALL)
 	private Money unitPrice;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date expectedDeliveryDate;

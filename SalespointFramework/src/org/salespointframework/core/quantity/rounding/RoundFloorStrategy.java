@@ -10,7 +10,7 @@ import javax.persistence.*;
  * Entity implementation class for Entity: RoundFloorStrategy
  *
  */
-@Entity
+//@Entity
 /** Rounds towards negative infinity.
  * 
  */
@@ -18,10 +18,10 @@ public class RoundFloorStrategy extends AbstractRoundingStrategy implements Seri
 	//@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
 	
 	private static final long serialVersionUID = 1L;
-	
+/*	
 	@Deprecated
 	protected RoundFloorStrategy() {};
-	
+	*/
 	public RoundFloorStrategy(int numberOfDigits) {
 		super(numberOfDigits, 0, 0);
 	}
