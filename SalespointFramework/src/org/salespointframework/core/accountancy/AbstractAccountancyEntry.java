@@ -31,7 +31,6 @@ public abstract class AbstractAccountancyEntry implements Serializable {
 	 * Protected, parameterless Constructor required by the persistence layer.
 	 * Do not use it.
 	 */
-	@Deprecated
 	public AbstractAccountancyEntry() {
 		timeStamp = new Date();
 	};
