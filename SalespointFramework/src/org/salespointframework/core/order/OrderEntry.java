@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,12 +26,9 @@ import org.salespointframework.util.SalespointIterable;
 @Entity
 public class OrderEntry {
 	
-	@Id
-	@OneToOne(cascade = CascadeType.ALL)
+	@EmbeddedId
 	private OrderIdentifier orderIdentifier;
-	// @GeneratedValue(strategy = GenerationType.AUTO)
-	// private long id;
-
+	
 	// Do NOT fucking touch!
 	@Column(name = "TimeStamp", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)

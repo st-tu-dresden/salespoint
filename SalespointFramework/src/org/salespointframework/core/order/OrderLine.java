@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Id;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -14,6 +18,8 @@ import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.util.Objects;
 
 /**
@@ -24,13 +30,20 @@ import org.salespointframework.util.Objects;
 @Entity
 public class OrderLine {
 	
-	@Id
+	@EmbeddedId
 	private OrderLineIdentifier identifier;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<ChargeLine> chargeLines;
-	// private ProductIdentifier productType;
-	// private SerialNumber serialNumber;
+	
+	@Embedded
+	@AttributeOverride(name="id", column=@Column(name="PRODUCT_ID"))
+	private ProductIdentifier productType;
+
+	@Embedded
+	@AttributeOverride(name="id", column=@Column(name="SERIALNO"))
+	private SerialNumber serialNumber;
+
 	private String description;
 	private String comment;
 	private int numberOrdered;

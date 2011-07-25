@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
@@ -16,10 +17,8 @@ import org.salespointframework.util.SalespointIterable;
 @MappedSuperclass
 public class AbstractProductType implements ProductType {
 	
-	@Id
-	@OneToOne(cascade = CascadeType.ALL)
-	private ProductIdentifier productIdentifier;
-	
+	@EmbeddedId
+	protected ProductIdentifier productIdentifier;
 	protected String name;
 	
 	@OneToOne(cascade = CascadeType.PERSIST)

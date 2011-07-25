@@ -9,7 +9,7 @@ import org.salespointframework.util.SalespointIdentifier;
  *
  * @author hannesweisbach
  */
-@Entity
+@Embeddable
 
 public class UserIdentifier extends SalespointIdentifier implements Serializable {
 

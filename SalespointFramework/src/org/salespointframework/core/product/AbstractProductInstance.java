@@ -13,10 +13,11 @@ import org.salespointframework.util.SalespointIterable;
 @MappedSuperclass
 public abstract class AbstractProductInstance implements ProductInstance {
 	
-	@Id
-	@OneToOne(cascade = CascadeType.ALL)
+	@EmbeddedId
 	private SerialNumber serialNumber;
 	
+	@Embedded
+	@AttributeOverride(name="id", column=@Column(name="PRODUCT_ID"))
 	private ProductIdentifier productIdentifier;
 	
 	@OneToOne(cascade = CascadeType.PERSIST)

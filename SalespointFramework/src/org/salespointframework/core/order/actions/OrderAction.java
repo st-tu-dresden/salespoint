@@ -21,13 +21,19 @@ public class OrderAction implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private static final long serialVersionUID = 1L;
-
+	
+	@Embedded
+	@AttributeOverride(name="id", column=@Column(name="ORDER_ID"))
 	private OrderIdentifier orderIdentifier;
+
 	private DateTime dateAuthorized;
 	private boolean processed = false;
 
+	@Embedded
+	@AttributeOverride(name="id", column=@Column(name="USER_ID"))
 	private UserIdentifier authorization;
 
+	
 	/**
 	 * Parameterless constructor as required by JPA. Don't use it directly.
 	 */
@@ -62,6 +68,7 @@ public class OrderAction implements Serializable {
 		if (processed) {
 			dateAuthorized = new DateTime();
 			this.processed = true;
+
 			this.authorization = Objects.requireNonNull(userIdentifier,
 					"userIdentifier");
 		} else if (userIdentifier != null) {
@@ -138,5 +145,4 @@ public class OrderAction implements Serializable {
 	public UserIdentifier getAuthorization() {
 		return authorization;
 	}
-
 }

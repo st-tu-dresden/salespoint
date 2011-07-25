@@ -1,5 +1,6 @@
 package org.salespointframework.util;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.*;
@@ -10,9 +11,14 @@ import javax.persistence.*;
  * @author Thomas Dedek
  * 
  */
-@Entity
-public class SalespointIdentifier {
-	@Id
+@Embeddable
+@MappedSuperclass
+public /*abstract*/ class SalespointIdentifier implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5689127925646322527L;
+	//@Id
 	private String id;
 
 	public SalespointIdentifier() {

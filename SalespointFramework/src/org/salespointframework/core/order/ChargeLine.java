@@ -1,5 +1,6 @@
 package org.salespointframework.core.order;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -14,7 +15,7 @@ import org.salespointframework.util.Objects;
 @Entity
 public class ChargeLine {
 	
-	@Id
+	@EmbeddedId
 	private OrderLineIdentifier identifier;
 
 	private Money amount;

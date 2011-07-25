@@ -12,61 +12,66 @@ import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
-public abstract class AbstractProductCatalog<T extends AbstractProductType> implements ProductCatalog<T>, ICanHasClass<T> {
+public abstract class AbstractProductCatalog<T extends AbstractProductType>
+		implements ProductCatalog<T>, ICanHasClass<T> {
 
 	private EntityManager entityManager;
-	
+
 	public AbstractProductCatalog(EntityManager entityManager) {
-		this.entityManager = Objects.requireNonNull(entityManager, "entityManager");
-		
+		this.entityManager = Objects.requireNonNull(entityManager,
+				"entityManager");
+
 	}
-	
+
 	@Override
 	public void addProductType(T productType) {
 		Objects.requireNonNull(productType, "productType");
 		entityManager.persist(productType);
 	}
-	
+
 	@Override
 	public void removeProductType(ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
-		entityManager.remove(this.findProductTypeByProductIdentifier(productIdentifier));
+		entityManager.remove(this
+				.findProductTypeByProductIdentifier(productIdentifier));
 	}
 
 	@Override
-	public T findProductTypeByProductIdentifier(ProductIdentifier productIdentifier) {
+	public T findProductTypeByProductIdentifier(
+			ProductIdentifier productIdentifier) {
 		return entityManager.find(this.getContentClass(), productIdentifier);
 	}
 
 	// TODO sinnvoll?
+	// klingt erstmal gut, aber mal sehen, ob man beim coden einfach so an einen
+	// ProductType String herankommt
 	@Override
 	public T findProductTypeByName(String name) {
 		Objects.requireNonNull(name, "name");
 		return null;
 	}
 
-	
 	@Override
 	public Iterable<T> getProductTypes() {
 		Class<T> cc = this.getContentClass();
-		TypedQuery<T> tquery = entityManager.createQuery("Select t from " + cc.getSimpleName() + " t",cc);
+		TypedQuery<T> tquery = entityManager.createQuery(
+				"Select t from " + cc.getSimpleName() + " t", cc);
 		return SalespointIterable.from(tquery.getResultList());
 	}
-	
-	//TODO
+
+	// TODO
 	@Override
 	public Iterable<T> findProductTypesByCategory(String category) {
 		Objects.requireNonNull(category, "category");
-		
+
 		Class<T> contentClass = this.getContentClass();
-		
+
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<T> cq = cb.createQuery(contentClass); 
+		CriteriaQuery<T> cq = cb.createQuery(contentClass);
 		Root<T> root = cq.from(contentClass);
 
-		
-		
-		TypedQuery<T> tquery = entityManager.createQuery("",this.getContentClass());
+		TypedQuery<T> tquery = entityManager.createQuery("",
+				this.getContentClass());
 		return tquery.getResultList();
 	}
 
@@ -77,6 +82,6 @@ public abstract class AbstractProductCatalog<T extends AbstractProductType> impl
 
 	@Override
 	public void clear() {
-	
+
 	}
 }

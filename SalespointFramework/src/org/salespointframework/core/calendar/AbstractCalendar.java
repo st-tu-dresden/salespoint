@@ -91,7 +91,7 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
         em.remove(this.getEntryByID(calendarEntryIdentifier));
     }
 }
-
+/*
 @Entity
 class CapabilityList extends ArrayList<CalendarEntryCapability> {
 
@@ -103,3 +103,4 @@ class CapabilityList extends ArrayList<CalendarEntryCapability> {
     private long id;
     
 }
+*/
