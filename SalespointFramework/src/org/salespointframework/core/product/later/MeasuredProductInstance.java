@@ -4,7 +4,7 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.quantity.Quantity;
 
-public interface MeasuredProductInstance<T extends MeasuredProductType> extends ProductInstance<T> {
+public interface MeasuredProductInstance<T extends MeasuredProductType> extends ProductInstance {
 
 	/**
      * Return the MeasuredProductType of this MeasuredProductInstance

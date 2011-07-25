@@ -3,7 +3,7 @@ package org.salespointframework.core.product.later;
 import org.joda.time.DateTime;
 import org.salespointframework.core.product.ProductInstance;
 
-public interface ServiceInstance<T extends ServiceType> extends ProductInstance<T> {
+public interface ServiceInstance<T extends ServiceType> extends ProductInstance {
 
 	ServiceDeliveryStatus getServiceDeliveryStatus();
 	DateTime getStart();
