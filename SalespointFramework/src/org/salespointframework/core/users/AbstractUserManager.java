@@ -39,13 +39,6 @@ public class AbstractUserManager<T extends User>{
 		
 	}
 	
-	public static <T> T requireNonNull(T object, String paramName) {
-		if(object == null) {
-			throw new ArgumentNullException(paramName);
-		}
-		return object;
-	}
-	
 	
 	/**
 	 * adds a UserCapability to an User

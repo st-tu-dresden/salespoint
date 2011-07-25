@@ -7,7 +7,7 @@ import org.salespointframework.util.Objects;
 
 
 @MappedSuperclass
-public class AbstractUser {
+public class AbstractUser implements User{
 	
 
 	@Id
