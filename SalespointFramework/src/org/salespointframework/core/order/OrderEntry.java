@@ -155,7 +155,8 @@ public class OrderEntry {
 	
 	/**
 	 * Add a <code>ChargeLine</code> to this
-	 * <code>OrderEntry</code>.
+	 * <code>OrderEntry</code>. The ChargeLine cannot be added, 
+	 * if this OrderEntry is cancelled or closed.
 	 * 
 	 * @param chargeLine The <code>ChargeLine</code> that shall be added.
 	 */
@@ -169,7 +170,8 @@ public class OrderEntry {
 	
 	/**
 	 * Remove a <code>ChargeLine</code> from this
-	 * <code>OrderEntry</code>.
+	 * <code>OrderEntry</code>. The ChargeLine cannot be removed, 
+	 * if this OrderEntry is cancelled or closed.
 	 * 
 	 * @param id The Identifier from the <code>ChargeLine</code> that shall be removed.
 	 */
@@ -195,7 +197,8 @@ public class OrderEntry {
 	
 	/**
 	 * Add an <code>OrderLine</code> to this
-	 * <code>OrderEntry</code>.
+	 * <code>OrderEntry</code>. The OrderLine cannot be added, 
+	 * if this OrderEntry is processing, cancelled or closed.
 	 * 
 	 * @param orderLine The <code>OrderLine</code> that shall be added.
 	 */
@@ -209,7 +212,8 @@ public class OrderEntry {
 	
 	/**
 	 * Remove an <code>OrderLine</code> from this
-	 * <code>OrderEntry</code>.
+	 * <code>OrderEntry</code>. The OrderLine cannot be removed, 
+	 * if this OrderEntry is processing, cancelled or closed.
 	 * 
 	 * @param id The Identifier from the <code>OrderLine</code> that shall be removed.
 	 */

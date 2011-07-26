@@ -147,7 +147,7 @@ public class OrderLine {
 	/**
 	 * Increments the number of the ordered objects in this OrderLine. 
 	 * This method doesn't change anything, if the given number is less than or equal to 0. If this OrderLine is provided 
-	 * in the context of an cancelled or closed OrderEntry, the number will not be changed.
+	 * in the context of an processing, cancelled or closed OrderEntry, the number will not be changed.
 	 * 
 	 * @param number
 	 *            the number of ordered objects that shall to be added.  
@@ -164,7 +164,7 @@ public class OrderLine {
 	 * Decrements the number of the ordered objects in this OrderLine. 
 	 * This method doesn't change anything, if the given number is less than or equal to 0.
 	 * The number of ordered objects cannot fall below 0. If this OrderLine is provided 
-	 * in the context of an cancelled or closed OrderEntry, the number will not be changed.
+	 * in the context of an processing, cancelled or closed OrderEntry, the number will not be changed.
 	 * 
 	 * @param number
 	 *            the number of ordered objects that shall to be substituted.  
