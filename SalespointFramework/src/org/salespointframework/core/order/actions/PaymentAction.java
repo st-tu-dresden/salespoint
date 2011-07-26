@@ -28,7 +28,7 @@ public class PaymentAction extends OrderAction {
 	@AttributeOverride(name="id", column=@Column(name="INVOICE_ID"))
 	private InvoiceIdentifier invoiceIdentifier;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	//@OneToOne(cascade=CascadeType.ALL)
 	private OrderPayment orderPayment;
 	
 	//TODO: does a PaymentAction really need a reference to a ProductPaymentEntry?
