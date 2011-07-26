@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Objects;
@@ -19,9 +20,9 @@ import org.salespointframework.util.Objects;
  */
 @Entity
 public class ChargeLine {
-	@Id @GeneratedValue(strategy=GenerationType.AUTO) private long id;
+	//@Id @GeneratedValue(strategy=GenerationType.AUTO) private long id;
 	
-	@Embedded
+	@EmbeddedId
 	@AttributeOverride(name="id", column=@Column(name="ORDERLINE_ID"))
 	private OrderLineIdentifier identifier;
 
