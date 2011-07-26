@@ -1,5 +1,7 @@
 package org.salespointframework.core.calendar;
 
+import javax.persistence.Entity;
+
 /**
  * This enum stores capabilities which users can have relative to calendar
  * entries.
@@ -7,6 +9,7 @@ package org.salespointframework.core.calendar;
  * @author stanley
  * 
  */
+@Entity
 public enum CalendarEntryCapability {
     OWNER,
     READ,

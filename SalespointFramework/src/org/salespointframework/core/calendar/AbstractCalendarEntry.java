@@ -1,16 +1,14 @@
 package org.salespointframework.core.calendar;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -39,8 +37,6 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
      */
     @ElementCollection
     protected Map<String, CapabilitySet> capabilities = new HashMap<String, CapabilitySet>();
-    // protected Map<String, ArrayList<CalendarEntryCapability>> capabilities =
-    // new HashMap<String, ArrayList<CalendarEntryCapability>>();
 
     /**
      * Description of this calendar entry. May be empty.
@@ -327,7 +323,6 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
         }
 
         CapabilitySet capList = null;
-        // ArrayList<CalendarEntryCapability> capList = null;
 
         if ((capList = capabilities.get(user)) == null) {
             capList = new CapabilitySet();
@@ -360,8 +355,7 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
         if (capability == CalendarEntryCapability.OWNER)
             throw new IllegalArgumentException("Capability 'OWNER' cannot be removed.");
 
-        CapabilitySet capList = null;
-        // ArrayList<CalendarEntryCapability> capList = null;
+        Set<CalendarEntryCapability> capList = null;
 
         if ((capList = capabilities.get(user)) != null) {
             capList.remove(capability);
@@ -411,11 +405,5 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
     }
 }
 
-@Entity
 class CapabilitySet extends HashSet<CalendarEntryCapability> {
-    private static final long serialVersionUID = -4240058989013189975L;
-
-    @Id
-    @GeneratedValue
-    private long              id;
 }

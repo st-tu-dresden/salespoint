@@ -41,5 +41,5 @@ public interface Calendar<T extends CalendarEntry> {
      * Deletes the entry with the given id.
      * @param id of the entry that should be removed from calendar
      */
-    void deleteEntry(int id);
+    void deleteEntry(long id);
 }

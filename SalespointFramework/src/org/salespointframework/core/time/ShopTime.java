@@ -8,7 +8,7 @@ public enum ShopTime {
 	INSTANCE;
 	
 	public DateTime getDateTime() {
-		return null;
+		return new DateTime();
 	}
 	
 }

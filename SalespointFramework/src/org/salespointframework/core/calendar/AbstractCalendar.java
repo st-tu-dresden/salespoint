@@ -84,7 +84,7 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
     }
 
     @Override
-    public void deleteEntry(int calendarEntryIdentifier) {
+    public void deleteEntry(long calendarEntryIdentifier) {
         em.remove(this.getEntryByID(calendarEntryIdentifier));
     }
 }
