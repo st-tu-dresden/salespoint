@@ -54,6 +54,7 @@ public class OrderLine {
 	private Date expectedDeliveryDate;
 	
 	protected boolean mutableChargeLines; 
+	protected boolean mutableOrderLine;
 
 	@Deprecated
 	protected OrderLine() {}
@@ -70,6 +71,7 @@ public class OrderLine {
 		this.expectedDeliveryDate = Objects.requireNonNull(expectedDeliveryDate, "expectedDeliveryDate").toDate();
 		this.chargeLines = new ArrayList<ChargeLine>(); 
 		this.mutableChargeLines = true;
+		this.mutableOrderLine = true;
 		//this.serialNumber = Objects.requireNonNull(serialNumber, "serialNumber");
 		//this.productType = Objects.requireNonNull(productType, "productType");
 	}
@@ -144,39 +146,44 @@ public class OrderLine {
 	
 	/**
 	 * Increments the number of the ordered objects in this OrderLine. 
-	 * This method doesn't change anything, if the given number is less than or equal to 0.
+	 * This method doesn't change anything, if the given number is less than or equal to 0. If this OrderLine is provided 
+	 * in the context of an cancelled or closed OrderEntry, the number will not be changed.
 	 * 
 	 * @param number
 	 *            the number of ordered objects that shall to be added.  
 	 */
-	public void incrementNumberOrdered(int number) {
+	public boolean incrementNumberOrdered(int number) {
 		
-		if(number <= 0) return;
+		if(!this.mutableChargeLines) return false;
+		if(number <= 0) return false;
 		this.numberOrdered += number;
+		return true;
 	}
 	
 	/**
 	 * Decrements the number of the ordered objects in this OrderLine. 
 	 * This method doesn't change anything, if the given number is less than or equal to 0.
-	 * The number of ordered objects cannot fall below 0.
+	 * The number of ordered objects cannot fall below 0. If this OrderLine is provided 
+	 * in the context of an cancelled or closed OrderEntry, the number will not be changed.
 	 * 
 	 * @param number
 	 *            the number of ordered objects that shall to be substituted.  
 	 */
-	public void decrementNumberOrdered(int number) {
+	public boolean decrementNumberOrdered(int number) {
 		
-		if(number <= 0) return;
+		if(!this.mutableChargeLines) return false;
+		if(number <= 0) return false;
 		if(number > this.numberOrdered) this.numberOrdered = 0;
 		else {
 			this.numberOrdered -= number;
 		}
 		
-		return;
+		return true;
 	}
 	
 	/**
 	 * Add a <code>ChargeLine</code> to this
-	 * <code>OrderLine</code>. The OrderLine cannot be added, 
+	 * <code>OrderLine</code>. The ChargeLine cannot be added, 
 	 * if this OrderLine is provided in the context of an cancelled or closed OrderEntry.
 	 * 
 	 * @param chargeLine The <code>ChargeLine</code> that shall be added.
@@ -191,7 +198,7 @@ public class OrderLine {
 	
 	/**
 	 * Remove a <code>ChargeLine</code> from this
-	 * <code>OrderLine</code>. The OrderLine cannot be removed, 
+	 * <code>OrderLine</code>. The ChargeLine cannot be removed, 
 	 * if this OrderLine is provided in the context of an cancelled or closed OrderEntry.
 	 * 
 	 * @param id The Identifier from the <code>ChargeLine</code> that shall be removed.

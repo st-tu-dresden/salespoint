@@ -244,17 +244,48 @@ public class OrderEntry {
 		Objects.requireNonNull(orderStatus, "orderStatus");
 		this.status = orderStatus;
 		
-		if(this.status.equals(OrderStatus.CLOSED ) || this.status.equals(OrderStatus.CANCELLED)) {
-			for(OrderLine ol : this.orderLines) {
-				ol.mutableChargeLines = false;
-			}
-		}
-		
-		if(this.status.equals(OrderStatus.INITIALIZED ) || this.status.equals(OrderStatus.OPEN) || this.status.equals(OrderStatus.PROCESSING)) {
-			for(OrderLine ol : this.orderLines) {
-				ol.mutableChargeLines = true;
-			}
-		}
+		switch (orderStatus)
+        {
+          case CANCELLED:
+        	  
+        	  for(OrderLine ol : this.orderLines) {
+        		  ol.mutableChargeLines = false;
+        		  ol.mutableOrderLine = false;
+        	  }
+        	  break;
+        	  
+          case CLOSED:
+        	  
+        	  for(OrderLine ol : this.orderLines) {
+        		  ol.mutableChargeLines = false;
+        		  ol.mutableOrderLine = false;
+        	  }
+        	  break;
+        	  
+          case OPEN:
+        	  
+        	  for(OrderLine ol : this.orderLines) {
+        		  ol.mutableChargeLines = true;
+        		  ol.mutableOrderLine = true;
+        	  }
+        	  break;
+        	  
+          case INITIALIZED:
+        	  
+        	  for(OrderLine ol : this.orderLines) {
+        		  ol.mutableChargeLines = true;
+        		  ol.mutableOrderLine = true;
+        	  }
+        	  break;
+        	  
+          case PROCESSING:
+        	  
+        	  for(OrderLine ol : this.orderLines) {
+        		  ol.mutableChargeLines = true;
+        		  ol.mutableOrderLine = false;
+        	  }
+        	  break;
+        }
 	}
 
 }
