@@ -6,14 +6,11 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -117,7 +114,7 @@ public class OrderEntry {
 	}
 	
 	/**
-	 * @return the chargeLines
+	 * @return an Iterable with all chargeLines from this OrderEntry
 	 */
 	public Iterable<ChargeLine> getChargeLines() {
 		return SalespointIterable.from(this.chargeLines);
@@ -165,6 +162,8 @@ public class OrderEntry {
 	public boolean addChargeLine(ChargeLine chargeLine) {
 		
 		Objects.requireNonNull(chargeLine, "chargeLine");
+		if(this.status.equals(OrderStatus.CANCELLED) || this.status.equals(OrderStatus.CLOSED)) return false;
+		
 		return this.chargeLines.add(chargeLine);
 	}
 	
@@ -177,6 +176,7 @@ public class OrderEntry {
 	public boolean removeChargeLine(OrderLineIdentifier id) {
 		
 		Objects.requireNonNull(id, "id");
+		if(this.status.equals(OrderStatus.CANCELLED) || this.status.equals(OrderStatus.CLOSED)) return false;
 		
 		ChargeLine lineToRemove = null;
 		boolean available = false;
@@ -202,6 +202,8 @@ public class OrderEntry {
 	public boolean addOrderLine(OrderLine orderLine) {
 		
 		Objects.requireNonNull(orderLine, "orderLine");
+		if(this.status.equals(OrderStatus.CANCELLED) || this.status.equals(OrderStatus.CLOSED) || this.status.equals(OrderStatus.PROCESSING)) return false;
+		
 		return this.orderLines.add(orderLine);
 	}
 	
@@ -214,6 +216,7 @@ public class OrderEntry {
 	public boolean removeOrderLine(OrderLineIdentifier id) {
 		
 		Objects.requireNonNull(id, "id");
+		if(this.status.equals(OrderStatus.CANCELLED) || this.status.equals(OrderStatus.CLOSED) || this.status.equals(OrderStatus.PROCESSING)) return false;
 		
 		OrderLine lineToRemove = null;
 		boolean available = false;
@@ -228,6 +231,30 @@ public class OrderEntry {
 		
 		if(available == false) return false;
 		else return this.orderLines.remove(lineToRemove);
+	}
+	
+	/**
+	 * Change the <code>OrderStatus</code> from this
+	 * <code>OrderEntry</code>.
+	 * 
+	 * @param status The OrderStatus to which the <code>OrderEntry</code> shall be changed.
+	 */
+	public void changeOrderStatus(OrderStatus orderStatus) {
+		
+		Objects.requireNonNull(orderStatus, "orderStatus");
+		this.status = orderStatus;
+		
+		if(this.status.equals(OrderStatus.CLOSED ) || this.status.equals(OrderStatus.CANCELLED)) {
+			for(OrderLine ol : this.orderLines) {
+				ol.mutableChargeLines = false;
+			}
+		}
+		
+		if(this.status.equals(OrderStatus.INITIALIZED ) || this.status.equals(OrderStatus.OPEN) || this.status.equals(OrderStatus.PROCESSING)) {
+			for(OrderLine ol : this.orderLines) {
+				ol.mutableChargeLines = true;
+			}
+		}
 	}
 
 }

@@ -2,6 +2,7 @@ package test.order;
 
 import static org.junit.Assert.*;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -43,8 +44,8 @@ public class OrderLineTest {
 		ChargeLine cl1 = new ChargeLine(new Money(1), "cl1description", "cl1comment");
 		ChargeLine cl2 = new ChargeLine(new Money(2), "cl2description", "cl2comment");
 		
-		ol1.getChargeLines().add(cl1);
-		ol2.getChargeLines().add(cl2);
+		ol1.addChargeLine(cl1);
+		ol2.addChargeLine(cl2);
 		
 		em.getTransaction().begin();
 		em.persist(ol1);
@@ -93,8 +94,18 @@ public class OrderLineTest {
             assertTrue(expectedDeliveryDate.equals(new DateTime(timeStamp+1))
                     || expectedDeliveryDate.equals(new DateTime(timeStamp+2)));
             
-            assertEquals(1, current.getChargeLines().size());
-            ChargeLine cl = current.getChargeLines().get(0);
+            Iterator<ChargeLine> it = current.getChargeLines().iterator();
+            int chargeLineCount = 0;
+            
+            while(it.hasNext()) {
+            	chargeLineCount++;
+            	it.next();
+            }
+            
+            assertEquals(1, chargeLineCount);
+            
+            it = current.getChargeLines().iterator();
+            ChargeLine cl = it.next();
             
             assertTrue(cl.getAmount().getAmount().intValue()==1
                     || cl.getAmount().getAmount().intValue()==2);

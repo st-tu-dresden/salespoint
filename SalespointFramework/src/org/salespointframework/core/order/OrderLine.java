@@ -9,10 +9,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
-import javax.persistence.Id;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -23,6 +21,7 @@ import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Objects;
+import org.salespointframework.util.SalespointIterable;
 
 /**
  * 
@@ -49,9 +48,12 @@ public class OrderLine {
 	private String description;
 	private String comment;
 	private int numberOrdered;
+
 	private Money unitPrice;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date expectedDeliveryDate;
+	
+	protected boolean mutableChargeLines; 
 
 	@Deprecated
 	protected OrderLine() {}
@@ -67,6 +69,7 @@ public class OrderLine {
 		this.identifier = new OrderLineIdentifier();
 		this.expectedDeliveryDate = Objects.requireNonNull(expectedDeliveryDate, "expectedDeliveryDate").toDate();
 		this.chargeLines = new ArrayList<ChargeLine>(); 
+		this.mutableChargeLines = true;
 		//this.serialNumber = Objects.requireNonNull(serialNumber, "serialNumber");
 		//this.productType = Objects.requireNonNull(productType, "productType");
 	}
@@ -79,13 +82,12 @@ public class OrderLine {
 	}
 
 	/**
-	 * This Method returns the Embedded List of ChargeLines from this OrderLine.
-	 * This list has to be used to add/remove/edit the ChargeLines for changes that have to be persistent.
+	 * This Method returns an Iterable of ChargeLines from this OrderLine.
 	 *   
-	 * @return the editable List of ChargeLines from this OrderLine 
+	 * @return the Iterable with ChargeLines from this OrderLine 
 	 */
-	public List<ChargeLine> getChargeLines() {
-		return chargeLines;
+	public Iterable<ChargeLine> getChargeLines() {
+		return SalespointIterable.from(this.chargeLines);
 	}
 
 	/**
@@ -171,6 +173,49 @@ public class OrderLine {
 		
 		return;
 	}
+	
+	/**
+	 * Add a <code>ChargeLine</code> to this
+	 * <code>OrderLine</code>. The OrderLine cannot be added, 
+	 * if this OrderLine is provided in the context of an cancelled or closed OrderEntry.
+	 * 
+	 * @param chargeLine The <code>ChargeLine</code> that shall be added.
+	 */
+	public boolean addChargeLine(ChargeLine chargeLine) {
+		
+		Objects.requireNonNull(chargeLine, "chargeLine");
+		if(!this.mutableChargeLines) return false;
+		
+		return this.chargeLines.add(chargeLine);
+	}
+	
+	/**
+	 * Remove a <code>ChargeLine</code> from this
+	 * <code>OrderLine</code>. The OrderLine cannot be removed, 
+	 * if this OrderLine is provided in the context of an cancelled or closed OrderEntry.
+	 * 
+	 * @param id The Identifier from the <code>ChargeLine</code> that shall be removed.
+	 */
+	public boolean removeChargeLine(OrderLineIdentifier id) {
+		
+		Objects.requireNonNull(id, "id");
+		if(!this.mutableChargeLines) return false;
+		
+		ChargeLine lineToRemove = null;
+		boolean available = false;
+		
+		for(ChargeLine cl : this.chargeLines) {
+			if(cl.getIdentifier().equals(id)) {
+				lineToRemove = cl;
+				available = true;
+				break;
+			}
+		}
+		
+		if(available == false) return false;
+		else return this.chargeLines.remove(lineToRemove);
+	}
+	
 	
 	@Override
     public boolean equals(Object obj) {
