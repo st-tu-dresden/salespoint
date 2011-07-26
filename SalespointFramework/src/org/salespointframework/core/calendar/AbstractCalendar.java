@@ -3,10 +3,7 @@ package org.salespointframework.core.calendar;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.TypedQuery;
 
 import org.salespointframework.core.database.ICanHasClass;
@@ -91,16 +88,3 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
         em.remove(this.getEntryByID(calendarEntryIdentifier));
     }
 }
-/*
-@Entity
-class CapabilityList extends ArrayList<CalendarEntryCapability> {
-
-    private static final long serialVersionUID = -4240058989013189975L;
-    
-    @SuppressWarnings("unused")
-    @Id
-    @GeneratedValue
-    private long id;
-    
-}
-*/
