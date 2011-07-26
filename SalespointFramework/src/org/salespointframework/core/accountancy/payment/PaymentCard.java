@@ -1,10 +1,10 @@
 package org.salespointframework.core.accountancy.payment;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
+import org.salespointframework.util.Objects;
 
 /**
  * A <code>PaymentCard</code> is used to charge the cost of goods or services to
@@ -17,8 +17,8 @@ import org.salespointframework.core.accountancy.payment.PaymentMethod;
  * not implemented at the moment.
  * 
  */
-@Entity
-public class PaymentCard extends PaymentMethod implements Serializable {
+// @Entity
+public abstract class PaymentCard extends PaymentMethod implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,13 +30,15 @@ public class PaymentCard extends PaymentMethod implements Serializable {
 	private DateTime expiryDate;
 	private String cardVerificationCode;
 
-	public PaymentCard() {
-		super();
-	}
+	/*
+	 * public PaymentCard() { super(); }
+	 */
 
 	/**
 	 * Instantiates a <code>PaymentCard</code>.
 	 * 
+	 * @param cardName
+	 *            specific name of this card, e.g. VISA, or MasterCard
 	 * @param cardAssociationName
 	 *            the name of the association which issued the card
 	 * @param cardNumber
@@ -52,67 +54,82 @@ public class PaymentCard extends PaymentMethod implements Serializable {
 	 * @param cardVerificationCode
 	 *            verification code printed on the card or a PIN
 	 */
-	public PaymentCard(String cardAssociationName, String cardNumber,
-			String nameOnCard, String billingAddress, DateTime validFrom,
-			DateTime expiryDate, String cardVerificationCode) {
-		super();
-		this.cardAssociationName = cardAssociationName;
-		this.cardNumber = cardNumber;
-		this.nameOnCard = nameOnCard;
-		this.billingAddress = billingAddress;
-		this.validFrom = validFrom;
-		this.expiryDate = expiryDate;
-		this.cardVerificationCode = cardVerificationCode;
+	public PaymentCard(String cardName, String cardAssociationName,
+			String cardNumber, String nameOnCard, String billingAddress,
+			DateTime validFrom, DateTime expiryDate, String cardVerificationCode) {
+		super(Objects.requireNonNull(cardName, "cardName"));
+		this.cardAssociationName = Objects.requireNonNull(cardAssociationName,
+				"cardAssociationName");
+		this.cardNumber = Objects.requireNonNull(cardNumber, "cardNumber");
+		this.nameOnCard = Objects.requireNonNull(nameOnCard, "nameOnCard");
+		this.billingAddress = Objects.requireNonNull(billingAddress,
+				"billingAddress");
+		this.validFrom = Objects.requireNonNull(validFrom, "validFrom");
+		this.expiryDate = Objects.requireNonNull(expiryDate, "expiryDate");
+		this.cardVerificationCode = Objects.requireNonNull(
+				cardVerificationCode, "cardVerificationCode");
 	}
 
 	/**
-	 * @return name of the association which issued the card or
-	 *         <code>null</code>
+	 * The name of the association which issued the card
+	 * 
+	 * @return String containing the name of the card association.
 	 */
 	public String getCardAssociationName() {
 		return cardAssociationName;
 	}
 
 	/**
-	 * @return card number or <code>null</code>
+	 * The number uniquely identifying this payment card.
+	 * 
+	 * @return String containing the card number.
 	 */
 	public String getCardNumber() {
 		return cardNumber;
 	}
 
 	/**
-	 * @return name of party to which the card was issued to or
-	 *         <code>null</code>
+	 * The name of the party to which the card was issued to
+	 * 
+	 * @return The name of the card holder.
 	 */
 	public String getNameOnCard() {
 		return nameOnCard;
 	}
 
 	/**
-	 * @return billing address registered with this card or <code>null</code>
+	 * The billing address registered with this card.
+	 * 
+	 * @return String containing the billing address.
 	 */
 	public String getBillingAddress() {
 		return billingAddress;
 	}
 
 	/**
+	 * The date from which on the card is valid.
+	 * 
 	 * @return <code>DateTime</code> representing the date from which the card
-	 *         is valid or <code>null</code>
+	 *         is valid.
 	 */
 	public DateTime getValidFrom() {
 		return validFrom;
 	}
 
 	/**
+	 * The date on which the card expires.
+	 * 
 	 * @return <code>DateTime</code> representing the date on which the card
-	 *         expires or <code>null</code>
+	 *         expires.
 	 */
 	public DateTime getExpiryDate() {
 		return expiryDate;
 	}
 
 	/**
-	 * @return verification code of this card or <code>null</code>
+	 * The verification code or PIN of this card.
+	 * 
+	 * @return String containing the verification code of this card.
 	 */
 	public String getCardVerificationCode() {
 		return cardVerificationCode;

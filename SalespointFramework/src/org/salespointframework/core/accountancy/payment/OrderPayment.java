@@ -1,16 +1,13 @@
 package org.salespointframework.core.accountancy.payment;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.payment.Payment;
 
 /**
- * Entity implementation class for Entity: OrderPayment
- * 
+ * Payment to specifically pay for an Order.
  */
-@Entity
 public class OrderPayment extends Payment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -18,12 +15,17 @@ public class OrderPayment extends Payment implements Serializable {
 	private String fromAccount;
 	private String toAccount;
 
-	@Deprecated
-	protected OrderPayment() {}
-
 	/**
+	 * Instantiates a payment for an Order
+	 * 
+	 * @param paymentMethod
+	 *            Method with which the payment was made.
+	 * @param dateDue
+	 *            Date on which the payment is due
 	 * @param fromAccount
+	 *            Account from which the payment was made
 	 * @param toAccount
+	 *            Account to which the payment was made
 	 */
 	public OrderPayment(PaymentMethod paymentMethod, DateTime dateDue,
 			String fromAccount, String toAccount) {
@@ -33,14 +35,18 @@ public class OrderPayment extends Payment implements Serializable {
 	}
 
 	/**
-	 * @return the fromAccount
+	 * Account from which the payment was made.
+	 * 
+	 * @return String containing the account from which the payment was made.
 	 */
 	public String getFromAccount() {
 		return fromAccount;
 	}
 
 	/**
-	 * @return the toAccount
+	 * Account to which the payment was made.
+	 * 
+	 * @return String containing the account to which the payment was made.
 	 */
 	public String getToAccount() {
 		return toAccount;

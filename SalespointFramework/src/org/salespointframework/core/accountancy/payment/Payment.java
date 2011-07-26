@@ -1,73 +1,37 @@
 package org.salespointframework.core.accountancy.payment;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
 import org.joda.time.DateTime;
+import org.salespointframework.util.Objects;
 
 /**
  * A <code>Payment</code> represents a payment from one party to another in
  * exchange for goods or services.
  * 
  */
-@Entity
-public class Payment implements Serializable {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	long id;
+public abstract class Payment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * A method of payment associated with a particular payment
-	 */
-	@OneToOne(cascade=CascadeType.ALL)
-	protected PaymentMethod paymentMethod;
-
-	/**
-	 * A <code>DateTime</code> object representing the time, the payment was
-	 * made by the payer.
-	 */
+	private PaymentMethod paymentMethod;
 	private DateTime dateMade;
-
-	/**
-	 * A <code>DateTime</code> object representing the time, the payment was
-	 * received by the payee.
-	 */
 	private DateTime dateReceived;
-
-	/**
-	 * A <code>DateTime</code> object representing the time, the payee expects
-	 * the payment to be complete.
-	 */
-	protected DateTime dateDue;
-
-	/**
-	 * A <code>DateTime</code> object representing the time, the payment has
-	 * been cleared, for example by a banking system.
-	 */
+	private DateTime dateDue;
 	private DateTime dateCleared;
 
 	/**
-	 * This constructor may not be used. It is required by the JPA.
-	 * 
-	 */
-	@Deprecated
-	protected Payment() {}
-
-	/**
-	 * Instantiates a new <code>Payment</code>-object, specifying a
-	 * <code>PaymentMethod</code> and a <code>DateTime</code> when the Payment
-	 * is due.
 	 * 
 	 * @param paymentMethod
-	 *            the method used for this <code>Payment</code>
+	 *            A method of payment associated with a particular payment
 	 * @param dateDue
-	 *            the date this <code>Payment</code> is due
+	 *            A <code>DateTime</code> object representing the time, the
+	 *            payee expects the payment to be complete.
 	 */
 	public Payment(PaymentMethod paymentMethod, DateTime dateDue) {
-		this.paymentMethod = paymentMethod;
-		this.dateDue = dateDue;
+		this.paymentMethod = Objects.requireNonNull(paymentMethod,
+				"paymentMethod");
+		this.dateDue = Objects.requireNonNull(dateDue, "dateDue");
 	}
 
 	/**

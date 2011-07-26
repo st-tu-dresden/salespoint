@@ -1,16 +1,20 @@
 package org.salespointframework.core.accountancy.payment;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 
 /**
+ * A is a written bill of exchange (or draft), a written order by the drawer
+ * (the writer of the cheque) to the drawee (usually the bank), to pay a
+ * specified amount of money to a payee. The class <code>Cheque</code>
+ * represents such a written order of payment in a digital form.
  * 
+ * @author hannesweisbach
  * 
  */
-@Entity
+// @Entity
 public class Cheque extends PaymentMethod implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -21,14 +25,17 @@ public class Cheque extends PaymentMethod implements Serializable {
 	private String payee;
 	private DateTime dateWritten;
 	private String bankName;
+	// TODO Address class
 	private String bankAddress;
+
 	private String bankIdentificationNumber;
 
-	@Deprecated
-	protected Cheque() {
-	}
-
+	/*
+	 * @Deprecated protected Cheque() { }
+	 */
 	/**
+	 * Instantiate a new <code>Cheque</code> instance.
+	 * 
 	 * @param accountName
 	 *            Name of the account holder.
 	 * @param accountNumber
@@ -52,7 +59,7 @@ public class Cheque extends PaymentMethod implements Serializable {
 	public Cheque(String accountName, String accountNumber,
 			String chequeNumber, String payee, DateTime dateWritten,
 			String bankName, String bankAddress, String bankIdentificationNumber) {
-		super();
+		super("Cheque");
 		this.accountName = accountName;
 		this.accountNumber = accountNumber;
 		this.chequeNumber = chequeNumber;
@@ -64,56 +71,73 @@ public class Cheque extends PaymentMethod implements Serializable {
 	}
 
 	/**
-	 * @return the accountName
+	 * Name of the account holder.
+	 * 
+	 * @return String containing the name of the account holder.
 	 */
 	public String getAccountName() {
 		return accountName;
 	}
 
 	/**
-	 * @return the accountNumber
+	 * Number of the account on which the cheque is drawn.
+	 * 
+	 * @return String containing the account number on which the cheque is
+	 *         drawn.
 	 */
 	public String getAccountNumber() {
 		return accountNumber;
 	}
 
 	/**
-	 * @return the chequeNumber
+	 * Number uniquely identifying this cheque.
+	 * 
+	 * @return String containing the cheque number.
 	 */
 	public String getChequeNumber() {
 		return chequeNumber;
 	}
 
 	/**
-	 * @return the payee
+	 * Name of the payee.
+	 * 
+	 * @return String containing the name of the payee.
 	 */
 	public String getPayee() {
 		return payee;
 	}
 
 	/**
-	 * @return the dateWritten
+	 * Date on which the cheque was written.
+	 * 
+	 * @return DateTime containing the date on which the cheque was written.
 	 */
 	public DateTime getDateWritten() {
 		return dateWritten;
 	}
 
 	/**
-	 * @return the bankName
+	 * Name of the bank, that issued the cheque.
+	 * 
+	 * @return String containing the name of the bank.
 	 */
 	public String getBankName() {
 		return bankName;
 	}
 
 	/**
-	 * @return the bankAddress
+	 * Address of the bank, that issued the cheque.
+	 * 
+	 * @return String containing the address of the bank.
 	 */
 	public String getBankAddress() {
 		return bankAddress;
 	}
 
 	/**
-	 * @return the bankIdentificationNumber
+	 * Unique identification number of this bank. Also known as routing number.
+	 * 
+	 * @return String containing the identification number of this bank.
 	 */
 	public String getBankIdentificationNumber() {
 		return bankIdentificationNumber;
