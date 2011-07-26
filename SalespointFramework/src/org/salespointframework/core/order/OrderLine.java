@@ -20,6 +20,8 @@ import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.SerialNumber;
+import org.salespointframework.core.quantity.Metric;
+import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Objects;
 
 /**
@@ -121,7 +123,8 @@ public class OrderLine {
 	 */
 	public Money getOrderLinePrice() {
 		Money price = new Money(this.unitPrice.getAmount(), this.unitPrice.getMetric());
-		price = (Money) price.multiply(new Money(this.numberOrdered));
+		//price = (Money) price.multiply(new Money(this.numberOrdered));
+		price = new Quantity(this.numberOrdered, Metric.PIECES, Quantity.ROUND_ONE).multiply_(price);
 		
 		for(ChargeLine cl : this.chargeLines) {
 			price = (Money) price.add(cl.getAmount());

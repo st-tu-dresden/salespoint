@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.salespointframework.core.quantity.rounding.AbstractRoundingStrategy;
+import org.salespointframework.core.quantity.rounding.RoundDownStrategy;
 import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 
 /**
@@ -30,27 +31,25 @@ import org.salespointframework.core.quantity.rounding.RoundingStrategy;
  */
 
 public class Quantity implements Comparable<Quantity>, Serializable {
-/**
+	
+	public static final RoundingStrategy ROUND_ONE = new RoundDownStrategy(0);
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5292263711685595615L;
-	/*
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	long id;
-*/
+	//immutable
 	protected BigDecimal amount;
-//	@OneToOne(cascade = CascadeType.ALL, targetEntity = Metric.class)
+	//immutable
 	protected Metric metric;
-//	@OneToOne(cascade = CascadeType.ALL, targetEntity = AbstractRoundingStrategy.class)
+	//immutable
 	protected RoundingStrategy roundingStrategy;
 
 	/**
 	 * Protected class constructor is required for JPA/Hibernate. Use
 	 * parameterized Constructor instead.
 	 */
-//	protected Quantity() {
-//	};
+	// protected Quantity() {
+	// };
 
 	/**
 	 * Parameterized class constructor. <code>amount</code> is immediately
@@ -86,8 +85,7 @@ public class Quantity implements Comparable<Quantity>, Serializable {
 	 *            <code>roudingStrategy</code> to be used with this
 	 *            <code>Quantity</code>
 	 */
-	public Quantity(int amount, Metric metric,
-			RoundingStrategy roundingStrategy) {
+	public Quantity(int amount, Metric metric, RoundingStrategy roundingStrategy) {
 		this.amount = roundingStrategy.round(new BigDecimal(amount));
 		this.metric = metric;
 		this.roundingStrategy = roundingStrategy;
@@ -239,6 +237,12 @@ public class Quantity implements Comparable<Quantity>, Serializable {
 				roundingStrategy);
 	}
 
+	public Quantity clone() {
+		Quantity q;
+			q = this.clone();
+			return q;
+	}
+	
 	/**
 	 * Multiplies two quantities. The <code>amount</code> of this and quantity
 	 * are multiplied, and a new <code>Quantity</code>-instance is returned,
@@ -255,6 +259,12 @@ public class Quantity implements Comparable<Quantity>, Serializable {
 	public Quantity multiply(Quantity quantity) {
 		return new Quantity(amount.multiply(quantity.amount), metric,
 				roundingStrategy);
+	}
+	
+	public <T extends Quantity> T multiply_(T quantity) {
+		T q = (T) quantity.clone();
+		q.amount = roundingStrategy.round(amount.multiply(quantity.amount));
+		return q;
 	}
 
 	/**

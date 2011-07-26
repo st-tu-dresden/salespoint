@@ -91,6 +91,7 @@ public abstract class AbstractMeasuredProductInstance<T extends MeasuredProductT
 	
 	@Override
 	public Money getPrice(){
-		return (Money) productType.getUnitPrice().multiply(quantity);
+		//return (Money) productType.getUnitPrice().multiply(quantity);
+		return quantity.multiply_(productType.getUnitPrice());
 	}
 }
