@@ -30,7 +30,7 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	
 	public AbstractProductInstance(ProductType productType) {
 		this.productIdentifier = Objects.requireNonNull(productType, "productType").getProductIdentifier();
-		this.price = productType.getPrice();
+		this.price = productType.getPrice(); //TODO CLONE
 		this.serialNumber = new SerialNumber();
 		
 		calculatePrice();
@@ -39,7 +39,7 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	// Hook Method
 	protected void calculatePrice() {
 		for(ProductFeature pt : productFeatures.values()) {
-			price.add(pt.getPrice());
+			price = (Money) price.add(pt.getPrice()); //TODO cast >_>
 		}
 	}
 	

@@ -6,9 +6,9 @@ import org.salespointframework.core.inventory.AbstractInventory;
 
 import test.product.KeksInstance;
 
-public class KeksInventar extends AbstractInventory<KeksInstance> {
+public class KeksInventory extends AbstractInventory<KeksInstance> {
 
-	public KeksInventar(EntityManager entityManager) {
+	public KeksInventory(EntityManager entityManager) {
 		super(entityManager);
 	}
 
