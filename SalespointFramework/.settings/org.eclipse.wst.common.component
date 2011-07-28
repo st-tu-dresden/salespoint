@@ -3,5 +3,6 @@
     <wb-module deploy-name="SalespointFramework">
         <wb-resource deploy-path="/" source-path="/src"/>
         <wb-resource deploy-path="/" source-path="/test"/>
+        <wb-resource deploy-path="/" source-path="/metamodels"/>
     </wb-module>
 </project-modules>
