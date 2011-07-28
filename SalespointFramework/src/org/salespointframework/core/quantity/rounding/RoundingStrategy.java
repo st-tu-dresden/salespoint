@@ -3,6 +3,9 @@ package org.salespointframework.core.quantity.rounding;
 import java.math.BigDecimal;
 
 public interface RoundingStrategy {
+	public static final RoundingStrategy MONETARY_ROUNDING = new RoundDownStrategy(
+			4);
+
 	/**
 	 * Rounds the given <code>BigDecimal</code> instance <code>amount</code>
 	 * with a specific strategy. Because <code>BigDecimal</code> is immutable, a

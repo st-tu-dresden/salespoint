@@ -2,12 +2,8 @@ package org.salespointframework.core.money;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Quantity;
-import org.salespointframework.core.quantity.rounding.RoundDownStrategy;
 import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 import org.salespointframework.util.Objects;
 
@@ -22,21 +18,13 @@ import org.salespointframework.util.Objects;
  * @author hannesweisbach
  * 
  */
-// @Entity
 public class Money extends Quantity {
-	// @Embedded
-	public static final Metric EURO = new Metric("Euro", "€", "");
-	public static final RoundingStrategy MONETARY_ROUNDING = new RoundDownStrategy(
-			4);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6400828491785686659L;
 	public static final Money ZERO = new Money(0);
 
-	/**
-	 * Parameterless constructor, do not use. This constructor is required by
-	 * the persistence layer and may not be used by application developers.
-	 */
-	/*
-	 * @Deprecated protected Money() { }
-	 */
 	/**
 	 * Creates a new <code>Money</code> instance from an amount and a metric.
 	 * 
@@ -47,7 +35,7 @@ public class Money extends Quantity {
 	 */
 	public Money(BigDecimal amount, Metric metric) {
 		super(Objects.requireNonNull(amount, "amount"), Objects.requireNonNull(
-				metric, "metric"), MONETARY_ROUNDING);
+				metric, "metric"), RoundingStrategy.MONETARY_ROUNDING);
 	}
 
 	/**
@@ -74,7 +62,6 @@ public class Money extends Quantity {
 	public Money(double amount, Metric metric) {
 		this(BigDecimal.valueOf(amount), Objects.requireNonNull(metric,
 				"metric"));
-		// this(BigDecimal.valueOf(amount), metric);
 	}
 
 	/**
@@ -85,7 +72,7 @@ public class Money extends Quantity {
 	 *            the amount of money represented by <code>this</code>
 	 */
 	public Money(BigDecimal amount) {
-		this(Objects.requireNonNull(amount, "amount"), EURO);
+		this(Objects.requireNonNull(amount, "amount"), Metric.EURO);
 	}
 
 	/**

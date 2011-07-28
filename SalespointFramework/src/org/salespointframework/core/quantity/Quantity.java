@@ -24,7 +24,7 @@ import org.salespointframework.core.quantity.rounding.RoundingStrategy;
  * 
  */
 
-public class Quantity implements Comparable<Quantity>, Serializable {
+public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 
 	public static final RoundingStrategy ROUND_ONE = new RoundDownStrategy(0);
 	/**
@@ -37,13 +37,6 @@ public class Quantity implements Comparable<Quantity>, Serializable {
 	protected Metric metric;
 	// immutable
 	protected RoundingStrategy roundingStrategy;
-
-	/**
-	 * Protected class constructor is required for JPA/Hibernate. Use
-	 * parameterized Constructor instead.
-	 */
-	// protected Quantity() {
-	// };
 
 	/**
 	 * Parameterized class constructor. <code>amount</code> is immediately
@@ -231,10 +224,20 @@ public class Quantity implements Comparable<Quantity>, Serializable {
 				roundingStrategy);
 	}
 
-	public Quantity clone() {
-		Quantity q;
-		q = this.clone();
-		return q;
+	public Object clone() {
+		Quantity clone;
+		try {
+			clone = (Quantity) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			return null;
+		}
+		/*
+		clone.amount = amount;
+		clone.metric = metric;
+		clone.roundingStrategy = roundingStrategy;
+		*/
+		return clone;
 	}
 
 	
