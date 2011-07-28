@@ -3,6 +3,7 @@ package org.salespointframework.core.accountancy.payment;
 import java.io.Serializable;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.Objects;
 
 /**
@@ -43,7 +44,7 @@ public abstract class Payment implements Serializable {
 	 */
 	public void paymentReceived() {
 		if (dateReceived == null)
-			dateReceived = new DateTime();
+			dateReceived = Shop.INSTANCE.getTime().getDateTime();
 	}
 
 	/**
@@ -54,7 +55,7 @@ public abstract class Payment implements Serializable {
 	 */
 	public void paymentCleared() {
 		if (dateCleared == null)
-			dateCleared = new DateTime();
+			dateCleared = Shop.INSTANCE.getTime().getDateTime();
 	}
 
 	/**
@@ -65,7 +66,7 @@ public abstract class Payment implements Serializable {
 	 */
 	public void paymentMade() {
 		if (dateMade == null)
-			dateMade = new DateTime();
+			dateMade = Shop.INSTANCE.getTime().getDateTime();
 	}
 
 	/**

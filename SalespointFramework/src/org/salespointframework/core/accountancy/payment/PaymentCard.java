@@ -17,7 +17,6 @@ import org.salespointframework.util.Objects;
  * not implemented at the moment.
  * 
  */
-// @Entity
 public abstract class PaymentCard extends PaymentMethod implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -29,10 +28,6 @@ public abstract class PaymentCard extends PaymentMethod implements Serializable 
 	private DateTime validFrom;
 	private DateTime expiryDate;
 	private String cardVerificationCode;
-
-	/*
-	 * public PaymentCard() { super(); }
-	 */
 
 	/**
 	 * Instantiates a <code>PaymentCard</code>.

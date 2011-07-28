@@ -9,13 +9,7 @@ import org.salespointframework.util.Objects;
  * will be made.
  * 
  */
-//@Entity
 public abstract class PaymentMethod implements Serializable {
-/*
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	long id;
-*/
 	private static final long serialVersionUID = 1L;
 
 	private String desc;

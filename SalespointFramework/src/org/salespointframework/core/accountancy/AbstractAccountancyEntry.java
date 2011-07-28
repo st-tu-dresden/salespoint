@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.shop.Shop;
 
 /**
  * This class represents an accountancy entries. The
@@ -32,7 +33,7 @@ public abstract class AbstractAccountancyEntry implements Serializable {
 	 * Do not use it.
 	 */
 	public AbstractAccountancyEntry() {
-		timeStamp = new Date();
+		timeStamp = Shop.INSTANCE.getTime().getDateTime().toDate();
 	};
 	
 	public DateTime getTimeStamp() {

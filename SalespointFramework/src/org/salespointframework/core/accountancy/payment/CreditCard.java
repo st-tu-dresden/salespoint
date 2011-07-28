@@ -11,7 +11,6 @@ import org.salespointframework.util.Objects;
  * Entity implementation class for Entity: CreditCard
  * 
  */
-// @Entity
 public class CreditCard extends PaymentCard implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -19,9 +18,6 @@ public class CreditCard extends PaymentCard implements Serializable {
 	private Money dailyWithdrawalLimit;
 	private Money creditLimit;
 
-	/*
-	 * @Deprecated protected CreditCard() { }
-	 */
 	/**
 	 * Instantiates a specific credit card.
 	 * 

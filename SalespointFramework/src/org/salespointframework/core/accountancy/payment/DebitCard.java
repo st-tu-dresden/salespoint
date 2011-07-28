@@ -12,16 +12,12 @@ import org.salespointframework.util.Objects;
  * account. A payment made with such a card is represented by an instance of the
  * class <code>DebitCard</code>.
  */
-// @Entity
 public class DebitCard extends PaymentCard implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private Money dailyWithdrawalLimit;
 
-	/*
-	 * @Deprecated protected DebitCard() { }
-	 */
 	/**
 	 * Instantiates a specific type of debit card.
 	 * 
