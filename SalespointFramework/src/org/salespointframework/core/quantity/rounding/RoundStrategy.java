@@ -4,41 +4,59 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import javax.persistence.*;
-
 /**
- * Entity implementation class for Entity: RoundStrategy
- *
+ * <code>RoundingStrategy</code> which rounds away from zero, using the supplied
+ * <code>roundingDigit</code> for rounding instead of 5.
+ * 
+ * @author hannesweisbach
+ * 
  */
-//@Entity
-
-public class RoundStrategy extends AbstractRoundingStrategy implements Serializable, RoundingStrategy {
-	//@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;	
+public class RoundStrategy implements Serializable, RoundingStrategy {
 	private static final long serialVersionUID = 1L;
-	/*
-	@Deprecated
-	protected RoundStrategy() {};
-	*/
+
+	private int numberOfDigits;
+	private int roundingDigit;
+
+	/**
+	 * Creates a new <code>RoundingStrategy</code> keeping
+	 * <code>numberOfDigits</code> digits after the decimal delimiter. Also,
+	 * <code>roundingDigit</code> specifies the digit on which is rounded on,
+	 * instead of 5.
+	 * 
+	 * @param numberOfDigits
+	 *            Number of digits after the decimal delimiter, which are kept.
+	 * @param roundingDigit
+	 *            Digit, above which the number is rounded up and below which
+	 *            the number is rounded down.
+	 */
 	public RoundStrategy(int numberOfDigits, int roundingDigit) {
-		super(numberOfDigits, roundingDigit, 0);
+		this.numberOfDigits = numberOfDigits;
+		this.roundingDigit = roundingDigit;
 	}
-	
+
 	@Override
 	public BigDecimal round(BigDecimal amount) {
-		BigInteger lastDigit = amount.scaleByPowerOfTen(numberOfDigits + 1).toBigInteger().mod(BigInteger.TEN);
-		//if the last digit is equal or greater than the rounding digit ...
-		if(lastDigit.compareTo(BigInteger.valueOf(roundingDigit)) >= 0) {
+		BigInteger lastDigit = amount.scaleByPowerOfTen(numberOfDigits + 1)
+				.toBigInteger().mod(BigInteger.TEN);
+		// if the last digit is equal or greater than the rounding digit ...
+		if (lastDigit.compareTo(BigInteger.valueOf(roundingDigit)) >= 0) {
 			// ... we need to add or subtract (depending on sign of amount) 1
-			if(amount.compareTo(BigDecimal.ZERO) > 0) {
-				return new BigDecimal(amount.scaleByPowerOfTen(numberOfDigits).add(BigDecimal.ONE).toBigInteger()).scaleByPowerOfTen(-numberOfDigits);
+			if (amount.compareTo(BigDecimal.ZERO) > 0) {
+				return new BigDecimal(amount.scaleByPowerOfTen(numberOfDigits)
+						.add(BigDecimal.ONE).toBigInteger())
+						.scaleByPowerOfTen(-numberOfDigits);
 			} else {
-				return new BigDecimal(amount.scaleByPowerOfTen(numberOfDigits).subtract(BigDecimal.ONE).toBigInteger()).scaleByPowerOfTen(-numberOfDigits);	
+				return new BigDecimal(amount.scaleByPowerOfTen(numberOfDigits)
+						.subtract(BigDecimal.ONE).toBigInteger())
+						.scaleByPowerOfTen(-numberOfDigits);
 			}
 		} else {
-			//if the last digit is smaller than the rounding digit, we can just truncate	
-			return new BigDecimal(amount.scaleByPowerOfTen(numberOfDigits).toBigInteger()).scaleByPowerOfTen(-numberOfDigits);	
+			// if the last digit is smaller than the rounding digit, we can just
+			// truncate
+			return new BigDecimal(amount.scaleByPowerOfTen(numberOfDigits)
+					.toBigInteger()).scaleByPowerOfTen(-numberOfDigits);
 		}
-	
+
 	}
-   
+
 }

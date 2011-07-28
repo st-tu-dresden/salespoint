@@ -2,12 +2,6 @@ package org.salespointframework.core.quantity;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 /**
  * Immutable metric representation. A metric consists of a name, a symbol and a
  * description.

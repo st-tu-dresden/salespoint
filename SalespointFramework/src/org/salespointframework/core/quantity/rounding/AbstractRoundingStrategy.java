@@ -3,30 +3,14 @@ package org.salespointframework.core.quantity.rounding;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-//@Entity
-public/* abstract */class AbstractRoundingStrategy implements RoundingStrategy, Serializable {
-/**
-	 * 
-	 */
+public abstract class AbstractRoundingStrategy implements RoundingStrategy,
+		Serializable {
 	private static final long serialVersionUID = 7276214459340424642L;
-	/*	@Id @GeneratedValue(strategy = GenerationType.AUTO)
-	long id;
-*/
+
 	protected int numberOfDigits;
 	protected int roundingDigit;
 	protected int roundingStep;
 
-	/*
-	@Deprecated
-	protected AbstractRoundingStrategy() {
-	};
-*/
-	
 	public AbstractRoundingStrategy(int numberOfDigits, int roundingDigit,
 			int roundingStep) {
 		this.numberOfDigits = numberOfDigits;
@@ -35,10 +19,7 @@ public/* abstract */class AbstractRoundingStrategy implements RoundingStrategy, 
 	}
 
 	@Override
-	/* abstract */public BigDecimal round(BigDecimal amount) {
-		throw new RuntimeException(
-				"Do not use AbstractRoundingStrategy. Extend it and implement public BigDecimal round(BigDecimal amount)");
-	};
+	abstract public BigDecimal round(BigDecimal amount);
 
 	@Override
 	public boolean equals(Object o) {
@@ -52,4 +33,27 @@ public/* abstract */class AbstractRoundingStrategy implements RoundingStrategy, 
 					&& this.getClass().equals(o.getClass());
 		}
 	}
+
+	/**
+	 * Returns the number of digits after the decimal delimiter which are kept,
+	 * when using this <code>RoundingStrategy</code>.
+	 * 
+	 * @return Number of digits after the decimal delimiter.
+	 */
+	public int getNumberOfDigits() {
+		return numberOfDigits;
+	}
+
+	/**
+	 * Returns the digit on which is rounded on. If a
+	 * <code>RoundingStrategy</code> does not use this option, a value of
+	 * <code>0</code> is returned.
+	 * 
+	 * @return Digit, below which a number is rounded down an above which a
+	 *         number is rounded up.
+	 */
+	public int getRoundingDigit() {
+		return roundingDigit;
+	}
+
 }

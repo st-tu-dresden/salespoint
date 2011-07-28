@@ -3,18 +3,6 @@ package org.salespointframework.core.quantity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-
-import org.salespointframework.core.quantity.rounding.AbstractRoundingStrategy;
 import org.salespointframework.core.quantity.rounding.RoundDownStrategy;
 import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 
@@ -26,22 +14,28 @@ import org.salespointframework.core.quantity.rounding.RoundingStrategy;
  * <code>roundingStrategy</code> is applied to <code>amount</code> in the class
  * constructor. This way, every instance has a valid <code>amount</code>.
  * 
+ * To allow arithmetic operations on
+ * <code>Quantity<code> objects and instances of subclasses of <code>Quantity</code>
+ * to return the correct type (and thus avoiding casts), <code>Quantity</code>
+ * instances are immutable and all subclasses of <code>Quantity</code> have to
+ * be immutable.
+ * 
  * @author hannesweisbach
  * 
  */
 
 public class Quantity implements Comparable<Quantity>, Serializable {
-	
+
 	public static final RoundingStrategy ROUND_ONE = new RoundDownStrategy(0);
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5292263711685595615L;
-	//immutable
+	// immutable
 	protected BigDecimal amount;
-	//immutable
+	// immutable
 	protected Metric metric;
-	//immutable
+	// immutable
 	protected RoundingStrategy roundingStrategy;
 
 	/**
@@ -239,9 +233,10 @@ public class Quantity implements Comparable<Quantity>, Serializable {
 
 	public Quantity clone() {
 		Quantity q;
-			q = this.clone();
-			return q;
+		q = this.clone();
+		return q;
 	}
+
 	
 	/**
 	 * Multiplies two quantities. The <code>amount</code> of this and quantity
@@ -260,8 +255,9 @@ public class Quantity implements Comparable<Quantity>, Serializable {
 		return new Quantity(amount.multiply(quantity.amount), metric,
 				roundingStrategy);
 	}
-	
+
 	public <T extends Quantity> T multiply_(T quantity) {
+		@SuppressWarnings("unchecked")
 		T q = (T) quantity.clone();
 		q.amount = roundingStrategy.round(amount.multiply(quantity.amount));
 		return q;

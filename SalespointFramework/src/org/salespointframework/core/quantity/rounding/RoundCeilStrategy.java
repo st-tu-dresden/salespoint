@@ -4,24 +4,22 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import javax.persistence.*;
-
 /**
- * Entity implementation class for Entity: RoundCeilingStrategy
- *
- */
-//@Entity
-/** Rounds towards positive infinity.
+ * Rounds towards positive infinity.
  * 
  */
 public class RoundCeilStrategy extends AbstractRoundingStrategy implements Serializable, RoundingStrategy {
-	//@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
-	
+
 	private static final long serialVersionUID = 1L;
-	/*
-	@Deprecated
-	protected RoundCeilStrategy() {};
-	*/
+
+	/**
+	 * Create a new <code>RoundingStrategy</code> which rounds towards positive
+	 * infinity. <code>numberOfDigits</code> digits after the decimal delimiter
+	 * are kept.
+	 * 
+	 * @param numberOfDigits
+	 *            Number of digits after the decimal delimiter which are kept.
+	 */
 	public RoundCeilStrategy(int numberOfDigits) {
 		super(numberOfDigits, 0, 0);
 	}
@@ -30,5 +28,5 @@ public class RoundCeilStrategy extends AbstractRoundingStrategy implements Seria
 	public BigDecimal round(BigDecimal amount) {
 		return amount.setScale(numberOfDigits, RoundingMode.CEILING);
 	}
-   
+
 }

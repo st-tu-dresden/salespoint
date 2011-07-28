@@ -4,31 +4,29 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import javax.persistence.*;
-
 /**
- * Entity implementation class for Entity: RoundUpStrategy
- *
- */
-//@Entity
-/**Round a value up, i.e. away from zero.
+ * Round a value up, i.e. away from zero.
  * 
  */
-public class RoundUpStrategy extends AbstractRoundingStrategy implements Serializable, RoundingStrategy {
-	//@Id @GeneratedValue(strategy=GenerationType.AUTO) long id;
-	
+public class RoundUpStrategy implements Serializable, RoundingStrategy {
+
 	private static final long serialVersionUID = 1L;
-	/*
-	@Deprecated
-	protected RoundUpStrategy() {};
-	*/
+	private int numberOfDigits;
+
+	/**
+	 * Creates a new <code>RoundingsStrategy</code> which rounds away from zero,
+	 * keeping <code>numberOfDigits</code> digits after the decimal delimiter.
+	 * 
+	 * @param numberOfDigits
+	 *            Number of digits after the decimal delimiter, which should be
+	 *            kept.
+	 */
 	public RoundUpStrategy(int numberOfDigits) {
-		super(numberOfDigits, 0, 0);
+		this.numberOfDigits = numberOfDigits;
 	}
 
 	@Override
 	public BigDecimal round(BigDecimal amount) {
 		return amount.setScale(numberOfDigits, RoundingMode.UP);
 	}
-   
 }
