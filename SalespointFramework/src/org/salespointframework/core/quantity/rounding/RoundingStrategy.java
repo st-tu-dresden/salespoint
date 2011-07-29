@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public interface RoundingStrategy {
 	public static final RoundingStrategy MONETARY_ROUNDING = new RoundDownStrategy(
 			4);
+	public static final RoundingStrategy ROUND_ONE = new RoundDownStrategy(0);
 
 	/**
 	 * Rounds the given <code>BigDecimal</code> instance <code>amount</code>

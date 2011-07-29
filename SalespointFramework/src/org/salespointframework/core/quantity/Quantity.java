@@ -18,7 +18,7 @@ import org.salespointframework.core.quantity.rounding.RoundingStrategy;
  * <code>Quantity<code> objects and instances of subclasses of <code>Quantity</code>
  * to return the correct type (and thus avoiding casts), <code>Quantity</code>
  * instances are immutable and all subclasses of <code>Quantity</code> have to
- * be immutable.
+ * be immutable or implement a suitable <code>clone()</code>-method.
  * 
  * @author hannesweisbach
  * 
@@ -26,7 +26,6 @@ import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 
 public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 
-	public static final RoundingStrategy ROUND_ONE = new RoundDownStrategy(0);
 	/**
 	 * 
 	 */
@@ -238,11 +237,6 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 			e.printStackTrace();
 			return null;
 		}
-		/*
-		clone.amount = amount;
-		clone.metric = metric;
-		clone.roundingStrategy = roundingStrategy;
-		*/
 		return clone;
 	}
 

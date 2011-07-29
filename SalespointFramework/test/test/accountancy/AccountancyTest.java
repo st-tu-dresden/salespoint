@@ -13,8 +13,9 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.salespointframework.core.accountancy.Accountancy;
+import org.salespointframework.core.accountancy.PersistentAccountancy;
 import org.salespointframework.core.accountancy.AbstractAccountancyEntry;
+import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.accountancy.SomeOtherEntry;
 import org.salespointframework.core.accountancy.payment.Cash;
@@ -24,7 +25,7 @@ import org.salespointframework.core.order.actions.PaymentAction;
 import org.salespointframework.util.ArgumentNullException;
 
 public class AccountancyTest {
-	private Accountancy a;
+	private PersistentAccountancy a;
 	
 	private DateTime from;
 	private DateTime to;
@@ -36,7 +37,7 @@ public class AccountancyTest {
 
 	@Before
 	public void testSetup() {
-		a = new Accountancy();
+		a = new PersistentAccountancy();
 		System.out.println("Creating AccountancyEntries: ");
 		for (int year = 2000; year < 2010; year++) {
 			if(year % 2 == 0) {
@@ -92,7 +93,7 @@ public class AccountancyTest {
 	
 	//@Test(expected=RollbackException.class)
 	public void doubleAdd() {
-		Accountancy a = new Accountancy();
+		Accountancy a = new PersistentAccountancy();
 		PaymentAction pa = new PaymentAction(new OrderPayment(Cash.CASH, new DateTime(), "me", "you" ));
 		AbstractAccountancyEntry e = new ProductPaymentEntry(pa);
 		a.addEntry(e);
