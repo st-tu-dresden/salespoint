@@ -1,5 +1,9 @@
 package org.salespointframework.core.users;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
@@ -15,6 +19,13 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 	@PersistenceUnit
 	private EntityManager entityManager;
 	
+	@ElementCollection
+    protected Map<String, UserCapabilityList> capabilities = new HashMap<String, UserCapabilityList>();
+	
+	/**
+	 * creates new AbstractUserManager
+	 * @param entityManager
+	 */
 	public AbstractUserManager(EntityManager entityManager){
 		this.entityManager= entityManager;
 	}
@@ -46,15 +57,24 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 	public boolean addCapability(T user, UserCapability userCapability){
 		Objects.requireNonNull(user, "addCapability_User");
 		Objects.requireNonNull(userCapability, "addCapability_userCapability");
-		if (!entityManager.contains(user)){
+		if (this.getUserById(user.getUserId()) == null){
+			//System.out.println("noSuchUser");
 			return false;
 		}
 		else{
-			if(!entityManager.contains(userCapability)){
-				entityManager.persist(userCapability);
-			}
-			//TODO: add Cap to User
-			return true;
+		     UserCapabilityList capList = null;
+
+		        if ((capList = capabilities.get(user)) == null) {
+		            System.out.println("noCapas");
+		        	capList = new UserCapabilityList();
+		            capabilities.put(user.getUserId(), capList);
+		        }
+		        else {
+		            if (capList.contains(userCapability)) return true;		          
+		        }
+		        System.out.println("AddCapa");
+		        capList.add(userCapability);
+		        return true;
 		}
 	}
 	
@@ -86,9 +106,12 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 	 * @param userCapability the cabability you want to check to User for
 	 * @return true if User has Capability
 	 */
-	public boolean hasCapability(T user,UserCapability userCapability){
-		boolean i=true; //nur zür überbrückung!
-		if(i){//TODO: check
+	public boolean hasCapability(T user, UserCapability userCapability){
+		Objects.requireNonNull(user, "hasCapability_User");
+		Objects.requireNonNull(userCapability, "hasCapability_userCapability");
+		System.out.println("hasCapaTEst?");
+		if(capabilities.containsKey(user.getUserId())){
+			System.out.println("TESTSTSTIGHA");
 			return true;
 		}
 		return false;
@@ -96,7 +119,7 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 	
 	public Iterable<T> getUsers(){
 		Class<T> cc = this.getContentClass();
-		TypedQuery<T> users = entityManager.createQuery("Select t from " + cc.getCanonicalName() + " t",cc);
+		TypedQuery<T> users = entityManager.createQuery("SELECT t FROM " + cc.getSimpleName() + " t",cc);
 		return SalespointIterable.from(users.getResultList());
 	}
 	

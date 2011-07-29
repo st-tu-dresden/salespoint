@@ -1,7 +1,11 @@
 package org.salespointframework.core.users;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 
 import org.salespointframework.util.Objects;
 
@@ -15,6 +19,8 @@ public class AbstractUser implements User{
 	private String password;
 	@SuppressWarnings("unused")
 	private boolean deleted=false;
+	@OneToMany
+	private List<UserCapability> capabilities= new ArrayList<UserCapability>();
 	
 	@Deprecated
 	protected AbstractUser() {}
@@ -49,5 +55,26 @@ public class AbstractUser implements User{
 	public String getUserId(){
 		return userId;
 	}
+	
+//	//package visibility
+//	List<UserCapability> getCapabilities(){
+//		return capabilities;
+//	}
+//	
+//	//package visibility
+//	void addCapability(UserCapability uc){
+//		capabilities.add(uc);
+//	}
+//	
+//	//package visibility
+//	void removeCapability(UserCapability uc){
+//		capabilities.remove(uc);
+//	}
+//	
+//	//package visibility
+//	boolean hasCapability(UserCapability uc){
+//		if (capabilities.contains(uc)) return true;
+//		return false;
+//	}
 
 }
