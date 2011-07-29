@@ -20,6 +20,7 @@ import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Quantity;
+import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
@@ -47,7 +48,7 @@ public class OrderLine {
 
 	private String description;
 	private String comment;
-	private int numberOrdered;
+	private Quantity numberOrdered;
 
 	private Money unitPrice;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -60,12 +61,14 @@ public class OrderLine {
 	protected OrderLine() {}
 	
 	public OrderLine(
+			//TODO: why are ProductIdentifier and SerialNumber not used?
 			// ProductIdentifier productType, SerialNumber serialNumber,
 			String description, String comment, int numberOrdered,
 			Money unitPrice, DateTime expectedDeliveryDate) {
 		this.description = Objects.requireNonNull(description, "description");
 		this.comment = Objects.requireNonNull(comment, "comment");
-		this.numberOrdered = numberOrdered;
+		//TODO maybe numberOrdered should be passed as Quantity ?
+		this.numberOrdered = new Quantity(numberOrdered, Metric.PIECES, RoundingStrategy.ROUND_ONE);
 		this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
 		this.identifier = new OrderLineIdentifier();
 		this.expectedDeliveryDate = Objects.requireNonNull(expectedDeliveryDate, "expectedDeliveryDate").toDate();
@@ -110,7 +113,8 @@ public class OrderLine {
 	 * @return the numberOrdered
 	 */
 	public int getNumberOrdered() {
-		return numberOrdered;
+		//FIXME / TODO: return as Quantity?
+		return numberOrdered.getAmount().intValue();
 	}
 
 	/**
@@ -128,8 +132,9 @@ public class OrderLine {
 	public Money getOrderLinePrice() {
 		Money price = new Money(this.unitPrice.getAmount(), this.unitPrice.getMetric());
 		//price = (Money) price.multiply(new Money(this.numberOrdered));
-		price = new Quantity(this.numberOrdered, Metric.PIECES, Quantity.ROUND_ONE).multiply_(price);
-		
+		//price = new Quantity(this.numberOrdered, Metric.PIECES, Quantity.ROUND_ONE).multiply_(price);
+		//wohoo, this is how it is done. if we can't use our own framework, how can we expect the students to do so?!?
+		price = numberOrdered.multiply_(price);
 		for(ChargeLine cl : this.chargeLines) {
 			price = (Money) price.add(cl.getAmount());
 		}
@@ -153,10 +158,13 @@ public class OrderLine {
 	 *            the number of ordered objects that shall to be added.  
 	 */
 	public boolean incrementNumberOrdered(int number) {
-		
+		//TODO remove this shit. OrderLine should be immutable!
 		if(!this.mutableChargeLines) return false;
 		if(number <= 0) return false;
-		this.numberOrdered += number;
+		//this.numberOrdered += number;
+		//anyway, this is how it is done:
+		//TODO: maybe we should subclass Quantity to "Unit" or something with default-rounding to 1, etc?
+		numberOrdered = numberOrdered.add(new Quantity(number, numberOrdered.getMetric(), numberOrdered.getRoundingStrategy()));
 		return true;
 	}
 	
@@ -173,9 +181,10 @@ public class OrderLine {
 		
 		if(!this.mutableChargeLines) return false;
 		if(number <= 0) return false;
-		if(number > this.numberOrdered) this.numberOrdered = 0;
+		if(number > this.numberOrdered.getAmount().intValue())
+			numberOrdered = new Quantity(0, numberOrdered.getMetric(),  numberOrdered.getRoundingStrategy());
 		else {
-			this.numberOrdered -= number;
+			numberOrdered = new Quantity(numberOrdered.getAmount().intValue() - number, numberOrdered.getMetric(),  numberOrdered.getRoundingStrategy());;
 		}
 		
 		return true;
