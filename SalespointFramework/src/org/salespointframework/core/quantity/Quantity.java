@@ -3,7 +3,6 @@ package org.salespointframework.core.quantity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import org.salespointframework.core.quantity.rounding.RoundDownStrategy;
 import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 
 /**
@@ -291,4 +290,10 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 				roundingStrategy);
 	}
 
+	public <T extends Quantity> T divide_(T quantity) {
+		@SuppressWarnings("unchecked")
+		T q = (T) quantity.clone();
+		q.amount = quantity.roundingStrategy.round(amount.divide(quantity.amount));
+		return q;
+	}
 }
