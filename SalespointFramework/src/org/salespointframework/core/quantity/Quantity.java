@@ -221,7 +221,7 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	public <T extends Quantity> T add_(T quantity) {
 		@SuppressWarnings("unchecked")
 		T q = (T) quantity.clone();
-		q.amount = roundingStrategy.round(amount.add(quantity.amount));
+		q.amount = quantity.roundingStrategy.round(amount.add(quantity.amount));
 		return q;
 	}
 	/**
@@ -245,7 +245,7 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	public <T extends Quantity> T subtract_(T quantity) {
 		@SuppressWarnings("unchecked")
 		T q = (T) quantity.clone();
-		q.amount = roundingStrategy.round(amount.subtract(quantity.amount));
+		q.amount = quantity.roundingStrategy.round(amount.subtract(quantity.amount));
 		return q;
 	}
 
@@ -270,7 +270,7 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	public <T extends Quantity> T multiply_(T quantity) {
 		@SuppressWarnings("unchecked")
 		T q = (T) quantity.clone();
-		q.amount = roundingStrategy.round(amount.multiply(quantity.amount));
+		q.amount = quantity.roundingStrategy.round(amount.multiply(quantity.amount));
 		return q;
 	}
 
