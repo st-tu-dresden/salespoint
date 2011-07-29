@@ -20,6 +20,7 @@ import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Quantity;
+import org.salespointframework.core.quantity.Unit;
 import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
@@ -48,7 +49,7 @@ public class OrderLine {
 
 	private String description;
 	private String comment;
-	private Quantity numberOrdered;
+	private Unit numberOrdered;
 
 	private Money unitPrice;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -67,8 +68,7 @@ public class OrderLine {
 			Money unitPrice, DateTime expectedDeliveryDate) {
 		this.description = Objects.requireNonNull(description, "description");
 		this.comment = Objects.requireNonNull(comment, "comment");
-		//TODO maybe numberOrdered should be passed as Quantity ?
-		this.numberOrdered = new Quantity(numberOrdered, Metric.PIECES, RoundingStrategy.ROUND_ONE);
+		this.numberOrdered = new Unit(numberOrdered);
 		this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
 		this.identifier = new OrderLineIdentifier();
 		this.expectedDeliveryDate = Objects.requireNonNull(expectedDeliveryDate, "expectedDeliveryDate").toDate();
@@ -113,7 +113,7 @@ public class OrderLine {
 	 * @return the numberOrdered
 	 */
 	public int getNumberOrdered() {
-		//FIXME / TODO: return as Quantity?
+		//FIXME / TODO: return as Unit?
 		return numberOrdered.getAmount().intValue();
 	}
 
@@ -164,7 +164,7 @@ public class OrderLine {
 		//this.numberOrdered += number;
 		//anyway, this is how it is done:
 		//TODO: maybe we should subclass Quantity to "Unit" or something with default-rounding to 1, etc?
-		numberOrdered = numberOrdered.add(new Quantity(number, numberOrdered.getMetric(), numberOrdered.getRoundingStrategy()));
+		numberOrdered = numberOrdered.add_(new Unit(number));
 		return true;
 	}
 	
@@ -182,9 +182,9 @@ public class OrderLine {
 		if(!this.mutableChargeLines) return false;
 		if(number <= 0) return false;
 		if(number > this.numberOrdered.getAmount().intValue())
-			numberOrdered = new Quantity(0, numberOrdered.getMetric(),  numberOrdered.getRoundingStrategy());
+			numberOrdered = Unit.ZERO;
 		else {
-			numberOrdered = new Quantity(numberOrdered.getAmount().intValue() - number, numberOrdered.getMetric(),  numberOrdered.getRoundingStrategy());;
+			numberOrdered = numberOrdered.subtract_(new Unit(number));
 		}
 		
 		return true;
