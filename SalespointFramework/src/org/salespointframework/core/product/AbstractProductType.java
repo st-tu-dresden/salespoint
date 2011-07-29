@@ -1,7 +1,10 @@
 package org.salespointframework.core.product;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
@@ -24,8 +27,7 @@ public class AbstractProductType implements ProductType {
 	protected Money price;
 	
 	//TODO Map?
-	protected Set<ProductFeatureType> featureTypes = new HashSet<ProductFeatureType>() ;
-	
+	protected Set <ProductFeatureType> featureTypes = new HashSet<ProductFeatureType>();
 	@Deprecated
 	protected AbstractProductType() {
 		
@@ -72,7 +74,19 @@ public class AbstractProductType implements ProductType {
 		return productIdentifier;
 	}
 
-
+	@Override
+	public void addProductFeatureType (ProductFeatureType pf){
+		if (pf!=null)
+		featureTypes.add(pf);
+		
+	}
+	
+	@Override
+	public void removeProductFeatureType (ProductFeatureType pf){
+		if (pf!=null)
+		featureTypes.remove(pf);
+	}
+	
 	@Override
 	public String getName() {
 		return name;

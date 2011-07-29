@@ -8,5 +8,7 @@ public interface ProductType {
 	String getName();
 	Money getPrice();
 	Iterable<ProductFeatureType> getProductFeatureTypes(); // TODO umbenennen, je nachdem wie die Klasse heißen wird
-
+	void addProductFeatureType (ProductFeatureType pf);
+	void removeProductFeatureType(ProductFeatureType pf);
+	
 }

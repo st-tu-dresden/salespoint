@@ -7,6 +7,8 @@ import javax.persistence.*;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.features.ProductFeature;
+import org.salespointframework.core.product.features.ProductFeatureType;
+import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
@@ -21,7 +23,7 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	private ProductIdentifier productIdentifier;
 	
 	private Money price;
-	
+	private ProductType productType;
 	//TODO annot
 	private Map<String, ProductFeature> productFeatures = new HashMap<String, ProductFeature>();
 	
@@ -30,6 +32,7 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	
 	public AbstractProductInstance(ProductType productType) {
 		this.productIdentifier = Objects.requireNonNull(productType, "productType").getProductIdentifier();
+		this.productType = productType;
 		this.price = productType.getPrice(); //TODO CLONE
 		this.serialNumber = new SerialNumber();
 		
@@ -39,7 +42,8 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	// Hook Method
 	protected void calculatePrice() {
 		for(ProductFeature pt : productFeatures.values()) {
-			price = (Money) price.add(pt.getPrice()); //TODO cast >_>
+			//price = (Money) price.add(pt.getPrice()); //TODO cast >_>
+			price = price.add_(pt.getPrice());
 		}
 	}
 	
@@ -66,6 +70,26 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	@Override
 	public ProductFeature getProductFeature(String name) {
 		return productFeatures.get(name);
+	}
+	
+	@Override
+	public void addProductFeatures(ProductFeatureType pf){
+		if (productFeatures!=null){
+			productFeatures.clear();
+		}
+		productType.addProductFeatureType(pf);
+		
+		for (ProductFeature p: pf.getPossibleValues()){
+			productFeatures.put(p.getName(), p);
+		}
+		calculatePrice();
+	}
+	
+	@Override
+	public void removeProductFeatures(){
+			productFeatures.clear();
+			price = productType.getPrice();
+		
 	}
 	
 	@Override

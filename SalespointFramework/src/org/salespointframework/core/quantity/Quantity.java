@@ -206,6 +206,12 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 				roundingStrategy);
 	}
 
+	public <T extends Quantity> T add_(T quantity) {
+		@SuppressWarnings("unchecked")
+		T q = (T) quantity.clone();
+		q.amount = roundingStrategy.round(amount.add(quantity.amount));
+		return q;
+	}
 	/**
 	 * Subtracts a quantity from this. The <code>amount</code> of this is
 	 * subtracted by that of quantity, and a new <code>Quantity</code>-instance
