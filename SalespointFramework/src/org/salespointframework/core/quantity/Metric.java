@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class Metric implements Serializable {
 
 	public static final Metric PIECES = new Metric("Pieces", "pcs", "");
+	public static final Metric UNITS = new Metric("Units", "pcs", "");
 	public static final Metric EURO = new Metric("Euro", "€", "");
 	
 	/**

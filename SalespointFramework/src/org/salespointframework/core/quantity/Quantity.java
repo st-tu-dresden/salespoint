@@ -187,6 +187,18 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	public int hashCode() {
 		return amount.hashCode();
 	}
+	
+	@Override
+	public Object clone() {
+		Quantity clone;
+		try {
+			clone = (Quantity) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return clone;
+	}
 
 	/**
 	 * Sums two quantities up. The <code>amount</code> of this and quantity are
@@ -205,6 +217,7 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 				roundingStrategy);
 	}
 
+	//I suppose, this means we use the typed arithmetic?
 	public <T extends Quantity> T add_(T quantity) {
 		@SuppressWarnings("unchecked")
 		T q = (T) quantity.clone();
@@ -229,18 +242,13 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 				roundingStrategy);
 	}
 
-	public Object clone() {
-		Quantity clone;
-		try {
-			clone = (Quantity) super.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-			return null;
-		}
-		return clone;
+	public <T extends Quantity> T subtract_(T quantity) {
+		@SuppressWarnings("unchecked")
+		T q = (T) quantity.clone();
+		q.amount = roundingStrategy.round(amount.subtract(quantity.amount));
+		return q;
 	}
 
-	
 	/**
 	 * Multiplies two quantities. The <code>amount</code> of this and quantity
 	 * are multiplied, and a new <code>Quantity</code>-instance is returned,
