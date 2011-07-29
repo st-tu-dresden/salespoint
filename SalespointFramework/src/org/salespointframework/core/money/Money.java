@@ -18,7 +18,7 @@ import org.salespointframework.util.Objects;
  * @author hannesweisbach
  * 
  */
-public class Money extends Quantity {
+public final class Money extends Quantity {
 	/**
 	 * 
 	 */
