@@ -2,16 +2,11 @@ package test.product;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.Test;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.AbstractProductType;
-import org.salespointframework.core.product.ProductType;
 import org.salespointframework.core.product.features.ProductFeature;
 import org.salespointframework.core.product.features.ProductFeatureType;
 import org.salespointframework.util.ArgumentNullException;
