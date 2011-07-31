@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,6 +19,9 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.ChargeLine;
 import org.salespointframework.core.order.OrderLine;
+import org.salespointframework.core.product.SerialNumber;
+
+import test.inventory.KeksInventory;
 
 public class OrderLineTest {
 	
@@ -24,6 +29,7 @@ public class OrderLineTest {
 	.getEntityManagerFactory();
 	private EntityManager em;
 	private long timeStamp;
+	SerialNumber sn1, sn2;
 	
 	
 	@BeforeClass
@@ -37,9 +43,17 @@ public class OrderLineTest {
 		
 		em = emf.createEntityManager();
 		timeStamp = new DateTime().getMillis();
+		Set<SerialNumber> serialNumbers = new TreeSet<SerialNumber>();
+		sn1 = new SerialNumber();
+		sn2 = new SerialNumber();
 		
-		OrderLine ol1 = new OrderLine("testdescription1", "testcomment1", 1, new Money(1), new DateTime(timeStamp+1));
-		OrderLine ol2 = new OrderLine("testdescription2", "testcomment2", 2, new Money(2), new DateTime(timeStamp+2));
+		KeksInventory inv = new KeksInventory(em);
+		
+		serialNumbers.add(sn1);
+		OrderLine ol1 = new OrderLine(serialNumbers, inv, "testdescription1", "testcomment1", new Money(1), new DateTime(timeStamp+1));
+		
+		serialNumbers.add(sn2);
+		OrderLine ol2 = new OrderLine(serialNumbers, inv, "testdescription2", "testcomment2", new Money(2), new DateTime(timeStamp+2));
 		
 		ChargeLine cl1 = new ChargeLine(new Money(1), "cl1description", "cl1comment");
 		ChargeLine cl2 = new ChargeLine(new Money(2), "cl2description", "cl2comment");

@@ -1,27 +1,27 @@
 package org.salespointframework.core.order;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
+import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.SerialNumber;
-import org.salespointframework.core.quantity.Metric;
-import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.quantity.Unit;
-import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
@@ -38,18 +38,15 @@ public class OrderLine {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<ChargeLine> chargeLines;
-	
-	@Embedded
-	@AttributeOverride(name="id", column=@Column(name="PRODUCT_ID"))
-	private ProductIdentifier productType;
 
-	@Embedded
+	//TODO Problems with multiple embedded Objects...
+	@ElementCollection
 	@AttributeOverride(name="id", column=@Column(name="SERIALNO"))
-	private SerialNumber serialNumber;
+	private Set<SerialNumber> serialNumbers;
+	private Inventory<?> inventory;
 
 	private String description;
 	private String comment;
-	private Unit numberOrdered;
 
 	private Money unitPrice;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -62,21 +59,43 @@ public class OrderLine {
 	protected OrderLine() {}
 	
 	public OrderLine(
-			//TODO: why are ProductIdentifier and SerialNumber not used?
-			// ProductIdentifier productType, SerialNumber serialNumber,
-			String description, String comment, int numberOrdered,
+			SerialNumber serialNumber, Inventory<?> inventory,
+			String description, String comment,
 			Money unitPrice, DateTime expectedDeliveryDate) {
 		this.description = Objects.requireNonNull(description, "description");
 		this.comment = Objects.requireNonNull(comment, "comment");
-		this.numberOrdered = new Unit(numberOrdered);
 		this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
 		this.identifier = new OrderLineIdentifier();
 		this.expectedDeliveryDate = Objects.requireNonNull(expectedDeliveryDate, "expectedDeliveryDate").toDate();
 		this.chargeLines = new ArrayList<ChargeLine>(); 
 		this.mutableChargeLines = true;
 		this.mutableOrderLine = true;
-		//this.serialNumber = Objects.requireNonNull(serialNumber, "serialNumber");
-		//this.productType = Objects.requireNonNull(productType, "productType");
+		Objects.requireNonNull(serialNumber, "serialNumber");
+		this.serialNumbers = new HashSet<SerialNumber>();
+		this.serialNumbers.add(serialNumber);
+		this.inventory = Objects.requireNonNull(inventory, "inventory");
+	}
+	
+	
+	public OrderLine(
+			Collection<SerialNumber> serialNumbers, Inventory<?> inventory,
+			String description, String comment,
+			Money unitPrice, DateTime expectedDeliveryDate) {
+		this.description = Objects.requireNonNull(description, "description");
+		this.comment = Objects.requireNonNull(comment, "comment");
+		this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
+		this.identifier = new OrderLineIdentifier();
+		this.expectedDeliveryDate = Objects.requireNonNull(expectedDeliveryDate, "expectedDeliveryDate").toDate();
+		this.chargeLines = new ArrayList<ChargeLine>(); 
+		this.mutableChargeLines = true;
+		this.mutableOrderLine = true;
+		
+		Objects.requireNonNull(serialNumbers, "serialNumbers");
+		this.serialNumbers = new HashSet<SerialNumber>();
+		for(SerialNumber sn : serialNumbers) {
+			this.serialNumbers.add(sn);
+		}
+		this.inventory = Objects.requireNonNull(inventory, "inventory");
 	}
 
 	/**
@@ -106,15 +125,14 @@ public class OrderLine {
 	 * @return the comment
 	 */
 	public String getComment() {
-		return comment;
+		return this.comment;
 	}
 
 	/**
 	 * @return the numberOrdered
 	 */
 	public int getNumberOrdered() {
-		//FIXME / TODO: return as Unit?
-		return numberOrdered.getAmount().intValue();
+		return this.serialNumbers.size();
 	}
 
 	/**
@@ -131,12 +149,11 @@ public class OrderLine {
 	 */
 	public Money getOrderLinePrice() {
 		Money price = new Money(this.unitPrice.getAmount(), this.unitPrice.getMetric());
-		//price = (Money) price.multiply(new Money(this.numberOrdered));
-		//price = new Quantity(this.numberOrdered, Metric.PIECES, Quantity.ROUND_ONE).multiply_(price);
-		//wohoo, this is how it is done. if we can't use our own framework, how can we expect the students to do so?!?
+		Unit numberOrdered = new Unit(this.serialNumbers.size());
+
 		price = numberOrdered.multiply_(price);
 		for(ChargeLine cl : this.chargeLines) {
-			price = (Money) price.add(cl.getAmount());
+			price = price.add_(cl.getAmount());
 		}
 		
 		return price;
@@ -151,43 +168,79 @@ public class OrderLine {
 	
 	/**
 	 * Increments the number of the ordered objects in this OrderLine. 
-	 * This method doesn't change anything, if the given number is less than or equal to 0. If this OrderLine is provided 
-	 * in the context of an processing, cancelled or closed OrderEntry, the number will not be changed.
+	 * If this OrderLine is provided 
+	 * in the context of an processing, cancelled or closed OrderEntry, the number cannot be changed.
 	 * 
-	 * @param number
-	 *            the number of ordered objects that shall to be added.  
+	 * @param numbersToAdd
+	 *            the SerialNumber from that object that shall to be added.  
 	 */
-	public boolean incrementNumberOrdered(int number) {
-		//TODO remove this shit. OrderLine should be immutable!
+	public boolean incrementNumberOrdered(SerialNumber numberToAdd) {
+		
 		if(!this.mutableChargeLines) return false;
-		if(number <= 0) return false;
-		//this.numberOrdered += number;
-		//anyway, this is how it is done:
-		//TODO: maybe we should subclass Quantity to "Unit" or something with default-rounding to 1, etc?
-		numberOrdered = numberOrdered.add_(new Unit(number));
-		return true;
+		Objects.requireNonNull(numberToAdd, "numberToAdd");
+		
+		return this.serialNumbers.add(numberToAdd);
+	}
+	
+	/**
+	 * Increments the number of the ordered objects in this OrderLine. 
+	 * This method doesn't change anything, if the given Collection is empty. If this OrderLine is provided 
+	 * in the context of an processing, cancelled or closed OrderEntry, the number cannot be changed.
+	 * 
+	 * @param numbersToAdd
+	 *            the Collection of SerialNumbers from objects that shall to be added.  
+	 */
+	public boolean incrementNumberOrdered(Collection<SerialNumber> numbersToAdd) {
+		
+		boolean ret = false;
+		
+		if(!this.mutableChargeLines) return ret;
+		if(numbersToAdd.isEmpty()) return ret;
+
+		for(SerialNumber sn : numbersToAdd) {
+			if(this.serialNumbers.add(sn)) ret = true;
+		}
+		
+		return ret;
 	}
 	
 	/**
 	 * Decrements the number of the ordered objects in this OrderLine. 
-	 * This method doesn't change anything, if the given number is less than or equal to 0.
-	 * The number of ordered objects cannot fall below 0. If this OrderLine is provided 
+	 * If the SerialNumber doesn't exist in this OrderLine, nothing will be removed. If this OrderLine is provided 
+	 * in the context of an processing, cancelled or closed OrderEntry, the number will not be changed.
+	 * 
+	 * @param numberToRemove
+	 *            the SerialNumber of that object that shall to be removed.  
+	 */
+	public boolean decrementNumberOrdered(SerialNumber numberToRemove) {
+		
+		if(!this.mutableChargeLines) return false;
+		Objects.requireNonNull(numberToRemove, "numberToRemove");
+		
+		return this.serialNumbers.remove(numberToRemove);
+	}
+	
+	/**
+	 * Decrements the number of the ordered objects in this OrderLine. 
+	 * This method doesn't change anything, if size of the given Collection is empty.
+	 * Only Elements which exists in this OrderLine will be removed. If this OrderLine is provided 
 	 * in the context of an processing, cancelled or closed OrderEntry, the number will not be changed.
 	 * 
 	 * @param number
-	 *            the number of ordered objects that shall to be substituted.  
+	 *            the Collection of SerialNumbers from objects that shall to be removed.  
 	 */
-	public boolean decrementNumberOrdered(int number) {
+	public boolean decrementNumberOrdered(Collection<SerialNumber> numbersToRemove) {
 		
-		if(!this.mutableChargeLines) return false;
-		if(number <= 0) return false;
-		if(number > this.numberOrdered.getAmount().intValue())
-			numberOrdered = Unit.ZERO;
-		else {
-			numberOrdered = numberOrdered.subtract_(new Unit(number));
+		boolean ret = false;
+		
+		if(!this.mutableChargeLines) return ret;
+		if(numbersToRemove.isEmpty()) return ret;
+
+		for(SerialNumber sn : numbersToRemove) {
+			if(this.serialNumbers.remove(sn)) ret = true;
 		}
 		
-		return true;
+		return ret;
 	}
 	
 	/**
@@ -232,15 +285,31 @@ public class OrderLine {
 		else return this.chargeLines.remove(lineToRemove);
 	}
 	
+	public Inventory<?> getInventory() {
+		return this.inventory;
+	}
+	
+	public Iterable<SerialNumber> getSerialNumbers() {
+		return SalespointIterable.from(this.serialNumbers);
+	}
+	
 	
 	@Override
-    public boolean equals(Object obj) {
-		
-        if (obj == this) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof OrderLine)) return false;
-        
-        OrderLine ol = (OrderLine) obj;
-        return this.getIdentifier().equals(ol.getIdentifier());
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (other == null) return false;
+        if (!(other instanceof OrderLine)) return false;
+        return this.equals((OrderLine) other);
     }
+	
+	public boolean equals(OrderLine other) {
+        if (other == this) return true;
+        if (other == null) return false;
+		return this.getIdentifier().equals(other.getIdentifier());
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getIdentifier().hashCode();
+	}
 }
