@@ -13,7 +13,7 @@ import javax.persistence.*;
  */
 @Embeddable
 @MappedSuperclass
-public /*abstract*/ class SalespointIdentifier implements Serializable {
+public /*abstract*/ class SalespointIdentifier implements Serializable, Comparable<SalespointIdentifier> {
 	/**
 	 * 
 	 */
@@ -55,5 +55,10 @@ public /*abstract*/ class SalespointIdentifier implements Serializable {
 	@Override
 	public int hashCode() {
 		return id.hashCode();
+	}
+
+	@Override
+	public int compareTo(SalespointIdentifier arg0) {
+		return this.id.compareTo(arg0.getIdentifier());
 	}
 }
