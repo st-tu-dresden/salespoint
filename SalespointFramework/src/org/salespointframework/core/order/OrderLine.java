@@ -10,12 +10,14 @@ import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.inventory.Inventory;
@@ -33,6 +35,7 @@ import org.salespointframework.util.SalespointIterable;
 @Entity
 public class OrderLine {
 	
+	//TODO Unit Price über Inventar
 	@EmbeddedId
 	private OrderLineIdentifier identifier;
 
@@ -43,6 +46,7 @@ public class OrderLine {
 	@ElementCollection
 	@AttributeOverride(name="id", column=@Column(name="SERIALNO"))
 	private Set<SerialNumber> serialNumbers;
+	@Transient
 	private Inventory<?> inventory;
 
 	private String description;
@@ -174,6 +178,11 @@ public class OrderLine {
 	 * @param numbersToAdd
 	 *            the SerialNumber from that object that shall to be added.  
 	 */
+	
+	//TODO
+	public boolean addSN(SerialNumber sn, SerialNumber... rest) {
+		return false;
+	}
 	public boolean incrementNumberOrdered(SerialNumber numberToAdd) {
 		
 		if(!this.mutableChargeLines) return false;

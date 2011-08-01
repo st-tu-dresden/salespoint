@@ -11,7 +11,7 @@ import org.salespointframework.util.SalespointIdentifier;
  */
 @Embeddable
 
-public class OrderIdentifier extends SalespointIdentifier implements Serializable {
+public final class OrderIdentifier extends SalespointIdentifier implements Serializable {
 
 	/**
 	 * 

@@ -294,48 +294,10 @@ public class OrderEntry {
         }
 	}
 	
-	//TODO Make Payment
-	public Money pay(Money money) {
-		return null;
-	}
-	
 	//TODO Complete Order and remove Objects from Inventory
+	//TODO Return Iterable of serialNumbers
 	public boolean completeOrder() {
 		return false;
-	}
-	
-	
-	/**
-	 * Returns the amount that still have to be payed for this OrderEntry to complete.
-	 * 
-	 * @return the amount that still have to be payed
-	 */
-	public Money getMoneyToPay() {
-		
-		Money price;	
-		boolean hasOrderLines = !this.orderLines.isEmpty();
-		
-		if(this.chargeLines.isEmpty() && !hasOrderLines) return new Money(0);
-		if(hasOrderLines) price = this.orderLines.get(0).getOrderLinePrice();
-		else price = this.chargeLines.get(0).getAmount();
-		
-		if(hasOrderLines) {
-			
-			for(int i=1; i<this.orderLines.size(); i++) {
-				price = price.add_(this.orderLines.get(i).getOrderLinePrice());
-			}
-			
-			for(int i=0; i<this.chargeLines.size(); i++) {
-				price = price.add_(this.chargeLines.get(i).getAmount());
-			}
-		} else {
-			
-			for(int i=1; i<this.chargeLines.size(); i++) {
-				price = price.add_(this.chargeLines.get(i).getAmount());
-			}
-		}
-
-		return price.subtract_(this.payed);
 	}
 
 }

@@ -29,7 +29,7 @@ public class OrderLineTest {
 	.getEntityManagerFactory();
 	private EntityManager em;
 	private long timeStamp;
-	SerialNumber sn1, sn2;
+	SerialNumber sn1, sn2, sn3;
 	
 	
 	@BeforeClass
@@ -46,13 +46,13 @@ public class OrderLineTest {
 		Set<SerialNumber> serialNumbers = new TreeSet<SerialNumber>();
 		sn1 = new SerialNumber();
 		sn2 = new SerialNumber();
+		sn3 = new SerialNumber();
 		
 		KeksInventory inv = new KeksInventory(em);
-		
-		serialNumbers.add(sn1);
-		OrderLine ol1 = new OrderLine(serialNumbers, inv, "testdescription1", "testcomment1", new Money(1), new DateTime(timeStamp+1));
-		
 		serialNumbers.add(sn2);
+		serialNumbers.add(sn3);
+		
+		OrderLine ol1 = new OrderLine(sn1, inv, "testdescription1", "testcomment1", new Money(1), new DateTime(timeStamp+1));
 		OrderLine ol2 = new OrderLine(serialNumbers, inv, "testdescription2", "testcomment2", new Money(2), new DateTime(timeStamp+2));
 		
 		ChargeLine cl1 = new ChargeLine(new Money(1), "cl1description", "cl1comment");
