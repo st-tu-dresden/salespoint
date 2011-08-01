@@ -406,4 +406,5 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
 }
 
 class CapabilitySet extends HashSet<CalendarEntryCapability> {
+    private static final long serialVersionUID = 3436040513346592595L;
 }

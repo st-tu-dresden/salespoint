@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import org.joda.time.DateTime;
 import org.salespointframework.core.database.ICanHasClass;
 import org.salespointframework.util.Filter;
 import org.salespointframework.util.Objects;
@@ -67,6 +68,117 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
         return entries;
     }
 
+    @Override
+    public Iterable<T> getEntriesByTitle(String title) {
+        Objects.requireNonNull(title, "title");
+        
+        TypedQuery<T> q = em
+                .createQuery(
+                        "SELECT ce FROM "+getContentClass().getSimpleName()+" ce WHERE ce.title == :title",
+                        getContentClass());
+        
+        q.setParameter("title", title);
+
+        return q.getResultList();
+    }
+    
+    @Override
+    public Iterable<T> getEntriesThatStartAfter(DateTime start) {
+        Objects.requireNonNull(start, "from");
+        
+        TypedQuery<T> q = em
+                .createQuery(
+                        "SELECT ce FROM "+getContentClass().getSimpleName()+" ce WHERE ce.start >= :start",
+                        getContentClass());
+        
+        q.setParameter("start", start);
+
+        return q.getResultList();
+    }
+
+    @Override
+    public Iterable<T> getEntriesThatStartBefore(DateTime start) {
+        Objects.requireNonNull(start, "from");
+        
+        TypedQuery<T> q = em
+                .createQuery(
+                        "SELECT ce FROM "+getContentClass().getSimpleName()+" ce WHERE ce.start <= :start",
+                        getContentClass());
+        
+        q.setParameter("start", start);
+
+        return q.getResultList();
+    }
+    
+    @Override
+    public Iterable<T> getEntriesThatEndBefore(DateTime end) {
+        Objects.requireNonNull(end, "end");
+        
+        TypedQuery<T> q = em
+                .createQuery(
+                        "SELECT ce FROM "+getContentClass().getSimpleName()+" ce WHERE ce.end <= :end",
+                        getContentClass());
+        
+        q.setParameter("end", end);
+
+        return q.getResultList();
+    }
+
+    @Override
+    public Iterable<T> getEntriesThatEndAfter(DateTime end) {
+        Objects.requireNonNull(end, "end");
+        
+        TypedQuery<T> q = em
+                .createQuery(
+                        "SELECT ce FROM "+getContentClass().getSimpleName()+" ce WHERE ce.end >= :end",
+                        getContentClass());
+        
+        q.setParameter("end", end);
+
+        return q.getResultList();
+    }
+    
+    @Override
+    public Iterable<T> getEntriesThatStartBetween(DateTime start, DateTime end) {
+        Objects.requireNonNull(start, "start");
+        Objects.requireNonNull(end, "end");
+        
+        TypedQuery<T> q = em
+                .createQuery(
+                        "SELECT ce FROM "+getContentClass().getSimpleName()+" ce WHERE ce.start BETWEEN :start and :end",
+                        getContentClass());
+        q.setParameter("start", start);
+        q.setParameter("end", end);
+
+        return q.getResultList();
+    }
+
+    @Override
+    public Iterable<T> getEntriesThatEndBetween(DateTime start, DateTime end) {
+        Objects.requireNonNull(start, "start");
+        Objects.requireNonNull(end, "end");
+        
+        TypedQuery<T> q = em
+                .createQuery(
+                        "SELECT ce FROM "+getContentClass().getSimpleName()+" ce WHERE ce.end BETWEEN :start and :end",
+                        getContentClass());
+        q.setParameter("start", start);
+        q.setParameter("end", end);
+
+        return q.getResultList();
+    }    
+    
+    @Override
+    public Iterable<T> getEntriesByOwner(final String owner) {
+        return getEntries(new Filter<T>() {
+            @SuppressWarnings("boxing")
+            @Override
+            public Boolean invoke(T arg) {
+                return arg.getOwner().equals(owner);
+            }
+        });
+    }
+    
     @SuppressWarnings("boxing")
     @Override
     public T getEntryByID(long l) {
