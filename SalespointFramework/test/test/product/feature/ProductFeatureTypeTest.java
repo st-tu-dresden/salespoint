@@ -12,8 +12,6 @@ import org.salespointframework.core.product.features.ProductFeature;
 import org.salespointframework.core.product.features.ProductFeatureType;
 import org.salespointframework.util.ArgumentNullException;
 
-import test.product.KeksProduct;
-
 public class ProductFeatureTypeTest {
 
 	private ProductFeature butter = ProductFeature.create("Butter",new Money(0.25));
