@@ -1,6 +1,7 @@
 package org.salespointframework.core.product.later;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.time.ShopTime;
 import org.salespointframework.util.Objects;
 
@@ -39,10 +40,10 @@ public abstract class AbstractServiceInstance<T extends ServiceType> implements 
 	public ServiceDeliveryStatus getServiceDeliveryStatus(){
 		if (this.serviceDeliveryStatus == ServiceDeliveryStatus.CANCELLED){}
 		else{
-				if(ShopTime.INSTANCE.getDateTime().isBefore(scheduledStart)){
+				if(Shop.INSTANCE.getTime().getDateTime().isBefore(scheduledStart)){
 					this.serviceDeliveryStatus = ServiceDeliveryStatus.SCHEDULED;
 				}
-				else {	if(ShopTime.INSTANCE.getDateTime().isAfter(scheduledEnd)){
+				else {	if(Shop.INSTANCE.getTime().getDateTime().isAfter(scheduledEnd)){
 							this.serviceDeliveryStatus = ServiceDeliveryStatus.COMPLETED;
 							}
 				
@@ -54,7 +55,7 @@ public abstract class AbstractServiceInstance<T extends ServiceType> implements 
 	}
 	
 	public void cancelServiceInstance(){
-		this.scheduledEnd = ShopTime.INSTANCE.getDateTime();
+		this.scheduledEnd = Shop.INSTANCE.getTime().getDateTime();
 		this.serviceDeliveryStatus = ServiceDeliveryStatus.CANCELLED;
 	}
 	

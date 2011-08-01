@@ -1,8 +1,5 @@
 package org.salespointframework.core.product.later;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.AbstractProductType;
 import org.salespointframework.core.quantity.Metric;
