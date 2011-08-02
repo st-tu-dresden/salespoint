@@ -2,30 +2,14 @@ package test.calendar;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+
 import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
 
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.salespointframework.core.calendar.CalendarEntryCapability;
-import org.salespointframework.core.database.Database;
-import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.features.ProductFeatureType;
-import org.salespointframework.core.users.User;
 import org.salespointframework.util.ArgumentNullException;
-
-import test.product.KeksProduct;
 
 public class CalendarEntryTest {
 	
