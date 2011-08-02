@@ -41,7 +41,6 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	// Hook Method
 	protected void calculatePrice() {
 		for(ProductFeature pt : productFeatures.values()) {
-			//price = (Money) price.add(pt.getPrice()); //TODO cast >_>
 			price = price.add_(pt.getPrice());
 		}
 	}
