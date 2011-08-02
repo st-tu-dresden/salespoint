@@ -2,7 +2,6 @@ package org.salespointframework.core.product.later;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.shop.Shop;
-import org.salespointframework.core.time.ShopTime;
 import org.salespointframework.util.Objects;
 
 

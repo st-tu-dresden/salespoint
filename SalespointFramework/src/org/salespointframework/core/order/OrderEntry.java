@@ -1,13 +1,17 @@
 package org.salespointframework.core.order;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
@@ -15,8 +19,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.database.Database;
+import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.actions.OrderAction;
+import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
@@ -50,7 +57,7 @@ public class OrderEntry {
 	
 	public OrderEntry(String salesChannel, String termsAndConditions) {
 		orderIdentifier = new OrderIdentifier();
-		dateCreated = new Date();
+		dateCreated = new Date(); // <- TODO WTF
 		this.salesChannel = Objects
 				.requireNonNull(salesChannel, "salesChannel");
 		this.termsAndConditions = Objects.requireNonNull(termsAndConditions,
@@ -61,6 +68,121 @@ public class OrderEntry {
 		this.payed = new Money(0);
 	}
 
+	
+	// PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUL
+	
+	private Map<String, OrderLine> paul_orderlines = new HashMap<String, OrderLine>();
+	
+	public OrderLine addOrderLine(OrderLine orderLine) {
+		Objects.requireNonNull(orderLine, "orderLine");
+		if(this.status.equals(OrderStatus.CANCELLED) || this.status.equals(OrderStatus.CLOSED) || this.status.equals(OrderStatus.PROCESSING)) {
+			// TODO andere bessere Exception
+			throw new RuntimeException();
+		}
+		
+		String key = orderLine.getInventory().getClass().getCanonicalName();
+		OrderLine o = orderLine;
+		if(paul_orderlines.containsKey(key)) {
+			 o = mergeOrderLines(paul_orderlines.get(key), orderLine);
+		}
+		paul_orderlines.put(key, o);
+		return o;
+		
+	}
+	
+	public OrderLine addOrderLine(Inventory<?> inventory, SerialNumber serialNumber) {
+		
+		String key = inventory.getClass().getCanonicalName();
+		OrderLine o;
+		
+		if(paul_orderlines.containsKey(key)) {
+			paul_orderlines.get(key).addSerialNumber(serialNumber);
+			o = paul_orderlines.get(key);
+		} else {
+			o = new OrderLine(inventory, serialNumber);
+			paul_orderlines.put(key,o);
+		}
+		
+		return o;
+	}
+	
+	public OrderLine addOrderLine(Inventory<?> inventory, Iterable<SerialNumber> serialNumbers) {
+		String key = inventory.getClass().getCanonicalName();
+		OrderLine o;
+		
+		if(paul_orderlines.containsKey(key)) {
+			paul_orderlines.get(key).addAllSerialNumbers(serialNumbers);
+			o = paul_orderlines.get(key);
+		} else {
+			o = new OrderLine(inventory, serialNumbers);
+			paul_orderlines.put(key,o);
+		}
+		
+		return o;
+		
+	}
+	
+	//TODO
+	private OrderLine mergeOrderLines(OrderLine o1, OrderLine o2) {
+		return o2;
+	}
+	
+	public boolean paul_completeOrder() {
+		EntityManager em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
+		
+		em.getTransaction().begin();
+		
+		for(Map.Entry<String, OrderLine> entry : paul_orderlines.entrySet()) {
+			String key = entry.getKey();
+			OrderLine orderLine = entry.getValue();
+			
+			// I FUCKING HATE CHECKED EXCEPTIONS
+			// I FUCKING HATE CHECKED EXCEPTIONS
+			// I FUCKING HATE CHECKED EXCEPTIONS
+			// I FUCKING HATE CHECKED EXCEPTIONS
+			// I FUCKING HATE CHECKED EXCEPTIONS
+			
+			try {
+				Class<?> inventoryClass = Class.forName(key);
+				
+			 	Inventory<?> inventory = (Inventory<?>) inventoryClass.getConstructor(EntityManager.class).newInstance(em);
+				
+			 	for(SerialNumber serialNumber : orderLine.getSerialNumbers()) {
+			 		inventory.removeProductInstance(serialNumber);
+			 	}
+				
+			 	
+			// TODO plätttten
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		em.getTransaction().commit();
+		
+		return false;
+	}
+	
+	// PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUL
+	
 	public OrderEntry(String salesChannel) {
 		this(Objects.requireNonNull(salesChannel, "salesChannel"), "");
 	}
@@ -204,6 +326,7 @@ public class OrderEntry {
 	 * 
 	 * @param orderLine The <code>OrderLine</code> that shall be added.
 	 */
+	/*
 	public boolean addOrderLine(OrderLine orderLine) {
 		
 		Objects.requireNonNull(orderLine, "orderLine");
@@ -211,6 +334,7 @@ public class OrderEntry {
 		
 		return this.orderLines.add(orderLine);
 	}
+	*/
 	
 	/**
 	 * Remove an <code>OrderLine</code> from this

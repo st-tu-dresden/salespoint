@@ -3,7 +3,7 @@ package org.salespointframework.core.shop;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.salespointframework.core.order.IOrderManager;
+import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.time.DefaultTime;
 import org.salespointframework.core.time.Time;
 import org.salespointframework.core.users.UserManager;
@@ -15,14 +15,14 @@ public enum Shop {
 	//Accountancy und co?
 	
 	private Time time = new DefaultTime();
-	private IOrderManager ordermanager;
+	private OrderManager ordermanager;
 	private Map<String, UserManager> userManagerMap = new HashMap<String, UserManager>();
 	
-	public void setOrderManager(IOrderManager ordermanager) {
+	public void setOrderManager(OrderManager ordermanager) {
 		this.ordermanager = ordermanager;
 	}
 	
-	public IOrderManager getOrderManager() {
+	public OrderManager getOrderManager() {
 		return ordermanager;
 	}
 

@@ -3,6 +3,7 @@ package org.salespointframework.core.inventory;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import org.salespointframework.core.database.Database;
 import org.salespointframework.core.database.ICanHasClass;
 import org.salespointframework.core.product.AbstractProductInstance;
 import org.salespointframework.core.product.SerialNumber;
@@ -16,6 +17,13 @@ public abstract class AbstractInventory<T extends AbstractProductInstance> imple
 
 	EntityManager entityManager;
 	
+	
+	// Alles Instant
+	public AbstractInventory() {
+	
+	}
+	
+	// Kann per begin, commit, rollback gesteuert werden
 	public AbstractInventory(EntityManager entityManager) {
 		this.entityManager = Objects.requireNonNull(entityManager, "entityManager");
 	}
@@ -23,31 +31,53 @@ public abstract class AbstractInventory<T extends AbstractProductInstance> imple
 	@Override
 	public void addProductInstance(T productInstance) {
 		Objects.requireNonNull(productInstance, "productInstance");
-		entityManager.persist(productInstance);
+		EntityManager em = foobar();
+		em.persist(productInstance);
+		beginCommit(em);
 	}
 
 	@Override
 	public void removeProductInstance(SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
-		entityManager.remove(serialNumber);
+		EntityManager em = foobar();
+		em.remove(serialNumber);
+		beginCommit(em);
 	}
 
 	@Override
 	public T getProductInstance(SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
-		return entityManager.find(this.getContentClass(), serialNumber);
+		EntityManager em = foobar();
+		return em.find(this.getContentClass(), serialNumber);
 	}
 
 	@Override
 	public boolean contains(SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
-		return entityManager.contains(serialNumber);
+		EntityManager em = foobar();
+		return em.contains(serialNumber);
 	}
 	
 	@Override
 	public Iterable<T> getProductInstances() {
 		Class<T> cc = this.getContentClass();
-		TypedQuery<T> tquery = entityManager.createQuery("Select t from " + cc.getCanonicalName() + " t",cc);
+		EntityManager em = foobar();
+		TypedQuery<T> tquery = em.createQuery("Select t from " + cc.getCanonicalName() + " t",cc);
 		return SalespointIterable.from(tquery.getResultList());
 	}
+	
+	
+	private final void beginCommit(EntityManager em) {
+		if(entityManager == null) {
+			em.getTransaction().begin();
+			em.getTransaction().commit();
+		}
+	}
+	
+	// ?? Operator in C#, gibts hier leider nicht, deswegen die Methode
+	private final EntityManager foobar() {
+		return entityManager != null ? entityManager : Database.INSTANCE.getEntityManagerFactory().createEntityManager();
+	}
+	
+	
 }

@@ -24,6 +24,7 @@ import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.core.quantity.Unit;
+import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
@@ -45,7 +46,7 @@ public class OrderLine {
 	//TODO Problems with multiple embedded Objects...
 	@ElementCollection
 	@AttributeOverride(name="id", column=@Column(name="SERIALNO"))
-	private Set<SerialNumber> serialNumbers;
+	private Set<SerialNumber> serialNumbers = new HashSet<SerialNumber>();
 	@Transient
 	private Inventory<?> inventory;
 
@@ -62,6 +63,41 @@ public class OrderLine {
 	@Deprecated
 	protected OrderLine() {}
 	
+	// PAUL
+	public OrderLine(Inventory<?> inventory, SerialNumber serialNumber) {
+		// check Inventar,
+		this.inventory = Objects.requireNonNull(inventory, "inventory");
+		Objects.requireNonNull(serialNumber, "serialNumber");
+		this.serialNumbers.add(serialNumber);
+	}
+	
+	public OrderLine(Inventory<?> inventory, Iterable<SerialNumber> serialNumber) {
+		// check Inventar
+		this.inventory = Objects.requireNonNull(inventory, "inventory");
+		Objects.requireNonNull(serialNumber, "serialNumber");
+		if(Iterables.isEmpty(serialNumber)) {
+			//TODO bessere Exception
+			throw new RuntimeException();
+		}
+		this.serialNumbers.addAll(Iterables.toList(serialNumber));
+	}
+	
+	public boolean addSerialNumber(SerialNumber serialNumber) {
+		//TODO
+		// check Null, check Inventar, check Status
+		return this.serialNumbers.add(serialNumber);
+	}
+	
+	public boolean addAllSerialNumbers(Iterable<SerialNumber> serialNumbers) {
+		//TODO
+		// check Null, check Inventar, check Status
+		return this.serialNumbers.addAll(Iterables.toList(serialNumbers));
+	}
+	
+	// PAUL
+	
+	
+	
 	public OrderLine(
 			SerialNumber serialNumber, Inventory<?> inventory,
 			String description, String comment,
@@ -75,7 +111,6 @@ public class OrderLine {
 		this.mutableChargeLines = true;
 		this.mutableOrderLine = true;
 		Objects.requireNonNull(serialNumber, "serialNumber");
-		this.serialNumbers = new HashSet<SerialNumber>();
 		this.serialNumbers.add(serialNumber);
 		this.inventory = Objects.requireNonNull(inventory, "inventory");
 	}
@@ -178,11 +213,6 @@ public class OrderLine {
 	 * @param numbersToAdd
 	 *            the SerialNumber from that object that shall to be added.  
 	 */
-	
-	//TODO
-	public boolean addSN(SerialNumber sn, SerialNumber... rest) {
-		return false;
-	}
 	public boolean incrementNumberOrdered(SerialNumber numberToAdd) {
 		
 		if(!this.mutableChargeLines) return false;

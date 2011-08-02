@@ -24,6 +24,7 @@ public final class Money extends Quantity {
 	 */
 	private static final long serialVersionUID = -6400828491785686659L;
 	public static final Money ZERO = new Money(0);
+	public static final Money OVER9000 = new Money(9001);
 
 	/**
 	 * Creates a new <code>Money</code> instance from an amount and a metric.

@@ -14,13 +14,13 @@ import org.junit.Test;
 import org.salespointframework.core.accountancy.PersistentAccountancy;
 import org.salespointframework.core.accountancy.AbstractAccountancyEntry;
 import org.salespointframework.core.database.Database;
-import org.salespointframework.core.order.IOrderManager;
+import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.order.OrderEntry;
 import org.salespointframework.core.order.OrderIdentifier;
-import org.salespointframework.core.order.OrderManager;
+import org.salespointframework.core.order.PersistentOrderManager;
 
 public class OrderTest {
-	private IOrderManager om;
+	private OrderManager om;
 	private List<OrderIdentifier> oi = new ArrayList<OrderIdentifier>();
 	private EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 	
@@ -34,7 +34,7 @@ public class OrderTest {
 
 	@Before
 	public void testSetup() {
-		om = new OrderManager();
+		om = new PersistentOrderManager();
 		OrderEntry oe;
 		for (int year = 2000; year < 2005; year++) {
 			oe = new OrderEntry();
