@@ -8,7 +8,6 @@ import javax.persistence.*;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.features.ProductFeature;
 import org.salespointframework.core.product.features.ProductFeatureType;
-import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
@@ -24,7 +23,7 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	
 	private Money price;
 	private ProductType productType;
-	//TODO annot
+	//TODO annot?
 	private Map<String, ProductFeature> productFeatures = new HashMap<String, ProductFeature>();
 	
 	@Deprecated

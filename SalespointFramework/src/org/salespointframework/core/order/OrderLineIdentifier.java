@@ -1,25 +1,9 @@
 package org.salespointframework.core.order;
 
-import java.io.Serializable;
-
-import javax.persistence.*;
+import javax.persistence.Embeddable;
 import org.salespointframework.util.SalespointIdentifier;
 
-/**
- * Entity implementation class for Entity: OrderLineIdentifier
- * 
- * @author hannesweisbach
- */
 @Embeddable
-public class OrderLineIdentifier extends SalespointIdentifier implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3266292510417825915L;
-
-	public OrderLineIdentifier() {
-		super();
-	}
-
+public final class OrderLineIdentifier extends SalespointIdentifier {
+	private static final long serialVersionUID = 1L;
 }

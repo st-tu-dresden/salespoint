@@ -2,7 +2,6 @@ package org.salespointframework.util;
 
 import java.io.Serializable;
 import java.util.UUID;
-
 import javax.persistence.*;
 
 /**
@@ -14,10 +13,8 @@ import javax.persistence.*;
 @Embeddable
 @MappedSuperclass
 public /*abstract*/ class SalespointIdentifier implements Serializable, Comparable<SalespointIdentifier> {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5689127925646322527L;
+
+	private static final long serialVersionUID = 1L;
 	//@Id
 	private String id;
 
@@ -58,7 +55,7 @@ public /*abstract*/ class SalespointIdentifier implements Serializable, Comparab
 	}
 
 	@Override
-	public int compareTo(SalespointIdentifier arg0) {
-		return this.id.compareTo(arg0.getIdentifier());
+	public int compareTo(SalespointIdentifier other) {
+		return this.id.compareTo(other.getIdentifier());
 	}
 }

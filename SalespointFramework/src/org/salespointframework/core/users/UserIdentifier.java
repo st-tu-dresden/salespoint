@@ -11,7 +11,7 @@ import org.salespointframework.util.SalespointIdentifier;
  */
 @Embeddable
 
-public class UserIdentifier extends SalespointIdentifier implements Serializable {
+public final class UserIdentifier extends SalespointIdentifier implements Serializable {
 
 	
 	private static final long serialVersionUID = 1L;

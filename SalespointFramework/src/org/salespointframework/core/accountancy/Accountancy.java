@@ -14,7 +14,7 @@ public interface Accountancy {
 	 *            <code>AccountancyEntry</code> which should be added to the
 	 *            <code>Accountancy</code>
 	 */
-	public void addEntry(AbstractAccountancyEntry accountancyEntry);
+	void addEntry(AbstractAccountancyEntry accountancyEntry);
 
 	/**
 	 * Adds multiple <code>AccountancyEntry</code>s to this
@@ -24,8 +24,7 @@ public interface Accountancy {
 	 * 
 	 * @param accountancyEntries
 	 */
-	public void addEntries(
-			Iterable<AbstractAccountancyEntry> accountancyEntries);
+	 void addEntries(Iterable<AbstractAccountancyEntry> accountancyEntries);
 
 	/**
 	 * Returns all <code>AccountancyEntry</code>s in between the dates
@@ -40,9 +39,11 @@ public interface Accountancy {
 	 * @return an unmodifiable Iterable containing all entries between from and
 	 *         to
 	 */
-	public Iterable<AbstractAccountancyEntry> getEntries(
-			DateTime from, DateTime to);
+	Iterable<AbstractAccountancyEntry> getEntries(DateTime from, DateTime to);
 
+	
+	
+	// TODO häßlich mit Class<T>, gez. Paul
 	/**
 	 * Returns all <code>AccountancyEntry</code>s of the specified type
 	 * <code>class</code>. If no entries of the specified type exist, an empty
@@ -52,7 +53,7 @@ public interface Accountancy {
 	 *            The type of the entries.
 	 * @return an unmodifiable Iterable containing all entries of type clazz
 	 */
-	public <T extends AbstractAccountancyEntry> Iterable<T> getEntries(Class<T> clazz);
+	<T extends AbstractAccountancyEntry> Iterable<T> getEntries(Class<T> clazz);
 
 	/**
 	 * Returns all <code>AccountancyEntry</code>s in between the dates
@@ -74,7 +75,6 @@ public interface Accountancy {
 	 * @return an unmodifiable Iterable containing all entries between from and
 	 *         to of type T
 	 */
-	public <T extends AbstractAccountancyEntry> Iterable<T> getEntries(
-			Class<T> clazz, DateTime from, DateTime to);
+	<T extends AbstractAccountancyEntry> Iterable<T> getEntries(Class<T> clazz, DateTime from, DateTime to);
 
 }

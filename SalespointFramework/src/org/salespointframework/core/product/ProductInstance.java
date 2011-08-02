@@ -8,8 +8,8 @@ public interface ProductInstance {
 	Money getPrice();
 	SerialNumber getSerialNumber();
 	ProductIdentifier getProductIdentifier();
-	Iterable<ProductFeature> getProductFeatures(); 
-	ProductFeature getProductFeature(String name); //TODO notwendig?
+	Iterable<ProductFeature> getProductFeatures();
+	ProductFeature getProductFeature(String name); // TODO notwendig?
 	void addProductFeatures(ProductFeatureType pf);
 	void removeProductFeatures();
 }
