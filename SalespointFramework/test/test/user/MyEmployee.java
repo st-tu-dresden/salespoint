@@ -3,6 +3,7 @@ package test.user;
 import javax.persistence.Entity;
 
 import org.salespointframework.core.users.AbstractEmployee;
+import org.salespointframework.core.users.UserIdentifier;
 
 @Entity
 public class MyEmployee extends AbstractEmployee{
@@ -12,7 +13,7 @@ public class MyEmployee extends AbstractEmployee{
 		
 	}
 	
-	public MyEmployee(String userId, String pw){
+	public MyEmployee(UserIdentifier userId, String pw){
 		super(userId, pw);
 	}
 

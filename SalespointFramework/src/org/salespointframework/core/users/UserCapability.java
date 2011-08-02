@@ -5,8 +5,8 @@ import javax.persistence.Id;
 
 /**
  * A UserCapability is identified by a name and nothing else.
- * You connect your Capabilities to the User in your {@link UserManager}.
- * @see UserManager
+ * You connect your Capabilities to the User in your {@link AbstractUserManager}.
+ * 
  * @author Christopher Bellmann
  *
  */

@@ -9,11 +9,11 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.ElementCollection;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.users.UserIdentifier;
 import org.salespointframework.util.Objects;
 
 /**
@@ -24,19 +24,18 @@ import org.salespointframework.util.Objects;
  * @author stanley
  * 
  */
-@MappedSuperclass
-public abstract class AbstractCalendarEntry implements CalendarEntry {
+@Entity
+public final class PersistentCalendarEntry implements CalendarEntry {
 
-    @Id
-    @GeneratedValue
-    private long                         calendarEntryIdentifier;
+    @EmbeddedId
+    private CalendarEntryIdentifier                         calendarEntryIdentifier;
 
     /**
      * This map stores a relationship between users and their capabilitys
      * relative to this calendar entry.
      */
     @ElementCollection
-    protected Map<String, CapabilitySet> capabilities = new HashMap<String, CapabilitySet>();
+    protected Map<UserIdentifier, CapabilitySet> capabilities = new HashMap<UserIdentifier, CapabilitySet>();
 
     /**
      * Description of this calendar entry. May be empty.
@@ -61,7 +60,7 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
     /**
      * Represents how often this entry should be repeated. For determining the
      * time between two repetitions, see
-     * {@link AbstractCalendarEntry#repeatStep}
+     * {@link PersistentCalendarEntry#repeatStep}
      * 
      */
     protected int                        repeatCount;
@@ -69,7 +68,7 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
     /**
      * Represents the time in millis between two repetitions of this entry. For
      * determining how often an entry should be repeated, see
-     * {@link AbstractCalendarEntry#repeatCount}
+     * {@link PersistentCalendarEntry#repeatCount}
      */
     protected long                       repeatStep;
 
@@ -78,7 +77,7 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
      * reasons.
      */
     @Deprecated
-    public AbstractCalendarEntry() {
+    public PersistentCalendarEntry() {
 
     }
 
@@ -98,7 +97,7 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
      *             begin is not before the end of this calendar entry or the
      *             title is empty.
      */
-    public AbstractCalendarEntry(String owner, String title, DateTime start, DateTime end) {
+    public PersistentCalendarEntry(UserIdentifier owner, String title, DateTime start, DateTime end) {
         Objects.requireNonNull(owner, "owner");
         Objects.requireNonNull(title, "title");
         Objects.requireNonNull(start, "start");
@@ -152,7 +151,7 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
      */
     @Override
     public int hashCode() {
-        return new Long(calendarEntryIdentifier).hashCode();
+        return calendarEntryIdentifier.hashCode();
     }
 
     /**
@@ -206,7 +205,7 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
      * @return the ID of this entry
      */
     @Override
-    public long getID() {
+    public CalendarEntryIdentifier getID() {
         return calendarEntryIdentifier;
     }
 
@@ -291,8 +290,8 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
      * @return The userID of the user who is the owner of this entry.
      */
     @Override
-    public String getOwner() {
-        for (String userId : capabilities.keySet()) {
+    public UserIdentifier getOwner() {
+        for (UserIdentifier userId : capabilities.keySet()) {
             if (capabilities.get(userId).contains(CalendarEntryCapability.OWNER)) {
                 return userId;
             }
@@ -312,12 +311,12 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
      *            the new capability for the given user
      */
     @Override
-    public void addCapability(String user, CalendarEntryCapability capability) {
+    public void addCapability(UserIdentifier user, CalendarEntryCapability capability) {
         Objects.requireNonNull(user, "user");
         Objects.requireNonNull(capability, "capability");
 
         if (capability == CalendarEntryCapability.OWNER) {
-            Iterator<String> owner = getUsersByCapability(capability).iterator();
+            Iterator<UserIdentifier> owner = getUsersByCapability(capability).iterator();
             while (owner.hasNext())
                 removeCapability(owner.next(), capability);
         }
@@ -348,7 +347,7 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
      *             if the capability <code>OWNER</code> should be removed.
      */
     @Override
-    public void removeCapability(String user, CalendarEntryCapability capability) {
+    public void removeCapability(UserIdentifier user, CalendarEntryCapability capability) {
         Objects.requireNonNull(user, "user");
         Objects.requireNonNull(capability, "capability");
 
@@ -374,7 +373,7 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
      * @return An {@link Iterable} which contains all capabilities of this user
      *         or null if the user has no capabilities for this entry.
      */
-    public Iterable<CalendarEntryCapability> getCapabilitiesByUser(String user) {
+    public Iterable<CalendarEntryCapability> getCapabilitiesByUser(UserIdentifier user) {
         Objects.requireNonNull(user, "user");
 
         return capabilities.get(user);
@@ -391,12 +390,12 @@ public abstract class AbstractCalendarEntry implements CalendarEntry {
      *         the capability or null if there is no user who has the capability
      *         for this entry.
      */
-    public Iterable<String> getUsersByCapability(CalendarEntryCapability capability) {
+    public Iterable<UserIdentifier> getUsersByCapability(CalendarEntryCapability capability) {
         Objects.requireNonNull(capability, "capability");
 
-        List<String> users = new LinkedList<String>();
+        List<UserIdentifier> users = new LinkedList<UserIdentifier>();
 
-        for (String user : capabilities.keySet()) {
+        for (UserIdentifier user : capabilities.keySet()) {
             if (capabilities.get(user).contains(capability))
                 users.add(user);
         }

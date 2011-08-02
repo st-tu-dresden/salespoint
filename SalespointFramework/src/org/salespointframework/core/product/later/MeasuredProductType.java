@@ -27,7 +27,7 @@ public interface MeasuredProductType extends ProductType {
 	
 	/**
      * Subtract this quantity from the available quantity of the MeasuredProductType  
-     * @param quantity which reduces the {@link quantityOnHand} of the MeasuredProductType
+     * @param quantity which reduces the {@link AbstractMeasuredProductType#quantityOnHand} of the MeasuredProductType
      */
 	public void reduceQuantity(Quantity quantity);
 }

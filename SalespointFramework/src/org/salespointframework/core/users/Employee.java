@@ -12,7 +12,7 @@ public interface Employee extends User{
 	
 	/**
 	 * Set the salary of the Employee to the given parameter
-	 * @param salery new salary
+	 * @param salary new salary
 	 */
 	public void changeSalary(Money salary);
 	
