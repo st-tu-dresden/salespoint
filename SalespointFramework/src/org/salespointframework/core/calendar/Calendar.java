@@ -1,5 +1,6 @@
 package org.salespointframework.core.calendar;
 
+import org.joda.time.DateTime;
 import org.salespointframework.util.Filter;
 
 /**
@@ -29,7 +30,7 @@ public interface Calendar<T extends CalendarEntry> {
      * @param id of the entry that should be returned
      * @return the entry with the given id or <code>null</code>
      */
-    T getEntryByID(CalendarEntryIdentifier id);
+    T getEntryByID(long id);
     
     /**
      * Adds the given entry to the calendar.
@@ -41,5 +42,26 @@ public interface Calendar<T extends CalendarEntry> {
      * Deletes the entry with the given id.
      * @param id of the entry that should be removed from calendar
      */
-    void deleteEntry(CalendarEntryIdentifier id);
+    void deleteEntry(long id);
+
+    /**
+     * Returns an {@link Iterable} that contains all entries that have the give title.
+     * @param title 
+     * @return An iterable with all found entries
+     */
+    Iterable<T> getEntriesByTitle(String title);
+
+    Iterable<T> getEntriesThatStartAfter(DateTime start);
+
+    Iterable<T> getEntriesThatStartBefore(DateTime start);
+
+    Iterable<T> getEntriesThatEndBefore(DateTime end);
+
+    Iterable<T> getEntriesThatEndAfter(DateTime end);
+
+    Iterable<T> getEntriesThatStartBetween(DateTime start, DateTime end);
+
+    Iterable<T> getEntriesThatEndBetween(DateTime start, DateTime end);
+
+    Iterable<T> getEntriesByOwner(String owner);
 }

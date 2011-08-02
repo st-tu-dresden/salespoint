@@ -1,7 +1,6 @@
 package org.salespointframework.core.calendar;
 
 import org.joda.time.DateTime;
-import org.salespointframework.core.users.UserIdentifier;
 
 /**
  * This is an interface which provides basic methods to handle an entry of a
@@ -45,14 +44,14 @@ public interface CalendarEntry {
      * 
      * @return owner
      */
-    UserIdentifier getOwner();
+    String getOwner();
 
     /**
      * Returns the id of this entry
      * 
      * @return ID
      */
-    CalendarEntryIdentifier getID();
+    long getID();
 
     /**
      * Sets a new start time.
@@ -94,7 +93,7 @@ public interface CalendarEntry {
      * @param capability
      *            the capability that the user should get
      */
-    void addCapability(UserIdentifier user, CalendarEntryCapability capability);
+    void addCapability(String user, CalendarEntryCapability capability);
 
     /**
      * Removes the capability of the user
@@ -104,6 +103,6 @@ public interface CalendarEntry {
      * @param capability
      *            the capability that the user should loose
      */
-    void removeCapability(UserIdentifier user, CalendarEntryCapability capability);
+    void removeCapability(String user, CalendarEntryCapability capability);
 
 }
