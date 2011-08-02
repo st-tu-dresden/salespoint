@@ -20,7 +20,7 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 	private EntityManager entityManager;
 	
 	@ElementCollection
-    protected Map<String, UserCapabilityList> capabilities = new HashMap<String, UserCapabilityList>();
+    protected Map<UserIdentifier, UserCapabilityList> capabilities = new HashMap<UserIdentifier, UserCapabilityList>();
 	
 	/**
 	 * creates new AbstractUserManager
@@ -133,8 +133,8 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 	}
 	
 	
-	public T getUserById(String userId){
-		return entityManager.find(this.getContentClass(), userId);
+	public T getUserById(UserIdentifier userIdentifier){
+		return entityManager.find(this.getContentClass(), userIdentifier);
 	}
 
 	

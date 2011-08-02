@@ -16,8 +16,13 @@ public final class UserIdentifier extends SalespointIdentifier implements Serial
 	
 	private static final long serialVersionUID = 1L;
 
-	public UserIdentifier() {
+	@Deprecated
+	public UserIdentifier(){
 		super();
+	}
+	
+	public UserIdentifier(String userId) {
+		super(userId);
 	}
    
 }

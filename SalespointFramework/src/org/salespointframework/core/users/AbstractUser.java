@@ -15,7 +15,7 @@ public class AbstractUser implements User{
 	
 
 	@Id
-	private String userId;
+	private UserIdentifier userId;
 	private String password;
 	@SuppressWarnings("unused")
 	private boolean deleted=false;
@@ -27,7 +27,7 @@ public class AbstractUser implements User{
 	protected AbstractUser() {}
 
 	
-	public AbstractUser(String userId, String password) {
+	public AbstractUser(UserIdentifier userId, String password) {
 		Objects.requireNonNull(userId, "CreateUser_userId");
 		Objects.requireNonNull(password, "CreateUser_password");
 		this.userId=userId;
@@ -53,7 +53,7 @@ public class AbstractUser implements User{
 	}
 	
 	
-	public String getUserId(){
+	public UserIdentifier getUserId(){
 		return userId;
 	}
 	
@@ -62,5 +62,17 @@ public class AbstractUser implements User{
 		return false;
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		if (o instanceof User){
+			return equals((User)o);
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		return userId.hashCode();
+	}
 
 }

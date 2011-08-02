@@ -19,7 +19,7 @@ public class AbstractCustomer extends AbstractUser implements Customer{
 	 * @param userId (username) of the Customer 
 	 * @param first password of the Customer
 	 */
-	public AbstractCustomer(String userId, String password) {
+	public AbstractCustomer(UserIdentifier userId, String password) {
 		super(userId, password);
 	}
 
