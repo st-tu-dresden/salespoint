@@ -33,4 +33,10 @@ public class UserCapability {
 	public String getName(){
 		return name;
 	}
+	
+	
+	public boolean equals(UserCapability uc){
+		if (this.name.equals(uc.name)) return true;
+		return false;
+	}
 }

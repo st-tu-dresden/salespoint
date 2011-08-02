@@ -19,8 +19,9 @@ public class AbstractUser implements User{
 	private String password;
 	@SuppressWarnings("unused")
 	private boolean deleted=false;
-	@OneToMany
-	private List<UserCapability> capabilities= new ArrayList<UserCapability>();
+	
+	//@OneToMany
+	//private List<UserCapability> capabilities= new ArrayList<UserCapability>();
 	
 	@Deprecated
 	protected AbstractUser() {}
@@ -56,25 +57,10 @@ public class AbstractUser implements User{
 		return userId;
 	}
 	
-//	//package visibility
-//	List<UserCapability> getCapabilities(){
-//		return capabilities;
-//	}
-//	
-//	//package visibility
-//	void addCapability(UserCapability uc){
-//		capabilities.add(uc);
-//	}
-//	
-//	//package visibility
-//	void removeCapability(UserCapability uc){
-//		capabilities.remove(uc);
-//	}
-//	
-//	//package visibility
-//	boolean hasCapability(UserCapability uc){
-//		if (capabilities.contains(uc)) return true;
-//		return false;
-//	}
+	public boolean equals(User user){
+		if(userId.equals(user.getUserId())) return true;
+		return false;
+	}
+	
 
 }

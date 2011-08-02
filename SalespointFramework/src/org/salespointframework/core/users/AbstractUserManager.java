@@ -52,7 +52,7 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 	 * adds a UserCapability to an User
 	 * @param user the User you want to give that UserCapability
 	 * @param userCapability the Capapbility you want to give to the User
-	 * @return true if successful 
+	 * @return true if successful, false if there is no such user
 	 */
 	public boolean addCapability(T user, UserCapability userCapability){
 		Objects.requireNonNull(user, "addCapability_User");
@@ -62,10 +62,10 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 			return false;
 		}
 		else{
-		     UserCapabilityList capList = null;
+		     UserCapabilityList capList = capabilities.get(user);
 
-		        if ((capList = capabilities.get(user)) == null) {
-		            System.out.println("noCapas");
+		        if (capList  == null) {
+		            //System.out.println("noCapas");
 		        	capList = new UserCapabilityList();
 		            capabilities.put(user.getUserId(), capList);
 		        }
@@ -82,23 +82,33 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 	 * removes a UserCapability from an User. 
 	 * @param user the User you want to give that UserCapability
 	 * @param userCapability the Capapbility you want to give to the User
-	 * @return true if successful 
+	 * @return true if successful, false if there is no such user
 	 */
 	public boolean removeCapability(T user, UserCapability userCapability){
 		Objects.requireNonNull(user, "removeCapability_User");
 		Objects.requireNonNull(userCapability, "removeCapability_userCapability");
-		if (!entityManager.contains(user)){
+		if (this.getUserById(user.getUserId()) == null){
+			System.out.println("noSuchUser");
 			return false;
 		}
 		else{
-			boolean i=true; //nur zür überbrückung!
-			if(i){//check if User has Capability exists
-				//TODO: remove Capability
-				return true;
-			}
-			else return false;
+		    UserCapabilityList capList = capabilities.get(user);
+
+		        if (capList  == null) {
+		            //System.out.println("noCapas");
+		        	return true;
+		        }
+		        else {
+		            if (capList.contains(userCapability)){
+		            	capList.remove(userCapability);
+		            	 return true;
+		            }
+		            return false;
+		        }
+		        
 		}
 	}
+	
 	
 	/**
 	 * Checks if a User has the given Capability
@@ -109,10 +119,9 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 	public boolean hasCapability(T user, UserCapability userCapability){
 		Objects.requireNonNull(user, "hasCapability_User");
 		Objects.requireNonNull(userCapability, "hasCapability_userCapability");
-		System.out.println("hasCapaTEst?");
 		if(capabilities.containsKey(user.getUserId())){
-			System.out.println("TESTSTSTIGHA");
-			return true;
+			UserCapabilityList ucl= capabilities.get(user.getUserId());
+			if (ucl.contains(userCapability)) return true;
 		}
 		return false;
 	}

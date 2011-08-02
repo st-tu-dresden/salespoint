@@ -7,7 +7,9 @@ import java.util.Iterator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import org.junit.After;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.users.DuplicateUserException;
@@ -45,7 +47,24 @@ public class UsermanagerTest {
 		employeeManager.addUser(e3);
 		emE.getTransaction().commit();
 		
-	}	
+	}
+	
+	@After   
+	public void runAfterEveryTest() {   
+	    if(emE.getTransaction().isActive()){
+	    	emE.getTransaction().rollback();
+	    }
+	    if(emC.getTransaction().isActive()){
+	    	emC.getTransaction().rollback();
+	    }
+	    
+	}   
+	
+	@Test
+	public void testEmployeeMangerContainsE3(){
+		assertEquals(employeeManager.getUserById(e3.getUserId()), e3);
+	}
+	
 	
 	@Test
 	public void testAddCostumer(){
@@ -53,6 +72,7 @@ public class UsermanagerTest {
 		emC.getTransaction().begin();
 		customerManager.addUser(c);
 		emC.getTransaction().commit();
+		assertEquals(customerManager.getUserById(c.getUserId()), c);
 	}
 	
 	@Test
@@ -60,6 +80,9 @@ public class UsermanagerTest {
 		emE.getTransaction().begin();
 		employeeManager.addUser(e);
 		emE.getTransaction().commit();
+		
+		MyEmployee currentE = employeeManager.getUserById(e.getUserId());
+		assertEquals(currentE, e);
 	}
 	
 	
@@ -82,11 +105,12 @@ public class UsermanagerTest {
 	
 	@Test
 	public void testGetAllUsers(){
-		//set this Number in order how many Employees u creat during testing
+		//set this Number in order how many Employees u create during testing
 		int numberOfEmployees =2;
 		int sizeOfAllEmployees =0;
 		for(Iterator<MyEmployee> i = employeeManager.getUsers().iterator(); i.hasNext(); ){
 			employeeManager.getUsers();
+			System.out.println("zählen");
 			sizeOfAllEmployees++;
 			i.next();
 		}
@@ -100,19 +124,38 @@ public class UsermanagerTest {
 		
 	}
 	
+	@Ignore
 	@Test
 	public void testAddCapabilityToEmployee(){
 		capa= new UserCapability("CrazyTestCapabilityAgain");
+		emC.getTransaction().begin();
 		boolean addCapa = employeeManager.addCapability(e3, capa);
-		assertEquals("NoSuchUser!",true,  addCapa);
+		emC.getTransaction().commit();
+		assertEquals("NoSuchUser!", true,  addCapa);
 	}
 	
+	@Ignore
 	@Test
 	public void testHasCapability(){
 		capa= new UserCapability("CrazyTestCapabilityAgain");
-		//employeeManager.addCapability(e3, capa);
 		boolean hasCapa = employeeManager.hasCapability(e3, capa);
 		assertEquals(true,  hasCapa);
+	}
+	
+	@Ignore
+	@Test
+	public void testRemoveCapability(){
+		capa= new UserCapability("CrazyTestCapabilityAgain");
+		boolean hasCapa = employeeManager.hasCapability(e3, capa);
+		assertEquals("befor removing", true,  hasCapa);
+		
+		emC.getTransaction().begin();
+		boolean remo =employeeManager.removeCapability(e3, capa);
+		emC.getTransaction().commit();
+		assertEquals("during removing", true,  remo);
+		
+		boolean hasCapa2 = employeeManager.hasCapability(e3, capa);
+		assertEquals("after removing", false,  hasCapa2);
 	}
 	
 }
