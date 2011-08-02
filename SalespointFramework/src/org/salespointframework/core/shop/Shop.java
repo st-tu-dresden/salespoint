@@ -3,6 +3,7 @@ package org.salespointframework.core.shop;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.time.DefaultTime;
 import org.salespointframework.core.time.Time;
@@ -12,11 +13,22 @@ public enum Shop {
 	INSTANCE;
 
 	//TODO
-	//Accountancy und co?
+	
 	
 	private Time time = new DefaultTime();
+	private Accountancy accountancy;
 	private OrderManager ordermanager;
 	private Map<String, UserManager> userManagerMap = new HashMap<String, UserManager>();
+	
+	
+	public void setAccountancy(Accountancy accountancy) {
+		this.accountancy = accountancy;
+	}
+	
+	public Accountancy getAccountancy() {
+		return accountancy;
+	}
+
 	
 	public void setOrderManager(OrderManager ordermanager) {
 		this.ordermanager = ordermanager;
@@ -25,6 +37,8 @@ public enum Shop {
 	public OrderManager getOrderManager() {
 		return ordermanager;
 	}
+	
+	
 
 	public void setTime(Time time) {
 		this.time = time;
