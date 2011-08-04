@@ -261,16 +261,16 @@ public class OrderEntry {
 		if(hasOrderLines) {
 			
 			for(int i=1; i<this.orderLines.size(); i++) {
-				price = (Money) price.add(this.orderLines.get(i).getOrderLinePrice());
+				price = price.add_(this.orderLines.get(i).getOrderLinePrice());
 			}
 			
 			for(int i=0; i<this.chargeLines.size(); i++) {
-				price = (Money) price.add(this.chargeLines.get(i).getAmount());
+				price = price.add_(this.chargeLines.get(i).getAmount());
 			}
 		} else {
 			
 			for(int i=1; i<this.chargeLines.size(); i++) {
-				price = (Money) price.add(this.chargeLines.get(i).getAmount());
+				price = price.add_(this.chargeLines.get(i).getAmount());
 			}
 		}
 
