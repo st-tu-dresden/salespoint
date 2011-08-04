@@ -3,6 +3,7 @@ package org.salespointframework.core.users;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
@@ -14,14 +15,14 @@ import org.salespointframework.util.Objects;
 public class AbstractUser implements User{
 	
 
-	@Id
+	@EmbeddedId
 	private UserIdentifier userId;
 	private String password;
 	@SuppressWarnings("unused")
 	private boolean deleted=false;
 	
 	//@OneToMany
-	//private List<UserCapability> capabilities= new ArrayList<UserCapability>();
+	private List<UserCapability> capabilities= new ArrayList<UserCapability>();
 	
 	@Deprecated
 	protected AbstractUser() {}

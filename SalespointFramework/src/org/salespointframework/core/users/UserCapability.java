@@ -39,4 +39,9 @@ public class UserCapability {
 		if (this.name.equals(uc.name)) return true;
 		return false;
 	}
+	
+	@Override
+	public String toString(){
+		return name;
+	}
 }

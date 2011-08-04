@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
 
 import org.salespointframework.core.database.ICanHasClass;
@@ -16,7 +15,7 @@ import org.salespointframework.util.SalespointIterable;
 public abstract class AbstractUserManager<T extends User> implements ICanHasClass<T>{
 	
 		
-	@PersistenceUnit
+	//@PersistenceUnit
 	private EntityManager entityManager;
 	
 	@ElementCollection
@@ -70,10 +69,20 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 		            capabilities.put(user.getUserId(), capList);
 		        }
 		        else {
-		            if (capList.contains(userCapability)) return true;		          
+		            if (capList.contains(userCapability)) {
+		            	System.out.println("already has Capa");
+		            	return true;		          
+		            }
+		        }
+		        if(entityManager.find(UserCapability.class, userCapability.getName()) == null){
+		        	System.out.println("persistsCapa");
+		        	entityManager.persist(userCapability);
 		        }
 		        System.out.println("AddCapa");
 		        capList.add(userCapability);
+		        //capabilities.put(user.getUserId(), capList);
+		        System.out.println(capList);
+		        System.out.println(capabilities);
 		        return true;
 		}
 	}
@@ -120,8 +129,9 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 		Objects.requireNonNull(user, "hasCapability_User");
 		Objects.requireNonNull(userCapability, "hasCapability_userCapability");
 		if(capabilities.containsKey(user.getUserId())){
+			System.out.println("UserExists");
 			UserCapabilityList ucl= capabilities.get(user.getUserId());
-			if (ucl.contains(userCapability)) return true;
+			if (ucl.contains(userCapability))	return true;
 		}
 		return false;
 	}
@@ -129,7 +139,8 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 	public Iterable<T> getUsers(){
 		Class<T> cc = this.getContentClass();
 		TypedQuery<T> users = entityManager.createQuery("SELECT t FROM " + cc.getSimpleName() + " t",cc);
-		return SalespointIterable.from(users.getResultList());
+		Iterable<T> i= SalespointIterable.from(users.getResultList());
+		 return i;
 	}
 	
 	
