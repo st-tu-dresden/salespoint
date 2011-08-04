@@ -61,7 +61,6 @@ public class OrderLine {
 	protected OrderLine() {
 	}
 
-	// PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUL
 	public OrderLine(Inventory<?> inventory, SerialNumber serialNumber) {
 		// check Inventar,
 		this.inventory = Objects.requireNonNull(inventory, "inventory");
@@ -110,7 +109,6 @@ public class OrderLine {
 		this.mutableOrderLine = true;
 	}
 
-	// PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUL
 	public OrderLine(Inventory<?> inventory, SerialNumber serialNumber,
 			String description, String comment) {
 
