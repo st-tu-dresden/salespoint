@@ -16,6 +16,7 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.ChargeLine;
 import org.salespointframework.core.order.OrderLine;
+import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.product.SerialNumber;
 
 import test.inventory.KeksInventory;
@@ -75,6 +76,9 @@ public class OrderLineTest {
 		
 		em.getTransaction().begin();
 		for (OrderLine current : list) {
+			for(ProductInstance pi : current.getInventory().getProductInstances()) {
+				current.getInventory().removeProductInstance(pi.getSerialNumber());
+			}
 			em.remove(current);
 		}
 		em.getTransaction().commit();
