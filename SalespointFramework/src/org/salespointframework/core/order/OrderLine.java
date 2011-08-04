@@ -10,7 +10,6 @@ import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Column;
@@ -83,17 +82,6 @@ public class OrderLine {
 		this.serialNumbers.addAll(Iterables.toList(serialNumber));
 	}
 
-	public boolean addSerialNumber(SerialNumber serialNumber) {
-		// TODO
-		// check Null, check Inventar, check Status
-		return this.serialNumbers.add(serialNumber);
-	}
-
-	public boolean addAllSerialNumbers(Iterable<SerialNumber> serialNumbers) {
-		// TODO
-		// check Null, check Inventar, check Status
-		return this.serialNumbers.addAll(Iterables.toList(serialNumbers));
-	}
 
 	// PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUL
 
@@ -206,95 +194,91 @@ public class OrderLine {
 	}
 
 	/**
-	 * Increments the number of the ordered objects in this OrderLine. If this
+	 * Adds the given SerialNumber to this OrderLine. If this
 	 * OrderLine is provided in the context of an processing, cancelled or
-	 * closed OrderEntry, the number cannot be changed.
+	 * closed OrderEntry or the inventory doesn't contain this SerialNumber, the number cannot be added.
 	 * 
-	 * @param numbersToAdd
-	 *            the SerialNumber from that object that shall to be added.
+	 * @param serialNumber
+	 *            the SerialNumber that shall to be added.
+	 *            
+	 * @return true if this OrderLine changed as a result of the call.
 	 */
-	public boolean incrementNumberOrdered(SerialNumber numberToAdd) {
+	public boolean addSerialNumber(SerialNumber serialNumber) {
 
 		if (!this.mutableChargeLines)
 			return false;
-		Objects.requireNonNull(numberToAdd, "numberToAdd");
-
-		return this.serialNumbers.add(numberToAdd);
+		Objects.requireNonNull(serialNumber, "serialNumber");
+		if(!inventory.contains(serialNumber)) 
+			return false;
+		return this.serialNumbers.add(serialNumber);
 	}
 
 	/**
-	 * Increments the number of the ordered objects in this OrderLine. This
-	 * method doesn't change anything, if the given Collection is empty. If this
+	 * Adds the specified SerialNumbers to this OrderLine. If this
 	 * OrderLine is provided in the context of an processing, cancelled or
-	 * closed OrderEntry, the number cannot be changed.
+	 * closed OrderEntry or the inventory doesn't contain all SerialNumbers of the given Iterable, no number will be added.
 	 * 
-	 * @param numbersToAdd
-	 *            the Collection of SerialNumbers from objects that shall to be
-	 *            added.
+	 * @param serialNumbers
+	 *            the SerialNumbers that shall to be added.
+	 *            
+	 * @return true if this OrderLine changed as a result of the call.
 	 */
-	public boolean incrementNumberOrdered(Collection<SerialNumber> numbersToAdd) {
-
-		boolean ret = false;
-
-		if (!this.mutableChargeLines)
-			return ret;
-		if (numbersToAdd.isEmpty())
-			return ret;
-
-		for (SerialNumber sn : numbersToAdd) {
-			if (this.serialNumbers.add(sn))
-				ret = true;
-		}
-
-		return ret;
-	}
-
-	/**
-	 * Decrements the number of the ordered objects in this OrderLine. If the
-	 * SerialNumber doesn't exist in this OrderLine, nothing will be removed. If
-	 * this OrderLine is provided in the context of an processing, cancelled or
-	 * closed OrderEntry, the number will not be changed.
-	 * 
-	 * @param numberToRemove
-	 *            the SerialNumber of that object that shall to be removed.
-	 */
-	public boolean decrementNumberOrdered(SerialNumber numberToRemove) {
+	public boolean addAllSerialNumbers(Iterable<SerialNumber> serialNumbers) {
 
 		if (!this.mutableChargeLines)
 			return false;
-		Objects.requireNonNull(numberToRemove, "numberToRemove");
+		Objects.requireNonNull(serialNumbers, "serialNumbers");
+		
+		for(SerialNumber sn : serialNumbers) {
+			if(!inventory.contains(sn)) 
+				return false;
+		}
+		return this.serialNumbers.addAll(Iterables.toList(serialNumbers));
+	}
+	
+	/**
+	 * Removes the given SerialNumber from this OrderLine. If this
+	 * OrderLine is provided in the context of an processing, cancelled or
+	 * closed OrderEntry, the number cannot be removed.
+	 * 
+	 * @param serialNumber
+	 *            the SerialNumber that shall to be removed.
+	 *            
+	 * @return true if this OrderLine changed as a result of the call.
+	 */
+	public boolean removeSerialNumber(SerialNumber serialNumber) {
 
-		return this.serialNumbers.remove(numberToRemove);
+		if (!this.mutableChargeLines)
+			return false;
+		Objects.requireNonNull(serialNumber, "serialNumber");
+		if(!inventory.contains(serialNumber)) 
+			return false;
+		return this.serialNumbers.remove(serialNumber);
 	}
 
 	/**
-	 * Decrements the number of the ordered objects in this OrderLine. This
-	 * method doesn't change anything, if size of the given Collection is empty.
-	 * Only Elements which exists in this OrderLine will be removed. If this
+	 * Removes the specified SerialNumbers from this OrderLine. If this
 	 * OrderLine is provided in the context of an processing, cancelled or
-	 * closed OrderEntry, the number will not be changed.
+	 * closed OrderEntry, no number will be removed.
 	 * 
-	 * @param number
-	 *            the Collection of SerialNumbers from objects that shall to be
-	 *            removed.
+	 * @param serialNumbers
+	 *            the SerialNumbers that shall to be removed.
+	 *            
+	 * @return true if this OrderLine changed as a result of the call. 
 	 */
-	public boolean decrementNumberOrdered(
-			Collection<SerialNumber> numbersToRemove) {
-
-		boolean ret = false;
+	public boolean removeAllSerialNumbers(Iterable<SerialNumber> serialNumbers) {
 
 		if (!this.mutableChargeLines)
-			return ret;
-		if (numbersToRemove.isEmpty())
-			return ret;
-
-		for (SerialNumber sn : numbersToRemove) {
-			if (this.serialNumbers.remove(sn))
-				ret = true;
+			return false;
+		Objects.requireNonNull(serialNumbers, "serialNumbers");
+		
+		for(SerialNumber sn : serialNumbers) {
+			if(!inventory.contains(sn)) 
+				return false;
 		}
-
-		return ret;
+		return this.serialNumbers.removeAll(Iterables.toList(serialNumbers));
 	}
+	
 
 	/**
 	 * Add a <code>ChargeLine</code> to this <code>OrderLine</code>. The
