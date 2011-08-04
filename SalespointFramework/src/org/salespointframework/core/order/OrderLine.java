@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +23,6 @@ import org.joda.time.DateTime;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.SerialNumber;
-import org.salespointframework.core.quantity.Unit;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
@@ -41,6 +41,9 @@ public class OrderLine {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<ChargeLine> chargeLines;
+	
+	//TODO maybe ChargeLines for particular SerialNumbers
+	//private Map<String,List<ChargeLine>> snChargeLines;
 
 	// TODO Problems with multiple embedded Objects...
 	@ElementCollection
@@ -82,9 +85,7 @@ public class OrderLine {
 		this.serialNumbers.addAll(Iterables.toList(serialNumber));
 	}
 
-
 	// PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUL
-
 	public OrderLine(SerialNumber serialNumber, Inventory<?> inventory,
 			String description, String comment, Money unitPrice,
 			DateTime expectedDeliveryDate) {
@@ -174,11 +175,15 @@ public class OrderLine {
 	 * @return the total price of this OrderLine
 	 */
 	public Money getOrderLinePrice() {
-		Money price = new Money(this.unitPrice.getAmount(),
-				this.unitPrice.getMetric());
-		Unit numberOrdered = new Unit(this.serialNumbers.size());
-
-		price = numberOrdered.multiply_(price);
+		
+		Iterator<SerialNumber> itSN = this.serialNumbers.iterator();
+		
+		Money price = this.inventory.getProductInstance(itSN.next()).getPrice();
+		
+		while(itSN.hasNext()) {
+			price = price.add_(this.inventory.getProductInstance(itSN.next()).getPrice());
+		}
+		
 		for (ChargeLine cl : this.chargeLines) {
 			price = price.add_(cl.getAmount());
 		}
