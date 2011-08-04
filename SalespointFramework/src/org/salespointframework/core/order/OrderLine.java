@@ -177,17 +177,19 @@ public class OrderLine {
 	public Money getOrderLinePrice() {
 		
 		Iterator<SerialNumber> itSN = this.serialNumbers.iterator();
+		Money price = new Money(0);
 		
-		Money price = this.inventory.getProductInstance(itSN.next()).getPrice();
-		
-		while(itSN.hasNext()) {
-			price = price.add_(this.inventory.getProductInstance(itSN.next()).getPrice());
+		if(itSN.hasNext()) {
+			price = this.inventory.getProductInstance(itSN.next()).getPrice();
+			
+			while(itSN.hasNext()) {
+				price = price.add_(this.inventory.getProductInstance(itSN.next()).getPrice());
+			}
+			
+			for (ChargeLine cl : this.chargeLines) {
+				price = price.add_(cl.getAmount());
+			}
 		}
-		
-		for (ChargeLine cl : this.chargeLines) {
-			price = price.add_(cl.getAmount());
-		}
-
 		return price;
 	}
 
