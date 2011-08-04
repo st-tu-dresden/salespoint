@@ -24,6 +24,7 @@ import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.actions.OrderAction;
 import org.salespointframework.core.product.SerialNumber;
+import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
@@ -43,8 +44,6 @@ public class OrderEntry {
 	private Date dateCreated;
 	private String salesChannel;
 	private String termsAndConditions;
-	private Money payed;
-	
 	
 	private List<OrderAction> orderActions;
 	
@@ -57,7 +56,7 @@ public class OrderEntry {
 	
 	public OrderEntry(String salesChannel, String termsAndConditions) {
 		orderIdentifier = new OrderIdentifier();
-		dateCreated = new Date(); // <- TODO WTF
+		dateCreated = Shop.INSTANCE.getTime().getDateTime().toDate(); // <- TODO WTF
 		this.salesChannel = Objects
 				.requireNonNull(salesChannel, "salesChannel");
 		this.termsAndConditions = Objects.requireNonNull(termsAndConditions,
@@ -65,7 +64,6 @@ public class OrderEntry {
 		orderActions = new ArrayList<OrderAction>();
 		orderLines = new ArrayList<OrderLine>();
 		status = OrderStatus.INITIALIZED;
-		this.payed = new Money(0);
 	}
 
 	
