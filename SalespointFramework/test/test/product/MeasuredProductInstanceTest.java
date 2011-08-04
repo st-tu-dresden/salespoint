@@ -19,6 +19,7 @@ public class MeasuredProductInstanceTest {
 	
 	TestMeasuredProductInstance klein1 = new TestMeasuredProductInstance (coke, new Quantity(0.2, q.getMetric(), q.getRoundingStrategy()));
 	TestMeasuredProductInstance klein2 = new TestMeasuredProductInstance (coke, new Quantity(0.2, q.getMetric(), q.getRoundingStrategy()));
+	TestMeasuredProductInstance klein3 = new TestMeasuredProductInstance (coke, 0.2);
 	TestMeasuredProductInstance gross = new TestMeasuredProductInstance (coke, new Quantity(0.5, q.getMetric(), q.getRoundingStrategy()));
 	
 	@Test(expected=ArgumentNullException.class)
@@ -47,10 +48,19 @@ public class MeasuredProductInstanceTest {
 	}
 	
 	@Test 
-	public void testGetQuantityOfProductType(){
+	public void testGetQuantityOfProductType1(){
 		
 		TestMeasuredProductType coke1 = new TestMeasuredProductType ("Coke", new Money(600), q);
 		TestMeasuredProductInstance m = new TestMeasuredProductInstance (coke1, new Quantity(0.5, q.getMetric(), q.getRoundingStrategy()));
+		
+		assertEquals (new BigDecimal(299.5) , m.getProductType().getQuantityOnHand().getAmount());
+	}
+	
+	@Test 
+	public void testGetQuantityOfProductType2(){
+		
+		TestMeasuredProductType coke1 = new TestMeasuredProductType ("Coke", new Money(600), q);
+		TestMeasuredProductInstance m = new TestMeasuredProductInstance (coke1, 0.5);
 		
 		assertEquals (new BigDecimal(299.5) , m.getProductType().getQuantityOnHand().getAmount());
 	}
@@ -60,7 +70,6 @@ public class MeasuredProductInstanceTest {
 		TestMeasuredProductInstance m = klein1;
 		
 		assertEquals(m,klein1);
-		
 	}
 	
 	@Test
@@ -83,6 +92,7 @@ public class MeasuredProductInstanceTest {
 		assertTrue(klein1.equals(klein1));
 		assertTrue(klein1.equals(m));
 		assertFalse(klein1.equals(klein2));
+		assertFalse(klein1.equals(klein3));
 		assertFalse(klein1.equals(gross));
 	}
 	
@@ -94,6 +104,12 @@ public class MeasuredProductInstanceTest {
 	
 	@Test 
 	public void testHashcode2() {
+		
+		assertEquals(klein1.hashCode(),klein3.hashCode());
+	}
+	
+	@Test 
+	public void testHashcode3() {
 		
 		assertNotSame(klein1.hashCode(),gross.hashCode());
 	}
