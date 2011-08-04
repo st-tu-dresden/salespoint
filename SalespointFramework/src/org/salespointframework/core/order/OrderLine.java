@@ -35,7 +35,6 @@ import org.salespointframework.util.SalespointIterable;
 @Entity
 public class OrderLine {
 
-	// TODO Unit Price über Inventar
 	@EmbeddedId
 	private OrderLineIdentifier identifier;
 
@@ -55,7 +54,7 @@ public class OrderLine {
 	private String description;
 	private String comment;
 
-	private Money unitPrice;
+	//private Money unitPrice; -> removed, because of calculation over the inventory
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date expectedDeliveryDate;
 
@@ -87,11 +86,11 @@ public class OrderLine {
 
 	// PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUL
 	public OrderLine(SerialNumber serialNumber, Inventory<?> inventory,
-			String description, String comment, Money unitPrice,
+			String description, String comment,
 			DateTime expectedDeliveryDate) {
 		this.description = Objects.requireNonNull(description, "description");
 		this.comment = Objects.requireNonNull(comment, "comment");
-		this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
+		//this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
 		this.identifier = new OrderLineIdentifier();
 		this.expectedDeliveryDate = Objects.requireNonNull(
 				expectedDeliveryDate, "expectedDeliveryDate").toDate();
@@ -105,10 +104,10 @@ public class OrderLine {
 
 	public OrderLine(Collection<SerialNumber> serialNumbers,
 			Inventory<?> inventory, String description, String comment,
-			Money unitPrice, DateTime expectedDeliveryDate) {
+			DateTime expectedDeliveryDate) {
 		this.description = Objects.requireNonNull(description, "description");
 		this.comment = Objects.requireNonNull(comment, "comment");
-		this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
+		//this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
 		this.identifier = new OrderLineIdentifier();
 		this.expectedDeliveryDate = Objects.requireNonNull(
 				expectedDeliveryDate, "expectedDeliveryDate").toDate();
@@ -163,10 +162,10 @@ public class OrderLine {
 
 	/**
 	 * @return the unitPrice
-	 */
+	 *//*
 	public Money getUnitPrice() {
 		return unitPrice;
-	}
+	}*/
 
 	/**
 	 * Calculates the total price of this OrderLine. The number of ordered
