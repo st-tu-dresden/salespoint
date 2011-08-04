@@ -1,8 +1,6 @@
 package org.salespointframework.core.order;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -15,11 +13,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.joda.time.DateTime;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.SerialNumber;
@@ -55,8 +50,9 @@ public class OrderLine {
 	private String comment;
 
 	//private Money unitPrice; -> removed, because of calculation over the inventory
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date expectedDeliveryDate;
+	
+	//@Temporal(TemporalType.TIMESTAMP)
+	//private Date expectedDeliveryDate; -> not Used
 
 	protected boolean mutableChargeLines;
 	protected boolean mutableOrderLine;
@@ -70,57 +66,101 @@ public class OrderLine {
 		// check Inventar,
 		this.inventory = Objects.requireNonNull(inventory, "inventory");
 		Objects.requireNonNull(serialNumber, "serialNumber");
-		this.serialNumbers.add(serialNumber);
-	}
-
-	public OrderLine(Inventory<?> inventory, Iterable<SerialNumber> serialNumber) {
-		// check Inventar
-		this.inventory = Objects.requireNonNull(inventory, "inventory");
-		Objects.requireNonNull(serialNumber, "serialNumber");
-		if (Iterables.isEmpty(serialNumber)) {
+		
+		if(inventory.contains(serialNumber)) {
+			this.serialNumbers.add(serialNumber);
+		} else {
 			// TODO bessere Exception
 			throw new RuntimeException();
 		}
-		this.serialNumbers.addAll(Iterables.toList(serialNumber));
+		
+		this.identifier = new OrderLineIdentifier();
+		this.description = "";
+		this.comment = "";
+		//this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
+		this.chargeLines = new ArrayList<ChargeLine>();
+		this.mutableChargeLines = true;
+		this.mutableOrderLine = true;
+	}
+
+	public OrderLine(Inventory<?> inventory, Iterable<SerialNumber> serialNumbers) {
+		// check Inventar
+		this.inventory = Objects.requireNonNull(inventory, "inventory");
+		Objects.requireNonNull(serialNumbers, "serialNumber");
+		if (Iterables.isEmpty(serialNumbers)) {
+			// TODO bessere Exception
+			throw new RuntimeException();
+		}
+		
+		for(SerialNumber sn : serialNumbers) {
+			if(!inventory.contains(sn)) {
+				// TODO bessere Exception
+				throw new RuntimeException();
+			}
+		}
+		
+		this.serialNumbers.addAll(Iterables.toList(serialNumbers));
+		
+		this.identifier = new OrderLineIdentifier();
+		this.description = "";
+		this.comment = "";
+		//this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
+		this.chargeLines = new ArrayList<ChargeLine>();
+		this.mutableChargeLines = true;
+		this.mutableOrderLine = true;
 	}
 
 	// PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUL
-	public OrderLine(SerialNumber serialNumber, Inventory<?> inventory,
-			String description, String comment,
-			DateTime expectedDeliveryDate) {
+	public OrderLine(Inventory<?> inventory, SerialNumber serialNumber,
+			String description, String comment) {
+
+		// check Inventar,
+		this.inventory = Objects.requireNonNull(inventory, "inventory");
+		Objects.requireNonNull(serialNumber, "serialNumber");
+		
+		if(inventory.contains(serialNumber)) {
+			this.serialNumbers.add(serialNumber);
+		} else {
+			// TODO bessere Exception
+			throw new RuntimeException();
+		}
+		
+		this.identifier = new OrderLineIdentifier();
 		this.description = Objects.requireNonNull(description, "description");
 		this.comment = Objects.requireNonNull(comment, "comment");
 		//this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
-		this.identifier = new OrderLineIdentifier();
-		this.expectedDeliveryDate = Objects.requireNonNull(
-				expectedDeliveryDate, "expectedDeliveryDate").toDate();
 		this.chargeLines = new ArrayList<ChargeLine>();
 		this.mutableChargeLines = true;
 		this.mutableOrderLine = true;
-		Objects.requireNonNull(serialNumber, "serialNumber");
-		this.serialNumbers.add(serialNumber);
-		this.inventory = Objects.requireNonNull(inventory, "inventory");
 	}
 
-	public OrderLine(Collection<SerialNumber> serialNumbers,
-			Inventory<?> inventory, String description, String comment,
-			DateTime expectedDeliveryDate) {
+	public OrderLine(Inventory<?> inventory, Iterable<SerialNumber> serialNumbers, 
+			String description, String comment) {
+
+		// check Inventar
+		this.inventory = Objects.requireNonNull(inventory, "inventory");
+		Objects.requireNonNull(serialNumbers, "serialNumber");
+		if (Iterables.isEmpty(serialNumbers)) {
+			// TODO bessere Exception
+			throw new RuntimeException();
+		}
+		
+		for(SerialNumber sn : serialNumbers) {
+			if(!inventory.contains(sn)) {
+				// TODO bessere Exception
+				throw new RuntimeException();
+			}
+		}
+		
+		this.serialNumbers.addAll(Iterables.toList(serialNumbers));
+		
+		this.identifier = new OrderLineIdentifier();
 		this.description = Objects.requireNonNull(description, "description");
 		this.comment = Objects.requireNonNull(comment, "comment");
 		//this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
-		this.identifier = new OrderLineIdentifier();
-		this.expectedDeliveryDate = Objects.requireNonNull(
-				expectedDeliveryDate, "expectedDeliveryDate").toDate();
 		this.chargeLines = new ArrayList<ChargeLine>();
 		this.mutableChargeLines = true;
 		this.mutableOrderLine = true;
-
-		Objects.requireNonNull(serialNumbers, "serialNumbers");
-		this.serialNumbers = new HashSet<SerialNumber>();
-		for (SerialNumber sn : serialNumbers) {
-			this.serialNumbers.add(sn);
-		}
-		this.inventory = Objects.requireNonNull(inventory, "inventory");
 	}
 
 	/**
@@ -195,9 +235,9 @@ public class OrderLine {
 	/**
 	 * @return the expectedDeliveryDate
 	 */
-	public DateTime getExpectedDeliveryDate() {
+	/*public DateTime getExpectedDeliveryDate() {
 		return new DateTime(expectedDeliveryDate);
-	}
+	}*/
 
 	/**
 	 * Adds the given SerialNumber to this OrderLine. If this
