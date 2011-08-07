@@ -34,6 +34,10 @@ public class UserCapability {
 		return name;
 	}
 	
+	public int hashCode(){
+		return name.hashCode();
+	}
+	
 	
 	@Override
 	public boolean equals(Object o){
