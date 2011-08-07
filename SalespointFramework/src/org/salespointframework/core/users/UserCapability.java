@@ -35,6 +35,15 @@ public class UserCapability {
 	}
 	
 	
+	@Override
+	public boolean equals(Object o){
+		if (o instanceof UserCapability){
+			return equals((UserCapability)o);
+		}
+		return false;
+	}
+	
+	
 	public boolean equals(UserCapability uc){
 		if (this.name.equals(uc.name)) return true;
 		return false;
