@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -31,6 +32,7 @@ import org.salespointframework.util.SalespointIterable;
 public class OrderLine {
 
 	@EmbeddedId
+	@AttributeOverride(name = "id", column = @Column(name = "ORDERLINE_ID"))
 	private OrderLineIdentifier identifier;
 
 	@OneToMany(cascade = CascadeType.ALL)
@@ -40,9 +42,10 @@ public class OrderLine {
 	//private Map<String,List<ChargeLine>> snChargeLines;
 
 	// TODO Problems with multiple embedded Objects...
+	// Look, i FIXED it, hope u liek
 	@ElementCollection
-	@AttributeOverride(name = "id", column = @Column(name = "SERIALNO"))
 	private Set<SerialNumber> serialNumbers = new HashSet<SerialNumber>();
+
 	@Transient
 	private Inventory<?> inventory;
 
