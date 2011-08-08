@@ -15,14 +15,10 @@ import org.salespointframework.util.Objects;
  * This is a basic implementation of the interface {@link Calendar}. To realize
  * your own calendar you just have to implement
  * {@link ICanHasClass#getContentClass}
- * 
- * @param <T>
- *            Type of calendar entries (extends
- *            {@link org.salespointframework.core.calendar.CalendarEntry})
- * 
+ *
  * @author stanley
  */
-public abstract class AbstractCalendar<T extends CalendarEntry> implements Calendar<T>, ICanHasClass<T> {
+public final class PersistentCalendar implements Calendar<PersistentCalendarEntry>, ICanHasClass<PersistentCalendarEntry> {
 
     private EntityManager em;
 
@@ -34,7 +30,7 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
      *            the entity manager which is used to persist the entries of
      *            this calendar
      */
-    public AbstractCalendar(EntityManager em) {
+    public PersistentCalendar(EntityManager em) {
         Objects.requireNonNull(em, "em");
         this.em = em;
     }
@@ -52,15 +48,15 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
      */
     @SuppressWarnings("boxing")
     @Override
-    public Iterable<T> getEntries(Filter<T> filter) {
+    public Iterable<PersistentCalendarEntry> getEntries(Filter<PersistentCalendarEntry> filter) {
 
         Objects.requireNonNull(filter, "filter");
 
-        TypedQuery<T> q = em.createQuery("SELECT ce FROM " + getContentClass().getSimpleName() + " ce", getContentClass());
+        TypedQuery<PersistentCalendarEntry> q = em.createQuery("SELECT ce FROM " + getContentClass().getSimpleName() + " ce", getContentClass());
 
-        List<T> entries = new ArrayList<T>();
+        List<PersistentCalendarEntry> entries = new ArrayList<PersistentCalendarEntry>();
 
-        for (T entry : q.getResultList()) {
+        for (PersistentCalendarEntry entry : q.getResultList()) {
             if (filter.invoke(entry))
                 entries.add(entry);
         }
@@ -68,11 +64,15 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
         return entries;
     }
 
-    @Override
-    public Iterable<T> getEntriesByTitle(String title) {
+    /**
+     * Returns an {@link Iterable} that contains all entries that have the give title.
+     * @param title The title that entries should have.
+     * @return An iterable with all found entries
+     */
+    public Iterable<PersistentCalendarEntry> getEntriesByTitle(String title) {
         Objects.requireNonNull(title, "title");
         
-        TypedQuery<T> q = em
+        TypedQuery<PersistentCalendarEntry> q = em
                 .createQuery(
                         "SELECT ce FROM "+getContentClass().getSimpleName()+" ce WHERE ce.title == :title",
                         getContentClass());
@@ -82,11 +82,10 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
         return q.getResultList();
     }
     
-    @Override
-    public Iterable<T> getEntriesThatStartAfter(DateTime start) {
+    public Iterable<PersistentCalendarEntry> getEntriesThatStartAfter(DateTime start) {
         Objects.requireNonNull(start, "from");
         
-        TypedQuery<T> q = em
+        TypedQuery<PersistentCalendarEntry> q = em
                 .createQuery(
                         "SELECT ce FROM "+getContentClass().getSimpleName()+" ce WHERE ce.start >= :start",
                         getContentClass());
@@ -96,11 +95,10 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
         return q.getResultList();
     }
 
-    @Override
-    public Iterable<T> getEntriesThatStartBefore(DateTime start) {
+    public Iterable<PersistentCalendarEntry> getEntriesThatStartBefore(DateTime start) {
         Objects.requireNonNull(start, "from");
         
-        TypedQuery<T> q = em
+        TypedQuery<PersistentCalendarEntry> q = em
                 .createQuery(
                         "SELECT ce FROM "+getContentClass().getSimpleName()+" ce WHERE ce.start <= :start",
                         getContentClass());
@@ -110,11 +108,10 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
         return q.getResultList();
     }
     
-    @Override
-    public Iterable<T> getEntriesThatEndBefore(DateTime end) {
+    public Iterable<PersistentCalendarEntry> getEntriesThatEndBefore(DateTime end) {
         Objects.requireNonNull(end, "end");
         
-        TypedQuery<T> q = em
+        TypedQuery<PersistentCalendarEntry> q = em
                 .createQuery(
                         "SELECT ce FROM "+getContentClass().getSimpleName()+" ce WHERE ce.end <= :end",
                         getContentClass());
@@ -124,11 +121,10 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
         return q.getResultList();
     }
 
-    @Override
-    public Iterable<T> getEntriesThatEndAfter(DateTime end) {
+    public Iterable<PersistentCalendarEntry> getEntriesThatEndAfter(DateTime end) {
         Objects.requireNonNull(end, "end");
         
-        TypedQuery<T> q = em
+        TypedQuery<PersistentCalendarEntry> q = em
                 .createQuery(
                         "SELECT ce FROM "+getContentClass().getSimpleName()+" ce WHERE ce.end >= :end",
                         getContentClass());
@@ -138,12 +134,11 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
         return q.getResultList();
     }
     
-    @Override
-    public Iterable<T> getEntriesThatStartBetween(DateTime start, DateTime end) {
+    public Iterable<PersistentCalendarEntry> getEntriesThatStartBetween(DateTime start, DateTime end) {
         Objects.requireNonNull(start, "start");
         Objects.requireNonNull(end, "end");
         
-        TypedQuery<T> q = em
+        TypedQuery<PersistentCalendarEntry> q = em
                 .createQuery(
                         "SELECT ce FROM "+getContentClass().getSimpleName()+" ce WHERE ce.start BETWEEN :start and :end",
                         getContentClass());
@@ -153,12 +148,11 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
         return q.getResultList();
     }
 
-    @Override
-    public Iterable<T> getEntriesThatEndBetween(DateTime start, DateTime end) {
+    public Iterable<PersistentCalendarEntry> getEntriesThatEndBetween(DateTime start, DateTime end) {
         Objects.requireNonNull(start, "start");
         Objects.requireNonNull(end, "end");
         
-        TypedQuery<T> q = em
+        TypedQuery<PersistentCalendarEntry> q = em
                 .createQuery(
                         "SELECT ce FROM "+getContentClass().getSimpleName()+" ce WHERE ce.end BETWEEN :start and :end",
                         getContentClass());
@@ -168,20 +162,18 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
         return q.getResultList();
     }    
     
-    @Override
-    public Iterable<T> getEntriesByOwner(final String owner) {
-        return getEntries(new Filter<T>() {
+    public Iterable<PersistentCalendarEntry> getEntriesByOwner(final String owner) {
+        return getEntries(new Filter<PersistentCalendarEntry>() {
             @SuppressWarnings("boxing")
             @Override
-            public Boolean invoke(T arg) {
+            public Boolean invoke(PersistentCalendarEntry arg) {
                 return arg.getOwner().equals(owner);
             }
         });
     }
     
-    @SuppressWarnings("boxing")
     @Override
-    public T getEntryByID(long l) {
+    public PersistentCalendarEntry getEntryByID(CalendarEntryIdentifier l) {
         return em.find(this.getContentClass(), l);
     }
 
@@ -190,13 +182,18 @@ public abstract class AbstractCalendar<T extends CalendarEntry> implements Calen
      * The given entry must not be <code>null</code>
      */
     @Override
-    public void addEntry(T entry) {
+    public void addEntry(PersistentCalendarEntry entry) {
         Objects.requireNonNull(entry, "entry");
         em.persist(entry);
     }
 
     @Override
-    public void deleteEntry(long calendarEntryIdentifier) {
+    public void deleteEntry(CalendarEntryIdentifier calendarEntryIdentifier) {
         em.remove(this.getEntryByID(calendarEntryIdentifier));
+    }
+
+    @Override
+    public Class<PersistentCalendarEntry> getContentClass() {
+        return PersistentCalendarEntry.class;
     }
 }
