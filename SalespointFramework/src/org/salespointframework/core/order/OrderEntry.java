@@ -75,10 +75,9 @@ public class OrderEntry {
 		status = OrderStatus.INITIALIZED;
 	}
 
-	
-	// PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUL
 
-	public boolean paul_completeOrder() {
+	//TODO make PaymentEntry in Accountancy
+	public boolean completeOrder() {
 		EntityManager em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
 		
 		em.getTransaction().begin();
@@ -87,11 +86,6 @@ public class OrderEntry {
 			String key = entry.getKey();
 			OrderLine orderLine = entry.getValue();
 			
-			// I FUCKING HATE CHECKED EXCEPTIONS
-			// I FUCKING HATE CHECKED EXCEPTIONS
-			// I FUCKING HATE CHECKED EXCEPTIONS
-			// I FUCKING HATE CHECKED EXCEPTIONS
-			// I FUCKING HATE CHECKED EXCEPTIONS
 			
 			try {
 				Class<?> inventoryClass = Class.forName(key);
@@ -457,12 +451,6 @@ public class OrderEntry {
         	  }
         	  break;
         }
-	}
-	
-	//TODO Complete Order and remove Objects from Inventory
-	//TODO Return Iterable of serialNumbers
-	public boolean completeOrder() {
-		return false;
 	}
 
 }
