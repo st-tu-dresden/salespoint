@@ -1,14 +1,11 @@
 package org.salespointframework.core.order;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -36,12 +33,8 @@ public class OrderLine {
 	private OrderLineIdentifier identifier;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<ChargeLine> chargeLines;
-	
-	//TODO maybe ChargeLines for particular SerialNumbers
-	//private Map<String,List<ChargeLine>> snChargeLines;
+	private Set<ChargeLine> chargeLines;
 
-	// TODO Problems with multiple embedded Objects...
 	// Look, i FIXED it, hope u liek
 	@ElementCollection
 	private Set<SerialNumber> serialNumbers = new HashSet<SerialNumber>();
@@ -80,7 +73,7 @@ public class OrderLine {
 		this.description = "";
 		this.comment = "";
 		//this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
-		this.chargeLines = new ArrayList<ChargeLine>();
+		this.chargeLines = new HashSet<ChargeLine>();
 		this.mutableChargeLines = true;
 		this.mutableOrderLine = true;
 	}
@@ -107,7 +100,7 @@ public class OrderLine {
 		this.description = "";
 		this.comment = "";
 		//this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
-		this.chargeLines = new ArrayList<ChargeLine>();
+		this.chargeLines = new HashSet<ChargeLine>();
 		this.mutableChargeLines = true;
 		this.mutableOrderLine = true;
 	}
@@ -130,7 +123,7 @@ public class OrderLine {
 		this.description = Objects.requireNonNull(description, "description");
 		this.comment = Objects.requireNonNull(comment, "comment");
 		//this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
-		this.chargeLines = new ArrayList<ChargeLine>();
+		this.chargeLines = new HashSet<ChargeLine>();
 		this.mutableChargeLines = true;
 		this.mutableOrderLine = true;
 	}
@@ -159,7 +152,7 @@ public class OrderLine {
 		this.description = Objects.requireNonNull(description, "description");
 		this.comment = Objects.requireNonNull(comment, "comment");
 		//this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice");
-		this.chargeLines = new ArrayList<ChargeLine>();
+		this.chargeLines = new HashSet<ChargeLine>();
 		this.mutableChargeLines = true;
 		this.mutableOrderLine = true;
 	}
@@ -252,7 +245,7 @@ public class OrderLine {
 	 */
 	public boolean addSerialNumber(SerialNumber serialNumber) {
 
-		if (!this.mutableChargeLines)
+		if (!this.mutableOrderLine)
 			return false;
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		if(!inventory.contains(serialNumber)) 
@@ -272,7 +265,7 @@ public class OrderLine {
 	 */
 	public boolean addAllSerialNumbers(Iterable<SerialNumber> serialNumbers) {
 
-		if (!this.mutableChargeLines)
+		if (!this.mutableOrderLine)
 			return false;
 		Objects.requireNonNull(serialNumbers, "serialNumbers");
 		
@@ -281,6 +274,39 @@ public class OrderLine {
 				return false;
 		}
 		return this.serialNumbers.addAll(Iterables.toList(serialNumbers));
+	}
+	
+	public boolean mergeOrderLine(OrderLine orderLine) {
+		
+		boolean containsAllSerialNumbers = true;
+		boolean containsAllChargeLines = true;
+		
+		for(SerialNumber sn : orderLine.getSerialNumbers()) {
+			if(!this.serialNumbers.contains(sn))
+				containsAllSerialNumbers = false;
+		}
+		
+		for(ChargeLine cl : orderLine.getChargeLines()) {
+			if(!this.chargeLines.contains(cl))
+				containsAllChargeLines = false;
+		}
+		
+		if (!this.mutableOrderLine && !containsAllSerialNumbers)
+			return false;
+		if (!this.mutableChargeLines && !containsAllChargeLines)
+			return false;
+		if(containsAllSerialNumbers && containsAllChargeLines)
+			return false;
+		Objects.requireNonNull(orderLine, "orderLine");
+		
+		for(SerialNumber sn : orderLine.getSerialNumbers()) {
+			this.addSerialNumber(sn);
+		}
+		
+		for(ChargeLine cl : orderLine.getChargeLines()) {
+			this.addChargeLine(cl);
+		}
+		return true;
 	}
 	
 	/**
@@ -295,7 +321,7 @@ public class OrderLine {
 	 */
 	public boolean removeSerialNumber(SerialNumber serialNumber) {
 
-		if (!this.mutableChargeLines)
+		if (!this.mutableOrderLine)
 			return false;
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		if(!inventory.contains(serialNumber)) 
@@ -315,7 +341,7 @@ public class OrderLine {
 	 */
 	public boolean removeAllSerialNumbers(Iterable<SerialNumber> serialNumbers) {
 
-		if (!this.mutableChargeLines)
+		if (!this.mutableOrderLine)
 			return false;
 		Objects.requireNonNull(serialNumbers, "serialNumbers");
 		

@@ -1,11 +1,11 @@
 package org.salespointframework.core.order;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,7 +22,6 @@ import org.joda.time.DateTime;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.order.actions.OrderAction;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.Objects;
@@ -45,31 +44,31 @@ public class OrderEntry {
 	private String salesChannel;
 	private String termsAndConditions;
 	
-	private List<OrderAction> orderActions;
+	//TODO
+	//private List<OrderAction> orderActions;
 	
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<OrderLine> orderLines;
+	private Set<ChargeLine> chargeLines = new HashSet<ChargeLine>();
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<ChargeLine> chargeLines;
+	private Map<String, OrderLine> paul_orderlines = new HashMap<String, OrderLine>();
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 	
 	public OrderEntry(String salesChannel, String termsAndConditions) {
 		orderIdentifier = new OrderIdentifier();
-		dateCreated = Shop.INSTANCE.getTime().getDateTime().toDate(); // <- TODO WTF
+		dateCreated = Shop.INSTANCE.getTime().getDateTime().toDate();
 		this.salesChannel = Objects
 				.requireNonNull(salesChannel, "salesChannel");
 		this.termsAndConditions = Objects.requireNonNull(termsAndConditions,
 				"termsAndConditions");
-		orderActions = new ArrayList<OrderAction>();
-		orderLines = new ArrayList<OrderLine>();
+		//TODO
+		//orderActions = new ArrayList<OrderAction>();
 		status = OrderStatus.INITIALIZED;
 	}
 
 	
 	// PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUL
-	
-	private Map<String, OrderLine> paul_orderlines = new HashMap<String, OrderLine>();
+
 	
 	public OrderLine addOrderLine(OrderLine orderLine) {
 		Objects.requireNonNull(orderLine, "orderLine");
@@ -80,12 +79,12 @@ public class OrderEntry {
 		
 		String key = orderLine.getInventory().getClass().getCanonicalName();
 		OrderLine o = orderLine;
+		
 		if(paul_orderlines.containsKey(key)) {
-			 o = mergeOrderLines(paul_orderlines.get(key), orderLine);
+			 paul_orderlines.get(key).mergeOrderLine(o);
 		}
 		paul_orderlines.put(key, o);
-		return o;
-		
+		return paul_orderlines.get(key);
 	}
 	
 	public OrderLine addOrderLine(Inventory<?> inventory, SerialNumber serialNumber) {
@@ -117,13 +116,8 @@ public class OrderEntry {
 		}
 		
 		return o;
-		
 	}
-	
-	//TODO
-	private OrderLine mergeOrderLines(OrderLine o1, OrderLine o2) {
-		return o2;
-	}
+
 	
 	public boolean paul_completeOrder() {
 		EntityManager em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
@@ -224,15 +218,16 @@ public class OrderEntry {
 	/**
 	 * @return the orderAction
 	 */
-	public Iterable<OrderAction> getOrderAction() {
+	//TODO
+/*	public Iterable<OrderAction> getOrderAction() {
 		return SalespointIterable.from(this.orderActions);
-	}
+	}*/
 	
 	/**
 	 * @return the orderLines
 	 */
 	public Iterable<OrderLine> getOrderLines() {
-		return SalespointIterable.from(this.orderLines);
+		return SalespointIterable.from(this.paul_orderlines.values());
 	}
 	
 	/**
@@ -250,28 +245,57 @@ public class OrderEntry {
 	public Money getTotalPrice() {
 		
 		Money price;	
-		boolean hasOrderLines = !this.orderLines.isEmpty();
 		
-		if(this.chargeLines.isEmpty() && !hasOrderLines) return new Money(0);
-		if(hasOrderLines) price = this.orderLines.get(0).getOrderLinePrice();
-		else price = this.chargeLines.get(0).getAmount();
-		
-		if(hasOrderLines) {
-			
-			for(int i=1; i<this.orderLines.size(); i++) {
-				price = price.add_(this.orderLines.get(i).getOrderLinePrice());
-			}
-			
-			for(int i=0; i<this.chargeLines.size(); i++) {
-				price = price.add_(this.chargeLines.get(i).getAmount());
-			}
+		if(!this.paul_orderlines.isEmpty()) {
+			price = this.getOrderedObjectsPrice();
+			price.add_(this.getChargedPrice());
 		} else {
-			
-			for(int i=1; i<this.chargeLines.size(); i++) {
-				price = price.add_(this.chargeLines.get(i).getAmount());
+			price = this.getChargedPrice();
+		}
+		return price;
+	}
+	
+	/**
+	 * Calculates the price of all ordered objects from this OrderEntry without including ChargeLines.
+	 * 
+	 * @return the cumulative price of ordered objects from this OrderEntry
+	 */
+	public Money getOrderedObjectsPrice() {
+		
+		Money price = new Money(0);
+		boolean firstElement = true;
+		
+		for(OrderLine ol : this.paul_orderlines.values()) {
+			if(firstElement) {
+				price = ol.getOrderLinePrice();
+				firstElement = false;
+			} else {
+				price = price.add_(ol.getOrderLinePrice());
 			}
 		}
-
+		
+		return price;
+	}
+	
+	/**
+	 * Calculates the price of all ChargeLines from this OrderEntry.
+	 * 
+	 * @return the charged price of this OrderEntry
+	 */
+	public Money getChargedPrice() {
+		
+		Money price = new Money(0);
+		boolean firstElement = true;
+		
+		for(ChargeLine cl : this.chargeLines) {
+			if(firstElement) {
+				price = cl.getAmount();
+				firstElement = false;
+			} else {
+				price = price.add_(cl.getAmount());
+			}
+		}
+		
 		return price;
 	}
 	
@@ -340,16 +364,18 @@ public class OrderEntry {
 	 * if this OrderEntry is processing, cancelled or closed.
 	 * 
 	 * @param id The Identifier from the <code>OrderLine</code> that shall be removed.
+	 * 
+	 * @return the OrderLine that was removed, or null if nothing is removed.
 	 */
-	public boolean removeOrderLine(OrderLineIdentifier id) {
+	public OrderLine removeOrderLine(OrderLineIdentifier id) {
 		
 		Objects.requireNonNull(id, "id");
-		if(this.status.equals(OrderStatus.CANCELLED) || this.status.equals(OrderStatus.CLOSED) || this.status.equals(OrderStatus.PROCESSING)) return false;
+		if(this.status.equals(OrderStatus.CANCELLED) || this.status.equals(OrderStatus.CLOSED) || this.status.equals(OrderStatus.PROCESSING)) return null;
 		
 		OrderLine lineToRemove = null;
 		boolean available = false;
 		
-		for(OrderLine ol : this.orderLines) {
+		for(OrderLine ol : this.paul_orderlines.values()) {
 			if(ol.getIdentifier().equals(id)) {
 				lineToRemove = ol;
 				available = true;
@@ -357,8 +383,8 @@ public class OrderEntry {
 			}
 		}
 		
-		if(available == false) return false;
-		else return this.orderLines.remove(lineToRemove);
+		if(available == false) return null;
+		else return this.paul_orderlines.remove(lineToRemove.getInventory().getClass().getCanonicalName());
 	}
 	
 	/**
@@ -376,7 +402,7 @@ public class OrderEntry {
         {
           case CANCELLED:
         	  
-        	  for(OrderLine ol : this.orderLines) {
+        	  for(OrderLine ol : this.paul_orderlines.values()) {
         		  ol.mutableChargeLines = false;
         		  ol.mutableOrderLine = false;
         	  }
@@ -384,7 +410,7 @@ public class OrderEntry {
         	  
           case CLOSED:
         	  
-        	  for(OrderLine ol : this.orderLines) {
+        	  for(OrderLine ol : this.paul_orderlines.values()) {
         		  ol.mutableChargeLines = false;
         		  ol.mutableOrderLine = false;
         	  }
@@ -392,7 +418,7 @@ public class OrderEntry {
         	  
           case OPEN:
         	  
-        	  for(OrderLine ol : this.orderLines) {
+        	  for(OrderLine ol : this.paul_orderlines.values()) {
         		  ol.mutableChargeLines = true;
         		  ol.mutableOrderLine = true;
         	  }
@@ -400,7 +426,7 @@ public class OrderEntry {
         	  
           case INITIALIZED:
         	  
-        	  for(OrderLine ol : this.orderLines) {
+        	  for(OrderLine ol : this.paul_orderlines.values()) {
         		  ol.mutableChargeLines = true;
         		  ol.mutableOrderLine = true;
         	  }
@@ -408,7 +434,7 @@ public class OrderEntry {
         	  
           case PROCESSING:
         	  
-        	  for(OrderLine ol : this.orderLines) {
+        	  for(OrderLine ol : this.paul_orderlines.values()) {
         		  ol.mutableChargeLines = true;
         		  ol.mutableOrderLine = false;
         	  }
