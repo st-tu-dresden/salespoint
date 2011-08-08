@@ -324,6 +324,13 @@ public class OrderEntry {
 	 */
 	public OrderLine addOrderLine(Inventory<?> inventory, SerialNumber serialNumber) {
 		
+		Objects.requireNonNull(inventory, "inventory");
+		Objects.requireNonNull(serialNumber, "serialNumber");
+		if(this.status.equals(OrderStatus.CANCELLED) || this.status.equals(OrderStatus.CLOSED) || this.status.equals(OrderStatus.PROCESSING)) {
+			// TODO andere bessere Exception
+			throw new RuntimeException();
+		}
+		
 		String key = inventory.getClass().getCanonicalName();
 		OrderLine o;
 		
@@ -346,6 +353,14 @@ public class OrderEntry {
 	 * @param orderLine The <code>OrderLine</code> that shall be added.
 	 */
 	public OrderLine addOrderLine(Inventory<?> inventory, Iterable<SerialNumber> serialNumbers) {
+		
+		Objects.requireNonNull(inventory, "inventory");
+		Objects.requireNonNull(serialNumbers, "serialNumbers");
+		if(this.status.equals(OrderStatus.CANCELLED) || this.status.equals(OrderStatus.CLOSED) || this.status.equals(OrderStatus.PROCESSING)) {
+			// TODO andere bessere Exception
+			throw new RuntimeException();
+		}
+		
 		String key = inventory.getClass().getCanonicalName();
 		OrderLine o;
 		
