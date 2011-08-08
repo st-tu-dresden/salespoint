@@ -50,10 +50,19 @@ public class OrderEntry {
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<ChargeLine> chargeLines = new HashSet<ChargeLine>();
 	@OneToMany(cascade = CascadeType.ALL)
-	private Map<String, OrderLine> paul_orderlines = new HashMap<String, OrderLine>();
+	private Map<String, OrderLine> orderlines = new HashMap<String, OrderLine>();
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 	
+	
+	public OrderEntry() {
+		this("", "");
+	}
+	
+	public OrderEntry(String salesChannel) {
+		this(Objects.requireNonNull(salesChannel, "salesChannel"), "");
+	}
+		
 	public OrderEntry(String salesChannel, String termsAndConditions) {
 		orderIdentifier = new OrderIdentifier();
 		dateCreated = Shop.INSTANCE.getTime().getDateTime().toDate();
@@ -69,62 +78,12 @@ public class OrderEntry {
 	
 	// PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUL
 
-	
-	public OrderLine addOrderLine(OrderLine orderLine) {
-		Objects.requireNonNull(orderLine, "orderLine");
-		if(this.status.equals(OrderStatus.CANCELLED) || this.status.equals(OrderStatus.CLOSED) || this.status.equals(OrderStatus.PROCESSING)) {
-			// TODO andere bessere Exception
-			throw new RuntimeException();
-		}
-		
-		String key = orderLine.getInventory().getClass().getCanonicalName();
-		OrderLine o = orderLine;
-		
-		if(paul_orderlines.containsKey(key)) {
-			 paul_orderlines.get(key).mergeOrderLine(o);
-		}
-		paul_orderlines.put(key, o);
-		return paul_orderlines.get(key);
-	}
-	
-	public OrderLine addOrderLine(Inventory<?> inventory, SerialNumber serialNumber) {
-		
-		String key = inventory.getClass().getCanonicalName();
-		OrderLine o;
-		
-		if(paul_orderlines.containsKey(key)) {
-			paul_orderlines.get(key).addSerialNumber(serialNumber);
-			o = paul_orderlines.get(key);
-		} else {
-			o = new OrderLine(inventory, serialNumber);
-			paul_orderlines.put(key,o);
-		}
-		
-		return o;
-	}
-	
-	public OrderLine addOrderLine(Inventory<?> inventory, Iterable<SerialNumber> serialNumbers) {
-		String key = inventory.getClass().getCanonicalName();
-		OrderLine o;
-		
-		if(paul_orderlines.containsKey(key)) {
-			paul_orderlines.get(key).addAllSerialNumbers(serialNumbers);
-			o = paul_orderlines.get(key);
-		} else {
-			o = new OrderLine(inventory, serialNumbers);
-			paul_orderlines.put(key,o);
-		}
-		
-		return o;
-	}
-
-	
 	public boolean paul_completeOrder() {
 		EntityManager em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
 		
 		em.getTransaction().begin();
 		
-		for(Map.Entry<String, OrderLine> entry : paul_orderlines.entrySet()) {
+		for(Map.Entry<String, OrderLine> entry : orderlines.entrySet()) {
 			String key = entry.getKey();
 			OrderLine orderLine = entry.getValue();
 			
@@ -173,16 +132,6 @@ public class OrderEntry {
 		return false;
 	}
 	
-	// PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUL
-	
-	public OrderEntry(String salesChannel) {
-		this(Objects.requireNonNull(salesChannel, "salesChannel"), "");
-	}
-		
-	public OrderEntry() {
-		this("", "");
-	}
-
 	public String toString() {
 		return orderIdentifier.toString();
 	}
@@ -227,7 +176,7 @@ public class OrderEntry {
 	 * @return the orderLines
 	 */
 	public Iterable<OrderLine> getOrderLines() {
-		return SalespointIterable.from(this.paul_orderlines.values());
+		return SalespointIterable.from(this.orderlines.values());
 	}
 	
 	/**
@@ -246,7 +195,7 @@ public class OrderEntry {
 		
 		Money price;	
 		
-		if(!this.paul_orderlines.isEmpty()) {
+		if(!this.orderlines.isEmpty()) {
 			price = this.getOrderedObjectsPrice();
 			price.add_(this.getChargedPrice());
 		} else {
@@ -265,7 +214,7 @@ public class OrderEntry {
 		Money price = new Money(0);
 		boolean firstElement = true;
 		
-		for(OrderLine ol : this.paul_orderlines.values()) {
+		for(OrderLine ol : this.orderlines.values()) {
 			if(firstElement) {
 				price = ol.getOrderLinePrice();
 				firstElement = false;
@@ -342,21 +291,74 @@ public class OrderEntry {
 	}
 	
 	/**
-	 * Add an <code>OrderLine</code> to this
+	 * Adds an <code>OrderLine</code> to this
+	 * <code>OrderEntry</code>. If the OrderLine already exists in this OrderEntry,
+	 * the OrderLine will be merged with the existing OrderLine. The OrderLine cannot be added, 
+	 * if this OrderEntry is processing, cancelled or closed.
+	 * 
+	 * @param orderLine The <code>OrderLine</code> that shall be added.
+	 */
+	public OrderLine addOrderLine(OrderLine orderLine) {
+		Objects.requireNonNull(orderLine, "orderLine");
+		if(this.status.equals(OrderStatus.CANCELLED) || this.status.equals(OrderStatus.CLOSED) || this.status.equals(OrderStatus.PROCESSING)) {
+			// TODO andere bessere Exception
+			throw new RuntimeException();
+		}
+		
+		String key = orderLine.getInventory().getClass().getCanonicalName();
+		OrderLine o = orderLine;
+		
+		if(orderlines.containsKey(key)) {
+			 orderlines.get(key).mergeOrderLine(o);
+		}
+		orderlines.put(key, o);
+		return orderlines.get(key);
+	}
+	
+	/**
+	 * Adds an <code>OrderLine</code> to this
 	 * <code>OrderEntry</code>. The OrderLine cannot be added, 
 	 * if this OrderEntry is processing, cancelled or closed.
 	 * 
 	 * @param orderLine The <code>OrderLine</code> that shall be added.
 	 */
-	/*
-	public boolean addOrderLine(OrderLine orderLine) {
+	public OrderLine addOrderLine(Inventory<?> inventory, SerialNumber serialNumber) {
 		
-		Objects.requireNonNull(orderLine, "orderLine");
-		if(this.status.equals(OrderStatus.CANCELLED) || this.status.equals(OrderStatus.CLOSED) || this.status.equals(OrderStatus.PROCESSING)) return false;
+		String key = inventory.getClass().getCanonicalName();
+		OrderLine o;
 		
-		return this.orderLines.add(orderLine);
+		if(orderlines.containsKey(key)) {
+			orderlines.get(key).addSerialNumber(serialNumber);
+			o = orderlines.get(key);
+		} else {
+			o = new OrderLine(inventory, serialNumber);
+			orderlines.put(key,o);
+		}
+		
+		return o;
 	}
-	*/
+	
+	/**
+	 * Adds an <code>OrderLine</code> to this
+	 * <code>OrderEntry</code>. The OrderLine cannot be added, 
+	 * if this OrderEntry is processing, cancelled or closed.
+	 * 
+	 * @param orderLine The <code>OrderLine</code> that shall be added.
+	 */
+	public OrderLine addOrderLine(Inventory<?> inventory, Iterable<SerialNumber> serialNumbers) {
+		String key = inventory.getClass().getCanonicalName();
+		OrderLine o;
+		
+		if(orderlines.containsKey(key)) {
+			orderlines.get(key).addAllSerialNumbers(serialNumbers);
+			o = orderlines.get(key);
+		} else {
+			o = new OrderLine(inventory, serialNumbers);
+			orderlines.put(key,o);
+		}
+		
+		return o;
+	}
 	
 	/**
 	 * Remove an <code>OrderLine</code> from this
@@ -375,7 +377,7 @@ public class OrderEntry {
 		OrderLine lineToRemove = null;
 		boolean available = false;
 		
-		for(OrderLine ol : this.paul_orderlines.values()) {
+		for(OrderLine ol : this.orderlines.values()) {
 			if(ol.getIdentifier().equals(id)) {
 				lineToRemove = ol;
 				available = true;
@@ -384,7 +386,7 @@ public class OrderEntry {
 		}
 		
 		if(available == false) return null;
-		else return this.paul_orderlines.remove(lineToRemove.getInventory().getClass().getCanonicalName());
+		else return this.orderlines.remove(lineToRemove.getInventory().getClass().getCanonicalName());
 	}
 	
 	/**
@@ -402,7 +404,7 @@ public class OrderEntry {
         {
           case CANCELLED:
         	  
-        	  for(OrderLine ol : this.paul_orderlines.values()) {
+        	  for(OrderLine ol : this.orderlines.values()) {
         		  ol.mutableChargeLines = false;
         		  ol.mutableOrderLine = false;
         	  }
@@ -410,7 +412,7 @@ public class OrderEntry {
         	  
           case CLOSED:
         	  
-        	  for(OrderLine ol : this.paul_orderlines.values()) {
+        	  for(OrderLine ol : this.orderlines.values()) {
         		  ol.mutableChargeLines = false;
         		  ol.mutableOrderLine = false;
         	  }
@@ -418,7 +420,7 @@ public class OrderEntry {
         	  
           case OPEN:
         	  
-        	  for(OrderLine ol : this.paul_orderlines.values()) {
+        	  for(OrderLine ol : this.orderlines.values()) {
         		  ol.mutableChargeLines = true;
         		  ol.mutableOrderLine = true;
         	  }
@@ -426,7 +428,7 @@ public class OrderEntry {
         	  
           case INITIALIZED:
         	  
-        	  for(OrderLine ol : this.paul_orderlines.values()) {
+        	  for(OrderLine ol : this.orderlines.values()) {
         		  ol.mutableChargeLines = true;
         		  ol.mutableOrderLine = true;
         	  }
@@ -434,7 +436,7 @@ public class OrderEntry {
         	  
           case PROCESSING:
         	  
-        	  for(OrderLine ol : this.paul_orderlines.values()) {
+        	  for(OrderLine ol : this.orderlines.values()) {
         		  ol.mutableChargeLines = true;
         		  ol.mutableOrderLine = false;
         	  }
