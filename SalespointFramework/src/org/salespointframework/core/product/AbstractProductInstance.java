@@ -22,7 +22,6 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	private ProductIdentifier productIdentifier;
 	
 	private Money price;
-	private ProductType productType;
 	//TODO annot?
 	private Map<String, ProductFeature> productFeatures = new HashMap<String, ProductFeature>();
 	
@@ -31,7 +30,7 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	
 	public AbstractProductInstance(ProductType productType) {
 		this.productIdentifier = Objects.requireNonNull(productType, "productType").getProductIdentifier();
-		this.productType = productType;
+		//this.productType = productType;
 		this.price = productType.getPrice(); //TODO CLONE
 		this.serialNumber = new SerialNumber();
 		
@@ -75,7 +74,7 @@ public abstract class AbstractProductInstance implements ProductInstance {
 		if (productFeatures!=null){
 			productFeatures.clear();
 		}
-		productType.addProductFeatureType(pf);
+		//productType.addProductFeatureType(pf);
 		
 		for (ProductFeature p: pf.getPossibleValues()){
 			productFeatures.put(p.getName(), p);
@@ -86,7 +85,7 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	@Override
 	public void removeProductFeatures(){
 			productFeatures.clear();
-			price = productType.getPrice();
+			//price = productType.getPrice();
 		
 	}
 	
@@ -101,12 +100,12 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	public boolean equals(ProductInstance other) {
 		if(other == null) return false;
 		if(other == this) return true;
-		return this.productIdentifier.equals(other.getSerialNumber());
+		return this.serialNumber.equals(other.getSerialNumber());
 	}
 	
 	@Override
 	public int hashCode() {
-		return productIdentifier.hashCode();
+		return serialNumber.hashCode();
 	}
 
 }
