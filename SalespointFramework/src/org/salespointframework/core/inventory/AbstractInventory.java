@@ -40,7 +40,7 @@ public abstract class AbstractInventory<T extends AbstractProductInstance> imple
 	public void removeProductInstance(SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		EntityManager em = foobar();
-		em.remove(serialNumber);
+		em.remove(this.getProductInstance(serialNumber));
 		beginCommit(em);
 	}
 
@@ -55,14 +55,14 @@ public abstract class AbstractInventory<T extends AbstractProductInstance> imple
 	public boolean contains(SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		EntityManager em = foobar();
-		return em.contains(serialNumber);
+		return em.contains(this.getProductInstance(serialNumber));
 	}
 	
 	@Override
 	public Iterable<T> getProductInstances() {
 		Class<T> cc = this.getContentClass();
 		EntityManager em = foobar();
-		TypedQuery<T> tquery = em.createQuery("Select t from " + cc.getCanonicalName() + " t",cc);
+		TypedQuery<T> tquery = em.createQuery("Select t from " + cc.getSimpleName() + " t",cc);
 		return SalespointIterable.from(tquery.getResultList());
 	}
 	
