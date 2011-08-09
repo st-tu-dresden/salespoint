@@ -1,5 +1,8 @@
 package org.salespointframework.core.users;
 
+import java.io.Serializable;
+
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -10,10 +13,12 @@ import javax.persistence.Id;
  * @author Christopher Bellmann
  *
  */
-@Entity
-public class UserCapability {
+@Embeddable
+public class UserCapability implements Serializable{
 	
-	@Id
+	
+	private static final long serialVersionUID = 3321997496371179389L;
+	
 	private String name;
 	
 	@Deprecated
