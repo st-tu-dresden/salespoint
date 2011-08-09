@@ -23,6 +23,7 @@ public class TestMain {
 		TestCapas tc=new TestCapas("Capa_toll");
 		TestCapas tc2=new TestCapas("Capa_mist");
 		TestCapas tc3=new TestCapas("Capa_dumm");
+		TestCapas tc4=new TestCapas("Capa_bla");
 		em.getTransaction().begin();
 		t.addCapa(tc);
 		t.addCapa(tc2);
@@ -30,6 +31,7 @@ public class TestMain {
 		em.getTransaction().commit();
 		em.getTransaction().begin();
 		t2.addCapa(tc3);
+		t2.addCapa(tc4);
 		em.getTransaction().commit();
 		
 		

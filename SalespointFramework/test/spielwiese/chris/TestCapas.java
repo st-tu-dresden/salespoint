@@ -3,6 +3,8 @@ package spielwiese.chris;
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 
 @Embeddable
@@ -11,6 +13,7 @@ public class TestCapas implements Serializable{
 	
 	private static final long serialVersionUID = 31154175801615520L;
 	private String name;
+	
 	
 			
 	public TestCapas(){
