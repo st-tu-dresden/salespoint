@@ -60,7 +60,7 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 	        if (capList == null) {
 	            //System.out.println("no Capabilities");
 	        	capList = new UserCapabilityList(user.getUserId());
-	            
+	            entityManager.persist(capList);
 	        }
 	        capList.addCapa(userCapability);      	        
 	        return true;

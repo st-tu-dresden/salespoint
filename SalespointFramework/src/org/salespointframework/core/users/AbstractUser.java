@@ -21,9 +21,7 @@ public class AbstractUser implements User{
 	@SuppressWarnings("unused")
 	private boolean deleted=false;
 	
-	//@OneToMany
-	private List<UserCapability> capabilities= new ArrayList<UserCapability>();
-	
+		
 	@Deprecated
 	protected AbstractUser() {}
 

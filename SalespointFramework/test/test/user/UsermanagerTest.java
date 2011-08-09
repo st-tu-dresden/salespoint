@@ -162,10 +162,13 @@ public class UsermanagerTest {
 	@Test
 	public void testAddCapabilityToEmployee(){
 		capa= new UserCapability("CrazyTestCapabilityAgain");
+		UserCapability capa2= new UserCapability("MustBeInDataBaseAfterTesting");
 		emC.getTransaction().begin();
 		boolean addCapa = employeeManager.addCapability(e3, capa);
+		boolean addCapa2 = employeeManager.addCapability(e3, capa2);
 		emC.getTransaction().commit();
 		assertEquals("NoSuchUser!", true,  addCapa);
+		assertEquals("NoSuchUser!", true,  addCapa2);
 	}
 	
 //	@Ignore
