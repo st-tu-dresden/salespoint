@@ -27,7 +27,7 @@ public class DeLoreanTime implements Time /*, Observable<Duration> */ {
 	
 	//Hook
 	public void beforeGoAhead(Duration duration) {
-		
+	
 	}
 	
 	//Hook
