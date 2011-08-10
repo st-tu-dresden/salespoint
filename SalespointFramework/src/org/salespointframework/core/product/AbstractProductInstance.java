@@ -85,7 +85,7 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	@Override
 	public void removeProductFeatures(){
 			productFeatures.clear();
-			//price = productType.getPrice();
+			//price = productType.getPrice(); Warum auskommentiert?
 		
 	}
 	
