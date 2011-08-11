@@ -35,8 +35,19 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 			throw new DuplicateUserException(user.getUserId());			
 		}
 		entityManager.persist(user);
+//		UserCapabilityList capList = new UserCapabilityList(user.getUserId());
+//        entityManager.persist(capList);
 		return true;
 		
+	}
+	
+	/**
+	 * will remove User, but only if there is no open Order for the User
+	 * @param User user you want remove
+	 * @return true if successful
+	 */
+	public boolean removeUser(T User){
+		return false;
 	}
 	
 	
@@ -56,14 +67,22 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 		else{
 		    
 			UserCapabilityList capList = entityManager.find(UserCapabilityList.class, user.getUserId());
-
+			System.out.println(capList);	
+			
 	        if (capList == null) {
 	            //System.out.println("no Capabilities");
 	        	capList = new UserCapabilityList(user.getUserId());
 	            entityManager.persist(capList);
+	            System.out.println("persList");
 	        }
-	        capList.addCapa(userCapability);      	        
-	        return true;
+	        if (capList.contains(userCapability)) return true; //allready has Capabiltiy
+	        else{
+	        	capList.addCapa(userCapability);
+	        	System.out.println("addCapa");
+	        	System.out.println(capList);
+	        	return true;
+	        }
+	        
 		}
 	}
 	
@@ -111,7 +130,7 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 		Class<T> cc = this.getContentClass();
 		TypedQuery<T> users = entityManager.createQuery("SELECT t FROM " + cc.getSimpleName() + " t",cc);
 		Iterable<T> i= SalespointIterable.from(users.getResultList());
-		 return i;
+		return i;
 	}
 	
 	

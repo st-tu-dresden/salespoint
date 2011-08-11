@@ -140,7 +140,6 @@ public class UsermanagerTest {
 		int countEmployees =0;
 		for(Iterator<MyEmployee> i = employeeManager.getUsers().iterator(); i.hasNext(); ){
 			employeeManager.getUsers();
-			System.out.println("zählen");
 			countEmployees++;
 			i.next();
 		}
@@ -163,32 +162,39 @@ public class UsermanagerTest {
 	public void testAddCapabilityToEmployee(){
 		capa= new UserCapability("CrazyTestCapabilityAgain");
 		UserCapability capa2= new UserCapability("MustBeInDataBaseAfterTesting");
-		emC.getTransaction().begin();
+		emE.getTransaction().begin();
 		boolean addCapa = employeeManager.addCapability(e3, capa);
+		//boolean addCapa2 = employeeManager.addCapability(e3, capa2);
+		emE.getTransaction().commit();
+		emE.getTransaction().begin();
 		boolean addCapa2 = employeeManager.addCapability(e3, capa2);
-		emC.getTransaction().commit();
+		emE.getTransaction().commit();
+		
 		assertEquals("NoSuchUser!", true,  addCapa);
 		assertEquals("NoSuchUser!", true,  addCapa2);
 	}
 	
-//	@Ignore
+
 	@Test
 	public void testHasCapability(){
 		capa= new UserCapability("CrazyTestCapabilityAgain");
+		UserCapability capa2= new UserCapability("MustBeInDataBaseAfterTesting");
 		boolean hasCapa = employeeManager.hasCapability(e3, capa);
-		assertEquals(true,  hasCapa);
+		boolean hasCapa2 = employeeManager.hasCapability(e3, capa2);
+		assertEquals("1",true,  hasCapa);
+		assertEquals("2",true,  hasCapa2);
 	}
 	
-//	@Ignore
+
 	@Test
 	public void testRemoveCapability(){
 		capa= new UserCapability("CrazyTestCapabilityAgain");
 		boolean hasCapa = employeeManager.hasCapability(e3, capa);
 		assertEquals("befor removing", true,  hasCapa);
 		
-		emC.getTransaction().begin();
+		emE.getTransaction().begin();
 		boolean remo =employeeManager.removeCapability(e3, capa);
-		emC.getTransaction().commit();
+		emE.getTransaction().commit();
 		assertEquals("during removing", true,  remo);
 		
 		boolean hasCapa2 = employeeManager.hasCapability(e3, capa);

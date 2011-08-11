@@ -1,7 +1,7 @@
 package spielwiese.chris;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -15,7 +15,7 @@ public class CapaListTest {
 	private String id;
 	
 	@ElementCollection
-	private Set<TestCapas> capalist;
+	private List<TestCapas> capalist;
 	
 	
 	public CapaListTest(){
@@ -23,7 +23,7 @@ public class CapaListTest {
 	}
 	
 	public CapaListTest(String id){
-		capalist= new HashSet<TestCapas>();
+		capalist= new ArrayList<TestCapas>();
 		this.id=id;
 	}
 	

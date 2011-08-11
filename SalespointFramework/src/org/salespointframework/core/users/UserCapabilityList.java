@@ -1,7 +1,7 @@
 package org.salespointframework.core.users;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
@@ -16,7 +16,7 @@ public class UserCapabilityList{
 	private UserIdentifier id;
 
 	@ElementCollection
-	private Set<UserCapability> capaList;
+	private List<UserCapability> capaList;
 	
 	@Deprecated
 	public UserCapabilityList(){
@@ -25,7 +25,7 @@ public class UserCapabilityList{
 	
 	public UserCapabilityList(UserIdentifier id){
 		this.id=id;
-		capaList= new HashSet<UserCapability>();
+		capaList= new ArrayList<UserCapability>();
 	}
 	
 	public void addCapa(UserCapability uc){
