@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -27,6 +28,7 @@ import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.core.shop.Shop;
+import org.salespointframework.core.users.UserIdentifier;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
@@ -35,6 +37,10 @@ public class OrderEntry {
 	
 	@EmbeddedId
 	private OrderIdentifier orderIdentifier;
+	
+	//for internal association with users
+	@Embedded
+	protected UserIdentifier uID;
 	
 	// Do NOT fucking touch!
 	@Column(name = "TimeStamp", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, nullable = false, updatable = false)
@@ -140,6 +146,13 @@ public class OrderEntry {
 	 */
 	public OrderIdentifier getOrderIdentifier() {
 		return orderIdentifier;
+	}
+	
+	/**
+	 * @return the orderStatus
+	 */
+	public OrderStatus getOrderStatus() {
+		return this.status;
 	}
 
 	/**

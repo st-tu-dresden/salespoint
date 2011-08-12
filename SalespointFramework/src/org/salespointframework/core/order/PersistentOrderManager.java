@@ -7,6 +7,7 @@ import javax.persistence.TypedQuery;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.database.Database;
+import org.salespointframework.core.users.UserIdentifier;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.SalespointIterable;
 
@@ -155,4 +156,85 @@ public class PersistentOrderManager implements OrderManager {
 			em.getTransaction().commit();
 		}
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.salespointframework.core.order.IOrderManager#hasOpenOrders(org.salespointframework.core.users.UserIdentifier)
+	 */
+	@Override
+	public boolean hasOpenOrders(UserIdentifier userIdentifier) {
+		
+		Objects.requireNonNull(userIdentifier, "userIdentifier");
+
+		EntityManager em = emf.createEntityManager();
+
+		TypedQuery<OrderEntry> q = em
+				.createQuery(
+						"SELECT o FROM OrderEntry o WHERE o.userIdentifier == :userIdentifier",
+						OrderEntry.class);
+		q.setParameter("userIdentifier", userIdentifier);
+
+		for(OrderEntry oe : q.getResultList()) {
+			if(oe.getOrderStatus() == OrderStatus.PROCESSING ||
+					oe.getOrderStatus() == OrderStatus.OPEN ||
+					oe.getOrderStatus() == OrderStatus.INITIALIZED) {
+				return true;
+			}		
+		}
+		
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.salespointframework.core.order.IOrderManager#getOrders(org.salespointframework.core.users.UserIdentifier)
+	 */
+	@Override
+	public Iterable<OrderEntry> getOrders(UserIdentifier userIdentifier) {
+		
+		Objects.requireNonNull(userIdentifier, "userIdentifier");
+
+		EntityManager em = emf.createEntityManager();
+
+		TypedQuery<OrderEntry> q = em
+				.createQuery(
+						"SELECT o FROM OrderEntry o WHERE o.userIdentifier == :userIdentifier",
+						OrderEntry.class);
+		q.setParameter("userIdentifier", userIdentifier);
+		
+		return SalespointIterable.from(q.getResultList());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.salespointframework.core.order.IOrderManager#getOrders(org.salespointframework.core.users.UserIdentifier, org.joda.
+	 * time.DateTime, org.joda.time.DateTime)
+	 */
+	@Override
+	public Iterable<OrderEntry> getOrders(UserIdentifier userIdentifier,
+			DateTime from, DateTime to) {
+		
+		Objects.requireNonNull(userIdentifier, "userIdentifier");
+		Objects.requireNonNull(from, "from");
+		Objects.requireNonNull(to, "to");
+
+		EntityManager em = emf.createEntityManager();
+
+		TypedQuery<OrderEntry> q = em
+				.createQuery(
+						"SELECT o FROM OrderEntry o WHERE o.userIdentifier == :userIdentifier and o.timeStamp BETWEEN :from and :to",
+						OrderEntry.class);
+		q.setParameter("userIdentifier", userIdentifier);
+		q.setParameter("from", from.toDate(), TemporalType.TIMESTAMP);
+		q.setParameter("to", to.toDate(), TemporalType.TIMESTAMP);
+		
+		return SalespointIterable.from(q.getResultList());
+	}
+
 }

@@ -1,6 +1,7 @@
 package org.salespointframework.core.order;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.users.UserIdentifier;
 
 public interface OrderManager {
 
@@ -63,5 +64,46 @@ public interface OrderManager {
 	 * @param orderEntry The <code>OrderEntry</code> which shall be updated.
 	 */
 	 void update(OrderEntry orderEntry);
+	 
+	/**
+	 * Checks whether the specified user has initialized, open or processing
+	 * orders. For example this information have to be checked before removing
+	 * an user from the system.
+	 * 
+	 * @param userIdentifier
+	 *            Denoting the UserIdentifier on which shall be checked.
+	 * @return True, if the user has initialized, open or processing orders.
+	 */
+	 boolean hasOpenOrders(UserIdentifier userIdentifier);
+	 
+	/**
+	 * Returns all <code>OrderEntry</code>s from the given userID. If this user
+	 * has no orderEntries, an empty Iterable is returned.
+	 * 
+	 * @param userIdentifier
+	 *            Denoting the UserIdentifier on which the OrderEntrys will be
+	 *            requested.
+	 * @return an unmodifiable Iterable containing all OrderEntries from the
+	 *         specified user.
+	 */
+	 Iterable<OrderEntry> getOrders(UserIdentifier userIdentifier);
+	 
+	/**
+	 * Returns all <code>OrderEntry</code>s from the given userID in between the
+	 * dates <code>from</code> and <code>to</code>, including from and to. If
+	 * this user has no orderEntries in this period, an empty Iterable is
+	 * returned.
+	 * 
+	 * @param userIdentifier
+	 *            Denoting the UserIdentifier on which the OrderEntrys will be
+	 *            requested.
+	 * @param from
+	 *            time stamp denoting the start of the requested time period
+	 * @param to
+	 *            time stamp denoting the end of the requested time period
+	 * @return an unmodifiable Iterable containing all OrderEntries from the
+	 *         specified user in the specified period.
+	 */
+	 Iterable<OrderEntry> getOrders(UserIdentifier userIdentifier, DateTime from, DateTime to);
 
 }
