@@ -1,7 +1,6 @@
 package org.salespointframework.core.order;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 
@@ -22,16 +21,28 @@ import org.salespointframework.util.SalespointIterable;
  */
 
 public class PersistentOrderManager implements OrderManager {
-	private EntityManagerFactory emf;
+	
+	private EntityManager em;
 
 	/**
 	 * Create a new <code>OrderManager</code>. For persistence, an
-	 * <code>EntityManager</code> is created internally as required. The
+	 * <code>EntityManager</code> is created internal as required. The
 	 * <code>Database.INSTANCE</code> has to be initialized first.
 	 * 
 	 */
 	public PersistentOrderManager() {
-		this.emf = Database.INSTANCE.getEntityManagerFactory();
+		this.em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
+	}
+	
+	/**
+	 * Create a new <code>OrderManager</code> using the given EntityManager.
+	 * 
+	 * @param entityManager
+	 *            the entityManager that shall be used for persistence
+	 *            functionality
+	 */
+	public PersistentOrderManager(EntityManager entityManager) {
+		this.em = Objects.requireNonNull(entityManager, "entityManager");
 	}
 
 	/*
@@ -41,10 +52,12 @@ public class PersistentOrderManager implements OrderManager {
 	 * salespointframework.core.order.OrderEntry)
 	 */
 	@Override
-	public void addOrder(OrderEntry order) {
-		EntityManager em = emf.createEntityManager();
+	public void addOrder(OrderEntry orderEntry) {
+		
+		Objects.requireNonNull(orderEntry, "orderEntry");
+		
 		em.getTransaction().begin();
-		em.persist(order);
+		em.persist(orderEntry);
 		em.getTransaction().commit();
 	}
 
@@ -57,8 +70,6 @@ public class PersistentOrderManager implements OrderManager {
 	@Override
 	public OrderEntry findOrder(OrderIdentifier orderIdentifier) {
 		Objects.requireNonNull(orderIdentifier, "orderIdentifier");
-
-		EntityManager em = emf.createEntityManager();
 
 		TypedQuery<OrderEntry> q = em
 				.createQuery(
@@ -81,8 +92,6 @@ public class PersistentOrderManager implements OrderManager {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
 
-		EntityManager em = emf.createEntityManager();
-
 		TypedQuery<OrderEntry> q = em
 				.createQuery(
 						"SELECT o FROM OrderEntry o WHERE o.timeStamp BETWEEN :from and :to",
@@ -103,8 +112,6 @@ public class PersistentOrderManager implements OrderManager {
 	public Iterable<OrderEntry> findOrders(OrderStatus status) {
 		Objects.requireNonNull(status, "status");
 
-		EntityManager em = emf.createEntityManager();
-
 		TypedQuery<OrderEntry> q = em.createQuery(
 				"SELECT o FROM OrderEntry o WHERE o.status == :status",
 				OrderEntry.class);
@@ -123,8 +130,6 @@ public class PersistentOrderManager implements OrderManager {
 	public OrderEntry remove(OrderIdentifier orderIdentifier) {
 		Objects.requireNonNull(orderIdentifier, "orderIdentifier");
 
-		EntityManager em = emf.createEntityManager();
-
 		OrderEntry orderEntry = em.find(OrderEntry.class, orderIdentifier);
 
 		em.getTransaction().begin();
@@ -142,8 +147,6 @@ public class PersistentOrderManager implements OrderManager {
 	@Override
 	public void update(OrderEntry orderEntry) {
 		Objects.requireNonNull(orderEntry, "orderEntry");
-
-		EntityManager em = emf.createEntityManager();
 
 		OrderEntry oe = em.find(OrderEntry.class,
 				orderEntry.getOrderIdentifier());
@@ -167,8 +170,6 @@ public class PersistentOrderManager implements OrderManager {
 	public boolean hasOpenOrders(UserIdentifier userIdentifier) {
 		
 		Objects.requireNonNull(userIdentifier, "userIdentifier");
-
-		EntityManager em = emf.createEntityManager();
 
 		TypedQuery<OrderEntry> q = em
 				.createQuery(
@@ -198,8 +199,6 @@ public class PersistentOrderManager implements OrderManager {
 		
 		Objects.requireNonNull(userIdentifier, "userIdentifier");
 
-		EntityManager em = emf.createEntityManager();
-
 		TypedQuery<OrderEntry> q = em
 				.createQuery(
 						"SELECT o FROM OrderEntry o WHERE o.userIdentifier == :userIdentifier",
@@ -224,8 +223,6 @@ public class PersistentOrderManager implements OrderManager {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
 
-		EntityManager em = emf.createEntityManager();
-
 		TypedQuery<OrderEntry> q = em
 				.createQuery(
 						"SELECT o FROM OrderEntry o WHERE o.userIdentifier == :userIdentifier and o.timeStamp BETWEEN :from and :to",
@@ -235,6 +232,21 @@ public class PersistentOrderManager implements OrderManager {
 		q.setParameter("to", to.toDate(), TemporalType.TIMESTAMP);
 		
 		return SalespointIterable.from(q.getResultList());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.salespointframework.core.order.IOrderManager#containsOrderEntry(org.
+	 * salespointframework.core.order.OrderEntry)
+	 */
+	@Override
+	public boolean containsOrderEntry(OrderEntry orderEntry) {
+		
+		Objects.requireNonNull(orderEntry, "orderEntry");
+		
+		em.find(OrderEntry.class, orderEntry.getOrderIdentifier());
+		return em.contains(orderEntry);
 	}
 
 }

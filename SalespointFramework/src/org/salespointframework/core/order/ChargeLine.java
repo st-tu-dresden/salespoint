@@ -67,4 +67,28 @@ public class ChargeLine {
 	public OrderLineIdentifier getIdentifier() {
 		return identifier;
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other == this)
+			return true;
+		if (other == null)
+			return false;
+		if (!(other instanceof ChargeLine))
+			return false;
+		return this.equals((ChargeLine) other);
+	}
+
+	public boolean equals(ChargeLine other) {
+		if (other == this)
+			return true;
+		if (other == null)
+			return false;
+		return this.getIdentifier().equals(other.getIdentifier());
+	}
+
+	@Override
+	public int hashCode() {
+		return this.getIdentifier().hashCode();
+	}
 }

@@ -14,6 +14,15 @@ public interface OrderManager {
 	void addOrder(OrderEntry order);
 
 	/**
+	 * Checks whether the OrderManager contains the given OrderEntry.
+	 * 
+	 * @param orderEntry
+	 *            Denoting the OrderEntry that shall be checked.
+	 * @return True, if the OrderManager contains this OrderEntry 
+	 */
+	boolean containsOrderEntry(OrderEntry orderEntry);
+	
+	/**
 	 * Returns the <code>OrderEntry</code>s whith the specified
 	 * <code>orderIdentifier</code>.
 	 * 
