@@ -18,7 +18,6 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.ChargeLine;
 import org.salespointframework.core.order.OrderLine;
-import org.salespointframework.core.product.SerialNumber;
 
 import test.inventory.KeksInventory;
 import test.product.KeksInstance;
@@ -29,8 +28,7 @@ public class OrderLineTest {
 	private static Logger logger = Logger.getLogger(OrderLineTest.class.getName());
 	private EntityManagerFactory emf;
 	private EntityManager em;
-	SerialNumber sn1, sn2, sn3;
-	
+
 	
 	@BeforeClass
 	public static void classSetup() {
@@ -142,8 +140,7 @@ public class OrderLineTest {
     		em.persist(ol);
     		assertTrue(em.contains(ol));
     		
-    		
-    		//TODO FIX it
+
     		ChargeLine cl1 = new ChargeLine(new Money(1), "cl1description", "cl1comment");
     		ChargeLine cl2 = new ChargeLine(new Money(3), "cl2description", "cl2comment");
     		

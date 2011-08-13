@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -36,10 +37,12 @@ import org.salespointframework.util.SalespointIterable;
 public class OrderEntry {
 	
 	@EmbeddedId
+	//@AttributeOverride(name = "id", column = @Column(name = "ORDERENTRY_ID"))
 	private OrderIdentifier orderIdentifier;
 	
 	//for internal association with users
 	@Embedded
+	//@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))
 	protected UserIdentifier uID;
 	
 	// Do NOT fucking touch!
@@ -53,8 +56,6 @@ public class OrderEntry {
 	private String salesChannel;
 	private String termsAndConditions;
 	
-	//TODO
-	//private List<OrderAction> orderActions;
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<ChargeLine> chargeLines = new HashSet<ChargeLine>();
@@ -65,24 +66,24 @@ public class OrderEntry {
 	@ElementCollection
 	private List<OrderLogEntry> log = new ArrayList<OrderLogEntry>();
 	
-	
+	@Deprecated
 	public OrderEntry() {
-		this("", "");
 	}
 	
-	public OrderEntry(String salesChannel) {
-		this(Objects.requireNonNull(salesChannel, "salesChannel"), "");
+	public OrderEntry(UserIdentifier userIdentifier, String salesChannel) {
+		this(Objects.requireNonNull(userIdentifier, "userIdentifier"), 
+				Objects.requireNonNull(salesChannel, "salesChannel"), "");
 	}
 		
-	public OrderEntry(String salesChannel, String termsAndConditions) {
+	public OrderEntry(UserIdentifier userIdentifier, String salesChannel, String termsAndConditions) {
 		orderIdentifier = new OrderIdentifier();
 		dateCreated = Shop.INSTANCE.getTime().getDateTime().toDate();
 		this.salesChannel = Objects
 				.requireNonNull(salesChannel, "salesChannel");
 		this.termsAndConditions = Objects.requireNonNull(termsAndConditions,
 				"termsAndConditions");
-		//TODO
-		//orderActions = new ArrayList<OrderAction>();
+		this.uID = Objects.requireNonNull(userIdentifier,
+				"userIdentifier");
 		status = OrderStatus.INITIALIZED;
 	}
 
@@ -140,7 +141,7 @@ public class OrderEntry {
 	public String toString() {
 		return orderIdentifier.toString();
 	}
-
+	
 	/**
 	 * @return the orderIdentifier
 	 */
@@ -175,14 +176,6 @@ public class OrderEntry {
 	public String getTermsAndConditions() {
 		return termsAndConditions;
 	}
-
-	/**
-	 * @return the orderAction
-	 */
-	//TODO
-/*	public Iterable<OrderAction> getOrderAction() {
-		return SalespointIterable.from(this.orderActions);
-	}*/
 	
 	/**
 	 * @return the orderLines
