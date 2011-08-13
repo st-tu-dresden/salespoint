@@ -37,12 +37,12 @@ import org.salespointframework.util.SalespointIterable;
 public class OrderEntry {
 	
 	@EmbeddedId
-	//@AttributeOverride(name = "id", column = @Column(name = "ORDERENTRY_ID"))
+	@AttributeOverride(name = "id", column = @Column(name = "ORDERENTRY_ID"))
 	private OrderIdentifier orderIdentifier;
 	
 	//for internal association with users
 	@Embedded
-	//@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))
+	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))
 	protected UserIdentifier uID;
 	
 	// Do NOT fucking touch!

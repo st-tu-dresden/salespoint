@@ -71,7 +71,7 @@ public class OrderEntryTest {
 	@Test
 	public void testPersistOrderEntry() {
 		
-        //try {
+        try {
 
             em.getTransaction().begin();
             
@@ -120,7 +120,7 @@ public class OrderEntryTest {
     		
     		final List<OrderLine> olList = em.createQuery("SELECT o FROM OrderLine o",
     				OrderLine.class).getResultList();
-    		assertEquals(1, clList.size());
+    		assertEquals(1, olList.size());
     		
     		for(OrderLine o : oe.getOrderLines()) {
     			assertTrue(olList.contains(o));
@@ -138,11 +138,11 @@ public class OrderEntryTest {
     		
             em.getTransaction().commit();
 
-/*        } catch (Exception ex) {
+        } catch (Exception ex) {
             em.getTransaction().rollback();
             ex.printStackTrace();
             fail("Exception during testPersistOrderEntry");
-        }*/
+        }
 		
 	}
 
