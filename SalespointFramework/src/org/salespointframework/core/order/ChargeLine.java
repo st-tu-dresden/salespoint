@@ -18,7 +18,7 @@ public class ChargeLine {
 	//@Id @GeneratedValue(strategy=GenerationType.AUTO) private long id;
 	
 	@EmbeddedId
-	@AttributeOverride(name="id", column=@Column(name="ORDERLINE_ID"))
+	@AttributeOverride(name="id", column=@Column(name="CHARGELINE_ID"))
 	private OrderLineIdentifier identifier;
 
 	private Money amount;
