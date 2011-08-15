@@ -1,6 +1,5 @@
 package org.salespointframework.core.accountancy;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -18,13 +17,13 @@ import org.salespointframework.core.shop.Shop;
  * 
  */
 @Entity
-public abstract class AbstractAccountancyEntry implements Serializable {
+public abstract class AbstractAccountancyEntry {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@SuppressWarnings("unused")
-	private long id;
+	private long identifier;
 
-	private static final long serialVersionUID = 1L;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timeStamp;
 	

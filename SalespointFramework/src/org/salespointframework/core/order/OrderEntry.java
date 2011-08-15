@@ -24,6 +24,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.money.Money;
@@ -85,6 +86,7 @@ public class OrderEntry {
 		this.userIdentifier = Objects.requireNonNull(userIdentifier,
 				"userIdentifier");
 		status = OrderStatus.INITIALIZED;
+		this.log.add(new OrderLogEntry("OrderEntry initialized succesfully", ""));
 	}
 
 
@@ -107,6 +109,13 @@ public class OrderEntry {
 			 	for(SerialNumber serialNumber : orderLine.getSerialNumbers()) {
 			 		inventory.removeProductInstance(serialNumber);
 			 	}
+			 	
+			 	this.log.add(new OrderLogEntry("ProductInstances removed succesfully from Inventory", ""));
+			 	
+			 	Shop.INSTANCE.getAccountancy().addEntry(
+			 			new ProductPaymentEntry(this.orderIdentifier, this.userIdentifier, this.getTotalPrice()));
+			 	
+			 	this.log.add(new OrderLogEntry("OrderEntry payed and completed succesfully", ""));
 				
 			 	
 			// TODO plätttten

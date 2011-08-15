@@ -2,13 +2,6 @@ package test.accountancy;
 
 import static org.junit.Assert.*;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Date;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.RollbackException;
-
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -18,11 +11,10 @@ import org.salespointframework.core.accountancy.AbstractAccountancyEntry;
 import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.accountancy.SomeOtherEntry;
-import org.salespointframework.core.accountancy.payment.Cash;
-import org.salespointframework.core.accountancy.payment.OrderPayment;
 import org.salespointframework.core.database.Database;
-import org.salespointframework.core.order.actions.PaymentAction;
-import org.salespointframework.util.ArgumentNullException;
+import org.salespointframework.core.money.Money;
+import org.salespointframework.core.order.OrderIdentifier;
+import org.salespointframework.core.users.UserIdentifier;
 
 public class AccountancyTest {
 	private PersistentAccountancy a;
@@ -41,8 +33,7 @@ public class AccountancyTest {
 		System.out.println("Creating AccountancyEntries: ");
 		for (int year = 2000; year < 2010; year++) {
 			if(year % 2 == 0) {
-				PaymentAction pa = new PaymentAction(new OrderPayment(new Cash(), new DateTime(), "me", "you" ));
-				a.addEntry(pa.getProductPaymentEntry());
+				a.addEntry(new ProductPaymentEntry(new OrderIdentifier(), new UserIdentifier(), new Money(1)));
 			} else {
 				a.addEntry(new SomeOtherEntry());
 			}
@@ -94,8 +85,7 @@ public class AccountancyTest {
 	//@Test(expected=RollbackException.class)
 	public void doubleAdd() {
 		Accountancy a = new PersistentAccountancy();
-		PaymentAction pa = new PaymentAction(new OrderPayment(Cash.CASH, new DateTime(), "me", "you" ));
-		AbstractAccountancyEntry e = new ProductPaymentEntry(pa);
+		AbstractAccountancyEntry e = new ProductPaymentEntry(new OrderIdentifier(), new UserIdentifier(), new Money(1));
 		a.addEntry(e);
 		System.out.println(new DateTime());
 		try {
@@ -104,8 +94,7 @@ public class AccountancyTest {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		pa = new PaymentAction(new OrderPayment(Cash.CASH, new DateTime(), "me", "you" ));
-		a.addEntry(new ProductPaymentEntry(pa));
+		a.addEntry(new ProductPaymentEntry(new OrderIdentifier(), new UserIdentifier(), new Money(1)));
 		System.out.println(new DateTime());
 	}
 
