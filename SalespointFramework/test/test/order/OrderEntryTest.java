@@ -149,7 +149,7 @@ public class OrderEntryTest {
 	@Test
 	public void testPriceCalculationOrderEntry() {
 		
-        //try {
+        try {
 
             
             UserIdentifier ui = new UserIdentifier();
@@ -186,11 +186,11 @@ public class OrderEntryTest {
     		inv.removeProductInstance(ki2.getSerialNumber());
 
 
-/*        } catch (Exception ex) {
+        } catch (Exception ex) {
             em.getTransaction().rollback();
             ex.printStackTrace();
-            fail("Exception during testPersistOrderEntry");
-        }*/
+            fail("Exception during testPriceCalculationOrderEntry");
+        }
 		
 	}
 
