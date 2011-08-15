@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.AbstractProductInstance;
+import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Objects;
 
@@ -88,13 +89,30 @@ public abstract class AbstractMeasuredProductInstance extends AbstractProductIns
 		this.productType.reduceQuantityOnHand(quantity);
 	}
 	
+	/**
+	 * Returns the {@link MeasuredProductType} of the MeasuredProductInstance
+	 * @return the MeasuredProductType of this MeasuredProductInstance
+	 */
+	
 	public MeasuredProductType getProductType(){
 		return this.productType;
 	}
 	
+
+	/**
+	 * Returns the {@link Quantity} of the MeasuredProductInstance
+	 * @return the quantity of this MeasuredProductInstance
+	 */
+	
 	public Quantity getQuantity(){
 		return quantity;
 	}
+	
+
+	/**
+	 * Returns the Price of this MeasuredProductInstance
+	 * @return the price of this MeasuredProductInstance
+	 */
 	
 	@Override
 	public Money getPrice(){

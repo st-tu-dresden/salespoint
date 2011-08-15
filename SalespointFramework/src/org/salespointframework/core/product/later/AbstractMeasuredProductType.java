@@ -33,22 +33,51 @@ public AbstractMeasuredProductType(String name, Money price, Quantity quantityOn
 	this.unitPrice = price.divide_(new Money(quantityOnHand.getAmount()));
 }
 
+/**
+ * Returns an {@link Quantity} of this MeasuredProductType, which is available.
+ * @return the quantityOnHand of the MeasuredProductType
+ */
+
 public Quantity getQuantityOnHand(){
 	return this.quantityOnHand;
 }
+
+/**
+ * Returns the {@link Metric} of this MeasuredProductType, which is preffered.
+ * @return the Metric of the MeasuredProductType
+ */
 
 public Metric getPreferredMetric(){
 	return this.preferredMetric;
 }
 
+/**
+ * Returns the Price of the Quantity of this MeasuredProductType.
+ * @return the Price of the Quantity on Hand of this MeasuredProductType
+ */
+
 @Override
 public Money getPrice(){
 	return quantityOnHand.multiply_(unitPrice);
 }
+
+/**
+ * Returns the Price of an unit of this MeasuredProductType.
+ * @return the Unit Price of the MeasuredProductType
+ */
+
 public Money getUnitPrice(){
 	
 	return this.unitPrice;
 }
+
+/**
+ * Adds a quantity to the quantity of the MeasuredProductType
+ * @param quantity which will be added to the quantityOnHand of this MeasuredProductType.
+ * @throws IllegalArgumentException
+ * The {@link IllegalArgumentException} will be thrown, if the amount 
+ * of the quantity is negative. 
+ */
 
 public void addQuantity(Quantity quantity){
 
@@ -106,6 +135,14 @@ public void addQuantity(BigDecimal amount){
 	quantityOnHand = quantityOnHand.add(q);
 }
 
+/**
+ * Subtracts a quantity to the quantity of the MeasuredProductType
+ * @param quantity which will be subtract
+ * @throws IllegalArgumentException
+ * The {@link IllegalArgumentException} will be thrown, if the amount 
+ * of the quantity is negative and if the quantity, which will be subtract, is greater than
+ * the quantityOnHand of this MeasuredProductType. 
+ */
 public void reduceQuantityOnHand(Quantity quantity){
 	
 	 if (quantity.getAmount().intValue()<0)
