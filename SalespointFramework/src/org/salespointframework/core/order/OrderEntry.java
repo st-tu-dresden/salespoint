@@ -90,8 +90,12 @@ public class OrderEntry {
 	}
 
 
-	//TODO make PaymentEntry in Accountancy
-	public boolean completeOrder() {
+	/**
+	 * Completes this OrderEntry. This means removing the serielnumbers of this OrderEntry
+	 * from inventory, make a payment entry in the accountancy of the shop and set the OrderStatus to CLOSED.
+	 * 
+	 */
+	public void completeOrder() {
 		EntityManager em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
 		
 		em.getTransaction().begin();
@@ -115,7 +119,8 @@ public class OrderEntry {
 			 	Shop.INSTANCE.getAccountancy().addEntry(
 			 			new ProductPaymentEntry(this.orderIdentifier, this.userIdentifier, this.getTotalPrice()));
 			 	
-			 	this.log.add(new OrderLogEntry("OrderEntry payed and completed succesfully", ""));
+			 	this.log.add(new OrderLogEntry("OrderEntry payed succesfully", ""));
+			 	this.changeOrderStatus(OrderStatus.CLOSED);
 				
 			 	
 			// TODO plätttten
@@ -143,8 +148,6 @@ public class OrderEntry {
 			}
 		}
 		em.getTransaction().commit();
-		
-		return false;
 	}
 	
 	public String toString() {
