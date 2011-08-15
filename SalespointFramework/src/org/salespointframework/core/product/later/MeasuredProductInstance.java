@@ -4,20 +4,24 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.quantity.Quantity;
 
+/**
+ * This is an interface which provides basic methods to handle MeasuredProductInstances.
+ * 
+ */
 public interface MeasuredProductInstance extends ProductInstance {
 
 	/**
-     * Return the MeasuredProductType of this MeasuredProductInstance
+     * Returns the MeasuredProductType of this MeasuredProductInstance
      * @return the {@link MeasuredProductType} of this MeasuredProductInstance 
      */
 	public MeasuredProductType getProductType();
 	/**
-     * Return the Quantity
+     * Returns the Quantity
      * @return the quantity of this MeasuredProductInstance 
      */
 	public Quantity getQuantity();
 	/**
-     * Return the Price of this MeasuredProductInstance
+     * Returns the Price of this MeasuredProductInstance
      * @return the price of this MeasuredProductInstance 
      */
 	public Money getPrice();

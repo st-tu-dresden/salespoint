@@ -4,10 +4,15 @@ import java.math.BigDecimal;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.AbstractProductInstance;
-import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Objects;
 
+/**
+ * 
+ * This is an abstract representation of a MeasuredProductInstance which provides basic
+ * functionality
+ * 
+ */
 
 public abstract class AbstractMeasuredProductInstance extends AbstractProductInstance implements MeasuredProductInstance {
 
@@ -89,30 +94,13 @@ public abstract class AbstractMeasuredProductInstance extends AbstractProductIns
 		this.productType.reduceQuantityOnHand(quantity);
 	}
 	
-	/**
-	 * Returns the {@link MeasuredProductType} of the MeasuredProductInstance
-	 * @return the MeasuredProductType of this MeasuredProductInstance
-	 */
-	
 	public MeasuredProductType getProductType(){
 		return this.productType;
 	}
 	
-
-	/**
-	 * Returns the {@link Quantity} of the MeasuredProductInstance
-	 * @return the quantity of this MeasuredProductInstance
-	 */
-	
 	public Quantity getQuantity(){
 		return quantity;
 	}
-	
-
-	/**
-	 * Returns the Price of this MeasuredProductInstance
-	 * @return the price of this MeasuredProductInstance
-	 */
 	
 	@Override
 	public Money getPrice(){
@@ -128,11 +116,30 @@ public abstract class AbstractMeasuredProductInstance extends AbstractProductIns
 		return this.equals((MeasuredProductInstance)other);
 	}
 	
+	/**
+	 * Determines if the given {@link MeasuredProductInstance} is equal to this one or
+	 * not. Two MeasuredProductInstances are equal to each other, if their hash code is
+	 * the same.
+	 * 
+	 * @param other
+	 *            this one should be compared with
+	 * @return <code>true</code> if and only if the hashCode of this Object
+	 *         equals the hashCode of the object given as parameter.
+	 *         <code>false</code> otherwise.
+	 */
+	
 	public boolean equals(MeasuredProductInstance other) {
 		if(other == null) return false;
 		if(other == this) return true;
 		return this.getProductIdentifier().equals(other.getSerialNumber());
 	}
+	
+	/**
+	 * Returns the hash code for this entry. The hash of this object is the hash
+	 * of its primary key.
+	 * 
+	 * @return the hash code for this entry
+	 */
 	
 	@Override
 	public int hashCode() {

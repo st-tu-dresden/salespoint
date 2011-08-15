@@ -13,6 +13,12 @@ import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.Objects;
 
+/**
+ * 
+ * This is an abstract representation of a ServiceInstance which provides basic
+ * functionality
+ * 
+ */
 
 public abstract class AbstractServiceInstance extends AbstractProductInstance implements ServiceInstance {
 	
@@ -25,6 +31,18 @@ public abstract class AbstractServiceInstance extends AbstractProductInstance im
 	@Deprecated
 	public AbstractServiceInstance(){}
 	
+	/**
+     * Parameterized constructor with 
+     * @param serviceType The {@link ServiceType} of this ServiceInstance
+     * @param start The start time of the ServiceInstance.
+     * @param end The end time of the ServiceInstance.
+     *	@throws IllegalArgumentException
+     *             if the start is after the end
+     * @throws IllegalArgumentException
+     *             if the start is before the start of the ServiceType
+     * @throws IllegalArgumentException
+     *             if the end is after the end of the ServiceType
+     */
 	public AbstractServiceInstance(ServiceType serviceType, DateTime start, DateTime end) {
 		super(serviceType);
 		this.serviceType = Objects.requireNonNull(serviceType, "serviceType");
@@ -107,11 +125,30 @@ public abstract class AbstractServiceInstance extends AbstractProductInstance im
 		return this.equals((ServiceInstance)other);
 	}
 	
+	/**
+	 * Determines if the given {@link ServiceInstance} is equal to this one or
+	 * not. Two ServiceInstances are equal to each other, if their hash code is
+	 * the same.
+	 * 
+	 * @param other
+	 *            this one should be compared with
+	 * @return <code>true</code> if and only if the hashCode of this Object
+	 *         equals the hashCode of the object given as parameter.
+	 *         <code>false</code> otherwise.
+	 */
+	
 	public boolean equals(ServiceInstance other) {
 		if(other == null) return false;
 		if(other == this) return true;
 		return this.getProductIdentifier().equals(other.getSerialNumber());
 	}
+	
+	/**
+	 * Returns the hash code for this entry. The hash of this object is the hash
+	 * of its primary key.
+	 * 
+	 * @return the hash code for this entry
+	 */
 	
 	@Override
 	public int hashCode() {

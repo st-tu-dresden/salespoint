@@ -2,11 +2,19 @@ package org.salespointframework.core.product.later;
 
 import java.math.BigDecimal;
 
+import org.salespointframework.core.calendar.CalendarEntry;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.AbstractProductType;
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Objects;
+
+/**
+ * 
+ * This is an abstract representation of a MeasuredProductType which provides basic
+ * functionality
+ * 
+ */
 
 public abstract class AbstractMeasuredProductType extends AbstractProductType implements MeasuredProductType{
 	
@@ -33,51 +41,23 @@ public AbstractMeasuredProductType(String name, Money price, Quantity quantityOn
 	this.unitPrice = price.divide_(new Money(quantityOnHand.getAmount()));
 }
 
-/**
- * Returns an {@link Quantity} of this MeasuredProductType, which is available.
- * @return the quantityOnHand of the MeasuredProductType
- */
-
 public Quantity getQuantityOnHand(){
 	return this.quantityOnHand;
 }
 
-/**
- * Returns the {@link Metric} of this MeasuredProductType, which is preffered.
- * @return the Metric of the MeasuredProductType
- */
-
 public Metric getPreferredMetric(){
 	return this.preferredMetric;
 }
-
-/**
- * Returns the Price of the Quantity of this MeasuredProductType.
- * @return the Price of the Quantity on Hand of this MeasuredProductType
- */
 
 @Override
 public Money getPrice(){
 	return quantityOnHand.multiply_(unitPrice);
 }
 
-/**
- * Returns the Price of an unit of this MeasuredProductType.
- * @return the Unit Price of the MeasuredProductType
- */
-
 public Money getUnitPrice(){
 	
 	return this.unitPrice;
 }
-
-/**
- * Adds a quantity to the quantity of the MeasuredProductType
- * @param quantity which will be added to the quantityOnHand of this MeasuredProductType.
- * @throws IllegalArgumentException
- * The {@link IllegalArgumentException} will be thrown, if the amount 
- * of the quantity is negative. 
- */
 
 public void addQuantity(Quantity quantity){
 
@@ -135,14 +115,6 @@ public void addQuantity(BigDecimal amount){
 	quantityOnHand = quantityOnHand.add(q);
 }
 
-/**
- * Subtracts a quantity to the quantity of the MeasuredProductType
- * @param quantity which will be subtract
- * @throws IllegalArgumentException
- * The {@link IllegalArgumentException} will be thrown, if the amount 
- * of the quantity is negative and if the quantity, which will be subtract, is greater than
- * the quantityOnHand of this MeasuredProductType. 
- */
 public void reduceQuantityOnHand(Quantity quantity){
 	
 	 if (quantity.getAmount().intValue()<0)
@@ -222,12 +194,30 @@ public boolean equals(Object other) {
 	return this.equals((MeasuredProductType)other);
 }
 
+/**
+ * Determines if the given {@link MeasuredProductType} is equal to this one or
+ * not. Two MeasuredProductTypes are equal to each other, if their hash code is
+ * the same.
+ * 
+ * @param other
+ *            this one should be compared with
+ * @return <code>true</code> if and only if the hashCode of this Object
+ *         equals the hashCode of the object given as parameter.
+ *         <code>false</code> otherwise.
+ */
+
 public boolean equals(MeasuredProductType other) {
 	if(other == null) return false;
 	if(other == this) return true;
 	return productIdentifier.equals(other.getProductIdentifier());
 }
 
+/**
+ * Returns the hash code for this entry. The hash of this object is the hash
+ * of its primary key.
+ * 
+ * @return the hash code for this entry
+ */
 @Override
 public int hashCode() {
 	return this.getProductIdentifier().hashCode();
