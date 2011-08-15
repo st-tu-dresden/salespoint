@@ -7,29 +7,29 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.database.ICanHasClass;
 import org.salespointframework.core.product.AbstractProductInstance;
 import org.salespointframework.core.product.SerialNumber;
+import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
-import org.salespointframework.util.SalespointIterable;
 
+//Vollständig getypt
 //public class AbstractInventory<T1 extends AbstractInventoryEntry<T2, T3>, T2 extends AbstractProductInstance<T3>, T3 extends AbstractProductType> 
 //implements Inventory<T1,T2,T3> {
 
 public abstract class AbstractInventory<T extends AbstractProductInstance> implements Inventory<T>, ICanHasClass<T> {
 
-	EntityManager entityManager;
-	
+	final EntityManager entityManager;
 	
 	// Alles Instant
 	public AbstractInventory() {
-	
+		entityManager = null;
 	}
 	
 	// Kann per begin, commit, rollback gesteuert werden
-	public AbstractInventory(EntityManager entityManager) {
+	public AbstractInventory(final EntityManager entityManager) {
 		this.entityManager = Objects.requireNonNull(entityManager, "entityManager");
 	}
 	
 	@Override
-	public void addProductInstance(T productInstance) {
+	public void addProductInstance(final T productInstance) {
 		Objects.requireNonNull(productInstance, "productInstance");
 		EntityManager em = foobar();
 		em.persist(productInstance);
@@ -37,7 +37,7 @@ public abstract class AbstractInventory<T extends AbstractProductInstance> imple
 	}
 
 	@Override
-	public void removeProductInstance(SerialNumber serialNumber) {
+	public void removeProductInstance(final SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		EntityManager em = foobar();
 		em.remove(this.getProductInstance(serialNumber));
@@ -45,14 +45,14 @@ public abstract class AbstractInventory<T extends AbstractProductInstance> imple
 	}
 
 	@Override
-	public T getProductInstance(SerialNumber serialNumber) {
+	public T getProductInstance(final SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		EntityManager em = foobar();
 		return em.find(this.getContentClass(), serialNumber);
 	}
 
 	@Override
-	public boolean contains(SerialNumber serialNumber) {
+	public boolean contains(final SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		EntityManager em = foobar();
 		return em.contains(this.getProductInstance(serialNumber));
@@ -63,11 +63,11 @@ public abstract class AbstractInventory<T extends AbstractProductInstance> imple
 		Class<T> cc = this.getContentClass();
 		EntityManager em = foobar();
 		TypedQuery<T> tquery = em.createQuery("Select t from " + cc.getSimpleName() + " t",cc);
-		return SalespointIterable.from(tquery.getResultList());
+		return Iterables.from(tquery.getResultList());
 	}
 	
 	
-	private final void beginCommit(EntityManager em) {
+	private final void beginCommit(final EntityManager em) {
 		if(entityManager == null) {
 			em.getTransaction().begin();
 			em.getTransaction().commit();

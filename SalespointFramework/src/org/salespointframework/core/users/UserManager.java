@@ -1,5 +1,5 @@
 package org.salespointframework.core.users;
 
-public interface UserManager {
+public interface UserManager<T extends User> {
 
 }

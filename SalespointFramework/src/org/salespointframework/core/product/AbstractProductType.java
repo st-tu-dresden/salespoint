@@ -3,32 +3,35 @@ package org.salespointframework.core.product;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.features.ProductFeatureType;
+import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
-import org.salespointframework.util.SalespointIterable;
+
 
 @MappedSuperclass
 public class AbstractProductType implements ProductType {
 	
 	@EmbeddedId
-	protected ProductIdentifier productIdentifier;
-	protected String name;
-	
-	protected Money price;
+	private ProductIdentifier productIdentifier;
+
+	private String name;
+	private Money price;
 	
 	//TODO Map?
-	protected Set<ProductFeatureType> featureTypes = new HashSet<ProductFeatureType>();
+	@OneToMany(cascade = CascadeType.ALL)
+	private Set<ProductFeatureType> featureTypes = new HashSet<ProductFeatureType>();
+	
+	
 	@Deprecated
-	protected AbstractProductType() {
-		
-	}
+	protected AbstractProductType() { }
 	
 	public AbstractProductType(String name, Money price) {
-		//this.productIdentifier = Objects.requireNonNull(productIdentifier, "productIdentifier");
 		this.name = Objects.requireNonNull(name, "name");
 		this.price = Objects.requireNonNull(price, "price");
 		this.productIdentifier = new ProductIdentifier();
@@ -42,15 +45,20 @@ public class AbstractProductType implements ProductType {
 		return this.equals((ProductType)other);
 	}
 	
-	public boolean equals(ProductType other) {
+	public final boolean equals(ProductType other) {
 		if(other == null) return false;
 		if(other == this) return true;
 		return this.productIdentifier.equals(other.getProductIdentifier());
 	}
 	
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return productIdentifier.hashCode();
+	}
+	
+	@Override
+	public final String getName() {
+		return name;
 	}
 	
 	@Override	
@@ -59,31 +67,28 @@ public class AbstractProductType implements ProductType {
 	}
 
 	@Override
-	public Iterable<ProductFeatureType> getProductFeatureTypes() {
-		return SalespointIterable.from(featureTypes);
+	public final Iterable<ProductFeatureType> getProductFeatureTypes() {
+		return Iterables.from(featureTypes);
 	}
 	
 	@Override
-	public ProductIdentifier getProductIdentifier() {
+	public final ProductIdentifier getProductIdentifier() {
 		return productIdentifier;
 	}
 
 	@Override
-	public void addProductFeatureType (ProductFeatureType pf){
-		if (pf!=null)
-		featureTypes.add(pf);
+	public final void addProductFeatureType (ProductFeatureType productFeatureType){
+		Objects.requireNonNull(productFeatureType, "productFeatureType");
+		featureTypes.add(productFeatureType);
 		
 	}
 	
 	@Override
-	public void removeProductFeatureType (ProductFeatureType pf){
-		if (pf!=null)
-		featureTypes.remove(pf);
+	public final void removeProductFeatureType (ProductFeatureType productFeatureType){
+		Objects.requireNonNull(productFeatureType, "productFeatureType");
+		featureTypes.remove(productFeatureType);
 	}
 	
-	@Override
-	public String getName() {
-		return name;
-	}
+
 	
 }

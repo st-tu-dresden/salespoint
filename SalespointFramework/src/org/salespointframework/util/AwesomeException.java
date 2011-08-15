@@ -1,6 +1,6 @@
 package org.salespointframework.util;
 
-public class AwesomeException extends RuntimeException {
+public final class AwesomeException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

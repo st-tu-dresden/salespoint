@@ -4,7 +4,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 public class DefaultTime implements Time {
-
 	@Override
 	public DateTime getDateTime() {
 		return new DateTime();
@@ -14,5 +13,4 @@ public class DefaultTime implements Time {
 	public void goAhead(Duration duration) {
 		// NO OP
 	}
-
 }

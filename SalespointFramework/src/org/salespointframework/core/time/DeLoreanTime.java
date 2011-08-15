@@ -1,14 +1,11 @@
 package org.salespointframework.core.time;
 
-
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.salespointframework.util.Objects;
-import org.salespointframework.util.Observable;
-import org.salespointframework.util.Observer;
 
 //TODO OBSERVER
-public class DeLoreanTime implements Time /*, Observable<Duration> */ {
+public class DeLoreanTime implements Time {
 
 	Duration duration = Duration.ZERO;
 
@@ -24,16 +21,14 @@ public class DeLoreanTime implements Time /*, Observable<Duration> */ {
 		this.duration = this.duration.plus(duration);
 		afterGoAhead(duration);
 	}
-	
-	//Hook
+
+	// Hook
 	public void beforeGoAhead(Duration duration) {
-	
+
 	}
-	
-	//Hook
+
+	// Hook
 	public void afterGoAhead(Duration duration) {
-		
+
 	}
-
-
 }

@@ -7,9 +7,9 @@ import javax.persistence.*;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.features.ProductFeature;
-import org.salespointframework.core.product.features.ProductFeatureType;
+
+import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
-import org.salespointframework.util.SalespointIterable;
 
 @MappedSuperclass
 public abstract class AbstractProductInstance implements ProductInstance {
@@ -22,13 +22,14 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	private ProductIdentifier productIdentifier;
 	
 	private Money price;
-	//TODO annot?
+	
+	@ElementCollection
 	private Map<String, ProductFeature> productFeatures = new HashMap<String, ProductFeature>();
 	
 	@Deprecated
 	protected AbstractProductInstance() { }
 	
-	public AbstractProductInstance(ProductType productType) {
+	public AbstractProductInstance(final ProductType productType) {
 		this.productIdentifier = Objects.requireNonNull(productType, "productType").getProductIdentifier();
 		//this.productType = productType;
 		this.price = productType.getPrice(); //TODO CLONE
@@ -37,6 +38,12 @@ public abstract class AbstractProductInstance implements ProductInstance {
 		calculatePrice();
 	}
 
+	
+	// TODO
+	private final void addFeatures(final ProductType productType) {
+		
+	}
+	
 	// Hook Method
 	protected void calculatePrice() {
 		for(ProductFeature pt : productFeatures.values()) {
@@ -45,7 +52,7 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	}
 	
 	@Override
-	public ProductIdentifier getProductIdentifier() { 
+	public final ProductIdentifier getProductIdentifier() { 
 		return productIdentifier;
 	}
 
@@ -55,38 +62,19 @@ public abstract class AbstractProductInstance implements ProductInstance {
 	}
 
 	@Override
-	public SerialNumber getSerialNumber() {
+	public final SerialNumber getSerialNumber() {
 		return serialNumber;
 	}
 
 	@Override
-	public Iterable<ProductFeature> getProductFeatures() {
-		return SalespointIterable.from(productFeatures.values());
+	public final Iterable<ProductFeature> getProductFeatures() {
+		return Iterables.from(productFeatures.values());
 	}
 	
 	@Override
-	public ProductFeature getProductFeature(String name) {
+	public final ProductFeature getProductFeature(final String name) {
+		Objects.requireNonNull(name, "name");
 		return productFeatures.get(name);
-	}
-	
-	@Override
-	public void addProductFeatures(ProductFeatureType pf){
-		if (productFeatures!=null){
-			productFeatures.clear();
-		}
-		//productType.addProductFeatureType(pf);
-		
-		for (ProductFeature p: pf.getPossibleValues()){
-			productFeatures.put(p.getName(), p);
-		}
-		calculatePrice();
-	}
-	
-	@Override
-	public void removeProductFeatures(){
-			productFeatures.clear();
-			//price = productType.getPrice(); Warum auskommentiert?
-		
 	}
 	
 	@Override
@@ -97,15 +85,14 @@ public abstract class AbstractProductInstance implements ProductInstance {
 		return this.equals((ProductInstance)other);
 	}
 	
-	public boolean equals(ProductInstance other) {
+	public final boolean equals(ProductInstance other) {
 		if(other == null) return false;
 		if(other == this) return true;
 		return this.serialNumber.equals(other.getSerialNumber());
 	}
 	
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return serialNumber.hashCode();
 	}
-
 }

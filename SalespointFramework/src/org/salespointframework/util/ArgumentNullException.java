@@ -8,10 +8,10 @@ public class ArgumentNullException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = -7522700184079490206L;
 	
-	private String paramName;
+	private final String paramName;
 	
 	protected ArgumentNullException() {
-
+		paramName = "";
 	}
 	
 	public ArgumentNullException(String paramName) {
