@@ -145,5 +145,53 @@ public class OrderEntryTest {
         }
 		
 	}
+	
+	@Test
+	public void testPriceCalculationOrderEntry() {
+		
+        //try {
+
+            
+            UserIdentifier ui = new UserIdentifier();
+            OrderEntry oe = new OrderEntry(ui, "internet", "testCondition");
+
+    		ChargeLine cl1 = new ChargeLine(new Money(1), "cl1description", "cl1comment");
+    		ChargeLine cl2 = new ChargeLine(new Money(3), "cl2description", "cl2comment");
+    		ChargeLine cl3 = new ChargeLine(new Money(4), "cl3description", "cl3comment");
+    		
+    		oe.addChargeLine(cl1);
+    		oe.addChargeLine(cl2);
+    		
+    		KeksInventory inv = new KeksInventory(em);
+    		
+    		KeksProduct kp1 = new KeksProduct("bla" ,new Money(1));
+    		KeksInstance ki1 = new KeksInstance(kp1);
+    		KeksProduct kp2 = new KeksProduct("blub" ,new Money(2));
+    		KeksInstance ki2 = new KeksInstance(kp2);
+    	
+    		inv.addProductInstance(ki1);
+    		inv.addProductInstance(ki2);
+    		
+    		OrderLine ol = new OrderLine(inv, ki1.getSerialNumber(), "testdescription1", "testcomment1");
+    		ol.addSerialNumber(ki2.getSerialNumber());
+    		ol.addChargeLine(cl3);
+ 
+    		oe.addOrderLine(ol);
+    		
+    		assertTrue(oe.getChargedPrice().equals(new Money(4)));
+    		assertTrue(oe.getOrderedObjectsPrice().equals(new Money(7)));
+    		assertTrue(oe.getTotalPrice().equals(new Money(11)));
+    		
+    		inv.removeProductInstance(ki1.getSerialNumber());
+    		inv.removeProductInstance(ki2.getSerialNumber());
+
+
+/*        } catch (Exception ex) {
+            em.getTransaction().rollback();
+            ex.printStackTrace();
+            fail("Exception during testPersistOrderEntry");
+        }*/
+		
+	}
 
 }

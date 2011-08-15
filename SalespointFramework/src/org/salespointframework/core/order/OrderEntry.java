@@ -205,11 +205,11 @@ public class OrderEntry {
 	 */
 	public Money getTotalPrice() {
 		
-		Money price;	
+		Money price;
 		
 		if(!this.orderlines.isEmpty()) {
 			price = this.getOrderedObjectsPrice();
-			price.add_(this.getChargedPrice());
+			price = price.add_(this.getChargedPrice());
 		} else {
 			price = this.getChargedPrice();
 		}
@@ -256,7 +256,6 @@ public class OrderEntry {
 				price = price.add_(cl.getAmount());
 			}
 		}
-		
 		return price;
 	}
 	
