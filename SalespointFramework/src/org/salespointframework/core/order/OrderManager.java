@@ -57,6 +57,36 @@ public interface OrderManager {
 	 * @return an unmodifiable Iterable containing all OrderEntries whith the specified OrderEntryStatus
 	 */
 	Iterable<OrderEntry> findOrders(OrderStatus status);
+	
+	/**
+	 * Returns all <code>OrderEntry</code>s from the given userID. If this user
+	 * has no orderEntries, an empty Iterable is returned.
+	 * 
+	 * @param userIdentifier
+	 *            Denoting the UserIdentifier on which the OrderEntrys will be
+	 *            requested.
+	 * @return an unmodifiable Iterable containing all OrderEntries from the
+	 *         specified user.
+	 */
+	 Iterable<OrderEntry> findOrders(UserIdentifier userIdentifier);
+	 
+	/**
+	 * Returns all <code>OrderEntry</code>s from the given userID in between the
+	 * dates <code>from</code> and <code>to</code>, including from and to. If
+	 * this user has no orderEntries in this period, an empty Iterable is
+	 * returned.
+	 * 
+	 * @param userIdentifier
+	 *            Denoting the UserIdentifier on which the OrderEntrys will be
+	 *            requested.
+	 * @param from
+	 *            time stamp denoting the start of the requested time period
+	 * @param to
+	 *            time stamp denoting the end of the requested time period
+	 * @return an unmodifiable Iterable containing all OrderEntries from the
+	 *         specified user in the specified period.
+	 */
+	 Iterable<OrderEntry> findOrders(UserIdentifier userIdentifier, DateTime from, DateTime to);
 
 	/**
 	 * Remove an <code>OrderEntry</code> from this
@@ -85,34 +115,6 @@ public interface OrderManager {
 	 */
 	 boolean hasOpenOrders(UserIdentifier userIdentifier);
 	 
-	/**
-	 * Returns all <code>OrderEntry</code>s from the given userID. If this user
-	 * has no orderEntries, an empty Iterable is returned.
-	 * 
-	 * @param userIdentifier
-	 *            Denoting the UserIdentifier on which the OrderEntrys will be
-	 *            requested.
-	 * @return an unmodifiable Iterable containing all OrderEntries from the
-	 *         specified user.
-	 */
-	 Iterable<OrderEntry> getOrders(UserIdentifier userIdentifier);
-	 
-	/**
-	 * Returns all <code>OrderEntry</code>s from the given userID in between the
-	 * dates <code>from</code> and <code>to</code>, including from and to. If
-	 * this user has no orderEntries in this period, an empty Iterable is
-	 * returned.
-	 * 
-	 * @param userIdentifier
-	 *            Denoting the UserIdentifier on which the OrderEntrys will be
-	 *            requested.
-	 * @param from
-	 *            time stamp denoting the start of the requested time period
-	 * @param to
-	 *            time stamp denoting the end of the requested time period
-	 * @return an unmodifiable Iterable containing all OrderEntries from the
-	 *         specified user in the specified period.
-	 */
-	 Iterable<OrderEntry> getOrders(UserIdentifier userIdentifier, DateTime from, DateTime to);
+
 
 }

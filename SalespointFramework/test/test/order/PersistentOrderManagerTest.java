@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -21,6 +22,7 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.ChargeLine;
 import org.salespointframework.core.order.OrderEntry;
 import org.salespointframework.core.order.OrderLine;
+import org.salespointframework.core.order.OrderStatus;
 import org.salespointframework.core.order.PersistentOrderManager;
 import org.salespointframework.core.users.UserIdentifier;
 
@@ -69,7 +71,7 @@ public class PersistentOrderManagerTest {
 	}
 	
 	@Test
-	public void testOrderManager() {
+	public void testOrderManagerPersistence() {
 		
         try {
 
@@ -139,7 +141,70 @@ public class PersistentOrderManagerTest {
         } catch (Exception ex) {
             em.getTransaction().rollback();
             ex.printStackTrace();
-            fail("Exception during testOrderManager");
+            fail("Exception during testOrderManagerPersistence");
+       }
+	}
+	
+	@Test
+	public void testOrderManagerFind() {
+		
+       try {
+        	
+        	PersistentOrderManager pom = new PersistentOrderManager(em);
+            
+            UserIdentifier ui = new UserIdentifier();
+            
+            OrderEntry oe1 = new OrderEntry(ui, "internet", "testCondition1");
+            OrderEntry oe2 = new OrderEntry(ui, "telephone", "testCondition2");
+            
+            pom.addOrder(oe1);
+            pom.addOrder(oe2);
+            
+            oe2.changeOrderStatus(OrderStatus.CANCELLED);
+            
+            pom.update(oe2);
+    		
+    		assertTrue(pom.findOrder(oe1.getOrderIdentifier()).equals(oe1));
+    		assertTrue(pom.findOrder(oe2.getOrderIdentifier()).equals(oe2));
+    		
+    		List<OrderEntry> entryList1 = new ArrayList<OrderEntry>();
+    		
+    		for(OrderEntry test : pom.findOrders(OrderStatus.CANCELLED)) {
+    			entryList1.add(test);
+    		}
+    		
+    		assertTrue(entryList1.contains(oe2));
+    		assertTrue(entryList1.size() == 1);
+    		
+    		List<OrderEntry> entryList2 = new ArrayList<OrderEntry>();
+    		
+    		for(OrderEntry test : pom.findOrders(ui)) {
+    			entryList2.add(test);
+    		}
+    		
+    		assertTrue(entryList2.contains(oe1));
+    		assertTrue(entryList2.contains(oe2));
+    		assertTrue(entryList2.size() == 2);
+    		
+    		pom.remove(oe2.getOrderIdentifier());
+    		oe2 = new OrderEntry(ui, "telephone", "testCondition2");
+    		pom.addOrder(oe2);
+    		
+    		List<OrderEntry> entryList3 = new ArrayList<OrderEntry>();
+    		
+    		for(OrderEntry test : pom.findOrders(ui, oe2.getDateCreated(), oe2.getDateCreated())) {
+    			entryList3.add(test);
+    		}
+    		
+    		assertTrue(entryList3.contains(oe2));
+    		assertTrue(entryList3.size() == 1);
+    		
+    		pom.remove(oe1.getOrderIdentifier());
+    		pom.remove(oe2.getOrderIdentifier());
+
+       } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Exception during testOrderManagerFind");
        }
 	}
 

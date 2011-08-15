@@ -1,5 +1,7 @@
 package org.salespointframework.core.order;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
@@ -71,11 +73,15 @@ public class PersistentOrderManager implements OrderManager {
 	public OrderEntry findOrder(OrderIdentifier orderIdentifier) {
 		Objects.requireNonNull(orderIdentifier, "orderIdentifier");
 
+		em.getTransaction().begin();
+		
 		TypedQuery<OrderEntry> q = em
 				.createQuery(
-						"SELECT o FROM OrderEntry o WHERE o.orderIdentifier == :orderIdentifier",
+						"SELECT DISTINCT o FROM OrderEntry o WHERE o.orderIdentifier = :orderIdentifier",
 						OrderEntry.class);
 		q.setParameter("orderIdentifier", orderIdentifier);
+		
+		em.getTransaction().commit();
 
 		return q.getSingleResult();
 	}
@@ -92,12 +98,16 @@ public class PersistentOrderManager implements OrderManager {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
 
+		em.getTransaction().begin();
+		
 		TypedQuery<OrderEntry> q = em
 				.createQuery(
-						"SELECT o FROM OrderEntry o WHERE o.timeStamp BETWEEN :from and :to",
+						"SELECT DISTINCT o FROM OrderEntry o WHERE o.timeStamp BETWEEN :from and :to",
 						OrderEntry.class);
 		q.setParameter("from", from.toDate(), TemporalType.TIMESTAMP);
 		q.setParameter("to", to.toDate(), TemporalType.TIMESTAMP);
+		
+		em.getTransaction().commit();
 
 		return SalespointIterable.from(q.getResultList());
 	}
@@ -112,10 +122,14 @@ public class PersistentOrderManager implements OrderManager {
 	public Iterable<OrderEntry> findOrders(OrderStatus status) {
 		Objects.requireNonNull(status, "status");
 
+		em.getTransaction().begin();
+		
 		TypedQuery<OrderEntry> q = em.createQuery(
-				"SELECT o FROM OrderEntry o WHERE o.status == :status",
+				"SELECT DISTINCT o FROM OrderEntry o WHERE o.status = :status",
 				OrderEntry.class);
 		q.setParameter("status", status);
+		
+		em.getTransaction().commit();
 
 		return SalespointIterable.from(q.getResultList());
 	}
@@ -130,10 +144,11 @@ public class PersistentOrderManager implements OrderManager {
 	public OrderEntry remove(OrderIdentifier orderIdentifier) {
 		Objects.requireNonNull(orderIdentifier, "orderIdentifier");
 
-		OrderEntry orderEntry = em.find(OrderEntry.class, orderIdentifier);
-
 		em.getTransaction().begin();
+		
+		OrderEntry orderEntry = em.find(OrderEntry.class, orderIdentifier);
 		em.remove(orderEntry);
+		
 		em.getTransaction().commit();
 		return orderEntry;
 	}
@@ -148,16 +163,16 @@ public class PersistentOrderManager implements OrderManager {
 	public void update(OrderEntry orderEntry) {
 		Objects.requireNonNull(orderEntry, "orderEntry");
 
+		em.getTransaction().begin();
+		
 		OrderEntry oe = em.find(OrderEntry.class,
 				orderEntry.getOrderIdentifier());
 
-		if (oe == null)
-			return;
-		else {
-			em.getTransaction().begin();
+		if (oe != null) {
 			em.merge(orderEntry);
-			em.getTransaction().commit();
 		}
+		
+		em.getTransaction().commit();
 	}
 
 	/*
@@ -171,13 +186,18 @@ public class PersistentOrderManager implements OrderManager {
 		
 		Objects.requireNonNull(userIdentifier, "userIdentifier");
 
+		em.getTransaction().begin();
+		
 		TypedQuery<OrderEntry> q = em
 				.createQuery(
-						"SELECT o FROM OrderEntry o WHERE o.userIdentifier == :userIdentifier",
+						"SELECT DISTINCT o FROM OrderEntry o WHERE o.userIdentifier = :userIdentifier",
 						OrderEntry.class);
 		q.setParameter("userIdentifier", userIdentifier);
-
-		for(OrderEntry oe : q.getResultList()) {
+		List<OrderEntry> resultList = q.getResultList();
+		
+		em.getTransaction().commit();
+		
+		for(OrderEntry oe : resultList) {
 			if(oe.getOrderStatus() == OrderStatus.PROCESSING ||
 					oe.getOrderStatus() == OrderStatus.OPEN ||
 					oe.getOrderStatus() == OrderStatus.INITIALIZED) {
@@ -192,18 +212,22 @@ public class PersistentOrderManager implements OrderManager {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.salespointframework.core.order.IOrderManager#getOrders(org.salespointframework.core.users.UserIdentifier)
+	 * org.salespointframework.core.order.IOrderManager#findOrders(org.salespointframework.core.users.UserIdentifier)
 	 */
 	@Override
-	public Iterable<OrderEntry> getOrders(UserIdentifier userIdentifier) {
+	public Iterable<OrderEntry> findOrders(UserIdentifier userIdentifier) {
 		
 		Objects.requireNonNull(userIdentifier, "userIdentifier");
 
+		em.getTransaction().begin();
+		
 		TypedQuery<OrderEntry> q = em
 				.createQuery(
-						"SELECT o FROM OrderEntry o WHERE o.userIdentifier == :userIdentifier",
+						"SELECT DISTINCT o FROM OrderEntry o WHERE o.userIdentifier = :userIdentifier",
 						OrderEntry.class);
 		q.setParameter("userIdentifier", userIdentifier);
+		
+		em.getTransaction().commit();
 		
 		return SalespointIterable.from(q.getResultList());
 	}
@@ -212,24 +236,28 @@ public class PersistentOrderManager implements OrderManager {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.salespointframework.core.order.IOrderManager#getOrders(org.salespointframework.core.users.UserIdentifier, org.joda.
+	 * org.salespointframework.core.order.IOrderManager#findOrders(org.salespointframework.core.users.UserIdentifier, org.joda.
 	 * time.DateTime, org.joda.time.DateTime)
 	 */
 	@Override
-	public Iterable<OrderEntry> getOrders(UserIdentifier userIdentifier,
+	public Iterable<OrderEntry> findOrders(UserIdentifier userIdentifier,
 			DateTime from, DateTime to) {
 		
 		Objects.requireNonNull(userIdentifier, "userIdentifier");
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
 
+		em.getTransaction().begin();
+		
 		TypedQuery<OrderEntry> q = em
 				.createQuery(
-						"SELECT o FROM OrderEntry o WHERE o.userIdentifier == :userIdentifier and o.timeStamp BETWEEN :from and :to",
+						"SELECT DISTINCT o FROM OrderEntry o WHERE o.userIdentifier = :userIdentifier and o.timeStamp BETWEEN :from and :to",
 						OrderEntry.class);
 		q.setParameter("userIdentifier", userIdentifier);
 		q.setParameter("from", from.toDate(), TemporalType.TIMESTAMP);
 		q.setParameter("to", to.toDate(), TemporalType.TIMESTAMP);
+		
+		em.getTransaction().commit();
 		
 		return SalespointIterable.from(q.getResultList());
 	}
@@ -245,8 +273,12 @@ public class PersistentOrderManager implements OrderManager {
 		
 		Objects.requireNonNull(orderEntry, "orderEntry");
 		
+		em.getTransaction().begin();
 		em.find(OrderEntry.class, orderEntry.getOrderIdentifier());
-		return em.contains(orderEntry);
+		boolean ret = em.contains(orderEntry);
+		em.getTransaction().commit();
+		
+		return ret;
 	}
 
 }

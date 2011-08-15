@@ -43,7 +43,7 @@ public class OrderEntry {
 	//for internal association with users
 	@Embedded
 	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))
-	protected UserIdentifier uID;
+	protected UserIdentifier userIdentifier;
 	
 	// Do NOT fucking touch!
 	@Column(name = "TimeStamp", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, nullable = false, updatable = false)
@@ -82,7 +82,7 @@ public class OrderEntry {
 				.requireNonNull(salesChannel, "salesChannel");
 		this.termsAndConditions = Objects.requireNonNull(termsAndConditions,
 				"termsAndConditions");
-		this.uID = Objects.requireNonNull(userIdentifier,
+		this.userIdentifier = Objects.requireNonNull(userIdentifier,
 				"userIdentifier");
 		status = OrderStatus.INITIALIZED;
 	}
@@ -737,5 +737,28 @@ public class OrderEntry {
         	  break;
         }
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other == this)
+			return true;
+		if (other == null)
+			return false;
+		if (!(other instanceof OrderEntry))
+			return false;
+		return this.equals((OrderEntry) other);
+	}
 
+	public boolean equals(OrderEntry other) {
+		if (other == this)
+			return true;
+		if (other == null)
+			return false;
+		return this.getOrderIdentifier().equals(other.getOrderIdentifier());
+	}
+
+	@Override
+	public int hashCode() {
+		return this.getOrderIdentifier().hashCode();
+	}
 }
