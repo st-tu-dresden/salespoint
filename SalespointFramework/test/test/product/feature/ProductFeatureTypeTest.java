@@ -81,7 +81,7 @@ public class ProductFeatureTypeTest {
 		
 		 Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
 		 
-		 for(ProductFeature pf: p1.getPossibleValues()) {
+		 for(ProductFeature pf: p1.getProductFeatures()) {
 			    if (pf!=null){
 	    			m1.put(pf.getName(), pf);
 	    		}
@@ -123,7 +123,7 @@ public class ProductFeatureTypeTest {
 		p1.addFeature(zucker);
 		
 	    Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
-	    	for (ProductFeature pf : p1.getPossibleValues()){
+	    	for (ProductFeature pf : p1.getProductFeatures()){
 	    		if (pf!=null){
 	    			m1.put(pf.getName(), pf);
 	    		}
@@ -144,7 +144,7 @@ public class ProductFeatureTypeTest {
 		p1.addFeature(butter);
 		
 	    Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
-	    	for (ProductFeature pf : p1.getPossibleValues()){
+	    	for (ProductFeature pf : p1.getProductFeatures()){
 	    		if (pf!=null){
 	    			m1.put(pf.getName(), pf);
 	    		}
@@ -164,7 +164,7 @@ public class ProductFeatureTypeTest {
 		p1.removeFeature(butter);
 		
 		Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
-    	for (ProductFeature pf : p1.getPossibleValues()){
+    	for (ProductFeature pf : p1.getProductFeatures()){
     		if (pf!=null){
     			m1.put(pf.getName(), pf);
     		}
@@ -187,7 +187,7 @@ public class ProductFeatureTypeTest {
 		p1.removeFeature(zucker);
 		
 		Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
-    	for (ProductFeature pf : p1.getPossibleValues()){
+    	for (ProductFeature pf : p1.getProductFeatures()){
     		if (pf!=null){
     			m1.put(pf.getName(), pf);
     		}
@@ -213,7 +213,7 @@ public class ProductFeatureTypeTest {
 		p1.removeFeature(zucker);
 		
 		Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
-    	for (ProductFeature pf : p1.getPossibleValues()){
+    	for (ProductFeature pf : p1.getProductFeatures()){
     		if (pf!=null){
     			m1.put(pf.getName(), pf);
     		}

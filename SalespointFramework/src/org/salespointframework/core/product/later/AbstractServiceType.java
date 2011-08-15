@@ -3,7 +3,6 @@ package org.salespointframework.core.product.later;
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.AbstractProductType;
-import org.salespointframework.core.product.ProductType;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.Objects;
 
@@ -14,13 +13,17 @@ import org.salespointframework.util.Objects;
  * 
  */
 
+//TODO
+//@Entity
 public abstract class AbstractServiceType extends AbstractProductType implements ServiceType{
 
+	
+	//TODO long -> Date
 	protected long startOfPeriodOfOperation;
 	protected long endOfPeriodOfOperation;
 	
 	@Deprecated
-	public AbstractServiceType(){
+	protected AbstractServiceType(){
 	}
 	
 	/**
@@ -102,22 +105,9 @@ public abstract class AbstractServiceType extends AbstractProductType implements
 	 *         <code>false</code> otherwise.
 	 */
 	
-	public boolean equals(ServiceType other) {
+	public final boolean equals(ServiceType other) {
 		if(other == null) return false;
 		if(other == this) return true;
-		return productIdentifier.equals(other.getProductIdentifier());
+		return this.getProductIdentifier().equals(other.getProductIdentifier());
 	}
-	
-	/**
-	 * Returns the hash code for this entry. The hash of this object is the hash
-	 * of its primary key.
-	 * 
-	 * @return the hash code for this entry
-	 */
-	
-	@Override
-	public int hashCode() {
-		return this.getProductIdentifier().hashCode();
-	}
-	
 }

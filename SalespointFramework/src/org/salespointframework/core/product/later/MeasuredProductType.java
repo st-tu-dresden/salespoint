@@ -12,6 +12,7 @@ import org.salespointframework.core.quantity.Quantity;
  * 
  */
 
+// TODO, die vielen add und reduce methoden sind ziemlich redundant 
 public interface MeasuredProductType extends ProductType {
 
 	/**

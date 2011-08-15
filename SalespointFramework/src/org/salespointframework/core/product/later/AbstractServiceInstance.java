@@ -1,15 +1,7 @@
 package org.salespointframework.core.product.later;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
-
 import org.joda.time.DateTime;
 import org.salespointframework.core.product.AbstractProductInstance;
-import org.salespointframework.core.product.ProductIdentifier;
-import org.salespointframework.core.product.ProductInstance;
-import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.Objects;
 
@@ -20,16 +12,20 @@ import org.salespointframework.util.Objects;
  * 
  */
 
+//TODO
+//@Entity
+
 public abstract class AbstractServiceInstance extends AbstractProductInstance implements ServiceInstance {
 	
 	private ServiceType serviceType;
 	
+	//TODO DateTime -> Date
 	private DateTime scheduledStart;
 	private DateTime scheduledEnd;
 	private ServiceDeliveryStatus serviceDeliveryStatus;
 	
 	@Deprecated
-	public AbstractServiceInstance(){}
+	protected AbstractServiceInstance(){}
 	
 	/**
      * Parameterized constructor with 
@@ -137,22 +133,9 @@ public abstract class AbstractServiceInstance extends AbstractProductInstance im
 	 *         <code>false</code> otherwise.
 	 */
 	
-	public boolean equals(ServiceInstance other) {
+	public final boolean equals(ServiceInstance other) {
 		if(other == null) return false;
 		if(other == this) return true;
-		return this.getProductIdentifier().equals(other.getSerialNumber());
+		return this.getSerialNumber().equals(other.getSerialNumber());
 	}
-	
-	/**
-	 * Returns the hash code for this entry. The hash of this object is the hash
-	 * of its primary key.
-	 * 
-	 * @return the hash code for this entry
-	 */
-	
-	@Override
-	public int hashCode() {
-		return this.getProductIdentifier().hashCode();
-	}
-
 }

@@ -14,8 +14,12 @@ import org.salespointframework.util.Objects;
  * 
  */
 
+// TODO
+// @Entity
+
 public abstract class AbstractMeasuredProductInstance extends AbstractProductInstance implements MeasuredProductInstance {
 
+	// TODO muss der Typ in die Klasse?
 	private MeasuredProductType productType;
 	private Quantity quantity;
 	
@@ -131,19 +135,7 @@ public abstract class AbstractMeasuredProductInstance extends AbstractProductIns
 	public boolean equals(MeasuredProductInstance other) {
 		if(other == null) return false;
 		if(other == this) return true;
-		return this.getProductIdentifier().equals(other.getSerialNumber());
-	}
-	
-	/**
-	 * Returns the hash code for this entry. The hash of this object is the hash
-	 * of its primary key.
-	 * 
-	 * @return the hash code for this entry
-	 */
-	
-	@Override
-	public int hashCode() {
-		return this.getProductIdentifier().hashCode();
+		return this.getSerialNumber().equals(other.getSerialNumber());
 	}
 	
 }
