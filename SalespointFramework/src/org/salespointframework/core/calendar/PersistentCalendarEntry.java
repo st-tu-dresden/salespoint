@@ -12,6 +12,8 @@ import java.util.Set;
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.users.UserIdentifier;
@@ -46,11 +48,13 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     /**
      * The start date and time for this entry.
      */
+    @Temporal(TemporalType.TIMESTAMP)
     protected Date                       startTime;
 
     /**
      * The end date and time for this entry.
      */
+    @Temporal(TemporalType.TIMESTAMP)
     protected Date                       endTime;
 
     /**

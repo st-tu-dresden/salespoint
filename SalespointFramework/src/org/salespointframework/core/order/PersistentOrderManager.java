@@ -9,8 +9,8 @@ import javax.persistence.TypedQuery;
 import org.joda.time.DateTime;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
-import org.salespointframework.util.SalespointIterable;
 
 /**
  * This class provides functionality to manage orders (<code>OrderEntry</code>)
@@ -109,7 +109,7 @@ public class PersistentOrderManager implements OrderManager {
 		
 		em.getTransaction().commit();
 
-		return SalespointIterable.from(q.getResultList());
+		return Iterables.from(q.getResultList());
 	}
 
 	/*
@@ -131,7 +131,7 @@ public class PersistentOrderManager implements OrderManager {
 		
 		em.getTransaction().commit();
 
-		return SalespointIterable.from(q.getResultList());
+		return Iterables.from(q.getResultList());
 	}
 
 	/*
@@ -229,7 +229,7 @@ public class PersistentOrderManager implements OrderManager {
 		
 		em.getTransaction().commit();
 		
-		return SalespointIterable.from(q.getResultList());
+		return Iterables.from(q.getResultList());
 	}
 
 	/*
@@ -259,7 +259,7 @@ public class PersistentOrderManager implements OrderManager {
 		
 		em.getTransaction().commit();
 		
-		return SalespointIterable.from(q.getResultList());
+		return Iterables.from(q.getResultList());
 	}
 
 	/*

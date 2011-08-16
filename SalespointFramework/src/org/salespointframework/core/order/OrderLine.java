@@ -18,7 +18,6 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
-import org.salespointframework.util.SalespointIterable;
 
 /**
  * 
@@ -170,7 +169,7 @@ public class OrderLine {
 	 * @return the Iterable with ChargeLines from this OrderLine
 	 */
 	public Iterable<ChargeLine> getChargeLines() {
-		return SalespointIterable.from(this.chargeLines);
+		return Iterables.from(this.chargeLines);
 	}
 
 	/**
@@ -407,7 +406,7 @@ public class OrderLine {
 	}
 
 	public Iterable<SerialNumber> getSerialNumbers() {
-		return SalespointIterable.from(this.serialNumbers);
+		return Iterables.from(this.serialNumbers);
 	}
 
 	@Override

@@ -31,8 +31,8 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
-import org.salespointframework.util.SalespointIterable;
 
 @Entity
 public class OrderEntry {
@@ -193,21 +193,21 @@ public class OrderEntry {
 	 * @return the orderLines
 	 */
 	public Iterable<OrderLine> getOrderLines() {
-		return SalespointIterable.from(this.orderlines.values());
+		return Iterables.from(this.orderlines.values());
 	}
 	
 	/**
 	 * @return an Iterable with all chargeLines from this OrderEntry
 	 */
 	public Iterable<ChargeLine> getChargeLines() {
-		return SalespointIterable.from(this.chargeLines);
+		return Iterables.from(this.chargeLines);
 	}
 	
 	/**
 	 * @return an Iterable with all LogEntrys from this OrderEntry
 	 */
 	public Iterable<OrderLogEntry> getLogEntries() {
-		return SalespointIterable.from(this.log);
+		return Iterables.from(this.log);
 	}
 	
 	/**
