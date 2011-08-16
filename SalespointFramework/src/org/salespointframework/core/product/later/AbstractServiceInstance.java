@@ -1,5 +1,7 @@
 package org.salespointframework.core.product.later;
 
+import java.util.Date;
+
 import org.joda.time.DateTime;
 import org.salespointframework.core.product.AbstractProductInstance;
 import org.salespointframework.core.shop.Shop;
@@ -20,8 +22,8 @@ public abstract class AbstractServiceInstance extends AbstractProductInstance im
 	private ServiceType serviceType;
 	
 	//TODO DateTime -> Date
-	private DateTime scheduledStart;
-	private DateTime scheduledEnd;
+	private Date scheduledStart;
+	private Date scheduledEnd;
 	private ServiceDeliveryStatus serviceDeliveryStatus;
 	
 	@Deprecated
@@ -54,29 +56,29 @@ public abstract class AbstractServiceInstance extends AbstractProductInstance im
 		 if (end.isAfter(serviceType.getEndOfPeriodOfOperation()))
 			 	throw new IllegalArgumentException("A serviceType cannot end after the period of serviceType was finished.");
 
-		this.scheduledStart = Objects.requireNonNull(start,"start");
-		this.scheduledEnd = Objects.requireNonNull(end,"end");
+		this.scheduledStart = Objects.requireNonNull(start.toDate(),"start");
+		this.scheduledEnd = Objects.requireNonNull(end.toDate(),"end");
 		this.serviceDeliveryStatus = ServiceDeliveryStatus.SCHEDULED;
 	}
 	
 	@Override
 	public DateTime getStart(){
-		return this.scheduledStart;
+		return new DateTime(scheduledStart);
 	}
 	
 	@Override
 	public DateTime getEnd(){
-		return this.scheduledEnd;
+		return new DateTime(scheduledEnd);
 	}
 	
 	@Override
 	public ServiceDeliveryStatus getServiceDeliveryStatus(){
 		if (this.serviceDeliveryStatus == ServiceDeliveryStatus.CANCELLED){}
 		else{
-				if(Shop.INSTANCE.getTime().getDateTime().isBefore(scheduledStart)){
+				if(Shop.INSTANCE.getTime().getDateTime().isBefore(getStart())){
 					this.serviceDeliveryStatus = ServiceDeliveryStatus.SCHEDULED;
 				}
-				else {	if(Shop.INSTANCE.getTime().getDateTime().isAfter(scheduledEnd)){
+				else {	if(Shop.INSTANCE.getTime().getDateTime().isAfter(getEnd())){
 							this.serviceDeliveryStatus = ServiceDeliveryStatus.COMPLETED;
 							}
 				
@@ -90,10 +92,10 @@ public abstract class AbstractServiceInstance extends AbstractProductInstance im
 	public ServiceDeliveryStatus getServiceDeliveryStatusOnTime(DateTime dateTime){
 		if (this.serviceDeliveryStatus == ServiceDeliveryStatus.CANCELLED){}
 		else{
-				if(dateTime.isBefore(scheduledStart)){
+				if(dateTime.isBefore(getStart())){
 					this.serviceDeliveryStatus = ServiceDeliveryStatus.SCHEDULED;
 				}
-				else {	if(dateTime.isAfter(scheduledEnd)){
+				else {	if(dateTime.isAfter(getEnd())){
 							this.serviceDeliveryStatus = ServiceDeliveryStatus.COMPLETED;
 							}
 				
@@ -105,7 +107,7 @@ public abstract class AbstractServiceInstance extends AbstractProductInstance im
 	}
 	
 	public void cancelServiceInstance(){
-		this.scheduledEnd = Shop.INSTANCE.getTime().getDateTime();
+		this.scheduledEnd = Shop.INSTANCE.getTime().getDateTime().toDate();
 		this.serviceDeliveryStatus = ServiceDeliveryStatus.CANCELLED;
 	}
 	

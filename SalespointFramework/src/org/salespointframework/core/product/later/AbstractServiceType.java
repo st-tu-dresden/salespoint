@@ -1,5 +1,7 @@
 package org.salespointframework.core.product.later;
 
+import java.util.Date;
+
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.AbstractProductType;
@@ -19,8 +21,8 @@ public abstract class AbstractServiceType extends AbstractProductType implements
 
 	
 	//TODO long -> Date
-	protected long startOfPeriodOfOperation;
-	protected long endOfPeriodOfOperation;
+	protected Date startOfPeriodOfOperation;
+	protected Date endOfPeriodOfOperation;
 	
 	@Deprecated
 	protected AbstractServiceType(){
@@ -39,8 +41,8 @@ public abstract class AbstractServiceType extends AbstractProductType implements
 		Objects.requireNonNull(name, "name");
 		Objects.requireNonNull(price, "price");
 		
-		this.startOfPeriodOfOperation = Shop.INSTANCE.getTime().getDateTime().getMillis();
-		this.endOfPeriodOfOperation = Shop.INSTANCE.getTime().getDateTime().plusYears(100).getMillis();
+		this.startOfPeriodOfOperation = Shop.INSTANCE.getTime().getDateTime().toDate();
+		this.endOfPeriodOfOperation = Shop.INSTANCE.getTime().getDateTime().plusYears(100).toDate();
 	}
 	
 	/**
@@ -73,8 +75,8 @@ public abstract class AbstractServiceType extends AbstractProductType implements
 		 if (end.isBefore(Shop.INSTANCE.getTime().getDateTime().minusMillis(500))==true)
 			 	throw new IllegalArgumentException("A serviceType cannot end before its creation time.");
 
-		this.startOfPeriodOfOperation=start.getMillis();
-		this.endOfPeriodOfOperation=end.getMillis();
+		this.startOfPeriodOfOperation=start.toDate();
+		this.endOfPeriodOfOperation=end.toDate();
 	}
 	
 	public DateTime getStartOfPeriodOfOperation(){

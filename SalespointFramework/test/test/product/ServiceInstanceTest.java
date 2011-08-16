@@ -139,7 +139,7 @@ public class ServiceInstanceTest {
 	@Test 
 	public void testHashcode1() {
 		
-		assertEquals(t1.hashCode(),t2.hashCode());
+		assertNotSame(t1.hashCode(),t2.hashCode());
 	}
 	
 	@Test 
