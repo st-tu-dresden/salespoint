@@ -36,12 +36,6 @@ public class MeasuredProductInstanceTest {
 	}	
 	
 	@Test 
-	public void testGetProductType(){
-		
-		assertEquals (coke, klein1.getProductType());
-	}
-	
-	@Test 
 	public void testGetPrice(){
 		
 		assertEquals (new Money(0.4), klein1.getPrice());
@@ -53,7 +47,7 @@ public class MeasuredProductInstanceTest {
 		TestMeasuredProductType coke1 = new TestMeasuredProductType ("Coke", new Money(600), q);
 		TestMeasuredProductInstance m = new TestMeasuredProductInstance (coke1, new Quantity(0.5, q.getMetric(), q.getRoundingStrategy()));
 		
-		assertEquals (new BigDecimal(299.5) , m.getProductType().getQuantityOnHand().getAmount());
+		assertEquals (new BigDecimal(299.5) , coke1.getQuantityOnHand().getAmount());
 	}
 	
 	@Test 
@@ -62,7 +56,7 @@ public class MeasuredProductInstanceTest {
 		TestMeasuredProductType coke1 = new TestMeasuredProductType ("Coke", new Money(600), q);
 		TestMeasuredProductInstance m = new TestMeasuredProductInstance (coke1, 0.5);
 		
-		assertEquals (new BigDecimal(299.5) , m.getProductType().getQuantityOnHand().getAmount());
+		assertEquals (new BigDecimal(299.5) , coke1.getQuantityOnHand().getAmount());
 	}
 	
 	@Test
@@ -99,13 +93,13 @@ public class MeasuredProductInstanceTest {
 	@Test 
 	public void testHashcode1() {
 		
-		assertEquals(klein1.hashCode(),klein2.hashCode());
+		assertNotSame(klein1.hashCode(),klein2.hashCode());
 	}
 	
 	@Test 
 	public void testHashcode2() {
 		
-		assertEquals(klein1.hashCode(),klein3.hashCode());
+		assertNotSame(klein1.hashCode(),klein3.hashCode());
 	}
 	
 	@Test 
