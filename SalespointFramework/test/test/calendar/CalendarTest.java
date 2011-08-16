@@ -42,7 +42,7 @@ public class CalendarTest {
         t.begin();
 
         for (int i = 0; i < 10; i++) {
-            PersistentCalendarEntry entry = new PersistentCalendarEntry(new Worker().getUserId(), "TestEntry_" + i, basicDateTime.plusMinutes(i * 10),
+            PersistentCalendarEntry entry = new PersistentCalendarEntry(new Worker().getUserIdentifier(), "TestEntry_" + i, basicDateTime.plusMinutes(i * 10),
                             basicDateTime.plusMinutes(i * 10 + 5));
             entries.add(entry);
             calendar.addEntry(entry);
@@ -75,13 +75,13 @@ public class CalendarTest {
         EntityTransaction t = em.getTransaction();
         t.begin();
 
-        expected_entry.addCapability(newUser.getUserId(), CalendarEntryCapability.READ);
+        expected_entry.addCapability(newUser.getUserIdentifier(), CalendarEntryCapability.READ);
 
         t.commit();
 
         PersistentCalendarEntry actual_entry = calendar.getEntryByID(expected_entry.getID());
 
-        assertEquals(expected_entry.getCapabilitiesByUser(newUser.getUserId()), actual_entry.getCapabilitiesByUser(newUser.getUserId()));
+        assertEquals(expected_entry.getCapabilitiesByUser(newUser.getUserIdentifier()), actual_entry.getCapabilitiesByUser(newUser.getUserIdentifier()));
     }
 
     @Test
