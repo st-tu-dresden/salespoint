@@ -1,13 +1,9 @@
 package org.salespointframework.core.users;
 
-import javax.persistence.GeneratedValue;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class AbstractCustomer extends AbstractUser implements Customer{
-	
-	@GeneratedValue
-	private long customerId;
 	
 	@Deprecated
 	protected AbstractCustomer() {
@@ -16,16 +12,13 @@ public class AbstractCustomer extends AbstractUser implements Customer{
 	
 	/**
 	 * creates a new Customer
-	 * @param userId (username) of the Customer 
+	 * @param userIdentifier (username) of the Customer 
 	 * @param first password of the Customer
 	 */
-	public AbstractCustomer(UserIdentifier userId, String password) {
-		super(userId, password);
+	public AbstractCustomer(UserIdentifier userIdentifier, String password) {
+		super(userIdentifier, password);
 	}
 
-	@Override
-	public long getCustomerId() {
-		return customerId;
-	}
+
 
 }

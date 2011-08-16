@@ -25,8 +25,8 @@ public abstract class AbstractEmployee extends AbstractUser implements Employee 
 	 * @param userId (username) of the Employee 
 	 * @param first password of the Employee
 	 */
-	public AbstractEmployee(UserIdentifier userId, String password){
-		super(userId, password);
+	public AbstractEmployee(UserIdentifier userIdentifier, String password){
+		super(userIdentifier, password);
 	}
 	
 	@Override

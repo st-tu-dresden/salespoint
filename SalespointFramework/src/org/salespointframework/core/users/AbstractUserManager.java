@@ -1,38 +1,39 @@
 package org.salespointframework.core.users;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import org.salespointframework.core.database.Database;
 import org.salespointframework.core.database.ICanHasClass;
+import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
-import org.salespointframework.util.SalespointIterable;
 
 
-public abstract class AbstractUserManager<T extends User> implements ICanHasClass<T>{
+public abstract class AbstractUserManager<T extends User> implements UserManager<T>, ICanHasClass<T> {
 	
-		
-	private EntityManager entityManager;
-	
+	private final EntityManager entityManager;
 		
 	/**
 	 * creates new AbstractUserManager
 	 * @param entityManager
 	 */
 	public AbstractUserManager(EntityManager entityManager){
-		this.entityManager= entityManager;
+		Objects.requireNonNull(entityManager, "entityManager");
+		this.entityManager = entityManager;
 	}
 
 	
-	/**
-	 * adds an User to the Usermanager if not exists and persists it
-	 * @param user User you want to add
-	 * @return 
-	 * @throws DuplicateUserException 
+	/* (non-Javadoc)
+	 * @see org.salespointframework.core.users.UserManage#addUser(T)
 	 */
+	@Override
 	public boolean addUser(T user) {
-		Objects.requireNonNull(user, "addUser");
-		if (entityManager.find(user.getClass(), user.getUserId()) != null){
-			throw new DuplicateUserException(user.getUserId());			
+		Objects.requireNonNull(user, "user");
+		if (entityManager.find(this.getContentClass(), user.getUserIdentifier()) != null){
+			throw new DuplicateUserException(user.getUserIdentifier());			
 		}
 		entityManager.persist(user);
 //		UserCapabilityList capList = new UserCapabilityList(user.getUserId());
@@ -41,37 +42,35 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 		
 	}
 	
-	/**
-	 * will remove User, but only if there is no open Order for the User
-	 * @param User user you want remove
-	 * @return true if successful
+	/* (non-Javadoc)
+	 * @see org.salespointframework.core.users.UserManage#removeUser(T)
 	 */
-	public boolean removeUser(T User){
+	@Override
+	public boolean removeUser(T user){
+		Objects.requireNonNull(user, "user");
 		return false;
 	}
 	
 	
-	/**
-	 * adds a UserCapability to an User
-	 * @param user the User you want to give that UserCapability
-	 * @param userCapability the Capapbility you want to give to the User
-	 * @return true if successful, false if there is no such user
+	/* (non-Javadoc)
+	 * @see org.salespointframework.core.users.UserManage#addCapability(T, org.salespointframework.core.users.UserCapability)
 	 */
+	@Override
 	public boolean addCapability(T user, UserCapability userCapability){
-		Objects.requireNonNull(user, "addCapability_User");
-		Objects.requireNonNull(userCapability, "addCapability_userCapability");
-		if (entityManager.find(user.getClass(), user.getUserId()) == null){
+		Objects.requireNonNull(user, "user");
+		Objects.requireNonNull(userCapability, "userCapability");
+		if (entityManager.find(this.getContentClass(), user.getUserIdentifier()) == null){
 			//System.out.println("no such User");
 			return false;
 		}
 		else{
 		    
-			UserCapabilityList capList = entityManager.find(UserCapabilityList.class, user.getUserId());
+			UserCapabilityList capList = entityManager.find(UserCapabilityList.class, user.getUserIdentifier());
 			System.out.println(capList);	
 			
 	        if (capList == null) {
 	            //System.out.println("no Capabilities");
-	        	capList = new UserCapabilityList(user.getUserId());
+	        	capList = new UserCapabilityList(user.getUserIdentifier());
 	            entityManager.persist(capList);
 	            System.out.println("persList");
 	        }
@@ -86,17 +85,15 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 		}
 	}
 	
-	/**
-	 * removes a UserCapability from an User. 
-	 * @param user the User you want to remove that UserCapability from
-	 * @param userCapability the Capability you want to remove from the User
-	 * @return true if successful, false if there is no such user or the user does not have this capability
+	/* (non-Javadoc)
+	 * @see org.salespointframework.core.users.UserManage#removeCapability(T, org.salespointframework.core.users.UserCapability)
 	 */
+	@Override
 	public boolean removeCapability(T user, UserCapability userCapability){
-		Objects.requireNonNull(user, "removeCapability_User");
-		Objects.requireNonNull(userCapability, "removeCapability_userCapability");
+		Objects.requireNonNull(user, "user");
+		Objects.requireNonNull(userCapability, "userCapability");
 
-		UserCapabilityList ucl= entityManager.find(UserCapabilityList.class, user.getUserId());
+		UserCapabilityList ucl= entityManager.find(UserCapabilityList.class, user.getUserIdentifier());
 		if(ucl==null) return false; //nosuchUser
 		if(ucl.contains(userCapability)){
 			ucl.remove(userCapability);
@@ -107,37 +104,96 @@ public abstract class AbstractUserManager<T extends User> implements ICanHasClas
 	}
 	
 	
-	/**
-	 * Checks if a User has the given Capability
-	 * @param user you want to check
-	 * @param userCapability the cabability you want to check to User for
-	 * @return true if User has Capability
+	/* (non-Javadoc)
+	 * @see org.salespointframework.core.users.UserManage#hasCapability(T, org.salespointframework.core.users.UserCapability)
 	 */
+	@Override
 	public boolean hasCapability(T user, UserCapability userCapability){
-		Objects.requireNonNull(user, "hasCapability_User");
-		Objects.requireNonNull(userCapability, "hasCapability_userCapability");
+		Objects.requireNonNull(user, "user");
+		Objects.requireNonNull(userCapability, "userCapability");
 		
-		UserCapabilityList ucl= entityManager.find(UserCapabilityList.class, user.getUserId());
+		UserCapabilityList ucl= entityManager.find(UserCapabilityList.class, user.getUserIdentifier());
 		if(ucl==null) return false;
 		if(ucl.contains(userCapability)) return true;
 		return false;
 	}
-	/**
-	 * 
-	 * @return all User from this Usermanger
+	/* (non-Javadoc)
+	 * @see org.salespointframework.core.users.UserManage#getUsers()
 	 */
+	@Override
 	public Iterable<T> getUsers(){
 		Class<T> cc = this.getContentClass();
 		TypedQuery<T> users = entityManager.createQuery("SELECT t FROM " + cc.getSimpleName() + " t",cc);
-		Iterable<T> i= SalespointIterable.from(users.getResultList());
-		return i;
+		return Iterables.from(users.getResultList());
 	}
 	
 	
-	public T getUserById(UserIdentifier userIdentifier){
+	/* (non-Javadoc)
+	 * @see org.salespointframework.core.users.UserManage#getUserByIdentifier(org.salespointframework.core.users.UserIdentifier)
+	 */
+	@Override
+	public T getUserByIdentifier(UserIdentifier userIdentifier){
+		Objects.requireNonNull(userIdentifier, "userIdentifier");
 		return entityManager.find(this.getContentClass(), userIdentifier);
 	}
+	
+	
+	// PAAAAAAAAAAAAAAAAAAAAAAAAAAUUUUUUUUUUUUUUL
+	private final Map<Object, T> userTokenMap = new ConcurrentHashMap<Object, T>();
 
+	// TODO naming kinda sucks
+	
+	// associates a user with a token
+    /* (non-Javadoc)
+	 * @see org.salespointframework.core.users.UserManage#logOn(T, java.lang.Object)
+	 */
+    @Override
+	public final void logOn(T user, Object token) {
+    	Objects.requireNonNull(user, "user");
+    	Objects.requireNonNull(token, "token");
+    	
+        T temp = this.getUserByIdentifier(user.getUserIdentifier());
+
+        if (temp == null) {
+            throw new UnknownUserException(user.getUserIdentifier().toString());
+        }
+
+        if (user != null) {
+            userTokenMap.put(token, user);
+        }
+    }
+
+    /* (non-Javadoc)
+	 * @see org.salespointframework.core.users.UserManage#logOff(java.lang.Object)
+	 */
+    @Override
+	public final T logOff(Object token) {
+    	Objects.requireNonNull(token, "token");
+    	T user = userTokenMap.remove(token);
+        return user;
+    }
+
+    /* (non-Javadoc)
+	 * @see org.salespointframework.core.users.UserManage#getUserByToken(java.lang.Object)
+	 */
+    @Override
+	public final T getUserByToken(Object token) {
+    	Objects.requireNonNull(token, "token");
+        return userTokenMap.get(token);
+    }
+    
+    // Wozu die beiden Methoden sind erklär ich später, sollten aber bleiben.
+	private final void beginCommit(final EntityManager em) {
+		if(entityManager == null) {
+			em.getTransaction().begin();
+			em.getTransaction().commit();
+		}
+	}
+	
+	// ?? Operator in C#, gibts hier leider nicht, deswegen die Methode
+	private final EntityManager foobar() {
+		return entityManager != null ? entityManager : Database.INSTANCE.getEntityManagerFactory().createEntityManager();
+	}
 	
 	
 	

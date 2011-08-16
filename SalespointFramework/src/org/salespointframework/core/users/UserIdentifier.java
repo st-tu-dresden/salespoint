@@ -1,28 +1,24 @@
 package org.salespointframework.core.users;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Embeddable;
 import org.salespointframework.util.SalespointIdentifier;
 
 /**
  * Entity implementation class for Entity: UserIdentifier
- *
+ * 
  * @author hannesweisbach
  */
 @Embeddable
-
 public final class UserIdentifier extends SalespointIdentifier implements Serializable {
 
-	
 	private static final long serialVersionUID = 1L;
 
-
-	public UserIdentifier(){
+	public UserIdentifier() {
 		super();
 	}
-	
-	public UserIdentifier(String userId) {
-		super(userId);
+
+	public UserIdentifier(String userIdentifier) {
+		super(userIdentifier);
 	}
-   
 }

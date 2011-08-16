@@ -52,12 +52,12 @@ public class AbstractUser implements User{
 	}
 	
 	
-	public UserIdentifier getUserId(){
+	public UserIdentifier getUserIdentifier(){
 		return userId;
 	}
 	
 	public boolean equals(User user){
-		if(userId.equals(user.getUserId())) return true;
+		if(userId.equals(user.getUserIdentifier())) return true;
 		return false;
 	}
 	

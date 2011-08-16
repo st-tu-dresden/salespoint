@@ -19,7 +19,7 @@ public interface User {
 	 * 
 	 * @return the users name/ID
 	 */
-	public UserIdentifier getUserId();
+	public UserIdentifier getUserIdentifier();
 
 }
 

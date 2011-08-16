@@ -7,8 +7,5 @@ package org.salespointframework.core.users;
  */
 public interface Customer extends User{
 
-	/**
-	 * @return customerId of the User
-	 */
-	public long getCustomerId();
+
 }
