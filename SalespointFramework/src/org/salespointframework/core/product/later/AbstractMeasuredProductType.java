@@ -66,6 +66,14 @@ public abstract class AbstractMeasuredProductType extends AbstractProductType im
 		quantityOnHand = quantityOnHand.add(quantity);
 	}
 	
+	/**
+	 * Add the quantity of this amount to the available quantity of the MeasuredProductType
+	 * @param amount of the quantity which add to the {@link AbstractMeasuredProductType#quantityOnHand} of this MeasuredProductType
+	 * @throws IllegalArgumentException
+	 * The {@link IllegalArgumentException} will be thrown, if the amount 
+	 * of the quantity is negative. 
+	 */
+	
 	public void addQuantity(int amount){
 	
 		 if (amount<0)
@@ -74,6 +82,14 @@ public abstract class AbstractMeasuredProductType extends AbstractProductType im
 		Quantity q = new Quantity(amount, quantityOnHand.getMetric(), quantityOnHand.getRoundingStrategy());
 		quantityOnHand = quantityOnHand.add(q);
 	}
+	
+	/**
+	 * Add the quantity of this amount to the available quantity of the MeasuredProductType
+	 * @param amount of the quantity which add to the {@link AbstractMeasuredProductType#quantityOnHand} of this MeasuredProductType
+	 * @throws IllegalArgumentException
+	 * The {@link IllegalArgumentException} will be thrown, if the amount 
+	 * of the quantity is negative. 
+	 */
 	
 	public void addQuantity(double amount){
 	
@@ -84,6 +100,13 @@ public abstract class AbstractMeasuredProductType extends AbstractProductType im
 		quantityOnHand = quantityOnHand.add(q);
 	}
 	
+	/**
+	 * Add the quantity of this amount to the available quantity of the MeasuredProductType
+	 * @param amount of the quantity which add to the {@link AbstractMeasuredProductType#quantityOnHand} of this MeasuredProductType
+	 * @throws IllegalArgumentException
+	 * The {@link IllegalArgumentException} will be thrown, if the amount 
+	 * of the quantity is negative. 
+	 */
 	
 	public void addQuantity(float amount){
 	
@@ -94,6 +117,13 @@ public abstract class AbstractMeasuredProductType extends AbstractProductType im
 		quantityOnHand = quantityOnHand.add(q);
 	}
 	
+	/**
+	 * Add the quantity of this amount to the available quantity of the MeasuredProductType
+	 * @param amount of the quantity which add to the {@link AbstractMeasuredProductType#quantityOnHand} of this MeasuredProductType
+	 * @throws IllegalArgumentException
+	 * The {@link IllegalArgumentException} will be thrown, if the amount 
+	 * of the quantity is negative. 
+	 */
 	
 	public void addQuantity(long amount){
 	
@@ -104,6 +134,13 @@ public abstract class AbstractMeasuredProductType extends AbstractProductType im
 		quantityOnHand = quantityOnHand.add(q);
 	}
 	
+	/**
+	 * Add the quantity of this amount to the available quantity of the MeasuredProductType
+	 * @param amount of the quantity which add to the {@link AbstractMeasuredProductType#quantityOnHand} of this MeasuredProductType
+	 * @throws IllegalArgumentException
+	 * The {@link IllegalArgumentException} will be thrown, if the amount 
+	 * of the quantity is negative. 
+	 */
 	
 	public void addQuantity(BigDecimal amount){
 	
@@ -125,6 +162,15 @@ public abstract class AbstractMeasuredProductType extends AbstractProductType im
 		quantityOnHand = quantityOnHand.subtract(quantity);
 	}
 	
+	/**
+     * Subtract this amount from the available quantity of the MeasuredProductType  
+     * @param amount of the quantity which reduces the {@link AbstractMeasuredProductType#quantityOnHand} of the MeasuredProductType
+     * @throws IllegalArgumentException
+     * The {@link IllegalArgumentException} will be thrown, if the amount 
+     * of the quantity is negative and if the quantity, which will be subtract, is greater than
+     * the quantityOnHand of this MeasuredProductType. 
+     */
+	
 	public void reduceQuantityOnHand(int amount){
 		
 		 if (amount<0)
@@ -136,6 +182,15 @@ public abstract class AbstractMeasuredProductType extends AbstractProductType im
 		quantityOnHand = quantityOnHand.subtract(new Quantity(amount, quantityOnHand.getMetric(), quantityOnHand.getRoundingStrategy()));
 		
 	}
+	
+	/**
+     * Subtract this amount from the available quantity of the MeasuredProductType  
+     * @param amount of the quantity which reduces the {@link AbstractMeasuredProductType#quantityOnHand} of the MeasuredProductType
+     * @throws IllegalArgumentException
+     * The {@link IllegalArgumentException} will be thrown, if the amount 
+     * of the quantity is negative and if the quantity, which will be subtract, is greater than
+     * the quantityOnHand of this MeasuredProductType. 
+     */
 	
 	public void reduceQuantityOnHand(double amount){
 		
@@ -149,6 +204,15 @@ public abstract class AbstractMeasuredProductType extends AbstractProductType im
 		
 	}
 	
+	/**
+     * Subtract this amount from the available quantity of the MeasuredProductType  
+     * @param amount of the quantity which reduces the {@link AbstractMeasuredProductType#quantityOnHand} of the MeasuredProductType
+     * @throws IllegalArgumentException
+     * The {@link IllegalArgumentException} will be thrown, if the amount 
+     * of the quantity is negative and if the quantity, which will be subtract, is greater than
+     * the quantityOnHand of this MeasuredProductType. 
+     */
+	
 	public void reduceQuantityOnHand(float amount){
 		
 		 if (amount<0)
@@ -161,6 +225,15 @@ public abstract class AbstractMeasuredProductType extends AbstractProductType im
 		
 	}
 	
+	/**
+     * Subtract this amount from the available quantity of the MeasuredProductType  
+     * @param amount of the quantity which reduces the {@link AbstractMeasuredProductType#quantityOnHand} of the MeasuredProductType
+     * @throws IllegalArgumentException
+     * The {@link IllegalArgumentException} will be thrown, if the amount 
+     * of the quantity is negative and if the quantity, which will be subtract, is greater than
+     * the quantityOnHand of this MeasuredProductType. 
+     */
+	
 	public void reduceQuantityOnHand(long amount){
 		
 		 if (amount<0)
@@ -172,6 +245,15 @@ public abstract class AbstractMeasuredProductType extends AbstractProductType im
 		quantityOnHand = quantityOnHand.subtract(new Quantity(amount, quantityOnHand.getMetric(), quantityOnHand.getRoundingStrategy()));
 		
 	}
+	
+	/**
+     * Subtract this amount from the available quantity of the MeasuredProductType  
+     * @param amount of the quantity which reduces the {@link AbstractMeasuredProductType#quantityOnHand} of the MeasuredProductType
+     * @throws IllegalArgumentException
+     * The {@link IllegalArgumentException} will be thrown, if the amount 
+     * of the quantity is negative and if the quantity, which will be subtract, is greater than
+     * the quantityOnHand of this MeasuredProductType. 
+     */
 	
 	public void reduceQuantityOnHand(BigDecimal amount){
 		
