@@ -1,13 +1,13 @@
 package org.salespointframework.core.users;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 
+import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
 
@@ -21,9 +21,25 @@ public class AbstractUser implements User{
 	@SuppressWarnings("unused")
 	private boolean deleted=false;
 	
-		
+
+	@ElementCollection
+	Set<UserCapability> capabilities = new HashSet<UserCapability>();
+	
 	@Deprecated
 	protected AbstractUser() {}
+
+
+	void addCapability(UserCapability capability) {
+		capabilities.add(capability);
+	}
+	
+	void removeCapability(UserCapability capability) {
+		capabilities.remove(capability);
+	}
+	
+	Iterable<UserCapability> getCapabilities() {
+		return Iterables.from(capabilities);
+	}
 
 	
 	public AbstractUser(UserIdentifier userId, String password) {

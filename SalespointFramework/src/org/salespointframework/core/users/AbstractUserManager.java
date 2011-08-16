@@ -12,7 +12,7 @@ import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
 
-public abstract class AbstractUserManager<T extends User> implements UserManager<T>, ICanHasClass<T> {
+public abstract class AbstractUserManager<T extends AbstractUser> implements UserManager<T>, ICanHasClass<T> {
 	
 	private final EntityManager entityManager;
 		
@@ -59,6 +59,11 @@ public abstract class AbstractUserManager<T extends User> implements UserManager
 	public boolean addCapability(T user, UserCapability userCapability){
 		Objects.requireNonNull(user, "user");
 		Objects.requireNonNull(userCapability, "userCapability");
+		
+		user.addCapability(userCapability);
+		
+		return true;
+		/*
 		if (entityManager.find(this.getContentClass(), user.getUserIdentifier()) == null){
 			//System.out.println("no such User");
 			return false;
@@ -81,8 +86,8 @@ public abstract class AbstractUserManager<T extends User> implements UserManager
 	        	System.out.println(capList);
 	        	return true;
 	        }
-	        
 		}
+		*/
 	}
 	
 	/* (non-Javadoc)
@@ -93,6 +98,10 @@ public abstract class AbstractUserManager<T extends User> implements UserManager
 		Objects.requireNonNull(user, "user");
 		Objects.requireNonNull(userCapability, "userCapability");
 
+		user.removeCapability(userCapability);
+		return true;
+		
+		/*
 		UserCapabilityList ucl= entityManager.find(UserCapabilityList.class, user.getUserIdentifier());
 		if(ucl==null) return false; //nosuchUser
 		if(ucl.contains(userCapability)){
@@ -100,7 +109,7 @@ public abstract class AbstractUserManager<T extends User> implements UserManager
 			return true;
 		}
 		return false; //userhasNotCapa
-
+		*/
 	}
 	
 	
@@ -112,11 +121,24 @@ public abstract class AbstractUserManager<T extends User> implements UserManager
 		Objects.requireNonNull(user, "user");
 		Objects.requireNonNull(userCapability, "userCapability");
 		
+		// TODO das geht auch schöner
+		return Iterables.toSet(user.getCapabilities()).contains(userCapability);
+		
+		/*
 		UserCapabilityList ucl= entityManager.find(UserCapabilityList.class, user.getUserIdentifier());
 		if(ucl==null) return false;
 		if(ucl.contains(userCapability)) return true;
 		return false;
+		*/
 	}
+	
+	public Iterable<UserCapability> getCapabilities(T user) {
+		Objects.requireNonNull(user, "user");
+		return Iterables.from(user.getCapabilities());
+	}
+	
+	
+	
 	/* (non-Javadoc)
 	 * @see org.salespointframework.core.users.UserManage#getUsers()
 	 */
