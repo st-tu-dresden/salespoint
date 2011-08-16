@@ -11,11 +11,6 @@ import org.salespointframework.core.quantity.Quantity;
 public interface MeasuredProductInstance extends ProductInstance {
 
 	/**
-     * Returns the MeasuredProductType of this MeasuredProductInstance
-     * @return the {@link MeasuredProductType} of this MeasuredProductInstance 
-     */
-	public MeasuredProductType getProductType();
-	/**
      * Returns the Quantity
      * @return the quantity of this MeasuredProductInstance 
      */

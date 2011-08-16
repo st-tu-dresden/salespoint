@@ -19,9 +19,8 @@ import org.salespointframework.util.Objects;
 
 public abstract class AbstractMeasuredProductInstance extends AbstractProductInstance implements MeasuredProductInstance {
 
-	// TODO muss der Typ in die Klasse?
-	private MeasuredProductType productType;
 	private Quantity quantity;
+	private Money unitPrice;
 	
 	@Deprecated
 	protected AbstractMeasuredProductInstance(){}
@@ -33,9 +32,10 @@ public abstract class AbstractMeasuredProductInstance extends AbstractProductIns
      */
 	public AbstractMeasuredProductInstance(MeasuredProductType productType, Quantity quantity) {
 		super(productType);
-		this.productType = Objects.requireNonNull(productType, "productType");
+		Objects.requireNonNull(productType, "productType");
+		this.unitPrice = productType.getUnitPrice();
 		this.quantity = Objects.requireNonNull(quantity, "quantity");
-		this.productType.reduceQuantityOnHand(this.quantity);
+		productType.reduceQuantityOnHand(this.quantity);
 	}
 	
 	/**
@@ -45,9 +45,10 @@ public abstract class AbstractMeasuredProductInstance extends AbstractProductIns
      */
 	public AbstractMeasuredProductInstance(MeasuredProductType productType, int amount) {
 		super(productType);
-		this.productType = Objects.requireNonNull(productType, "productType");
+		Objects.requireNonNull(productType, "productType");
+		this.unitPrice = productType.getUnitPrice();
 		this.quantity = new Quantity(amount, productType.getQuantityOnHand().getMetric(), productType.getQuantityOnHand().getRoundingStrategy());
-		this.productType.reduceQuantityOnHand(quantity);
+		productType.reduceQuantityOnHand(quantity);
 	}
 	
 	/**
@@ -57,9 +58,10 @@ public abstract class AbstractMeasuredProductInstance extends AbstractProductIns
      */
 	public AbstractMeasuredProductInstance(MeasuredProductType productType, BigDecimal amount) {
 		super(productType);
-		this.productType = Objects.requireNonNull(productType, "productType");
+		Objects.requireNonNull(productType, "productType");
+		this.unitPrice = productType.getUnitPrice();
 		this.quantity = new Quantity(amount, productType.getQuantityOnHand().getMetric(), productType.getQuantityOnHand().getRoundingStrategy());
-		this.productType.reduceQuantityOnHand(quantity);
+		productType.reduceQuantityOnHand(quantity);
 	}
 	
 	/**
@@ -69,9 +71,10 @@ public abstract class AbstractMeasuredProductInstance extends AbstractProductIns
      */
 	public AbstractMeasuredProductInstance(MeasuredProductType productType, long amount) {
 		super(productType);
-		this.productType = Objects.requireNonNull(productType, "productType");
+		Objects.requireNonNull(productType, "productType");
+		this.unitPrice = productType.getUnitPrice();
 		this.quantity = new Quantity(amount, productType.getQuantityOnHand().getMetric(), productType.getQuantityOnHand().getRoundingStrategy());
-		this.productType.reduceQuantityOnHand(quantity);
+		productType.reduceQuantityOnHand(quantity);
 	}
 	
 	/**
@@ -81,9 +84,10 @@ public abstract class AbstractMeasuredProductInstance extends AbstractProductIns
      */
 	public AbstractMeasuredProductInstance(MeasuredProductType productType, float amount) {
 		super(productType);
-		this.productType = Objects.requireNonNull(productType, "productType");
+		Objects.requireNonNull(productType, "productType");
+		this.unitPrice = productType.getUnitPrice();
 		this.quantity = new Quantity(amount, productType.getQuantityOnHand().getMetric(), productType.getQuantityOnHand().getRoundingStrategy());
-		this.productType.reduceQuantityOnHand(quantity);
+		productType.reduceQuantityOnHand(quantity);
 	}
 	
 	/**
@@ -93,13 +97,10 @@ public abstract class AbstractMeasuredProductInstance extends AbstractProductIns
      */
 	public AbstractMeasuredProductInstance(MeasuredProductType productType, double amount) {
 		super(productType);
-		this.productType = Objects.requireNonNull(productType, "productType");
+		Objects.requireNonNull(productType, "productType");
+		this.unitPrice = productType.getUnitPrice();
 		this.quantity = new Quantity(amount, productType.getQuantityOnHand().getMetric(), productType.getQuantityOnHand().getRoundingStrategy());
-		this.productType.reduceQuantityOnHand(quantity);
-	}
-	
-	public MeasuredProductType getProductType(){
-		return this.productType;
+		productType.reduceQuantityOnHand(quantity);
 	}
 	
 	public Quantity getQuantity(){
@@ -109,7 +110,7 @@ public abstract class AbstractMeasuredProductInstance extends AbstractProductIns
 	@Override
 	public Money getPrice(){
 		//return (Money) productType.getUnitPrice().multiply(quantity);
-		return quantity.multiply_(productType.getUnitPrice());
+		return quantity.multiply_(this.unitPrice);
 	}
 	
 	@Override
