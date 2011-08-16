@@ -161,7 +161,7 @@ public class ProductFeatureTypeTest {
 	@Test
 	public void testRemoveProductFeatures1(){
 		
-		p1.removeFeature(butter);
+		p1.removeFeature(butter.getName());
 		
 		Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
     	for (ProductFeature pf : p1.getProductFeatures()){
@@ -183,8 +183,8 @@ public class ProductFeatureTypeTest {
 		
 		ProductFeature zucker = ProductFeature.create("Zucker", new Money(0.75));
 		
-		p1.removeFeature(butter);
-		p1.removeFeature(zucker);
+		p1.removeFeature(butter.getName());
+		p1.removeFeature(zucker.getName());
 		
 		Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
     	for (ProductFeature pf : p1.getProductFeatures()){
@@ -207,10 +207,10 @@ public class ProductFeatureTypeTest {
 		
 		ProductFeature zucker = ProductFeature.create("Zucker", new Money(0.75));
 		
-		p1.removeFeature(butter);
+		p1.removeFeature(butter.getName());
 		p1.addFeature(zucker);
 		p1.addFeature(butter);
-		p1.removeFeature(zucker);
+		p1.removeFeature(zucker.getName());
 		
 		Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
     	for (ProductFeature pf : p1.getProductFeatures()){
