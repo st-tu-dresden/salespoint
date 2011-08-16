@@ -4,69 +4,72 @@ import org.joda.time.DateTime;
 import org.salespointframework.core.users.UserIdentifier;
 
 /**
- * This is an interface which provides basic methods to handle an entry of a
- * calendar.
+ * A calendar entry is an appointment that basically sould have a definded start and end date and a title.
  * 
- * @author stanley
+ * @author Stanley Foerster
  * 
  */
 public interface CalendarEntry {
 
     /**
-     * Returns the start date and time of this entry
+     * Should return the start point in time when this appointment starts.
      * 
-     * @return start date and time
+     * @return start date and time which is unmodifiable.
+     * 
+     * @see DateTime
      */
     DateTime getStart();
 
     /**
-     * Returns the end date and time of this entry
+     * Should return the end point in time of when this appointment ends.
      * 
-     * @return end date and time
+     * @return end date and time which is unmodifiable
+     * 
+     * @see DateTime
      */
     DateTime getEnd();
 
     /**
-     * Returns the title of this entry
+     * Should return the title of this entry.
      * 
-     * @return title
+     * @return title of this entry.
      */
     String getTitle();
 
     /**
-     * Returns the description of this entry
+     * Should return a description of this entry
      * 
-     * @return description
+     * @return description of this entry.
      */
     String getDescription();
 
     /**
-     * Returns the user-id of the owner of this entry
+     * Should the user's id who is the owner of this entry.
      * 
-     * @return owner
+     * @return owner ID of the user who is the owner of this entry.
      */
     UserIdentifier getOwner();
 
     /**
-     * Returns the id of this entry
+     * Should return the id of this entry.
      * 
-     * @return ID
+     * @return ID of this entry.
      */
     CalendarEntryIdentifier getID();
 
     /**
-     * Sets a new start time.
+     * Should set a new start date.
      * 
      * @param start
-     *            the new start time
+     *            the new start date.
      */
     void setStart(DateTime start);
 
     /**
-     * Sets a new end time.
+     * Should set a new end date.
      * 
      * @param end
-     *            the new end time
+     *            the new end date.
      */
     void setEnd(DateTime end);
 

@@ -1,5 +1,6 @@
 package org.salespointframework.core.calendar;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,12 +46,12 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     /**
      * The start date and time for this entry.
      */
-    protected long                       startTime;
+    protected Date                       startTime;
 
     /**
      * The end date and time for this entry.
      */
-    protected long                       endTime;
+    protected Date                       endTime;
 
     /**
      * Title of this entry.
@@ -110,8 +111,8 @@ public final class PersistentCalendarEntry implements CalendarEntry {
             throw new IllegalArgumentException("The title cannot be empty.");
 
         this.title = title;
-        this.startTime = start.getMillis();
-        this.endTime = end.getMillis();
+        this.startTime = start.toDate();
+        this.endTime = end.toDate();
 
         description = "";
         repeatCount = 0;
@@ -224,10 +225,10 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     @Override
     public void setStart(DateTime start) {
         Objects.requireNonNull(start, "start");
-        if (start.getMillis() >= endTime)
+        if (start.getMillis() >= endTime.getTime())
             throw new IllegalArgumentException("An calendar entry cannot start after it ends.");
 
-        this.startTime = start.getMillis();
+        this.startTime = start.toDate();
     }
 
     /**
@@ -245,10 +246,10 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     @Override
     public void setEnd(DateTime end) {
         Objects.requireNonNull(end, "end");
-        if (end.getMillis() <= startTime)
+        if (end.getMillis() <= startTime.getTime())
             throw new IllegalArgumentException("An calendar entry cannot end before it starts.");
 
-        this.endTime = end.getMillis();
+        this.endTime = end.toDate();
     }
 
     /**
