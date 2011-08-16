@@ -75,7 +75,7 @@ public class UsermanagerTest {
 	
 	@Test
 	public void testEmployeeMangerContainsE3(){
-		assertEquals(employeeManager.getUserById(e3.getUserId()), e3);
+		assertEquals(employeeManager.getUserByIdentifier(e3.getUserIdentifier()), e3);
 	}
 	
 	
@@ -85,7 +85,7 @@ public class UsermanagerTest {
 		t.begin();
 		customerManager.addUser(c);
 		t.commit();
-		assertEquals(customerManager.getUserById(c.getUserId()), c);
+		assertEquals(customerManager.getUserByIdentifier(c.getUserIdentifier()), c);
 	}
 	
 	@Test
@@ -94,7 +94,7 @@ public class UsermanagerTest {
 		employeeManager.addUser(e);
 		emE.getTransaction().commit();
 		
-		MyEmployee currentE = employeeManager.getUserById(e.getUserId());
+		MyEmployee currentE = employeeManager.getUserByIdentifier(e.getUserIdentifier());
 		assertEquals(currentE, e);
 	}
 	
@@ -143,10 +143,10 @@ public class UsermanagerTest {
 			countEmployees++;
 			i.next();
 		}
-		assertEquals("me1",employeeManager.getUserById(uie1), me1);
-		assertEquals("me2",employeeManager.getUserById(uie2), me2);
-		assertEquals("me3",employeeManager.getUserById(uie3), me3);
-		assertEquals("me4",employeeManager.getUserById(uie4), me4);
+		assertEquals("me1",employeeManager.getUserByIdentifier(uie1), me1);
+		assertEquals("me2",employeeManager.getUserByIdentifier(uie2), me2);
+		assertEquals("me3",employeeManager.getUserByIdentifier(uie3), me3);
+		assertEquals("me4",employeeManager.getUserByIdentifier(uie4), me4);
 		assertEquals("iterator", numberOfEmployees,countEmployees);
 	}
 	

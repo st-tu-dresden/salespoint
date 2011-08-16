@@ -63,8 +63,8 @@ public class UsermangerPersistenceTest {
 	public void testHasEmployeeE3AndHasPW() {
 		UserIdentifier ui3= new UserIdentifier("CapaEmployee");
 		MyEmployee e3 = new MyEmployee(ui3, "lala");
-		assertEquals(employeeManager.getUserById(e3.getUserId()), e3);
-		assertEquals(employeeManager.getUserById(e3.getUserId()).verifyPassword("lala"),true);
+		assertEquals(employeeManager.getUserByIdentifier(e3.getUserIdentifier()), e3);
+		assertEquals(employeeManager.getUserByIdentifier(e3.getUserIdentifier()).verifyPassword("lala"),true);
 	}
 	
 	@Test

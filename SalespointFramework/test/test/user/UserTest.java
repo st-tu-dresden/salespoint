@@ -31,7 +31,7 @@ public class UserTest {
 	@Test
 	public void testCustomerUserId(){
 		UserIdentifier u= new UserIdentifier("testCustomer");
-		assertEquals(u, c.getUserId());
+		assertEquals(u, c.getUserIdentifier());
 	}
 	
 	@Test
@@ -44,7 +44,7 @@ public class UserTest {
 	@Test
 	public void testEmployeeUserId(){
 		UserIdentifier u= new UserIdentifier("testEmployee");
-		assertEquals(u, e.getUserId());
+		assertEquals(u, e.getUserIdentifier());
 	}
 	
 	@Test
