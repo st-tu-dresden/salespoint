@@ -2,7 +2,9 @@ package test.user;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -16,6 +18,7 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.users.DuplicateUserException;
 import org.salespointframework.core.users.UserCapability;
 import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.util.Iterables;
 
 
 public class UsermanagerTest {
@@ -116,8 +119,35 @@ public class UsermanagerTest {
 	}
 	
 	@Test
-	public void testGetAllUsers(){
+	public void testGetAllUsersBETTER(){
+		final int usersToAdd = 4;
+		final List<MyEmployee> list = new ArrayList<MyEmployee>(usersToAdd);
 		
+		final EntityManager entityManager = emf.createEntityManager();
+		final MyEmployeeManager empManager = new MyEmployeeManager(entityManager);
+		
+		final int oldCount = Iterables.toList((empManager.getUsers())).size();
+
+		entityManager.getTransaction().begin();
+		for(int n = 0; n < usersToAdd; n++) {
+			MyEmployee employee = new MyEmployee(new UserIdentifier(), "egal");		//id egal, besser leer lassen, eigene wird generiert, clasht nicht mit anderen Tests 
+			list.add(employee);
+			empManager.addUser(employee);
+		}
+		entityManager.getTransaction().commit();
+		
+		final int newCount = Iterables.toList((empManager.getUsers())).size();
+		
+		for(MyEmployee employee : list) {
+			assertEquals(empManager.getUserByIdentifier(employee.getUserIdentifier()), employee);
+		}
+		assertEquals(usersToAdd, newCount - oldCount); 
+	}
+	
+	// the following test sucks, delete plz 
+	@Test
+	public void testGetAllUsers(){
+
 		UserIdentifier uie1= new UserIdentifier("me1");
 		MyEmployee me1= new MyEmployee(uie1 ,"egal");
 		UserIdentifier uie2= new UserIdentifier("me2");
