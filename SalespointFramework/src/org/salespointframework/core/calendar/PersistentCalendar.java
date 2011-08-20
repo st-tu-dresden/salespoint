@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.database.Database;
 import org.salespointframework.core.database.ICanHasClass;
+import org.salespointframework.core.users.UserIdentifier;
 import org.salespointframework.util.Filter;
+import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
 /**
@@ -20,19 +25,15 @@ import org.salespointframework.util.Objects;
  */
 public final class PersistentCalendar implements Calendar<PersistentCalendarEntry>, ICanHasClass<PersistentCalendarEntry> {
 
-    private EntityManager em;
+    private final EntityManager em;
 
     /**
      * Creates a new Calendar. An {@link EntityManager} is required for
      * persistence reasons.
-     * 
-     * @param em
-     *            the entity manager which is used to persist the entries of
-     *            this calendar
      */
-    public PersistentCalendar(EntityManager em) {
-        Objects.requireNonNull(em, "em");
-        this.em = em;
+    public PersistentCalendar() {
+        EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
+        this.em = emf.createEntityManager();
     }
 
     /**
@@ -49,7 +50,6 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
     @SuppressWarnings("boxing")
     @Override
     public Iterable<PersistentCalendarEntry> getEntries(Filter<PersistentCalendarEntry> filter) {
-
         Objects.requireNonNull(filter, "filter");
 
         TypedQuery<PersistentCalendarEntry> q = em.createQuery("SELECT ce FROM " + getContentClass().getSimpleName() + " ce", getContentClass());
@@ -61,7 +61,7 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
                 entries.add(entry);
         }
 
-        return entries;
+        return Iterables.from(entries);
     }
 
     /**
@@ -79,7 +79,7 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
         
         q.setParameter("title", title);
 
-        return q.getResultList();
+        return Iterables.from(q.getResultList());
     }
     
     public Iterable<PersistentCalendarEntry> getEntriesThatStartAfter(DateTime start) {
@@ -92,7 +92,7 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
         
         q.setParameter("start", start);
 
-        return q.getResultList();
+        return Iterables.from(q.getResultList());
     }
 
     public Iterable<PersistentCalendarEntry> getEntriesThatStartBefore(DateTime start) {
@@ -105,7 +105,7 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
         
         q.setParameter("start", start);
 
-        return q.getResultList();
+        return Iterables.from(q.getResultList());
     }
     
     public Iterable<PersistentCalendarEntry> getEntriesThatEndBefore(DateTime end) {
@@ -118,7 +118,7 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
         
         q.setParameter("end", end);
 
-        return q.getResultList();
+        return Iterables.from(q.getResultList());
     }
 
     public Iterable<PersistentCalendarEntry> getEntriesThatEndAfter(DateTime end) {
@@ -131,7 +131,7 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
         
         q.setParameter("end", end);
 
-        return q.getResultList();
+        return Iterables.from(q.getResultList());
     }
     
     public Iterable<PersistentCalendarEntry> getEntriesThatStartBetween(DateTime start, DateTime end) {
@@ -145,7 +145,7 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
         q.setParameter("start", start);
         q.setParameter("end", end);
 
-        return q.getResultList();
+        return Iterables.from(q.getResultList());
     }
 
     public Iterable<PersistentCalendarEntry> getEntriesThatEndBetween(DateTime start, DateTime end) {
@@ -159,22 +159,23 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
         q.setParameter("start", start);
         q.setParameter("end", end);
 
-        return q.getResultList();
+        return Iterables.from(q.getResultList());
     }    
     
-    public Iterable<PersistentCalendarEntry> getEntriesByOwner(final String owner) {
+    public Iterable<PersistentCalendarEntry> getEntriesByOwner(final UserIdentifier owner) {
         return getEntries(new Filter<PersistentCalendarEntry>() {
-            @SuppressWarnings("boxing")
             @Override
             public Boolean invoke(PersistentCalendarEntry arg) {
-                return arg.getOwner().equals(owner);
+                return new Boolean(arg.getOwner().equals(owner));
             }
         });
     }
     
     @Override
-    public PersistentCalendarEntry getEntryByID(CalendarEntryIdentifier l) {
-        return em.find(this.getContentClass(), l);
+    public PersistentCalendarEntry getEntryByID(CalendarEntryIdentifier calendarEntryIdentifier) {
+        Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier");
+        
+        return em.find(this.getContentClass(), calendarEntryIdentifier);
     }
 
     /**
@@ -184,12 +185,19 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
     @Override
     public void addEntry(PersistentCalendarEntry entry) {
         Objects.requireNonNull(entry, "entry");
+        EntityTransaction t = em.getTransaction();
+        t.begin();
         em.persist(entry);
+        t.commit();
     }
 
     @Override
     public void deleteEntry(CalendarEntryIdentifier calendarEntryIdentifier) {
+        Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier");
+        EntityTransaction t = em.getTransaction();
+        t.begin();
         em.remove(this.getEntryByID(calendarEntryIdentifier));
+        t.commit();
     }
 
     @Override

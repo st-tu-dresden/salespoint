@@ -55,7 +55,7 @@ public interface CalendarEntry {
      * 
      * @return ID of this entry.
      */
-    CalendarEntryIdentifier getID();
+    CalendarEntryIdentifier getCalendarEntryIdentifier();
 
     /**
      * Should set a new start date.

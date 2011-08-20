@@ -121,7 +121,7 @@ public class CalendarEntryTest {
 	@Test
 	public void testGetID(){
 		
-		assertNotSame(null, testEntry1.getID());
+		assertNotSame(null, testEntry1.getCalendarEntryIdentifier());
 	}
 	
 	@Test
