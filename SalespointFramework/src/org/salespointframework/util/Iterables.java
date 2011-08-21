@@ -48,7 +48,8 @@ public final class Iterables {
 	public static <T> Iterable<T> from(final Iterable<T> iterable) {
 		final Iterator<T> iterator = iterable.iterator();
 		return new Iterable<T>() {
-			public Iterator<T> iterator() {
+			@Override
+            public Iterator<T> iterator() {
 				return new Iterator<T>() {
 					@Override
 					public boolean hasNext() {
@@ -71,7 +72,8 @@ public final class Iterables {
 
 	public static <T> Iterable<T> from(final T[] array) {
 		return new Iterable<T>() {
-			public Iterator<T> iterator() {
+			@Override
+            public Iterator<T> iterator() {
 				return new Iterator<T>() {
 					int n = 0;
 					@Override

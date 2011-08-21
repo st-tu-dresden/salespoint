@@ -1,13 +1,13 @@
 package org.salespointframework.core.calendar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Temporal;
@@ -22,24 +22,33 @@ import javax.persistence.criteria.Root;
 import org.joda.time.DateTime;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Objects;
 
 /**
  * 
  * This is an abstract representation of an calendar entry which provides basic
- * functionality
+ * functionality.
  * 
- * @author stanley
+ * @author Stanley Förster
  * 
  */
 @Entity
 public final class PersistentCalendarEntry implements CalendarEntry {
 
+    /**
+     * The unique identifier for this entry.
+     */
     @EmbeddedId
     private CalendarEntryIdentifier calendarEntryIdentifier;
 
+    /**
+     * The entitymanager is used to persist capabilities for this entry.
+     * 
+     * @see EntityManager
+     */
     @Transient
-    private EntityManager           em;
+    private EntityManager           em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
 
     /**
      * Description of this calendar entry. May be empty.
@@ -84,13 +93,10 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      */
     @Deprecated
     public PersistentCalendarEntry() {
-        // EntityManagerFactory emf =
-        // Database.INSTANCE.getEntityManagerFactory();
-        // this.em = emf.createEntityManager();
     }
 
     /**
-     * Basic contructor with
+     * Creates a new calendar entry with a minimum of information.
      * 
      * @param owner
      *            The id of the user, who created this entry.
@@ -101,18 +107,18 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      * @param end
      *            End time and date.
      * @throws IllegalArgumentException
-     *             The {@link IllegalArgumentException} will be thrown, if the
+     *             The {@link IllegalArgumentException} will be thrown if the
      *             begin is not before the end of this calendar entry or the
      *             title is empty.
+     * @throws ArgumentNullException
+     *             The {@link ArgumentNullException} will be thrown if one ore
+     *             more arguments are <code>null</code>
      */
     public PersistentCalendarEntry(UserIdentifier owner, String title, DateTime start, DateTime end) {
         Objects.requireNonNull(owner, "owner");
         Objects.requireNonNull(title, "title");
         Objects.requireNonNull(start, "start");
         Objects.requireNonNull(end, "end");
-
-        EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
-        this.em = emf.createEntityManager();
 
         this.calendarEntryIdentifier = new CalendarEntryIdentifier();
 
@@ -130,8 +136,7 @@ public final class PersistentCalendarEntry implements CalendarEntry {
         repeatCount = 0;
         repeatStep = 0;
 
-        for (CalendarEntryCapability cap : CalendarEntryCapability.values())
-            addCapability(owner, cap);
+        addCapabilities(owner, CalendarEntryCapability.values());
     }
 
     @Override
@@ -147,10 +152,10 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      * the same.
      * 
      * @param entry
-     *            the entry this one should be compared with
-     * @return <code>true</code> if and only if the hashCode of this Object
-     *         equals the hashCode of the object given as parameter.
-     *         <code>false</code> otherwise.
+     *            The entry this one should be compared with.
+     * @return <code>true</code> if and only if the hash code of this calendar
+     *         entry equals the hash code of the entry that is given as
+     *         parameter. <code>false</code> otherwise.
      */
     public boolean equals(CalendarEntry entry) {
         return (entry != null) && (this.hashCode() == entry.hashCode());
@@ -160,7 +165,7 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      * Returns the hash code for this entry. The hash of this object is the hash
      * of its primary key.
      * 
-     * @return the hash code for this entry
+     * @return The hash code for this entry.
      */
     @Override
     public int hashCode() {
@@ -181,7 +186,7 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     /**
      * Returns the title of this entry. The title cannot be empty.
      * 
-     * @return the title of this entry
+     * @return The title of this entry.
      */
     @Override
     public String getTitle() {
@@ -189,10 +194,10 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     }
 
     /**
-     * Returns the start time of this entry. The start time is never
-     * <code>null</code>
+     * Returns the start date of this entry. The start date is never
+     * <code>null</code> and never after the end date.
      * 
-     * @return the start time of this entry
+     * @return The date when this entry starts.
      */
     @Override
     public DateTime getStart() {
@@ -200,10 +205,10 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     }
 
     /**
-     * Returns the end time of this entry. The end time is never
-     * <code>null</code>
+     * Returns the end date of this entry. The end date is never
+     * <code>null</code> and never before the start date.
      * 
-     * @return the end time of this entry
+     * @return The date when this entry ends.
      */
     @Override
     public DateTime getEnd() {
@@ -212,10 +217,9 @@ public final class PersistentCalendarEntry implements CalendarEntry {
 
     /**
      * Returns the ID of this entry. The ID is the entry's primary key,
-     * generated automatically when the entry has been stored. The ID of an
-     * entry that hasn't been persisted yet is undefined.
+     * generated automatically when the entry has been created.
      * 
-     * @return the ID of this entry
+     * @return The ID of this entry.
      */
     @Override
     public CalendarEntryIdentifier getCalendarEntryIdentifier() {
@@ -223,14 +227,14 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     }
 
     /**
-     * Sets the start time of this entry. The start time must not be
-     * <code>null</code> and has to be before the end time.
+     * Sets the start date of this entry. The start date must neither be
+     * <code>null</code> nor after the end date.
      * 
      * @param start
-     *            the new start time
+     *            The new start date.
      * 
      * @throws IllegalArgumentException
-     *             if the start is after the end
+     *             if the start is after the end.
      * 
      * @see DateTime
      */
@@ -244,14 +248,14 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     }
 
     /**
-     * Sets the end time of this entry. The end time must not be
-     * <code>null</code> and has to be after the start time.
+     * Sets the end date of this entry. The end date must neither be
+     * <code>null</code> nor before the start date.
      * 
      * @param end
-     *            the new end time
+     *            The new end date.
      * 
      * @throws IllegalArgumentException
-     *             if the start is after the end
+     *             if the end is before the start
      * 
      * @see DateTime
      */
@@ -265,8 +269,8 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     }
 
     /**
-     * Sets the new title of the entry. The title must not be <code>null</code>
-     * nor empty.
+     * Sets the new title of the entry. The title must neither be
+     * <code>null</code> nor empty.
      * 
      * @param title
      *            the new title for this entry
@@ -287,7 +291,7 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      * but can be an empty string.
      * 
      * @param description
-     *            the new description for this entry
+     *            The new description for this entry.
      */
     @Override
     public void setDescription(String description) {
@@ -296,70 +300,99 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     }
 
     /**
-     * Return the userID of the owner of this entry. Typically the owner is the
-     * creator of an entry but this can change over time. An entry can only have
-     * one owner at a time.
+     * Return the user identifiaction of the owner of this entry. Typically the
+     * owner is the creator of an entry but this can change over time. An entry
+     * can only have one owner at a time.
      * 
-     * @return The userID of the user who is the owner of this entry.
+     * @return The user id of the user who is the owner of this entry.
      */
     @Override
     public UserIdentifier getOwner() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<CalendarEntryCapabilitySet> q = cb.createQuery(CalendarEntryCapabilitySet.class);
         Root<CalendarEntryCapabilitySet> r = q.from(CalendarEntryCapabilitySet.class);
-        
+
         Predicate pEntry = cb.equal(r.get(CalendarEntryCapabilitySet_.calendarEntryIdentifier), this.calendarEntryIdentifier);
         q.where(pEntry);
-        
+
         TypedQuery<CalendarEntryCapabilitySet> tq = em.createQuery(q);
-        
+
         for (CalendarEntryCapabilitySet capSet : tq.getResultList()) {
             if (capSet.contains(CalendarEntryCapability.OWNER))
                 return capSet.getUserIdentifier();
         }
-        
+
         return null;
     }
 
     /**
-     * Adds a capability for a specific user. Parameters must not be
-     * <code>null</code>. If capability <code>OWNER</code> should be added, the
-     * old owner looses this capability, because there can be only one owner at
-     * a time.
+     * Adds the capability to a specific user. Parameters must not be
+     * <code>null</code>. The capability <code>OWNER</code> cannot be added,
+     * because there can be only one owner who has been defined when the entry
+     * was created.
      * 
      * @param user
-     *            the userID of the user who should get the new capability.
+     *            The user identification of the user who should get the new
+     *            capability.
      * @param capability
-     *            the new capability for the given user
+     *            The new capability for the given user.
+     * 
+     * @throws IllegalArgumentException
+     *             if capability <code>OWNER</code> should be added and there is
+     *             an owner already.
      */
     @Override
     public void addCapability(UserIdentifier user, CalendarEntryCapability capability) {
+        addCapabilities(Objects.requireNonNull(user, "user"), new CalendarEntryCapability[] { Objects.requireNonNull(capability, "capability") });
+    }
+
+    /**
+     * Adds the capabilities to a specific user. Parameters must not be
+     * <code>null</code>. The capability <code>OWNER</code> cannot be added,
+     * because there can be only one owner who has been defined when the entry
+     * was created.
+     * 
+     * @param user
+     *            The user identification of the user who should get the new
+     *            capabilities.
+     * @param capabilities
+     *            The new capabilities for the given user.
+     * 
+     * @throws IllegalArgumentException
+     *             if capability <code>OWNER</code> should be added and there is
+     *             an owner already.
+     */
+    private void addCapabilities(UserIdentifier user, CalendarEntryCapability[] capabilities) {
         Objects.requireNonNull(user, "user");
-        Objects.requireNonNull(capability, "capability");
-        
+        Objects.requireNonNull(capabilities, "capability");
+
+        if (Arrays.asList(capabilities).contains(CalendarEntryCapability.OWNER) && getUsersByCapability(CalendarEntryCapability.OWNER).iterator().hasNext())
+            throw new IllegalArgumentException("There can be only one owner of a calendar entry!");
+
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<CalendarEntryCapabilitySet> q = cb.createQuery(CalendarEntryCapabilitySet.class);
         Root<CalendarEntryCapabilitySet> r = q.from(CalendarEntryCapabilitySet.class);
-        
+
         Predicate pEntry = cb.equal(r.get(CalendarEntryCapabilitySet_.calendarEntryIdentifier), this.calendarEntryIdentifier);
         Predicate pUser = cb.equal(r.get(CalendarEntryCapabilitySet_.userIdentifier), user);
         q.where(cb.and(pUser, pEntry));
-        
+
         TypedQuery<CalendarEntryCapabilitySet> tq = em.createQuery(q);
-        
+
         EntityTransaction t = em.getTransaction();
         t.begin();
-        CalendarEntryCapabilitySet capSet = null;
-        try {
-            capSet = tq.getSingleResult();
-            capSet.add(capability);
-            em.merge(capSet);
-        } catch (NoResultException e) {
-            capSet = new CalendarEntryCapabilitySet(user, calendarEntryIdentifier);
-            capSet.add(capability);
-            em.persist(capSet);            
+        {
+            CalendarEntryCapabilitySet capSet = null;
+            try {
+                capSet = tq.getSingleResult();
+                capSet.addAll(capabilities);
+                em.merge(capSet);
+            } catch (NoResultException e) {
+                capSet = new CalendarEntryCapabilitySet(user, calendarEntryIdentifier);
+                capSet.addAll(capabilities);
+                em.persist(capSet);
+            }
         }
-        
         t.commit();
     }
 
@@ -380,16 +413,19 @@ public final class PersistentCalendarEntry implements CalendarEntry {
         Objects.requireNonNull(user, "user");
         Objects.requireNonNull(capability, "capability");
 
+        if (capability == CalendarEntryCapability.OWNER)
+            throw new IllegalArgumentException("Capability OWNER cannot be removed.");
+        
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<CalendarEntryCapabilitySet> q = cb.createQuery(CalendarEntryCapabilitySet.class);
         Root<CalendarEntryCapabilitySet> r = q.from(CalendarEntryCapabilitySet.class);
-        
+
         Predicate pEntry = cb.equal(r.get(CalendarEntryCapabilitySet_.calendarEntryIdentifier), this.calendarEntryIdentifier);
         Predicate pUser = cb.equal(r.get(CalendarEntryCapabilitySet_.userIdentifier), user);
         q.where(cb.and(pUser, pEntry));
-        
+
         TypedQuery<CalendarEntryCapabilitySet> tq = em.createQuery(q);
-        
+
         CalendarEntryCapabilitySet capSet = null;
         try {
             capSet = tq.getSingleResult();
@@ -402,33 +438,34 @@ public final class PersistentCalendarEntry implements CalendarEntry {
                 t.commit();
             }
         } catch (NoResultException e) {
-            
+
         }
     }
 
     /**
-     * Returns all capabilities the given user has for this entry. The userID
+     * Returns all capabilities the given user has for this entry. The user identification
      * must not be <code>null</code>
      * 
      * @param user
-     *            the userID of the user whose capabilities should be returned.
+     *            the user identification of the user whose capabilities should be returned.
      * 
      * @return An {@link Iterable} which contains all capabilities of this user
      *         or null if the user has no capabilities for this entry.
      */
+    @Override
     public Iterable<CalendarEntryCapability> getCapabilitiesByUser(UserIdentifier user) {
         Objects.requireNonNull(user, "user");
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<CalendarEntryCapabilitySet> q = cb.createQuery(CalendarEntryCapabilitySet.class);
         Root<CalendarEntryCapabilitySet> r = q.from(CalendarEntryCapabilitySet.class);
-        
+
         Predicate pEntry = cb.equal(r.get(CalendarEntryCapabilitySet_.calendarEntryIdentifier), this.calendarEntryIdentifier);
         Predicate pUser = cb.equal(r.get(CalendarEntryCapabilitySet_.userIdentifier), user);
         q.where(cb.and(pUser, pEntry));
-        
+
         TypedQuery<CalendarEntryCapabilitySet> tq = em.createQuery(q);
-        
+
         try {
             CalendarEntryCapabilitySet capSet = tq.getSingleResult();
             return capSet.getCapabilities();
@@ -439,31 +476,34 @@ public final class PersistentCalendarEntry implements CalendarEntry {
 
     /**
      * Returns all users that have the given capability. The capability must not
-     * be <code>null</code>
+     * be <code>null</code>.
      * 
      * @param capability
-     *            the capability for which all users should be found.
+     *            The capability for which all users should be found.
      * 
      * @return An {@link Iterable} which contains all user IDs of users who have
      *         the capability or null if there is no user who has the capability
      *         for this entry.
      */
+    @Override
     public Iterable<UserIdentifier> getUsersByCapability(CalendarEntryCapability capability) {
+        Objects.requireNonNull(capability, "capability");
+        
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<CalendarEntryCapabilitySet> q = cb.createQuery(CalendarEntryCapabilitySet.class);
         Root<CalendarEntryCapabilitySet> r = q.from(CalendarEntryCapabilitySet.class);
-        
+
         Predicate pEntry = cb.equal(r.get(CalendarEntryCapabilitySet_.calendarEntryIdentifier), this.calendarEntryIdentifier);
         q.where(pEntry);
-        
+
         TypedQuery<CalendarEntryCapabilitySet> tq = em.createQuery(q);
-        
+
         List<UserIdentifier> result = new ArrayList<UserIdentifier>();
         for (CalendarEntryCapabilitySet capSet : tq.getResultList()) {
             if (capSet.contains(capability))
                 result.add(capSet.getUserIdentifier());
         }
-        
+
         return result.isEmpty() ? null : result;
     }
 }

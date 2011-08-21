@@ -2,7 +2,9 @@ package org.salespointframework.util;
 
 import java.io.Serializable;
 import java.util.UUID;
-import javax.persistence.*;
+
+import javax.persistence.Embeddable;
+import javax.persistence.MappedSuperclass;
 
 /**
  * 

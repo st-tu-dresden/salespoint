@@ -6,7 +6,7 @@ import org.salespointframework.core.users.UserIdentifier;
 /**
  * A calendar entry is an appointment that basically sould have a definded start and end date and a title.
  * 
- * @author Stanley Foerster
+ * @author Stanley Förster
  * 
  */
 public interface CalendarEntry {
@@ -44,16 +44,16 @@ public interface CalendarEntry {
     String getDescription();
 
     /**
-     * Should the user's id who is the owner of this entry.
+     * Should return the user's identifiaction who is the owner of this entry.
      * 
      * @return owner ID of the user who is the owner of this entry.
      */
     UserIdentifier getOwner();
 
     /**
-     * Should return the id of this entry.
+     * Should return the identification of this entry.
      * 
-     * @return ID of this entry.
+     * @return Identification of this entry.
      */
     CalendarEntryIdentifier getCalendarEntryIdentifier();
 
@@ -74,15 +74,15 @@ public interface CalendarEntry {
     void setEnd(DateTime end);
 
     /**
-     * Sets a new title.
+     * Should change the title.
      * 
      * @param title
-     *            the new title
+     *            the new title.
      */
     void setTitle(String title);
 
     /**
-     * Sets a new description
+     * Should change the description.
      * 
      * @param description
      *            the new description
@@ -90,12 +90,12 @@ public interface CalendarEntry {
     void setDescription(String description);
 
     /**
-     * Adds a new capability for the user.
+     * Should add a new capability to the given user for this entry.
      * 
      * @param user
-     *            the user who should get a new capability
+     *            The user's identifiaction who should get a new capability.
      * @param capability
-     *            the capability that the user should get
+     *            the capability that the user should get.
      */
     void addCapability(UserIdentifier user, CalendarEntryCapability capability);
 
@@ -103,10 +103,26 @@ public interface CalendarEntry {
      * Removes the capability of the user
      * 
      * @param user
-     *            the user who should loose the capability
+     *            The user's identification who should loose the capability.
      * @param capability
-     *            the capability that the user should loose
+     *            the capability that the user should loose.
      */
     void removeCapability(UserIdentifier user, CalendarEntryCapability capability);
-
+    
+    /**
+     * Should return all capabilities the given user has for this calendar entry.
+     * 
+     * @param user The user's identification, to get all capabilities for.
+     * 
+     * @return An iterable of all capabilities the given user has for this entry.
+     */
+    public Iterable<CalendarEntryCapability> getCapabilitiesByUser(UserIdentifier user);
+    
+    /**
+     * Should return all users who have the given capability for this entry.
+     * 
+     * @param capability The capability for that all users should be returned.
+     * @return An iterable of all user identifications who have the given capability for this entry.
+     */
+    public Iterable<UserIdentifier> getUsersByCapability(CalendarEntryCapability capability);
 }
