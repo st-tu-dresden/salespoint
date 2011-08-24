@@ -1,0 +1,124 @@
+\documentclass[a4paper,ngerman,british,BCOR1.5cm,headsepline,DIV12,appendixprefix,final]{scrbook}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{ucs}
+\usepackage[OT1]{fontenc}
+\usepackage{babel}
+
+\usepackage{varioref}
+\usepackage[pdftex,plainpages=false,pdfpagelabels=true,pdfusetitle]{hyperref}
+%              citebordercolor={0.75 0.75 1},
+%              filebordercolor={0.75 0.75 1},
+%              linkbordercolor={0.75 0.75 1},
+%              pagebordercolor={0.75 0.75 1},
+%              urlbordercolor={0.75 0.75 1},
+%              pdfborder={0.75 0.75 1},
+\usepackage[all]{hypcap}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{tocvsec2}
+\usepackage{engord}
+\usepackage{hyphenat}
+\usepackage{booktabs}
+\usepackage{overpic}
+\usepackage{tikz}
+\usepackage{rotating}
+
+\usetikzlibrary{positioning}
+\usepackage[left,pagewise,modulo,]{lineno}
+%\linenumbers
+
+
+\newcommand{\todo}{\footnote}
+\newcommand{\comment}[1]{}
+
+\tolerance 2414
+\hbadness 2414
+\emergencystretch 1.6em
+%\hfuzz 0.3pt
+\widowpenalty=10000     % Hurenkinder
+\clubpenalty=10000      % Schusterjungen
+%\vfuzz \hfuzz
+%\raggedbottom
+
+
+%tocloft fixups
+\makeatletter
+\providecommand{\IfPackageLoaded}[2]{\@ifpackageloaded{#1}{#2}{}}
+\providecommand{\IfElsePackageLoaded}[3]{\@ifpackageloaded{#1}{#2}{#3}}
+\makeatother
+
+\IfElsePackageLoaded{subfig}
+	% IF subfig
+	{\usepackage[subfigure]{tocloft}}{
+	% ELSE
+	\IfElsePackageLoaded{subfigure}
+		% IF subfigure
+		{\usepackage[subfigure]{tocloft}}
+	   % Else (No subfig nor subfigure)
+		{\usepackage{tocloft}}
+	}
+\IfPackageLoaded{subfig}{
+	\setcounter{lofdepth}{2}
+	\setcounter{lotdepth}{2}
+}
+%tocloft fixups end
+
+\begin{document}
+\subject{\LARGE{Salespoint 2011}}
+%\title{Implementierung des DDEKit-Ansatzes auf Linux}
+%\title{Implementation of the DDEKit approach for Linux.}
+%\title{DDEKit-Linux: improved security and ease of development for Linux user space drivers.}
+\title{Technischer Überblick}
+\author{Hannes Weisbach}
+
+\publishers{Technische Universität Dresden\\
+				Fakultät Informatik\\
+				Institut für Software- und Multimediatechnik\\
+				Professur Softwarearchitektur\\
+\vskip 6cm
+\hangafter=0
+\footnotesize
+	\begin{tabular}{ll}
+ 		Address                                        & Telephone: 0351 463 38442 \\
+		Faculty of Computer Science                    & Fax: 0351 463 38459\\
+		Insitute of Software and Multimedia Technology & birgit.demuth@tu-dresden.de\\
+		TU Dresden                                     & http://tu-dresden.de\\
+		01062 Dresden                                  & \\
+	\end{tabular}
+}
+
+%\comment{
+
+\hypersetup{
+    pdfkeywords={salespoint, swt, praktikum},
+    pdfsubject={Salespoint 2011 - Technischer Überblick},
+}
+
+\maketitle
+
+\selectlanguage{ngerman}
+\cleardoublepage{}
+
+\maxtocdepth{section}
+\tableofcontents{}
+\clearpage
+
+\listoffigures
+\listoftables
+
+\clearpage
+
+\settocdepth{chapter}
+\input{introduction.tex}
+\settocdepth{section}
+\input{background/background}
+\input{core/core}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{alpha}
+\bibliography{bib}
+
+\end{document}
