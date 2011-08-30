@@ -24,18 +24,10 @@ import org.salespointframework.util.Iterables;
 public class UsermanagerTest {
 
 	
-	private UserIdentifier ui1= new UserIdentifier("testCustomer");
-	
-	private MyCustomer c = new MyCustomer(ui1, "pw1234");
-	private MyCustomer c2 = new MyCustomer(ui1, "pw1234");
-	
-	
-	private UserIdentifier ui2= new UserIdentifier("testEmployee");
 	
 	private static UserIdentifier ui3= new UserIdentifier("CapaEmployee");
 	
-	private MyEmployee e = new MyEmployee(ui2, "4321pw");
-	private MyEmployee e2 = new MyEmployee(ui2, "pw");
+	
 	private static MyEmployee e3 = new MyEmployee(ui3, "lala");
 	
 	
@@ -84,6 +76,10 @@ public class UsermanagerTest {
 	
 	@Test
 	public void testAddCostumer(){
+		UserIdentifier ui= new UserIdentifier("testCustomer");
+		MyCustomer c = new MyCustomer(ui, "pw1234");
+		
+		
 		EntityTransaction t= emC.getTransaction();
 		t.begin();
 		customerManager.addUser(c);
@@ -93,6 +89,10 @@ public class UsermanagerTest {
 	
 	@Test
 	public void testAddEmployee(){
+
+		UserIdentifier ui= new UserIdentifier("testEmployee");
+		MyEmployee e = new MyEmployee(ui, "4321pw");
+				
 		emE.getTransaction().begin();
 		employeeManager.addUser(e);
 		emE.getTransaction().commit();
@@ -104,14 +104,37 @@ public class UsermanagerTest {
 	
 	@Test(expected = DuplicateUserException.class)
 	public void testDuplicateEmployee(){
+		UserIdentifier ui= new UserIdentifier("testDuplicateEmployee");
+		MyEmployee e = new MyEmployee(ui, "4321pw");
+		MyEmployee e2 = new MyEmployee(ui, "adfpw");
+		
+		emE.getTransaction().begin();
+		employeeManager.addUser(e);
+		emE.getTransaction().commit();
+		
+		MyEmployee currentE = employeeManager.getUserByIdentifier(e.getUserIdentifier());
+		assertEquals(currentE, e);
+		
 		emE.getTransaction().begin();
 		employeeManager.addUser(e2);
 		emE.getTransaction().commit();
+		
+		
 		
 	}
 	
 	@Test(expected = DuplicateUserException.class)
 	public void testDuplicateCustomer(){
+		UserIdentifier ui= new UserIdentifier("testDuplicateCustomer");
+		MyCustomer c = new MyCustomer(ui, "pw1234");
+		MyCustomer c2 = new MyCustomer(ui, "asdf");
+		
+		emC.getTransaction().begin();
+		customerManager.addUser(c);
+		emC.getTransaction().commit();
+		
+		assertEquals(customerManager.getUserByIdentifier(c.getUserIdentifier()), c);
+		
 		emC.getTransaction().begin();
 		customerManager.addUser(c2);
 		emC.getTransaction().commit();
@@ -145,6 +168,7 @@ public class UsermanagerTest {
 	}
 	
 	// the following test sucks, delete plz 
+	@Ignore
 	@Test
 	public void testGetAllUsers(){
 
@@ -187,14 +211,12 @@ public class UsermanagerTest {
 		
 	}
 	
-//	@Ignore
 	@Test
 	public void testAddCapabilityToEmployee(){
 		capa= new UserCapability("CrazyTestCapabilityAgain");
 		UserCapability capa2= new UserCapability("MustBeInDataBaseAfterTesting");
 		emE.getTransaction().begin();
 		boolean addCapa = employeeManager.addCapability(e3, capa);
-		//boolean addCapa2 = employeeManager.addCapability(e3, capa2);
 		emE.getTransaction().commit();
 		emE.getTransaction().begin();
 		boolean addCapa2 = employeeManager.addCapability(e3, capa2);
@@ -202,23 +224,22 @@ public class UsermanagerTest {
 		
 		assertEquals("NoSuchUser!", true,  addCapa);
 		assertEquals("NoSuchUser!", true,  addCapa2);
-	}
-	
-
-	@Test
-	public void testHasCapability(){
-		capa= new UserCapability("CrazyTestCapabilityAgain");
-		UserCapability capa2= new UserCapability("MustBeInDataBaseAfterTesting");
+		
 		boolean hasCapa = employeeManager.hasCapability(e3, capa);
 		boolean hasCapa2 = employeeManager.hasCapability(e3, capa2);
 		assertEquals("1",true,  hasCapa);
 		assertEquals("2",true,  hasCapa2);
 	}
 	
+	
 
 	@Test
 	public void testRemoveCapability(){
-		capa= new UserCapability("CrazyTestCapabilityAgain");
+		capa= new UserCapability("RemoveTestCapabilityAgain");
+		emE.getTransaction().begin();
+		employeeManager.addCapability(e3, capa);
+		emE.getTransaction().commit();
+		
 		boolean hasCapa = employeeManager.hasCapability(e3, capa);
 		assertEquals("befor removing", true,  hasCapa);
 		
