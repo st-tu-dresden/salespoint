@@ -3,6 +3,8 @@ package org.salespointframework.core.product.later;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.TemporalType;
+import javax.persistence.Temporal;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
@@ -24,7 +26,9 @@ public abstract class AbstractServiceType extends AbstractProductType implements
 
 	
 	//TODO long -> Date
+	@Temporal(TemporalType.TIMESTAMP)
 	protected Date startOfPeriodOfOperation;
+	@Temporal(TemporalType.TIMESTAMP)
 	protected Date endOfPeriodOfOperation;
 	
 	@Deprecated

@@ -3,6 +3,8 @@ package org.salespointframework.core.product.later;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.product.AbstractProductInstance;
@@ -23,7 +25,9 @@ public abstract class AbstractServiceInstance extends AbstractProductInstance im
 	
 	private ServiceType serviceType;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date scheduledStart;
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date scheduledEnd;
 	private ServiceDeliveryStatus serviceDeliveryStatus;
 	
