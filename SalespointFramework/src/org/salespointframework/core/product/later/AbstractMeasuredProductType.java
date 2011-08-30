@@ -2,6 +2,8 @@ package org.salespointframework.core.product.later;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Entity;
+
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.AbstractProductType;
 import org.salespointframework.core.quantity.Metric;
@@ -15,8 +17,8 @@ import org.salespointframework.util.Objects;
  * 
  */
 
-//TODO
-//@Entity
+@Entity
+
 public abstract class AbstractMeasuredProductType extends AbstractProductType implements MeasuredProductType{
 	
 	private Quantity quantityOnHand;

@@ -2,6 +2,8 @@ package org.salespointframework.core.product.later;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Entity;
+
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.AbstractProductInstance;
 import org.salespointframework.core.quantity.Quantity;
@@ -14,8 +16,8 @@ import org.salespointframework.util.Objects;
  * 
  */
 
-// TODO
-// @Entity
+
+@Entity
 
 public abstract class AbstractMeasuredProductInstance extends AbstractProductInstance implements MeasuredProductInstance {
 

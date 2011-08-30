@@ -2,6 +2,8 @@ package org.salespointframework.core.product.later;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.AbstractProductType;
@@ -15,8 +17,9 @@ import org.salespointframework.util.Objects;
  * 
  */
 
-//TODO
-//@Entity
+
+@Entity
+
 public abstract class AbstractServiceType extends AbstractProductType implements ServiceType{
 
 	

@@ -2,6 +2,8 @@ package org.salespointframework.core.product.later;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+
 import org.joda.time.DateTime;
 import org.salespointframework.core.product.AbstractProductInstance;
 import org.salespointframework.core.shop.Shop;
@@ -14,14 +16,13 @@ import org.salespointframework.util.Objects;
  * 
  */
 
-//TODO
-//@Entity
+
+@Entity
 
 public abstract class AbstractServiceInstance extends AbstractProductInstance implements ServiceInstance {
 	
 	private ServiceType serviceType;
 	
-	//TODO DateTime -> Date
 	private Date scheduledStart;
 	private Date scheduledEnd;
 	private ServiceDeliveryStatus serviceDeliveryStatus;
