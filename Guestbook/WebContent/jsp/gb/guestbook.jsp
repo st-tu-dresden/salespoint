@@ -20,15 +20,7 @@
 	<!-- http://download.oracle.com/javaee/5/jstl/1.1/docs/tlddocs/overview-summary.html -->
 	<div class="entries">
 		<c:forEach var="e" items="${guestbookEntries}" varStatus="status">
-			<c:choose>
-				<c:when test="${status.index % 2 == 0}">
-					<c:set var="style" value="entry" />
-				</c:when>
-				<c:otherwise>
-					<c:set var="style" value="entry" />
-				</c:otherwise>
-			</c:choose>
-			<div class="${style}">
+			<div class="entry">
 				<c:url value="removeEntry" var="url">
 					<c:param name="id" value="${e.id}" />
 				</c:url>
