@@ -38,6 +38,7 @@ public class OrderLine {
 	@ElementCollection
 	private Set<SerialNumber> serialNumbers = new HashSet<SerialNumber>();
 
+	//TODO reinitialize
 	@Transient
 	private Inventory<?> inventory;
 
