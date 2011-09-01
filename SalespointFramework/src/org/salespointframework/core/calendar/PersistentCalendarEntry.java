@@ -48,8 +48,8 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      * @see EntityManager
      */
     @Transient
-    private EntityManager           em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
-
+    private EntityManager           em;
+    
     /**
      * Description of this calendar entry. May be empty.
      */
@@ -119,6 +119,8 @@ public final class PersistentCalendarEntry implements CalendarEntry {
         Objects.requireNonNull(title, "title");
         Objects.requireNonNull(start, "start");
         Objects.requireNonNull(end, "end");
+
+        em  = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
 
         this.calendarEntryIdentifier = new CalendarEntryIdentifier();
 
