@@ -3,6 +3,7 @@ package org.salespointframework.core.product.later;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -22,7 +23,8 @@ import org.salespointframework.util.Objects;
 @Entity
 
 public abstract class AbstractServiceInstance extends AbstractProductInstance implements ServiceInstance {
-	
+	//has embeddedid
+	@JoinColumn(name="SERVICETYPE_ID", referencedColumnName="ID")
 	private ServiceType serviceType;
 	
 	@Temporal(TemporalType.TIMESTAMP)
