@@ -1,7 +1,0 @@
-<root>
-  <facet id="jpt.jpa">
-    <node name="libprov">
-      <attribute name="provider-id" value="jpa-user-library-provider"/>
-    </node>
-  </facet>
-</root>
