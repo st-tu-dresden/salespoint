@@ -85,13 +85,13 @@ public class OrderEntry {
 				"termsAndConditions");
 		this.userIdentifier = Objects.requireNonNull(userIdentifier,
 				"userIdentifier");
-		status = OrderStatus.INITIALIZED;
+		status = OrderStatus.OPEN;
 		this.log.add(new OrderLogEntry("OrderEntry initialized succesfully", ""));
 	}
 
 
 	/**
-	 * Completes this OrderEntry. This means removing the serielnumbers of this OrderEntry
+	 * Completes this OrderEntry. This means removing the serialnumbers of this OrderEntry
 	 * from inventory, make a payment entry in the accountancy of the shop and set the OrderStatus to CLOSED.
 	 * 
 	 */
@@ -640,12 +640,18 @@ public class OrderEntry {
 	/**
 	 * Change the <code>OrderStatus</code> from this
 	 * <code>OrderEntry</code>. Standard log entry is created.
+	 * Closed OrderEntrys are final and can no longer change their state.
 	 * 
 	 * @param status The OrderStatus to which the <code>OrderEntry</code> shall be changed.
 	 */
+	//TODO Exception handling for closed OrderEntry
 	public void changeOrderStatus(OrderStatus orderStatus) {
 		
 		Objects.requireNonNull(orderStatus, "orderStatus");
+		
+		if(this.status.equals(OrderStatus.CLOSED))
+			return;
+		
 		this.status = orderStatus;
 		this.log.add(new OrderLogEntry("OrderStatus switched to "+orderStatus.toString(), ""));
 		
@@ -675,14 +681,6 @@ public class OrderEntry {
         	  }
         	  break;
         	  
-          case INITIALIZED:
-        	  
-        	  for(OrderLine ol : this.orderlines.values()) {
-        		  ol.mutableChargeLines = true;
-        		  ol.mutableOrderLine = true;
-        	  }
-        	  break;
-        	  
           case PROCESSING:
         	  
         	  for(OrderLine ol : this.orderlines.values()) {
@@ -696,12 +694,18 @@ public class OrderEntry {
 	/**
 	 * Change the <code>OrderStatus</code> from this
 	 * <code>OrderEntry</code>. A log entry with the given description is created.
+	 * Closed OrderEntrys are final and can no longer change their state.
 	 * 
 	 * @param status The OrderStatus to which the <code>OrderEntry</code> shall be changed.
 	 */
+	//TODO Exception handling for closed OrderEntry
 	public void changeOrderStatus(OrderStatus orderStatus, String logDescription) {
 		
 		Objects.requireNonNull(orderStatus, "orderStatus");
+		
+		if(this.status.equals(OrderStatus.CLOSED))
+			return;
+		
 		this.status = orderStatus;
 		this.log.add(new OrderLogEntry("OrderStatus switched to "+orderStatus.toString(), logDescription));
 		
@@ -724,14 +728,6 @@ public class OrderEntry {
         	  break;
         	  
           case OPEN:
-        	  
-        	  for(OrderLine ol : this.orderlines.values()) {
-        		  ol.mutableChargeLines = true;
-        		  ol.mutableOrderLine = true;
-        	  }
-        	  break;
-        	  
-          case INITIALIZED:
         	  
         	  for(OrderLine ol : this.orderlines.values()) {
         		  ol.mutableChargeLines = true;

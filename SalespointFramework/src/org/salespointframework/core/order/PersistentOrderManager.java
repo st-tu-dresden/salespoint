@@ -199,8 +199,7 @@ public class PersistentOrderManager implements OrderManager {
 		
 		for(OrderEntry oe : resultList) {
 			if(oe.getOrderStatus() == OrderStatus.PROCESSING ||
-					oe.getOrderStatus() == OrderStatus.OPEN ||
-					oe.getOrderStatus() == OrderStatus.INITIALIZED) {
+					oe.getOrderStatus() == OrderStatus.OPEN) {
 				return true;
 			}		
 		}

@@ -105,13 +105,13 @@ public interface OrderManager {
 	 void update(OrderEntry orderEntry);
 	 
 	/**
-	 * Checks whether the specified user has initialized, open or processing
+	 * Checks whether the specified user has open or processing
 	 * orders. For example this information have to be checked before removing
 	 * an user from the system.
 	 * 
 	 * @param userIdentifier
 	 *            Denoting the UserIdentifier on which shall be checked.
-	 * @return True, if the user has initialized, open or processing orders.
+	 * @return True, if the user has open or processing orders.
 	 */
 	 boolean hasOpenOrders(UserIdentifier userIdentifier);
 	 
