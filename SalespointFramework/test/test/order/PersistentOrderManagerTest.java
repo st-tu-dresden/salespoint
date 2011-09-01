@@ -92,7 +92,7 @@ public class PersistentOrderManagerTest {
     		oe.addChargeLine(cl1);
     		oe.addChargeLine(cl2);
     		
-    		pom.update(oe);
+    		pom.updateOrder(oe);
     		assertTrue(pom.containsOrderEntry(oe));
 
     		final List<ChargeLine> clList = em.createQuery("SELECT c FROM ChargeLine c",
@@ -118,7 +118,7 @@ public class PersistentOrderManagerTest {
     		ol.addSerialNumber(ki2.getSerialNumber());
  
     		oe.addOrderLine(ol);
-    		pom.update(oe);
+    		pom.updateOrder(oe);
     		assertTrue(pom.containsOrderEntry(oe));
     		
     		final List<OrderLine> olList = em.createQuery("SELECT o FROM OrderLine o",
@@ -133,7 +133,7 @@ public class PersistentOrderManagerTest {
     		inv.removeProductInstance(ki1.getSerialNumber());
     		inv.removeProductInstance(ki2.getSerialNumber());
     		
-    		pom.remove(oe.getOrderIdentifier());
+    		pom.removeOrder(oe.getOrderIdentifier());
     		assertFalse(pom.containsOrderEntry(oe));
     		
             em.getTransaction().commit();
@@ -162,7 +162,7 @@ public class PersistentOrderManagerTest {
             
             oe2.changeOrderStatus(OrderStatus.CANCELLED);
             
-            pom.update(oe2);
+            pom.updateOrder(oe2);
     		
     		assertTrue(pom.findOrder(oe1.getOrderIdentifier()).equals(oe1));
     		assertTrue(pom.findOrder(oe2.getOrderIdentifier()).equals(oe2));
@@ -186,7 +186,7 @@ public class PersistentOrderManagerTest {
     		assertTrue(entryList2.contains(oe2));
     		assertTrue(entryList2.size() == 2);
     		
-    		pom.remove(oe2.getOrderIdentifier());
+    		pom.removeOrder(oe2.getOrderIdentifier());
     		oe2 = new OrderEntry(ui, "telephone", "testCondition2");
     		pom.addOrder(oe2);
     		
@@ -199,8 +199,8 @@ public class PersistentOrderManagerTest {
     		assertTrue(entryList3.contains(oe2));
     		assertTrue(entryList3.size() == 1);
     		
-    		pom.remove(oe1.getOrderIdentifier());
-    		pom.remove(oe2.getOrderIdentifier());
+    		pom.removeOrder(oe1.getOrderIdentifier());
+    		pom.removeOrder(oe2.getOrderIdentifier());
 
        } catch (Exception ex) {
             ex.printStackTrace();

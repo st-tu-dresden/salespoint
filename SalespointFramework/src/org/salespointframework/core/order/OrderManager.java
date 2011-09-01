@@ -94,7 +94,7 @@ public interface OrderManager {
 	 * 
 	 * @param orderIdentifier The Identifier of the <code>OrderEntry</code> which shall be removed.
 	 */
-	OrderEntry remove(OrderIdentifier orderIdentifier);
+	OrderEntry removeOrder(OrderIdentifier orderIdentifier);
 
 	// TODO nötig??
 	/**
@@ -102,7 +102,7 @@ public interface OrderManager {
 	 * 
 	 * @param orderEntry The <code>OrderEntry</code> which shall be updated.
 	 */
-	 void update(OrderEntry orderEntry);
+	 void updateOrder(OrderEntry orderEntry);
 	 
 	/**
 	 * Checks whether the specified user has open or processing
