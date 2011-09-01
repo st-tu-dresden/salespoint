@@ -1,0 +1,147 @@
+/* sinvoll da damit 1em == 10px */
+
+* {
+	padding:0;
+	margin:0;
+	font-size:1em;
+	font-weight:normal;
+}
+
+body {
+	font-size:62,5%;
+	color:#444;
+}
+
+/* sinvoll da damit 1em == 10px */
+
+h1 {
+	font-size: 2em;
+	color:grey;
+	text-align:center;
+	font-variant: small-caps;
+}
+
+h2 {
+	font-size: 1em;
+	color: #BA0000;
+}
+
+div.entries {
+	margin: auto;
+	width: 50%;
+}
+
+
+div.entry {
+	padding: 1em;
+	border-top: 1px solid grey;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+div.entry:nth-child(odd) {
+	background-color: #f0f0f0;
+}
+
+div.entry:nth-child(even) {
+	background-color: #dadada;
+}
+
+div p.entrytext {
+	font-size: 1em;
+	margin-left: 1em;	
+}
+
+div p.date {
+	font-size: 0.8em;
+	margin-top:0.5em;
+}
+
+fieldset {
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;	
+	padding: 1em 1em 1em 1em;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+fieldset legend{
+	color: black;
+}
+
+fieldset label{
+	color: black;
+}
+
+fieldset input{
+	margin: 0.2em 0em 0.4em 0em;
+}
+
+fieldset textarea{
+	margin: 0.2em 0em 0.4em 0em;
+  	width: 100%;
+  	height: 50px;
+}
+
+a {
+	font: 0.8em sans-serif;
+	text-decoration: none;
+	color: black;
+	font-variant: small-caps;
+}
+
+a:hover {
+	font: 1em sans-serif;
+	text-decoration: none;
+	color: #BA0000;
+}
+
+h3 a:hover {
+	font: 0.9em sans-serif;
+	text-decoration: underline;
+	color: white;
+}
+
+a.active {
+	font: 1.0em sans-serif;
+	font-weight: 600;
+}
+
+button {
+	margin-top:10px;
+  	border-top: 1px solid gray;
+  	border-bottom: 1px solid black;
+  	border-right: 1px solid black;
+  	border-left: 1px solid gray;
+  	background-color: #dedede;
+  	padding: 2px;
+  	color: black;
+}
+
+button.delBtn {
+	margin: -0.5em;
+	padding:0;
+	float:right;
+	color: red;	
+	border: 0px;
+}
+button.delBtn span {
+	color:red;
+	display:block;
+	margin-top:-3px;
+}
+
+.center {
+    text-align:center;
+    margin-top:0px;
+    margin-bottom:0px;
+    padding:0px;
+}
+
+img.center {   
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
