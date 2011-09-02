@@ -39,7 +39,7 @@ Of course, a rouding step can be smaller than $1$, i.e. $0.25$.
 
 Two convenience rounding strategies exist so far: \code{RoudingStrategy.MONETARY} rouding with four digits after the decimal delimiter and rouding towards zero, and \code{RoudingStrategy.ROUND\_ONE} with zero digits after the decimal delimiter and also rouding towards zero.
 
-\section{\code{Money} - A usecase for \code{Quantity}}
+\subsection{\code{Money} - A usecase for \code{Quantity}}
 Objects of class \code{Money} are used to represent amounts of currency within Salespoint.
 The following paragraphs detail the intended use, internal modelling and implementation of \code{Money}.
 
@@ -56,7 +56,7 @@ The \code{toString()} method, however, limits the output to the expected two dig
 
 Two convenience instances exist: \code{Money.ZERO}, representing \euro{0,00}, and \code{Money.OVER9000}, representing an amount greater than \euro{9000,00}.
 
-\section{\code{Unit} - Representing persons or other integral items}
+\subsection{\code{Unit} - Representing persons or other integral items}
 To represent integral items conveniently, the objects of class \code{Unit} can be used.
 The rouding strategy is fixed for all instances to \code{RoundingStrategy.ROUND\_ONE} and \code{Metric.PIECES} is used as metric.
 Convenience instances for amounts of zero, one and ten unit(s) exist (\code{Unit.ZERO}, \code{Unit.ONE}, and \code{Unit.TEN}).
