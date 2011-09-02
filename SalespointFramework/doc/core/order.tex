@@ -22,4 +22,4 @@ Therefore we created the \code{OrderEntry} as main data structure to access thes
 	\caption{Order - Lifecycle}
 \end{figure}  
 
-As you can see an OrderEntry can only completely modified in state \code{OPEN}. \code{CANCELLED} and \code{CLOSED} \code{OrderEntrys} are immutable! An \code{PROCESSING} \code{OrderEntry} is basically also immutable but their is still the possibility to modify the \code{ChargeLines} of that \code{OrderEntry}. 
+As you can see an OrderEntry can only completely modified in state \code{OPEN}. \code{CANCELLED} and \code{CLOSED} \code{OrderEntrys} are immutable! \code{PROCESSING} \code{OrderEntrys} are basically also immutable but their is still the possibility to modify the \code{ChargeLines} of that \code{OrderEntrys}. 
