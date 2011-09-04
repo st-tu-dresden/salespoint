@@ -207,5 +207,69 @@ public class PersistentOrderManagerTest {
             fail("Exception during testOrderManagerFind");
        }
 	}
+	
+	@Test
+	public void testMultipleOrderManager() {
+		
+       try {
+        	
+        	PersistentOrderManager pom1 = new PersistentOrderManager(em);
+        	PersistentOrderManager pom2 = new PersistentOrderManager();
+            
+            UserIdentifier ui = new UserIdentifier();
+            
+            OrderEntry oe1 = new OrderEntry(ui, "internet", "testCondition1");
+            OrderEntry oe2 = new OrderEntry(ui, "telephone", "testCondition2");
+            
+            pom1.addOrder(oe1);
+            pom1.addOrder(oe2);
+            
+            oe2.changeOrderStatus(OrderStatus.CANCELLED);
+            
+            pom1.updateOrder(oe2);
+    		
+    		assertTrue(pom2.findOrder(oe1.getOrderIdentifier()).equals(oe1));
+    		assertTrue(pom2.findOrder(oe2.getOrderIdentifier()).equals(oe2));
+    		
+    		List<OrderEntry> entryList1 = new ArrayList<OrderEntry>();
+    		
+    		for(OrderEntry test : pom2.findOrders(OrderStatus.CANCELLED)) {
+    			entryList1.add(test);
+    		}
+    		
+    		assertTrue(entryList1.contains(oe2));
+    		assertTrue(entryList1.size() == 1);
+    		
+    		List<OrderEntry> entryList2 = new ArrayList<OrderEntry>();
+    		
+    		for(OrderEntry test : pom2.findOrders(ui)) {
+    			entryList2.add(test);
+    		}
+    		
+    		assertTrue(entryList2.contains(oe1));
+    		assertTrue(entryList2.contains(oe2));
+    		assertTrue(entryList2.size() == 2);
+    		
+    		pom1.removeOrder(oe2.getOrderIdentifier());
+    		oe2 = new OrderEntry(ui, "telephone", "testCondition2");
+    		pom1.addOrder(oe2);
+    		
+    		List<OrderEntry> entryList3 = new ArrayList<OrderEntry>();
+    		
+    		for(OrderEntry test : pom2.findOrders(ui, oe2.getDateCreated(), oe2.getDateCreated())) {
+    			entryList3.add(test);
+    		}
+    		
+    		assertTrue(entryList3.contains(oe2));
+    		assertTrue(entryList3.size() == 1);
+    		
+    		pom1.removeOrder(oe1.getOrderIdentifier());
+    		pom1.removeOrder(oe2.getOrderIdentifier());
+
+       } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Exception during testOrderManagerFind");
+       }
+	}
 
 }
