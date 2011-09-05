@@ -25,7 +25,6 @@ public class ProductPaymentEntry extends AbstractAccountancyEntry {
 	@Embedded
 	@AttributeOverride(name = "id", column = @Column(name = "USER_ID"))
 	private UserIdentifier userIdentifier;
-	private Money amount;
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
@@ -49,13 +48,11 @@ public class ProductPaymentEntry extends AbstractAccountancyEntry {
 	 *            the <code>Money</code> that was payed.
 	 */
 	public ProductPaymentEntry(OrderIdentifier orderIdentifier, UserIdentifier userIdentifier, Money amount) {
-		super();
+		super(amount);
 		this.orderIdentifier = Objects.requireNonNull(orderIdentifier,
 				"orderIdentifier");
 		this.userIdentifier = Objects.requireNonNull(userIdentifier,
 				"userIdentifier");
-		this.amount = Objects.requireNonNull(amount,
-				"amount");
 	}
 
 	/**
@@ -64,7 +61,7 @@ public class ProductPaymentEntry extends AbstractAccountancyEntry {
 	 * @return the amount of this Payment
 	 */
 	public Money getAmount() {
-		return amount;
+		return getValue();
 	}
 
 	/**

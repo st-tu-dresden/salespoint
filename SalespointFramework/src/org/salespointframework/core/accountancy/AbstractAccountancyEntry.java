@@ -5,7 +5,9 @@ import java.util.Date;
 import javax.persistence.*;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.money.Money;
 import org.salespointframework.core.shop.Shop;
+import org.salespointframework.util.Objects;
 
 /**
  * This class represents an accountancy entries. The
@@ -24,6 +26,8 @@ public abstract class AbstractAccountancyEntry {
 	@SuppressWarnings("unused")
 	private long identifier;
 
+	private Money amount;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timeStamp;
 	
@@ -31,11 +35,26 @@ public abstract class AbstractAccountancyEntry {
 	 * Protected, parameterless Constructor required by the persistence layer.
 	 * Do not use it.
 	 */
-	public AbstractAccountancyEntry() {
+	protected AbstractAccountancyEntry() {
 		timeStamp = Shop.INSTANCE.getTime().getDateTime().toDate();
+		this.amount = Money.ZERO;
 	};
+	
+	public AbstractAccountancyEntry(Money amount) {
+		this();
+		this.amount = Objects.requireNonNull(amount, "amount");
+	}
+	
+	public AbstractAccountancyEntry(Money amount, DateTime timeStamp) {
+		this.amount = Objects.requireNonNull(amount, "amount");
+		this.timeStamp = Objects.requireNonNull(timeStamp, "timeStamp").toDate();
+	}
 	
 	public DateTime getTimeStamp() {
 		return new DateTime(timeStamp);
+	}
+	
+	public Money getValue() {
+		return amount;
 	}
 }
