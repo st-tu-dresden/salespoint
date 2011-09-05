@@ -1,5 +1,6 @@
 package org.salespointframework.core.order;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -10,9 +11,10 @@ import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Column;
+import javax.persistence.EntityManager;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
+import org.salespointframework.core.database.Database;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.SerialNumber;
@@ -39,8 +41,11 @@ public class OrderLine {
 	private Set<SerialNumber> serialNumbers = new HashSet<SerialNumber>();
 
 	//TODO reinitialize
-	@Transient
-	private Inventory<?> inventory;
+/*	@Transient
+	private Inventory<?> inventory;*/
+	
+	//for recovering the transient inventory
+	private String inventoryKey;
 
 	private String description;
 	private String comment;
@@ -55,11 +60,13 @@ public class OrderLine {
 
 	@Deprecated
 	protected OrderLine() {
+		
+
 	}
 
 	public OrderLine(Inventory<?> inventory, SerialNumber serialNumber) {
-		// check Inventar,
-		this.inventory = Objects.requireNonNull(inventory, "inventory");
+
+		this.inventoryKey = inventory.getClass().getCanonicalName();
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		
 		if(inventory.contains(serialNumber)) {
@@ -79,8 +86,8 @@ public class OrderLine {
 	}
 
 	public OrderLine(Inventory<?> inventory, Iterable<SerialNumber> serialNumbers) {
-		// check Inventar
-		this.inventory = Objects.requireNonNull(inventory, "inventory");
+
+		this.inventoryKey = inventory.getClass().getCanonicalName();
 		Objects.requireNonNull(serialNumbers, "serialNumber");
 		if (Iterables.isEmpty(serialNumbers)) {
 			// TODO bessere Exception
@@ -108,8 +115,7 @@ public class OrderLine {
 	public OrderLine(Inventory<?> inventory, SerialNumber serialNumber,
 			String description, String comment) {
 
-		// check Inventar,
-		this.inventory = Objects.requireNonNull(inventory, "inventory");
+		this.inventoryKey = inventory.getClass().getCanonicalName();
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		
 		if(inventory.contains(serialNumber)) {
@@ -131,8 +137,7 @@ public class OrderLine {
 	public OrderLine(Inventory<?> inventory, Iterable<SerialNumber> serialNumbers, 
 			String description, String comment) {
 
-		// check Inventar
-		this.inventory = Objects.requireNonNull(inventory, "inventory");
+		this.inventoryKey = inventory.getClass().getCanonicalName();
 		Objects.requireNonNull(serialNumbers, "serialNumber");
 		if (Iterables.isEmpty(serialNumbers)) {
 			// TODO bessere Exception
@@ -209,21 +214,26 @@ public class OrderLine {
 	 */
 	public Money getOrderLinePrice() {
 		
+		Inventory<?> inventory = this.getInventory();
+		
 		Iterator<SerialNumber> itSN = this.serialNumbers.iterator();
 		Money price = new Money(0);
-		
-		if(itSN.hasNext()) {
-			price = this.inventory.getProductInstance(itSN.next()).getPrice();
-			
-			while(itSN.hasNext()) {
-				price = price.add_(this.inventory.getProductInstance(itSN.next()).getPrice());
+
+		if (itSN.hasNext()) {
+			price = inventory.getProductInstance(itSN.next()).getPrice();
+
+			while (itSN.hasNext()) {
+				price = price.add_(inventory.getProductInstance(itSN.next())
+						.getPrice());
 			}
-			
+
 			for (ChargeLine cl : this.chargeLines) {
 				price = price.add_(cl.getAmount());
 			}
 		}
+
 		return price;
+			
 	}
 
 	/**
@@ -245,10 +255,12 @@ public class OrderLine {
 	 */
 	public boolean addSerialNumber(SerialNumber serialNumber) {
 
+		Inventory<?> inventory = this.getInventory();
+		
 		if (!this.mutableOrderLine)
 			return false;
 		Objects.requireNonNull(serialNumber, "serialNumber");
-		if(!inventory.contains(serialNumber)) 
+		if (!inventory.contains(serialNumber))
 			return false;
 		return this.serialNumbers.add(serialNumber);
 	}
@@ -264,16 +276,19 @@ public class OrderLine {
 	 * @return true if this OrderLine changed as a result of the call.
 	 */
 	public boolean addAllSerialNumbers(Iterable<SerialNumber> serialNumbers) {
-
+	 	
+		Inventory<?> inventory = this.getInventory();
+		
 		if (!this.mutableOrderLine)
 			return false;
 		Objects.requireNonNull(serialNumbers, "serialNumbers");
-		
+			
 		for(SerialNumber sn : serialNumbers) {
 			if(!inventory.contains(sn)) 
 				return false;
 		}
 		return this.serialNumbers.addAll(Iterables.toList(serialNumbers));
+		
 	}
 	
 	public boolean mergeOrderLine(OrderLine orderLine) {
@@ -320,7 +335,9 @@ public class OrderLine {
 	 * @return true if this OrderLine changed as a result of the call.
 	 */
 	public boolean removeSerialNumber(SerialNumber serialNumber) {
-
+		
+		Inventory<?> inventory = this.getInventory();
+		
 		if (!this.mutableOrderLine)
 			return false;
 		Objects.requireNonNull(serialNumber, "serialNumber");
@@ -339,8 +356,10 @@ public class OrderLine {
 	 *            
 	 * @return true if this OrderLine changed as a result of the call. 
 	 */
-	public boolean removeAllSerialNumbers(Iterable<SerialNumber> serialNumbers) {
+	public boolean removeAllSerialNumbers(Iterable<SerialNumber> serialNumbers) {	
 
+		Inventory<?> inventory = this.getInventory();
+		
 		if (!this.mutableOrderLine)
 			return false;
 		Objects.requireNonNull(serialNumbers, "serialNumbers");
@@ -403,7 +422,41 @@ public class OrderLine {
 	}
 
 	public Inventory<?> getInventory() {
-		return this.inventory;
+		
+	 	try {
+	 		
+	 		//recover transient inventory
+        	EntityManager em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
+	 		
+	 		Class<?> inventoryClass = Class.forName(this.inventoryKey);
+	 		Inventory<?> inventory = (Inventory<?>) inventoryClass.getConstructor(EntityManager.class).newInstance(em);
+	 		
+	 		return inventory;
+			
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	public Iterable<SerialNumber> getSerialNumbers() {

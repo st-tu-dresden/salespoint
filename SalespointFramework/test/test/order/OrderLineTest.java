@@ -67,7 +67,7 @@ public class OrderLineTest {
 	@Test
 	public void testPersistOrderLine() {
 		
-        try {
+        //try {
 
             em.getTransaction().begin();
             
@@ -112,11 +112,11 @@ public class OrderLineTest {
     		
             em.getTransaction().commit();
 
-        } catch (Exception ex) {
+/*        } catch (Exception ex) {
             em.getTransaction().rollback();
             ex.printStackTrace();
             fail("Exception during testPersistOrderLine");
-        }
+        }*/
 	}
 	
 	
@@ -191,8 +191,10 @@ public class OrderLineTest {
 	public void testCalculateAmounts() {
 		
 		
-        try {
+        //try {
             
+        	em.getTransaction().begin();
+        	
             //setup
     		KeksInventory inv = new KeksInventory(em);
     		
@@ -218,12 +220,14 @@ public class OrderLineTest {
 
     		inv.removeProductInstance(ki1.getSerialNumber());
     		inv.removeProductInstance(ki2.getSerialNumber());
+    		
+    		em.getTransaction().commit();
 
-        } catch (Exception ex) {
+/*        } catch (Exception ex) {
             em.getTransaction().rollback();
             ex.printStackTrace();
             fail("Exception during testCalculateAmounts");
-        }
+        }*/
 	}
 
 }
