@@ -10,8 +10,8 @@ import javax.persistence.criteria.Root;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.database.Database;
+import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
-import org.salespointframework.util.SalespointIterable;
 
 /**
  * This class represents an accountancy. An accountancy consists of
@@ -79,7 +79,7 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 		q.where(p);
 		TypedQuery<AbstractAccountancyEntry> tq = em.createQuery(q);
 
-		return SalespointIterable.from(tq.getResultList());
+		return Iterables.from(tq.getResultList());
 	}
 
 	/* (non-Javadoc)
@@ -96,7 +96,7 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 		q.where(r.type().in(clazz));
 		TypedQuery<T> tq = em.createQuery(q);
 
-		return SalespointIterable.from(tq.getResultList());
+		return Iterables.from(tq.getResultList());
 	}
 
 	/* (non-Javadoc)
@@ -121,7 +121,7 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 		q.where(cb.and(p, p1));
 		TypedQuery<T> tq = em.createQuery(q);
 
-		return SalespointIterable.from(tq.getResultList());
+		return Iterables.from(tq.getResultList());
 	}
 
 }
