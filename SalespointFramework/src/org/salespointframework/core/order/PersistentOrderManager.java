@@ -271,10 +271,14 @@ public class PersistentOrderManager implements OrderManager {
 	public boolean containsOrderEntry(OrderEntry orderEntry) {
 		
 		Objects.requireNonNull(orderEntry, "orderEntry");
+		boolean ret;
 		
 		em.getTransaction().begin();
-		em.find(OrderEntry.class, orderEntry.getOrderIdentifier());
-		boolean ret = em.contains(orderEntry);
+		if(em.find(OrderEntry.class, orderEntry.getOrderIdentifier())!=null)
+			ret = true;
+		else {
+			ret = false;
+		}
 		em.getTransaction().commit();
 		
 		return ret;

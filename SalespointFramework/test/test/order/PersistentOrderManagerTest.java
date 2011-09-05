@@ -186,19 +186,6 @@ public class PersistentOrderManagerTest {
     		assertTrue(entryList2.contains(oe2));
     		assertTrue(entryList2.size() == 2);
     		
-    		pom.removeOrder(oe2.getOrderIdentifier());
-    		oe2 = new OrderEntry(ui, "telephone", "testCondition2");
-    		pom.addOrder(oe2);
-    		
-    		List<OrderEntry> entryList3 = new ArrayList<OrderEntry>();
-    		
-    		for(OrderEntry test : pom.findOrders(ui, oe2.getDateCreated(), oe2.getDateCreated())) {
-    			entryList3.add(test);
-    		}
-    		
-    		assertTrue(entryList3.contains(oe2));
-    		assertTrue(entryList3.size() == 1);
-    		
     		pom.removeOrder(oe1.getOrderIdentifier());
     		pom.removeOrder(oe2.getOrderIdentifier());
 
@@ -230,6 +217,8 @@ public class PersistentOrderManagerTest {
     		
     		assertTrue(pom2.findOrder(oe1.getOrderIdentifier()).equals(oe1));
     		assertTrue(pom2.findOrder(oe2.getOrderIdentifier()).equals(oe2));
+    		assertTrue(pom2.containsOrderEntry(oe1));
+    		assertTrue(pom2.containsOrderEntry(oe2));
     		
     		List<OrderEntry> entryList1 = new ArrayList<OrderEntry>();
     		
@@ -249,19 +238,6 @@ public class PersistentOrderManagerTest {
     		assertTrue(entryList2.contains(oe1));
     		assertTrue(entryList2.contains(oe2));
     		assertTrue(entryList2.size() == 2);
-    		
-    		pom1.removeOrder(oe2.getOrderIdentifier());
-    		oe2 = new OrderEntry(ui, "telephone", "testCondition2");
-    		pom1.addOrder(oe2);
-    		
-    		List<OrderEntry> entryList3 = new ArrayList<OrderEntry>();
-    		
-    		for(OrderEntry test : pom2.findOrders(ui, oe2.getDateCreated(), oe2.getDateCreated())) {
-    			entryList3.add(test);
-    		}
-    		
-    		assertTrue(entryList3.contains(oe2));
-    		assertTrue(entryList3.size() == 1);
     		
     		pom1.removeOrder(oe1.getOrderIdentifier());
     		pom1.removeOrder(oe2.getOrderIdentifier());
