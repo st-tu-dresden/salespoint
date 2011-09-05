@@ -55,7 +55,7 @@ public abstract class AbstractInventory<T extends AbstractProductInstance> imple
 	public boolean contains(final SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		EntityManager em = foobar();
-		return em.contains(this.getProductInstance(serialNumber));
+		return em.find(this.getContentClass(), serialNumber) != null;
 	}
 	
 	@Override
