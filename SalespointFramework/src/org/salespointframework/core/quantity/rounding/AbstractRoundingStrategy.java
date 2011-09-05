@@ -9,10 +9,10 @@ public abstract class AbstractRoundingStrategy implements RoundingStrategy,
 
 	protected int numberOfDigits;
 	protected int roundingDigit;
-	protected int roundingStep;
+	protected BigDecimal roundingStep;
 
 	public AbstractRoundingStrategy(int numberOfDigits, int roundingDigit,
-			int roundingStep) {
+			BigDecimal roundingStep) {
 		this.numberOfDigits = numberOfDigits;
 		this.roundingDigit = roundingDigit;
 		this.roundingStep = roundingStep;

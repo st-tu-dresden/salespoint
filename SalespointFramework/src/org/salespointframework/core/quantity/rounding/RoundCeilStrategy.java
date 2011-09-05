@@ -21,7 +21,7 @@ public class RoundCeilStrategy extends AbstractRoundingStrategy implements Seria
 	 *            Number of digits after the decimal delimiter which are kept.
 	 */
 	public RoundCeilStrategy(int numberOfDigits) {
-		super(numberOfDigits, 0, 0);
+		super(numberOfDigits, 0, BigDecimal.ZERO);
 	}
 
 	@Override

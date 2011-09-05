@@ -20,7 +20,7 @@ public class RoundDownStrategy extends AbstractRoundingStrategy implements Seria
 	 *            delimiter.
 	 */
 	public RoundDownStrategy(int numberOfDigits) {
-		super(numberOfDigits, 0, 0);
+		super(numberOfDigits, 0, BigDecimal.ZERO);
 	}
 
 	@Override

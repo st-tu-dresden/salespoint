@@ -22,7 +22,7 @@ public class RoundFloorStrategy extends AbstractRoundingStrategy implements Seri
 	 *            <code>RoundingStrategy</code>.
 	 */
 	public RoundFloorStrategy(int numberOfDigits) {
-		super(numberOfDigits, 0, 0);
+		super(numberOfDigits, 0, BigDecimal.ZERO);
 	}
 
 	@Override

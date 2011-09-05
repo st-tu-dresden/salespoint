@@ -81,5 +81,29 @@ public class TestRounding {
 		d = BigDecimal.valueOf(-4.45);
 		assertEquals(BigDecimal.valueOf(-4.5), new RoundFloorStrategy(1).round(d));
 	}
+	
+	@Test
+	public void RoundUpStepPos() {
+		d = BigDecimal.valueOf(76);
+		assertTrue(BigDecimal.valueOf(100).compareTo(new RoundUpStepStrategy(BigDecimal.valueOf(50)).round(d)) == 0);
+	}
+	
+	@Test
+	public void RoundUpStepNeg() {
+		d = BigDecimal.valueOf(-1.223);
+		assertTrue(BigDecimal.valueOf(-1.225).compareTo(new RoundUpStepStrategy(BigDecimal.valueOf(0.005)).round(d)) == 0);
+	}
+
+	@Test
+	public void RoundDownStepPos() {
+		d = BigDecimal.valueOf(76);
+		assertTrue(BigDecimal.valueOf(50).compareTo(new RoundDownStepStrategy(BigDecimal.valueOf(50)).round(d)) == 0);
+	}
+	
+	@Test
+	public void RoundDownStepNeg() {
+		d = BigDecimal.valueOf(-1.223);
+		assertTrue(BigDecimal.valueOf(-1.22).compareTo(new RoundDownStepStrategy(BigDecimal.valueOf(0.005)).round(d)) == 0);
+	}
 
 }
