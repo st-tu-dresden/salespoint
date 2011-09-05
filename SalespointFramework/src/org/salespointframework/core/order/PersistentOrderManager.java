@@ -3,8 +3,11 @@ package org.salespointframework.core.order;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.database.Database;
@@ -74,16 +77,9 @@ public class PersistentOrderManager implements OrderManager {
 		Objects.requireNonNull(orderIdentifier, "orderIdentifier");
 
 		em.getTransaction().begin();
-		
-		TypedQuery<OrderEntry> q = em
-				.createQuery(
-						"SELECT DISTINCT o FROM OrderEntry o WHERE o.orderIdentifier = :orderIdentifier",
-						OrderEntry.class);
-		q.setParameter("orderIdentifier", orderIdentifier);
-		
+		OrderEntry o = em.find(OrderEntry.class, orderIdentifier);
 		em.getTransaction().commit();
-
-		return q.getSingleResult();
+		return o;
 	}
 
 	/*
@@ -100,16 +96,17 @@ public class PersistentOrderManager implements OrderManager {
 
 		em.getTransaction().begin();
 		
-		TypedQuery<OrderEntry> q = em
-				.createQuery(
-						"SELECT DISTINCT o FROM OrderEntry o WHERE o.timeStamp BETWEEN :from and :to",
-						OrderEntry.class);
-		q.setParameter("from", from.toDate(), TemporalType.TIMESTAMP);
-		q.setParameter("to", to.toDate(), TemporalType.TIMESTAMP);
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<OrderEntry> q = cb
+				.createQuery(OrderEntry.class);
+		Root<OrderEntry> r = q.from(OrderEntry.class);
+		Predicate p = cb.between(r.get(OrderEntry_.dateCreated), from.toDate(), to.toDate());
+		q.where(p);
+		TypedQuery<OrderEntry> tq = em.createQuery(q);
 		
 		em.getTransaction().commit();
 
-		return Iterables.from(q.getResultList());
+		return Iterables.from(tq.getResultList());
 	}
 
 	/*
@@ -124,14 +121,17 @@ public class PersistentOrderManager implements OrderManager {
 
 		em.getTransaction().begin();
 		
-		TypedQuery<OrderEntry> q = em.createQuery(
-				"SELECT DISTINCT o FROM OrderEntry o WHERE o.status = :status",
-				OrderEntry.class);
-		q.setParameter("status", status);
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<OrderEntry> q = cb
+				.createQuery(OrderEntry.class);
+		Root<OrderEntry> r = q.from(OrderEntry.class);
+		Predicate p = cb.equal(r.get(OrderEntry_.status), status);
+		q.where(p);
+		TypedQuery<OrderEntry> tq = em.createQuery(q);
 		
 		em.getTransaction().commit();
 
-		return Iterables.from(q.getResultList());
+		return Iterables.from(tq.getResultList());
 	}
 
 	/*
@@ -147,6 +147,7 @@ public class PersistentOrderManager implements OrderManager {
 		em.getTransaction().begin();
 		
 		OrderEntry orderEntry = em.find(OrderEntry.class, orderIdentifier);
+		//TODO: what if orderEntry == null?!
 		em.remove(orderEntry);
 		
 		em.getTransaction().commit();
@@ -168,6 +169,7 @@ public class PersistentOrderManager implements OrderManager {
 		OrderEntry oe = em.find(OrderEntry.class,
 				orderEntry.getOrderIdentifier());
 
+		/* TODO: srsly? silently failing?! */
 		if (oe != null) {
 			em.merge(orderEntry);
 		}
@@ -181,30 +183,41 @@ public class PersistentOrderManager implements OrderManager {
 	 * @see
 	 * org.salespointframework.core.order.IOrderManager#hasOpenOrders(org.salespointframework.core.users.UserIdentifier)
 	 */
+	/* TODO: add extensive testing for all circumstances:
+	 * 1) ui has no order(s) at all
+	 * 2) ui has order(s), but only (a) closed one(s)
+	 * 3) ui has open order(s) but not proccesing ones
+	 * 4) ui has processing order(s), but not open one(s)
+	 * 5) ui has open and processing order(s)
+	 * 6) 3, 4, and 5 with order(s) in non Open/processing states
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.order.OrderManager#hasOpenOrders(org.salespointframework.core.users.UserIdentifier)
+	 */
 	@Override
 	public boolean hasOpenOrders(UserIdentifier userIdentifier) {
 		
 		Objects.requireNonNull(userIdentifier, "userIdentifier");
-
-		em.getTransaction().begin();
+		// this should not be necessary
+		//em.getTransaction().begin();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<OrderEntry> q = cb
+				.createQuery(OrderEntry.class);
+		Root<OrderEntry> r = q.from(OrderEntry.class);
+		Predicate p_ui = cb.equal(r.get(OrderEntry_.userIdentifier), userIdentifier);
+		Predicate p_statusProc = cb.equal(r.get(OrderEntry_.status), OrderStatus.PROCESSING);
+		Predicate p_statusOpen = cb.equal(r.get(OrderEntry_.status), OrderStatus.OPEN);
+		/* status = (PROCESSING | OPEN) */
+		Predicate status_or = cb.or(p_statusProc, p_statusOpen);
+		/* ui & (PROCESSING | OPEN) */
+		Predicate status_and_ui = cb.and(p_ui, status_or);
+		q.where(status_and_ui);
+		TypedQuery<OrderEntry> tq = em.createQuery(q);
 		
-		TypedQuery<OrderEntry> q = em
-				.createQuery(
-						"SELECT DISTINCT o FROM OrderEntry o WHERE o.userIdentifier = :userIdentifier",
-						OrderEntry.class);
-		q.setParameter("userIdentifier", userIdentifier);
-		List<OrderEntry> resultList = q.getResultList();
+		List<OrderEntry> oeList = tq.getResultList();
 		
-		em.getTransaction().commit();
+		//em.getTransaction().commit();
 		
-		for(OrderEntry oe : resultList) {
-			if(oe.getOrderStatus() == OrderStatus.PROCESSING ||
-					oe.getOrderStatus() == OrderStatus.OPEN) {
-				return true;
-			}		
-		}
-		
-		return false;
+		return !oeList.isEmpty();
 	}
 
 	/*
@@ -218,17 +231,18 @@ public class PersistentOrderManager implements OrderManager {
 		
 		Objects.requireNonNull(userIdentifier, "userIdentifier");
 
-		em.getTransaction().begin();
+		//em.getTransaction().begin();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<OrderEntry> q = cb
+				.createQuery(OrderEntry.class);
+		Root<OrderEntry> r = q.from(OrderEntry.class);
+		Predicate p = cb.equal(r.get(OrderEntry_.userIdentifier), userIdentifier);
+		q.where(p);
+		TypedQuery<OrderEntry> tq = em.createQuery(q);
+
+		//em.getTransaction().commit();
 		
-		TypedQuery<OrderEntry> q = em
-				.createQuery(
-						"SELECT DISTINCT o FROM OrderEntry o WHERE o.userIdentifier = :userIdentifier",
-						OrderEntry.class);
-		q.setParameter("userIdentifier", userIdentifier);
-		
-		em.getTransaction().commit();
-		
-		return Iterables.from(q.getResultList());
+		return Iterables.from(tq.getResultList());
 	}
 
 	/*
@@ -246,19 +260,18 @@ public class PersistentOrderManager implements OrderManager {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
 
-		em.getTransaction().begin();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<OrderEntry> q = cb
+				.createQuery(OrderEntry.class);
+		Root<OrderEntry> r = q.from(OrderEntry.class);
+		Predicate p_ui = cb.equal(r.get(OrderEntry_.userIdentifier), userIdentifier);
+		Predicate date = cb.between(r.get(OrderEntry_.dateCreated), from.toDate(), to.toDate());
+		Predicate conjunction = cb.and(p_ui, date);
+		q.where(conjunction);
+		TypedQuery<OrderEntry> tq = em.createQuery(q);
+
 		
-		TypedQuery<OrderEntry> q = em
-				.createQuery(
-						"SELECT DISTINCT o FROM OrderEntry o WHERE o.userIdentifier = :userIdentifier and o.timeStamp BETWEEN :from and :to",
-						OrderEntry.class);
-		q.setParameter("userIdentifier", userIdentifier);
-		q.setParameter("from", from.toDate(), TemporalType.TIMESTAMP);
-		q.setParameter("to", to.toDate(), TemporalType.TIMESTAMP);
-		
-		em.getTransaction().commit();
-		
-		return Iterables.from(q.getResultList());
+		return Iterables.from(tq.getResultList());
 	}
 
 	/*
