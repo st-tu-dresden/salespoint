@@ -49,7 +49,7 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      */
     @Transient
     private EntityManager           em;
-    
+
     /**
      * Description of this calendar entry. May be empty.
      */
@@ -83,7 +83,10 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     /**
      * Represents the time in millis between two repetitions of this entry. For
      * determining how often an entry should be repeated, see
-     * {@link PersistentCalendarEntry#repeatCount}
+     * {@link PersistentCalendarEntry#repeatCount} The time defined here is the
+     * time between two starts of this entry and not between the end of one
+     * appointment and the start of the next repetition. So this timespan also
+     * has to be smaller than the duration of this appointment.
      */
     protected long                  repeatStep;
 
@@ -120,7 +123,7 @@ public final class PersistentCalendarEntry implements CalendarEntry {
         Objects.requireNonNull(start, "start");
         Objects.requireNonNull(end, "end");
 
-        em  = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
+        em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
 
         this.calendarEntryIdentifier = new CalendarEntryIdentifier();
 
@@ -147,7 +150,49 @@ public final class PersistentCalendarEntry implements CalendarEntry {
             return this.equals((CalendarEntry) object);
         return false;
     }
+    
+    /**
+     * Sets a new timespan in milli seconds that should be between two starts of this entry.
+     * The timespan has to be smaller than the duration of this appointment.
+     * 
+     * @param millis The time that should be between two starts of this appointment.
+     */
+    public void setRepeatStep(long millis) {
+        if (millis <= (new DateTime(endTime).getMillis() - new DateTime(startTime).getMillis()))
+            throw new IllegalArgumentException("The timespan between two repetitions of a appointment has to be longer than it's duration.");
+        this.repeatStep = millis;
+    }
 
+    /**
+     * Returns the timespan that was defined to be between two starts of this appointment.
+     * 
+     * @return the time between two repetitions of this appointment in milli seconds.
+     */
+    public long getRepeatStep() {
+        return repeatStep;
+    }
+    
+    /**
+     * Sets the number how often this appointment should be repeated.
+     * 
+     * @param count Number how often this appointment should be repeated.
+     * This must be a positive value, including zero.
+     */
+    public void setRepeatCount(int count) {
+        if (count < 0) {
+            throw new IllegalArgumentException("The repeat count of an appointment can't be less than zero!");
+        }
+        this.repeatCount = count;
+    }
+    
+    /**
+     * Returns the number how often this appointment is repeated.
+     * @return The number how often this appointment is repeated.
+     */
+    public long getRepeatCount() {
+        return repeatCount;
+    }
+    
     /**
      * Determines if the given {@link CalendarEntry} is equal to this one or
      * not. Two calendar entries are equal to each other, if their hash code is
@@ -368,8 +413,8 @@ public final class PersistentCalendarEntry implements CalendarEntry {
         Objects.requireNonNull(user, "user");
         Objects.requireNonNull(capabilities, "capability");
 
-        if (Arrays.asList(capabilities).contains(CalendarEntryCapability.OWNER) && getUsersByCapability(CalendarEntryCapability.OWNER).iterator().hasNext())
-            throw new IllegalArgumentException("There can be only one owner of a calendar entry!");
+        if (Arrays.asList(capabilities).contains(CalendarEntryCapability.OWNER) && getUsersByCapability(CalendarEntryCapability.OWNER) != null)
+            throw new DuplicatedOwnerExcepion(this.toString());
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<CalendarEntryCapabilitySet> q = cb.createQuery(CalendarEntryCapabilitySet.class);
@@ -417,7 +462,7 @@ public final class PersistentCalendarEntry implements CalendarEntry {
 
         if (capability == CalendarEntryCapability.OWNER)
             throw new IllegalArgumentException("Capability OWNER cannot be removed.");
-        
+
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<CalendarEntryCapabilitySet> q = cb.createQuery(CalendarEntryCapabilitySet.class);
         Root<CalendarEntryCapabilitySet> r = q.from(CalendarEntryCapabilitySet.class);
@@ -445,11 +490,12 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     }
 
     /**
-     * Returns all capabilities the given user has for this entry. The user identification
-     * must not be <code>null</code>
+     * Returns all capabilities the given user has for this entry. The user
+     * identification must not be <code>null</code>
      * 
      * @param user
-     *            the user identification of the user whose capabilities should be returned.
+     *            the user identification of the user whose capabilities should
+     *            be returned.
      * 
      * @return An {@link Iterable} which contains all capabilities of this user
      *         or null if the user has no capabilities for this entry.
@@ -490,7 +536,7 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     @Override
     public Iterable<UserIdentifier> getUsersByCapability(CalendarEntryCapability capability) {
         Objects.requireNonNull(capability, "capability");
-        
+
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<CalendarEntryCapabilitySet> q = cb.createQuery(CalendarEntryCapabilitySet.class);
         Root<CalendarEntryCapabilitySet> r = q.from(CalendarEntryCapabilitySet.class);
@@ -507,5 +553,10 @@ public final class PersistentCalendarEntry implements CalendarEntry {
         }
 
         return result.isEmpty() ? null : result;
+    }
+
+    @Override
+    public String toString() {
+        return title + " (" + startTime + " - " + endTime + ")";
     }
 }

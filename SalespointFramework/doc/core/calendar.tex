@@ -1,1 +1,30 @@
 \section{Calendar}
+
+The calendar is a new functionality in SalesPoint 2011 to manage appointments.
+
+\subsection{\code{Calendar} - The central menagement for appointments}
+The calendar is an interface that provides simple functionality to store calendar entries persistently in and recover them from the underlaying database.
+With the \code{PersistentCalendar}-class there exists an implementation of the calendar interface that can be worked with. This class provides methods
+to add and remove entries and filter them by different criterias.  
+The \code{PersistentCalendar} calendar itself has no identifier or other attributes, it's just a container that provides methods to easy manage all calendar entries.
+So there is no need to keep a reference to any calendar object, every time one is needed, it can be created new.
+
+
+\subsection{\code{CalendarEntry} - Keeps information about a single appointment}
+
+With \code{CalendarEntry} there exists an interface to set, store and access information about a single appointment, which is implemented
+by \code{PersistentCalendarEntry}.
+Every \code{PersistentCalendarEntry} must have an owner, title, start and end date.
+Typically the owner is the creator of the entry and also gets all capabilities for this entry.
+Capabilities are
+\begin{itemize}
+    \item \code{OWNER} - indicates the owner of an entry who is typically also the creator of it
+    \item \code{READ} - indicates who can read this entry
+    \item \code{WRITE} - indicates who can change this entry
+    \item \code{DELETE} - indicates who can delete the entry
+    \item \cide[SHARE} - indicates who can share the entry to other users
+\end{itemize}.
+All of these capabilities but \code{OWNER}, can be given to and removed from a user in relation to this specific entry.
+Because a calendar entry does not check if a user has the capability to do something with it, the programmer has to check the capabilities before manipulating the entry.
+Besides the minimum information a calendar entry can also have a description which provides more information about it and a repeat count and repeat step which say how 
+often the entry is beeing repeated and how long the timespan between two repetitions is. 

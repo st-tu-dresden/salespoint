@@ -83,6 +83,8 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
 
         return Iterables.from(tq.getResultList());
     }
+    
+    //FIXME: fuer alle zeit-filter: wiederholngen werden nicht beachtet
 
     /**
      * Returns all entries that start at or after the given date.
