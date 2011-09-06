@@ -22,7 +22,7 @@ Capabilities are
     \item \code{READ} - indicates who can read this entry
     \item \code{WRITE} - indicates who can change this entry
     \item \code{DELETE} - indicates who can delete the entry
-    \item \cide[SHARE} - indicates who can share the entry to other users
+    \item \code{SHARE} - indicates who can share the entry to other users
 \end{itemize}.
 All of these capabilities but \code{OWNER}, can be given to and removed from a user in relation to this specific entry.
 Because a calendar entry does not check if a user has the capability to do something with it, the programmer has to check the capabilities before manipulating the entry.
