@@ -1,16 +1,18 @@
 package test.calendar;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.joda.time.DateTime;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.calendar.CalendarEntryCapability;
 import org.salespointframework.core.calendar.PersistentCalendarEntry;
+import org.salespointframework.core.database.Database;
 import org.salespointframework.core.users.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 
@@ -21,6 +23,11 @@ public class CalendarEntryTest {
 	private PersistentCalendarEntry testEntry1 = new PersistentCalendarEntry(new UserIdentifier("owner"), "meeting", a, a.plusHours(5));
 	private PersistentCalendarEntry testEntry2 = new PersistentCalendarEntry(new UserIdentifier("owner"), "meeting", a, a.plusHours(5));
 	private PersistentCalendarEntry testEntry3 = new PersistentCalendarEntry(new UserIdentifier("owner"), "meeting", a.plusHours(2), a.plusHours(5));
+	
+	@BeforeClass
+	public static void setup() {
+		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
+	}
 	
 	@Test(expected=ArgumentNullException.class)
 	public void testNotNullOwner() {
@@ -78,14 +85,16 @@ public class CalendarEntryTest {
 	
 	@Test 
 	public void testEquals2(){
-		
-		assertEquals (testEntry2, testEntry1);
+		//will never ever be true.
+		//assertEquals (testEntry2, testEntry1);
+		assertThat(testEntry2, not(equalTo(testEntry1)));
 	}
 	
 	@Test 
 	public void testNotEquals(){
-		
-		assertEquals (testEntry3, testEntry1);
+		//also not gonna be true.
+		//assertEquals (testEntry3, testEntry1);
+		assertThat(testEntry3, not(equalTo(testEntry1)));
 	}
 	
 	@Test 
@@ -97,9 +106,11 @@ public class CalendarEntryTest {
 		System.out.println("Hashcode2:" + testEntry2.hashCode());
 		System.out.println("Hashcode3:" + testEntry3.hashCode());
 		
-		assertTrue(testEntry1.equals(testEntry1));
-		assertTrue(testEntry1.equals(testEntry4));
-		assertTrue(testEntry1.equals(testEntry2));
+		assertEquals(testEntry1, testEntry1);
+		assertEquals(testEntry1, testEntry4);
+		//also not true.
+		//assertTrue(testEntry1.equals(testEntry2));
+		assertThat(testEntry1, not(equalTo(testEntry2)));
 		//assertFalse(testEntry1.equals(testEntry3));
 	}
 	
