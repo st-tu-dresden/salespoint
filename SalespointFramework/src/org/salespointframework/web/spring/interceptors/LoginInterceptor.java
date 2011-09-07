@@ -34,7 +34,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		@SuppressWarnings("unchecked")
 		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager(usermanagerName);
 		
-		User user = usermanager.getUserByIdentifier(userIdentifier);
+		User user = usermanager.getUserByIdentifier(User.class, userIdentifier);
 		
 		if(user != null) {
 			if(user.verifyPassword(password)) {

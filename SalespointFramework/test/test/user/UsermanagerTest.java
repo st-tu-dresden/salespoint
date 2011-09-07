@@ -70,7 +70,7 @@ public class UsermanagerTest {
 	
 	@Test
 	public void testEmployeeMangerContainsE3(){
-		assertEquals(employeeManager.getUserByIdentifier(e3.getUserIdentifier()), e3);
+		assertEquals(employeeManager.getUserByIdentifier(MyEmployee.class, e3.getUserIdentifier()), e3);
 	}
 	
 	
@@ -84,7 +84,7 @@ public class UsermanagerTest {
 		t.begin();
 		customerManager.addUser(c);
 		t.commit();
-		assertEquals(customerManager.getUserByIdentifier(c.getUserIdentifier()), c);
+		assertEquals(customerManager.getUserByIdentifier(MyCustomer.class, c.getUserIdentifier()), c);
 	}
 	
 	@Test
@@ -97,7 +97,7 @@ public class UsermanagerTest {
 		employeeManager.addUser(e);
 		emE.getTransaction().commit();
 		
-		MyEmployee currentE = employeeManager.getUserByIdentifier(e.getUserIdentifier());
+		MyEmployee currentE = employeeManager.getUserByIdentifier(MyEmployee.class, e.getUserIdentifier());
 		assertEquals(currentE, e);
 	}
 	
@@ -112,7 +112,7 @@ public class UsermanagerTest {
 		employeeManager.addUser(e);
 		emE.getTransaction().commit();
 		
-		MyEmployee currentE = employeeManager.getUserByIdentifier(e.getUserIdentifier());
+		MyEmployee currentE = employeeManager.getUserByIdentifier(MyEmployee.class, e.getUserIdentifier());
 		assertEquals(currentE, e);
 		
 		emE.getTransaction().begin();
@@ -133,7 +133,7 @@ public class UsermanagerTest {
 		customerManager.addUser(c);
 		emC.getTransaction().commit();
 		
-		assertEquals(customerManager.getUserByIdentifier(c.getUserIdentifier()), c);
+		assertEquals(customerManager.getUserByIdentifier(MyCustomer.class, c.getUserIdentifier()), c);
 		
 		emC.getTransaction().begin();
 		customerManager.addUser(c2);
@@ -149,7 +149,7 @@ public class UsermanagerTest {
 		final EntityManager entityManager = emf.createEntityManager();
 		final MyEmployeeManager empManager = new MyEmployeeManager(entityManager);
 		
-		final int oldCount = Iterables.toList((empManager.getUsers())).size();
+		final int oldCount = Iterables.toList((empManager.getUsers(MyEmployee.class))).size();
 
 		entityManager.getTransaction().begin();
 		for(int n = 0; n < usersToAdd; n++) {
@@ -159,10 +159,10 @@ public class UsermanagerTest {
 		}
 		entityManager.getTransaction().commit();
 		
-		final int newCount = Iterables.toList((empManager.getUsers())).size();
+		final int newCount = Iterables.toList((empManager.getUsers(MyEmployee.class))).size();
 		
 		for(MyEmployee employee : list) {
-			assertEquals(empManager.getUserByIdentifier(employee.getUserIdentifier()), employee);
+			assertEquals(empManager.getUserByIdentifier(MyEmployee.class, employee.getUserIdentifier()), employee);
 		}
 		assertEquals(usersToAdd, newCount - oldCount); 
 	}
@@ -192,15 +192,15 @@ public class UsermanagerTest {
 		//set this Number in order how many Employees u create during the hole test
 		int numberOfEmployees =6;
 		int countEmployees =0;
-		for(Iterator<MyEmployee> i = employeeManager.getUsers().iterator(); i.hasNext(); ){
-			employeeManager.getUsers();
+		for(Iterator<MyEmployee> i = employeeManager.getUsers(MyEmployee.class).iterator(); i.hasNext(); ){
+			employeeManager.getUsers(MyEmployee.class);
 			countEmployees++;
 			i.next();
 		}
-		assertEquals("me1",employeeManager.getUserByIdentifier(uie1), me1);
-		assertEquals("me2",employeeManager.getUserByIdentifier(uie2), me2);
-		assertEquals("me3",employeeManager.getUserByIdentifier(uie3), me3);
-		assertEquals("me4",employeeManager.getUserByIdentifier(uie4), me4);
+		assertEquals("me1",employeeManager.getUserByIdentifier(MyEmployee.class, uie1), me1);
+		assertEquals("me2",employeeManager.getUserByIdentifier(MyEmployee.class, uie2), me2);
+		assertEquals("me3",employeeManager.getUserByIdentifier(MyEmployee.class, uie3), me3);
+		assertEquals("me4",employeeManager.getUserByIdentifier(MyEmployee.class, uie4), me4);
 		assertEquals("iterator", numberOfEmployees,countEmployees);
 	}
 	

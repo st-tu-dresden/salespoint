@@ -4,39 +4,53 @@ public interface UserManager<T extends User> {
 
 	/**
 	 * adds an User to the Usermanager if not exists and persists it
-	 * @param user User you want to add
-	 * @return 
-	 * @throws DuplicateUserException 
+	 * 
+	 * @param user
+	 *            User you want to add
+	 * @return
+	 * @throws DuplicateUserException
 	 */
 	boolean addUser(T user);
 
 	/**
 	 * will remove User, but only if there is no open Order for the User
-	 * @param User user you want remove
+	 * 
+	 * @param User
+	 *            user you want remove
 	 * @return true if successful
 	 */
 	boolean removeUser(T user);
 
 	/**
 	 * adds a UserCapability to an User
-	 * @param user the User you want to give that UserCapability
-	 * @param userCapability the Capapbility you want to give to the User
+	 * 
+	 * @param user
+	 *            the User you want to give that UserCapability
+	 * @param userCapability
+	 *            the Capapbility you want to give to the User
 	 * @return true if successful, false if there is no such user
 	 */
 	boolean addCapability(T user, UserCapability userCapability);
 
 	/**
-	 * removes a UserCapability from an User. 
-	 * @param user the User you want to remove that UserCapability from
-	 * @param userCapability the Capability you want to remove from the User
-	 * @return true if successful, false if there is no such user or the user does not have this capability
+	 * removes a UserCapability from an User.
+	 * 
+	 * @param user
+	 *            the User you want to remove that UserCapability from
+	 * @param userCapability
+	 *            the Capability you want to remove from the User
+	 * @return true if successful, false if there is no such user or the user
+	 *         does not have this capability
 	 */
 	boolean removeCapability(T user, UserCapability userCapability);
 
 	/**
 	 * Checks if a User has the given Capability
-	 * @param user you want to check
-	 * @param userCapability the cabability you want to check to User for
+	 * 
+	 * @param user
+	 *            you want to check
+	 * @param userCapability
+	 *            the cabability you want to check to User for
 	 * @return true if User has Capability
 	 */
 	boolean hasCapability(T user, UserCapability userCapability);
@@ -45,9 +59,11 @@ public interface UserManager<T extends User> {
 	 * 
 	 * @return all User from this Usermanger
 	 */
-	Iterable<T> getUsers();
+	// remove those. We only want on UserManager to handle all. To retain
+	// type-safety a type parameter is added to all requests.
+	// Iterable<T> getUsers();
 
-	T getUserByIdentifier(UserIdentifier userIdentifier);
+	// T getUserByIdentifier(UserIdentifier userIdentifier);
 
 	// associates a user with a token
 	void logOn(T user, Object token);
@@ -56,4 +72,9 @@ public interface UserManager<T extends User> {
 
 	T getUserByToken(Object token);
 
+	Iterable<T> getUsers(Class<T> clazz);
+
+	T getUserByIdentifier(Class<T> clazz, UserIdentifier userIdentifier);
+
+	
 }

@@ -5,13 +5,13 @@ import java.util.Set;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Entity;
 
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
 
-@MappedSuperclass
+@Entity
 public class AbstractUser implements User{
 	
 
@@ -28,25 +28,27 @@ public class AbstractUser implements User{
 	@Deprecated
 	protected AbstractUser() {}
 
-
-	void addCapability(UserCapability capability) {
-		capabilities.add(capability);
-	}
-	
-	void removeCapability(UserCapability capability) {
-		capabilities.remove(capability);
-	}
-	
-	Iterable<UserCapability> getCapabilities() {
-		return Iterables.from(capabilities);
-	}
-
-	
 	public AbstractUser(UserIdentifier userId, String password) {
 		Objects.requireNonNull(userId, "CreateUser_userId");
 		Objects.requireNonNull(password, "CreateUser_password");
 		this.userId=userId;
 		this.password=password;
+	}
+
+	boolean addCapability(UserCapability capability) {
+		return capabilities.add(capability);
+	}
+	
+	boolean removeCapability(UserCapability capability) {
+		return capabilities.remove(capability);
+	}
+	
+	boolean hasCapability(UserCapability capability) {
+		return capabilities.contains(capability);
+	}
+	
+	Iterable<UserCapability> getCapabilities() {
+		return Iterables.from(capabilities);
 	}
 
 	public boolean verifyPassword(String password) {
@@ -73,8 +75,7 @@ public class AbstractUser implements User{
 	}
 	
 	public boolean equals(User user){
-		if(userId.equals(user.getUserIdentifier())) return true;
-		return false;
+		return userId.equals(user.getUserIdentifier());
 	}
 	
 	@Override
