@@ -12,6 +12,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.accountancy.AbstractAccountancyEntry;
+import org.salespointframework.core.accountancy.AbstractAccountancyEntry_;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.database.ICanHasClass;
 import org.salespointframework.core.users.UserIdentifier;
@@ -22,7 +24,7 @@ import org.salespointframework.util.Objects;
 /**
  * This is an implementation of the interface {@link Calendar} that provides
  * basic functionality like add/remove calendar entries and filter them
- * according to different criterias.
+ * according to different criteria.
  * 
  * @author Stanley Förster
  */
@@ -49,12 +51,15 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
     public Iterable<PersistentCalendarEntry> getEntries(Filter<PersistentCalendarEntry> filter) {
         Objects.requireNonNull(filter, "filter");
 
-        TypedQuery<PersistentCalendarEntry> q = em.createQuery("SELECT ce FROM " + getContentClass().getSimpleName() + " ce", getContentClass());
+      CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<PersistentCalendarEntry> q = cb
+				.createQuery(PersistentCalendarEntry.class);
+		TypedQuery<PersistentCalendarEntry> tq = em.createQuery(q);
+        
+		List<PersistentCalendarEntry> entries = new ArrayList<PersistentCalendarEntry>();
 
-        List<PersistentCalendarEntry> entries = new ArrayList<PersistentCalendarEntry>();
-
-        for (PersistentCalendarEntry entry : q.getResultList()) {
-            if (filter.invoke(entry))
+        for (PersistentCalendarEntry entry : tq.getResultList()) {
+        	if (filter.invoke(entry))
                 entries.add(entry);
         }
 
