@@ -1,6 +1,8 @@
 package test.calendar;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.matchers.JUnitMatchers.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +48,7 @@ public class CalendarTest {
         entry.addCapability(new Worker().getUserIdentifier(), CalendarEntryCapability.OWNER);
     }
     
-//    @Test
+    @Test
     public void testOwnership() {
         PersistentCalendar calendar = new PersistentCalendar();
 
@@ -58,7 +60,7 @@ public class CalendarTest {
         }
     }
 
-    //@Test
+    @Test
     public void addUser() {
         PersistentCalendar calendar = new PersistentCalendar();
 
@@ -75,12 +77,15 @@ public class CalendarTest {
 //        assertThat(w1, equalTo(w2));
     }
 
-//    @Test
+    @Test
     public void filterEntries() {
         PersistentCalendar calendar = new PersistentCalendar();
-
+        PersistentCalendarEntry has = new PersistentCalendarEntry(new UserIdentifier(), "early", new DateTime().minusHours(1), new DateTime().plusHours(1));
+        PersistentCalendarEntry hasnot = new PersistentCalendarEntry(new UserIdentifier(), "late", new DateTime().plusHours(1), new DateTime().plusHours(2)); 
+        calendar.addEntry(has);
+        calendar.addEntry(hasnot);
+        
         Iterable<PersistentCalendarEntry> actual = calendar.getEntries(new Filter<PersistentCalendarEntry>() {
-            @SuppressWarnings("boxing")
             @Override
             public Boolean invoke(PersistentCalendarEntry arg) {
                 return arg.getStart().isBefore(basicDateTime.plusMinutes(10));
@@ -98,7 +103,8 @@ public class CalendarTest {
             }
         };
 
-        assertEquals(expected, actual);
+        assertThat(actual, hasItem(has));
+        assertThat(actual, not(hasItem(hasnot)));
     }
 }
 
