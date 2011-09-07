@@ -12,33 +12,33 @@ import org.salespointframework.util.Filter;
 public interface Calendar<T extends CalendarEntry> {
     
     /**
-     * Should return all entries that match the filter criteria.
+     * Returns all entries that match the filter criteria.
      * 
-     * @param filter The filter that defines the filter criteria. 
+     * @param filter The Filter object used to determine if an entry is part of the result or not 
      * 
-     * @return Iterable of all entries that match the filter criteria.
+     * @return Iterable<T> of all entries that match the filter criteria.
      * 
      * @see Filter
      */
     Iterable<T> getEntries(Filter<T> filter);
     
     /**
-     * Should return the calendar entry which has the given id.
+     * Returns the calendar entry which has the given id.
      * 
-     * @param id of the entry that should be returned.
+     * @param id Id of the requested entry.
      * @return the entry with the given id.
      */
     T getEntryByID(CalendarEntryIdentifier id);
     
     /**
-     * Should add the given entry to the calendar.
-     * @param entry the entry that should be added to the calendar.
+     * Adds the given entry to the calendar.
+     * @param entry the entry that is to be added to the calendar.
      */
     void addEntry(T entry);
     
     /**
-     * Should delete the entry with the given id from the calendar.
-     * @param id of the entry that should be removed from calendar.
+     * Deletes the entry with the given id from the calendar.
+     * @param id Id of the entry that is to be removed from the calendar.
      */
     void deleteEntry(CalendarEntryIdentifier id);
 }
