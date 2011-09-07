@@ -421,6 +421,8 @@ public class OrderLine {
 			return this.chargeLines.remove(lineToRemove);
 	}
 
+	//TODO here's a problem generating the inventory... 
+	//thats why OrderLineTest (TestClass) and testPriceCalculationOrderEntry in TestClass OrderEntryTest fail
 	public Inventory<?> getInventory() {
 		
 	 	try {
