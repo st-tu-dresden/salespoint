@@ -8,7 +8,7 @@ An \code{AbstractProductType} contains a set of \code{ProductFeatureTypes} to sp
 An example: Our specified \code{ProductType} is a table. About to sell any variations of this table, you need any \code{ProductFeatureTypes} like a corner table or a side table. 
 So one \code{ProductFeatureType} represents one sort.
 
-\subsection{\code{ProductFeatureType} & \code{ProductFeature} - Creating Features}
+\subsection{\code{ProductFeatureType} and \code{ProductFeature} - Creating Features}
 Every \code{ProductFeatureType} has a name, a description and a map of \code{ProductFeatures}, which define the \code{ProductFeatureType}. It's possible to add 
 \code{ProductFeatures} to this map or remove them from it. So you can create your own \code{ProductFeatureType} with any \code{ProductFeatures}.\\
 A \code{ProductFeature} can be for example a specified color or a special part of one or many products and has a name and a price.   
@@ -48,6 +48,7 @@ The \code{ServiceDeliverystatus} is an enumeration with follow attributes:
 \item \code{EXECUTING}: If the \code{ServiceInstance} is executing now.
 \item \code{CANCELLED}: If the \code{ServiceInstance} was cancelled.
 \item \code{COMPLETED}: If the \code{ServiceInstance} is completed, so the end of the \code{ServiceInstance} is in the past and it wasn’t cancelled.
+\end{itemize}
 
 \subsection{\code{MeasuredProductType} - Creating MeasuredProducts}
 The interface \code{MeasuredProductType} is implemented by \code{AbstractMeasuredProductType}. With this class you can realize products, which are not sold as predefined unit, but rather 
