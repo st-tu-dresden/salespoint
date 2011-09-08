@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.database.Database;
+import org.salespointframework.core.users.PersistentUserManager;
 import org.salespointframework.core.users.UserCapability;
 import org.salespointframework.core.users.UserIdentifier;
 
@@ -24,71 +25,62 @@ import org.salespointframework.core.users.UserIdentifier;
 public class UsermangerPersistenceTest {
 
 	private static EntityManagerFactory emf;
-	private static EntityManager emC;
-	private static EntityManager emE;
-	private static MyEmployeeManager employeeManager;
-	private static MyCustomerManager customerManager;
+	private static EntityManager em;
+	private static PersistentUserManager pum;
 
 	@BeforeClass
 	public static void setUp() {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
 		emf = Database.INSTANCE.getEntityManagerFactory();
-		emC = emf.createEntityManager();
-		emE = emf.createEntityManager();
-		customerManager = new MyCustomerManager(emC);
-		employeeManager = new MyEmployeeManager(emE);
-
+		em = emf.createEntityManager();
+		pum = new PersistentUserManager(em);
 	}
 
 	@After
 	public void runAfterEveryTest() {
-		if (emE.getTransaction().isActive()) {
-			emE.getTransaction().rollback();
+		if (em.getTransaction().isActive()) {
+			em.getTransaction().rollback();
 		}
-		if (emC.getTransaction().isActive()) {
-			emC.getTransaction().rollback();
-		}
-
 	}
 
 	@Test
 	public void testHasEmployeeE3AndHasPW() {
 		UserIdentifier ui3 = new UserIdentifier();
 		MyEmployee e3 = new MyEmployee(ui3, "lala");
-		employeeManager.addUser(e3);
-		// WTF. plz add e3 to eM first.
+		em.getTransaction().begin();
+		pum.addUser(e3);
+		em.getTransaction().commit();
 		assertEquals(
-				employeeManager.getUserByIdentifier(MyEmployee.class, e3.getUserIdentifier()), e3);
+				pum.getUserByIdentifier(MyEmployee.class, e3.getUserIdentifier()), e3);
 		assertEquals(
-				employeeManager.getUserByIdentifier(MyEmployee.class, e3.getUserIdentifier())
+				pum.getUserByIdentifier(MyEmployee.class, e3.getUserIdentifier())
 						.verifyPassword("lala"), true);
 	}
 
 	@Test
 	public void testE3HasCapability() {
-		// Yeah. same string (=identifier) as above. this will work well.
-		// Instead, just auto-generate an id.
 		UserIdentifier ui3 = new UserIdentifier();
 		MyEmployee e3 = new MyEmployee(ui3, "lala");
 		UserCapability capa2 = new UserCapability(
 				"MustBeInDataBaseAfterTesting");
-		// same as above. add user and capability first.
-		employeeManager.addUser(e3);
-		employeeManager.addCapability(e3, capa2);
-		assertTrue(employeeManager.hasCapability(e3, capa2));
+
+		em.getTransaction().begin();
+		pum.addUser(e3);
+		pum.addCapability(e3, capa2);
+		em.getTransaction().commit();
+		assertTrue(pum.hasCapability(e3, capa2));
 
 	}
 
 	@Test
 	public void testE3HasNOTCapability() {
-		// same as above. generate new id.
 		UserIdentifier ui3 = new UserIdentifier();
 		MyEmployee e3 = new MyEmployee(ui3, "lala");
 		UserCapability capa = new UserCapability("CrazyTestCapabilityAgain");
-		// again, meaningless. of course the capability is not found if
-		// e3 is ever added to the manager.
-		employeeManager.addUser(e3);
-		assertFalse(employeeManager.hasCapability(e3, capa));
+		em.getTransaction().begin();
+		pum.addUser(e3);
+		em.getTransaction().commit();
+		assertFalse(pum.hasCapability(e3, capa));
 	}
 
 }

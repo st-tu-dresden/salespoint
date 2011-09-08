@@ -16,6 +16,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.users.DuplicateUserException;
+import org.salespointframework.core.users.PersistentUserManager;
 import org.salespointframework.core.users.UserCapability;
 import org.salespointframework.core.users.UserIdentifier;
 import org.salespointframework.util.Iterables;
@@ -34,11 +35,8 @@ public class UsermanagerTest {
 	private UserCapability capa;
 	
 	private static EntityManagerFactory emf;
-	private static EntityManager emC;
-	private static EntityManager emE;
-	private static MyCustomerManager customerManager;
-	private static MyEmployeeManager employeeManager;
-	
+	private static EntityManager em;
+	private static PersistentUserManager pum;
 	
 	
 	
@@ -46,31 +44,24 @@ public class UsermanagerTest {
 	public static void setUp() {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
 		emf = Database.INSTANCE.getEntityManagerFactory();
-		emC = emf.createEntityManager();
-		emE = emf.createEntityManager();
-		customerManager= new MyCustomerManager(emC);
-		employeeManager= new MyEmployeeManager(emE);
-		
-		emE.getTransaction().begin();
-		employeeManager.addUser(e3);
-		emE.getTransaction().commit();
+		em = emf.createEntityManager();
+		pum = new PersistentUserManager(em);
+		em.getTransaction().begin();
+		pum.addUser(e3);
+		em.getTransaction().commit();
 	
 	}
 	
 	@After   
 	public void runAfterEveryTest() {   
-	    if(emE.getTransaction().isActive()){
-	    	emE.getTransaction().rollback();
+	    if(em.getTransaction().isActive()){
+	    	em.getTransaction().rollback();
 	    }
-	    if(emC.getTransaction().isActive()){
-	    	emC.getTransaction().rollback();
-	    }
-	    
 	}   
 	
 	@Test
 	public void testEmployeeMangerContainsE3(){
-		assertEquals(employeeManager.getUserByIdentifier(MyEmployee.class, e3.getUserIdentifier()), e3);
+		assertEquals(pum.getUserByIdentifier(MyEmployee.class, e3.getUserIdentifier()), e3);
 	}
 	
 	
@@ -80,11 +71,11 @@ public class UsermanagerTest {
 		MyCustomer c = new MyCustomer(ui, "pw1234");
 		
 		
-		EntityTransaction t= emC.getTransaction();
+		EntityTransaction t= em.getTransaction();
 		t.begin();
-		customerManager.addUser(c);
+		pum.addUser(c);
 		t.commit();
-		assertEquals(customerManager.getUserByIdentifier(MyCustomer.class, c.getUserIdentifier()), c);
+		assertEquals(pum.getUserByIdentifier(MyCustomer.class, c.getUserIdentifier()), c);
 	}
 	
 	@Test
@@ -93,51 +84,33 @@ public class UsermanagerTest {
 		UserIdentifier ui= new UserIdentifier("testEmployee");
 		MyEmployee e = new MyEmployee(ui, "4321pw");
 				
-		emE.getTransaction().begin();
-		employeeManager.addUser(e);
-		emE.getTransaction().commit();
+		em.getTransaction().begin();
+		pum.addUser(e);
+		em.getTransaction().commit();
 		
-		MyEmployee currentE = employeeManager.getUserByIdentifier(MyEmployee.class, e.getUserIdentifier());
+		MyEmployee currentE = pum.getUserByIdentifier(MyEmployee.class, e.getUserIdentifier());
 		assertEquals(currentE, e);
 	}
 	
 	
-	@Test(expected = DuplicateUserException.class)
+	@Test
 	public void testDuplicateEmployee(){
 		UserIdentifier ui= new UserIdentifier("testDuplicateEmployee");
 		MyEmployee e = new MyEmployee(ui, "4321pw");
 		MyEmployee e2 = new MyEmployee(ui, "adfpw");
 		
-		emE.getTransaction().begin();
-		employeeManager.addUser(e);
-		emE.getTransaction().commit();
+		em.getTransaction().begin();
+		pum.addUser(e);
+		em.getTransaction().commit();
 		
-		MyEmployee currentE = employeeManager.getUserByIdentifier(MyEmployee.class, e.getUserIdentifier());
+		MyEmployee currentE = pum.getUserByIdentifier(MyEmployee.class, e.getUserIdentifier());
 		assertEquals(currentE, e);
 		
-		emE.getTransaction().begin();
-		employeeManager.addUser(e2);
-		emE.getTransaction().commit();
+		em.getTransaction().begin();
+		assertFalse(pum.addUser(e2));
+		em.getTransaction().commit();
 		
 		
-		
-	}
-	
-	@Test(expected = DuplicateUserException.class)
-	public void testDuplicateCustomer(){
-		UserIdentifier ui= new UserIdentifier("testDuplicateCustomer");
-		MyCustomer c = new MyCustomer(ui, "pw1234");
-		MyCustomer c2 = new MyCustomer(ui, "asdf");
-		
-		emC.getTransaction().begin();
-		customerManager.addUser(c);
-		emC.getTransaction().commit();
-		
-		assertEquals(customerManager.getUserByIdentifier(MyCustomer.class, c.getUserIdentifier()), c);
-		
-		emC.getTransaction().begin();
-		customerManager.addUser(c2);
-		emC.getTransaction().commit();
 		
 	}
 	
@@ -147,7 +120,7 @@ public class UsermanagerTest {
 		final List<MyEmployee> list = new ArrayList<MyEmployee>(usersToAdd);
 		
 		final EntityManager entityManager = emf.createEntityManager();
-		final MyEmployeeManager empManager = new MyEmployeeManager(entityManager);
+		final PersistentUserManager empManager = new PersistentUserManager(entityManager);
 		
 		final int oldCount = Iterables.toList((empManager.getUsers(MyEmployee.class))).size();
 
@@ -181,26 +154,26 @@ public class UsermanagerTest {
 		UserIdentifier uie4= new UserIdentifier("me4");
 		MyEmployee me4= new MyEmployee(uie4 ,"egal");
 		
-		emE.getTransaction().begin();
-		employeeManager.addUser(me1);
-		employeeManager.addUser(me2);
-		employeeManager.addUser(me3);
-		employeeManager.addUser(me4);
-		emE.getTransaction().commit();
+		em.getTransaction().begin();
+		pum.addUser(me1);
+		pum.addUser(me2);
+		pum.addUser(me3);
+		pum.addUser(me4);
+		em.getTransaction().commit();
 		
 			
 		//set this Number in order how many Employees u create during the hole test
 		int numberOfEmployees =6;
 		int countEmployees =0;
-		for(Iterator<MyEmployee> i = employeeManager.getUsers(MyEmployee.class).iterator(); i.hasNext(); ){
-			employeeManager.getUsers(MyEmployee.class);
+		for(Iterator<MyEmployee> i = pum.getUsers(MyEmployee.class).iterator(); i.hasNext(); ){
+			pum.getUsers(MyEmployee.class);
 			countEmployees++;
 			i.next();
 		}
-		assertEquals("me1",employeeManager.getUserByIdentifier(MyEmployee.class, uie1), me1);
-		assertEquals("me2",employeeManager.getUserByIdentifier(MyEmployee.class, uie2), me2);
-		assertEquals("me3",employeeManager.getUserByIdentifier(MyEmployee.class, uie3), me3);
-		assertEquals("me4",employeeManager.getUserByIdentifier(MyEmployee.class, uie4), me4);
+		assertEquals("me1",pum.getUserByIdentifier(MyEmployee.class, uie1), me1);
+		assertEquals("me2",pum.getUserByIdentifier(MyEmployee.class, uie2), me2);
+		assertEquals("me3",pum.getUserByIdentifier(MyEmployee.class, uie3), me3);
+		assertEquals("me4",pum.getUserByIdentifier(MyEmployee.class, uie4), me4);
 		assertEquals("iterator", numberOfEmployees,countEmployees);
 	}
 	
@@ -215,18 +188,18 @@ public class UsermanagerTest {
 	public void testAddCapabilityToEmployee(){
 		capa= new UserCapability("CrazyTestCapabilityAgain");
 		UserCapability capa2= new UserCapability("MustBeInDataBaseAfterTesting");
-		emE.getTransaction().begin();
-		boolean addCapa = employeeManager.addCapability(e3, capa);
-		emE.getTransaction().commit();
-		emE.getTransaction().begin();
-		boolean addCapa2 = employeeManager.addCapability(e3, capa2);
-		emE.getTransaction().commit();
+		em.getTransaction().begin();
+		boolean addCapa = pum.addCapability(e3, capa);
+		em.getTransaction().commit();
+		em.getTransaction().begin();
+		boolean addCapa2 = pum.addCapability(e3, capa2);
+		em.getTransaction().commit();
 		
 		assertEquals("NoSuchUser!", true,  addCapa);
 		assertEquals("NoSuchUser!", true,  addCapa2);
 		
-		boolean hasCapa = employeeManager.hasCapability(e3, capa);
-		boolean hasCapa2 = employeeManager.hasCapability(e3, capa2);
+		boolean hasCapa = pum.hasCapability(e3, capa);
+		boolean hasCapa2 = pum.hasCapability(e3, capa2);
 		assertEquals("1",true,  hasCapa);
 		assertEquals("2",true,  hasCapa2);
 	}
@@ -236,19 +209,19 @@ public class UsermanagerTest {
 	@Test
 	public void testRemoveCapability(){
 		capa= new UserCapability("RemoveTestCapabilityAgain");
-		emE.getTransaction().begin();
-		employeeManager.addCapability(e3, capa);
-		emE.getTransaction().commit();
+		em.getTransaction().begin();
+		pum.addCapability(e3, capa);
+		em.getTransaction().commit();
 		
-		boolean hasCapa = employeeManager.hasCapability(e3, capa);
+		boolean hasCapa = pum.hasCapability(e3, capa);
 		assertEquals("befor removing", true,  hasCapa);
 		
-		emE.getTransaction().begin();
-		boolean remo =employeeManager.removeCapability(e3, capa);
-		emE.getTransaction().commit();
+		em.getTransaction().begin();
+		boolean remo =pum.removeCapability(e3, capa);
+		em.getTransaction().commit();
 		assertEquals("during removing", true,  remo);
 		
-		boolean hasCapa2 = employeeManager.hasCapability(e3, capa);
+		boolean hasCapa2 = pum.hasCapability(e3, capa);
 		assertEquals("after removing", false,  hasCapa2);
 	}
 	

@@ -10,7 +10,7 @@ import org.salespointframework.core.money.Money;
  *
  */
 @MappedSuperclass
-public abstract class AbstractEmployee extends AbstractUser implements Employee {
+public abstract class AbstractEmployee extends PersistentUser implements Employee {
 	private Money salary;
 	
 	

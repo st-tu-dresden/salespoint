@@ -3,7 +3,7 @@ package org.salespointframework.core.users;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class AbstractCustomer extends AbstractUser implements Customer{
+public class AbstractCustomer extends PersistentUser {
 	
 	@Deprecated
 	protected AbstractCustomer() {
