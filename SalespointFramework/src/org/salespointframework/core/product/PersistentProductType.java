@@ -13,7 +13,6 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.features.ProductFeatureType;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
