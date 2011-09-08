@@ -30,7 +30,6 @@ public abstract class AbstractMeasuredProductType extends AbstractProductType im
 	
 	/**
      * Parameterized constructor with
-     * @param productIdentifier The id of this MeasuredProductType 
      * @param name The name of this MeasuredProductType
      * @param price The price of the quantity of this MeasuredProductType
      * @param quantityOnHand The quantity of this MeasuredProductType, which is available.
