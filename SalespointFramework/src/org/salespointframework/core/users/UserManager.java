@@ -3,78 +3,122 @@ package org.salespointframework.core.users;
 public interface UserManager<T extends User> {
 
 	/**
-	 * adds an User to the Usermanager if not exists and persists it
+	 * Adds a <code>User</code> to the <code>UserManager</code> if the user not
+	 * already exists.
 	 * 
 	 * @param user
-	 *            User you want to add
-	 * @return
-	 * @throws DuplicateUserException
+	 *            <code>User</code> to be stored.
+	 * @return <code>true</code>, if user was added, <code>false</code> if the
+	 *         user already existed
 	 */
 	boolean addUser(T user);
 
 	/**
-	 * will remove User, but only if there is no open Order for the User
+	 * Removes a <code>User<code>, if there is no open <code>Order</code> for
+	 * the <code>User</code>
 	 * 
-	 * @param User
-	 *            user you want remove
-	 * @return true if successful
+	 * @param user
+	 *            <code>User</code> to be removed.
+	 * @return <code>true</code>, if successful, <code>false</code> otherwise.
 	 */
 	boolean removeUser(T user);
 
 	/**
-	 * adds a UserCapability to an User
+	 * Adds a <code>UserCapability</code> to a <code>User</code>
 	 * 
 	 * @param user
-	 *            the User you want to give that UserCapability
+	 *            <code>User</code> which will receive the
+	 *            <code>UserCapability</code>
 	 * @param userCapability
-	 *            the Capapbility you want to give to the User
-	 * @return true if successful, false if there is no such user
+	 *            <code>UserCapability</code> which the <code>user</code> will
+	 *            receive.
+	 * @return <code>true</code> if successful, <code>false</code> otherwise.
 	 */
 	boolean addCapability(T user, UserCapability userCapability);
 
 	/**
-	 * removes a UserCapability from an User.
+	 * Removes a <code>UserCapability<code> from a <code>User</code>.
 	 * 
 	 * @param user
-	 *            the User you want to remove that UserCapability from
+	 *            <code>User</code> from which the <code>UserCapability</code>
+	 *            will be removed.
 	 * @param userCapability
-	 *            the Capability you want to remove from the User
-	 * @return true if successful, false if there is no such user or the user
-	 *         does not have this capability
+	 *            <code>UserCapability</code> which will be removed from
+	 *            <code>user</code>
+	 * @return <code>true</code> if successful, <code>false</code> otherwise
 	 */
 	boolean removeCapability(T user, UserCapability userCapability);
 
 	/**
-	 * Checks if a User has the given Capability
+	 * Checks if a <code>User</code> has a specific <code>UserCapability</code>
 	 * 
 	 * @param user
-	 *            you want to check
+	 *            <code>User</code> which will be checked if
+	 *            <code>userCapability</code> was granted.
 	 * @param userCapability
-	 *            the cabability you want to check to User for
-	 * @return true if User has Capability
+	 *            <code>UserCabability</code> for which the <code>user</code>
+	 *            will be checked for.
+	 * @return <code>true</code> if <code>userCapability</code> was granted to
+	 *         <code>user</code>
 	 */
 	boolean hasCapability(T user, UserCapability userCapability);
 
 	/**
+	 * Logs the user on. When a user is logged on, an association is made
+	 * between the user, and a supplied token.
 	 * 
-	 * @return all User from this Usermanger
+	 * @param user
+	 *            <code>User<code> to be logged on.
+	 * @param token
+	 *            token, with which the <code>user</code> will be associated.
 	 */
-	// remove those. We only want on UserManager to handle all. To retain
-	// type-safety a type parameter is added to all requests.
-	// Iterable<T> getUsers();
-
-	// T getUserByIdentifier(UserIdentifier userIdentifier);
-
-	// associates a user with a token
 	void logOn(T user, Object token);
 
-	T logOff(Object token);
+	/**
+	 * Logs a user off. The user associated with <code>token</code> on log on is
+	 * logged off.
+	 * 
+	 * @param token
+	 *            token, with which a user was logged on.
+	 */
+	void logOff(final Object token);
 
-	T getUserByToken(Object token);
+	/**
+	 * Get a logged-on user by its token.
+	 * 
+	 * @param clazz
+	 *            the specific class type of the requested user.
+	 * @param token
+	 *            token, which was associated with the user, on log on.
+	 * @return the user which is associated with token and of class type
+	 *         <code>clazz</code>.
+	 * @throws ClassCastException
+	 *             , if user associated with <code>token</code> is not of type
+	 *             <code>clazz</code>.
+	 */
+	<E extends T> E getUserByToken(Class<E> clazz, Object token);
 
-	Iterable<T> getUsers(Class<T> clazz);
+	/**
+	 * Get all users of class type <code>clazz</code>.
+	 * 
+	 * @param clazz
+	 *            all users of this type will be returned.
+	 * @return all users of class type <code>clazz</code>
+	 */
+	<E extends T> Iterable<E> getUsers(Class<E> clazz);
 
-	T getUserByIdentifier(Class<T> clazz, UserIdentifier userIdentifier);
+	/**
+	 * Get a user by its unique identifier.
+	 * 
+	 * @param clazz
+	 *            the class type of the user.
+	 * @param userIdentifier
+	 *            the identifier of the user
+	 * @return the user of class type <code>clazz</code> with the identifier
+	 *         equal to <code>userIdentifier</code>
+	 * @throws NoResultException
+	 */
+	<E extends T> E getUserByIdentifier(Class<E> clazz,
+			UserIdentifier userIdentifier);
 
-	
 }
