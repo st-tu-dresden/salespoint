@@ -16,6 +16,8 @@ public final class Iterables {
 
 	private Iterables() {
 	}
+	
+
 
 	public static <T> List<T> toList(final Iterable<T> iterable) {
 		List<T> temp = new ArrayList<T>();
@@ -98,6 +100,7 @@ public final class Iterables {
 		};
 	}
 
-	
-
+	public static <T> Iterable<T> empty() {
+		return from(new ArrayList<T>(0));
+	}
 }

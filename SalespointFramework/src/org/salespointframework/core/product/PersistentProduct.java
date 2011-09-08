@@ -15,6 +15,7 @@ import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 import org.salespointframework.util.Tuple;
 
+
 @Entity
 public class PersistentProduct implements Product {
 	
@@ -33,14 +34,18 @@ public class PersistentProduct implements Product {
 	@Deprecated
 	protected PersistentProduct() { }
 	
-	// features = "FeatureType:Ausprägung" 
-	public PersistentProduct(final ProductType productType, final Tuple<String,String>... features) {
+
+	public PersistentProduct(final ProductType productType)  {
+		this(productType, Iterables.<Tuple<String, String>>empty());
+	}
+	
+	public PersistentProduct(final ProductType productType, final Iterable<Tuple<String,String>> features) {
 		Objects.requireNonNull(features, "features");
 		this.productIdentifier = Objects.requireNonNull(productType, "productType").getProductIdentifier();
 		this.price = productType.getPrice(); //TODO CLONE?
 		this.serialNumber = new SerialNumber();
 		
-		// TODO zu hacky
+		// TODO zu hacky?
 		for(Tuple<String,String> feature : features) {
 			ProductFeature f = ProductFeature.create(feature.getItem1(), feature.getItem2());
 			
@@ -54,7 +59,6 @@ public class PersistentProduct implements Product {
 				}
 			}
 		}
-		
 	}
 	
 	@Override
