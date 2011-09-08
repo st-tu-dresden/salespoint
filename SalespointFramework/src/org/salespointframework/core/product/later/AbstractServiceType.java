@@ -8,7 +8,7 @@ import javax.persistence.Temporal;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.AbstractProductType;
+import org.salespointframework.core.product.PersistentProductType;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.Objects;
 
@@ -22,7 +22,7 @@ import org.salespointframework.util.Objects;
 
 @Entity
 
-public abstract class AbstractServiceType extends AbstractProductType implements ServiceType{
+public abstract class AbstractServiceType extends PersistentProductType implements ServiceType{
 
 	
 	//TODO long -> Date

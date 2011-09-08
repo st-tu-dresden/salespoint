@@ -1,7 +1,7 @@
 package org.salespointframework.core.product.later;
 
 import org.joda.time.DateTime;
-import org.salespointframework.core.product.ProductInstance;
+import org.salespointframework.core.product.Product;
 
 
 /**
@@ -9,7 +9,7 @@ import org.salespointframework.core.product.ProductInstance;
  * 
  */
 
-public interface ServiceInstance extends ProductInstance {
+public interface ServiceInstance extends Product {
 
 	/**
      * Returns the Status of the ServiceInstance

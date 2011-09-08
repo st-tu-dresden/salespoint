@@ -14,7 +14,7 @@ import org.salespointframework.util.Objects;
 
 // TODO umbenennen
 @Entity
-public class ProductFeatureType {
+public class ProductFeatureType_old {
 	
 	@SuppressWarnings("unused")
 	@Id
@@ -26,21 +26,21 @@ public class ProductFeatureType {
 	
 	// Name -> Feature
 	@ElementCollection
-	private Map<String, ProductFeature> possibleValues = new HashMap<String, ProductFeature>();
+	private Map<String, ProductFeature_old> possibleValues = new HashMap<String, ProductFeature_old>();
 	
 	@Deprecated
-	protected ProductFeatureType() { }
+	protected ProductFeatureType_old() { }
 	
-	public ProductFeatureType(String name, ProductFeature... productFeatures) {
+	public ProductFeatureType_old(String name, ProductFeature_old... productFeatures) {
 		this(name, "", productFeatures);
 	}
 	
-	public ProductFeatureType(String name, String description, ProductFeature... productFeatures) {
+	public ProductFeatureType_old(String name, String description, ProductFeature_old... productFeatures) {
 		this.name = Objects.requireNonNull(name, "name");
 		this.description = Objects.requireNonNull(description, "description");
 		Objects.requireNonNull(productFeatures, "productFeatures");
 		if(productFeatures.length == 0) throw new RuntimeException(); 	//TODO bessere Exception
-		for(ProductFeature pf : productFeatures) {
+		for(ProductFeature_old pf : productFeatures) {
 			if(pf != null) this.addFeature(pf);
 		}
 	}
@@ -52,7 +52,7 @@ public class ProductFeatureType {
 		return description;
 	}
 
-	public final void addFeature(ProductFeature productFeature) {
+	public final void addFeature(ProductFeature_old productFeature) {
 		possibleValues.put(productFeature.getName(), productFeature);
 	}
 	
@@ -60,11 +60,11 @@ public class ProductFeatureType {
 		possibleValues.remove(name);
 	}
 	
-	public final ProductFeature getProductFeature(String name) {
+	public final ProductFeature_old getProductFeature(String name) {
 		return possibleValues.get(name);
 	}
 	
-	public final Iterable<ProductFeature> getProductFeatures() {
+	public final Iterable<ProductFeature_old> getProductFeatures() {
 		return Iterables.from(possibleValues.values());
 	}
 }

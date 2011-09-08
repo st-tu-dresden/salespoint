@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import javax.persistence.Entity;
 
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.AbstractProductInstance;
+import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Objects;
 
@@ -19,7 +19,7 @@ import org.salespointframework.util.Objects;
 
 @Entity
 
-public abstract class AbstractMeasuredProductInstance extends AbstractProductInstance implements MeasuredProductInstance {
+public abstract class AbstractMeasuredProductInstance extends PersistentProduct implements MeasuredProductInstance {
 
 	private Quantity quantity;
 	private Money unitPrice;

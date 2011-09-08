@@ -1,10 +1,14 @@
 package org.salespointframework.core.product;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
@@ -14,8 +18,8 @@ import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
 
-@MappedSuperclass
-public class AbstractProductType implements ProductType {
+@Entity
+public class PersistentProductType implements ProductType {
 	
 	@EmbeddedId
 	private ProductIdentifier productIdentifier;
@@ -23,15 +27,17 @@ public class AbstractProductType implements ProductType {
 	private String name;
 	private Money price;
 	
-	//TODO Map?
-	@OneToMany(cascade = CascadeType.ALL)
-	private Set<ProductFeatureType> featureTypes = new HashSet<ProductFeatureType>();
+	//@OneToMany(cascade = CascadeType.ALL)
+	@ElementCollection
+	private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
+	
+	//private Set<ProductFeatureType> featureTypes = new HashSet<ProductFeatureType>();
 	
 	
 	@Deprecated
-	protected AbstractProductType() { }
+	protected PersistentProductType() { }
 	
-	public AbstractProductType(String name, Money price) {
+	public PersistentProductType(String name, Money price) {
 		this.name = Objects.requireNonNull(name, "name");
 		this.price = Objects.requireNonNull(price, "price");
 		this.productIdentifier = new ProductIdentifier();
@@ -67,8 +73,8 @@ public class AbstractProductType implements ProductType {
 	}
 
 	@Override
-	public final Iterable<ProductFeatureType> getProductFeatureTypes() {
-		return Iterables.from(featureTypes);
+	public final Iterable<ProductFeature> getProductFeatures() {
+		return Iterables.from(productFeatures);
 	}
 	
 	@Override
@@ -77,18 +83,14 @@ public class AbstractProductType implements ProductType {
 	}
 
 	@Override
-	public final void addProductFeatureType (ProductFeatureType productFeatureType){
-		Objects.requireNonNull(productFeatureType, "productFeatureType");
-		featureTypes.add(productFeatureType);
-		
+	public final boolean addProductFeature(ProductFeature productFeature){
+		Objects.requireNonNull(productFeature, "productFeature");
+		return productFeatures.add(productFeature);
 	}
 	
 	@Override
-	public final void removeProductFeatureType (ProductFeatureType productFeatureType){
-		Objects.requireNonNull(productFeatureType, "productFeatureType");
-		featureTypes.remove(productFeatureType);
+	public final boolean removeProductFeature(ProductFeature productFeature){
+		Objects.requireNonNull(productFeature, "productFeature");
+		return productFeatures.remove(productFeature);
 	}
-	
-
-	
 }

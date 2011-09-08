@@ -1,14 +1,14 @@
 package org.salespointframework.core.product.later;
 
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.ProductInstance;
+import org.salespointframework.core.product.Product;
 import org.salespointframework.core.quantity.Quantity;
 
 /**
  * This is an interface which provides basic methods to handle MeasuredProductInstances.
  * 
  */
-public interface MeasuredProductInstance extends ProductInstance {
+public interface MeasuredProductInstance extends Product {
 
 	/**
      * Returns the Quantity

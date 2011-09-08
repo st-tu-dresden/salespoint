@@ -5,7 +5,7 @@ import javax.persistence.TypedQuery;
 
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.database.ICanHasClass;
-import org.salespointframework.core.product.AbstractProductInstance;
+import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
@@ -14,7 +14,7 @@ import org.salespointframework.util.Objects;
 //public class AbstractInventory<T1 extends AbstractInventoryEntry<T2, T3>, T2 extends AbstractProductInstance<T3>, T3 extends AbstractProductType> 
 //implements Inventory<T1,T2,T3> {
 
-public abstract class AbstractInventory<T extends AbstractProductInstance> implements Inventory<T>, ICanHasClass<T> {
+public abstract class AbstractInventory<T extends PersistentProduct> implements Inventory<T>, ICanHasClass<T> {
 
 	final EntityManager entityManager;
 	

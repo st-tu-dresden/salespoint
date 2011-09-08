@@ -8,13 +8,13 @@ import javax.persistence.criteria.Root;
 
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.database.ICanHasClass;
-import org.salespointframework.core.product.AbstractProductType;
+import org.salespointframework.core.product.PersistentProductType;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
 // TODO
-public abstract class AbstractProductCatalog<T extends AbstractProductType>
+public abstract class AbstractProductCatalog<T extends PersistentProductType>
 		implements ProductCatalog<T>, ICanHasClass<T> {
 
 	private final EntityManager entityManager;

@@ -8,7 +8,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
-import org.salespointframework.core.product.AbstractProductInstance;
+import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.Objects;
 
@@ -22,7 +22,7 @@ import org.salespointframework.util.Objects;
 
 @Entity
 
-public abstract class AbstractServiceInstance extends AbstractProductInstance implements ServiceInstance {
+public abstract class AbstractServiceInstance extends PersistentProduct implements ServiceInstance {
 	//has embeddedid
 	@JoinColumn(name="SERVICETYPE_ID", referencedColumnName="ID")
 	private ServiceType serviceType;
