@@ -6,7 +6,7 @@ import javax.persistence.Embeddable;
 
 /**
  * A UserCapability is identified by a name and nothing else. You connect your
- * Capabilities to the User in your {@link AbstractUserManager}.
+ * Capabilities to the User in your {@link PersistentUserManager}.
  * 
  * @author Christopher Bellmann
  * 
@@ -44,17 +44,17 @@ public final class UserCapability implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (o instanceof UserCapability) {
-			return equals((UserCapability) o);
-		}
-		return false;
+	public boolean equals(Object other) {
+		if(other == null) return false;
+		if(other == this) return true;
+		if(!(other instanceof UserCapability)) return false;
+		return equals((UserCapability) other);
 	}
 
-	public final boolean equals(UserCapability uc) {
-		if (this.name.equals(uc.name))
-			return true;
-		return false;
+	public final boolean equals(UserCapability other) {
+		if(other == null) return false;
+		if(other == this) return false;
+		return this.name.equals(other.name);
 	}
 
 	@Override
