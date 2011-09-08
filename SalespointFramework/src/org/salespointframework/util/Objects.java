@@ -10,14 +10,7 @@ import java.util.Arrays;
  * 
  */
 public final class Objects {
-    private Objects() {
-    }
-
-    //TODO: Ist das Kunst oder kann das weg?
-    /*
-     * public static <T> T requireNonNull(T object) { if(object == null) { throw
-     * new ArgumentNullException(); } return object; }
-     */
+    private Objects() {}
 
     /**
      * This method is used to check if an object is <code>null</code> or not.
