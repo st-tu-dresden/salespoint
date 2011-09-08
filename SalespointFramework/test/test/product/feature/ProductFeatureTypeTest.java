@@ -8,44 +8,44 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.features.ProductFeature;
-import org.salespointframework.core.product.features.ProductFeatureType;
+import org.salespointframework.core.product.features.ProductFeature_old;
+import org.salespointframework.core.product.features.ProductFeatureType_old;
 import org.salespointframework.util.ArgumentNullException;
 
 public class ProductFeatureTypeTest {
 
-	private ProductFeature butter = ProductFeature.create("Butter",new Money(0.25));
-	private ProductFeature ecken = ProductFeature.create("52",new Money(0.52));
-	private ProductFeature[] productFeatures ={butter, ecken};
+	private ProductFeature_old butter = ProductFeature_old.create("Butter",new Money(0.25));
+	private ProductFeature_old ecken = ProductFeature_old.create("52",new Money(0.52));
+	private ProductFeature_old[] productFeatures ={butter, ecken};
 	
-	ProductFeatureType p1 = new ProductFeatureType("p1","",productFeatures);
-	ProductFeatureType p2 = new ProductFeatureType("p2","",productFeatures);
+	ProductFeatureType_old p1 = new ProductFeatureType_old("p1","",productFeatures);
+	ProductFeatureType_old p2 = new ProductFeatureType_old("p2","",productFeatures);
 	
 	@Test(expected=ArgumentNullException.class)
 	public void testNotNullName() {
 		@SuppressWarnings("unused")
-		ProductFeatureType p = new ProductFeatureType(null,"",productFeatures);
+		ProductFeatureType_old p = new ProductFeatureType_old(null,"",productFeatures);
 		
 	}
 	
 	@Test(expected=ArgumentNullException.class)
 	public void testNotNullDescription() {
 		@SuppressWarnings("unused")
-		ProductFeatureType p = new ProductFeatureType("p",null,productFeatures);
+		ProductFeatureType_old p = new ProductFeatureType_old("p",null,productFeatures);
 	
 	}
 	
 
 	@Test(expected=ArgumentNullException.class)
 	public void testNotNullFeatures() {
-		ProductFeature[] pf = null;
+		ProductFeature_old[] pf = null;
 		@SuppressWarnings("unused")
-		ProductFeatureType p = new ProductFeatureType("p","",pf);
+		ProductFeatureType_old p = new ProductFeatureType_old("p","",pf);
 	
 	}
 	@Test
 	public void testEquals1() {
-		ProductFeatureType p = p1;
+		ProductFeatureType_old p = p1;
 		
 		assertEquals(p,p1);
 		
@@ -53,7 +53,7 @@ public class ProductFeatureTypeTest {
 	
 	@Test
 	public void testNotEquals1() {
-		ProductFeatureType p = new ProductFeatureType("p1","",productFeatures);
+		ProductFeatureType_old p = new ProductFeatureType_old("p1","",productFeatures);
 		
 		assertNotSame(p, p1);
 	}
@@ -79,15 +79,15 @@ public class ProductFeatureTypeTest {
 	@Test
 	public void testGetPossibleValues(){
 		
-		 Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
+		 Map <String, ProductFeature_old> m1 = new HashMap<String, ProductFeature_old>();
 		 
-		 for(ProductFeature pf: p1.getProductFeatures()) {
+		 for(ProductFeature_old pf: p1.getProductFeatures()) {
 			    if (pf!=null){
 	    			m1.put(pf.getName(), pf);
 	    		}
 	    	}
 	     
-		 Map <String, ProductFeature> m2 = new HashMap<String, ProductFeature>();
+		 Map <String, ProductFeature_old> m2 = new HashMap<String, ProductFeature_old>();
 		 m2.put(butter.getName(), butter);
 		 m2.put(ecken.getName(), ecken);
 		 
@@ -119,17 +119,17 @@ public class ProductFeatureTypeTest {
 	@Test
 	public void testAddProductFeatures1(){
 		
-		ProductFeature zucker = ProductFeature.create("Zucker", new Money(0.75));
+		ProductFeature_old zucker = ProductFeature_old.create("Zucker", new Money(0.75));
 		p1.addFeature(zucker);
 		
-	    Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
-	    	for (ProductFeature pf : p1.getProductFeatures()){
+	    Map <String, ProductFeature_old> m1 = new HashMap<String, ProductFeature_old>();
+	    	for (ProductFeature_old pf : p1.getProductFeatures()){
 	    		if (pf!=null){
 	    			m1.put(pf.getName(), pf);
 	    		}
 	    	}
 	    
-	    Map <String, ProductFeature> m2 = new HashMap<String, ProductFeature>();
+	    Map <String, ProductFeature_old> m2 = new HashMap<String, ProductFeature_old>();
 		m2.put(butter.getName(), butter);
 		m2.put(ecken.getName(), ecken);
 		m2.put(zucker.getName(), zucker);	   
@@ -143,14 +143,14 @@ public class ProductFeatureTypeTest {
 		
 		p1.addFeature(butter);
 		
-	    Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
-	    	for (ProductFeature pf : p1.getProductFeatures()){
+	    Map <String, ProductFeature_old> m1 = new HashMap<String, ProductFeature_old>();
+	    	for (ProductFeature_old pf : p1.getProductFeatures()){
 	    		if (pf!=null){
 	    			m1.put(pf.getName(), pf);
 	    		}
 	    	}
 	    
-	    Map <String, ProductFeature> m2 = new HashMap<String, ProductFeature>();
+	    Map <String, ProductFeature_old> m2 = new HashMap<String, ProductFeature_old>();
 		m2.put(butter.getName(), butter);
 		m2.put(ecken.getName(), ecken);	   
 	      
@@ -163,14 +163,14 @@ public class ProductFeatureTypeTest {
 		
 		p1.removeFeature(butter.getName());
 		
-		Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
-    	for (ProductFeature pf : p1.getProductFeatures()){
+		Map <String, ProductFeature_old> m1 = new HashMap<String, ProductFeature_old>();
+    	for (ProductFeature_old pf : p1.getProductFeatures()){
     		if (pf!=null){
     			m1.put(pf.getName(), pf);
     		}
     	}
     	
-    	Map <String, ProductFeature> m2 = new HashMap<String, ProductFeature>();
+    	Map <String, ProductFeature_old> m2 = new HashMap<String, ProductFeature_old>();
 		m2.put(ecken.getName(), ecken);	   
 	    
     	
@@ -181,19 +181,19 @@ public class ProductFeatureTypeTest {
 	@Test
 	public void testRemoveProductFeatures2(){
 		
-		ProductFeature zucker = ProductFeature.create("Zucker", new Money(0.75));
+		ProductFeature_old zucker = ProductFeature_old.create("Zucker", new Money(0.75));
 		
 		p1.removeFeature(butter.getName());
 		p1.removeFeature(zucker.getName());
 		
-		Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
-    	for (ProductFeature pf : p1.getProductFeatures()){
+		Map <String, ProductFeature_old> m1 = new HashMap<String, ProductFeature_old>();
+    	for (ProductFeature_old pf : p1.getProductFeatures()){
     		if (pf!=null){
     			m1.put(pf.getName(), pf);
     		}
     	}
     	
-    	Map <String, ProductFeature> m2 = new HashMap<String, ProductFeature>();
+    	Map <String, ProductFeature_old> m2 = new HashMap<String, ProductFeature_old>();
 		m2.put(ecken.getName(), ecken);	   
 	    
     	
@@ -205,21 +205,21 @@ public class ProductFeatureTypeTest {
 	@Test
 	public void testPossibleValues(){
 		
-		ProductFeature zucker = ProductFeature.create("Zucker", new Money(0.75));
+		ProductFeature_old zucker = ProductFeature_old.create("Zucker", new Money(0.75));
 		
 		p1.removeFeature(butter.getName());
 		p1.addFeature(zucker);
 		p1.addFeature(butter);
 		p1.removeFeature(zucker.getName());
 		
-		Map <String, ProductFeature> m1 = new HashMap<String, ProductFeature>();
-    	for (ProductFeature pf : p1.getProductFeatures()){
+		Map <String, ProductFeature_old> m1 = new HashMap<String, ProductFeature_old>();
+    	for (ProductFeature_old pf : p1.getProductFeatures()){
     		if (pf!=null){
     			m1.put(pf.getName(), pf);
     		}
     	}
     	
-    	Map <String, ProductFeature> m2 = new HashMap<String, ProductFeature>();
+    	Map <String, ProductFeature_old> m2 = new HashMap<String, ProductFeature_old>();
     	m2.put(ecken.getName(), ecken);	   
     	m2.put(butter.getName(), butter);	   
 	    

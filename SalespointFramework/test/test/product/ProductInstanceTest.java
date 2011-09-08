@@ -11,8 +11,8 @@ import java.util.Map;
 import org.apache.derby.database.Database;
 import org.junit.Test;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.features.ProductFeature;
-import org.salespointframework.core.product.features.ProductFeatureType;
+import org.salespointframework.core.product.features.ProductFeature_old;
+import org.salespointframework.core.product.features.ProductFeatureType_old;
 
 import test.catalog.KeksCatalog;
 
@@ -28,11 +28,11 @@ public class ProductInstanceTest {
 	private KeksInstance k2 = new KeksInstance(keks1);
 	private KeksInstance k3 = new KeksInstance(keks2);
 	
-	private ProductFeature butter = ProductFeature.create("Butter",new Money(0.25));
-	private ProductFeature ecken = ProductFeature.create("52",new Money(0.52));
+	private ProductFeature_old butter = ProductFeature_old.create("Butter",new Money(0.25));
+	private ProductFeature_old ecken = ProductFeature_old.create("52",new Money(0.52));
 	
-	private ProductFeature[] productFeatures ={butter, ecken};
-	private ProductFeatureType Butterkeks = new ProductFeatureType("Butterkeks", "", productFeatures);
+	private ProductFeature_old[] productFeatures ={butter, ecken};
+	private ProductFeatureType_old Butterkeks = new ProductFeatureType_old("Butterkeks", "", productFeatures);
 	 
 	
 	@Test

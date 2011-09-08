@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.features.ProductFeature;
+import org.salespointframework.core.product.features.ProductFeature_old;
 import org.salespointframework.core.product.later.ServiceDeliveryStatus;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.ArgumentNullException;
