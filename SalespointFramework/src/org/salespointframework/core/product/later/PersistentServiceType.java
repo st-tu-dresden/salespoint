@@ -21,18 +21,15 @@ import org.salespointframework.util.Objects;
 
 
 @Entity
+public class PersistentServiceType extends PersistentProductType implements ServiceType{
 
-public abstract class AbstractServiceType extends PersistentProductType implements ServiceType{
-
-	
-	//TODO long -> Date
 	@Temporal(TemporalType.TIMESTAMP)
 	protected Date startOfPeriodOfOperation;
 	@Temporal(TemporalType.TIMESTAMP)
 	protected Date endOfPeriodOfOperation;
 	
 	@Deprecated
-	protected AbstractServiceType(){
+	protected PersistentServiceType(){
 	}
 	
 	/**
@@ -43,7 +40,7 @@ public abstract class AbstractServiceType extends PersistentProductType implemen
      * The start of the ServiceType is now. 
      * 
      */
-	public AbstractServiceType( String name, Money price){
+	public PersistentServiceType( String name, Money price){
 		super( name, price);
 		Objects.requireNonNull(name, "name");
 		Objects.requireNonNull(price, "price");
@@ -66,7 +63,7 @@ public abstract class AbstractServiceType extends PersistentProductType implemen
      * @throws IllegalArgumentException
      *             if the end is before now
      */
-	public AbstractServiceType(String name, Money price, DateTime start, DateTime end){
+	public PersistentServiceType(String name, Money price, DateTime start, DateTime end){
 		super( name, price);
 		Objects.requireNonNull(name, "name");
 		Objects.requireNonNull(price, "price");

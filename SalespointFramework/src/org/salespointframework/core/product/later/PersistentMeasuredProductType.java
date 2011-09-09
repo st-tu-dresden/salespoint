@@ -18,15 +18,14 @@ import org.salespointframework.util.Objects;
  */
 
 @Entity
-
-public abstract class AbstractMeasuredProductType extends PersistentProductType implements MeasuredProductType{
+public class PersistentMeasuredProductType extends PersistentProductType implements MeasuredProductType {
 	
 	private Quantity quantityOnHand;
 	private Metric preferredMetric;
 	private Money unitPrice;
 
 	@Deprecated
-	protected AbstractMeasuredProductType(){ }
+	protected PersistentMeasuredProductType(){ }
 	
 	/**
      * Parameterized constructor with
@@ -34,7 +33,7 @@ public abstract class AbstractMeasuredProductType extends PersistentProductType 
      * @param price The price of the quantity of this MeasuredProductType
      * @param quantityOnHand The quantity of this MeasuredProductType, which is available.
      */
-	public AbstractMeasuredProductType(String name, Money price, Quantity quantityOnHand){
+	public PersistentMeasuredProductType(String name, Money price, Quantity quantityOnHand){
 		super( name, price);
 		Objects.requireNonNull(name, "name");
 		this.quantityOnHand = Objects.requireNonNull(quantityOnHand, "quantityOnHand");
@@ -69,7 +68,7 @@ public abstract class AbstractMeasuredProductType extends PersistentProductType 
 	
 	/**
 	 * Add the quantity of this amount to the available quantity of the MeasuredProductType
-	 * @param amount of the quantity which add to the {@link AbstractMeasuredProductType#quantityOnHand} of this MeasuredProductType
+	 * @param amount of the quantity which add to the {@link PersistentMeasuredProductType#quantityOnHand} of this MeasuredProductType
 	 * @throws IllegalArgumentException
 	 * The {@link IllegalArgumentException} will be thrown, if the amount 
 	 * of the quantity is negative. 
@@ -86,7 +85,7 @@ public abstract class AbstractMeasuredProductType extends PersistentProductType 
 	
 	/**
 	 * Add the quantity of this amount to the available quantity of the MeasuredProductType
-	 * @param amount of the quantity which add to the {@link AbstractMeasuredProductType#quantityOnHand} of this MeasuredProductType
+	 * @param amount of the quantity which add to the {@link PersistentMeasuredProductType#quantityOnHand} of this MeasuredProductType
 	 * @throws IllegalArgumentException
 	 * The {@link IllegalArgumentException} will be thrown, if the amount 
 	 * of the quantity is negative. 
@@ -103,7 +102,7 @@ public abstract class AbstractMeasuredProductType extends PersistentProductType 
 	
 	/**
 	 * Add the quantity of this amount to the available quantity of the MeasuredProductType
-	 * @param amount of the quantity which add to the {@link AbstractMeasuredProductType#quantityOnHand} of this MeasuredProductType
+	 * @param amount of the quantity which add to the {@link PersistentMeasuredProductType#quantityOnHand} of this MeasuredProductType
 	 * @throws IllegalArgumentException
 	 * The {@link IllegalArgumentException} will be thrown, if the amount 
 	 * of the quantity is negative. 
@@ -120,7 +119,7 @@ public abstract class AbstractMeasuredProductType extends PersistentProductType 
 	
 	/**
 	 * Add the quantity of this amount to the available quantity of the MeasuredProductType
-	 * @param amount of the quantity which add to the {@link AbstractMeasuredProductType#quantityOnHand} of this MeasuredProductType
+	 * @param amount of the quantity which add to the {@link PersistentMeasuredProductType#quantityOnHand} of this MeasuredProductType
 	 * @throws IllegalArgumentException
 	 * The {@link IllegalArgumentException} will be thrown, if the amount 
 	 * of the quantity is negative. 
@@ -137,7 +136,7 @@ public abstract class AbstractMeasuredProductType extends PersistentProductType 
 	
 	/**
 	 * Add the quantity of this amount to the available quantity of the MeasuredProductType
-	 * @param amount of the quantity which add to the {@link AbstractMeasuredProductType#quantityOnHand} of this MeasuredProductType
+	 * @param amount of the quantity which add to the {@link PersistentMeasuredProductType#quantityOnHand} of this MeasuredProductType
 	 * @throws IllegalArgumentException
 	 * The {@link IllegalArgumentException} will be thrown, if the amount 
 	 * of the quantity is negative. 
@@ -165,7 +164,7 @@ public abstract class AbstractMeasuredProductType extends PersistentProductType 
 	
 	/**
      * Subtract this amount from the available quantity of the MeasuredProductType  
-     * @param amount of the quantity which reduces the {@link AbstractMeasuredProductType#quantityOnHand} of the MeasuredProductType
+     * @param amount of the quantity which reduces the {@link PersistentMeasuredProductType#quantityOnHand} of the MeasuredProductType
      * @throws IllegalArgumentException
      * The {@link IllegalArgumentException} will be thrown, if the amount 
      * of the quantity is negative and if the quantity, which will be subtract, is greater than
@@ -186,7 +185,7 @@ public abstract class AbstractMeasuredProductType extends PersistentProductType 
 	
 	/**
      * Subtract this amount from the available quantity of the MeasuredProductType  
-     * @param amount of the quantity which reduces the {@link AbstractMeasuredProductType#quantityOnHand} of the MeasuredProductType
+     * @param amount of the quantity which reduces the {@link PersistentMeasuredProductType#quantityOnHand} of the MeasuredProductType
      * @throws IllegalArgumentException
      * The {@link IllegalArgumentException} will be thrown, if the amount 
      * of the quantity is negative and if the quantity, which will be subtract, is greater than
@@ -207,7 +206,7 @@ public abstract class AbstractMeasuredProductType extends PersistentProductType 
 	
 	/**
      * Subtract this amount from the available quantity of the MeasuredProductType  
-     * @param amount of the quantity which reduces the {@link AbstractMeasuredProductType#quantityOnHand} of the MeasuredProductType
+     * @param amount of the quantity which reduces the {@link PersistentMeasuredProductType#quantityOnHand} of the MeasuredProductType
      * @throws IllegalArgumentException
      * The {@link IllegalArgumentException} will be thrown, if the amount 
      * of the quantity is negative and if the quantity, which will be subtract, is greater than
@@ -228,7 +227,7 @@ public abstract class AbstractMeasuredProductType extends PersistentProductType 
 	
 	/**
      * Subtract this amount from the available quantity of the MeasuredProductType  
-     * @param amount of the quantity which reduces the {@link AbstractMeasuredProductType#quantityOnHand} of the MeasuredProductType
+     * @param amount of the quantity which reduces the {@link PersistentMeasuredProductType#quantityOnHand} of the MeasuredProductType
      * @throws IllegalArgumentException
      * The {@link IllegalArgumentException} will be thrown, if the amount 
      * of the quantity is negative and if the quantity, which will be subtract, is greater than
@@ -249,7 +248,7 @@ public abstract class AbstractMeasuredProductType extends PersistentProductType 
 	
 	/**
      * Subtract this amount from the available quantity of the MeasuredProductType  
-     * @param amount of the quantity which reduces the {@link AbstractMeasuredProductType#quantityOnHand} of the MeasuredProductType
+     * @param amount of the quantity which reduces the {@link PersistentMeasuredProductType#quantityOnHand} of the MeasuredProductType
      * @throws IllegalArgumentException
      * The {@link IllegalArgumentException} will be thrown, if the amount 
      * of the quantity is negative and if the quantity, which will be subtract, is greater than

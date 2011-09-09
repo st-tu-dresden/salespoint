@@ -8,7 +8,7 @@ import org.salespointframework.core.quantity.Quantity;
  * This is an interface which provides basic methods to handle MeasuredProductInstances.
  * 
  */
-public interface MeasuredProductInstance extends Product {
+public interface MeasuredProduct extends Product {
 
 	/**
      * Returns the Quantity

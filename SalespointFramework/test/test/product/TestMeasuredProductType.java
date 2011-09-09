@@ -1,10 +1,10 @@
 package test.product;
 
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.later.AbstractMeasuredProductType;
+import org.salespointframework.core.product.later.PersistentMeasuredProductType;
 import org.salespointframework.core.quantity.Quantity;
 
-public class TestMeasuredProductType extends AbstractMeasuredProductType{
+public class TestMeasuredProductType extends PersistentMeasuredProductType{
 	
 	@Deprecated
 	protected TestMeasuredProductType(){

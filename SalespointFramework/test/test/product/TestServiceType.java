@@ -4,10 +4,10 @@ import javax.persistence.Entity;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.later.AbstractServiceType;
+import org.salespointframework.core.product.later.PersistentServiceType;
 
 @Entity
-public class TestServiceType extends AbstractServiceType{
+public class TestServiceType extends PersistentServiceType{
 
 		@Deprecated
 		protected TestServiceType() {

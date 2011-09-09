@@ -1,7 +1,5 @@
 package org.salespointframework.core.product.later;
 
-import java.math.BigDecimal;
-
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.ProductType;
 import org.salespointframework.core.quantity.Metric;
@@ -12,7 +10,6 @@ import org.salespointframework.core.quantity.Quantity;
  * 
  */
 
-// TODO, die vielen add und reduce methoden sind ziemlich redundant 
 public interface MeasuredProductType extends ProductType {
 
 	/**
@@ -35,13 +32,13 @@ public interface MeasuredProductType extends ProductType {
 	
 	/**
 	 * Add this quantity to the available quantity of the MeasuredProductType
-	 * @param quantity which add to the {@link AbstractMeasuredProductType#quantityOnHand} of this MeasuredProductType
+	 * @param quantity which add to the {@link PersistentMeasuredProductType#quantityOnHand} of this MeasuredProductType
 	 */
 	public void addQuantity(Quantity quantity);
 	
 	/**
      * Subtract this quantity from the available quantity of the MeasuredProductType  
-     * @param quantity which reduces the {@link AbstractMeasuredProductType#quantityOnHand} of the MeasuredProductType
+     * @param quantity which reduces the {@link PersistentMeasuredProductType#quantityOnHand} of the MeasuredProductType
      * @throws IllegalArgumentException
 	 * The {@link IllegalArgumentException} will be thrown, if the amount 
 	 * of the quantity is negative. 

@@ -19,20 +19,20 @@ import org.salespointframework.util.Objects;
 
 @Entity
 
-public abstract class AbstractMeasuredProductInstance extends PersistentProduct implements MeasuredProductInstance {
+public class PersistentMeasuredProduct extends PersistentProduct implements MeasuredProduct {
 
 	private Quantity quantity;
 	private Money unitPrice;
 	
 	@Deprecated
-	protected AbstractMeasuredProductInstance(){}
+	protected PersistentMeasuredProduct(){}
 	
 	/**
      * Parameterized constructor with 
      * @param productType The productType of this MeasuredProductInstance
      * @param quantity The quantity of this MeasuredProductInstance
      */
-	public AbstractMeasuredProductInstance(MeasuredProductType productType, Quantity quantity) {
+	public PersistentMeasuredProduct(MeasuredProductType productType, Quantity quantity) {
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
 		this.unitPrice = productType.getUnitPrice();
@@ -45,7 +45,7 @@ public abstract class AbstractMeasuredProductInstance extends PersistentProduct 
      * @param productType The productType of this MeasuredProductInstance
      * @param amount The amount of the quantity, which will be used for this MeasuredProductInstance as Integer Value.
      */
-	public AbstractMeasuredProductInstance(MeasuredProductType productType, int amount) {
+	public PersistentMeasuredProduct(MeasuredProductType productType, int amount) {
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
 		this.unitPrice = productType.getUnitPrice();
@@ -58,7 +58,7 @@ public abstract class AbstractMeasuredProductInstance extends PersistentProduct 
      * @param productType The productType of this MeasuredProductInstance
      * @param amount The amount of the quantity, which will be used for this MeasuredProductInstance as BigDecimal Value.
      */
-	public AbstractMeasuredProductInstance(MeasuredProductType productType, BigDecimal amount) {
+	public PersistentMeasuredProduct(MeasuredProductType productType, BigDecimal amount) {
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
 		this.unitPrice = productType.getUnitPrice();
@@ -71,7 +71,7 @@ public abstract class AbstractMeasuredProductInstance extends PersistentProduct 
      * @param productType The productType of this MeasuredProductInstance
      * @param amount The amount of the quantity, which will be used for this MeasuredProductInstance as Long Value.
      */
-	public AbstractMeasuredProductInstance(MeasuredProductType productType, long amount) {
+	public PersistentMeasuredProduct(MeasuredProductType productType, long amount) {
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
 		this.unitPrice = productType.getUnitPrice();
@@ -84,7 +84,7 @@ public abstract class AbstractMeasuredProductInstance extends PersistentProduct 
      * @param productType The productType of this MeasuredProductInstance
      * @param amount The amount of the quantity, which will be used for this MeasuredProductInstance as Float Value.
      */
-	public AbstractMeasuredProductInstance(MeasuredProductType productType, float amount) {
+	public PersistentMeasuredProduct(MeasuredProductType productType, float amount) {
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
 		this.unitPrice = productType.getUnitPrice();
@@ -97,7 +97,7 @@ public abstract class AbstractMeasuredProductInstance extends PersistentProduct 
      * @param productType The productType of this MeasuredProductInstance
      * @param amount The amount of the quantity, which will be used for this MeasuredProductInstance as Double Value.
      */
-	public AbstractMeasuredProductInstance(MeasuredProductType productType, double amount) {
+	public PersistentMeasuredProduct(MeasuredProductType productType, double amount) {
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
 		this.unitPrice = productType.getUnitPrice();
@@ -119,12 +119,12 @@ public abstract class AbstractMeasuredProductInstance extends PersistentProduct 
 	public boolean equals(Object other) {
 		if(other == null) return false;
 		if(other == this) return true;
-		if(!(other instanceof MeasuredProductInstance)) return false;
-		return this.equals((MeasuredProductInstance)other);
+		if(!(other instanceof MeasuredProduct)) return false;
+		return this.equals((MeasuredProduct)other);
 	}
 	
 	/**
-	 * Determines if the given {@link MeasuredProductInstance} is equal to this one or
+	 * Determines if the given {@link MeasuredProduct} is equal to this one or
 	 * not. Two MeasuredProductInstances are equal to each other, if their hash code is
 	 * the same.
 	 * 
@@ -135,7 +135,7 @@ public abstract class AbstractMeasuredProductInstance extends PersistentProduct 
 	 *         <code>false</code> otherwise.
 	 */
 	
-	public boolean equals(MeasuredProductInstance other) {
+	public boolean equals(MeasuredProduct other) {
 		if(other == null) return false;
 		if(other == this) return true;
 		return this.getSerialNumber().equals(other.getSerialNumber());

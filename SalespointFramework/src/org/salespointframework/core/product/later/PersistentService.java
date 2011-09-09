@@ -22,7 +22,7 @@ import org.salespointframework.util.Objects;
 
 @Entity
 
-public abstract class AbstractServiceInstance extends PersistentProduct implements ServiceInstance {
+public class PersistentService extends PersistentProduct implements ServiceInstance {
 	//has embeddedid
 	@JoinColumn(name="SERVICETYPE_ID", referencedColumnName="ID")
 	private ServiceType serviceType;
@@ -34,7 +34,7 @@ public abstract class AbstractServiceInstance extends PersistentProduct implemen
 	private ServiceDeliveryStatus serviceDeliveryStatus;
 	
 	@Deprecated
-	protected AbstractServiceInstance(){}
+	protected PersistentService(){}
 	
 	/**
      * Parameterized constructor with 
@@ -48,7 +48,7 @@ public abstract class AbstractServiceInstance extends PersistentProduct implemen
      * @throws IllegalArgumentException
      *             if the end is after the end of the ServiceType
      */
-	public AbstractServiceInstance(ServiceType serviceType, DateTime start, DateTime end) {
+	public PersistentService(ServiceType serviceType, DateTime start, DateTime end) {
 		super(serviceType);
 		this.serviceType = Objects.requireNonNull(serviceType, "serviceType");
 		Objects.requireNonNull(start,"start"); 
