@@ -1,12 +1,10 @@
 package org.salespointframework.core.shop;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.time.DefaultTime;
 import org.salespointframework.core.time.Time;
+import org.salespointframework.core.users.User;
 import org.salespointframework.core.users.UserManager;
 import org.salespointframework.util.Objects;
 
@@ -16,7 +14,7 @@ public enum Shop {
 	private Time time = new DefaultTime();
 	private Accountancy accountancy;
 	private OrderManager ordermanager;
-	private Map<String, UserManager<?>> userManagerMap = new HashMap<String, UserManager<?>>();
+	private UserManager<User> usermanager;
 
 	public void setAccountancy(final Accountancy accountancy) {
 		Objects.requireNonNull(accountancy, "accountancy");
@@ -44,21 +42,11 @@ public enum Shop {
 		return time;
 	}
 
-	public void addUserManager(final String name,
-			final UserManager<?> userManager) {
-		Objects.requireNonNull(name, "name");
-		Objects.requireNonNull(userManager, "userManager");
-		userManagerMap.put(name, userManager);
+	public void setUserManager(final UserManager<User> userManager) {
+		this.usermanager = Objects.requireNonNull(userManager, "userManager");
 	}
 
-	public UserManager<?> getUserManager(final String name) {
-		Objects.requireNonNull(name, "name");
-		return userManagerMap.get(name);
+	public UserManager<User> getUserManager() {
+		return usermanager;
 	}
-
-	public void removeUserManager(final String name) {
-		Objects.requireNonNull(name, "name");
-		userManagerMap.remove(name);
-	}
-
 }
