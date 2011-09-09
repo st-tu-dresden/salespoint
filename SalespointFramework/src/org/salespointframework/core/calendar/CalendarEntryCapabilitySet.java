@@ -1,6 +1,7 @@
 package org.salespointframework.core.calendar;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,12 +22,13 @@ import org.salespointframework.util.Iterables;
  * @author Stanley Förster
  * 
  */
-@Entity
+//@Entity
 class CalendarEntryCapabilitySet {
     /**
      * A set that stores the user's capabilities for the calendar entry.
      */
     @ElementCollection
+    //private EnumSet<CalendarEntryCapability> capabilities = EnumSet.noneOf(CalendarEntryCapability.class); 
     private Set<CalendarEntryCapability> capabilities = new HashSet<CalendarEntryCapability>();
 
     /**
