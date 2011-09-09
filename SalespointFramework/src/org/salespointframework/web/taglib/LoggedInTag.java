@@ -12,23 +12,16 @@ public class LoggedInTag extends BodyTagSupport {
 	private static final long serialVersionUID = 1L;
 	
 	private boolean status = true;
-	private String usermanagerName;
 
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
 
-	public void setUserManagerName(String usermanagerName) {
-		this.usermanagerName = usermanagerName;
-	}
-
 	@Override
 	public int doStartTag() throws JspException {
 
-		@SuppressWarnings("unchecked")
-		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE
-				.getUserManager(usermanagerName);
-		User user = usermanager.getUserByToken(pageContext.getSession());
+		UserManager<User> usermanager = Shop.INSTANCE.getUserManager();
+		User user = usermanager.getUserByToken(User.class, pageContext.getSession());
 
 		if (status) {
 			return user == null ? SKIP_BODY : EVAL_BODY_INCLUDE;

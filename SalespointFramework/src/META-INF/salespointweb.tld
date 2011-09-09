@@ -13,13 +13,6 @@
 		<description>If the current User has the given Capability, the content
 			of the tag will be rendered - otherwise not.</description>
 		<attribute>
-			<name>usermanagerName</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>The name of the Usermanager</description>
-		</attribute>
-		<attribute>
 			<name>capabilityName</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -31,15 +24,8 @@
 	<tag>
 		<name>LoggedIn</name>
 		<tag-class>org.salespointframework.web.taglib.LoggedInTag</tag-class>
-		<description>depending on boolean value the body will rendered if the
+		<description>Depending on boolean value the body will rendered if the
 			current user is logged in else not</description>
-		<attribute>
-			<name>usermanagerName</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>The name of the Usermanager</description>
-		</attribute>
 		<attribute>
 			<name>status</name>
 			<required>true</required>

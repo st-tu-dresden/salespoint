@@ -22,17 +22,16 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		
 		Map<String,String[]> params = request.getParameterMap();
 	
-		if(!params.containsKey(WebConstants.LOGIN_PARAM)) {
+		if(!params.containsKey(WebConstants.SP_LOGIN_PARAM)) {
 			return;
 		}
 		
-		String identifier = params.get(WebConstants.LOGIN_PARAM_IDENTIFIER)[0];
-		String password = params.get(WebConstants.LOGIN_PARAM_PASSWORD)[0];
-		String usermanagerName = params.get(WebConstants.LOGIN_PARAM_USERMANAGER)[0];
+		String identifier = params.get(WebConstants.SP_LOGIN_PARAM_IDENTIFIER)[0];
+		String password = params.get(WebConstants.SP_LOGIN_PARAM_PASSWORD)[0];
 		
 		UserIdentifier userIdentifier = new UserIdentifier(identifier);		
 		@SuppressWarnings("unchecked")
-		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager(usermanagerName);
+		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
 		
 		User user = usermanager.getUserByIdentifier(User.class, userIdentifier);
 		
