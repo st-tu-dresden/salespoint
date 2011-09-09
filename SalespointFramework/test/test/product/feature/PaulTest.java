@@ -13,6 +13,8 @@ import org.salespointframework.core.product.features.ProductFeatureType_old;
 import test.catalog.KeksCatalog;
 import test.product.KeksProduct;
 
+
+// FIXME
 public class PaulTest {
 
 	private EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
@@ -26,7 +28,7 @@ public class PaulTest {
 	public void testPAUL() {
 		KeksProduct keks1 = new KeksProduct("Keks", Money.OVER9000);
 		ProductFeatureType_old pft = new ProductFeatureType_old("Farbe", "", ProductFeature_old.create("Blau", Money.ZERO), ProductFeature_old.create("Gelb", Money.ZERO));
-		keks1.addProductFeatureType(pft);
+		//keks1.addProductFeatureType(pft);
 		
 		EntityManager em = emf.createEntityManager();
 		
