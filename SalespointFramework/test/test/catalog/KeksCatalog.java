@@ -1,20 +1,12 @@
 package test.catalog;
 
-import javax.persistence.EntityManager;
+import org.salespointframework.core.catalog.PersistentCatalog;
 
-import org.salespointframework.core.catalog.AbstractProductCatalog;
 
-import test.product.KeksProduct;
+// TODO Delete, Legacy Code
 
-public class KeksCatalog extends AbstractProductCatalog<KeksProduct> {
 
-	public KeksCatalog(EntityManager entityManager) {
-		super(entityManager);
-	}
+public class KeksCatalog extends PersistentCatalog {
 
-	@Override
-	public Class<KeksProduct> getContentClass() {
-		return KeksProduct.class;
-	}
 
 }

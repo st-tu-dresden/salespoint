@@ -99,4 +99,11 @@ public class PersistentProduct implements Product {
 	public final int hashCode() {
 		return serialNumber.hashCode();
 	}
+	
+	
+	// TODO Name? -> erfordert Attribut Name
+	@Override
+	public String toString() {
+		return this.serialNumber.toString();
+	}
 }

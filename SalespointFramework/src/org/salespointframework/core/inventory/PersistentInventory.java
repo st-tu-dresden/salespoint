@@ -2,7 +2,6 @@ package org.salespointframework.core.inventory;
 
 import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.product.ProductType;
-import org.salespointframework.core.product.features.ProductFeature_old;
 import org.salespointframework.core.product.features.ProductFeatureSet;
 
 public class PersistentInventory {

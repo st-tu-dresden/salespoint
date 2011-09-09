@@ -1,24 +1,18 @@
 package test.product.feature;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.salespointframework.core.catalog.PersistentCatalog;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.features.ProductFeature_old;
-import org.salespointframework.core.product.features.ProductFeatureType_old;
-
-import test.catalog.KeksCatalog;
-import test.product.KeksProduct;
-
+import org.salespointframework.core.product.PersistentProductType;
+import org.salespointframework.core.product.ProductFeature;
 
 // FIXME
 public class PaulTest {
 
-	private EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
-	
 	@BeforeClass
 	public static void setUp() {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
@@ -26,18 +20,14 @@ public class PaulTest {
 	
 	@Test
 	public void testPAUL() {
-		KeksProduct keks1 = new KeksProduct("Keks", Money.OVER9000);
-		ProductFeatureType_old pft = new ProductFeatureType_old("Farbe", "", ProductFeature_old.create("Blau", Money.ZERO), ProductFeature_old.create("Gelb", Money.ZERO));
-		//keks1.addProductFeatureType(pft);
+		PersistentProductType cookie = new PersistentProductType("Cookie", new Money(10));
+		ProductFeature pf1 = ProductFeature.create("Crispyness", "crisp", Money.ZERO);
+		ProductFeature pf2 = ProductFeature.create("Crispyness", "hard", Money.ZERO);
 		
-		EntityManager em = emf.createEntityManager();
+		cookie.addProductFeature(pf1);
+		cookie.addProductFeature(pf2);
 		
-
-		KeksCatalog  catalog = new KeksCatalog(em);
-		catalog.addProductType(keks1);
-		
-		em.getTransaction().begin();
-		em.getTransaction().commit();
-		
+		PersistentCatalog catalog = new PersistentCatalog();
+		catalog.add(cookie);
 	}
 }

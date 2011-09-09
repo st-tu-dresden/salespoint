@@ -30,7 +30,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		String password = params.get(WebConstants.SP_LOGIN_PARAM_PASSWORD)[0];
 		
 		UserIdentifier userIdentifier = new UserIdentifier(identifier);		
-		@SuppressWarnings("unchecked")
 		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
 		
 		User user = usermanager.getUserByIdentifier(User.class, userIdentifier);

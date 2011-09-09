@@ -1,16 +1,11 @@
 package org.salespointframework.core.product;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Iterables;
@@ -29,9 +24,6 @@ public class PersistentProductType implements ProductType {
 	//@OneToMany(cascade = CascadeType.ALL)
 	@ElementCollection
 	private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
-	
-	//private Set<ProductFeatureType> featureTypes = new HashSet<ProductFeatureType>();
-	
 	
 	@Deprecated
 	protected PersistentProductType() { }
@@ -71,6 +63,11 @@ public class PersistentProductType implements ProductType {
 		return price;
 	}
 
+	@Override
+	public String toString() {
+		return name;
+	}
+	
 	@Override
 	public final Iterable<ProductFeature> getProductFeatures() {
 		return Iterables.from(productFeatures);
