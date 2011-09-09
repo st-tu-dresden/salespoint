@@ -1,5 +1,6 @@
 package org.salespointframework.core.calendar;
 
+import java.util.EnumSet;
 
 /**
  * This enum stores capabilities which users can have relative to calendar
@@ -8,10 +9,9 @@ package org.salespointframework.core.calendar;
  * @author Stanley Förster
  * 
  */
+
 public enum CalendarEntryCapability {
-    OWNER,
-    READ,
-    SHARE,
-    DELETE,
-    WRITE
+	READ, SHARE, DELETE, WRITE;
+	
+	public static final EnumSet<CalendarEntryCapability> CAPBILITY_ALL = EnumSet.allOf(CalendarEntryCapability.class);
 }

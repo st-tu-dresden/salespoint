@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.joda.time.DateTime;
+import org.joda.time.Interval;
+import org.joda.time.Period;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.calendar.CalendarEntryCapability;
@@ -45,16 +47,18 @@ public class CalendarEntryTest {
 	public void testNotNullTitle2() {
 		testEntry1.setTitle(null);
 	}
-	
-	@Test(expected=ArgumentNullException.class)
+	/* Exceptions are bad anyway. */
+	@Test//(expected=ArgumentNullException.class)
 	public void testNotNullStart() {
+		//null == now
 		@SuppressWarnings("unused")
 		PersistentCalendarEntry testEntry = new PersistentCalendarEntry(new UserIdentifier("owner"), "meeting", null, new DateTime());
 	}
 	
-	@Test(expected=ArgumentNullException.class)
+	@Test//(expected=ArgumentNullException.class)
 	public void testNotNullEnd() {
 		@SuppressWarnings("unused")
+		//null == now
 		PersistentCalendarEntry testEntry = new PersistentCalendarEntry(new UserIdentifier("owner"), "meeting", new DateTime(), null);
 	}
 	
@@ -288,4 +292,14 @@ public class CalendarEntryTest {
     	
     	assertEquals(l1,l2);
 	}
+	
+	@Test
+	public void countingTest() {
+		PersistentCalendarEntry e = new PersistentCalendarEntry(new UserIdentifier(), "test", new Interval(new DateTime(), new DateTime().plusHours(1)), "desc", Period.days(2), -1);
+		
+		for(Interval i : e.getEntryList(11)) {
+			System.out.println(i);
+		}
+	}
+	
 }

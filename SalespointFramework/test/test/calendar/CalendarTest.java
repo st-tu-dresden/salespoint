@@ -14,7 +14,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.calendar.CalendarEntry;
 import org.salespointframework.core.calendar.CalendarEntryCapability;
-import org.salespointframework.core.calendar.DuplicatedOwnerExcepion;
 import org.salespointframework.core.calendar.PersistentCalendar;
 import org.salespointframework.core.calendar.PersistentCalendarEntry;
 import org.salespointframework.core.database.Database;
@@ -36,17 +35,9 @@ public class CalendarTest {
         PersistentCalendar calendar = new PersistentCalendar();
         PersistentCalendarEntry entry = new PersistentCalendarEntry(new Worker().getUserIdentifier(), "addEntry", basicDateTime, basicDateTime.plusMinutes(30));
         calendar.addEntry(entry);
-        
         assertEquals(entry, calendar.getEntryByID(entry.getCalendarEntryIdentifier()));
     }
     
-    @Test(expected=DuplicatedOwnerExcepion.class)
-    public void addSecondOwner() {
-        PersistentCalendar calendar = new PersistentCalendar();
-        PersistentCalendarEntry entry = new PersistentCalendarEntry(new Worker().getUserIdentifier(), "addSecondOwner", basicDateTime, basicDateTime.plusMinutes(15));
-        calendar.addEntry(entry);
-        entry.addCapability(new Worker().getUserIdentifier(), CalendarEntryCapability.OWNER);
-    }
     
     @Test
     public void testOwnership() {

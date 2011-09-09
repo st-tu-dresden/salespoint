@@ -1,7 +1,6 @@
 package org.salespointframework.core.calendar;
 
 import javax.persistence.Embeddable;
-
 import org.salespointframework.util.SalespointIdentifier;
 
 @Embeddable
