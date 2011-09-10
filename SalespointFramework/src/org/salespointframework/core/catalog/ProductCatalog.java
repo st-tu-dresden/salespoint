@@ -9,13 +9,7 @@ public interface ProductCatalog<T extends ProductType> {
 	
 	void remove(ProductIdentifier productIdentifier);
 
-	void addCategory(T productType, String category);
-
-	void removeCategory(T productType, String category);
-
 	boolean contains(T productType);
-
-	Iterable<String> getCategories(T productType);
 
 	<E extends T> E getProductType(Class<E> clazz,
 			ProductIdentifier productIdentifier);

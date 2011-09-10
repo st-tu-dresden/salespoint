@@ -1,12 +1,16 @@
 package org.salespointframework.core.catalog;
 
+import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Predicate;
+import javax.persistence.metamodel.PluralAttribute;
 
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.product.PersistentProductType;
@@ -36,21 +40,6 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 		beginCommit(em);
 	}
 	
-	// TODO Category
-	@Override
-	public void addCategory(PersistentProductType productType, String category) {
-		Objects.requireNonNull(productType, "productType");
-		Objects.requireNonNull(category, "category");
-		
-	}
-	
-	// TODO Category
-	@Override
-	public void removeCategory(PersistentProductType productType, String category) {
-		Objects.requireNonNull(productType, "productType");
-		Objects.requireNonNull(category, "category");
-	}
-	
 	@Override
 	public boolean contains(PersistentProductType productType) {
 		Objects.requireNonNull(productType, "productType");
@@ -58,13 +47,6 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 		return em.find(ProductType.class, productType.getProductIdentifier()) != null;
 	}
 	
-	// TODO Category
-	@Override
-	public Iterable<String> getCategories(PersistentProductType productType) {
-		Objects.requireNonNull(productType, "productType");
-		return null;
-	}
-
 	@Override
 	public <T extends PersistentProductType> T getProductType(Class<T> clazz, ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(clazz, "clazz");
@@ -79,10 +61,10 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 		
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<T> q = cb.createQuery(clazz);
-		Root<T> entry = q.from(clazz);
-		q.where(entry.type().in(clazz));
-		TypedQuery<T> tq = em.createQuery(q);
+		CriteriaQuery<T> cq = cb.createQuery(clazz);
+		Root<T> entry = cq.from(clazz);
+		cq.where(entry.type().in(clazz));
+		TypedQuery<T> tq = em.createQuery(cq);
 
 		return Iterables.from(tq.getResultList());
 	}
@@ -100,8 +82,8 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 		Predicate p1 = entry.type().in(clazz); 
 		Predicate p2 = cb.like(entry.get(PersistentProductType_.name), name);
 		
-		cq.where(cb.and(p1,p2));
-		
+		cq.where( p1, p2);
+		 
 		TypedQuery<T> tq = em.createQuery(cq);
 
 		return Iterables.from(tq.getResultList());
@@ -118,9 +100,23 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 		CriteriaQuery<T> cq = cb.createQuery(clazz);
 		Root<T> entry = cq.from(clazz);
 
-		Predicate p1 = entry.type().in(clazz); 
+		Predicate p1 = entry.type().in(clazz);
 		
-		cq.where(p1);
+		Predicate p2 = cb.isMember(category, entry.<Set<String>>get("categories"));
+
+		//Predicate p2 = cb.isMember(category, entry.get(PersistentProductType_.categories));
+		
+		// interface SetAttribute<X,E> extends PluralAttribute<X,java.util.Set<E>,E>
+		// interface SetAttribute<PersistentProductType,String> extends PluralAttribute<PersistentProductType,Set<String>,String>
+				
+		//<E,C extends java.util.Collection<E>> Expression<C> get(PluralAttribute<X,C,E> collection)
+		//<String,Set<String> extends java.util.Collection<String>> Expression<Set<String>> get(PluralAttribute<PersistentProductType,Set<String>,String> collection)		
+
+		//PluralAttribute<PersistentProductType,Set<String>,String> collection = PersistentProductType_.categories;
+		//Expression<Set<String>> ex = entry.get(collection);
+		
+		
+		cq.where(p1, p2);
 		
 		TypedQuery<T> tq = em.createQuery(cq);
 

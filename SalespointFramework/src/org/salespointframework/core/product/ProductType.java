@@ -9,4 +9,7 @@ public interface ProductType {
 	boolean addProductFeature(ProductFeature productFeature);
 	boolean removeProductFeature(ProductFeature productFeature);
 	Iterable<ProductFeature> getProductFeatures();
+	boolean addCategory(String category);
+	boolean removeCategory(String category);
+	Iterable<String> getCategories();
 }

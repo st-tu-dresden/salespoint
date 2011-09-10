@@ -7,6 +7,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import org.eclipse.persistence.annotations.BasicCollection;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
@@ -24,6 +25,9 @@ public class PersistentProductType implements ProductType {
 	//@OneToMany(cascade = CascadeType.ALL)
 	@ElementCollection
 	private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
+	
+	@ElementCollection
+	Set<String> categories = new HashSet<String>();
 	
 	@Deprecated
 	protected PersistentProductType() { }
@@ -88,5 +92,20 @@ public class PersistentProductType implements ProductType {
 	public final boolean removeProductFeature(ProductFeature productFeature){
 		Objects.requireNonNull(productFeature, "productFeature");
 		return productFeatures.remove(productFeature);
+	}
+
+	@Override
+	public boolean addCategory(String category) {
+		return categories.add(category);
+	}
+
+	@Override
+	public boolean removeCategory(String category) {
+		return categories.remove(category);
+	}
+
+	@Override
+	public Iterable<String> getCategories() {
+		return Iterables.from(categories);
 	}
 }
