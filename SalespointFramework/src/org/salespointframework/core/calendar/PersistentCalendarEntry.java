@@ -37,7 +37,6 @@ import org.salespointframework.util.Objects;
  */
 // TODO sort getters/setters
 // TODO javadoc!!! rechtschreibung!!!
-// TODO @Override entfernen, wenn es kein override ist.
 // TODO vielleicht sogar setter entfernen und das ding immutable machen
 @Entity
 public final class PersistentCalendarEntry implements CalendarEntry {
@@ -49,6 +48,9 @@ public final class PersistentCalendarEntry implements CalendarEntry {
 	@AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID"))
 	private CalendarEntryIdentifier calendarEntryIdentifier;
 
+	/**
+	 * The unique identifier of the user who is the owner of this entry.
+	 */
 	@Embedded
 	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))
 	private UserIdentifier owner;

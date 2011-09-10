@@ -140,19 +140,19 @@ public class PersistentOrderManager implements OrderManager {
 	 * @see org.salespointframework.core.order.IOrderManager#removeOrder(org.
 	 * salespointframework.core.order.OrderIdentifier)
 	 */
-	@Override
-	public OrderEntry removeOrder(OrderIdentifier orderIdentifier) {
-		Objects.requireNonNull(orderIdentifier, "orderIdentifier");
+    @Override
+    public OrderEntry removeOrder(OrderIdentifier orderIdentifier) {
+        Objects.requireNonNull(orderIdentifier, "orderIdentifier");
 
-		em.getTransaction().begin();
-		
-		OrderEntry orderEntry = em.find(OrderEntry.class, orderIdentifier);
-		//TODO: what if orderEntry == null?!
-		em.remove(orderEntry);
-		
-		em.getTransaction().commit();
-		return orderEntry;
-	}
+        OrderEntry orderEntry = em.find(OrderEntry.class, orderIdentifier);
+
+        if (orderEntry != null) {
+            em.getTransaction().begin();
+            em.remove(orderEntry);
+            em.getTransaction().commit();
+        }
+        return orderEntry;
+    }
 
 	/*
 	 * (non-Javadoc)
