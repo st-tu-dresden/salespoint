@@ -1,1 +1,30 @@
 \section{User}
+
+PersistenceUsermanger
+
+The Usermanger ist the main part of the UserPackage. It connects all parts:
+-adds and removes User to the System
+-adds and removes Capabilities of the Users in the System
+You should know that it is not possible to remove Users with open Orders!
+
+
+
+UserCapability
+The UserCapablity should only be accessed via the Usermanger
+
+PersistenceUser
+This is an implementation of the User interface. It contains all basic attributes and methodes
+
+
+AbstractEmployee
+A spezial User who also has an salary. This helps to work together with the Accountency
+
+AbstractCustomer
+This Class is not very usefule, also is shows the user of the Framework that there could be different subclasses of the PersistenceUser
+
+UnknownUserException
+During the process of adding or removing Capabilities this Eception will be thrown if the User is not in the system
+
+DuplicateUserException
+To ensure that there a no User in the system with the same UserIdentifier. So there should be no problem later on at the login or other similar processes
+
