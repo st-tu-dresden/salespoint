@@ -99,6 +99,8 @@ public interface OrderManager {
 	// TODO nötig??
 	/**
 	 * Commits changes from the given <code>OrderEntry</code> to the database.
+	 * If the database doesn't contain an OrderEntry with same identifier as given OrderEntry,
+	 * the given OrderEntry will be persisted.
 	 * 
 	 * @param orderEntry The <code>OrderEntry</code> which shall be updated.
 	 */

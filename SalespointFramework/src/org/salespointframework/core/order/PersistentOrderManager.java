@@ -165,15 +165,7 @@ public class PersistentOrderManager implements OrderManager {
 		Objects.requireNonNull(orderEntry, "orderEntry");
 
 		em.getTransaction().begin();
-		
-		OrderEntry oe = em.find(OrderEntry.class,
-				orderEntry.getOrderIdentifier());
-
-		/* TODO: srsly? silently failing?! */
-		if (oe != null) {
-			em.merge(orderEntry);
-		}
-		
+		em.merge(orderEntry);
 		em.getTransaction().commit();
 	}
 
