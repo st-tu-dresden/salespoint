@@ -33,7 +33,7 @@ public class UsermangerPersistenceTest {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
 		emf = Database.INSTANCE.getEntityManagerFactory();
 		em = emf.createEntityManager();
-		pum = new PersistentUserManager(em);
+		pum = new PersistentUserManager();
 	}
 
 	@After
@@ -51,9 +51,9 @@ public class UsermangerPersistenceTest {
 		pum.addUser(e3);
 		em.getTransaction().commit();
 		assertEquals(
-				pum.getUserByIdentifier(MyEmployee.class, e3.getUserIdentifier()), e3);
+				pum.get(MyEmployee.class, e3.getUserIdentifier()), e3);
 		assertEquals(
-				pum.getUserByIdentifier(MyEmployee.class, e3.getUserIdentifier())
+				pum.get(MyEmployee.class, e3.getUserIdentifier())
 						.verifyPassword("lala"), true);
 	}
 

@@ -4,9 +4,15 @@ package org.salespointframework.util;
 // TODO in ein anderes Package?
 // inspired by http://msdn.microsoft.com/en-us/library/system.argumentnullexception.aspx
 // denn NullRefEx und IllegalArgumentEx sind beide unpassend
+
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
+@SuppressWarnings("serial")
 public class ArgumentNullException extends IllegalArgumentException {
 
-	private static final long serialVersionUID = -7522700184079490206L;
 	
 	private final String paramName;
 	

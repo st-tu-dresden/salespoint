@@ -14,6 +14,11 @@ import org.salespointframework.web.WebConstants;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+/**
+ * 
+ * @author Lars Kreizs, Uwe Schmidt, Paul Henke
+ *
+ */
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 	
 	@Override
@@ -32,7 +37,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		UserIdentifier userIdentifier = new UserIdentifier(identifier);		
 		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
 		
-		User user = usermanager.getUserByIdentifier(User.class, userIdentifier);
+		User user = usermanager.get(User.class, userIdentifier);
 		
 		if(user != null) {
 			if(user.verifyPassword(password)) {

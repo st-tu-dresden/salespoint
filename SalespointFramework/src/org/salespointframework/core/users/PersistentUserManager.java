@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -15,19 +16,15 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
+/**
+ * @author Christopher Bellmann
+ * @author Paul Henke
+ * @author Hannes Weissbach
+ */
+// FIXME
 public class PersistentUserManager implements UserManager<PersistentUser> {
 
-	private final EntityManager entityManager;
-
-	/**
-	 * creates new AbstractUserManager
-	 * 
-	 * @param entityManager
-	 */
-	public PersistentUserManager(final EntityManager entityManager) {
-		this.entityManager = Objects.requireNonNull(entityManager,
-				"entityManager");
-	}
+	private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 
 	/*
 	 * (non-Javadoc)
@@ -37,10 +34,12 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	@Override
 	public boolean addUser(final PersistentUser user) {
 		Objects.requireNonNull(user, "user");
-		if (entityManager.find(PersistentUser.class, user.getUserIdentifier()) != null) {
+		EntityManager em = emf.createEntityManager();
+		if (em.find(PersistentUser.class, user.getUserIdentifier()) != null) {
 			return false;
 		}
-		entityManager.persist(user);
+		em.persist(user);
+		beginCommit(em);
 		return true;
 	}
 
@@ -125,10 +124,11 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 */
 	@Override
 	public <T extends PersistentUser> Iterable<T> getUsers(Class<T> clazz) {
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		EntityManager em = emf.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> q = cb.createQuery(clazz);
 		// create and execute a query, where all results are from type clazz
-		TypedQuery<T> tq = entityManager.createQuery(q.where(q.from(clazz)
+		TypedQuery<T> tq = em.createQuery(q.where(q.from(clazz)
 				.type().in(clazz)));
 
 		return Iterables.from(tq.getResultList());
@@ -142,22 +142,28 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * .salespointframework.core.users.UserIdentifier)
 	 */
 	@Override
-	public <T extends PersistentUser> T getUserByIdentifier(Class<T> clazz,
+	public <T extends PersistentUser> T get(Class<T> clazz,
 			UserIdentifier userIdentifier) {
 		Objects.requireNonNull(userIdentifier, "userIdentifier");
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		EntityManager em = emf.createEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> q = cb.createQuery(clazz);
 		Root<T> r = q.from(clazz);
 		Predicate primaryKey = cb.equal(r.get(PersistentUser_.userIdentifier),
 				userIdentifier);
 		Predicate type = r.type().in(clazz);
 		q.where(cb.and(primaryKey, type));
-		TypedQuery<T> tq = entityManager.createQuery(q);
+		TypedQuery<T> tq = em.createQuery(q);
 
 		return tq.getSingleResult();
 	}
+	
+	public void update(PersistentUser user) {
+		EntityManager em = emf.createEntityManager();
+		em.merge(user);
+		beginCommit(em);
+	}
 
-	// PAAAAAAAAAAAAAAAAAAAAAAAAAAUUUUUUUUUUUUUUL
 	private final Map<Object, PersistentUser> userTokenMap = new ConcurrentHashMap<Object, PersistentUser>();
 
 	// TODO naming kinda sucks
@@ -175,7 +181,7 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 		Objects.requireNonNull(user, "user");
 		Objects.requireNonNull(token, "token");
 
-		PersistentUser temp = this.getUserByIdentifier(PersistentUser.class,
+		PersistentUser temp = this.get(PersistentUser.class,
 				user.getUserIdentifier());
 
 		if (temp == null) {
@@ -218,21 +224,9 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 			throw new ClassCastException();
 		}
 	}
-
-	// TODO Wozu die beiden Methoden sind erklär ich später, sollten aber
-	// bleiben.
-	// TODO ich weiß wozu die da sind, aber sollten wir das nicht einfach um
-	// jedes persist/update/remove machen? Ist so eine Methode wirklich besser?
-	private final void beginCommit(final EntityManager em) {
-		if (entityManager == null) {
-			em.getTransaction().begin();
-			em.getTransaction().commit();
-		}
-	}
-
-	// ?? Operator in C#, gibts hier leider nicht, deswegen die Methode
-	private final EntityManager foobar() {
-		return entityManager != null ? entityManager : Database.INSTANCE
-				.getEntityManagerFactory().createEntityManager();
+	
+	private void beginCommit(EntityManager entityManager) {
+		entityManager.getTransaction().begin();
+		entityManager.getTransaction().commit();
 	}
 }

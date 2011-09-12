@@ -11,8 +11,13 @@ import org.salespointframework.util.SalespointIdentifier;
  * @see SalespointIdentifier
  *
  */
+@SuppressWarnings("serial")
 @Embeddable
 public final class CalendarEntryIdentifier extends SalespointIdentifier {
-    @SuppressWarnings("javadoc")
-    private static final long serialVersionUID = -4862317207862935005L;
+	public CalendarEntryIdentifier() {
+		super();
+	}
+	public CalendarEntryIdentifier(String calendarEntryIdentifier) {
+		super(calendarEntryIdentifier);
+	}
 }

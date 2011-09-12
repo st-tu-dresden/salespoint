@@ -4,7 +4,11 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.salespointframework.util.Objects;
 
-//TODO OBSERVER
+/**
+ * 
+ * @author Paul Henke
+ *
+ */
 public class DeLoreanTime implements Time {
 
 	Duration duration = Duration.ZERO;

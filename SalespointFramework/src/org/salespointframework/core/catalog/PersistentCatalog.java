@@ -7,10 +7,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.metamodel.PluralAttribute;
+import javax.persistence.criteria.Root;
 
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.product.PersistentProductType;
@@ -20,6 +18,11 @@ import org.salespointframework.core.product.ProductType;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class PersistentCatalog implements ProductCatalog<PersistentProductType> {
 	
 	EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
@@ -36,19 +39,22 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 	public void remove(ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		EntityManager em = emf.createEntityManager();
-		em.remove(productIdentifier);
-		beginCommit(em);
+		Object order = em.find(PersistentProductType.class, productIdentifier);
+		if(order != null) {
+			em.remove(productIdentifier);
+			beginCommit(em);
+		}
 	}
 	
 	@Override
-	public boolean contains(PersistentProductType productType) {
-		Objects.requireNonNull(productType, "productType");
+	public boolean contains(ProductIdentifier productIdentifier) {
+		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		EntityManager em = emf.createEntityManager();
-		return em.find(ProductType.class, productType.getProductIdentifier()) != null;
+		return em.find(ProductType.class, productIdentifier) != null;
 	}
 	
 	@Override
-	public <T extends PersistentProductType> T getProductType(Class<T> clazz, ProductIdentifier productIdentifier) {
+	public <T extends PersistentProductType> T get(Class<T> clazz, ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		EntityManager em = emf.createEntityManager();
@@ -56,7 +62,7 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 	}
 
 	@Override
-	public <T extends PersistentProductType> Iterable<T> getProductTypes(Class<T> clazz) {
+	public <T extends PersistentProductType> Iterable<T> findProductTypes(Class<T> clazz) {
 		Objects.requireNonNull(clazz, "clazz");
 		
 		EntityManager em = emf.createEntityManager();
@@ -99,29 +105,39 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(clazz);
 		Root<T> entry = cq.from(clazz);
-
 		Predicate p1 = entry.type().in(clazz);
-		
 		Predicate p2 = cb.isMember(category, entry.<Set<String>>get("categories"));
 
+		// Overload Resolution fail? 
 		//Predicate p2 = cb.isMember(category, entry.get(PersistentProductType_.categories));
-		
-		// interface SetAttribute<X,E> extends PluralAttribute<X,java.util.Set<E>,E>
-		// interface SetAttribute<PersistentProductType,String> extends PluralAttribute<PersistentProductType,Set<String>,String>
-				
-		//<E,C extends java.util.Collection<E>> Expression<C> get(PluralAttribute<X,C,E> collection)
-		//<String,Set<String> extends java.util.Collection<String>> Expression<Set<String>> get(PluralAttribute<PersistentProductType,Set<String>,String> collection)		
-
 		//PluralAttribute<PersistentProductType,Set<String>,String> collection = PersistentProductType_.categories;
 		//Expression<Set<String>> ex = entry.get(collection);
 		
-		
 		cq.where(p1, p2);
-		
 		TypedQuery<T> tq = em.createQuery(cq);
-
+		
+		
+		
 		return Iterables.from(tq.getResultList());
 
+	}
+	
+	// Non Interface Methods
+	
+	public void update(ProductType productType) {
+		Objects.requireNonNull(productType, "productType");
+		EntityManager em = emf.createEntityManager();
+		em.merge(productType);
+		beginCommit(em);
+	}
+	
+	public void addAll(Iterable<PersistentProductType> productTypes) {
+		Objects.requireNonNull(productTypes, "productTypes");
+		EntityManager em = emf.createEntityManager();
+		for(ProductType pt : productTypes)  {
+			em.persist(pt);
+		}
+		beginCommit(em);
 	}
 	
 	private void beginCommit(EntityManager entityManager) {

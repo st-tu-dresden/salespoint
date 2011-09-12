@@ -118,7 +118,7 @@ public interface UserManager<T extends User> {
 	 *         equal to <code>userIdentifier</code>
 	 * @throws NoResultException
 	 */
-	<E extends T> E getUserByIdentifier(Class<E> clazz,
+	<E extends T> E get(Class<E> clazz,
 			UserIdentifier userIdentifier);
 
 }

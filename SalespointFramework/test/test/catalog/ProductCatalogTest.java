@@ -42,7 +42,7 @@ public class ProductCatalogTest {
 
 		catalog.add(keks1);
 
-		KeksProduct keks2 = catalog.getProductType(KeksProduct.class, keks1.getProductIdentifier());
+		KeksProduct keks2 = catalog.get(KeksProduct.class, keks1.getProductIdentifier());
 
 		assertEquals(keks1, keks2);
 	}

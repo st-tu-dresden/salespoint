@@ -4,16 +4,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
-import org.eclipse.persistence.annotations.BasicCollection;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
-
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 @Entity
+@Embeddable
 public class PersistentProductType implements ProductType {
 	
 	@EmbeddedId

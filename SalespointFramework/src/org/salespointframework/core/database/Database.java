@@ -11,6 +11,11 @@ import org.salespointframework.util.Objects;
 // TODO Name ändern
 // Singleton ist IMO nötig, da ALLE EntityManager von der SELBEN Factory kommen sollten
 // enum Singleton pattern -> awesome
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public enum Database {
 	INSTANCE;
 	

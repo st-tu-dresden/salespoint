@@ -12,7 +12,7 @@ import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
 
-// TODO umbenennen
+// TODO Delete, Legacy Code
 @Entity
 public class ProductFeatureType_old {
 	

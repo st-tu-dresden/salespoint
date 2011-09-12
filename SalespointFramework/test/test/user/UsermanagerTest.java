@@ -45,7 +45,7 @@ public class UsermanagerTest {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
 		emf = Database.INSTANCE.getEntityManagerFactory();
 		em = emf.createEntityManager();
-		pum = new PersistentUserManager(em);
+		pum = new PersistentUserManager();
 		em.getTransaction().begin();
 		pum.addUser(e3);
 		em.getTransaction().commit();
@@ -61,7 +61,7 @@ public class UsermanagerTest {
 	
 	@Test
 	public void testEmployeeMangerContainsE3(){
-		assertEquals(pum.getUserByIdentifier(MyEmployee.class, e3.getUserIdentifier()), e3);
+		assertEquals(pum.get(MyEmployee.class, e3.getUserIdentifier()), e3);
 	}
 	
 	
@@ -75,7 +75,7 @@ public class UsermanagerTest {
 		t.begin();
 		pum.addUser(c);
 		t.commit();
-		assertEquals(pum.getUserByIdentifier(MyCustomer.class, c.getUserIdentifier()), c);
+		assertEquals(pum.get(MyCustomer.class, c.getUserIdentifier()), c);
 	}
 	
 	@Test
@@ -88,7 +88,7 @@ public class UsermanagerTest {
 		pum.addUser(e);
 		em.getTransaction().commit();
 		
-		MyEmployee currentE = pum.getUserByIdentifier(MyEmployee.class, e.getUserIdentifier());
+		MyEmployee currentE = pum.get(MyEmployee.class, e.getUserIdentifier());
 		assertEquals(currentE, e);
 	}
 	
@@ -103,7 +103,7 @@ public class UsermanagerTest {
 		pum.addUser(e);
 		em.getTransaction().commit();
 		
-		MyEmployee currentE = pum.getUserByIdentifier(MyEmployee.class, e.getUserIdentifier());
+		MyEmployee currentE = pum.get(MyEmployee.class, e.getUserIdentifier());
 		assertEquals(currentE, e);
 		
 		em.getTransaction().begin();
@@ -120,7 +120,7 @@ public class UsermanagerTest {
 		final List<MyEmployee> list = new ArrayList<MyEmployee>(usersToAdd);
 		
 		final EntityManager entityManager = emf.createEntityManager();
-		final PersistentUserManager empManager = new PersistentUserManager(entityManager);
+		final PersistentUserManager empManager = new PersistentUserManager();
 		
 		final int oldCount = Iterables.toList((empManager.getUsers(MyEmployee.class))).size();
 
@@ -135,7 +135,7 @@ public class UsermanagerTest {
 		final int newCount = Iterables.toList((empManager.getUsers(MyEmployee.class))).size();
 		
 		for(MyEmployee employee : list) {
-			assertEquals(empManager.getUserByIdentifier(MyEmployee.class, employee.getUserIdentifier()), employee);
+			assertEquals(empManager.get(MyEmployee.class, employee.getUserIdentifier()), employee);
 		}
 		assertEquals(usersToAdd, newCount - oldCount); 
 	}
@@ -170,10 +170,10 @@ public class UsermanagerTest {
 			countEmployees++;
 			i.next();
 		}
-		assertEquals("me1",pum.getUserByIdentifier(MyEmployee.class, uie1), me1);
-		assertEquals("me2",pum.getUserByIdentifier(MyEmployee.class, uie2), me2);
-		assertEquals("me3",pum.getUserByIdentifier(MyEmployee.class, uie3), me3);
-		assertEquals("me4",pum.getUserByIdentifier(MyEmployee.class, uie4), me4);
+		assertEquals("me1",pum.get(MyEmployee.class, uie1), me1);
+		assertEquals("me2",pum.get(MyEmployee.class, uie2), me2);
+		assertEquals("me3",pum.get(MyEmployee.class, uie3), me3);
+		assertEquals("me4",pum.get(MyEmployee.class, uie4), me4);
 		assertEquals("iterator", numberOfEmployees,countEmployees);
 	}
 	

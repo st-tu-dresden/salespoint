@@ -14,6 +14,9 @@ import org.salespointframework.util.Objects;
 //public class AbstractInventory<T1 extends AbstractInventoryEntry<T2, T3>, T2 extends AbstractProductInstance<T3>, T3 extends AbstractProductType> 
 //implements Inventory<T1,T2,T3> {
 
+
+//TODO Legacy Code, DELETE
+
 public abstract class AbstractInventory<T extends PersistentProduct> implements Inventory<T>, ICanHasClass<T> {
 
 	final EntityManager entityManager;

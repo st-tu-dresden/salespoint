@@ -5,6 +5,11 @@ import javax.persistence.Embeddable;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Objects;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 @Embeddable
 public final class ProductFeature {
 	

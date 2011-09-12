@@ -7,6 +7,12 @@ import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.users.User;
 import org.salespointframework.core.users.UserManager;
 
+/**
+ * 
+ * @author Lars Kreisz
+ * @author Uwe Schmidt
+ * @author Paul Henke
+ */
 public class LoggedInTag extends BodyTagSupport {
 
 	private static final long serialVersionUID = 1L;

@@ -1,5 +1,10 @@
 package org.salespointframework.util;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public final class Tuple<T1, T2> {
 	private final T1 item1;
 	private final T2 item2;

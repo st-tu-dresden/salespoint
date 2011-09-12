@@ -8,6 +8,12 @@ import org.salespointframework.core.users.User;
 import org.salespointframework.core.users.UserCapability;
 import org.salespointframework.core.users.UserManager;
 
+/**
+ * 
+ * @author Lars Kreisz
+ * @author Uwe Schmidt
+ * @author Paul Henke
+ */
 public class HasCapabilityTag extends BodyTagSupport {
 	private static final long serialVersionUID = 1L;
 

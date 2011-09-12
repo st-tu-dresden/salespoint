@@ -7,18 +7,21 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-//TODO
+// TODO nullchecks 
 // SCHEISS Collection<T> die Idioten von Sun hätten mal ihre APIs um Iterable<T> erweitern sollen, alles muss man selber machen....
 // http://google-collections.googlecode.com/svn/trunk/javadoc/com/google/common/collect/Iterables.html
 // ob es sich lohnt die ganze lib reinzuziehen?
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public final class Iterables {
 
 	private Iterables() {
 	}
 	
-
-
 	public static <T> List<T> toList(final Iterable<T> iterable) {
 		List<T> temp = new ArrayList<T>();
 		for (T item : iterable) {
@@ -43,8 +46,30 @@ public final class Iterables {
 	public static <T> boolean isEmpty(final Iterable<T> iterable) {
 		return !iterable.iterator().hasNext();
 	}
-
 	
+
+	public static <T> Iterable<T> empty() {
+		return from(new ArrayList<T>(0));
+	}
+	
+	public static <T> int size(Iterable<T> iterable) {
+		int size = 0;
+		for(Iterator<T> iterator = iterable.iterator(); iterator.hasNext(); iterator.next()) {
+			size++;
+		}
+		return size;
+	}
+	
+	public static <T> T first(Iterable<T> iterable) {
+		Iterator<T> iterator = iterable.iterator();
+		if(iterator.hasNext()) {
+			return iterator.next();
+		} else {
+			return null;
+		}
+	}
+	
+
 	//WHAT THE FUCK
 	//einziger Use Case von anonymen Klassen: andere Fuckups in der Sprache/Lib kaschieren
 	public static <T> Iterable<T> from(final Iterable<T> iterable) {
@@ -98,9 +123,5 @@ public final class Iterables {
 				};
 			}
 		};
-	}
-
-	public static <T> Iterable<T> empty() {
-		return from(new ArrayList<T>(0));
 	}
 }

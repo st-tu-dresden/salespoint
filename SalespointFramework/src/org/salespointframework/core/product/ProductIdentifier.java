@@ -3,7 +3,14 @@ package org.salespointframework.core.product;
 import javax.persistence.Embeddable;
 import org.salespointframework.util.SalespointIdentifier;
 
+@SuppressWarnings("serial")
 @Embeddable
 public final class ProductIdentifier extends SalespointIdentifier {
-	private static final long serialVersionUID = 1L;
+	public ProductIdentifier() {
+		super();
+	}
+
+	public ProductIdentifier(String productIdentifier) {
+		super(productIdentifier);
+	}
 }
