@@ -1,71 +1,69 @@
 package test.calendar;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.matchers.JUnitMatchers.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Entity;
 
 import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.salespointframework.core.calendar.CalendarEntry;
-import org.salespointframework.core.calendar.CalendarEntryCapability;
 import org.salespointframework.core.calendar.PersistentCalendar;
 import org.salespointframework.core.calendar.PersistentCalendarEntry;
 import org.salespointframework.core.database.Database;
-import org.salespointframework.core.users.AbstractEmployee;
+import org.salespointframework.core.users.PersistentUser;
 import org.salespointframework.core.users.UserIdentifier;
 import org.salespointframework.util.Filter;
 
+@SuppressWarnings("javadoc")
 public class CalendarTest {
-    private static final List<CalendarEntry> entries       = new ArrayList<CalendarEntry>();
-    private static final DateTime            basicDateTime = new DateTime();
+    private static final DateTime          basicDateTime = new DateTime();
+
+    private static PersistentUser          user;
+    private static PersistentUser          notUser;
+    private static PersistentCalendar      calendar;
+    private static PersistentCalendarEntry entry;
+    private static PersistentCalendarEntry notEntry;
 
     @BeforeClass
     public static void setUp() {
         Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
-    }
 
-    @Test
-    public void addEntry() {
-        PersistentCalendar calendar = new PersistentCalendar();
-        PersistentCalendarEntry entry = new PersistentCalendarEntry(new Worker().getUserIdentifier(), "addEntry", basicDateTime, basicDateTime.plusMinutes(30));
-        calendar.addEntry(entry);
-        assertEquals(entry, calendar.getEntryByID(entry.getCalendarEntryIdentifier()));
-    }
-    
-    
-    @Test
-    public void testOwnership() {
-        PersistentCalendar calendar = new PersistentCalendar();
-
-        for (int i = 0; i < entries.size(); i++) {
-            CalendarEntry expected = entries.get(i);
-            PersistentCalendarEntry actual = calendar.getEntryByID(expected.getCalendarEntryIdentifier());
-
-            assertEquals(expected.getOwner(), actual.getOwner());
-        }
-    }
-
-    @Test
-    public void addUser() {
-        PersistentCalendar calendar = new PersistentCalendar();
-
-        Worker w1 = new Worker();
-        Worker w2 = new Worker();
-
-        PersistentCalendarEntry entry = new PersistentCalendarEntry(w1.getUserIdentifier(), "addUser", basicDateTime, basicDateTime.plus(10));
+        calendar = new PersistentCalendar();
+        
+        user = new PersistentUser(new UserIdentifier("user"), "test");
+        entry = new PersistentCalendarEntry(user.getUserIdentifier(), "entry", basicDateTime, basicDateTime.plusMinutes(30));
         calendar.addEntry(entry);
         
-        entry.addCapability(w2.getUserIdentifier(), CalendarEntryCapability.READ);
+        notUser = new PersistentUser(new UserIdentifier("notUser"), "test");
+        notEntry = new PersistentCalendarEntry(notUser.getUserIdentifier(), "notEntry", basicDateTime, basicDateTime.plusMinutes(30));
+        calendar.addEntry(notEntry);
+    }
 
-        calendar.getEntryByID(entry.getCalendarEntryIdentifier()).getUsersByCapability(CalendarEntryCapability.READ);
+    @Test
+    public void deleteEntry() {
+        PersistentCalendarEntry deleteEntry = new PersistentCalendarEntry(new UserIdentifier(), "deleteEntry", basicDateTime, basicDateTime.plusMinutes(10));
+        calendar.addEntry(deleteEntry);
+        
+        assumeThat(calendar.getEntryByID(deleteEntry.getCalendarEntryIdentifier()), is(deleteEntry));
+        
+        calendar.deleteEntry(deleteEntry.getCalendarEntryIdentifier());
+        
+        assertNull(calendar.getEntryByID(deleteEntry.getCalendarEntryIdentifier()));
+    }
+    
+    @Test
+    public void getEntriesByTitle() {
+        Iterable<PersistentCalendarEntry> actual = calendar.getEntriesByTitle(entry.getTitle()); 
+        assertThat(actual, hasItem(entry));
+        assertThat(actual, not(hasItem(notEntry)));
+    }
 
-//        assertThat(w1, equalTo(w2));
+    @Test
+    public void getEntriesByOwner() {
+        Iterable<PersistentCalendarEntry> actual = calendar.getEntriesByOwner(user.getUserIdentifier()); 
+        assertThat(actual, hasItem(entry));
+        assertThat(actual, not(hasItem(notEntry)));
     }
 
     @Test
@@ -77,31 +75,14 @@ public class CalendarTest {
         calendar.addEntry(hasnot);
         
         Iterable<PersistentCalendarEntry> actual = calendar.getEntries(new Filter<PersistentCalendarEntry>() {
+            @SuppressWarnings("boxing")
             @Override
             public Boolean invoke(PersistentCalendarEntry arg) {
                 return arg.getStart().isBefore(basicDateTime.plusMinutes(10));
             }
         });
 
-        List<PersistentCalendarEntry> expected = new ArrayList<PersistentCalendarEntry>() {
-            private static final long serialVersionUID = 2308635111301759390L;
-
-            {
-                for (CalendarEntry entry : entries) {
-                    if (entry.getStart().isBefore(basicDateTime.plusMinutes(10)))
-                        add((PersistentCalendarEntry) entry);
-                }
-            }
-        };
-
         assertThat(actual, hasItem(has));
         assertThat(actual, not(hasItem(hasnot)));
-    }
-}
-
-@Entity
-class Worker extends AbstractEmployee {
-    public Worker() {
-        super(new UserIdentifier(), "1");
     }
 }

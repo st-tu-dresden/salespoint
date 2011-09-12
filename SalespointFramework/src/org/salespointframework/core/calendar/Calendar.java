@@ -26,7 +26,7 @@ public interface Calendar<T extends CalendarEntry> {
      * Returns the calendar entry which has the given id.
      * 
      * @param id Id of the requested entry.
-     * @return the entry with the given id.
+     * @return the entry with the given id or <code>null</code> if no entry was found.
      */
     T getEntryByID(CalendarEntryIdentifier id);
     

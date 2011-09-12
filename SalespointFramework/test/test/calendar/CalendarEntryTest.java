@@ -18,6 +18,7 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.users.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 
+@SuppressWarnings("javadoc")
 public class CalendarEntryTest {
 	
 	private DateTime a = new DateTime("2011-08-01T14:01:32.180+02:00");
