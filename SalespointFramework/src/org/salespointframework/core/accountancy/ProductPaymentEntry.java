@@ -13,35 +13,45 @@ import org.salespointframework.util.Objects;
  * <code>AbstractAccountancyEntry</code> used to store information of payments
  * of orders.
  * 
- * @author hannesweisbach
+ * @author Hannes Weisbach
  * @author Thomas Dedek
  */
 @Entity
 public class ProductPaymentEntry extends AbstractAccountancyEntry {
 	
-	@Embedded
-	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID"))
-	private OrderIdentifier orderIdentifier;
-	@Embedded
-	@AttributeOverride(name = "id", column = @Column(name = "USER_ID"))
-	private UserIdentifier userIdentifier;
+    /**
+     * The <code>OrderIdentifier</code> to which this
+     * <code>ProductPaymentEntry</code> refers to.
+     */
+    @Embedded
+    @AttributeOverride(name = "id", column = @Column(name = "ORDER_ID"))
+    private OrderIdentifier orderIdentifier;
 
-	/**
-	 * Parameterless constructor required for JPA. Do not use.
-	 */
-	@Deprecated
-	protected ProductPaymentEntry() {
-	}
+    /**
+     * The <code>UserIdentifier</code> to which this
+     * <code>ProductPaymentEntry</code> refers to.
+     */
+    @Embedded
+    @AttributeOverride(name = "id", column = @Column(name = "USER_ID"))
+    private UserIdentifier  userIdentifier;
+
+    /**
+     * Parameterless constructor required for JPA. Do not use.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    protected ProductPaymentEntry() {
+    }
 
 	/**
 	 * A <code>ProductPaymentEntry</code> is constructed for a specific
 	 * <code>OrderIdentifier</code> attached to it. This Entry saves also the <code>UserIdentifier</code>
 	 * and the specified amount that was payed. 
 	 * 
-	 * @param OrderIdentifier
+	 * @param orderIdentifier
 	 *            the <code>OrderIdentifier</code> to which this
 	 *            <code>ProductPaymentEntry</code> will refer to.
-	 * @param UserIdentifier
+	 * @param userIdentifier
 	 *            the <code>UserIdentifier</code> to which this
 	 *            <code>ProductPaymentEntry</code> will refer to.
 	 * @param amount

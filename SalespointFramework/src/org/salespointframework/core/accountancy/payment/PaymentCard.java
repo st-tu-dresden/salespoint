@@ -16,17 +16,47 @@ import org.salespointframework.util.Objects;
  * forms of <code>PaymentCard</code>s such as prepaid cards or charge cards are
  * not implemented at the moment.
  * 
+ * @author Hannes Weisbach
+ * 
  */
 public abstract class PaymentCard extends PaymentMethod implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("javadoc")
+    private static final long serialVersionUID = 1L;
 
+	/**
+	 * The name of the association which issued the card
+	 */
 	private String cardAssociationName;
+	
+	/**
+	 * The number uniquely identifying this payment card.
+	 */
 	private String cardNumber;
+	
+	/**
+	 * The name of the party to which the card was issued to.
+	 */
 	private String nameOnCard;
+	
+	/**
+	 * The billing address registered with this card.
+	 */
 	private String billingAddress;
+	
+	/**
+	 * The date from which on the card is valid.
+	 */
 	private DateTime validFrom;
+	
+	/**
+	 * The date on which the card expires.
+	 */
 	private DateTime expiryDate;
+	
+	/**
+	 * The verification code or PIN of this card.
+	 */
 	private String cardVerificationCode;
 
 	/**
@@ -84,7 +114,7 @@ public abstract class PaymentCard extends PaymentMethod implements Serializable 
 	}
 
 	/**
-	 * The name of the party to which the card was issued to
+	 * The name of the party to which the card was issued to.
 	 * 
 	 * @return The name of the card holder.
 	 */

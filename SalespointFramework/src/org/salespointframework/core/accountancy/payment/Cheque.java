@@ -11,23 +11,54 @@ import org.salespointframework.core.accountancy.payment.PaymentMethod;
  * specified amount of money to a payee. The class <code>Cheque</code>
  * represents such a written order of payment in a digital form.
  * 
- * @author hannesweisbach
+ * @author Hannes Weisbach
  * 
  */
 // @Entity
 public class Cheque extends PaymentMethod implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("javadoc")
+    private static final long serialVersionUID = 1L;
 
+	/**
+	 * Name of the account holder.
+	 */
 	private String accountName;
+	
+	/**
+	 * Number of the account on which the cheque is drawn.
+	 */
 	private String accountNumber;
+	
+	/**
+	 * Number uniquely identifying this cheque.
+	 */
 	private String chequeNumber;
+	
+	/**
+	 * Name of the payee.
+	 */
 	private String payee;
+	
+	/**
+	 * Date on which the cheque was written.
+	 */
 	private DateTime dateWritten;
+	
+	/**
+	 * Name of the bank, that issued the cheque.
+	 */
 	private String bankName;
 	// TODO Address class
+	
+	/**
+	 * Address of the bank, that issued the cheque.
+	 */
 	private String bankAddress;
 
+	/**
+	 * Unique identification number of this bank. Also known as routing number.
+	 */
 	private String bankIdentificationNumber;
 
 	/*

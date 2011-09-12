@@ -11,11 +11,17 @@ import org.salespointframework.util.Objects;
  * A debit card provides the holder with electronic access to his or her bank
  * account. A payment made with such a card is represented by an instance of the
  * class <code>DebitCard</code>.
+ * 
+ * @author Hannes Weisbach
  */
 public class DebitCard extends PaymentCard implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("javadoc")
+    private static final long serialVersionUID = 1L;
 
+	/**
+	 * Amount of money, the card holder can dispose of within a day.
+	 */
 	private Money dailyWithdrawalLimit;
 
 	/**

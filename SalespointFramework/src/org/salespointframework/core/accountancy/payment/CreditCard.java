@@ -10,12 +10,22 @@ import org.salespointframework.util.Objects;
 /**
  * Entity implementation class for Entity: CreditCard
  * 
+ * @author Hannes Weisbach
+ * 
  */
 public class CreditCard extends PaymentCard implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("javadoc")
+    private static final long serialVersionUID = 1L;
 
+	/**
+	 * The maximum amount of money, the card holder can dispose of within a day.
+	 */
 	private Money dailyWithdrawalLimit;
+	
+	/**
+	 * Line of credit extended by the issuing association to the card holder.
+	 */
 	private Money creditLimit;
 
 	/**
@@ -58,6 +68,9 @@ public class CreditCard extends PaymentCard implements Serializable {
 						.requireNonNull(expiryDate, "expiryDate"), Objects
 						.requireNonNull(cardVerificationCode,
 								"cardVerficationCode"));
+		
+		this.dailyWithdrawalLimit = Objects.requireNonNull(dailyWithdrawalLimit, "dailyWithdrawalLimit");
+		this.creditLimit = Objects.requireNonNull(creditLimit, "creditLimit");
 	}
 
 	/**
@@ -97,6 +110,8 @@ public class CreditCard extends PaymentCard implements Serializable {
 						.requireNonNull(expiryDate, "expiryDate"), Objects
 						.requireNonNull(cardVerificationCode,
 								"cardVerficationCode"));
+		this.dailyWithdrawalLimit = Objects.requireNonNull(dailyWithdrawalLimit, "dailyWithdrawalLimit");
+		this.creditLimit = Objects.requireNonNull(creditLimit, "creditLimit");
 	}
 
 	/**

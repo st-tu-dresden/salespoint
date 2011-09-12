@@ -23,28 +23,30 @@ import org.salespointframework.util.Objects;
  * This class represents an accountancy. An accountancy consists of
  * <code>AccountancyEntries</code>.
  * 
- * @author hannesweisbach
+ * @author Hannes Weisbach
  * @author Thomas Dedek
  * 
  */
 public final class PersistentAccountancy implements Serializable, Accountancy {
+    /**
+     * <code>EntityManager</code> which is used for this Accountancy.
+     */
 	private EntityManagerFactory emf;
-	private static final long serialVersionUID = 1L;
+	
+	@SuppressWarnings("javadoc")
+    private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create a new <code>Accountancy</code>. For persistence, an
 	 * <code>EntityManager</code> is created internally as required. The
 	 * <code>Database.INSTANCE</code> has to be initialized first.
-	 * 
-	 * @param entityManager
-	 *            <code>EntityManager</code> which is used for this Accountancy.
 	 */
 	public PersistentAccountancy() {
 		this.emf = Database.INSTANCE.getEntityManagerFactory();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.salespointframework.core.accountancy.IAccountancy#addEntry(org.salespointframework.core.accountancy.AbstractAccountancyEntry)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void addEntry(AbstractAccountancyEntry accountancyEntry) {
@@ -55,8 +57,8 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 		em.getTransaction().commit();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.salespointframework.core.accountancy.IAccountancy#addEntries(java.lang.Iterable)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void addEntries(Iterable<AbstractAccountancyEntry> accountancyEntries) {
@@ -68,8 +70,8 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 		em.getTransaction().commit();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.salespointframework.core.accountancy.IAccountancy#getEntries(org.joda.time.DateTime, org.joda.time.DateTime)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Iterable<AbstractAccountancyEntry> getEntries(DateTime from, DateTime to) {
@@ -88,8 +90,8 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 		return Iterables.from(tq.getResultList());
 	}
 
-	/* (non-Javadoc)
-	 * @see org.salespointframework.core.accountancy.IAccountancy#getEntries(java.lang.Class)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public <T extends AbstractAccountancyEntry> Iterable<T> getEntries(Class<T> clazz) {
@@ -105,8 +107,8 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 		return Iterables.from(tq.getResultList());
 	}
 
-	/* (non-Javadoc)
-	 * @see org.salespointframework.core.accountancy.IAccountancy#getEntries(java.lang.Class, org.joda.time.DateTime, org.joda.time.DateTime)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public <T extends AbstractAccountancyEntry> Iterable<T> getEntries(Class<T> clazz,
@@ -130,6 +132,9 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 		return Iterables.from(tq.getResultList());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public <T extends AbstractAccountancyEntry> Map<Interval, Iterable<T>> getEntries(
 			Class<T> clazz, DateTime from, DateTime to, Period period) {
@@ -148,6 +153,9 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 		return entries;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public <T extends AbstractAccountancyEntry> Map<Interval, Money> getSalesVolume(
 			Class<T> clazz, DateTime from, DateTime to, Period period) {
