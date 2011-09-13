@@ -48,7 +48,7 @@ public class UsermangerPersistenceTest {
 		UserIdentifier ui3 = new UserIdentifier();
 		MyEmployee e3 = new MyEmployee(ui3, "lala");
 		em.getTransaction().begin();
-		pum.addUser(e3);
+		pum.add(e3);
 		em.getTransaction().commit();
 		assertEquals(
 				pum.get(MyEmployee.class, e3.getUserIdentifier()), e3);
@@ -65,7 +65,7 @@ public class UsermangerPersistenceTest {
 				"MustBeInDataBaseAfterTesting");
 
 		em.getTransaction().begin();
-		pum.addUser(e3);
+		pum.add(e3);
 		pum.addCapability(e3, capa2);
 		em.getTransaction().commit();
 		assertTrue(pum.hasCapability(e3, capa2));
@@ -78,7 +78,7 @@ public class UsermangerPersistenceTest {
 		MyEmployee e3 = new MyEmployee(ui3, "lala");
 		UserCapability capa = new UserCapability("CrazyTestCapabilityAgain");
 		em.getTransaction().begin();
-		pum.addUser(e3);
+		pum.add(e3);
 		em.getTransaction().commit();
 		assertFalse(pum.hasCapability(e3, capa));
 	}

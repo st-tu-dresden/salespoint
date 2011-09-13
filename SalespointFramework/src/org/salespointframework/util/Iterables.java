@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-// TODO nullchecks 
+// TODO netter schreiben 
 // SCHEISS Collection<T> die Idioten von Sun hätten mal ihre APIs um Iterable<T> erweitern sollen, alles muss man selber machen....
 // http://google-collections.googlecode.com/svn/trunk/javadoc/com/google/common/collect/Iterables.html
 // ob es sich lohnt die ganze lib reinzuziehen?
@@ -23,6 +23,8 @@ public final class Iterables {
 	}
 	
 	public static <T> List<T> toList(final Iterable<T> iterable) {
+		Objects.requireNonNull(iterable, "iterable");
+		
 		List<T> temp = new ArrayList<T>();
 		for (T item : iterable) {
 			temp.add(item);
@@ -31,6 +33,8 @@ public final class Iterables {
 	}
 
 	public static <T> Set<T> toSet(final Iterable<T> iterable) {
+		Objects.requireNonNull(iterable, "iterable");
+		
 		Set<T> temp = new HashSet<T>();
 		for (T item : iterable) {
 			temp.add(item);
@@ -40,10 +44,12 @@ public final class Iterables {
 
 	@SuppressWarnings("unchecked")
 	public static <T> T[] toArray(final Iterable<T> iterable) {
+		Objects.requireNonNull(iterable, "iterable");
 		return (T[]) toList(iterable).toArray();
 	}
 
 	public static <T> boolean isEmpty(final Iterable<T> iterable) {
+		Objects.requireNonNull(iterable, "iterable");
 		return !iterable.iterator().hasNext();
 	}
 	
@@ -52,7 +58,8 @@ public final class Iterables {
 		return from(new ArrayList<T>(0));
 	}
 	
-	public static <T> int size(Iterable<T> iterable) {
+	public static <T> int size(final Iterable<T> iterable) {
+		Objects.requireNonNull(iterable, "iterable");
 		int size = 0;
 		for(Iterator<T> iterator = iterable.iterator(); iterator.hasNext(); iterator.next()) {
 			size++;
@@ -60,7 +67,8 @@ public final class Iterables {
 		return size;
 	}
 	
-	public static <T> T first(Iterable<T> iterable) {
+	public static <T> T first(final Iterable<T> iterable) {
+		Objects.requireNonNull(iterable, "iterable");
 		Iterator<T> iterator = iterable.iterator();
 		if(iterator.hasNext()) {
 			return iterator.next();
@@ -70,9 +78,9 @@ public final class Iterables {
 	}
 	
 
-	//WHAT THE FUCK
-	//einziger Use Case von anonymen Klassen: andere Fuckups in der Sprache/Lib kaschieren
 	public static <T> Iterable<T> from(final Iterable<T> iterable) {
+		Objects.requireNonNull(iterable, "iterable");
+		
 		final Iterator<T> iterator = iterable.iterator();
 		return new Iterable<T>() {
 			@Override
@@ -98,6 +106,8 @@ public final class Iterables {
 	}
 
 	public static <T> Iterable<T> from(final T[] array) {
+		Objects.requireNonNull(array, "array");
+		
 		return new Iterable<T>() {
 			@Override
             public Iterator<T> iterator() {

@@ -1,5 +1,14 @@
 package org.salespointframework.core.users;
 
+/**
+ *
+ * @author Christopher Bellmann
+ * @author Paul Henke
+ * @author Hannes Weissbach
+ * 
+ * @param <T>
+ */
+
 public interface UserManager<T extends User> {
 
 	/**
@@ -8,20 +17,12 @@ public interface UserManager<T extends User> {
 	 * 
 	 * @param user
 	 *            <code>User</code> to be stored.
-	 * @return <code>true</code>, if user was added, <code>false</code> if the
-	 *         user already existed
 	 */
-	boolean addUser(T user);
+	void add(T user);
 
-	/**
-	 * Removes a <code>User<code>, if there is no open <code>Order</code> for
-	 * the <code>User</code>
-	 * 
-	 * @param user
-	 *            <code>User</code> to be removed.
-	 * @return <code>true</code>, if successful, <code>false</code> otherwise.
-	 */
-	boolean removeUser(T user);
+	void remove(UserIdentifier userIdentifier);
+	
+	boolean contains(UserIdentifier userIdentifier);
 
 	/**
 	 * Adds a <code>UserCapability</code> to a <code>User</code>
@@ -81,7 +82,7 @@ public interface UserManager<T extends User> {
 	 * @param token
 	 *            token, with which a user was logged on.
 	 */
-	void logOff(final Object token);
+	void logOff(Object token);
 
 	/**
 	 * Get a logged-on user by its token.
@@ -99,15 +100,6 @@ public interface UserManager<T extends User> {
 	<E extends T> E getUserByToken(Class<E> clazz, Object token);
 
 	/**
-	 * Get all users of class type <code>clazz</code>.
-	 * 
-	 * @param clazz
-	 *            all users of this type will be returned.
-	 * @return all users of class type <code>clazz</code>
-	 */
-	<E extends T> Iterable<E> getUsers(Class<E> clazz);
-
-	/**
 	 * Get a user by its unique identifier.
 	 * 
 	 * @param clazz
@@ -118,7 +110,16 @@ public interface UserManager<T extends User> {
 	 *         equal to <code>userIdentifier</code>
 	 * @throws NoResultException
 	 */
-	<E extends T> E get(Class<E> clazz,
-			UserIdentifier userIdentifier);
+	<E extends T> E get(Class<E> clazz, UserIdentifier userIdentifier);
+
+	
+	/**
+	 * Get all users of class type <code>clazz</code>.
+	 * 
+	 * @param clazz
+	 *            all users of this type will be returned.
+	 * @return all users of class type <code>clazz</code>
+	 */
+	<E extends T> Iterable<E> findUsers(Class<E> clazz);
 
 }

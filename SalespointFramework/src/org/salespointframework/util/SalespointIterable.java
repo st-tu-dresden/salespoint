@@ -1,5 +1,7 @@
 package org.salespointframework.util;
 
+// TODO LEGACY Code, DELELTE 
+
 import java.util.Arrays;
 import java.util.Iterator;
 

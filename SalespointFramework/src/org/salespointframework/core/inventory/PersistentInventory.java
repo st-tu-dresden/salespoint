@@ -11,7 +11,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.salespointframework.core.database.Database;
-import org.salespointframework.core.order.paul.PersistentOrder;
 import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.product.PersistentProductType;
 import org.salespointframework.core.product.PersistentProduct_;
@@ -29,7 +28,6 @@ public final class PersistentInventory implements __Inventory__<PersistentProduc
 	
 	private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 	private final EntityManager entityManager;
-	
 	
 	public PersistentInventory() {
 		this.entityManager = null;
@@ -51,13 +49,11 @@ public final class PersistentInventory implements __Inventory__<PersistentProduc
 	public void remove(SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		EntityManager em = getEntityManager();
-		Object order = em.find(PersistentProduct.class, serialNumber);
-		if(order != null) {
-			em.remove(serialNumber);
+		Object product = em.find(PersistentProduct.class, serialNumber);
+		if(product != null) {
+			em.remove(product);
 			beginCommit(em);
 		}
-		em.remove(serialNumber);
-		beginCommit(em);
 	}
 	
 	@Override
@@ -66,7 +62,6 @@ public final class PersistentInventory implements __Inventory__<PersistentProduc
 		EntityManager em = getEntityManager();
 		return em.find(PersistentProduct.class, serialNumber) != null;
 	}
-	
 	
 	@Override
 	public <E extends PersistentProduct> E get(Class<E> clazz,	SerialNumber serialNumber) {
@@ -101,8 +96,6 @@ public final class PersistentInventory implements __Inventory__<PersistentProduc
 	public Iterable<PersistentProduct> findProducts() {
 		return this.findProducts(PersistentProduct.class);
 	}
-	
-
 	
 	@Override
 	public <E extends PersistentProduct> Iterable<E> findProductByProductType(Class<E> clazz, PersistentProductType productType) {
@@ -157,12 +150,10 @@ public final class PersistentInventory implements __Inventory__<PersistentProduc
 		return this.findProductByProductTypeAndFeatures(PersistentProduct.class, productType, productFeatures);
 	}
 	
-	
-	public static PersistentInventory createNew(EntityManager entityManager) {
+	public PersistentInventory createNew(EntityManager entityManager) {
 		return new PersistentInventory(entityManager);
 	}
 
-	
 	private EntityManager getEntityManager() {
 		return entityManager != null ? entityManager : emf.createEntityManager();
 	}

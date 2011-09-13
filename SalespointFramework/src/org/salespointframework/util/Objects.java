@@ -2,6 +2,8 @@ package org.salespointframework.util;
 
 import java.util.Arrays;
 
+// inspired by http://download.oracle.com/javase/7/docs/api/java/util/Objects.html
+
 /**
  * This class provides useful methods for null-checking and hash calculation of
  * multiple objects.

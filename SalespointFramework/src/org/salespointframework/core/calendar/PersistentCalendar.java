@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -13,6 +14,8 @@ import javax.persistence.criteria.Root;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.salespointframework.core.database.Database;
+import org.salespointframework.core.product.PersistentProductType;
+import org.salespointframework.core.product.ProductType;
 import org.salespointframework.core.users.UserIdentifier;
 import org.salespointframework.util.Filter;
 import org.salespointframework.util.Iterables;
@@ -30,29 +33,41 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
     /**
      * The entity manager that is used to persist the entries of this calendar.
      */
-    private final EntityManager em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
+    private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 
     /**
      * Adds the given entry to the calendar and inserts it into the database.
      * The given entry must not be <code>null</code>
      */
     @Override
-    public void addEntry(PersistentCalendarEntry entry) {
+    public void add(PersistentCalendarEntry entry) {
         Objects.requireNonNull(entry, "entry");
-        em.getTransaction().begin();
+        
+        EntityManager em = emf.createEntityManager();
         em.persist(entry);
-        em.getTransaction().commit();
+        beginCommit(em);
     }
 
     /**
      * Removes the given entry from calendar and the database.
      */
     @Override
-    public void deleteEntry(CalendarEntryIdentifier calendarEntryIdentifier) {
+    public void remove(CalendarEntryIdentifier calendarEntryIdentifier) {
         Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier");
-        em.getTransaction().begin();
-        em.remove(this.getEntryByID(calendarEntryIdentifier));
-        em.getTransaction().commit();
+		
+		EntityManager em = emf.createEntityManager();
+		Object calendarEntry = em.find(PersistentProductType.class, calendarEntryIdentifier);
+		if(calendarEntry != null) {
+			em.remove(calendarEntry);
+			beginCommit(em);
+		}
+    }
+    
+    @Override
+    public boolean contains(CalendarEntryIdentifier calendarEntryIdentifier) {
+		Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier");
+		EntityManager em = emf.createEntityManager();
+		return em.find(ProductType.class, calendarEntryIdentifier) != null;
     }
 
     /**
@@ -70,6 +85,8 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
     @Override
     public Iterable<PersistentCalendarEntry> getEntries(Filter<PersistentCalendarEntry> filter) {
         Objects.requireNonNull(filter, "filter");
+        
+        EntityManager em = emf.createEntityManager();
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<PersistentCalendarEntry> q = cb.createQuery(PersistentCalendarEntry.class);
@@ -92,14 +109,16 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
      *            Useridentifier of the user whose entries should be found.
      * @return An {@iterable} with all found entries.
      */
-    public Iterable<PersistentCalendarEntry> getEntriesByOwner(final UserIdentifier owner) {
-        Objects.requireNonNull(owner, "owner");
+    public Iterable<PersistentCalendarEntry> findByUserIdentifier(UserIdentifier userIdentifier) {
+        Objects.requireNonNull(userIdentifier, "userIdentifier");
+        
+        EntityManager em = emf.createEntityManager();
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<PersistentCalendarEntry> q = cb.createQuery(PersistentCalendarEntry.class);
         Root<PersistentCalendarEntry> r = q.from(PersistentCalendarEntry.class);
 
-        Predicate pOwner = cb.equal(r.get(PersistentCalendarEntry_.owner), owner);
+        Predicate pOwner = cb.equal(r.get(PersistentCalendarEntry_.owner), userIdentifier);
 
         q.where(pOwner);
         TypedQuery<PersistentCalendarEntry> tq = em.createQuery(q);
@@ -114,9 +133,11 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
      *            The title that entries should have.
      * @return An iterable with all found entries
      */
-    public Iterable<PersistentCalendarEntry> getEntriesByTitle(String title) {
+    public Iterable<PersistentCalendarEntry> findByTitle(String title) {
         Objects.requireNonNull(title, "title");
 
+        EntityManager em = emf.createEntityManager();
+        
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<PersistentCalendarEntry> q = cb.createQuery(PersistentCalendarEntry.class);
         Root<PersistentCalendarEntry> r = q.from(PersistentCalendarEntry.class);
@@ -137,7 +158,7 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
      *            - The {@link Interval} in which entries should end.
      * @return An iterable with all found entries.
      */
-    public Iterable<PersistentCalendarEntry> getEntriesThatEndBetween(final Interval interval) {
+    public Iterable<PersistentCalendarEntry> findThatEndBetween(final Interval interval) {	// TODO ThatAndBetween ? Naming ??
         return getEntries(new Filter<PersistentCalendarEntry>() {
 
             @SuppressWarnings("boxing")
@@ -173,7 +194,7 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
      * 
      * @return An iterable with all found entries.
      */
-    public Iterable<PersistentCalendarEntry> getEntriesThatStartBetween(final Interval interval) {
+    public Iterable<PersistentCalendarEntry> findThatStartBetween(final Interval interval) {
         Objects.requireNonNull(interval, "interval");
         return getEntries(new Filter<PersistentCalendarEntry>() {
 
@@ -208,8 +229,16 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
      * @see EntityManager#find(Class, Object)
      */
     @Override
-    public PersistentCalendarEntry getEntryByID(CalendarEntryIdentifier calendarEntryIdentifier) {
+    public PersistentCalendarEntry get(CalendarEntryIdentifier calendarEntryIdentifier) {
         Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier");
+        
+        EntityManager em = emf.createEntityManager();
         return em.find(PersistentCalendarEntry.class, calendarEntryIdentifier);
     }
+    
+    private void beginCommit(EntityManager entityManager) {
+    	entityManager.getTransaction().begin();
+    	entityManager.getTransaction().commit();
+    }
+    
 }

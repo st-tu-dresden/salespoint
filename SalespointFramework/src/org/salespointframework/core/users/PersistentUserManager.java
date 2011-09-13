@@ -1,7 +1,6 @@
 package org.salespointframework.core.users;
 
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.EntityManager;
@@ -9,8 +8,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 import org.salespointframework.core.database.Database;
 import org.salespointframework.util.Iterables;
@@ -21,6 +18,7 @@ import org.salespointframework.util.Objects;
  * @author Paul Henke
  * @author Hannes Weissbach
  */
+
 // FIXME
 public class PersistentUserManager implements UserManager<PersistentUser> {
 
@@ -32,15 +30,15 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * @see org.salespointframework.core.users.UserManage#addUser(T)
 	 */
 	@Override
-	public boolean addUser(final PersistentUser user) {
+	public void add(final PersistentUser user) {
 		Objects.requireNonNull(user, "user");
+		
 		EntityManager em = emf.createEntityManager();
 		if (em.find(PersistentUser.class, user.getUserIdentifier()) != null) {
-			return false;
+			throw new DuplicateUserException(user.getUserIdentifier());
 		}
 		em.persist(user);
 		beginCommit(em);
-		return true;
 	}
 
 	/*
@@ -49,23 +47,34 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * @see org.salespointframework.core.users.UserManage#removeUser(T)
 	 */
 	@Override
-	public boolean removeUser(final PersistentUser user) {
-		Objects.requireNonNull(user, "user");
-		Object token = null;
+	public void remove(UserIdentifier userIdentifer) {
+		Objects.requireNonNull(userIdentifer, "userIdentifer");
+		
 		// If user is logged on, log him off.
-		if (userTokenMap.containsValue(user)) {
-			for (Entry<Object, PersistentUser> e : userTokenMap.entrySet()) {
-				if (e.getValue().equals(user)) {
-					token = e.getKey();
-					break;
-				}
+		for(Map.Entry<Object, PersistentUser> entry : userTokenMap.entrySet()) {
+			if(entry.getValue().getUserIdentifier().equals(userIdentifer)) {
+				Object token = entry.getKey();
+				this.logOff(token);
+				break;
 			}
-			logOff(token);
 		}
-		// TODO Now delete him!
-
-		return false;
+		
+		EntityManager em = emf.createEntityManager();
+		Object user = em.find(PersistentUser.class, userIdentifer);
+		if(user != null) {
+			em.remove(user);
+			beginCommit(em);
+		}
 	}
+	
+	@Override
+	public boolean contains(UserIdentifier userIdentifier) {
+		Objects.requireNonNull(userIdentifier, "userIdentifier");
+		
+		EntityManager em = emf.createEntityManager();
+		return em.find(PersistentUser.class, userIdentifier) != null;
+	}
+	
 
 	/*
 	 * (non-Javadoc)
@@ -74,8 +83,7 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * org.salespointframework.core.users.UserCapability)
 	 */
 	@Override
-	public boolean addCapability(PersistentUser user,
-			UserCapability userCapability) {
+	public boolean addCapability(PersistentUser user, UserCapability userCapability) {
 		Objects.requireNonNull(user, "user");
 		Objects.requireNonNull(userCapability, "userCapability");
 
@@ -89,8 +97,7 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * org.salespointframework.core.users.UserCapability)
 	 */
 	@Override
-	public boolean removeCapability(PersistentUser user,
-			UserCapability userCapability) {
+	public boolean removeCapability(PersistentUser user, UserCapability userCapability) {
 		Objects.requireNonNull(user, "user");
 		Objects.requireNonNull(userCapability, "userCapability");
 
@@ -104,8 +111,7 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * org.salespointframework.core.users.UserCapability)
 	 */
 	@Override
-	public boolean hasCapability(PersistentUser user,
-			UserCapability userCapability) {
+	public boolean hasCapability(PersistentUser user, UserCapability userCapability) {
 		Objects.requireNonNull(user, "user");
 		Objects.requireNonNull(userCapability, "userCapability");
 
@@ -114,6 +120,7 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 
 	public Iterable<UserCapability> getCapabilities(PersistentUser user) {
 		Objects.requireNonNull(user, "user");
+		
 		return Iterables.from(user.getCapabilities());
 	}
 
@@ -123,13 +130,13 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * @see org.salespointframework.core.users.UserManage#getUsers()
 	 */
 	@Override
-	public <T extends PersistentUser> Iterable<T> getUsers(Class<T> clazz) {
+	public <T extends PersistentUser> Iterable<T> findUsers(Class<T> clazz) {
+		Objects.requireNonNull(clazz, "clazz");
+		
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> q = cb.createQuery(clazz);
-		// create and execute a query, where all results are from type clazz
-		TypedQuery<T> tq = em.createQuery(q.where(q.from(clazz)
-				.type().in(clazz)));
+		TypedQuery<T> tq = em.createQuery(q.where(q.from(clazz).type().in(clazz)));
 
 		return Iterables.from(tq.getResultList());
 	}
@@ -142,23 +149,31 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * .salespointframework.core.users.UserIdentifier)
 	 */
 	@Override
-	public <T extends PersistentUser> T get(Class<T> clazz,
-			UserIdentifier userIdentifier) {
+	public <T extends PersistentUser> T get(Class<T> clazz, UserIdentifier userIdentifier) {
+		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(userIdentifier, "userIdentifier");
+		
+		EntityManager em = emf.createEntityManager();
+		return em.find(clazz, userIdentifier);
+		
+		
+		/* why the hell must be things so complicated
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<T> q = cb.createQuery(clazz);
-		Root<T> r = q.from(clazz);
-		Predicate primaryKey = cb.equal(r.get(PersistentUser_.userIdentifier),
-				userIdentifier);
-		Predicate type = r.type().in(clazz);
-		q.where(cb.and(primaryKey, type));
-		TypedQuery<T> tq = em.createQuery(q);
+		CriteriaQuery<T> cq = cb.createQuery(clazz);
+		Root<T> entry = cq.from(clazz);
+		Predicate primaryKey = cb.equal(entry.get(PersistentUser_.userIdentifier), userIdentifier);
+		Predicate type = entry.type().in(clazz);
+		cq.where(primaryKey, type);
+		TypedQuery<T> tq = em.createQuery(cq);
 
 		return tq.getSingleResult();
+		*/
 	}
 	
 	public void update(PersistentUser user) {
+		Objects.requireNonNull(user, "user");
+		
 		EntityManager em = emf.createEntityManager();
 		em.merge(user);
 		beginCommit(em);
@@ -202,6 +217,7 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	@Override
 	public final void logOff(final Object token) {
 		Objects.requireNonNull(token, "token");
+		
 		userTokenMap.remove(token);
 	}
 
@@ -214,9 +230,10 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 */
 	
 	@Override
-	public final <T extends PersistentUser> T getUserByToken(Class<T> clazz,
-			Object token) {
+	public final <T extends PersistentUser> T getUserByToken(Class<T> clazz, Object token) {
+		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(token, "token");
+		
 		PersistentUser user = userTokenMap.get(token);
 		if (clazz.isInstance(user)) {
 			return clazz.cast(user);

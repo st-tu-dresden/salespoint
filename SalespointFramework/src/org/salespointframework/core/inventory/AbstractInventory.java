@@ -17,6 +17,7 @@ import org.salespointframework.util.Objects;
 
 //TODO Legacy Code, DELETE
 
+@Deprecated
 public abstract class AbstractInventory<T extends PersistentProduct> implements Inventory<T>, ICanHasClass<T> {
 
 	final EntityManager entityManager;

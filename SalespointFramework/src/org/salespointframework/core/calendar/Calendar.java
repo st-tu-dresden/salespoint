@@ -28,17 +28,19 @@ public interface Calendar<T extends CalendarEntry> {
      * @param id Id of the requested entry.
      * @return the entry with the given id or <code>null</code> if no entry was found.
      */
-    T getEntryByID(CalendarEntryIdentifier id);
+    T get(CalendarEntryIdentifier calendarEntryIdentifier);
     
     /**
      * Adds the given entry to the calendar.
      * @param entry the entry that is to be added to the calendar.
      */
-    void addEntry(T entry);
+    void add(T entry);
     
     /**
      * Deletes the entry with the given id from the calendar.
      * @param id Id of the entry that is to be removed from the calendar.
      */
-    void deleteEntry(CalendarEntryIdentifier id);
+    void remove(CalendarEntryIdentifier CalendarEntryIdentifier);
+
+	boolean contains(CalendarEntryIdentifier calendarEntryIdentifier);
 }

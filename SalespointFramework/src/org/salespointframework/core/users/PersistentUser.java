@@ -15,9 +15,8 @@ public class PersistentUser implements User {
 
 	@EmbeddedId
 	private UserIdentifier userIdentifier;
+
 	private String password;
-	@SuppressWarnings("unused")
-	private boolean deleted = false;
 
 	@ElementCollection
 	Set<UserCapability> capabilities = new HashSet<UserCapability>();
@@ -66,10 +65,6 @@ public class PersistentUser implements User {
 		return userIdentifier;
 	}
 
-	public final boolean equals(PersistentUser other) {
-		return this.userIdentifier.equals(other.userIdentifier);
-	}
-
 	@Override
 	public boolean equals(Object other) {
 		if(other == null) return false;
@@ -77,10 +72,20 @@ public class PersistentUser implements User {
 		if (!(other instanceof PersistentUser)) return false;
 		return equals((PersistentUser) other);
 	}
+	
+	public final boolean equals(PersistentUser other) {
+		if(other == null) return false;
+		if(other == this) return true;
+		return this.userIdentifier.equals(other.userIdentifier);
+	}
 
 	@Override
 	public final int hashCode() {
 		return userIdentifier.hashCode();
 	}
-
+	
+	@Override
+	public String toString() {
+		return userIdentifier.toString();
+	}
 }

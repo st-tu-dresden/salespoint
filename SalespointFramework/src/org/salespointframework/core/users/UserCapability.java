@@ -11,15 +11,15 @@ import javax.persistence.Embeddable;
  * @author Christopher Bellmann
  * 
  */
+@SuppressWarnings("serial")
 @Embeddable
 public final class UserCapability implements Serializable {
 
-	private static final long serialVersionUID = 3321997496371179389L;
-
-	private String name;
+	private final String name;
 
 	@Deprecated
 	public UserCapability() {
+		this.name = null;
 	};
 
 	/**
@@ -39,6 +39,7 @@ public final class UserCapability implements Serializable {
 		return name;
 	}
 
+	@Override
 	public final int hashCode() {
 		return name.hashCode();
 	}
@@ -53,7 +54,7 @@ public final class UserCapability implements Serializable {
 
 	public final boolean equals(UserCapability other) {
 		if(other == null) return false;
-		if(other == this) return false;
+		if(other == this) return true;
 		return this.name.equals(other.name);
 	}
 

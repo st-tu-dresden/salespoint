@@ -39,9 +39,9 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 	public void remove(ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		EntityManager em = emf.createEntityManager();
-		Object order = em.find(PersistentProductType.class, productIdentifier);
-		if(order != null) {
-			em.remove(productIdentifier);
+		Object productType = em.find(PersistentProductType.class, productIdentifier);
+		if(productType != null) {
+			em.remove(productType);
 			beginCommit(em);
 		}
 	}
@@ -95,7 +95,6 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 		return Iterables.from(tq.getResultList());
 	}
 
-	// TODO Category
 	@Override
 	public <T extends PersistentProductType> Iterable<T> findProductTypesByCategory(Class<T> clazz, String category) {
 		Objects.requireNonNull(clazz, "clazz");
@@ -115,11 +114,8 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 		
 		cq.where(p1, p2);
 		TypedQuery<T> tq = em.createQuery(cq);
-		
-		
-		
-		return Iterables.from(tq.getResultList());
 
+		return Iterables.from(tq.getResultList());
 	}
 	
 	// Non Interface Methods

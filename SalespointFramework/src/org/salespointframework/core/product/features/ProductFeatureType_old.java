@@ -14,6 +14,7 @@ import org.salespointframework.util.Objects;
 
 // TODO Delete, Legacy Code
 @Entity
+@Deprecated
 public class ProductFeatureType_old {
 	
 	@SuppressWarnings("unused")
