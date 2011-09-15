@@ -19,17 +19,23 @@ import org.salespointframework.util.Objects;
  * 
  */
 @Entity
-public abstract class AbstractAccountancyEntry {
+public abstract class AbstractAccountancyEntry implements AccountancyEntry {
 
     /**
      * Identifier of this entry. Only used to persist to database.
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @SuppressWarnings("unused")
-    private long  identifier;
+	@EmbeddedId
+    private AccountancyEntryIdentifier accountancyEntryIdentifier;
 
-    /**
+	/**
+	 * {@inheritDoc}
+	 */
+    @Override
+	public AccountancyEntryIdentifier getAccountancyEntryIdentifier() {
+		return accountancyEntryIdentifier;
+	}
+
+	/**
      * Represents the value of this entry.
      */
     private Money amount;
@@ -39,7 +45,7 @@ public abstract class AbstractAccountancyEntry {
      * constructor parameter.
      */
     @Temporal(TemporalType.TIMESTAMP)
-    private Date  timeStamp;
+    private Date dateCreated;
 
     /**
      * Protected, parameterless Constructor required by the persistence layer.
@@ -47,7 +53,7 @@ public abstract class AbstractAccountancyEntry {
      */
     @Deprecated
     protected AbstractAccountancyEntry() {
-        timeStamp = Shop.INSTANCE.getTime().getDateTime().toDate();
+        dateCreated = Shop.INSTANCE.getTime().getDateTime().toDate();
         this.amount = Money.ZERO;
     }
 
@@ -72,24 +78,22 @@ public abstract class AbstractAccountancyEntry {
      */
     public AbstractAccountancyEntry(Money amount, DateTime timeStamp) {
         this.amount = Objects.requireNonNull(amount, "amount");
-        this.timeStamp = Objects.requireNonNull(timeStamp, "timeStamp").toDate();
+        this.dateCreated = Objects.requireNonNull(timeStamp, "timeStamp").toDate();
     }
 
-    /**
-     * The timestamp of this entry. This can be the creation time or a user defined one, that was given to the constructor when it has been created.
-     * 
-     * @return the timestamp that is stored in this entry.
-     */
-    public DateTime getTimeStamp() {
-        return new DateTime(timeStamp);
+	/**
+	 * {@inheritDoc}
+	 */
+    @Override
+	public DateTime getCreationDate() {
+        return new DateTime(dateCreated);
     }
 
-    /**
-     * The value of this entry.
-     * 
-     * @return the value that is stored in this entry.
-     */
-    public Money getValue() {
+	/**
+	 * {@inheritDoc}
+	 */
+    @Override
+	public Money getValue() {
         return amount;
     }
 }

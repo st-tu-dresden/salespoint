@@ -1,6 +1,5 @@
 package spielwiese.annotation;
 
-import java.util.UUID;
 import java.util.Vector;
 
 import org.eclipse.persistence.config.SessionCustomizer;
@@ -9,6 +8,7 @@ import org.eclipse.persistence.internal.sessions.AbstractSession;
 import org.eclipse.persistence.sequencing.Sequence;
 import org.eclipse.persistence.sessions.Session;
 
+@SuppressWarnings("serial")
 public class Generator extends Sequence implements SessionCustomizer {
 
 	public Generator() {
@@ -35,6 +35,7 @@ public class Generator extends Sequence implements SessionCustomizer {
 		return new Identifier();
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Vector getGeneratedVector(Accessor arg0, AbstractSession arg1,
 			String arg2, int arg3) {

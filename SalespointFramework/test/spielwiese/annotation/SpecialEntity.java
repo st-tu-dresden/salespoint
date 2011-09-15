@@ -7,6 +7,7 @@ import javax.persistence.*;
  * Entity implementation class for Entity: SpecialEntity
  *
  */
+@SuppressWarnings("serial")
 @Entity
 public class SpecialEntity implements Serializable {
 	@EmbeddedId

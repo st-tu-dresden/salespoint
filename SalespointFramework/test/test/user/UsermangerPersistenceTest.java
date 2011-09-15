@@ -1,11 +1,9 @@
 package test.user;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
-import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.database.Database;
@@ -24,36 +22,26 @@ import org.salespointframework.core.users.UserIdentifier;
  */
 public class UsermangerPersistenceTest {
 
-	private static EntityManagerFactory emf;
-	private static EntityManager em;
-	private static PersistentUserManager pum;
+	private static PersistentUserManager userManager;
 
 	@BeforeClass
 	public static void setUp() {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
-		emf = Database.INSTANCE.getEntityManagerFactory();
-		em = emf.createEntityManager();
-		pum = new PersistentUserManager();
-	}
 
-	@After
-	public void runAfterEveryTest() {
-		if (em.getTransaction().isActive()) {
-			em.getTransaction().rollback();
-		}
+		userManager = new PersistentUserManager();
 	}
 
 	@Test
 	public void testHasEmployeeE3AndHasPW() {
 		UserIdentifier ui3 = new UserIdentifier();
 		MyEmployee e3 = new MyEmployee(ui3, "lala");
-		em.getTransaction().begin();
-		pum.add(e3);
-		em.getTransaction().commit();
+
+		userManager.add(e3);
+
 		assertEquals(
-				pum.get(MyEmployee.class, e3.getUserIdentifier()), e3);
+				userManager.get(MyEmployee.class, e3.getUserIdentifier()), e3);
 		assertEquals(
-				pum.get(MyEmployee.class, e3.getUserIdentifier())
+				userManager.get(MyEmployee.class, e3.getUserIdentifier())
 						.verifyPassword("lala"), true);
 	}
 
@@ -64,11 +52,11 @@ public class UsermangerPersistenceTest {
 		UserCapability capa2 = new UserCapability(
 				"MustBeInDataBaseAfterTesting");
 
-		em.getTransaction().begin();
-		pum.add(e3);
-		pum.addCapability(e3, capa2);
-		em.getTransaction().commit();
-		assertTrue(pum.hasCapability(e3, capa2));
+
+		userManager.add(e3);
+		userManager.addCapability(e3, capa2);
+
+		assertTrue(userManager.hasCapability(e3, capa2));
 
 	}
 
@@ -77,10 +65,10 @@ public class UsermangerPersistenceTest {
 		UserIdentifier ui3 = new UserIdentifier();
 		MyEmployee e3 = new MyEmployee(ui3, "lala");
 		UserCapability capa = new UserCapability("CrazyTestCapabilityAgain");
-		em.getTransaction().begin();
-		pum.add(e3);
-		em.getTransaction().commit();
-		assertFalse(pum.hasCapability(e3, capa));
+
+		userManager.add(e3);
+
+		assertFalse(userManager.hasCapability(e3, capa));
 	}
 
 }

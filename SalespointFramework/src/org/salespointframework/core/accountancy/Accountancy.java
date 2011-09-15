@@ -14,7 +14,7 @@ import org.salespointframework.core.money.Money;
  * @author Hannes Weisbach
  * 
  */
-public interface Accountancy {
+public interface Accountancy<T extends AccountancyEntry> {
 
     /**
      * Adds a new <code>AccountancyEntry</code> to this <code>Accountancy</code>
@@ -26,7 +26,7 @@ public interface Accountancy {
      *            <code>AccountancyEntry</code> which should be added to the
      *            <code>Accountancy</code>
      */
-    void addEntry(AbstractAccountancyEntry accountancyEntry);
+    void add(T accountancyEntry);
 
     /**
      * Adds multiple <code>AccountancyEntry</code>s to this
@@ -38,7 +38,7 @@ public interface Accountancy {
      *            an {@link Iterable} of all <code>AccountancyEntry</code>s
      *            which should be added to the <code>Accountancy</code>
      */
-    void addEntries(Iterable<AbstractAccountancyEntry> accountancyEntries);
+    void addAll(Iterable<T> accountancyEntries);
 
     /**
      * Returns all <code>AccountancyEntry</code>s in between the dates
@@ -53,7 +53,7 @@ public interface Accountancy {
      * @return an unmodifiable Iterable containing all entries between from and
      *         to
      */
-    Iterable<AbstractAccountancyEntry> getEntries(DateTime from, DateTime to);
+    Iterable<T> find(DateTime from, DateTime to);
 
     // TODO häßlich mit Class<T>, gez. Paul
     /**
@@ -69,7 +69,7 @@ public interface Accountancy {
      *            The type of the entries.
      * @return an unmodifiable Iterable containing all entries of type clazz
      */
-    <T extends AbstractAccountancyEntry> Iterable<T> getEntries(Class<T> clazz);
+    <E extends T> Iterable<E> find(Class<E> clazz);
 
     /**
      * Returns all <code>AccountancyEntry</code>s in between the dates
@@ -91,7 +91,7 @@ public interface Accountancy {
      * @return an unmodifiable Iterable containing all entries between from and
      *         to of type T
      */
-    <T extends AbstractAccountancyEntry> Iterable<T> getEntries(Class<T> clazz, DateTime from, DateTime to);
+    <E extends T> Iterable<E> find(Class<E> clazz, DateTime from, DateTime to);
 
     /**
      * Returns all <code>AccountancyEntry</code>s of type <code>clazz</code>,
@@ -127,7 +127,7 @@ public interface Accountancy {
      *         <code>Iterable</code> containing all entries within the key-
      *         <code>Interval</code>
      */
-    <T extends AbstractAccountancyEntry> Map<Interval, Iterable<T>> getEntries(Class<T> clazz, DateTime from, DateTime to, Period period);
+    <E extends T> Map<Interval, Iterable<E>> find(Class<E> clazz, DateTime from, DateTime to, Period period);
 
     /**
      * Returns the sum of the field <code>amount</code> of all
@@ -163,5 +163,5 @@ public interface Accountancy {
      *         <code>Money</code> object, equal to the sum of the amount fields
      *         of all entries within the key-<code>Interval</code>
      */
-    <T extends AbstractAccountancyEntry> Map<Interval, Money> getSalesVolume(Class<T> clazz, DateTime from, DateTime to, Period period);
+    <E extends T> Map<Interval, Money> getSalesVolume(Class<E> clazz, DateTime from, DateTime to, Period period);
 }

@@ -7,10 +7,8 @@ import javax.persistence.Persistence;
 
 import org.salespointframework.util.Objects;
 
+// TODO Naming?
 
-// TODO Name ändern
-// Singleton ist IMO nötig, da ALLE EntityManager von der SELBEN Factory kommen sollten
-// enum Singleton pattern -> awesome
 /**
  * 
  * @author Paul Henke
@@ -18,30 +16,55 @@ import org.salespointframework.util.Objects;
  */
 public enum Database {
 	INSTANCE;
-	
-	private EntityManagerFactory emf;
-	
-	// TODO 
+
+	private EntityManagerFactory entityManagerFactory;
+
+	// TODO
 	// laut Doku wird keine Exception geworfen, genauer checken
 	// http://download.oracle.com/javaee/6/api/javax/persistence/Persistence.html#createEntityManagerFactory(java.lang.String)
-	// also gehe ich davon aus, dass da einfach null bei einem Fehler zurück kommt
-	
+	// also gehe ich davon aus, dass da einfach null bei einem Fehler zurück
+	// kommt
+
+	/**
+	 * Initialize an EntityManagerFactory for the named persistence unit.
+	 * 
+	 * @param persistenceUnitName
+	 *            The name of the persistence unit
+	 * @return 
+	 */
 	public boolean initializeEntityManagerFactory(String persistenceUnitName) {
 		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName");
-		emf = Persistence.createEntityManagerFactory(persistenceUnitName);
-		return emf != null ? true : false; 
-	}
-	
-	public boolean initializeEntityManagerFactory(String persistenceUnitName, @SuppressWarnings("rawtypes") Map properties)
-	{
-		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName");
-		Objects.requireNonNull(properties, "properties");
-		emf = Persistence.createEntityManagerFactory(persistenceUnitName, properties);
-		return emf != null ? true : false;
+		entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName);
+		return entityManagerFactory != null ? true : false;
 	}
 
-	public EntityManagerFactory getEntityManagerFactory() {
-		return emf;
+	/**
+	 * Initialize an EntityManagerFactory for the named persistence unit.
+	 * 
+	 * @param persistenceUnitName
+	 *            The name of the persistence unit
+	 * @param properties
+	 *            Additional properties to use when creating the factory. The
+	 *            values of these properties override any values that may have
+	 *            been configured elsewhere
+	 * @return
+	 */
+	public boolean initializeEntityManagerFactory(String persistenceUnitName,
+			@SuppressWarnings("rawtypes") Map properties) {
+		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName");
+		Objects.requireNonNull(properties, "properties");
+		entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName,
+				properties);
+		return entityManagerFactory != null ? true : false;
 	}
-	
+
+	/**
+	 * Returns the initialized EntityManagerFactory
+	 * 
+	 * @return The factory that creates EntityManagers configured according to
+	 *         the specified persistence unit.
+	 */
+	public EntityManagerFactory getEntityManagerFactory() {
+		return entityManagerFactory;
+	}
 }

@@ -20,7 +20,7 @@ public interface UserManager<T extends User> {
 	 */
 	void add(T user);
 
-	void remove(UserIdentifier userIdentifier);
+	boolean remove(UserIdentifier userIdentifier);
 	
 	boolean contains(UserIdentifier userIdentifier);
 
@@ -120,6 +120,6 @@ public interface UserManager<T extends User> {
 	 *            all users of this type will be returned.
 	 * @return all users of class type <code>clazz</code>
 	 */
-	<E extends T> Iterable<E> findUsers(Class<E> clazz);
+	<E extends T> Iterable<E> find(Class<E> clazz);
 
 }

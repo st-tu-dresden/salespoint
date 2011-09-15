@@ -1,13 +1,9 @@
 package test.time;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertEquals;
 
-import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.junit.Test;
-import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.features.ProductFeature_old;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.time.DeLoreanTime;
 
@@ -32,7 +28,7 @@ public class TestTime extends DeLoreanTime {
 	@Test
 	public void testAfterGoAhead(){
 		
-		DateTime a = new DateTime();
+
 		Duration d = new Duration(300000);
 		afterGoAhead(d);
 		

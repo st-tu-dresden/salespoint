@@ -1,4 +1,4 @@
-package org.salespointframework.core.order.paul;
+package org.salespointframework.core.order;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -23,8 +23,15 @@ public class PersistentChargeLine implements ChargeLine {
 	private String description;
 	private String comment;
 	
+    /**
+     * Parameterless constructor required for JPA. Do not use.
+     */
 	@Deprecated
 	protected PersistentChargeLine() {}
+	
+	public PersistentChargeLine(Money amount, String description) {
+		this(amount, description, "");
+	}
 	
 	public PersistentChargeLine(Money amount, String description, String comment) {
 		this.amount = Objects.requireNonNull(amount, "amount");
@@ -34,9 +41,7 @@ public class PersistentChargeLine implements ChargeLine {
 		this.chargeLineIdentifier = new ChargeLineIdentifier();
 	}
 
-	public PersistentChargeLine(Money amount, String description) {
-		this(amount, description, "");
-	}
+
 
 	@Override
 	public Money getPrice() {

@@ -33,6 +33,9 @@ public class PersistentService extends PersistentProduct implements ServiceInsta
 	private Date scheduledEnd;
 	private ServiceDeliveryStatus serviceDeliveryStatus;
 	
+    /**
+     * Parameterless constructor required for JPA. Do not use.
+     */
 	@Deprecated
 	protected PersistentService(){}
 	
@@ -126,8 +129,8 @@ public class PersistentService extends PersistentProduct implements ServiceInsta
 	public boolean equals(Object other) {
 		if(other == null) return false;
 		if(other == this) return true;
-		if(!(other instanceof ServiceInstance)) return false;
-		return this.equals((ServiceInstance)other);
+		if(!(other instanceof PersistentService)) return false;
+		return this.equals((PersistentService)other);
 	}
 	
 	/**
@@ -142,7 +145,7 @@ public class PersistentService extends PersistentProduct implements ServiceInsta
 	 *         <code>false</code> otherwise.
 	 */
 	
-	public final boolean equals(ServiceInstance other) {
+	public final boolean equals(PersistentService other) {
 		if(other == null) return false;
 		if(other == this) return true;
 		return this.getSerialNumber().equals(other.getSerialNumber());

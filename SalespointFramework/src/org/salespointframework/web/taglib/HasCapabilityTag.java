@@ -31,7 +31,8 @@ public class HasCapabilityTag extends BodyTagSupport {
 	@Override
 	public int doStartTag() throws JspException {
 
-		UserManager<User> usermanager = Shop.INSTANCE.getUserManager();
+		@SuppressWarnings("unchecked")
+		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
 		User user = usermanager.getUserByToken(User.class, pageContext.getSession());
 		UserCapability capability = new UserCapability(capabilityName);
 

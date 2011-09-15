@@ -1,19 +1,29 @@
 package org.salespointframework.core.inventory;
 
 import org.salespointframework.core.product.Product;
+import org.salespointframework.core.product.ProductFeature;
+import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.SerialNumber;
 
-// TODO Legacy Code, DELETE
-
-
-//Vollständig getypt
-//public interface Inventory<T1 extends InventoryEntry<T2, T3>, T2 extends ProductInstance<T3>, T3 extends ProductType> {
-@Deprecated
+/**
+ * 
+ * @author Paul
+ *
+ * @param <T>
+ */
 public interface Inventory<T extends Product> {
-	void addProductInstance(T productInstance);
-	void removeProductInstance(SerialNumber serialNumber);
-	boolean contains(SerialNumber serialNumber);
-	T getProductInstance(SerialNumber serialNumber);
-	Iterable<T> getProductInstances();
+
+	void add(T product);
 	
+	boolean remove(SerialNumber serialNumber);
+	
+	boolean contains(SerialNumber serialNumber);
+	
+	<E extends T> E get(Class<E> clazz, SerialNumber serialNumber);
+
+	<E extends T> Iterable<E> find(Class<E> clazz);
+
+	<E extends T> Iterable<E> find(Class<E> clazz, ProductIdentifier productType);
+	
+	<E extends T> Iterable<E> find(Class<E> clazz, ProductIdentifier productType, Iterable<ProductFeature> productFeatures);
 }

@@ -38,7 +38,6 @@ public class ProductPaymentEntry extends AbstractAccountancyEntry {
     /**
      * Parameterless constructor required for JPA. Do not use.
      */
-    @SuppressWarnings("deprecation")
     @Deprecated
     protected ProductPaymentEntry() {
     }

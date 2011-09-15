@@ -3,120 +3,23 @@ package org.salespointframework.core.order;
 import org.joda.time.DateTime;
 import org.salespointframework.core.users.UserIdentifier;
 
-public interface OrderManager {
+/**
+ * 
+ * @author Thomas Dedek
+ * @author Paul Henke
+ *
+ */
+public interface OrderManager<O extends Order<OL,CL>, OL extends OrderLine, CL extends ChargeLine> {
 
-	/**
-	 * Add an <code>OrderEntry</code> to this
-	 * <code>OrderManager</code> and persists them to underlying database.
-	 * 
-	 * @param order The <code>OrderEntry</code> which shall be added.
-	 */
-	void addOrder(OrderEntry order);
+	void add(O order);
+	void remove(OrderIdentifier orderIdentifier);
+	O get(OrderIdentifier orderIdentifier);
+	boolean contains(OrderIdentifier orderIdentifier);
 
-	/**
-	 * Checks whether the OrderManager contains the given OrderEntry.
-	 * 
-	 * @param orderEntry
-	 *            Denoting the OrderEntry that shall be checked.
-	 * @return True, if the OrderManager contains this OrderEntry 
-	 */
-	boolean containsOrderEntry(OrderEntry orderEntry);
-	
-	/**
-	 * Returns the <code>OrderEntry</code>s whith the specified
-	 * <code>orderIdentifier</code>.
-	 * 
-	 * @param orderIdentifier
-	 *            Denoting the identifier of the requested OrderEntry.
-	 * @return The requested OrderEntry
-	 */
-	OrderEntry findOrder(OrderIdentifier orderIdentifier);
-
-	/**
-	 * Returns all <code>OrderEntry</code>s in between the dates
-	 * <code>from</code> and <code>to</code>, including from and to. So every
-	 * entry with an time stamp <= to and >= from is returned. If no entries
-	 * within the specified time span exist, an empty Iterable is returned.
-	 * 
-	 * @param from
-	 *            time stamp denoting the start of the requested time period
-	 * @param to
-	 *            time stamp denoting the end of the requested time period
-	 * @return an unmodifiable Iterable containing all OrderEntries between from and
-	 *         to
-	 */
-	Iterable<OrderEntry> findOrders(DateTime from, DateTime to);
-
-	/**
-	 * Returns all <code>OrderEntry</code>s having the OrderEntryStatus
-	 * <code>status</code>. If no entries
-	 * with the specified status exist, an empty Iterable is returned.
-	 * 
-	 * @param status
-	 *            Denoting the OrderEntryStatus on which the OrderEntrys will be requested.
-	 * @return an unmodifiable Iterable containing all OrderEntries whith the specified OrderEntryStatus
-	 */
-	Iterable<OrderEntry> findOrders(OrderStatus status);
-	
-	/**
-	 * Returns all <code>OrderEntry</code>s from the given userID. If this user
-	 * has no orderEntries, an empty Iterable is returned.
-	 * 
-	 * @param userIdentifier
-	 *            Denoting the UserIdentifier on which the OrderEntrys will be
-	 *            requested.
-	 * @return an unmodifiable Iterable containing all OrderEntries from the
-	 *         specified user.
-	 */
-	 Iterable<OrderEntry> findOrders(UserIdentifier userIdentifier);
-	 
-	/**
-	 * Returns all <code>OrderEntry</code>s from the given userID in between the
-	 * dates <code>from</code> and <code>to</code>, including from and to. If
-	 * this user has no orderEntries in this period, an empty Iterable is
-	 * returned.
-	 * 
-	 * @param userIdentifier
-	 *            Denoting the UserIdentifier on which the OrderEntrys will be
-	 *            requested.
-	 * @param from
-	 *            time stamp denoting the start of the requested time period
-	 * @param to
-	 *            time stamp denoting the end of the requested time period
-	 * @return an unmodifiable Iterable containing all OrderEntries from the
-	 *         specified user in the specified period.
-	 */
-	 Iterable<OrderEntry> findOrders(UserIdentifier userIdentifier, DateTime from, DateTime to);
-
-	/**
-	 * Remove an <code>OrderEntry</code> from this
-	 * <code>OrderManager</code> and the underlying database.
-	 * 
-	 * @param orderIdentifier The Identifier of the <code>OrderEntry</code> which shall be removed.
-	 */
-	OrderEntry removeOrder(OrderIdentifier orderIdentifier);
-
-	// TODO nötig??
-	/**
-	 * Commits changes from the given <code>OrderEntry</code> to the database.
-	 * If the database doesn't contain an OrderEntry with same identifier as given OrderEntry,
-	 * the given OrderEntry will be persisted.
-	 * 
-	 * @param orderEntry The <code>OrderEntry</code> which shall be updated.
-	 */
-	 void updateOrder(OrderEntry orderEntry);
-	 
-	/**
-	 * Checks whether the specified user has open or processing
-	 * orders. For example this information have to be checked before removing
-	 * an user from the system.
-	 * 
-	 * @param userIdentifier
-	 *            Denoting the UserIdentifier on which shall be checked.
-	 * @return True, if the user has open or processing orders.
-	 */
-	 boolean hasOpenOrders(UserIdentifier userIdentifier);
-	 
-
+	// TODO mehr wie z.B. find(DateTime from, DateTime to) ???
+	Iterable<O> find(OrderStatus orderStatus);
+	Iterable<O> find(DateTime from, DateTime to);
+	Iterable<O> find(UserIdentifier userIdentifier);
+	Iterable<O> find(UserIdentifier userIdentifier, DateTime from, DateTime to);
 
 }

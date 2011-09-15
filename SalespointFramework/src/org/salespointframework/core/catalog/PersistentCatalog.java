@@ -23,9 +23,13 @@ import org.salespointframework.util.Objects;
  * @author Paul Henke
  * 
  */
-public class PersistentCatalog implements ProductCatalog<PersistentProductType> {
+public class PersistentCatalog implements Catalog<PersistentProductType> {
 	
 	EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
+	
+	public PersistentCatalog() {
+		
+	}
 	
 	@Override
 	public void add(PersistentProductType productType) {
@@ -36,13 +40,16 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 	}
 
 	@Override
-	public void remove(ProductIdentifier productIdentifier) {
+	public boolean remove(ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		EntityManager em = emf.createEntityManager();
 		Object productType = em.find(PersistentProductType.class, productIdentifier);
 		if(productType != null) {
 			em.remove(productType);
 			beginCommit(em);
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
@@ -62,7 +69,7 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 	}
 
 	@Override
-	public <T extends PersistentProductType> Iterable<T> findProductTypes(Class<T> clazz) {
+	public <T extends PersistentProductType> Iterable<T> find(Class<T> clazz) {
 		Objects.requireNonNull(clazz, "clazz");
 		
 		EntityManager em = emf.createEntityManager();
@@ -76,7 +83,7 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 	}
 
 	@Override
-	public <T extends PersistentProductType> Iterable<T> findProductTypesByName(Class<T> clazz, String name) {
+	public <T extends PersistentProductType> Iterable<T> findByName(Class<T> clazz, String name) {
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(name, "name");
 
@@ -96,7 +103,7 @@ public class PersistentCatalog implements ProductCatalog<PersistentProductType> 
 	}
 
 	@Override
-	public <T extends PersistentProductType> Iterable<T> findProductTypesByCategory(Class<T> clazz, String category) {
+	public <T extends PersistentProductType> Iterable<T> findByCategory(Class<T> clazz, String category) {
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(category, "category");
 		

@@ -28,6 +28,9 @@ public class PersistentServiceType extends PersistentProductType implements Serv
 	@Temporal(TemporalType.TIMESTAMP)
 	protected Date endOfPeriodOfOperation;
 	
+    /**
+     * Parameterless constructor required for JPA. Do not use.
+     */
 	@Deprecated
 	protected PersistentServiceType(){
 	}

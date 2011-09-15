@@ -6,8 +6,6 @@ import java.util.UUID;
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
-
 /**
  * Entity implementation class for Entity: Identifier
  *

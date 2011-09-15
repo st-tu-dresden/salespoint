@@ -9,19 +9,19 @@ import org.salespointframework.core.product.ProductType;
  *
  * @param <T>
  */
-public interface ProductCatalog<T extends ProductType> {
+public interface Catalog<T extends ProductType> {
 
 	void add(T productType);
 	
-	void remove(ProductIdentifier productIdentifier);
+	boolean remove(ProductIdentifier productIdentifier);
 
 	boolean contains(ProductIdentifier productIdentifier);
 
 	<E extends T> E get(Class<E> clazz, ProductIdentifier productIdentifier);
 
-	<E extends T> Iterable<E> findProductTypes(Class<E> clazz);
+	<E extends T> Iterable<E> find(Class<E> clazz);
 
-	<E extends T> Iterable<E> findProductTypesByName(Class<E> clazz, String name);
+	<E extends T> Iterable<E> findByName(Class<E> clazz, String name);
 	
-	<E extends T> Iterable<E> findProductTypesByCategory(Class<E> clazz, String category);
+	<E extends T> Iterable<E> findByCategory(Class<E> clazz, String category);
 }

@@ -12,9 +12,9 @@ import javax.persistence.criteria.Root;
 
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.product.PersistentProduct;
-import org.salespointframework.core.product.PersistentProductType;
 import org.salespointframework.core.product.PersistentProduct_;
 import org.salespointframework.core.product.ProductFeature;
+import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
@@ -24,15 +24,22 @@ import org.salespointframework.util.Objects;
  * @author Paul Henke
  * 
  */
-public final class PersistentInventory implements __Inventory__<PersistentProduct, PersistentProductType> {
+public final class PersistentInventory implements Inventory<PersistentProduct> {
 	
 	private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 	private final EntityManager entityManager;
 	
+	/**
+	 * 
+	 */
 	public PersistentInventory() {
 		this.entityManager = null;
 	}
 
+	/**
+	 * 
+	 * @param entityManager
+	 */
 	public PersistentInventory(EntityManager entityManager) {
 		this.entityManager = Objects.requireNonNull(entityManager, "entityManager");
 	}
@@ -46,13 +53,16 @@ public final class PersistentInventory implements __Inventory__<PersistentProduc
 	}
 	
 	@Override
-	public void remove(SerialNumber serialNumber) {
+	public boolean remove(SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		EntityManager em = getEntityManager();
 		Object product = em.find(PersistentProduct.class, serialNumber);
 		if(product != null) {
 			em.remove(product);
 			beginCommit(em);
+			return true;
+		} {
+			return false;
 		}
 	}
 	
@@ -71,13 +81,8 @@ public final class PersistentInventory implements __Inventory__<PersistentProduc
 		return em.find(clazz, serialNumber);
 	}
 
-	// convenience
-	public PersistentProduct get(SerialNumber serialNumber) {
-		return this.get(PersistentProduct.class, serialNumber);
-	}
-
 	@Override
-	public <E extends PersistentProduct> Iterable<E> findProducts(Class<E> clazz) {
+	public <E extends PersistentProduct> Iterable<E> find(Class<E> clazz) {
 		Objects.requireNonNull(clazz, "clazz");
 		
 		EntityManager em = emf.createEntityManager();
@@ -92,15 +97,10 @@ public final class PersistentInventory implements __Inventory__<PersistentProduc
 		return Iterables.from(tq.getResultList());
 	}
 	
-	// convenience
-	public Iterable<PersistentProduct> findProducts() {
-		return this.findProducts(PersistentProduct.class);
-	}
-	
 	@Override
-	public <E extends PersistentProduct> Iterable<E> findProductByProductType(Class<E> clazz, PersistentProductType productType) {
+	public <E extends PersistentProduct> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(clazz, "clazz");
-		Objects.requireNonNull(productType, "productType");
+		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -108,7 +108,7 @@ public final class PersistentInventory implements __Inventory__<PersistentProduc
 		Root<E> entry = cq.from(clazz);
 	
 		Predicate p0 = entry.type().in(clazz);
-		Predicate p1 = cb.equal(entry.get(PersistentProduct_.productIdentifier), productType.getProductIdentifier());
+		Predicate p1 = cb.equal(entry.get(PersistentProduct_.productIdentifier), productIdentifier);
 	
 		cq.where(p0, p1);
 		
@@ -117,15 +117,10 @@ public final class PersistentInventory implements __Inventory__<PersistentProduc
 		return Iterables.from(tq.getResultList());
 	}
 	
-	// convenience
-	public Iterable<PersistentProduct> findProductByProductType(PersistentProductType productType) {
-		return this.findProductByProductType(PersistentProduct.class, productType);
-	}
-	
 	@Override
-	public <E extends PersistentProduct> Iterable<E> findProductByProductTypeAndFeatures(Class<E> clazz, PersistentProductType productType,	Iterable<ProductFeature> productFeatures) {
+	public <E extends PersistentProduct> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier,	Iterable<ProductFeature> productFeatures) {
 		Objects.requireNonNull(clazz, "clazz");
-		Objects.requireNonNull(productType, "productType");
+		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		Objects.requireNonNull(productFeatures, "productFeatures");
 		
 		Set<ProductFeature> featureSet = Iterables.toSet(productFeatures);
@@ -136,7 +131,7 @@ public final class PersistentInventory implements __Inventory__<PersistentProduc
 		Root<E> entry = cq.from(clazz);
 		
 		Predicate p0 = entry.type().in(clazz);
-		Predicate p1 = cb.equal(entry.get(PersistentProduct_.productIdentifier), productType.getProductIdentifier());
+		Predicate p1 = cb.equal(entry.get(PersistentProduct_.productIdentifier), productIdentifier);
 		Predicate p2 = cb.equal(entry.<Set<ProductFeature>>get("productFeatures"), featureSet);
 		
 		cq.where(p0, p1, p2);
@@ -145,21 +140,16 @@ public final class PersistentInventory implements __Inventory__<PersistentProduc
 		return Iterables.from(tq.getResultList());
 	}
 	
-	// convenience
-	public Iterable<PersistentProduct> findProductByProductTypeAndFeatures(PersistentProductType productType, Iterable<ProductFeature> productFeatures) {
-		return this.findProductByProductTypeAndFeatures(PersistentProduct.class, productType, productFeatures);
-	}
-	
 	public PersistentInventory createNew(EntityManager entityManager) {
 		return new PersistentInventory(entityManager);
 	}
 
-	private EntityManager getEntityManager() {
+	private final EntityManager getEntityManager() {
 		return entityManager != null ? entityManager : emf.createEntityManager();
 	}
 	
 	// TODO not pretty
-	private void beginCommit(EntityManager entityManager) {
+	private final void beginCommit(EntityManager entityManager) {
 		if(this.entityManager == null) {
 			entityManager.getTransaction().begin();
 			entityManager.getTransaction().commit();

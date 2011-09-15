@@ -1,5 +1,4 @@
-package org.salespointframework.core.order.paul;
-
+package org.salespointframework.core.order;
 
 /**
  * 
@@ -7,14 +6,17 @@ package org.salespointframework.core.order.paul;
  *
  */
 public interface OrderCompletionResult {
-//
+
 	public enum OrderCompletionStatus {
-		SUCCESSFUL, FAILED
+		SUCCESSFUL, SPLITORDER, FAILED
 	}
 	
-	OrderCompletionStatus getOrderCompletionStatus();
+	OrderCompletionStatus getStatus();
 	
-	void rollBack();
+	boolean rollBack();
 	
 	Order<OrderLine, ChargeLine> splitOrder();
+
+	Throwable getException();
+	
 }

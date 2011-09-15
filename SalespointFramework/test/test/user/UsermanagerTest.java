@@ -1,21 +1,15 @@
 package test.user;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-
-import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.salespointframework.core.database.Database;
-import org.salespointframework.core.users.DuplicateUserException;
 import org.salespointframework.core.users.PersistentUserManager;
 import org.salespointframework.core.users.UserCapability;
 import org.salespointframework.core.users.UserIdentifier;
@@ -24,44 +18,21 @@ import org.salespointframework.util.Iterables;
 
 public class UsermanagerTest {
 
-	
-	
-	private static UserIdentifier ui3= new UserIdentifier("CapaEmployee");
-	
-	
-	private static MyEmployee e3 = new MyEmployee(ui3, "lala");
-	
-	
+	private static UserIdentifier userIdentifier = new UserIdentifier();
+	private static MyEmployee employee = new MyEmployee(userIdentifier, "lala");
 	private UserCapability capa;
-	
-	private static EntityManagerFactory emf;
-	private static EntityManager em;
-	private static PersistentUserManager pum;
-	
-	
+	private static PersistentUserManager userManager;
 	
 	@BeforeClass
 	public static void setUp() {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
-		emf = Database.INSTANCE.getEntityManagerFactory();
-		em = emf.createEntityManager();
-		pum = new PersistentUserManager();
-		em.getTransaction().begin();
-		pum.add(e3);
-		em.getTransaction().commit();
-	
+
+		userManager = new PersistentUserManager();
 	}
-	
-	@After   
-	public void runAfterEveryTest() {   
-	    if(em.getTransaction().isActive()){
-	    	em.getTransaction().rollback();
-	    }
-	}   
 	
 	@Test
 	public void testEmployeeMangerContainsE3(){
-		assertEquals(pum.get(MyEmployee.class, e3.getUserIdentifier()), e3);
+		assertEquals(userManager.get(MyEmployee.class, employee.getUserIdentifier()), employee);
 	}
 	
 	
@@ -70,12 +41,9 @@ public class UsermanagerTest {
 		UserIdentifier ui= new UserIdentifier("testCustomer");
 		MyCustomer c = new MyCustomer(ui, "pw1234");
 		
-		
-		EntityTransaction t= em.getTransaction();
-		t.begin();
-		pum.add(c);
-		t.commit();
-		assertEquals(pum.get(MyCustomer.class, c.getUserIdentifier()), c);
+		userManager.add(c);
+
+		assertEquals(userManager.get(MyCustomer.class, c.getUserIdentifier()), c);
 	}
 	
 	@Test
@@ -84,11 +52,11 @@ public class UsermanagerTest {
 		UserIdentifier ui= new UserIdentifier("testEmployee");
 		MyEmployee e = new MyEmployee(ui, "4321pw");
 				
-		em.getTransaction().begin();
-		pum.add(e);
-		em.getTransaction().commit();
 		
-		MyEmployee currentE = pum.get(MyEmployee.class, e.getUserIdentifier());
+		userManager.add(e);
+		
+		
+		MyEmployee currentE = userManager.get(MyEmployee.class, e.getUserIdentifier());
 		assertEquals(currentE, e);
 	}
 	
@@ -98,18 +66,17 @@ public class UsermanagerTest {
 	public void testDuplicateEmployee(){
 		UserIdentifier ui= new UserIdentifier("testDuplicateEmployee");
 		MyEmployee e = new MyEmployee(ui, "4321pw");
-		MyEmployee e2 = new MyEmployee(ui, "adfpw");
 		
-		em.getTransaction().begin();
-		pum.add(e);
-		em.getTransaction().commit();
 		
-		MyEmployee currentE = pum.get(MyEmployee.class, e.getUserIdentifier());
+		userManager.add(e);
+		
+		
+		MyEmployee currentE = userManager.get(MyEmployee.class, e.getUserIdentifier());
 		assertEquals(currentE, e);
 		
-		em.getTransaction().begin();
+		
 		//assertFalse(pum.add(e2));
-		em.getTransaction().commit();
+		
 		
 		
 		
@@ -120,20 +87,20 @@ public class UsermanagerTest {
 		final int usersToAdd = 4;
 		final List<MyEmployee> list = new ArrayList<MyEmployee>(usersToAdd);
 		
-		final EntityManager entityManager = emf.createEntityManager();
+
 		final PersistentUserManager empManager = new PersistentUserManager();
 		
-		final int oldCount = Iterables.toList((empManager.findUsers(MyEmployee.class))).size();
+		final int oldCount = Iterables.toList((empManager.find(MyEmployee.class))).size();
 
-		entityManager.getTransaction().begin();
+
 		for(int n = 0; n < usersToAdd; n++) {
 			MyEmployee employee = new MyEmployee(new UserIdentifier(), "egal");		//id egal, besser leer lassen, eigene wird generiert, clasht nicht mit anderen Tests 
 			list.add(employee);
 			empManager.add(employee);
 		}
-		entityManager.getTransaction().commit();
+
 		
-		final int newCount = Iterables.toList((empManager.findUsers(MyEmployee.class))).size();
+		final int newCount = Iterables.toList((empManager.find(MyEmployee.class))).size();
 		
 		for(MyEmployee employee : list) {
 			assertEquals(empManager.get(MyEmployee.class, employee.getUserIdentifier()), employee);
@@ -155,26 +122,26 @@ public class UsermanagerTest {
 		UserIdentifier uie4= new UserIdentifier("me4");
 		MyEmployee me4= new MyEmployee(uie4 ,"egal");
 		
-		em.getTransaction().begin();
-		pum.add(me1);
-		pum.add(me2);
-		pum.add(me3);
-		pum.add(me4);
-		em.getTransaction().commit();
+		
+		userManager.add(me1);
+		userManager.add(me2);
+		userManager.add(me3);
+		userManager.add(me4);
+		
 		
 			
 		//set this Number in order how many Employees u create during the hole test
 		int numberOfEmployees =6;
 		int countEmployees =0;
-		for(Iterator<MyEmployee> i = pum.findUsers(MyEmployee.class).iterator(); i.hasNext(); ){
-			pum.findUsers(MyEmployee.class);
+		for(Iterator<MyEmployee> i = userManager.find(MyEmployee.class).iterator(); i.hasNext(); ){
+			userManager.find(MyEmployee.class);
 			countEmployees++;
 			i.next();
 		}
-		assertEquals("me1",pum.get(MyEmployee.class, uie1), me1);
-		assertEquals("me2",pum.get(MyEmployee.class, uie2), me2);
-		assertEquals("me3",pum.get(MyEmployee.class, uie3), me3);
-		assertEquals("me4",pum.get(MyEmployee.class, uie4), me4);
+		assertEquals("me1",userManager.get(MyEmployee.class, uie1), me1);
+		assertEquals("me2",userManager.get(MyEmployee.class, uie2), me2);
+		assertEquals("me3",userManager.get(MyEmployee.class, uie3), me3);
+		assertEquals("me4",userManager.get(MyEmployee.class, uie4), me4);
 		assertEquals("iterator", numberOfEmployees,countEmployees);
 	}
 	
@@ -189,18 +156,16 @@ public class UsermanagerTest {
 	public void testAddCapabilityToEmployee(){
 		capa= new UserCapability("CrazyTestCapabilityAgain");
 		UserCapability capa2= new UserCapability("MustBeInDataBaseAfterTesting");
-		em.getTransaction().begin();
-		boolean addCapa = pum.addCapability(e3, capa);
-		em.getTransaction().commit();
-		em.getTransaction().begin();
-		boolean addCapa2 = pum.addCapability(e3, capa2);
-		em.getTransaction().commit();
+		
+		boolean addCapa = userManager.addCapability(employee, capa);
+		boolean addCapa2 = userManager.addCapability(employee, capa2);
+
 		
 		assertEquals("NoSuchUser!", true,  addCapa);
 		assertEquals("NoSuchUser!", true,  addCapa2);
 		
-		boolean hasCapa = pum.hasCapability(e3, capa);
-		boolean hasCapa2 = pum.hasCapability(e3, capa2);
+		boolean hasCapa = userManager.hasCapability(employee, capa);
+		boolean hasCapa2 = userManager.hasCapability(employee, capa2);
 		assertEquals("1",true,  hasCapa);
 		assertEquals("2",true,  hasCapa2);
 	}
@@ -210,19 +175,19 @@ public class UsermanagerTest {
 	@Test
 	public void testRemoveCapability(){
 		capa= new UserCapability("RemoveTestCapabilityAgain");
-		em.getTransaction().begin();
-		pum.addCapability(e3, capa);
-		em.getTransaction().commit();
 		
-		boolean hasCapa = pum.hasCapability(e3, capa);
+		userManager.addCapability(employee, capa);
+		
+		
+		boolean hasCapa = userManager.hasCapability(employee, capa);
 		assertEquals("befor removing", true,  hasCapa);
 		
-		em.getTransaction().begin();
-		boolean remo =pum.removeCapability(e3, capa);
-		em.getTransaction().commit();
+		
+		boolean remo =userManager.removeCapability(employee, capa);
+		
 		assertEquals("during removing", true,  remo);
 		
-		boolean hasCapa2 = pum.hasCapability(e3, capa);
+		boolean hasCapa2 = userManager.hasCapability(employee, capa);
 		assertEquals("after removing", false,  hasCapa2);
 	}
 	

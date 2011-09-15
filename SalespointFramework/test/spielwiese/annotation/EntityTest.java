@@ -13,6 +13,7 @@ public class EntityTest {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
 	}
 	
+	@SuppressWarnings("unused")
 	@Test
 	public void add() {
 		IdentifiableEntity ie = new IdentifiableEntity();

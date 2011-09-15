@@ -2,10 +2,9 @@ package test.catalog;
 
 import static junit.framework.Assert.assertEquals;
 
-import javax.persistence.EntityManagerFactory;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.salespointframework.core.catalog.PersistentCatalog;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.ArgumentNullException;
@@ -22,13 +21,13 @@ public class ProductCatalogTest {
 	@SuppressWarnings("unused")
 	@Test(expected = ArgumentNullException.class)
 	public void testNullCheckConstructor() {
-		KeksCatalog catalog = new KeksCatalog();
+		PersistentCatalog catalog = new PersistentCatalog();
 	}
 
 	@Test(expected = ArgumentNullException.class)
 	public void testNullCheckArgument() {
 
-		KeksCatalog catalog = new KeksCatalog();
+		PersistentCatalog catalog = new PersistentCatalog();
 
 		catalog.add(null);
 
@@ -38,7 +37,7 @@ public class ProductCatalogTest {
 	public void testFindById() {
 
 		KeksProduct keks1 = new KeksProduct("bla", new Money(0));
-		KeksCatalog catalog = new KeksCatalog();
+		PersistentCatalog catalog = new PersistentCatalog();
 
 		catalog.add(keks1);
 

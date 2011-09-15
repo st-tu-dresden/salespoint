@@ -26,7 +26,8 @@ public class LoggedInTag extends BodyTagSupport {
 	@Override
 	public int doStartTag() throws JspException {
 
-		UserManager<User> usermanager = Shop.INSTANCE.getUserManager();
+		@SuppressWarnings("unchecked")
+		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
 		User user = usermanager.getUserByToken(User.class, pageContext.getSession());
 
 		if (status) {

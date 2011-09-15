@@ -4,12 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Column;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Iterables;
@@ -27,11 +26,15 @@ public class PersistentProduct implements Product {
 	@AttributeOverride(name="id", column=@Column(name="PRODUCT_ID"))
 	private ProductIdentifier productIdentifier;
 	
+	protected String name; 
 	private Money price;
 	
 	@ElementCollection
 	private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
 	
+    /**
+     * Parameterless constructor required for JPA. Do not use.
+     */
 	@Deprecated
 	protected PersistentProduct() { }
 	
@@ -43,6 +46,7 @@ public class PersistentProduct implements Product {
 	public PersistentProduct(final ProductType productType, final Iterable<Tuple<String,String>> features) {
 		Objects.requireNonNull(features, "features");
 		this.productIdentifier = Objects.requireNonNull(productType, "productType").getProductIdentifier();
+		this.name = productType.getName();
 		this.price = productType.getPrice(); //TODO CLONE?
 		this.serialNumber = new SerialNumber();
 		
@@ -101,10 +105,8 @@ public class PersistentProduct implements Product {
 		return serialNumber.hashCode();
 	}
 	
-	
-	// TODO Name? -> erfordert Attribut Name
 	@Override
 	public String toString() {
-		return this.serialNumber.toString();
+		return name;
 	}
 }

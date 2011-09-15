@@ -24,6 +24,9 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	private Metric preferredMetric;
 	private Money unitPrice;
 
+    /**
+     * Parameterless constructor required for JPA. Do not use.
+     */
 	@Deprecated
 	protected PersistentMeasuredProductType(){ }
 	

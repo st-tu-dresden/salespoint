@@ -45,7 +45,7 @@ public class MeasuredProductInstanceTest {
 	public void testGetQuantityOfProductType1(){
 		
 		TestMeasuredProductType coke1 = new TestMeasuredProductType ("Coke", new Money(600), q);
-		TestMeasuredProductInstance m = new TestMeasuredProductInstance (coke1, new Quantity(0.5, q.getMetric(), q.getRoundingStrategy()));
+		
 		
 		assertEquals (new BigDecimal(299.5) , coke1.getQuantityOnHand().getAmount());
 	}
@@ -54,7 +54,7 @@ public class MeasuredProductInstanceTest {
 	public void testGetQuantityOfProductType2(){
 		
 		TestMeasuredProductType coke1 = new TestMeasuredProductType ("Coke", new Money(600), q);
-		TestMeasuredProductInstance m = new TestMeasuredProductInstance (coke1, 0.5);
+		
 		
 		assertEquals (new BigDecimal(299.5) , coke1.getQuantityOnHand().getAmount());
 	}
@@ -78,8 +78,6 @@ public class MeasuredProductInstanceTest {
 		assertNotSame(gross, klein1);
 	}
 	
-	// FIXME
-	/*
 	@Test
 	public void testEqualsMethod(){
 	
@@ -91,7 +89,7 @@ public class MeasuredProductInstanceTest {
 		assertFalse(klein1.equals(klein3));
 		assertFalse(klein1.equals(gross));
 	}
-	*/
+
 	
 	@Test 
 	public void testHashcode1() {

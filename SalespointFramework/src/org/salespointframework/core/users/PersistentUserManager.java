@@ -47,7 +47,7 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * @see org.salespointframework.core.users.UserManage#removeUser(T)
 	 */
 	@Override
-	public void remove(UserIdentifier userIdentifer) {
+	public boolean remove(UserIdentifier userIdentifer) {
 		Objects.requireNonNull(userIdentifer, "userIdentifer");
 		
 		// If user is logged on, log him off.
@@ -64,6 +64,9 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 		if(user != null) {
 			em.remove(user);
 			beginCommit(em);
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
@@ -130,7 +133,7 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * @see org.salespointframework.core.users.UserManage#getUsers()
 	 */
 	@Override
-	public <T extends PersistentUser> Iterable<T> findUsers(Class<T> clazz) {
+	public <T extends PersistentUser> Iterable<T> find(Class<T> clazz) {
 		Objects.requireNonNull(clazz, "clazz");
 		
 		EntityManager em = emf.createEntityManager();

@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
@@ -17,23 +16,25 @@ import org.salespointframework.util.Objects;
  * @author Paul Henke
  * 
  */
+
 @Entity
-@Embeddable
 public class PersistentProductType implements ProductType {
 	
 	@EmbeddedId
 	private ProductIdentifier productIdentifier;
 
-	private String name;
-	private Money price;
+	protected String name;
+	protected Money price;
 	
-	//@OneToMany(cascade = CascadeType.ALL)
 	@ElementCollection
 	private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
 	
 	@ElementCollection
-	Set<String> categories = new HashSet<String>();
+	private Set<String> categories = new HashSet<String>();
 	
+    /**
+     * Parameterless constructor required for JPA. Do not use.
+     */
 	@Deprecated
 	protected PersistentProductType() { }
 	
@@ -100,17 +101,17 @@ public class PersistentProductType implements ProductType {
 	}
 
 	@Override
-	public boolean addCategory(String category) {
+	public final boolean addCategory(String category) {
 		return categories.add(category);
 	}
 
 	@Override
-	public boolean removeCategory(String category) {
+	public final boolean removeCategory(String category) {
 		return categories.remove(category);
 	}
 
 	@Override
-	public Iterable<String> getCategories() {
+	public final Iterable<String> getCategories() {
 		return Iterables.from(categories);
 	}
 }

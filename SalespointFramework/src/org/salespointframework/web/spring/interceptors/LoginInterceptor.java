@@ -16,8 +16,9 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
  * 
- * @author Lars Kreizs, Uwe Schmidt, Paul Henke
- *
+ * @author Lars Kreisz
+ * @author Uwe Schmidt
+ * @author Paul Henke
  */
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 	
@@ -35,6 +36,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		String password = params.get(WebConstants.SP_LOGIN_PARAM_PASSWORD)[0];
 		
 		UserIdentifier userIdentifier = new UserIdentifier(identifier);		
+		@SuppressWarnings("unchecked")
 		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
 		
 		User user = usermanager.get(User.class, userIdentifier);

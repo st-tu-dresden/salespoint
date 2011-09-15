@@ -1,13 +1,12 @@
 package test.inventory;
 
-import static junit.framework.Assert.assertEquals;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.database.Database;
+import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.ArgumentNullException;
 
@@ -25,16 +24,16 @@ public class InventoryTest {
 	@SuppressWarnings("unused")
 	@Test(expected=ArgumentNullException.class)
 	public void testNullCheckConstructor() {
-		KeksInventory inventory = new KeksInventory(null);
+		PersistentInventory inventory = new PersistentInventory(null);
 	}
 	
 	@Test(expected=ArgumentNullException.class)
 	public void testNullCheckArgument() {
 		EntityManager em = emf.createEntityManager();
 		
-		KeksInventory inventory = new KeksInventory(em);
+		PersistentInventory inventory = new PersistentInventory(em);
 		
-		inventory.addProductInstance(null);
+		inventory.add(null);
 		
 	}
 	
@@ -42,14 +41,14 @@ public class InventoryTest {
 	public void testAddInstance() {
 		EntityManager em = emf.createEntityManager();
 		
-		KeksInventory inventory = new KeksInventory(em);
+		PersistentInventory inventory = new PersistentInventory(em);
 		
 		KeksProduct kp = new KeksProduct("Wheee" ,new Money(0));
 		KeksInstance ki = new KeksInstance(kp);
 		
 		em.getTransaction().begin();
 		
-		inventory.addProductInstance(ki);
+		inventory.add(ki);
 		
 		em.getTransaction().commit();
 	}

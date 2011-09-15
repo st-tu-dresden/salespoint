@@ -21,6 +21,9 @@ public class PersistentUser implements User {
 	@ElementCollection
 	Set<UserCapability> capabilities = new HashSet<UserCapability>();
 
+    /**
+     * Parameterless constructor required for JPA. Do not use.
+     */
 	@Deprecated
 	protected PersistentUser() {
 	}

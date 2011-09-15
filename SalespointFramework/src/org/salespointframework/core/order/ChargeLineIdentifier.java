@@ -1,4 +1,4 @@
-package org.salespointframework.core.order.paul;
+package org.salespointframework.core.order;
 
 import javax.persistence.Embeddable;
 

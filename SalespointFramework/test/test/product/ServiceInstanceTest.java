@@ -1,11 +1,13 @@
 package test.product;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.features.ProductFeature_old;
 import org.salespointframework.core.product.later.ServiceDeliveryStatus;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.ArgumentNullException;
@@ -125,8 +127,7 @@ public class ServiceInstanceTest {
 		assertNotSame(t3, t1);
 	}
 	
-	// FIXME
-	/*
+
 	@Test
 	public void testEqualsMethod(){
 	
@@ -137,7 +138,7 @@ public class ServiceInstanceTest {
 		assertFalse(t1.equals(t2));
 		assertFalse(t1.equals(t3));
 	}
-	*/
+
 	
 	@Test 
 	public void testHashcode1() {

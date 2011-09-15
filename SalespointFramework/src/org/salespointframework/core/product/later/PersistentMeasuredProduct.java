@@ -24,6 +24,9 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 	private Quantity quantity;
 	private Money unitPrice;
 	
+    /**
+     * Parameterless constructor required for JPA. Do not use.
+     */
 	@Deprecated
 	protected PersistentMeasuredProduct(){}
 	
@@ -119,8 +122,8 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 	public boolean equals(Object other) {
 		if(other == null) return false;
 		if(other == this) return true;
-		if(!(other instanceof MeasuredProduct)) return false;
-		return this.equals((MeasuredProduct)other);
+		if(!(other instanceof PersistentMeasuredProduct)) return false;
+		return this.equals((PersistentMeasuredProduct)other);
 	}
 	
 	/**
@@ -135,7 +138,7 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 	 *         <code>false</code> otherwise.
 	 */
 	
-	public boolean equals(MeasuredProduct other) {
+	public boolean equals(PersistentMeasuredProduct other) {
 		if(other == null) return false;
 		if(other == this) return true;
 		return this.getSerialNumber().equals(other.getSerialNumber());

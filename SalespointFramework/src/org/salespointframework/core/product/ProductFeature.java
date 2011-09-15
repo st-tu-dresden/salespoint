@@ -18,7 +18,10 @@ public final class ProductFeature {
 	private Money price;
 	private double percent;
 	
-	
+    /**
+     * Parameterless constructor required for JPA. Do not use.
+     */
+	@Deprecated
 	protected ProductFeature() {}
 	
 	// TODO ::::::: Check
@@ -41,24 +44,24 @@ public final class ProductFeature {
 		return new ProductFeature(featureType, value, Money.ZERO, percent);
 	}
 	
-	public String getFeatureType() {
+	public final String getFeatureType() {
 		return featureType;
 	}
 
-	public String getValue() {
+	public final String getValue() {
 		return value;
 	}
 
-	public Money getPrice() {
+	public final Money getPrice() {
 		return price;
 	}
 
-	public double getPercent() {
+	public final double getPercent() {
 		return percent;
 	}
 	
 	@Override
-	public boolean equals(final Object other) {
+	public final boolean equals(final Object other) {
 		if(other == null) return false;
 		if(other == this) return true;
 		if(!(other instanceof ProductFeature)) return false;
@@ -74,5 +77,10 @@ public final class ProductFeature {
 	@Override
 	public final int hashCode() {
 		return Objects.hash(featureType, value);
+	}
+	
+	@Override
+	public final String toString() {
+		return featureType +  " | " + value;
 	}
 }

@@ -2,7 +2,7 @@ package org.salespointframework.web.spring.propertyeditors;
 
 import java.beans.PropertyEditorSupport;
 
-import org.salespointframework.core.order.paul.ChargeLineIdentifier;
+import org.salespointframework.core.order.ChargeLineIdentifier;
 
 /**
  * 

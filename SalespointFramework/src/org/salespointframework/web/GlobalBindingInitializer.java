@@ -2,9 +2,9 @@ package org.salespointframework.web;
 
 import org.salespointframework.core.accountancy.AccountancyEntryIdentifier;
 import org.salespointframework.core.calendar.CalendarEntryIdentifier;
+import org.salespointframework.core.order.ChargeLineIdentifier;
 import org.salespointframework.core.order.OrderIdentifier;
 import org.salespointframework.core.order.OrderLineIdentifier;
-import org.salespointframework.core.order.paul.ChargeLineIdentifier;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.core.users.UserIdentifier;
@@ -44,5 +44,4 @@ public class GlobalBindingInitializer implements WebBindingInitializer {
         binder.registerCustomEditor(SerialNumber.class, new SerialNumberEditor());
         binder.registerCustomEditor(UserIdentifier.class, new UserIdentifierEditor());
     }
-
 }

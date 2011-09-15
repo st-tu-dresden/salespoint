@@ -1,11 +1,12 @@
 package org.salespointframework.core.accountancy;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -27,29 +28,26 @@ import org.salespointframework.util.Objects;
  * @author Thomas Dedek
  * 
  */
-public final class PersistentAccountancy implements Serializable, Accountancy {
+public final class PersistentAccountancy implements Accountancy<AbstractAccountancyEntry> {
     /**
      * <code>EntityManager</code> which is used for this Accountancy.
+     * The <code>Database.INSTANCE</code> has to be initialized first.
      */
-	private EntityManagerFactory emf;
+	private EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 	
-	@SuppressWarnings("javadoc")
-    private static final long serialVersionUID = 1L;
-
+	
 	/**
-	 * Create a new <code>Accountancy</code>. For persistence, an
-	 * <code>EntityManager</code> is created internally as required. The
-	 * <code>Database.INSTANCE</code> has to be initialized first.
+	 * Create a new <code>Accountancy</code>. 
 	 */
 	public PersistentAccountancy() {
-		this.emf = Database.INSTANCE.getEntityManagerFactory();
+		
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addEntry(AbstractAccountancyEntry accountancyEntry) {
+	public void add(AbstractAccountancyEntry accountancyEntry) {
 		EntityManager em = emf.createEntityManager();
 		Objects.requireNonNull(accountancyEntry, "accountancyEntry");
 		em.getTransaction().begin();
@@ -61,11 +59,11 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addEntries(Iterable<AbstractAccountancyEntry> accountancyEntries) {
+	public void addAll(Iterable<AbstractAccountancyEntry> accountancyEntries) {
 		EntityManager em = emf.createEntityManager();
 		Objects.requireNonNull(accountancyEntries, "accountancyEntries");
 		em.getTransaction().begin();
-		for (AbstractAccountancyEntry e : accountancyEntries)
+		for (AccountancyEntry e : accountancyEntries)
 			em.persist(e);
 		em.getTransaction().commit();
 	}
@@ -74,7 +72,7 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Iterable<AbstractAccountancyEntry> getEntries(DateTime from, DateTime to) {
+	public Iterable<AbstractAccountancyEntry> find(DateTime from, DateTime to) {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
 
@@ -83,7 +81,7 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 		CriteriaQuery<AbstractAccountancyEntry> q = cb
 				.createQuery(AbstractAccountancyEntry.class);
 		Root<AbstractAccountancyEntry> r = q.from(AbstractAccountancyEntry.class);
-		Predicate p = cb.between(r.get(AbstractAccountancyEntry_.timeStamp), from.toDate(), to.toDate());
+		Predicate p = cb.between(r.get(AbstractAccountancyEntry_.dateCreated), from.toDate(), to.toDate());
 		q.where(p);
 		TypedQuery<AbstractAccountancyEntry> tq = em.createQuery(q);
 
@@ -94,7 +92,7 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public <T extends AbstractAccountancyEntry> Iterable<T> getEntries(Class<T> clazz) {
+	public <T extends AbstractAccountancyEntry> Iterable<T> find(Class<T> clazz) {
 		Objects.requireNonNull(clazz, "clazz");
 
 		EntityManager em = emf.createEntityManager();
@@ -111,7 +109,7 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public <T extends AbstractAccountancyEntry> Iterable<T> getEntries(Class<T> clazz,
+	public <T extends AbstractAccountancyEntry> Iterable<T> find(Class<T> clazz,
 			DateTime from, DateTime to) {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
@@ -123,7 +121,7 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 		Root<T> entry = q.from(clazz);
 
 		Predicate p = entry.type().in(clazz);
-		Predicate p1 = cb.between(entry.get(AbstractAccountancyEntry_.timeStamp),
+		Predicate p1 = cb.between(entry.get(AbstractAccountancyEntry_.dateCreated),
 				from.toDate(), to.toDate());
 
 		q.where(cb.and(p, p1));
@@ -136,20 +134,20 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public <T extends AbstractAccountancyEntry> Map<Interval, Iterable<T>> getEntries(
+	public <T extends AbstractAccountancyEntry> Map<Interval, Iterable<T>> find(
 			Class<T> clazz, DateTime from, DateTime to, Period period) {
 		DateTime nextStep;
 		HashMap<Interval, Iterable<T>> entries = new HashMap<Interval, Iterable<T>>();
 		
 		for(; from.isBefore(to.minus(period)); from = from.plus(period)) {
 			nextStep = from.plus(period);
-			entries.put(new Interval(from, nextStep), getEntries(clazz, from, nextStep));
+			entries.put(new Interval(from, nextStep), find(clazz, from, nextStep));
 		}
 		/* Remove last interval from loop, to save the test for the last interval in every
 		 * iteration. But it's java, it not like you're gonna notice the speedup, hahaha.
 		 * BTW: the cake is a lie, hahaha.
 		 */
-		entries.put(new Interval(from, to), getEntries(clazz, from, to));
+		entries.put(new Interval(from, to), find(clazz, from, to));
 		return entries;
 	}
 
@@ -161,7 +159,7 @@ public final class PersistentAccountancy implements Serializable, Accountancy {
 			Class<T> clazz, DateTime from, DateTime to, Period period) {
 		Money total;
 		Map<Interval, Money> sales = new HashMap<Interval, Money>();
-		Map<Interval, Iterable<T>> entries = getEntries(clazz, from, to, period);
+		Map<Interval, Iterable<T>> entries = find(clazz, from, to, period);
 		
 		for(Entry<Interval, Iterable<T>> e : entries.entrySet()) {
 			total = Money.ZERO;
