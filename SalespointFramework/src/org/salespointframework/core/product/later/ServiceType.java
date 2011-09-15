@@ -8,19 +8,21 @@ import org.salespointframework.core.product.ProductType;
  * 
  */
 
-public interface ServiceType extends ProductType {
+public interface ServiceType extends ProductType
+{
+	/**
+	 * Returns the Start of the ServiceType
+	 * 
+	 * @return the start of the ServiceType
+	 */
+
+	DateTime getStartOfPeriodOfOperation();
 
 	/**
-     * Returns the Start of the ServiceType
-     * @return the start of the ServiceType 
-     */
-	
-	DateTime getStartOfPeriodOfOperation();
-	
-	/**
-     * Returns the End of the ServiceType
-     * @return the end of the ServiceType 
-     */
-	
+	 * Returns the End of the ServiceType
+	 * 
+	 * @return the end of the ServiceType
+	 */
+
 	DateTime getEndOfPeriodOfOperation();
 }

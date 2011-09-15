@@ -7,16 +7,19 @@ import org.salespointframework.util.SalespointIdentifier;
 /**
  * 
  * @author Paul Henke
- *
+ * 
  */
 @SuppressWarnings("serial")
 @Embeddable
-public class ChargeLineIdentifier extends SalespointIdentifier {
-	public ChargeLineIdentifier() {
+public class ChargeLineIdentifier extends SalespointIdentifier
+{
+	public ChargeLineIdentifier()
+	{
 		super();
 	}
-	
-	public ChargeLineIdentifier(String chargeLineIdentifier) {
+
+	public ChargeLineIdentifier(String chargeLineIdentifier)
+	{
 		super(chargeLineIdentifier);
 	}
 }

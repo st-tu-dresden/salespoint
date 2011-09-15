@@ -91,6 +91,7 @@ public class Metric implements Serializable {
 	 * @param obj
 	 *            the Object to which <code>this</code> is compared.
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Metric))
 			return false;

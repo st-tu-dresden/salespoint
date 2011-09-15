@@ -7,19 +7,22 @@ import org.salespointframework.util.Objects;
 /**
  * 
  * @author Paul Henke
- *
+ * 
  */
-public class DeLoreanTime implements Time {
+public class DeLoreanTime implements Time
+{
 
 	Duration duration = Duration.ZERO;
 
 	@Override
-	public final DateTime getDateTime() {
+	public final DateTime getDateTime()
+	{
 		return new DateTime().plus(duration);
 	}
 
 	@Override
-	public final void goAhead(Duration duration) {
+	public final void goAhead(Duration duration)
+	{
 		Objects.requireNonNull(duration, "duration");
 		beforeGoAhead(duration);
 		this.duration = this.duration.plus(duration);
@@ -27,12 +30,14 @@ public class DeLoreanTime implements Time {
 	}
 
 	// Hook
-	public void beforeGoAhead(Duration duration) {
+	public void beforeGoAhead(Duration duration)
+	{
 
 	}
 
 	// Hook
-	public void afterGoAhead(Duration duration) {
+	public void afterGoAhead(Duration duration)
+	{
 
 	}
 }

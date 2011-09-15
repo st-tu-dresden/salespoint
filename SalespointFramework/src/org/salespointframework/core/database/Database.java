@@ -10,6 +10,9 @@ import org.salespointframework.util.Objects;
 // TODO Naming?
 
 /**
+ * Delegates to
+ * http://download.oracle.com/javaee/6/api/javax/persistence/Persistence
+ * .html#createEntityManagerFactory(java.lang.String)
  * 
  * @author Paul Henke
  * 
@@ -19,20 +22,15 @@ public enum Database {
 
 	private EntityManagerFactory entityManagerFactory;
 
-	// TODO
-	// laut Doku wird keine Exception geworfen, genauer checken
-	// http://download.oracle.com/javaee/6/api/javax/persistence/Persistence.html#createEntityManagerFactory(java.lang.String)
-	// also gehe ich davon aus, dass da einfach null bei einem Fehler zurück
-	// kommt
-
 	/**
 	 * Initialize an EntityManagerFactory for the named persistence unit.
 	 * 
 	 * @param persistenceUnitName
 	 *            The name of the persistence unit
-	 * @return 
+	 * @return
 	 */
-	public boolean initializeEntityManagerFactory(String persistenceUnitName) {
+	public boolean initializeEntityManagerFactory(String persistenceUnitName)
+	{
 		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName");
 		entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName);
 		return entityManagerFactory != null ? true : false;
@@ -49,12 +47,11 @@ public enum Database {
 	 *            been configured elsewhere
 	 * @return
 	 */
-	public boolean initializeEntityManagerFactory(String persistenceUnitName,
-			@SuppressWarnings("rawtypes") Map properties) {
+	public boolean initializeEntityManagerFactory(String persistenceUnitName, @SuppressWarnings("rawtypes") Map properties)
+	{
 		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName");
 		Objects.requireNonNull(properties, "properties");
-		entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName,
-				properties);
+		entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName, properties);
 		return entityManagerFactory != null ? true : false;
 	}
 
@@ -64,7 +61,8 @@ public enum Database {
 	 * @return The factory that creates EntityManagers configured according to
 	 *         the specified persistence unit.
 	 */
-	public EntityManagerFactory getEntityManagerFactory() {
+	public EntityManagerFactory getEntityManagerFactory()
+	{
 		return entityManagerFactory;
 	}
 }

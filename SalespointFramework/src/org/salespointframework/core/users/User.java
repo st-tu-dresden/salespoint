@@ -6,7 +6,8 @@ package org.salespointframework.core.users;
  * @author Christopher Bellmann
  * 
  */
-public interface User {
+public interface User
+{
 
 	/**
 	 * Checks a given password against the user's password.

@@ -7,11 +7,13 @@ import org.salespointframework.core.order.OrderLineIdentifier;
 /**
  * 
  * @author Paul Henke
- *
+ * 
  */
-public class OrderLineIdentifierEditor extends PropertyEditorSupport {
+public class OrderLineIdentifierEditor extends PropertyEditorSupport
+{
 	@Override
-	public void setAsText(String text) {
+	public void setAsText(String text)
+	{
 		OrderLineIdentifier orderLineIdentifier = new OrderLineIdentifier(text);
 		setValue(orderLineIdentifier);
 	}

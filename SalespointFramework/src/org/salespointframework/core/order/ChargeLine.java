@@ -6,9 +6,10 @@ import org.salespointframework.core.money.Money;
  * 
  * @author Thomas Dedek
  * @author Paul Henke
- *
+ * 
  */
-public interface ChargeLine {
+public interface ChargeLine
+{
 	ChargeLineIdentifier getChargeLineIdentifier();
 	Money getPrice();
 	String getDescription();

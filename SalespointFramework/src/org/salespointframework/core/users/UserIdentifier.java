@@ -11,12 +11,15 @@ import org.salespointframework.util.SalespointIdentifier;
  */
 @SuppressWarnings("serial")
 @Embeddable
-public final class UserIdentifier extends SalespointIdentifier  {
-	public UserIdentifier() {
+public final class UserIdentifier extends SalespointIdentifier
+{
+	public UserIdentifier()
+	{
 		super();
 	}
 
-	public UserIdentifier(String userIdentifier) {
+	public UserIdentifier(String userIdentifier)
+	{
 		super(userIdentifier);
 	}
 }

@@ -14,30 +14,36 @@ import org.salespointframework.core.users.UserManager;
  * @author Uwe Schmidt
  * @author Paul Henke
  */
-public class HasCapabilityTag extends BodyTagSupport {
+public class HasCapabilityTag extends BodyTagSupport
+{
 	private static final long serialVersionUID = 1L;
 
 	String usermanagerName;
 	String capabilityName;
 
-	public void setUserManagerName(String usermanagerName) {
+	public void setUserManagerName(String usermanagerName)
+	{
 		this.usermanagerName = usermanagerName;
 	}
 
-	public void setCapabilityName(String capabilityName) {
+	public void setCapabilityName(String capabilityName)
+	{
 		this.capabilityName = capabilityName;
 	}
 
 	@Override
-	public int doStartTag() throws JspException {
+	public int doStartTag() throws JspException
+	{
 
 		@SuppressWarnings("unchecked")
 		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
 		User user = usermanager.getUserByToken(User.class, pageContext.getSession());
 		UserCapability capability = new UserCapability(capabilityName);
 
-		if (user != null) {
-			if (usermanager.hasCapability(user, capability)) {
+		if (user != null)
+		{
+			if (usermanager.hasCapability(user, capability))
+			{
 				return EVAL_BODY_INCLUDE;
 			}
 		}

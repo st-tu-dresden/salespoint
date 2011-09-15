@@ -9,9 +9,11 @@ import org.salespointframework.core.product.SerialNumber;
  * @author Paul Henke
  * 
  */
-public class SerialNumberEditor extends PropertyEditorSupport {
+public class SerialNumberEditor extends PropertyEditorSupport
+{
 	@Override
-	public void setAsText(String text) {
+	public void setAsText(String text)
+	{
 		SerialNumber serialNumber = new SerialNumber(text);
 		setValue(serialNumber);
 	}

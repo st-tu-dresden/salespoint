@@ -103,6 +103,7 @@ public final class Money extends Quantity {
 	 * after the decimal separator and followed by a whitespace and the symbol
 	 * stored in <code>metric</code>.
 	 */
+	@Override
 	public String toString() {
 		return amount.setScale(2) + " " + metric.getSymbol();
 	}

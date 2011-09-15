@@ -11,49 +11,59 @@ import org.joda.time.DateTime;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.Objects;
 
+
+/**
+ * @author Thomas Dedek
+ *
+ */
+@SuppressWarnings("serial")
 @Embeddable
-public class OrderLogEntry implements Serializable, Comparable<OrderLogEntry> {
-	
-	private static final long serialVersionUID = 1L;
-	
+public class OrderLogEntry implements Serializable, Comparable<OrderLogEntry>
+{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateCreated;
 	private String description;
 	private String action;
-	
+
 	@Deprecated
-	protected OrderLogEntry() {
+	protected OrderLogEntry()
+	{
 	}
-	
-	public OrderLogEntry(String action, String description) {
+
+	public OrderLogEntry(String action, String description)
+	{
 		this.description = Objects.requireNonNull(description, "description");
 		this.action = Objects.requireNonNull(action, "action");
 		this.dateCreated = Shop.INSTANCE.getTime().getDateTime().toDate();
 	}
-	
+
 	/**
 	 * @return the description
 	 */
-	public String getDescription() {
+	public String getDescription()
+	{
 		return description;
 	}
 
 	/**
 	 * @return the dateCreated
 	 */
-	public DateTime getDateCreated() {
+	public DateTime getDateCreated()
+	{
 		return new DateTime(dateCreated);
 	}
-	
+
 	/**
 	 * @return the action
 	 */
-	public String getAction() {
+	public String getAction()
+	{
 		return action;
 	}
 
 	@Override
-	public int compareTo(OrderLogEntry logEntry) {
+	public int compareTo(OrderLogEntry logEntry)
+	{
 		return this.dateCreated.compareTo(logEntry.dateCreated);
 	}
 }

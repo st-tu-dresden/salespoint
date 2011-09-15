@@ -25,6 +25,7 @@ public class IdentifiableEntity implements Serializable {
 		return id;
 	}
 	
+	@Override
 	public String toString() {
 		return id.toString();
 	}

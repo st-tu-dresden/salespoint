@@ -9,9 +9,11 @@ import org.salespointframework.core.product.ProductIdentifier;
  * @author Paul Henke
  * 
  */
-public class ProductIdentifierEditor extends PropertyEditorSupport {
+public class ProductIdentifierEditor extends PropertyEditorSupport
+{
 	@Override
-	public void setAsText(String text) {
+	public void setAsText(String text)
+	{
 		ProductIdentifier productIdentifier = new ProductIdentifier(text);
 		setValue(productIdentifier);
 	}

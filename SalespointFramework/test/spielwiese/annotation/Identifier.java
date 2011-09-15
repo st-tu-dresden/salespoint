@@ -26,10 +26,13 @@ public class Identifier implements Serializable {
 		id_ = UUID.randomUUID().toString();
 	}
 	
+	@Override
 	public String toString() {
 		return id_;
 	}
 	
+	
+	@Override
 	public boolean equals(Object o) {
 		if(o == null)
 			return false;
@@ -44,6 +47,7 @@ public class Identifier implements Serializable {
 			return false;
 	}
 	
+	@Override
 	public int hashCode() {
 		return id_.hashCode();
 	}

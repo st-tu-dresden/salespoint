@@ -8,9 +8,10 @@ import org.salespointframework.core.product.ProductIdentifier;
  * 
  * @author Thomas Dedek
  * @author Paul Henke
- *
+ * 
  */
-public interface OrderLine {
+public interface OrderLine
+{
 	OrderLineIdentifier getOrderLineIdentifier();
 	ProductIdentifier getProductIdentifier();
 	Iterable<ProductFeature> getProductFeatures();

@@ -27,55 +27,67 @@ public enum Shop {
 	private Time time = new DefaultTime();
 	private Accountancy<? extends AccountancyEntry> accountancy;
 	private Calendar<? extends CalendarEntry> calendar;
-	private OrderManager<? extends Order<? extends OrderLine,? extends ChargeLine>, ? extends OrderLine, ? extends ChargeLine> ordermanager;
+	private OrderManager<? extends Order<? extends OrderLine, ? extends ChargeLine>, ? extends OrderLine, ? extends ChargeLine> ordermanager;
 	private UserManager<? extends User> usermanager;
 	private Inventory<? extends Product> inventory;
 
-	public Accountancy<? extends AccountancyEntry> getAccountancy() {
+	public Accountancy<? extends AccountancyEntry> getAccountancy()
+	{
 		return accountancy;
 	}
-	
-	public void setAccountancy(final Accountancy<? extends AccountancyEntry> accountancy) {
+
+	public void setAccountancy(final Accountancy<? extends AccountancyEntry> accountancy)
+	{
 		this.accountancy = Objects.requireNonNull(accountancy, "accountancy");
 	}
 
-	public OrderManager<? extends Order<? extends OrderLine,? extends ChargeLine>, ? extends OrderLine, ? extends ChargeLine> getOrderManager() {
+	public OrderManager<? extends Order<? extends OrderLine, ? extends ChargeLine>, ? extends OrderLine, ? extends ChargeLine> getOrderManager()
+	{
 		return ordermanager;
 	}
-	
-	public void setOrderManager(final OrderManager<? extends Order<? extends OrderLine,? extends ChargeLine>, ? extends OrderLine, ? extends ChargeLine> ordermanager) {
+
+	public void setOrderManager(final OrderManager<? extends Order<? extends OrderLine, ? extends ChargeLine>, ? extends OrderLine, ? extends ChargeLine> ordermanager)
+	{
 		this.ordermanager = Objects.requireNonNull(ordermanager, "ordermanager");
 	}
 
-	public Time getTime() {
+	public Time getTime()
+	{
 		return time;
 	}
-	
-	public void setTime(final Time time) {
+
+	public void setTime(final Time time)
+	{
 		this.time = Objects.requireNonNull(time, "time");
 	}
 
-	public UserManager<? extends User> getUserManager() {
+	public UserManager<? extends User> getUserManager()
+	{
 		return usermanager;
 	}
-	
-	public void setUserManager(final UserManager<? extends User> userManager) {
+
+	public void setUserManager(final UserManager<? extends User> userManager)
+	{
 		this.usermanager = Objects.requireNonNull(userManager, "userManager");
 	}
 
-	public Inventory<? extends Product> getInventory() {
+	public Inventory<? extends Product> getInventory()
+	{
 		return inventory;
 	}
-	
-	public void setInventory(final Inventory<? extends Product> inventory) {
+
+	public void setInventory(final Inventory<? extends Product> inventory)
+	{
 		this.inventory = Objects.requireNonNull(inventory, "inventory");
 	}
 
-	public Calendar<? extends CalendarEntry> getCalendar() {
+	public Calendar<? extends CalendarEntry> getCalendar()
+	{
 		return calendar;
 	}
 
-	public void setCalendar(Calendar<? extends CalendarEntry> calendar) {
+	public void setCalendar(Calendar<? extends CalendarEntry> calendar)
+	{
 		this.calendar = Objects.requireNonNull(calendar, "calendar");
 	}
 }

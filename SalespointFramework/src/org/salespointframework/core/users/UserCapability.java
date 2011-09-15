@@ -13,12 +13,14 @@ import javax.persistence.Embeddable;
  */
 @SuppressWarnings("serial")
 @Embeddable
-public final class UserCapability implements Serializable {
+public final class UserCapability implements Serializable
+{
 
 	private final String name;
 
 	@Deprecated
-	public UserCapability() {
+	public UserCapability()
+	{
 		this.name = null;
 	};
 
@@ -28,38 +30,59 @@ public final class UserCapability implements Serializable {
 	 * @param name
 	 *            name you want the give the Capability
 	 */
-	public UserCapability(String name) {
+	public UserCapability(String name)
+	{
 		this.name = name;
 	}
 
 	/**
 	 * @return the name of the Capability
 	 */
-	public final String getName() {
+	public final String getName()
+	{
 		return name;
 	}
 
 	@Override
-	public final int hashCode() {
+	public final int hashCode()
+	{
 		return name.hashCode();
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		if(other == null) return false;
-		if(other == this) return true;
-		if(!(other instanceof UserCapability)) return false;
+	public boolean equals(Object other)
+	{
+		if (other == null)
+		{
+			return false;
+		}
+		if (other == this)
+		{
+			return true;
+		}
+		if (!(other instanceof UserCapability))
+		{
+			return false;
+		}
 		return equals((UserCapability) other);
 	}
 
-	public final boolean equals(UserCapability other) {
-		if(other == null) return false;
-		if(other == this) return true;
+	public final boolean equals(UserCapability other)
+	{
+		if (other == null)
+		{
+			return false;
+		}
+		if (other == this)
+		{
+			return true;
+		}
 		return this.name.equals(other.name);
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return name;
 	}
 }

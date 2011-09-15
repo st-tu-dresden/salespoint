@@ -7,12 +7,11 @@ import javax.persistence.Entity;
 
 /**
  * @author Hannes Weisbach
- *
+ * 
  */
 @SuppressWarnings("deprecation")
 @Entity
-public class SomeOtherEntry extends AbstractAccountancyEntry {
-	@SuppressWarnings({ "unused", "javadoc" })
-    private static final long serialVersionUID = 5407781267889316527L;
+public class SomeOtherEntry extends AbstractAccountancyEntry
+{
 
 }

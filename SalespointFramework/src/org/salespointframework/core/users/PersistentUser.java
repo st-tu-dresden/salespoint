@@ -11,7 +11,8 @@ import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
 @Entity
-public class PersistentUser implements User {
+public class PersistentUser implements User
+{
 
 	@EmbeddedId
 	private UserIdentifier userIdentifier;
@@ -21,74 +22,107 @@ public class PersistentUser implements User {
 	@ElementCollection
 	Set<UserCapability> capabilities = new HashSet<UserCapability>();
 
-    /**
-     * Parameterless constructor required for JPA. Do not use.
-     */
+	/**
+	 * Parameterless constructor required for JPA. Do not use.
+	 */
 	@Deprecated
-	protected PersistentUser() {
+	protected PersistentUser()
+	{
 	}
 
-	public PersistentUser(UserIdentifier userIdentifier, String password) {
-		this.userIdentifier = Objects.requireNonNull(userIdentifier,
-				"userIdentifier");
+	public PersistentUser(UserIdentifier userIdentifier, String password)
+	{
+		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier");
 		this.password = Objects.requireNonNull(password, "password");
 	}
 
-	boolean addCapability(UserCapability capability) {
+	boolean addCapability(UserCapability capability)
+	{
 		return capabilities.add(capability);
 	}
 
-	boolean removeCapability(UserCapability capability) {
+	boolean removeCapability(UserCapability capability)
+	{
 		return capabilities.remove(capability);
 	}
 
-	boolean hasCapability(UserCapability capability) {
+	boolean hasCapability(UserCapability capability)
+	{
 		return capabilities.contains(capability);
 	}
 
-	Iterable<UserCapability> getCapabilities() {
+	Iterable<UserCapability> getCapabilities()
+	{
 		return Iterables.from(capabilities);
 	}
 
-	public boolean verifyPassword(String password) {
+	@Override
+	public boolean verifyPassword(String password)
+	{
 		if (this.password.equals(password))
+		{
 			return true;
+		}
 		return false;
 	}
 
-	public boolean changePassword(String newPassword, String oldPassword) {
-		if (verifyPassword(oldPassword)) {
+	@Override
+	public boolean changePassword(String newPassword, String oldPassword)
+	{
+		if (verifyPassword(oldPassword))
+		{
 			this.password = newPassword;
 			return true;
 		}
 		return false;
 	}
 
-	public UserIdentifier getUserIdentifier() {
+	@Override
+	public UserIdentifier getUserIdentifier()
+	{
 		return userIdentifier;
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		if(other == null) return false;
-		if(other == this) return true;
-		if (!(other instanceof PersistentUser)) return false;
+	public boolean equals(Object other)
+	{
+		if (other == null)
+		{
+			return false;
+		}
+		if (other == this)
+		{
+			return true;
+		}
+		if (!(other instanceof PersistentUser))
+		{
+			return false;
+		}
 		return equals((PersistentUser) other);
 	}
-	
-	public final boolean equals(PersistentUser other) {
-		if(other == null) return false;
-		if(other == this) return true;
+
+	public final boolean equals(PersistentUser other)
+	{
+		if (other == null)
+		{
+			return false;
+		}
+		if (other == this)
+		{
+			return true;
+		}
 		return this.userIdentifier.equals(other.userIdentifier);
 	}
 
 	@Override
-	public final int hashCode() {
+	public final int hashCode()
+	{
 		return userIdentifier.hashCode();
 	}
-	
+
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return userIdentifier.toString();
 	}
 }

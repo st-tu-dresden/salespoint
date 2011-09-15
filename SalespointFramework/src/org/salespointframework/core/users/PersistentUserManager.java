@@ -20,7 +20,8 @@ import org.salespointframework.util.Objects;
  */
 
 // FIXME
-public class PersistentUserManager implements UserManager<PersistentUser> {
+public class PersistentUserManager implements UserManager<PersistentUser>
+{
 
 	private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 
@@ -30,11 +31,13 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * @see org.salespointframework.core.users.UserManage#addUser(T)
 	 */
 	@Override
-	public void add(final PersistentUser user) {
+	public void add(final PersistentUser user)
+	{
 		Objects.requireNonNull(user, "user");
-		
+
 		EntityManager em = emf.createEntityManager();
-		if (em.find(PersistentUser.class, user.getUserIdentifier()) != null) {
+		if (em.find(PersistentUser.class, user.getUserIdentifier()) != null)
+		{
 			throw new DuplicateUserException(user.getUserIdentifier());
 		}
 		em.persist(user);
@@ -47,37 +50,42 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * @see org.salespointframework.core.users.UserManage#removeUser(T)
 	 */
 	@Override
-	public boolean remove(UserIdentifier userIdentifer) {
+	public boolean remove(UserIdentifier userIdentifer)
+	{
 		Objects.requireNonNull(userIdentifer, "userIdentifer");
-		
+
 		// If user is logged on, log him off.
-		for(Map.Entry<Object, PersistentUser> entry : userTokenMap.entrySet()) {
-			if(entry.getValue().getUserIdentifier().equals(userIdentifer)) {
+		for (Map.Entry<Object, PersistentUser> entry : userTokenMap.entrySet())
+		{
+			if (entry.getValue().getUserIdentifier().equals(userIdentifer))
+			{
 				Object token = entry.getKey();
 				this.logOff(token);
 				break;
 			}
 		}
-		
+
 		EntityManager em = emf.createEntityManager();
 		Object user = em.find(PersistentUser.class, userIdentifer);
-		if(user != null) {
+		if (user != null)
+		{
 			em.remove(user);
 			beginCommit(em);
 			return true;
-		} else {
+		} else
+		{
 			return false;
 		}
 	}
-	
+
 	@Override
-	public boolean contains(UserIdentifier userIdentifier) {
+	public boolean contains(UserIdentifier userIdentifier)
+	{
 		Objects.requireNonNull(userIdentifier, "userIdentifier");
-		
+
 		EntityManager em = emf.createEntityManager();
 		return em.find(PersistentUser.class, userIdentifier) != null;
 	}
-	
 
 	/*
 	 * (non-Javadoc)
@@ -86,7 +94,8 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * org.salespointframework.core.users.UserCapability)
 	 */
 	@Override
-	public boolean addCapability(PersistentUser user, UserCapability userCapability) {
+	public boolean addCapability(PersistentUser user, UserCapability userCapability)
+	{
 		Objects.requireNonNull(user, "user");
 		Objects.requireNonNull(userCapability, "userCapability");
 
@@ -100,7 +109,8 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * org.salespointframework.core.users.UserCapability)
 	 */
 	@Override
-	public boolean removeCapability(PersistentUser user, UserCapability userCapability) {
+	public boolean removeCapability(PersistentUser user, UserCapability userCapability)
+	{
 		Objects.requireNonNull(user, "user");
 		Objects.requireNonNull(userCapability, "userCapability");
 
@@ -114,16 +124,18 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * org.salespointframework.core.users.UserCapability)
 	 */
 	@Override
-	public boolean hasCapability(PersistentUser user, UserCapability userCapability) {
+	public boolean hasCapability(PersistentUser user, UserCapability userCapability)
+	{
 		Objects.requireNonNull(user, "user");
 		Objects.requireNonNull(userCapability, "userCapability");
 
 		return user.hasCapability(userCapability);
 	}
 
-	public Iterable<UserCapability> getCapabilities(PersistentUser user) {
+	public Iterable<UserCapability> getCapabilities(PersistentUser user)
+	{
 		Objects.requireNonNull(user, "user");
-		
+
 		return Iterables.from(user.getCapabilities());
 	}
 
@@ -133,9 +145,10 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * @see org.salespointframework.core.users.UserManage#getUsers()
 	 */
 	@Override
-	public <T extends PersistentUser> Iterable<T> find(Class<T> clazz) {
+	public <T extends PersistentUser> Iterable<T> find(Class<T> clazz)
+	{
 		Objects.requireNonNull(clazz, "clazz");
-		
+
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> q = cb.createQuery(clazz);
@@ -152,31 +165,31 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * .salespointframework.core.users.UserIdentifier)
 	 */
 	@Override
-	public <T extends PersistentUser> T get(Class<T> clazz, UserIdentifier userIdentifier) {
+	public <T extends PersistentUser> T get(Class<T> clazz, UserIdentifier userIdentifier)
+	{
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(userIdentifier, "userIdentifier");
-		
+
 		EntityManager em = emf.createEntityManager();
 		return em.find(clazz, userIdentifier);
-		
-		
-		/* why the hell must be things so complicated
-		EntityManager em = emf.createEntityManager();
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<T> cq = cb.createQuery(clazz);
-		Root<T> entry = cq.from(clazz);
-		Predicate primaryKey = cb.equal(entry.get(PersistentUser_.userIdentifier), userIdentifier);
-		Predicate type = entry.type().in(clazz);
-		cq.where(primaryKey, type);
-		TypedQuery<T> tq = em.createQuery(cq);
 
-		return tq.getSingleResult();
-		*/
+		/*
+		 * why the hell must be things so complicated EntityManager em =
+		 * emf.createEntityManager(); CriteriaBuilder cb =
+		 * em.getCriteriaBuilder(); CriteriaQuery<T> cq = cb.createQuery(clazz);
+		 * Root<T> entry = cq.from(clazz); Predicate primaryKey =
+		 * cb.equal(entry.get(PersistentUser_.userIdentifier), userIdentifier);
+		 * Predicate type = entry.type().in(clazz); cq.where(primaryKey, type);
+		 * TypedQuery<T> tq = em.createQuery(cq);
+		 * 
+		 * return tq.getSingleResult();
+		 */
 	}
-	
-	public void update(PersistentUser user) {
+
+	public void update(PersistentUser user)
+	{
 		Objects.requireNonNull(user, "user");
-		
+
 		EntityManager em = emf.createEntityManager();
 		em.merge(user);
 		beginCommit(em);
@@ -195,18 +208,20 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 */
 	// TODO really? no return type, but throwing exceptions?
 	@Override
-	public final void logOn(PersistentUser user, Object token) {
+	public final void logOn(PersistentUser user, Object token)
+	{
 		Objects.requireNonNull(user, "user");
 		Objects.requireNonNull(token, "token");
 
-		PersistentUser temp = this.get(PersistentUser.class,
-				user.getUserIdentifier());
+		PersistentUser temp = this.get(PersistentUser.class, user.getUserIdentifier());
 
-		if (temp == null) {
+		if (temp == null)
+		{
 			throw new UnknownUserException(user.getUserIdentifier().toString());
 		}
 
-		if (user != null) {
+		if (user != null)
+		{
 			userTokenMap.put(token, user);
 		}
 	}
@@ -218,9 +233,10 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * org.salespointframework.core.users.UserManage#logOff(java.lang.Object)
 	 */
 	@Override
-	public final void logOff(final Object token) {
+	public final void logOff(final Object token)
+	{
 		Objects.requireNonNull(token, "token");
-		
+
 		userTokenMap.remove(token);
 	}
 
@@ -231,21 +247,25 @@ public class PersistentUserManager implements UserManager<PersistentUser> {
 	 * org.salespointframework.core.users.UserManage#getUserByToken(java.lang
 	 * .Object)
 	 */
-	
+
 	@Override
-	public final <T extends PersistentUser> T getUserByToken(Class<T> clazz, Object token) {
+	public final <T extends PersistentUser> T getUserByToken(Class<T> clazz, Object token)
+	{
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(token, "token");
-		
+
 		PersistentUser user = userTokenMap.get(token);
-		if (clazz.isInstance(user)) {
+		if (clazz.isInstance(user))
+		{
 			return clazz.cast(user);
-		} else {
+		} else
+		{
 			throw new ClassCastException();
 		}
 	}
-	
-	private void beginCommit(EntityManager entityManager) {
+
+	private void beginCommit(EntityManager entityManager)
+	{
 		entityManager.getTransaction().begin();
 		entityManager.getTransaction().commit();
 	}

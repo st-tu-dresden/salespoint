@@ -6,16 +6,19 @@ import org.joda.time.Duration;
 /**
  * 
  * @author Paul Henke
- *
+ * 
  */
-public class DefaultTime implements Time {
+public class DefaultTime implements Time
+{
 	@Override
-	public DateTime getDateTime() {
+	public DateTime getDateTime()
+	{
 		return new DateTime();
 	}
 
 	@Override
-	public void goAhead(Duration duration) {
+	public void goAhead(Duration duration)
+	{
 		// NO OP
 	}
 }

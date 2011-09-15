@@ -1,7 +1,7 @@
 package org.salespointframework.core.users;
 
 /**
- *
+ * 
  * @author Christopher Bellmann
  * @author Paul Henke
  * @author Hannes Weissbach
@@ -9,7 +9,8 @@ package org.salespointframework.core.users;
  * @param <T>
  */
 
-public interface UserManager<T extends User> {
+public interface UserManager<T extends User>
+{
 
 	/**
 	 * Adds a <code>User</code> to the <code>UserManager</code> if the user not
@@ -21,7 +22,7 @@ public interface UserManager<T extends User> {
 	void add(T user);
 
 	boolean remove(UserIdentifier userIdentifier);
-	
+
 	boolean contains(UserIdentifier userIdentifier);
 
 	/**
@@ -108,11 +109,9 @@ public interface UserManager<T extends User> {
 	 *            the identifier of the user
 	 * @return the user of class type <code>clazz</code> with the identifier
 	 *         equal to <code>userIdentifier</code>
-	 * @throws NoResultException
 	 */
 	<E extends T> E get(Class<E> clazz, UserIdentifier userIdentifier);
 
-	
 	/**
 	 * Get all users of class type <code>clazz</code>.
 	 * 

@@ -9,9 +9,11 @@ import org.salespointframework.core.accountancy.AccountancyEntryIdentifier;
  * @author Paul Henke
  * 
  */
-public class AccountancyEntryIdentifierEditor extends PropertyEditorSupport {
+public class AccountancyEntryIdentifierEditor extends PropertyEditorSupport
+{
 	@Override
-	public void setAsText(String text) {
+	public void setAsText(String text)
+	{
 		AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier(text);
 		setValue(accountancyEntryIdentifier);
 	}

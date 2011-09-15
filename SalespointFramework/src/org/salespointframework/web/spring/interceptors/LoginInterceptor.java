@@ -10,7 +10,6 @@ import org.salespointframework.core.users.User;
 import org.salespointframework.core.users.UserIdentifier;
 import org.salespointframework.core.users.UserManager;
 import org.salespointframework.web.WebConstants;
-
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -20,29 +19,31 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  * @author Uwe Schmidt
  * @author Paul Henke
  */
-public class LoginInterceptor extends HandlerInterceptorAdapter {
-	
+public class LoginInterceptor extends HandlerInterceptorAdapter
+{
 	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response,
-			Object handler, ModelAndView mav) throws Exception {
-		
-		Map<String,String[]> params = request.getParameterMap();
-	
-		if(!params.containsKey(WebConstants.SP_LOGIN_PARAM)) {
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView mav) throws Exception
+	{
+		Map<String, String[]> params = request.getParameterMap();
+
+		if (!params.containsKey(WebConstants.SP_LOGIN_PARAM))
+		{
 			return;
 		}
-		
+
 		String identifier = params.get(WebConstants.SP_LOGIN_PARAM_IDENTIFIER)[0];
 		String password = params.get(WebConstants.SP_LOGIN_PARAM_PASSWORD)[0];
-		
-		UserIdentifier userIdentifier = new UserIdentifier(identifier);		
+
+		UserIdentifier userIdentifier = new UserIdentifier(identifier);
 		@SuppressWarnings("unchecked")
 		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
-		
+
 		User user = usermanager.get(User.class, userIdentifier);
-		
-		if(user != null) {
-			if(user.verifyPassword(password)) {
+
+		if (user != null)
+		{
+			if (user.verifyPassword(password))
+			{
 				usermanager.logOn(user, request.getSession());
 			}
 		}

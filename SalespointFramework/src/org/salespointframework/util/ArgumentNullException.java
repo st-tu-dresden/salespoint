@@ -1,6 +1,5 @@
 package org.salespointframework.util;
 
-
 // TODO in ein anderes Package?
 // inspired by http://msdn.microsoft.com/en-us/library/system.argumentnullexception.aspx
 // denn NullRefEx und IllegalArgumentEx sind beide unpassend
@@ -11,26 +10,29 @@ package org.salespointframework.util;
  * 
  */
 @SuppressWarnings("serial")
-public class ArgumentNullException extends IllegalArgumentException {
-
-	
+public class ArgumentNullException extends IllegalArgumentException
+{
 	private final String paramName;
-	
-	protected ArgumentNullException() {
+
+	protected ArgumentNullException()
+	{
 		paramName = "";
 	}
-	
-	public ArgumentNullException(String paramName) {
+
+	public ArgumentNullException(String paramName)
+	{
 		super(paramName + " must be not null");
 		this.paramName = paramName;
 	}
-	
-	public ArgumentNullException(String paramName, String message) {
+
+	public ArgumentNullException(String paramName, String message)
+	{
 		super(message);
 		this.paramName = paramName;
 	}
-	
-	public String getParamName() {
+
+	public String getParamName()
+	{
 		return paramName;
 	}
 }

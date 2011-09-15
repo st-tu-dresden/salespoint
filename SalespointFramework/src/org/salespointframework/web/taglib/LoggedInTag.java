@@ -13,26 +13,29 @@ import org.salespointframework.core.users.UserManager;
  * @author Uwe Schmidt
  * @author Paul Henke
  */
-public class LoggedInTag extends BodyTagSupport {
-
-	private static final long serialVersionUID = 1L;
-	
+@SuppressWarnings("serial")
+public class LoggedInTag extends BodyTagSupport
+{
 	private boolean status = true;
 
-	public void setStatus(boolean status) {
+	public void setStatus(boolean status)
+	{
 		this.status = status;
 	}
 
 	@Override
-	public int doStartTag() throws JspException {
+	public int doStartTag() throws JspException
+	{
 
 		@SuppressWarnings("unchecked")
 		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
 		User user = usermanager.getUserByToken(User.class, pageContext.getSession());
 
-		if (status) {
+		if (status)
+		{
 			return user == null ? SKIP_BODY : EVAL_BODY_INCLUDE;
-		} else {
+		} else
+		{
 			return user == null ? EVAL_BODY_INCLUDE : SKIP_BODY;
 		}
 	}

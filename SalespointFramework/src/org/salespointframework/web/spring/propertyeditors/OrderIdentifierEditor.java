@@ -9,9 +9,11 @@ import org.salespointframework.core.order.OrderIdentifier;
  * @author Paul Henke
  * 
  */
-public class OrderIdentifierEditor extends PropertyEditorSupport {
+public class OrderIdentifierEditor extends PropertyEditorSupport
+{
 	@Override
-	public void setAsText(String text) {
+	public void setAsText(String text)
+	{
 		OrderIdentifier orderIdentifier = new OrderIdentifier(text);
 		setValue(orderIdentifier);
 	}

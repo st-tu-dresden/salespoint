@@ -13,91 +13,140 @@ import java.util.Set;
 // ob es sich lohnt die ganze lib reinzuziehen?
 
 /**
+ * Utility class for working with Iterables
  * 
  * @author Paul Henke
  * 
  */
-public final class Iterables {
-
-	private Iterables() {
+public final class Iterables
+{
+	// too bad there are no real static classes, -1 for java
+	private Iterables()
+	{
 	}
-	
-	public static <T> List<T> toList(final Iterable<T> iterable) {
+
+	/**
+	 * 
+	 * @param iterable
+	 * @return
+	 */
+	public static <T> List<T> toList(final Iterable<T> iterable)
+	{
 		Objects.requireNonNull(iterable, "iterable");
-		
+
 		List<T> temp = new ArrayList<T>();
-		for (T item : iterable) {
+		for (T item : iterable)
+		{
 			temp.add(item);
 		}
 		return temp;
 	}
 
-	public static <T> Set<T> toSet(final Iterable<T> iterable) {
+	public static <T> Set<T> toSet(final Iterable<T> iterable)
+	{
 		Objects.requireNonNull(iterable, "iterable");
-		
+
 		Set<T> temp = new HashSet<T>();
-		for (T item : iterable) {
+		for (T item : iterable)
+		{
 			temp.add(item);
 		}
 		return temp;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T[] toArray(final Iterable<T> iterable) {
+	public static <T> T[] toArray(final Iterable<T> iterable)
+	{
 		Objects.requireNonNull(iterable, "iterable");
 		return (T[]) toList(iterable).toArray();
 	}
 
-	public static <T> boolean isEmpty(final Iterable<T> iterable) {
+	/**
+	 * 
+	 * @param iterable
+	 * @return
+	 */
+	public static <T> boolean isEmpty(final Iterable<T> iterable)
+	{
 		Objects.requireNonNull(iterable, "iterable");
 		return !iterable.iterator().hasNext();
 	}
-	
 
-	public static <T> Iterable<T> empty() {
+	/**
+	 * 
+	 * @return
+	 */
+	public static <T> Iterable<T> empty()
+	{
 		return from(new ArrayList<T>(0));
 	}
-	
-	public static <T> int size(final Iterable<T> iterable) {
+
+	/**
+	 * 
+	 * @param iterable
+	 * @return
+	 */
+	public static <T> int size(final Iterable<T> iterable)
+	{
 		Objects.requireNonNull(iterable, "iterable");
 		int size = 0;
-		for(Iterator<T> iterator = iterable.iterator(); iterator.hasNext(); iterator.next()) {
+		for (Iterator<T> iterator = iterable.iterator(); iterator.hasNext(); iterator.next())
+		{
 			size++;
 		}
 		return size;
 	}
-	
-	public static <T> T first(final Iterable<T> iterable) {
+
+	/**
+	 * 
+	 * @param iterable
+	 * @return
+	 */
+	public static <T> T first(final Iterable<T> iterable)
+	{
 		Objects.requireNonNull(iterable, "iterable");
 		Iterator<T> iterator = iterable.iterator();
-		if(iterator.hasNext()) {
+		if (iterator.hasNext())
+		{
 			return iterator.next();
-		} else {
+		} else
+		{
 			return null;
 		}
 	}
-	
 
-	public static <T> Iterable<T> from(final Iterable<T> iterable) {
+	/**
+	 * 
+	 * @param iterable
+	 * @return
+	 */
+	public static <T> Iterable<T> from(final Iterable<T> iterable)
+	{
 		Objects.requireNonNull(iterable, "iterable");
-		
+
 		final Iterator<T> iterator = iterable.iterator();
-		return new Iterable<T>() {
+		return new Iterable<T>()
+		{
 			@Override
-            public Iterator<T> iterator() {
-				return new Iterator<T>() {
+			public Iterator<T> iterator()
+			{
+				return new Iterator<T>()
+				{
 					@Override
-					public boolean hasNext() {
+					public boolean hasNext()
+					{
 						return iterator.hasNext();
 					}
 
 					@Override
-					public T next() {
+					public T next()
+					{
 						return iterator.next();
 					}
 
 					@Override
-					public void remove() {
+					public void remove()
+					{
 						throw new UnsupportedOperationException();
 					}
 				};
@@ -105,29 +154,44 @@ public final class Iterables {
 		};
 	}
 
-	public static <T> Iterable<T> from(final T[] array) {
+	/**
+	 * 
+	 * @param array
+	 * @return
+	 */
+	public static <T> Iterable<T> from(final T[] array)
+	{
 		Objects.requireNonNull(array, "array");
-		
-		return new Iterable<T>() {
+
+		return new Iterable<T>()
+		{
 			@Override
-            public Iterator<T> iterator() {
-				return new Iterator<T>() {
+			public Iterator<T> iterator()
+			{
+				return new Iterator<T>()
+				{
 					int n = 0;
 					@Override
-					public boolean hasNext() {
+					public boolean hasNext()
+					{
 						return n < array.length;
 					}
 
 					@Override
-					public T next() {
-						if(n >= array.length) throw new NoSuchElementException();
+					public T next()
+					{
+						if (n >= array.length)
+						{
+							throw new NoSuchElementException();
+						}
 						T element = array[n];
 						n++;
-						return element; 
+						return element;
 					}
 
 					@Override
-					public void remove() {
+					public void remove()
+					{
 						throw new UnsupportedOperationException();
 					}
 				};
