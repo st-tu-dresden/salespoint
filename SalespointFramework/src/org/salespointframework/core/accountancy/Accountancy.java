@@ -14,8 +14,7 @@ import org.salespointframework.core.money.Money;
  * @author Hannes Weisbach
  * 
  */
-public interface Accountancy<T extends AccountancyEntry>
-{
+public interface Accountancy<T extends AccountancyEntry> {
 	/**
 	 * Adds a new <code>AccountancyEntry</code> to this <code>Accountancy</code>
 	 * The new entry is persisted transparently into the underlying database.
@@ -28,12 +27,23 @@ public interface Accountancy<T extends AccountancyEntry>
 	 */
 	void add(T accountancyEntry);
 
+	/**
+	 * Returns the <code>AccountancyEntry</code> of type <code>clazz</code>,
+	 * identified by <code>accountancyEntryIdentifier</code> or
+	 * <code>null</code>, if no entry with the given identifier exists
+	 * 
+	 * @param clazz
+	 *            Type of the entry returned
+	 * @param accountancyEntryIdentifier
+	 *            Identifier of the entry, which will be returned.
+	 * @return
+	 */
 	T get(Class<T> clazz, AccountancyEntryIdentifier accountancyEntryIdentifier);
 
 	/**
 	 * Returns all <code>AccountancyEntry</code>s of the specified type
-	 * <code>class</code>. If no entries of the specified type exist, an empty
-	 * Iterable is returned.
+	 * <code>clazz</code>. If no entries of the specified type exist, an empty
+	 * <code>Iterable</code> is returned.
 	 * 
 	 * @param <T>
 	 *            Type of the specific entries that are stored in the
@@ -101,7 +111,8 @@ public interface Accountancy<T extends AccountancyEntry>
 	 *         <code>Iterable</code> containing all entries within the key-
 	 *         <code>Interval</code>
 	 */
-	<E extends T> Map<Interval, Iterable<E>> find(Class<E> clazz, DateTime from, DateTime to, Period period);
+	<E extends T> Map<Interval, Iterable<E>> find(Class<E> clazz,
+			DateTime from, DateTime to, Period period);
 
 	/**
 	 * Returns the sum of the field <code>amount</code> of all
@@ -137,5 +148,6 @@ public interface Accountancy<T extends AccountancyEntry>
 	 *         <code>Money</code> object, equal to the sum of the amount fields
 	 *         of all entries within the key-<code>Interval</code>
 	 */
-	<E extends T> Map<Interval, Money> getSalesVolume(Class<E> clazz, DateTime from, DateTime to, Period period);
+	<E extends T> Map<Interval, Money> getSalesVolume(Class<E> clazz,
+			DateTime from, DateTime to, Period period);
 }
