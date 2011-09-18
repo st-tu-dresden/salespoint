@@ -34,13 +34,13 @@ public class AccountancyPeriodTest {
 		System.out.println("Creating AccountancyEntries: ");
 		for(int i = 0; i < 20; i++) {
 			 p = new ProductPaymentEntry(new OrderIdentifier(), new UserIdentifier(), new Money(1));
-			 System.out.println("Adding p " + p + " with time " + p.getCreationDate());
+			 System.out.println("Adding p " + p + " with time " + p.getDate());
 			 a.add(p);
 			 
 			 if(i == 5)
-				 from = p.getCreationDate();
+				 from = p.getDate();
 			 if(i == 15)
-				 to = p.getCreationDate();
+				 to = p.getDate();
 			 
 			 try {
 				 Thread.sleep(100);

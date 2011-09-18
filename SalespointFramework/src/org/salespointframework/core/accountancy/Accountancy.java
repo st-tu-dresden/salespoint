@@ -8,52 +8,61 @@ import org.joda.time.Period;
 import org.salespointframework.core.money.Money;
 
 /**
- * This interface provides access to an accountancy. An accountancy consists of
- * <code>AccountancyEntries</code>.
+ * The <code>Accountancy</code> interface is implemented by classes offering a
+ * basic accounting service. Generally, an <code>Accountancy</code> aggregates
+ * objects of the type <code>AccountancyEntry</code> and subclasses thereof.
+ * Additionally, an <code>Accountancy</code> offers methods for querying of
+ * entries and financial statistics.
  * 
  * @author Hannes Weisbach
+ * @param <T>
+ *            Base type of the entries managed by the accountancy.
  * 
  */
 public interface Accountancy<T extends AccountancyEntry> {
 	/**
 	 * Adds a new <code>AccountancyEntry</code> to this <code>Accountancy</code>
-	 * The new entry is persisted transparently into the underlying database.
-	 * Once an <code>AccountancyEntry</code> has been written to the database,
-	 * it cannot be added a second time.
+	 * .
 	 * 
 	 * @param accountancyEntry
-	 *            <code>AccountancyEntry</code> which should be added to the
-	 *            <code>Accountancy</code>
+	 *            entry to be added to the accountancy
 	 */
 	void add(T accountancyEntry);
 
 	/**
-	 * Returns the <code>AccountancyEntry</code> of type <code>clazz</code>,
-	 * identified by <code>accountancyEntryIdentifier</code> or
-	 * <code>null</code>, if no entry with the given identifier exists
-	 * 
-	 * @param clazz
-	 *            Type of the entry returned
-	 * @param accountancyEntryIdentifier
-	 *            Identifier of the entry, which will be returned.
-	 * @return
-	 */
-	T get(Class<T> clazz, AccountancyEntryIdentifier accountancyEntryIdentifier);
-
-	/**
 	 * Returns all <code>AccountancyEntry</code>s of the specified type
-	 * <code>clazz</code>. If no entries of the specified type exist, an empty
-	 * <code>Iterable</code> is returned.
+	 * <code>clazz</code>, previously added to the accountancy.
 	 * 
-	 * @param <T>
-	 *            Type of the specific entries that are stored in the
-	 *            <code>Accountancy</code>
+	 * If no entries of the specified type exist, an empty <code>Iterable</code>
+	 * is returned.
+	 * 
+	 * @param <E>
+	 *            type of the entries to be returned.
 	 * 
 	 * @param clazz
-	 *            The type of the entries.
+	 *            Class object corresponding to the type of the entries to be
+	 *            returned
+	 * 
 	 * @return an unmodifiable Iterable containing all entries of type clazz
 	 */
-	<E extends T> Iterable<E> find(Class<E> clazz);
+	<E extends T> Iterable<E> get(Class<E> clazz);
+
+	/**
+	 * Returns the <code>AccountancyEntry</code> of type <code>clazz</code>,
+	 * identified by <code>accountancyEntryIdentifier</code>.
+	 * 
+	 * <code>null</code> is returned, if no entry with the given identifier
+	 * exists.
+	 * 
+	 * @param clazz
+	 *            type of the entry to be returned
+	 * @param accountancyEntryIdentifier
+	 *            identifier of the entry to be returned
+	 * @return the <code>AccountancyEntry</code> or sub type thereof of type
+	 *         <code>clazz</code> which has the identifier
+	 *         <code>accountancyEntryIdentifier</code>
+	 */
+	T get(Class<T> clazz, AccountancyEntryIdentifier accountancyEntryIdentifier);
 
 	/**
 	 * Returns all <code>AccountancyEntry</code>s in between the dates
@@ -63,7 +72,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * time span exist, or no entries of the specified class type exist, an
 	 * empty Iterable is returned.
 	 * 
-	 * @param <T>
+	 * @param <E>
 	 *            type of the requested entries
 	 * 
 	 * @param from
@@ -75,23 +84,24 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * @return an unmodifiable Iterable containing all entries between from and
 	 *         to of type T
 	 */
-	<E extends T> Iterable<E> find(Class<E> clazz, DateTime from, DateTime to);
+	<E extends T> Iterable<E> get(Class<E> clazz, DateTime from, DateTime to);
 
 	/**
 	 * Returns all <code>AccountancyEntry</code>s of type <code>clazz</code>,
-	 * which have their <code>timeStamp</code> within (including)
-	 * <code>from</code> and <code>to</code>. <br>
+	 * which have their <code>date</code> within (including) <code>from</code>
+	 * and <code>to</code>. <br>
 	 * The time between <code>from</code> and <code>to</code> is divided into
-	 * parts of <code>period</code> length. According to their time stamp,
+	 * parts of <code>period</code> length. According to their respective date,
 	 * entries are sorted in exactly one of the time intervals. The last time
 	 * interval may be shorter than <code>period</code>.<br>
 	 * Returned is a map, having a <code>Interval</code> objects as its key, and
 	 * an <code>Iterable&lt;T&gt;</code> as value. The <code>Iterable</code>
-	 * contains all entries of the specific type with its time stamp in the
-	 * interval specified by the key.
+	 * contains all entries of the specific type with its date in the interval
+	 * specified by the key.<br>
+	 * If no entries for an interval exist, the <code>Iterable</code>
 	 * 
 	 * 
-	 * @param <T>
+	 * @param <E>
 	 *            type of the requested entries
 	 * 
 	 * @param clazz
@@ -117,7 +127,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	/**
 	 * Returns the sum of the field <code>amount</code> of all
 	 * <code>AccountancyEntry</code>s of type <code>clazz</code>, which have
-	 * their <code>timeStamp</code> within (including) <code>from</code> and
+	 * their <code>date</code> within (including) <code>from</code> and
 	 * <code>to</code>. <br>
 	 * The time between <code>from</code> and <code>to</code> is divided into
 	 * parts of <code>period</code> length. According to their time stamp,
@@ -125,10 +135,14 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * interval may be shorter than <code>period</code>.<br>
 	 * Returned is a map, having a <code>Interval</code> objects as its key, and
 	 * an <code>Money</code> as value. The <code>Money</code> object's value is
-	 * equal to the sum of all entries' <code>amount</code>-field, with a time
-	 * stamp within the key-<code>Interval</code>.
+	 * equal to the sum of all entries' <code>amount</code>-field, with a date
+	 * within the key-<code>Interval</code>.
 	 * 
-	 * @param <T>
+	 * If within an interval no entries of the specified type exist, a
+	 * <code>Money</code> object with a value of zero is added as value for that
+	 * interval.
+	 * 
+	 * @param <E>
 	 *            type of the requested entries
 	 * 
 	 * @param clazz

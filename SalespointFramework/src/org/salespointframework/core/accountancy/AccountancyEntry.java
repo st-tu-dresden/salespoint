@@ -3,24 +3,37 @@ package org.salespointframework.core.accountancy;
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
 
-public interface AccountancyEntry
-{
-	AccountancyEntryIdentifier getAccountancyEntryIdentifier();
-
-	// TODO user defined one?
+/**
+ * Implementing the <code>AccountancyEntry</code> interface allows objects to be
+ * used with the <code>Accountancy</code>. An <code>AccountancyEntry</code>
+ * consists at least of a date, some sort of description, and a monetary value
+ * and a unique identifier
+ * 
+ * @author hannesweisbach
+ * 
+ */
+public interface AccountancyEntry {
 	/**
-	 * The timestamp of this entry. This can be the creation time or a user
-	 * defined one, that was given to the constructor when it has been created.
-	 * 
-	 * @return the timestamp that is stored in this entry.
+	 * @return the date, when this entry was was posted.
 	 */
-	DateTime getCreationDate();
+	public DateTime getDate();
 
 	/**
-	 * The value of this entry.
 	 * 
-	 * @return the value that is stored in this entry.
+	 * @return description, detailing the entry.
 	 */
-	Money getValue();
+	public String getDescription();
 
+	/**
+	 * 
+	 * @return the monetary value for this entry.
+	 */
+	public Money getValue();
+
+	/**
+	 * @return <code>AccountancyEntryIdentifier</code> to uniquely identify this
+	 *         entry.
+	 * 
+	 */
+	public AccountancyEntryIdentifier getAccountancyEntryIdentifier();
 }

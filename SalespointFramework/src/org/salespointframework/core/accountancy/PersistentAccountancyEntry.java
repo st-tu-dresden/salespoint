@@ -2,7 +2,9 @@ package org.salespointframework.core.accountancy;
 
 import java.util.Date;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.EmbeddedId;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,8 +24,7 @@ import org.salespointframework.util.Objects;
  * 
  */
 @Entity
-public abstract class AbstractAccountancyEntry implements AccountancyEntry
-{
+public class PersistentAccountancyEntry implements AccountancyEntry {
 	/**
 	 * Identifier of this entry. Only used to persist to database.
 	 */
@@ -31,80 +32,74 @@ public abstract class AbstractAccountancyEntry implements AccountancyEntry
 	private AccountancyEntryIdentifier accountancyEntryIdentifier;
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public AccountancyEntryIdentifier getAccountancyEntryIdentifier()
-	{
-		return accountancyEntryIdentifier;
-	}
-
-	/**
 	 * Represents the value of this entry.
 	 */
-	private Money amount;
+	private Money value;
 
 	/**
 	 * The date at which this entry has been created or that was given as a
 	 * constructor parameter.
 	 */
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreated;
+	private Date date;
+
+	private String description;
 
 	/**
 	 * Protected, parameterless Constructor required by the persistence layer.
 	 * Do not use it.
 	 */
 	@Deprecated
-	protected AbstractAccountancyEntry()
-	{
-		dateCreated = Shop.INSTANCE.getTime().getDateTime().toDate();
-		this.amount = Money.ZERO;
+	protected PersistentAccountancyEntry() {
+		accountancyEntryIdentifier = new AccountancyEntryIdentifier();
+		date = Shop.INSTANCE.getTime().getDateTime().toDate();
+		this.value = Money.ZERO;
 	}
 
 	/**
 	 * Creates a new <code>AbstractAccountancyEntry</code> with a specific
 	 * value.
 	 * 
-	 * @param amount
+	 * @param value
 	 *            The value that is stored in this entry.
 	 */
-	public AbstractAccountancyEntry(Money amount)
-	{
+	public PersistentAccountancyEntry(Money value) {
 		this();
-		this.amount = Objects.requireNonNull(amount, "amount");
+		this.value = Objects.requireNonNull(value, "value");
 	}
 
 	/**
-	 * Creates a new <code>AbstractAccountancyEntry</code> with a specifc value
+	 * Creates a new <code>AbstractAccountancyEntry</code> with a specific value
 	 * and a user defined time.
 	 * 
-	 * @param amount
+	 * @param value
 	 *            The value that is stored in this entry.
-	 * @param timeStamp
-	 *            A user defined timestamp for this entry.
+	 * @param date
+	 *            A user defined time stamp for this entry.
 	 */
-	public AbstractAccountancyEntry(Money amount, DateTime timeStamp)
-	{
-		this.amount = Objects.requireNonNull(amount, "amount");
-		this.dateCreated = Objects.requireNonNull(timeStamp, "timeStamp").toDate();
+	public PersistentAccountancyEntry(Money value, DateTime date) {
+		this.value = Objects.requireNonNull(value, "value");
+		this.date = Objects.requireNonNull(date, "date").toDate();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public DateTime getCreationDate()
-	{
-		return new DateTime(dateCreated);
+	public DateTime getDate() {
+		return new DateTime(date);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public Money getValue()
-	{
-		return amount;
+	public Money getValue() {
+		return value;
 	}
+
+	@Override
+	public String getDescription() {
+		return description;
+	}
+
+	@Override
+	public AccountancyEntryIdentifier getAccountancyEntryIdentifier() {
+		return accountancyEntryIdentifier;
+	}
+
 }

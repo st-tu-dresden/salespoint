@@ -19,7 +19,7 @@ import org.salespointframework.util.Objects;
  * @author Thomas Dedek
  */
 @Entity
-public class ProductPaymentEntry extends AbstractAccountancyEntry
+public class ProductPaymentEntry extends PersistentAccountancyEntry
 {
 	/**
 	 * The <code>OrderIdentifier</code> to which this
