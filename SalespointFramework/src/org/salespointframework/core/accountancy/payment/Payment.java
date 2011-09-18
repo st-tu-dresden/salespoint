@@ -108,7 +108,7 @@ public abstract class Payment implements Serializable {
 
     /**
      * Returns a <code>DateTime</code> object representing the time the payment
-     * was made by the payer or <code>null</coderepresenting the time the payment
+     * was made by the payer or <code>null</code> representing the time the payment
      * was received by the payee or <code>null</code>, if the payment has not
      * been received yet.>, if the payment was not made
      * yet.
