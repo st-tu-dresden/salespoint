@@ -33,7 +33,7 @@ public final class AccountancyEntryIdentifier extends SalespointIdentifier {
 	 * @Deprecated.
 	 */
 	@Deprecated
-	AccountancyEntryIdentifier(String id) {
+	public AccountancyEntryIdentifier(String id) {
 		super(id);
 	}
 }
