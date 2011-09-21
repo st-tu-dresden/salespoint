@@ -50,7 +50,7 @@ public class AccountancyTest {
 
 	@Test
 	public void select() {
-		Iterable<PersistentAccountancyEntry> i = a.get(from, to);
+		Iterable<PersistentAccountancyEntry> i = a.find(from, to);
 
 		// TODO not really a test, because the Iterable is always non-null.
 		// Instead, we need to test for non-emptyness of the Iterable, or three
@@ -65,14 +65,14 @@ public class AccountancyTest {
 	@Test
 	public void selectType() {
 		System.out.println("AccountancyEntries: ");
-		Iterable<ProductPaymentEntry> i = a.get(ProductPaymentEntry.class,
+		Iterable<ProductPaymentEntry> i = a.find(ProductPaymentEntry.class,
 				from, to);
 		for (AccountancyEntry e : i) {
 			System.out.println(e.toString());
 		}
 
 		System.out.println("All entries:");
-		Iterable<PersistentAccountancyEntry> g = a.get(
+		Iterable<PersistentAccountancyEntry> g = a.find(
 				PersistentAccountancyEntry.class, from, to);
 		for (PersistentAccountancyEntry e : g) {
 			System.out.println(e.toString());

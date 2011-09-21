@@ -62,7 +62,18 @@ public final class PersistentAccountancy implements
 	}
 
 	@Override
-	public final <T extends PersistentAccountancyEntry> Iterable<T> get(
+	public final PersistentAccountancyEntry get(
+			Class<PersistentAccountancyEntry> clazz,
+			AccountancyEntryIdentifier accountancyEntryIdentifier) {
+		Objects.requireNonNull(clazz, "clazz");
+		Objects.requireNonNull(accountancyEntryIdentifier,
+				"accountancyEntryIdentifier");
+		EntityManager em = emf.createEntityManager();
+		return em.find(clazz, accountancyEntryIdentifier);
+	}
+
+	@Override
+	public final <T extends PersistentAccountancyEntry> Iterable<T> find(
 			Class<T> clazz) {
 		Objects.requireNonNull(clazz, "clazz");
 
@@ -77,18 +88,7 @@ public final class PersistentAccountancy implements
 	}
 
 	@Override
-	public final PersistentAccountancyEntry get(
-			Class<PersistentAccountancyEntry> clazz,
-			AccountancyEntryIdentifier accountancyEntryIdentifier) {
-		Objects.requireNonNull(clazz, "clazz");
-		Objects.requireNonNull(accountancyEntryIdentifier,
-				"accountancyEntryIdentifier");
-		EntityManager em = emf.createEntityManager();
-		return em.find(clazz, accountancyEntryIdentifier);
-	}
-
-	@Override
-	public final <T extends PersistentAccountancyEntry> Iterable<T> get(
+	public final <T extends PersistentAccountancyEntry> Iterable<T> find(
 			Class<T> clazz, DateTime from, DateTime to) {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
@@ -123,14 +123,14 @@ public final class PersistentAccountancy implements
 		for (; from.isBefore(to.minus(period)); from = from.plus(period)) {
 			nextStep = from.plus(period);
 			entries.put(new Interval(from, nextStep),
-					get(clazz, from, nextStep));
+					find(clazz, from, nextStep));
 		}
 		/*
 		 * Remove last interval from loop, to save the test for the last
 		 * interval in every iteration. But it's java, it not like you're gonna
 		 * notice the speedup, hahaha. BTW: the cake is a lie, hahaha.
 		 */
-		entries.put(new Interval(from, to), get(clazz, from, to));
+		entries.put(new Interval(from, to), find(clazz, from, to));
 		return entries;
 	}
 
@@ -195,7 +195,7 @@ public final class PersistentAccountancy implements
 	 * @return an unmodifiable Iterable containing all entries between from and
 	 *         to
 	 */
-	public final Iterable<PersistentAccountancyEntry> get(DateTime from,
+	public final Iterable<PersistentAccountancyEntry> find(DateTime from,
 			DateTime to) {
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");

@@ -45,7 +45,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * 
 	 * @return an unmodifiable Iterable containing all entries of type clazz
 	 */
-	<E extends T> Iterable<E> get(Class<E> clazz);
+	<E extends T> Iterable<E> find(Class<E> clazz);
 
 	/**
 	 * Returns the <code>AccountancyEntry</code> of type <code>clazz</code>,
@@ -84,7 +84,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * @return an unmodifiable Iterable containing all entries between from and
 	 *         to of type T
 	 */
-	<E extends T> Iterable<E> get(Class<E> clazz, DateTime from, DateTime to);
+	<E extends T> Iterable<E> find(Class<E> clazz, DateTime from, DateTime to);
 
 	/**
 	 * Returns all <code>AccountancyEntry</code>s of type <code>clazz</code>,
