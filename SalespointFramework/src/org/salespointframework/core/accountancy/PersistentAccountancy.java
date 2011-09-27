@@ -21,7 +21,7 @@ import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
 /**
- * This class represents an accountancy. An accountancy consists of
+ * This class represents an accountancy. An accountancy aggregates of
  * <code>AccountancyEntries</code>.
  * 
  * @author Hannes Weisbach
@@ -34,11 +34,11 @@ public final class PersistentAccountancy implements
 	 * <code>EntityManager</code> which is used for this Accountancy. The
 	 * <code>Database.INSTANCE</code> has to be initialized first.
 	 */
-	private EntityManagerFactory emf = Database.INSTANCE
+	private final EntityManagerFactory emf = Database.INSTANCE
 			.getEntityManagerFactory();
 
 	/**
-	 * Create a new <code>Accountancy</code>.
+	 * Creates a new <code>PersistentAccountancy</code> instance.
 	 */
 	public PersistentAccountancy() {
 
@@ -62,8 +62,8 @@ public final class PersistentAccountancy implements
 	}
 
 	@Override
-	public final PersistentAccountancyEntry get(
-			Class<PersistentAccountancyEntry> clazz,
+	public final <T extends PersistentAccountancyEntry> T get(
+			Class<T> clazz,
 			AccountancyEntryIdentifier accountancyEntryIdentifier) {
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(accountancyEntryIdentifier,
@@ -116,7 +116,7 @@ public final class PersistentAccountancy implements
 		Objects.requireNonNull(period, "period");
 
 		DateTime nextStep;
-		HashMap<Interval, Iterable<T>> entries = new HashMap<Interval, Iterable<T>>();
+		Map<Interval, Iterable<T>> entries = new HashMap<Interval, Iterable<T>>();
 
 		for (; from.isBefore(to.minus(period)); from = from.plus(period)) {
 			nextStep = from.plus(period);
@@ -175,42 +175,6 @@ public final class PersistentAccountancy implements
 		}
 		beginCommit(em);
 
-	}
-
-	// TODO convencience
-	// braucht man die wirklich ohne .clas, alle anderen im framework (Catalog,
-	// Inventory, Order, Calendar?) sind mit class
-	/**
-	 * Returns all <code>AccountancyEntry</code>s in between the dates
-	 * <code>from</code> and <code>to</code>, including <code>from</code> and
-	 * <code>to</code>. So every entry with an time stamp <= <code>to</code> and
-	 * >= <code>from</code> is returned. If no entries within the specified time
-	 * span exist, an empty <code>Iterable</code> is returned.
-	 * 
-	 * @param from
-	 *            time stamp denoting the start of the requested time period
-	 * @param to
-	 *            time stamp denoting the end of the requested time period
-	 * @return an unmodifiable <code>Iterable</code> containing all entries
-	 *         between <code>from</code> and <code>to</code>
-	 */
-	public final Iterable<PersistentAccountancyEntry> find(DateTime from,
-			DateTime to) {
-		Objects.requireNonNull(from, "from");
-		Objects.requireNonNull(to, "to");
-
-		EntityManager em = emf.createEntityManager();
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<PersistentAccountancyEntry> q = cb
-				.createQuery(PersistentAccountancyEntry.class);
-		Root<PersistentAccountancyEntry> r = q
-				.from(PersistentAccountancyEntry.class);
-		Predicate p = cb.between(r.get(PersistentAccountancyEntry_.date),
-				from.toDate(), to.toDate());
-		q.where(p);
-		TypedQuery<PersistentAccountancyEntry> tq = em.createQuery(q);
-
-		return Iterables.from(tq.getResultList());
 	}
 
 	private final void beginCommit(EntityManager entityManager) {
