@@ -62,6 +62,8 @@ public interface Calendar<T extends CalendarEntry> {
      * 
      * @param calendarEntryIdentifier
      *            Id of the entry that is to be removed from the calendar.
+     * @return <code>true</code> if removal was successful, <code>false</code>
+     *         otherwise.
      * @throws ArgumentNullException
      *             if <code>calendarEntryIdentifier</code> is <code>null</code>.
      */
