@@ -39,7 +39,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * is returned.
 	 * 
 	 * @param <E>
-	 *            type of the entries to be returned.
+	 *            common super type of all entries returned
 	 * 
 	 * @param clazz
 	 *            Class object corresponding to the type of the entries to be
@@ -56,6 +56,8 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * <code>null</code> is returned, if no entry with the given identifier
 	 * exists.
 	 * 
+	 * @param <E>
+	 *            common super type of all entries returned
 	 * @param clazz
 	 *            type of the entry to be returned; has to implement
 	 *            <code>AccountancyEntry</code>
@@ -65,7 +67,8 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 *         <code>clazz</code> which has the identifier
 	 *         <code>accountancyEntryIdentifier</code>
 	 */
-	T get(Class<T> clazz, AccountancyEntryIdentifier accountancyEntryIdentifier);
+	<E extends T> T get(Class<E> clazz,
+			AccountancyEntryIdentifier accountancyEntryIdentifier);
 
 	/**
 	 * Returns all <code>AccountancyEntry</code>s in between the dates
@@ -76,7 +79,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * entries of the specified class type exist, an empty Iterable is returned.
 	 * 
 	 * @param <E>
-	 *            type of the requested entries
+	 *            common super type of all entries returned
 	 * 
 	 * @param from
 	 *            time stamp denoting the start of the requested time period
@@ -105,7 +108,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * 
 	 * 
 	 * @param <E>
-	 *            type of the requested entries
+	 *            common super type of all entries returned
 	 * 
 	 * @param clazz
 	 *            class type of the requested entries; has to implement
@@ -146,7 +149,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * interval.
 	 * 
 	 * @param <E>
-	 *            type of the requested entries
+	 *            common super type of all entries returned
 	 * 
 	 * @param clazz
 	 *            class type of the requested entries; has implement
