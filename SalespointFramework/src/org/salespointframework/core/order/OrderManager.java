@@ -1,7 +1,7 @@
 package org.salespointframework.core.order;
 
 import org.joda.time.DateTime;
-import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.core.user.UserIdentifier;
 
 /**
  * 

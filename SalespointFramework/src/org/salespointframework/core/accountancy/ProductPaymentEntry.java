@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderIdentifier;
-import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.Objects;
 
 /**

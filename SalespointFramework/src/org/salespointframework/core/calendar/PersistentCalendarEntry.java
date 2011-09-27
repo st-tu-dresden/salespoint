@@ -19,7 +19,7 @@ import javax.persistence.JoinColumn;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
-import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;

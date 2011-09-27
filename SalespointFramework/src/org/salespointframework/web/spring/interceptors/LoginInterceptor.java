@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.salespointframework.core.shop.Shop;
-import org.salespointframework.core.users.User;
-import org.salespointframework.core.users.UserIdentifier;
-import org.salespointframework.core.users.UserManager;
+import org.salespointframework.core.user.User;
+import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.core.user.UserManager;
 import org.salespointframework.web.WebConstants;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;

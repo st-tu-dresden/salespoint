@@ -12,8 +12,8 @@ import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.product.Product;
 import org.salespointframework.core.time.DefaultTime;
 import org.salespointframework.core.time.Time;
-import org.salespointframework.core.users.User;
-import org.salespointframework.core.users.UserManager;
+import org.salespointframework.core.user.User;
+import org.salespointframework.core.user.UserManager;
 import org.salespointframework.util.Objects;
 
 /**

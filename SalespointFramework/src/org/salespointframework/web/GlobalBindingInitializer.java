@@ -7,7 +7,7 @@ import org.salespointframework.core.order.OrderIdentifier;
 import org.salespointframework.core.order.OrderLineIdentifier;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.SerialNumber;
-import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.web.spring.propertyeditors.AccountancyEntryIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.CalendarEntryIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.ChargeLineIdentifierEditor;

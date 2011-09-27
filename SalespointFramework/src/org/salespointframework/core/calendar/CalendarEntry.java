@@ -1,7 +1,7 @@
 package org.salespointframework.core.calendar;
 
 import org.joda.time.DateTime;
-import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 
 /**

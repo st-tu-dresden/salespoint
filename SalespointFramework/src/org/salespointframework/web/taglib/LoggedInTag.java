@@ -4,8 +4,8 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import org.salespointframework.core.shop.Shop;
-import org.salespointframework.core.users.User;
-import org.salespointframework.core.users.UserManager;
+import org.salespointframework.core.user.User;
+import org.salespointframework.core.user.UserManager;
 
 /**
  * 

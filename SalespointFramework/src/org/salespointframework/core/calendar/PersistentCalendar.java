@@ -14,7 +14,7 @@ import javax.persistence.criteria.Root;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.salespointframework.core.database.Database;
-import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
@@ -27,6 +27,7 @@ import org.salespointframework.util.Objects;
  * 
  * @author Stanley Förster
  */
+//TODO add upadte method
 public final class PersistentCalendar implements
 		Calendar<PersistentCalendarEntry> {
 

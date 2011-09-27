@@ -2,7 +2,7 @@ package org.salespointframework.web.spring.propertyeditors;
 
 import java.beans.PropertyEditorSupport;
 
-import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.core.user.UserIdentifier;
 
 /**
  * 
