@@ -31,7 +31,8 @@ public interface Accountancy<T extends AccountancyEntry> {
 
 	/**
 	 * Returns all <code>AccountancyEntry</code>s of the specified type
-	 * <code>clazz</code>, previously added to the accountancy.
+	 * <code>clazz</code> and all sub-types, previously added to the
+	 * accountancy.
 	 * 
 	 * If no entries of the specified type exist, an empty <code>Iterable</code>
 	 * is returned.
@@ -41,21 +42,23 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * 
 	 * @param clazz
 	 *            Class object corresponding to the type of the entries to be
-	 *            returned
+	 *            returned, has to be a sub-class of
+	 *            <code>PersistentAccountancyEntry</code>
 	 * 
 	 * @return an unmodifiable Iterable containing all entries of type clazz
 	 */
 	<E extends T> Iterable<E> find(Class<E> clazz);
 
 	/**
-	 * Returns the <code>AccountancyEntry</code> of type <code>clazz</code>,
-	 * identified by <code>accountancyEntryIdentifier</code>.
+	 * Returns the <code>AccountancyEntry</code> of type <code>clazz</code> and
+	 * all sub-types, identified by <code>accountancyEntryIdentifier</code>.
 	 * 
 	 * <code>null</code> is returned, if no entry with the given identifier
 	 * exists.
 	 * 
 	 * @param clazz
-	 *            type of the entry to be returned
+	 *            type of the entry to be returned, has to be a sub-class of
+	 *            <code>PersistentAccountancyEntry</code>
 	 * @param accountancyEntryIdentifier
 	 *            identifier of the entry to be returned
 	 * @return the <code>AccountancyEntry</code> or sub type thereof of type
@@ -67,10 +70,10 @@ public interface Accountancy<T extends AccountancyEntry> {
 	/**
 	 * Returns all <code>AccountancyEntry</code>s in between the dates
 	 * <code>from</code> and <code>to</code> of the specified class type
-	 * <code>clazz</code>, including from and to. So every entry with an time
-	 * stamp <= to and >= from is returned. If no entries within the specified
-	 * time span exist, or no entries of the specified class type exist, an
-	 * empty Iterable is returned.
+	 * <code>clazz</code> and all sub-types, including from and to. So every
+	 * entry with an time stamp <= <code>to</code> and >= <code>from</code> is
+	 * returned. If no entries within the specified time span exist, or no
+	 * entries of the specified class type exist, an empty Iterable is returned.
 	 * 
 	 * @param <E>
 	 *            type of the requested entries
@@ -80,16 +83,17 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * @param to
 	 *            time stamp denoting the end of the requested time period
 	 * @param clazz
-	 *            class type of the requested entries
+	 *            class type of the requested entries, has to be a sub-class of
+	 *            <code>PersistentAccountancyEntry</code>
 	 * @return an unmodifiable Iterable containing all entries between from and
 	 *         to of type T
 	 */
 	<E extends T> Iterable<E> find(Class<E> clazz, DateTime from, DateTime to);
 
 	/**
-	 * Returns all <code>AccountancyEntry</code>s of type <code>clazz</code>,
-	 * which have their <code>date</code> within (including) <code>from</code>
-	 * and <code>to</code>. <br>
+	 * Returns all <code>AccountancyEntry</code>s of type <code>clazz</code> and
+	 * all sub-types, which have their <code>date</code> within (including)
+	 * <code>from</code> and <code>to</code>. <br>
 	 * The time between <code>from</code> and <code>to</code> is divided into
 	 * parts of <code>period</code> length. According to their respective date,
 	 * entries are sorted in exactly one of the time intervals. The last time
@@ -106,7 +110,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * 
 	 * @param clazz
 	 *            class type of the requested entries, has to be a subclass of
-	 *            AbstractAccountancyEntry
+	 *            <code>PersistentAccountancyEntry</code>
 	 * @param from
 	 *            all returned entries will have a time stamp after
 	 *            <code>from</code>
@@ -126,9 +130,9 @@ public interface Accountancy<T extends AccountancyEntry> {
 
 	/**
 	 * Returns the sum of the field <code>amount</code> of all
-	 * <code>AccountancyEntry</code>s of type <code>clazz</code>, which have
-	 * their <code>date</code> within (including) <code>from</code> and
-	 * <code>to</code>. <br>
+	 * <code>AccountancyEntry</code>s of type <code>clazz</code> and its
+	 * sub-types, which have their <code>date</code> within (including)
+	 * <code>from</code> and <code>to</code>. <br>
 	 * The time between <code>from</code> and <code>to</code> is divided into
 	 * parts of <code>period</code> length. According to their time stamp,
 	 * entries are sorted in exactly one of the time intervals. The last time
@@ -147,7 +151,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * 
 	 * @param clazz
 	 *            class type of the requested entries, has to be a subclass of
-	 *            AbstractAccountancyEntry
+	 *            PersistentAccountancyEntry
 	 * @param from
 	 *            all returned entries will have a time stamp after
 	 *            <code>from</code>
