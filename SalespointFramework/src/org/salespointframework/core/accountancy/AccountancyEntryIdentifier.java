@@ -20,7 +20,7 @@ import org.salespointframework.util.SalespointIdentifier;
 public final class AccountancyEntryIdentifier extends SalespointIdentifier {
 
 	/**
-	 * Creates a new unique identfier for accountancy entries.
+	 * Creates a new unique identifier for accountancy entries.
 	 */
 	public AccountancyEntryIdentifier() {
 	    super();
