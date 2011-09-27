@@ -16,7 +16,8 @@ import org.salespointframework.core.money.Money;
  * 
  * @author Hannes Weisbach
  * @param <T>
- *            Base type of the entries managed by the accountancy.
+ *            Base type of the entries managed by the accountancy; has to
+ *            implement <code>AccountancyEntry</code>.
  * 
  */
 public interface Accountancy<T extends AccountancyEntry> {
@@ -42,10 +43,9 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * 
 	 * @param clazz
 	 *            Class object corresponding to the type of the entries to be
-	 *            returned, has to be a sub-class of
-	 *            <code>PersistentAccountancyEntry</code>
+	 *            returned, has to implement <code>AccountancyEntry</code>
 	 * 
-	 * @return an unmodifiable Iterable containing all entries of type clazz
+	 * @return an Iterable containing all entries of type clazz
 	 */
 	<E extends T> Iterable<E> find(Class<E> clazz);
 
@@ -57,8 +57,8 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * exists.
 	 * 
 	 * @param clazz
-	 *            type of the entry to be returned, has to be a sub-class of
-	 *            <code>PersistentAccountancyEntry</code>
+	 *            type of the entry to be returned; has to implement
+	 *            <code>AccountancyEntry</code>
 	 * @param accountancyEntryIdentifier
 	 *            identifier of the entry to be returned
 	 * @return the <code>AccountancyEntry</code> or sub type thereof of type
@@ -83,10 +83,9 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * @param to
 	 *            time stamp denoting the end of the requested time period
 	 * @param clazz
-	 *            class type of the requested entries, has to be a sub-class of
-	 *            <code>PersistentAccountancyEntry</code>
-	 * @return an unmodifiable Iterable containing all entries between from and
-	 *         to of type T
+	 *            class type of the requested entries, has to implement
+	 *            <code>AccountancyEntry</code>
+	 * @return an Iterable containing all entries between from and to of type E
 	 */
 	<E extends T> Iterable<E> find(Class<E> clazz, DateTime from, DateTime to);
 
@@ -109,8 +108,8 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 *            type of the requested entries
 	 * 
 	 * @param clazz
-	 *            class type of the requested entries, has to be a subclass of
-	 *            <code>PersistentAccountancyEntry</code>
+	 *            class type of the requested entries; has to implement
+	 *            <code>AccountancyEntry</code>
 	 * @param from
 	 *            all returned entries will have a time stamp after
 	 *            <code>from</code>
@@ -150,8 +149,8 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 *            type of the requested entries
 	 * 
 	 * @param clazz
-	 *            class type of the requested entries, has to be a subclass of
-	 *            PersistentAccountancyEntry
+	 *            class type of the requested entries; has implement
+	 *            <code>AccountancyEntry</code>
 	 * @param from
 	 *            all returned entries will have a time stamp after
 	 *            <code>from</code>
@@ -166,6 +165,6 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 *         <code>Money</code> object, equal to the sum of the amount fields
 	 *         of all entries within the key-<code>Interval</code>
 	 */
-	<E extends T> Map<Interval, Money> getSalesVolume(Class<E> clazz,
+	<E extends T> Map<Interval, Money> salesVolume(Class<E> clazz,
 			DateTime from, DateTime to, Period period);
 }
