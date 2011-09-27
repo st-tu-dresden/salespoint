@@ -21,7 +21,7 @@ public class DeLoreanTime implements Time
 	}
 
 	@Override
-	public final void goAhead(Duration duration)
+	public final void forward(Duration duration)
 	{
 		Objects.requireNonNull(duration, "duration");
 		beforeGoAhead(duration);

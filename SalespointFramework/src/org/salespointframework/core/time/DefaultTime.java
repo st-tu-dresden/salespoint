@@ -17,7 +17,7 @@ public class DefaultTime implements Time
 	}
 
 	@Override
-	public void goAhead(Duration duration)
+	public void forward(Duration duration)
 	{
 		// NO OP
 	}
