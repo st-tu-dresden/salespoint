@@ -12,7 +12,7 @@ import org.salespointframework.util.Objects;
 
 /**
  * 
- * This is an abstract representation of a MeasuredProductType which provides
+ * This is a representation of a MeasuredProductType which provides
  * basic functionality
  * 
  */
@@ -42,6 +42,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	 * @param quantityOnHand
 	 *            The quantity of this MeasuredProductType, which is available.
 	 */
+	//TODO price to unitPrice
 	public PersistentMeasuredProductType(String name, Money price, Quantity quantityOnHand)
 	{
 		super(name, price);
@@ -75,6 +76,8 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 		return this.unitPrice;
 	}
 
+	//TODO fix IllegalArgumentException descriptions
+	
 	@Override
 	public void addQuantity(Quantity quantity)
 	{
