@@ -32,104 +32,32 @@ import org.salespointframework.util.Objects;
  * @author Stanley Förster
  * 
  */
-// TODO sort getters/setters
-// TODO javadoc!!! rechtschreibung!!!
 @Entity
 public final class PersistentCalendarEntry implements CalendarEntry {
 
-    /**
-     * The unique identifier for this entry.
-     */
     @EmbeddedId
     @AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID"))
     private CalendarEntryIdentifier                               calendarEntryIdentifier;
 
-    /**
-     * This map stores all capabilities, a user has in relation to this calendar
-     * entry.
-     */
     @ElementCollection(targetClass = EnumSet.class)
     @CollectionTable(joinColumns = @JoinColumn(referencedColumnName = "ENTRY_ID", name = "ENTRY_ID"))
     @AttributeOverride(name = "key.id", column = @Column(name = "USER_ID"))
     @Column(name = "ENUM")
     private Map<UserIdentifier, EnumSet<CalendarEntryCapability>> capabilities = new HashMap<UserIdentifier, EnumSet<CalendarEntryCapability>>();
 
-    /**
-     * Specifies start and end date of this entry, where the end is exclusive.
-     * 
-     * @see Interval
-     */
+    private int                                                   count;
+
+    private String                                                description;
+
     private Interval                                              duration;
 
-    /**
-     * The unique identifier of the user who is the owner of this entry. It will
-     * be specified when the entry is created, so the creator will become the
-     * owner of the entry. The owner canno change, once it's defined, it's
-     * immutable.
-     */
     @Embedded
     @AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))
     private UserIdentifier                                        owner;
 
-    /**
-     * Represents the time between two repetitions of this entry. For
-     * determining how often an entry should be repeated, see
-     * {@link PersistentCalendarEntry#count}. The time defined here is the time
-     * between two starts of this entry and not between the end of one
-     * appointment and the start of the next repetition. So this timespan also
-     * has to be smaller than the duration of this appointment.
-     * 
-     * @see Period
-     */
     private Period                                                period;
 
-    /**
-     * Description of this calendar entry.
-     */
-    protected String                                              description;
-
-    // /**
-    // * The end date and time for this entry.
-    // */
-    // @Temporal(TemporalType.TIMESTAMP)
-    // protected Date endTime;
-
-    // /**
-    // * Represents how often this entry should be repeated. For determining the
-    // * time between two repetitions, see
-    // * {@link PersistentCalendarEntry#repeatStep}
-    // *
-    // */
-    // protected int repeatCount;
-    //
-    // /**
-    // * Represents the time in millis between two repetitions of this entry.
-    // For
-    // * determining how often an entry should be repeated, see
-    // * {@link PersistentCalendarEntry#repeatCount} The time defined here is
-    // the
-    // * time between two starts of this entry and not between the end of one
-    // * appointment and the start of the next repetition. So this timespan also
-    // * has to be smaller than the duration of this appointment.
-    // */
-    // protected long repeatStep;
-
-    // /**
-    // * The start date and time for this entry.
-    // */
-    // @Temporal(TemporalType.TIMESTAMP)
-    // protected Date startTime;
-
-    /**
-     * Title of this entry.
-     */
-    protected String                                              title;
-
-    /**
-     * Represents how often this entry should be repeated. For determining the
-     * time between two repetitions, see {@link PersistentCalendarEntry#period}
-     */
-    int                                                           count;
+    private String                                                title;
 
     /**
      * This contructor should not be used. It only exists for persistence
@@ -140,7 +68,8 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     }
 
     /**
-     * Creates a new calendar entry with a minimum of information.
+     * Creates a new calendar entry that can be persisted in a
+     * {@link PersistentCalendar}.
      * 
      * @param owner
      *            The id of the user, who created this entry.
@@ -151,8 +80,9 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      * @param end
      *            End time and date.
      * @throws ArgumentNullException
-     *             The {@link ArgumentNullException} will be thrown if one ore
-     *             more arguments are <code>null</code>
+     *             if one ore more arguments are <code>null</code>
+     * @throws IllegalArgumentException
+     *             if the end is before the start
      */
     public PersistentCalendarEntry(UserIdentifier owner, String title, DateTime start, DateTime end) {
         /* new Interval throws IllegalArgumentE, if end < start */
@@ -160,7 +90,8 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     }
 
     /**
-     * Creates a new calendar entry with a minimum of information.
+     * Creates a new calendar entry that can be persisted in a
+     * {@link PersistentCalendar}.
      * 
      * @param owner
      *            The id of the user, who created this entry.
@@ -170,8 +101,7 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      *            The duration ({@link Interval}) of this entry. It contains
      *            start and end date.
      * @throws ArgumentNullException
-     *             The {@link ArgumentNullException} will be thrown if one ore
-     *             more arguments are <code>null</code>
+     *             if one ore more arguments are <code>null</code>
      * 
      * @see Interval
      */
@@ -180,7 +110,8 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     }
 
     /**
-     * Creates a new calendar entry with a minimum of information.
+     * Creates a new calendar entry that can be persisted in a
+     * {@link PersistentCalendar}.
      * 
      * @param owner
      *            The id of the user, who created this entry.
@@ -192,8 +123,7 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      * @param description
      *            The description of this entry.
      * @throws ArgumentNullException
-     *             The {@link ArgumentNullException} will be thrown if one ore
-     *             more arguments are <code>null</code>
+     *             if one ore more arguments are <code>null</code>
      * 
      * @see Interval
      */
@@ -221,8 +151,10 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      * @param count
      *            Times how often the event is repeated. -1 means infinitely.
      * @throws ArgumentNullException
-     *             The {@link ArgumentNullException} will be thrown if one ore
-     *             more arguments are <code>null</code>
+     *             if one ore more arguments are <code>null</code>
+     * @throws IllegalArgumentException
+     *             if the time between two repetitions should be smaller than
+     *             the duration of the entry.
      * 
      * @see Interval
      * @see Period
@@ -243,18 +175,8 @@ public final class PersistentCalendarEntry implements CalendarEntry {
             throw new IllegalArgumentException("The time between two repetitions can not be less than the duration of a calendar entry!");
     }
 
-    /**
-     * Adds the capability to a specific user. Parameters must not be
-     * <code>null</code>.
-     * 
-     * @param user
-     *            The user identification of the user who should get the new
-     *            capability.
-     * @param capability
-     *            The new capability for the given user.
-     */
     @Override
-    public void addCapability(UserIdentifier user, CalendarEntryCapability capability) {
+    public final void addCapability(UserIdentifier user, CalendarEntryCapability capability) {
         Objects.requireNonNull(user, "user");
         Objects.requireNonNull(capabilities, "capability");
 
@@ -264,9 +186,6 @@ public final class PersistentCalendarEntry implements CalendarEntry {
             capabilities.put(user, EnumSet.of(capability));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(Object other) {
         if (other == null)
@@ -287,9 +206,9 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      *            The entry this one should be compared with.
      * @return <code>true</code> if and only if the identifier of this calendar
      *         entry equals the identifier of the entry that is given as
-     *         parameter. <code>false</code> otherwise.
+     *         parameter, <code>false</code> otherwise.
      */
-    public boolean equals(PersistentCalendarEntry other) {
+    public final boolean equals(PersistentCalendarEntry other) {
         if (other == null)
             return false;
         if (other == this)
@@ -297,31 +216,13 @@ public final class PersistentCalendarEntry implements CalendarEntry {
         return this.calendarEntryIdentifier.equals(other.calendarEntryIdentifier);
     }
 
-    /**
-     * Returns the ID of this entry. The ID is the entry's primary key,
-     * generated automatically when the entry has been created.
-     * 
-     * @return The ID of this entry.
-     */
     @Override
-    public CalendarEntryIdentifier getCalendarEntryIdentifier() {
+    public final CalendarEntryIdentifier getCalendarEntryIdentifier() {
         return calendarEntryIdentifier;
     }
 
-    /**
-     * Returns all capabilities the given user has for this entry. The user
-     * identification must not be <code>null</code>
-     * 
-     * @param user
-     *            the user identification of the user whose capabilities should
-     *            be returned.
-     * 
-     * @return An {@link Iterable} which contains all capabilities of this user
-     *         or <code>null</code> if the user has no capabilities for this
-     *         entry.
-     */
     @Override
-    public Iterable<CalendarEntryCapability> getCapabilitiesByUser(UserIdentifier user) {
+    public final Iterable<CalendarEntryCapability> getCapabilitiesByUser(UserIdentifier user) {
         Objects.requireNonNull(user, "user");
 
         return Iterables.from(capabilities.get(user));
@@ -333,31 +234,20 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      * 
      * @return The number how often this appointment will be repeated.
      */
-    public long getCount() {
+    public final long getCount() {
         return count;
     }
 
-    /**
-     * Returns the description of this entry. The description may be empty but
-     * never <code>null</code>.
-     * 
-     * @return The description of this entry
-     */
     @Override
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 
     /**
-     * Returns the end date of this entry. The end date is never
-     * <code>null</code>, never before the start date and it's exclusive.
-     * 
-     * @return The end of this event.
-     * 
      * @see Interval#getEnd()
      */
     @Override
-    public DateTime getEnd() {
+    public final DateTime getEnd() {
         return duration.getEnd();
     }
 
@@ -380,7 +270,7 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      * @return An iterable that contains the original event and all repetitions,
      *         limited to <code>maxEntires</code>.
      */
-    public Iterable<Interval> getEntryList(int maxEntries) {
+    public final Iterable<Interval> getEntryList(int maxEntries) {
         List<Interval> dates = new ArrayList<Interval>();
         Interval last;
 
@@ -401,15 +291,8 @@ public final class PersistentCalendarEntry implements CalendarEntry {
         return Iterables.from(dates);
     }
 
-
-    /**
-     * Return the user identifiaction of the owner of this entry. The owner is
-     * the creator of the entry.
-     * 
-     * @return The user id of the user who is the owner of this entry.
-     */
     @Override
-    public UserIdentifier getOwner() {
+    public final UserIdentifier getOwner() {
         return owner;
     }
 
@@ -420,46 +303,25 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      * @return the time between two repetitions of this appointment as a
      *         {@link Period}
      */
-    public Period getPeriod() {
+    public final Period getPeriod() {
         return period;
     }
 
     /**
-     * Returns the start date of this entry. The start date is never
-     * <code>null</code> and never after the end date.
-     * 
-     * @return The date when this entry starts.
-     * 
      * @see Interval#getStart()
      */
     @Override
-    public DateTime getStart() {
+    public final DateTime getStart() {
         return duration.getStart();
     }
 
-    /**
-     * Returns the title of this entry. The title cannot be empty.
-     * 
-     * @return The title of this entry.
-     */
     @Override
-    public String getTitle() {
+    public final String getTitle() {
         return title;
     }
 
-    /**
-     * Returns all users that have the given capability. The capability must not
-     * be <code>null</code>.
-     * 
-     * @param capability
-     *            The capability for which all users should be found.
-     * 
-     * @return An {@link Iterable} which contains all user IDs of users who have
-     *         the capability or null if there is no user who has the capability
-     *         for this entry.
-     */
     @Override
-    public Iterable<UserIdentifier> getUsersByCapability(CalendarEntryCapability capability) {
+    public final Iterable<UserIdentifier> getUsersByCapability(CalendarEntryCapability capability) {
         Objects.requireNonNull(capability, "capability");
 
         List<UserIdentifier> result = new ArrayList<UserIdentifier>();
@@ -472,8 +334,10 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     }
 
     /**
-     * Returns the hash code for this entry. The hash of this object is the hash
-     * of its primary key.
+     * {@inheritDoc}
+     * <p>
+     * The hash of this object is the hash of its primary key.
+     * </p>
      * 
      * @return The hash code for this entry.
      */
@@ -482,20 +346,8 @@ public final class PersistentCalendarEntry implements CalendarEntry {
         return calendarEntryIdentifier.hashCode();
     }
 
-    /**
-     * Removes a capability from a user. Parameters must not be
-     * <code>null</code>. The owner of this entry can not loose any capability.
-     * 
-     * @param user
-     *            userID of the user who should loose the capability
-     * @param capability
-     *            the capability that schould be removed from the user
-     * 
-     * @throws IllegalArgumentException
-     *             if a capability from the owner should be removed.
-     */
     @Override
-    public void removeCapability(UserIdentifier user, CalendarEntryCapability capability) {
+    public final void removeCapability(UserIdentifier user, CalendarEntryCapability capability) {
         Objects.requireNonNull(user, "user");
         Objects.requireNonNull(capability, "capability");
         if (user.equals(owner))
@@ -515,53 +367,47 @@ public final class PersistentCalendarEntry implements CalendarEntry {
      *            Number how often this appointment should be repeated. This
      *            must be a positive value, including zero. Also -1 is allowed
      *            for indicating infinite repetitions.
+     * 
+     * @throws IllegalArgumentException
+     *             if <code>count</code> is less than -1.
      */
-    public void setCount(int count) {
+    public final void setCount(int count) {
         if (count < -1) {
             throw new IllegalArgumentException("The repeat count of an appointment can't be less than zero, except -1, but was " + count);
         }
         this.count = count;
     }
 
-    /**
-     * Sets the new description of this entry. The description must not be null
-     * but can be an empty string.
-     * 
-     * @param description
-     *            The new description for this entry.
-     */
     @Override
-    public void setDescription(String description) {
+    public final void setDescription(String description) {
         this.description = Objects.requireNonNull(description, "description");
     }
 
     /**
-     * Sets the end date of this entry. The end date must neither be
-     * <code>null</code> nor before the start date.
-     * 
-     * @param end
-     *            The new end date.
-     * 
      * @throws IllegalArgumentException
      *             if the end is before the start
      * 
-     * @see DateTime
+     * @see Interval
      */
     @Override
-    public void setEnd(DateTime end) {
+    public final void setEnd(DateTime end) {
         Objects.requireNonNull(end, "end");
         duration = new Interval(duration.getStart(), end);
-        // this.endTime = end.toDate();
     }
 
     /**
      * Sets a new timespan that should be between two starts of this entry. The
-     * timespan has to be smaller than the duration of this appointment.
+     * timespan has to be larger than the duration of this appointment.
      * 
      * @param period
      *            The timespan between two repetitions.
+     * @throws ArgumentNullException
+     *             if one ore more arguments are <code>null</code>
+     * @throws IllegalArgumentException
+     *             if the time between two repetitions should be smaller than
+     *             the duration of the entry.
      */
-    public void setPeriod(Period period) {
+    public final void setPeriod(Period period) {
         Objects.requireNonNull(period, "period");
 
         if ((count != 0) && duration.getStart().plus(period).isBefore(duration.getEnd()))
@@ -571,41 +417,21 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     }
 
     /**
-     * Sets the start date of this entry. The start date must neither be
-     * <code>null</code> nor after the end date.
-     * 
-     * @param start
-     *            The new start date.
-     * 
      * @throws IllegalArgumentException
-     *             if the start is after the end.
+     *             if the start is after the end
      * 
-     * @see DateTime
+     * @see Interval
      */
     @Override
-    public void setStart(DateTime start) {
+    public final void setStart(DateTime start) {
         Objects.requireNonNull(start, "start");
         duration = new Interval(start, duration.getEnd());
         // this.startTime = start.toDate();
     }
 
-    /**
-     * Sets the new title of the entry. The title must neither be
-     * <code>null</code> nor empty.
-     * 
-     * @param title
-     *            the new title for this entry
-     * 
-     * @throws IllegalArgumentException
-     *             if title is empty
-     */
     @Override
-    public void setTitle(String title) {
-        Objects.requireNonNull(title, "title");
-        if (title.isEmpty())
-            // Why?
-            throw new IllegalArgumentException("The title cannot be empty.");
-        this.title = title;
+    public final void setTitle(String title) {
+        this.title = Objects.requireNonNull(title, "title");
     }
 
     /**
@@ -621,5 +447,4 @@ public final class PersistentCalendarEntry implements CalendarEntry {
     public String toString() {
         return title + " (" + getStart() + " - " + getEnd() + ")";
     }
-
 }

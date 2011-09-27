@@ -2,6 +2,7 @@ package org.salespointframework.core.calendar;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.util.ArgumentNullException;
 
 /**
  * A calendar entry is an appointment that has a start date, end date, and a
@@ -12,127 +13,141 @@ import org.salespointframework.core.users.UserIdentifier;
  */
 public interface CalendarEntry {
 
-	/**
-	 * Returns the time <code>this</code> appointment begins.
-	 * 
-	 * @return start <code>DateTime</code>, which is immutable.
-	 * 
-	 * @see DateTime
-	 */
-	DateTime getStart();
+    /**
+     * Adds a new capability to the given user. The capability is limited for
+     * this entry.
+     * 
+     * @param user
+     *            The user's identifiaction who should get a new capability.
+     * @param capability
+     *            the capability that the user should get.
+     * @throws ArgumentNullException
+     *             if one ore more arguments are <code>null</code>
+     */
+    void addCapability(UserIdentifier user, CalendarEntryCapability capability);
 
-	/**
-	 * Returns the time <code>this</code> appointments is over.
-	 * 
-	 * @return end <code>DateTime</code>, which is immutable.
-	 * 
-	 * @see DateTime
-	 */
-	DateTime getEnd();
+    /**
+     * Returns the ID of this entry. The ID is the entry's primary key,
+     * generated automatically when the entry has been created.
+     * 
+     * @return The ID of this entry.
+     */
+    CalendarEntryIdentifier getCalendarEntryIdentifier();
 
-	/**
-	 * Returns the title of <code>this</code> entry.
-	 * 
-	 * @return title of this entry.
-	 */
-	String getTitle();
+    /**
+     * Returns all capabilities granted to a particular user. All capabilities
+     * refer to <code>this</code> calendar entry.
+     * 
+     * @param user
+     *            The user's identification, to get all capabilities for.
+     * 
+     * @return An iterable of all capabilities the given user has for this
+     *         entry.
+     * @throws ArgumentNullException
+     *             if one ore more arguments are <code>null</code>
+     */
+    Iterable<CalendarEntryCapability> getCapabilitiesByUser(UserIdentifier user);
 
-	/**
-	 * Returns a description of this entry
-	 * 
-	 * @return description of this entry.
-	 */
-	String getDescription();
+    /**
+     * Returns a description of this entry
+     * 
+     * @return description of this entry.
+     */
+    String getDescription();
 
-	/**
-	 * Returns the identification of the user who owns this entry.
-	 * 
-	 * @return owner ID of the user who owns this entry.
-	 */
-	UserIdentifier getOwner();
+    /**
+     * Returns the time <code>this</code> appointments is over.
+     * 
+     * @return end <code>DateTime</code>, which is immutable.
+     * 
+     * @see DateTime
+     */
+    DateTime getEnd();
 
-	/**
-	 * Returns the ID of this entry.
-	 * 
-	 * @return Identification of this entry.
-	 */
-	CalendarEntryIdentifier getCalendarEntryIdentifier();
+    /**
+     * Returns the identification of the user who owns this entry.
+     * 
+     * @return owner ID of the user who owns this entry.
+     */
+    UserIdentifier getOwner();
 
-	/**
-	 * Sets a new start date.
-	 * 
-	 * @param start
-	 *            the new start date.
-	 */
-	void setStart(DateTime start);
+    /**
+     * Returns the time <code>this</code> appointment begins.
+     * 
+     * @return start <code>DateTime</code>, which is immutable.
+     * 
+     * @see DateTime
+     */
+    DateTime getStart();
 
-	/**
-	 * Sets a new end date.
-	 * 
-	 * @param end
-	 *            the new end date.
-	 */
-	void setEnd(DateTime end);
+    /**
+     * Returns the title of <code>this</code> entry.
+     * 
+     * @return title of this entry.
+     */
+    String getTitle();
 
-	/**
-	 * Changes the title.
-	 * 
-	 * @param title
-	 *            the new title.
-	 */
-	void setTitle(String title);
+    /**
+     * Returns all users who have a certain capability for this entry.
+     * 
+     * @param capability
+     *            The capability for that all users should be returned.
+     * @return An iterable of all user identifications who have the given
+     *         capability for this entry.
+     */
+    Iterable<UserIdentifier> getUsersByCapability(CalendarEntryCapability capability);
 
-	/**
-	 * Changes the description.
-	 * 
-	 * @param description
-	 *            the new description
-	 */
-	void setDescription(String description);
+    /**
+     * Removes a capability from a user
+     * 
+     * @param user
+     *            The user's identification who should loose the capability.
+     * @param capability
+     *            the capability that the user should loose.
+     * @throws ArgumentNullException
+     *             if one ore more arguments are <code>null</code>
+     * @throws IllegalArgumentException
+     *             if a capability from the owner should be removed.
+     */
+    void removeCapability(UserIdentifier user, CalendarEntryCapability capability);
 
-	/**
-	 * Adds a new capability to the given user. The capability is limited for
-	 * this entry.
-	 * 
-	 * @param user
-	 *            The user's identifiaction who should get a new capability.
-	 * @param capability
-	 *            the capability that the user should get.
-	 */
-	void addCapability(UserIdentifier user, CalendarEntryCapability capability);
+    /**
+     * Changes the description.
+     * 
+     * @param description
+     *            the new description
+     * @throws ArgumentNullException
+     *             if one ore more arguments are <code>null</code>
+     */
+    void setDescription(String description);
 
-	/**
-	 * Removes a capability from a user
-	 * 
-	 * @param user
-	 *            The user's identification who should loose the capability.
-	 * @param capability
-	 *            the capability that the user should loose.
-	 */
-	void removeCapability(UserIdentifier user,
-			CalendarEntryCapability capability);
+    /**
+     * Sets a new end date.
+     * 
+     * @param end
+     *            the new end date.
+     * @throws ArgumentNullException
+     *             if one ore more arguments are <code>null</code>
+     */
+    void setEnd(DateTime end);
 
-	/**
-	 * Returns all capabilities granted to a particular user. All capabilities
-	 * refer to <code>this</code> calendar entry.
-	 * 
-	 * @param user
-	 *            The user's identification, to get all capabilities for.
-	 * 
-	 * @return An iterable of all capabilities the given user has for this
-	 *         entry.
-	 */
-	public Iterable<CalendarEntryCapability> getCapabilitiesByUser(
-			UserIdentifier user);
+    /**
+     * Sets a new start date.
+     * 
+     * @param start
+     *            the new start date.
+     * @throws ArgumentNullException
+     *             if one ore more arguments are <code>null</code>
+     */
+    void setStart(DateTime start);
 
-	/**
-	 * Returns all users who have a certain capability for this entry.
-	 * 
-	 * @param capability
-	 *            The capability for that all users should be returned.
-	 * @return An iterable of all user identifications who have the given
-	 *         capability for this entry.
-	 */
-	public Iterable<UserIdentifier> getUsersByCapability(
-			CalendarEntryCapability capability);
+    /**
+     * Changes the title.
+     * 
+     * @param title
+     *            the new title.
+     * @throws ArgumentNullException
+     *             if one ore more arguments are <code>null</code>
+     */
+    void setTitle(String title);
 }

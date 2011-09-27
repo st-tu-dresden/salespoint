@@ -17,7 +17,7 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.product.PersistentProductType;
 import org.salespointframework.core.product.ProductType;
 import org.salespointframework.core.users.UserIdentifier;
-import org.salespointframework.util.Filter;
+import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
@@ -30,88 +30,68 @@ import org.salespointframework.util.Objects;
  */
 public final class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
 
-    /**
-     * The entity manager that is used to persist the entries of this calendar.
-     */
     private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 
-    /**
-     * Adds the given entry to the calendar and inserts it into the database.
-     * The given entry must not be <code>null</code>
-     */
     @Override
     public void add(PersistentCalendarEntry entry) {
         Objects.requireNonNull(entry, "entry");
-        
+
         EntityManager em = emf.createEntityManager();
         em.persist(entry);
         beginCommit(em);
     }
 
-    /**
-     * Removes the given entry from calendar and the database.
-     */
-    @Override
-    public void remove(CalendarEntryIdentifier calendarEntryIdentifier) {
-        Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier");
-		
-		EntityManager em = emf.createEntityManager();
-		Object calendarEntry = em.find(PersistentProductType.class, calendarEntryIdentifier);
-		if(calendarEntry != null) {
-			em.remove(calendarEntry);
-			beginCommit(em);
-		}
-    }
-    
     @Override
     public boolean contains(CalendarEntryIdentifier calendarEntryIdentifier) {
-		Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier");
-		EntityManager em = emf.createEntityManager();
-		return em.find(ProductType.class, calendarEntryIdentifier) != null;
+        Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier");
+        EntityManager em = emf.createEntityManager();
+        return em.find(ProductType.class, calendarEntryIdentifier) != null;
+    }
+
+    @Override
+    public PersistentCalendarEntry find(CalendarEntryIdentifier calendarEntryIdentifier) {
+        Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier");
+
+        EntityManager em = emf.createEntityManager();
+        return em.find(PersistentCalendarEntry.class, calendarEntryIdentifier);
     }
 
     /**
-     * Returns all Entries that match the filter criteria. If no entries were
-     * found an empty {@link Iterable} will be returned, not <code>null</code>;
+     * Returns all entries that have the given title.
      * 
-     * @param filter
-     *            The filter will be invoked for each entry in this calendar.
-     *            Every entry for which {@link Filter#invoke(Object)} returns
-     *            <code>true</code> will be part of the result.
-     * 
-     * @return Iterable of all entries that match the filter criteria
+     * @param title
+     *            The title that entries should have.
+     * @return An iterable with all found entries
      */
-    @SuppressWarnings("boxing")
-    @Override
-    public Iterable<PersistentCalendarEntry> getEntries(Filter<PersistentCalendarEntry> filter) {
-        Objects.requireNonNull(filter, "filter");
-        
+    public Iterable<PersistentCalendarEntry> findByTitle(String title) {
+        Objects.requireNonNull(title, "title");
+
         EntityManager em = emf.createEntityManager();
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<PersistentCalendarEntry> q = cb.createQuery(PersistentCalendarEntry.class);
+        Root<PersistentCalendarEntry> r = q.from(PersistentCalendarEntry.class);
+
+        Predicate pEntry = cb.equal(r.get(PersistentCalendarEntry_.title), title);
+
+        q.where(pEntry);
+
         TypedQuery<PersistentCalendarEntry> tq = em.createQuery(q);
 
-        List<PersistentCalendarEntry> entries = new ArrayList<PersistentCalendarEntry>();
-
-        for (PersistentCalendarEntry entry : tq.getResultList()) {
-            if (filter.invoke(entry))
-                entries.add(entry);
-        }
-
-        return Iterables.from(entries);
+        return Iterables.from(tq.getResultList());
     }
 
     /**
      * Returns all entries for that the given user is the owner.
      * 
-     * @param owner
-     *            Useridentifier of the user whose entries should be found.
-     * @return An {@iterable} with all found entries.
+     * @param userIdentifier
+     *            {@link UserIdentifier} of the user whose entries should be
+     *            found.
+     * @return An {@Iterable} with all found entries.
      */
     public Iterable<PersistentCalendarEntry> findByUserIdentifier(UserIdentifier userIdentifier) {
         Objects.requireNonNull(userIdentifier, "userIdentifier");
-        
+
         EntityManager em = emf.createEntityManager();
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -127,63 +107,47 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
     }
 
     /**
-     * Returns all entries that have the given title.
-     * 
-     * @param title
-     *            The title that entries should have.
-     * @return An iterable with all found entries
-     */
-    public Iterable<PersistentCalendarEntry> findByTitle(String title) {
-        Objects.requireNonNull(title, "title");
-
-        EntityManager em = emf.createEntityManager();
-        
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<PersistentCalendarEntry> q = cb.createQuery(PersistentCalendarEntry.class);
-        Root<PersistentCalendarEntry> r = q.from(PersistentCalendarEntry.class);
-
-        Predicate pEntry = cb.equal(r.get(PersistentCalendarEntry_.title), title);
-
-        q.where(pEntry);
-
-        TypedQuery<PersistentCalendarEntry> tq = em.createQuery(q);
-
-        return Iterables.from(tq.getResultList());
-    }
-
-    /**
      * Returns all entries that end at or between the given start and end date.
      * 
      * @param interval
      *            - The {@link Interval} in which entries should end.
      * @return An iterable with all found entries.
+     * @throws ArgumentNullException
+     *             if <code>interval</code> is <code>null</code>
      */
-    public Iterable<PersistentCalendarEntry> findThatEndBetween(final Interval interval) {	// TODO ThatAndBetween ? Naming ??
-        return getEntries(new Filter<PersistentCalendarEntry>() {
+    public Iterable<PersistentCalendarEntry> findThatEndBetween(final Interval interval) { // TODO
+                                                                                           // ThatAndBetween
+                                                                                           // ?
+                                                                                           // Naming
+                                                                                           // ??
+        Objects.requireNonNull(interval, "interval");
+        Iterable<PersistentCalendarEntry> allEntries = getAllEntries();
+        List<PersistentCalendarEntry> result = new ArrayList<PersistentCalendarEntry>();
 
-            @SuppressWarnings("boxing")
-            @Override
-            public Boolean invoke(PersistentCalendarEntry arg) {
-                if (interval.contains(arg.getEnd()))
-                    return true;
+        for (PersistentCalendarEntry entry : allEntries) {
+            if (interval.contains(entry.getEnd())) {
+                result.add(entry);
+                continue;
+            }
 
-                long maxCount = arg.getCount();
+            long maxCount = entry.getCount();
 
-                if (maxCount != 0) {
-                    maxCount = maxCount == -1 ? Long.MAX_VALUE : maxCount;
-                    DateTime nextEnd = arg.getEnd();
+            if (maxCount != 0) {
+                maxCount = maxCount == -1 ? Long.MAX_VALUE : maxCount;
+                DateTime nextEnd = entry.getEnd();
 
-                    for (int i = 1; i < maxCount && !interval.isBefore(nextEnd); i++) {
-                        nextEnd = nextEnd.plus(arg.getPeriod());
-                        if (interval.contains(nextEnd))
-                            return true;
+                for (int i = 1; i < maxCount && !interval.isBefore(nextEnd); i++) {
+                    nextEnd = nextEnd.plus(entry.getPeriod());
+                    if (interval.contains(nextEnd)) {
+                        result.add(entry);
+                        continue;
                     }
-
                 }
 
-                return false;
             }
-        });
+        }
+
+        return Iterables.from(result);
     }
 
     /**
@@ -191,54 +155,74 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
      * 
      * @param interval
      *            - The {@link Interval} in which entries should start.
-     * 
      * @return An iterable with all found entries.
+     * @throws ArgumentNullException
+     *             if <code>interval</code> is <code>null</code>
      */
     public Iterable<PersistentCalendarEntry> findThatStartBetween(final Interval interval) {
         Objects.requireNonNull(interval, "interval");
-        return getEntries(new Filter<PersistentCalendarEntry>() {
 
-            @SuppressWarnings("boxing")
-            @Override
-            public Boolean invoke(PersistentCalendarEntry arg) {
-                if (interval.contains(arg.getStart()))
-                    return true;
+        Iterable<PersistentCalendarEntry> allEntries = getAllEntries();
+        List<PersistentCalendarEntry> result = new ArrayList<PersistentCalendarEntry>();
 
-                long maxCount = arg.getCount();
+        for (PersistentCalendarEntry entry : allEntries) {
+            if (interval.contains(entry.getStart())) {
+                result.add(entry);
+                continue;
+            }
 
-                if (maxCount != 0) {
-                    maxCount = maxCount == -1 ? Long.MAX_VALUE : maxCount;
-                    DateTime nextStart = arg.getStart();
+            long maxCount = entry.getCount();
 
-                    for (int i = 1; i < maxCount && !interval.isBefore(nextStart); i++) {
-                        nextStart = nextStart.plus(arg.getPeriod());
-                        if (interval.contains(nextStart))
-                            return true;
+            if (maxCount != 0) {
+                maxCount = maxCount == -1 ? Long.MAX_VALUE : maxCount;
+                DateTime nextStart = entry.getStart();
+
+                for (int i = 1; i < maxCount && !interval.isBefore(nextStart); i++) {
+                    nextStart = nextStart.plus(entry.getPeriod());
+                    if (interval.contains(nextStart)) {
+                        result.add(entry);
+                        continue;
                     }
-
                 }
 
-                return false;
             }
-        });
+        }
+
+        return result;
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see EntityManager#find(Class, Object)
-     */
     @Override
-    public PersistentCalendarEntry get(CalendarEntryIdentifier calendarEntryIdentifier) {
-        Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier");
-        
+    public Iterable<PersistentCalendarEntry> getAllEntries() {
         EntityManager em = emf.createEntityManager();
-        return em.find(PersistentCalendarEntry.class, calendarEntryIdentifier);
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<PersistentCalendarEntry> q = cb.createQuery(PersistentCalendarEntry.class);
+        TypedQuery<PersistentCalendarEntry> tq = em.createQuery(q);
+
+        return Iterables.from(tq.getResultList());
     }
-    
+
+    @Override
+    public boolean remove(CalendarEntryIdentifier calendarEntryIdentifier) {
+        Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier");
+        try {
+            EntityManager em = emf.createEntityManager();
+            Object calendarEntry = em.find(PersistentProductType.class, calendarEntryIdentifier);
+            if (calendarEntry != null) {
+                em.remove(calendarEntry);
+                beginCommit(em);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        
+        return true;
+    }
+
     private void beginCommit(EntityManager entityManager) {
-    	entityManager.getTransaction().begin();
-    	entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        entityManager.getTransaction().commit();
     }
-    
+
 }

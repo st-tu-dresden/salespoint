@@ -1,46 +1,69 @@
 package org.salespointframework.core.calendar;
 
-import org.salespointframework.util.Filter;
+import org.salespointframework.util.ArgumentNullException;
 
 /**
  * A calendar manages a set of calendar entries.
- *
- * @param <T> Type of calendar entries (extends {@link org.salespointframework.core.calendar.CalendarEntry})
+ * 
+ * @param <T>
+ *            Type of calendar entries (extends
+ *            {@link org.salespointframework.core.calendar.CalendarEntry})
  * 
  * @author Stanley Förster
  */
 public interface Calendar<T extends CalendarEntry> {
-    
+
     /**
-     * Returns all entries that match the filter criteria.
+     * Adds the given entry to the calendar.
      * 
-     * @param filter The Filter object used to determine if an entry is part of the result or not 
+     * @param entry
+     *            the entry that is to be added to the calendar.
      * 
-     * @return Iterable<T> of all entries that match the filter criteria.
-     * 
-     * @see Filter
+     * @throws ArgumentNullException
+     *             if <code>entry</code> is <code>null</code>
      */
-    Iterable<T> getEntries(Filter<T> filter);
-    
+    void add(T entry);
+
+    /**
+     * Checks, whether there exists an {@link CalendarEntry} that has the given
+     * {@link CalendarEntryIdentifier} in this calendar or not.
+     * 
+     * @param calendarEntryIdentifier
+     *            The identifier of the entry that should be checked to be
+     *            contained in this calendar.
+     * @return <code>true</code> if there exists an entry with the given
+     *         identifier in this calendar, <code>false</code> otherwise.
+     * @throws ArgumentNullException
+     *             if <code>calendarEntryIdentifier</code> is <code>null</code>.
+     */
+    boolean contains(CalendarEntryIdentifier calendarEntryIdentifier);
+
     /**
      * Returns the calendar entry which has the given id.
      * 
-     * @param id Id of the requested entry.
-     * @return the entry with the given id or <code>null</code> if no entry was found.
+     * @param calendarEntryIdentifier
+     *            Id of the requested entry.
+     * @return the entry with the given id or <code>null</code> if no entry was
+     *         found.
+     * @throws ArgumentNullException
+     *             if <code>calendarEntryIdentifier</code> is <code>null</code>.
      */
-    T get(CalendarEntryIdentifier calendarEntryIdentifier);
-    
+    T find(CalendarEntryIdentifier calendarEntryIdentifier);
+
     /**
-     * Adds the given entry to the calendar.
-     * @param entry the entry that is to be added to the calendar.
+     * Returns all entries that are stored in this calendar.
+     * 
+     * @return Iterable<T> of all found entries.
      */
-    void add(T entry);
-    
+    Iterable<T> getAllEntries();
+
     /**
      * Deletes the entry with the given id from the calendar.
-     * @param id Id of the entry that is to be removed from the calendar.
+     * 
+     * @param calendarEntryIdentifier
+     *            Id of the entry that is to be removed from the calendar.
+     * @throws ArgumentNullException
+     *             if <code>calendarEntryIdentifier</code> is <code>null</code>.
      */
-    void remove(CalendarEntryIdentifier CalendarEntryIdentifier);
-
-	boolean contains(CalendarEntryIdentifier calendarEntryIdentifier);
+    boolean remove(CalendarEntryIdentifier calendarEntryIdentifier);
 }
