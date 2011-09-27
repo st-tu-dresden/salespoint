@@ -137,7 +137,7 @@ public class CalendarEntryTest {
 	@Test
 	public void testGetID(){
 		
-		assertNotSame(null, testEntry1.getCalendarEntryIdentifier());
+		assertNotSame(null, testEntry1.getIdentifier());
 	}
 	
 	@Test
@@ -197,7 +197,7 @@ public class CalendarEntryTest {
 		testEntry1.addCapability(new UserIdentifier("hermann"), CalendarEntryCapability.WRITE);
 		
 		Set<CalendarEntryCapability> l1 = new HashSet<CalendarEntryCapability>();
-    	for (CalendarEntryCapability c : testEntry1.getCapabilitiesByUser(new UserIdentifier("hermann"))){
+    	for (CalendarEntryCapability c : testEntry1.getCapabilities(new UserIdentifier("hermann"))){
     		if (c!=null){
     			l1.add(c);
     		}
@@ -218,7 +218,7 @@ public class CalendarEntryTest {
 		testEntry1.addCapability(new UserIdentifier("hermann"), CalendarEntryCapability.WRITE);
 		
 		Set<CalendarEntryCapability> l1 = new HashSet<CalendarEntryCapability>();
-    	for (CalendarEntryCapability c : testEntry1.getCapabilitiesByUser(new UserIdentifier("hermann"))){
+    	for (CalendarEntryCapability c : testEntry1.getCapabilities(new UserIdentifier("hermann"))){
     		if (c!=null){
     			l1.add(c);
     		}
@@ -239,7 +239,7 @@ public class CalendarEntryTest {
 		testEntry1.removeCapability(new UserIdentifier("hermann"), CalendarEntryCapability.WRITE);
 		
 		Set<CalendarEntryCapability> l1 = new HashSet<CalendarEntryCapability>();
-    	for (CalendarEntryCapability c : testEntry1.getCapabilitiesByUser(new UserIdentifier("hermann"))){
+    	for (CalendarEntryCapability c : testEntry1.getCapabilities(new UserIdentifier("hermann"))){
     		if (c!=null){
     			l1.add(c);
     		}

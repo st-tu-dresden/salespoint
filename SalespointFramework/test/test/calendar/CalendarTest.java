@@ -49,11 +49,11 @@ public class CalendarTest {
         PersistentCalendarEntry deleteEntry = new PersistentCalendarEntry(new UserIdentifier(), "deleteEntry", basicDateTime, basicDateTime.plusMinutes(10));
         calendar.add(deleteEntry);
         
-        assumeThat(calendar.find(deleteEntry.getCalendarEntryIdentifier()), is(deleteEntry));
+        assumeThat(calendar.get(deleteEntry.getIdentifier()), is(deleteEntry));
         
-        calendar.remove(deleteEntry.getCalendarEntryIdentifier());
+        calendar.remove(deleteEntry.getIdentifier());
         
-        assertNull(calendar.find(deleteEntry.getCalendarEntryIdentifier()));
+        assertNull(calendar.get(deleteEntry.getIdentifier()));
     }
     
     @Test
@@ -65,7 +65,7 @@ public class CalendarTest {
 
     @Test
     public void getEntriesByOwner() {
-        Iterable<PersistentCalendarEntry> actual = calendar.findByUserIdentifier(user.getUserIdentifier()); 
+        Iterable<PersistentCalendarEntry> actual = calendar.find(user.getUserIdentifier()); 
         assertThat(actual, hasItem(entry));
         assertThat(actual, not(hasItem(notEntry)));
     }
@@ -79,7 +79,7 @@ public class CalendarTest {
         calendar.add(hasnot);
         
         List<PersistentCalendarEntry> actual = new ArrayList<PersistentCalendarEntry>();
-        for (PersistentCalendarEntry entry : calendar.getAllEntries()) {
+        for (PersistentCalendarEntry entry : calendar.find(null)) {
             if (entry.getStart().isBefore(basicDateTime.plusMinutes(10)))
                 actual.add(entry);
         }
