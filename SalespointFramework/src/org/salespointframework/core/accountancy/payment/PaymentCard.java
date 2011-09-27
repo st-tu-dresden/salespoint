@@ -21,7 +21,6 @@ import org.salespointframework.util.Objects;
  */
 public abstract class PaymentCard extends PaymentMethod implements Serializable {
 
-	@SuppressWarnings("javadoc")
     private static final long serialVersionUID = 1L;
 
 	/**

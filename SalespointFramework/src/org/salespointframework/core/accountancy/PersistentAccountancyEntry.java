@@ -2,9 +2,7 @@ package org.salespointframework.core.accountancy;
 
 import java.util.Date;
 
-import javax.persistence.AttributeOverride;
 import javax.persistence.EmbeddedId;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,21 +23,12 @@ import org.salespointframework.util.Objects;
  */
 @Entity
 public class PersistentAccountancyEntry implements AccountancyEntry {
-	/**
-	 * Identifier of this entry. Only used to persist to database.
-	 */
+
 	@EmbeddedId
 	private AccountancyEntryIdentifier accountancyEntryIdentifier;
 
-	/**
-	 * Represents the value of this entry.
-	 */
 	private Money value;
 
-	/**
-	 * The date at which this entry has been created or that was given as a
-	 * constructor parameter.
-	 */
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
@@ -75,7 +64,7 @@ public class PersistentAccountancyEntry implements AccountancyEntry {
 	 * @param value
 	 *            The value that is stored in this entry.
 	 * @param date
-	 *            A user defined time stamp for this entry.
+	 *            A user defined timestamp for this entry.
 	 */
 	public PersistentAccountancyEntry(Money value, DateTime date) {
 		this.value = Objects.requireNonNull(value, "value");

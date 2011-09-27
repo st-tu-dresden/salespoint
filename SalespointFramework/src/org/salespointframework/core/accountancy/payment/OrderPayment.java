@@ -12,8 +12,7 @@ import org.salespointframework.core.accountancy.payment.Payment;
  */
 public class OrderPayment extends Payment implements Serializable {
 
-	@SuppressWarnings("javadoc")
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Account from which the payment was made.

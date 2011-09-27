@@ -15,7 +15,6 @@ import org.salespointframework.util.Objects;
  */
 public abstract class Payment implements Serializable {
 
-    @SuppressWarnings("javadoc")
     private static final long serialVersionUID = 1L;
 
     /**

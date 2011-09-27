@@ -11,7 +11,6 @@ import org.salespointframework.core.accountancy.payment.PaymentMethod;
  */
 // @Entity
 public class Cash extends PaymentMethod implements Serializable {
-	@SuppressWarnings("javadoc")
     private static final long serialVersionUID = 1L;
 	
 	/**
