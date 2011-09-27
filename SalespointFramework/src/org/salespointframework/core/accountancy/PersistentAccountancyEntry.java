@@ -14,9 +14,9 @@ import org.salespointframework.util.Objects;
 
 /**
  * This class represents an accountancy entry. The
- * <code>AbstractAccountancyEntry</code> is not intended to be directly used.
- * Instead, it should be sub-classed to define specific entry types for an
- * accountancy, for example a <code>ProductPaymentEntry</code>.
+ * <code>PersistentAccountancyEntry</code> may be used directly, but it is
+ * advisable to sub-class it, to define specific entry types for an accountancy,
+ * for example a <code>ProductPaymentEntry</code>.
  * 
  * @author Hannes Weisbach
  * 
@@ -25,12 +25,12 @@ import org.salespointframework.util.Objects;
 public class PersistentAccountancyEntry implements AccountancyEntry {
 
 	@EmbeddedId
-	private AccountancyEntryIdentifier accountancyEntryIdentifier;
+	private AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();
 
-	private Money value;
+	private Money value = Money.ZERO;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date date;
+	private Date date = Shop.INSTANCE.getTime().getDateTime().toDate();
 
 	private String description;
 
@@ -40,31 +40,27 @@ public class PersistentAccountancyEntry implements AccountancyEntry {
 	 */
 	@Deprecated
 	protected PersistentAccountancyEntry() {
-		accountancyEntryIdentifier = new AccountancyEntryIdentifier();
-		date = Shop.INSTANCE.getTime().getDateTime().toDate();
-		this.value = Money.ZERO;
 	}
 
 	/**
-	 * Creates a new <code>AbstractAccountancyEntry</code> with a specific
+	 * Creates a new <code>PersistentAccountancyEntry</code> with a specific
 	 * value.
 	 * 
 	 * @param value
 	 *            The value that is stored in this entry.
 	 */
 	public PersistentAccountancyEntry(Money value) {
-		this();
 		this.value = Objects.requireNonNull(value, "value");
 	}
 
 	/**
-	 * Creates a new <code>AbstractAccountancyEntry</code> with a specific value
+	 * Creates a new <code>PersistentAccountancyEntry</code> with a specific value
 	 * and a user defined time.
 	 * 
 	 * @param value
 	 *            The value that is stored in this entry.
 	 * @param date
-	 *            A user defined timestamp for this entry.
+	 *            A user defined time stamp for this entry.
 	 */
 	public PersistentAccountancyEntry(Money value, DateTime date) {
 		this.value = Objects.requireNonNull(value, "value");
