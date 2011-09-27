@@ -34,6 +34,7 @@ public interface MeasuredProductType extends ProductType
 	 */
 	public Money getUnitPrice();
 
+	//TODO remove javadoc references to private members
 	/**
 	 * Add this quantity to the available quantity of the MeasuredProductType
 	 * 
