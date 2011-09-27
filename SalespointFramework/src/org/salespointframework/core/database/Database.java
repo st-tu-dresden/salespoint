@@ -7,8 +7,6 @@ import javax.persistence.Persistence;
 
 import org.salespointframework.util.Objects;
 
-// TODO Naming?
-
 /**
  * Delegates to
  * http://download.oracle.com/javaee/6/api/javax/persistence/Persistence
@@ -17,6 +15,7 @@ import org.salespointframework.util.Objects;
  * @author Paul Henke
  * 
  */
+//TODO what happens, if double-init?
 public enum Database {
 	INSTANCE;
 
@@ -27,13 +26,14 @@ public enum Database {
 	 * 
 	 * @param persistenceUnitName
 	 *            The name of the persistence unit
-	 * @return
+	 * @return <code>true</code> if the persistence unit exists,
+	 *         <code>false</code> otherwise
 	 */
-	public boolean initializeEntityManagerFactory(String persistenceUnitName)
-	{
+	public boolean initializeEntityManagerFactory(String persistenceUnitName) {
 		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName");
-		entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName);
-		return entityManagerFactory != null ? true : false;
+		entityManagerFactory = Persistence
+				.createEntityManagerFactory(persistenceUnitName);
+		return entityManagerFactory != null;
 	}
 
 	/**
@@ -45,14 +45,16 @@ public enum Database {
 	 *            Additional properties to use when creating the factory. The
 	 *            values of these properties override any values that may have
 	 *            been configured elsewhere
-	 * @return
+	 * @return <code>true</code> if the persistence unit exists,
+	 *         <code>false</code> otherwise
 	 */
-	public boolean initializeEntityManagerFactory(String persistenceUnitName, @SuppressWarnings("rawtypes") Map properties)
-	{
+	public boolean initializeEntityManagerFactory(String persistenceUnitName,
+			@SuppressWarnings("rawtypes") Map properties) {
 		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName");
 		Objects.requireNonNull(properties, "properties");
-		entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName, properties);
-		return entityManagerFactory != null ? true : false;
+		entityManagerFactory = Persistence.createEntityManagerFactory(
+				persistenceUnitName, properties);
+		return entityManagerFactory != null;
 	}
 
 	/**
@@ -61,8 +63,7 @@ public enum Database {
 	 * @return The factory that creates EntityManagers configured according to
 	 *         the specified persistence unit.
 	 */
-	public EntityManagerFactory getEntityManagerFactory()
-	{
+	public EntityManagerFactory getEntityManagerFactory() {
 		return entityManagerFactory;
 	}
 }
