@@ -80,8 +80,7 @@ public final class PersistentAccountancy implements
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> q = cb.createQuery(clazz);
-		Root<T> r = q.from(clazz);
-		q.where(r.type().in(clazz));
+
 		TypedQuery<T> tq = em.createQuery(q);
 
 		return Iterables.from(tq.getResultList());
@@ -99,11 +98,10 @@ public final class PersistentAccountancy implements
 		CriteriaQuery<T> q = cb.createQuery(clazz);
 		Root<T> entry = q.from(clazz);
 
-		Predicate p = entry.type().in(clazz);
 		Predicate p1 = cb.between(entry.get(PersistentAccountancyEntry_.date),
 				from.toDate(), to.toDate());
 
-		q.where(cb.and(p, p1));
+		q.where(p1);
 		TypedQuery<T> tq = em.createQuery(q);
 
 		return Iterables.from(tq.getResultList());
@@ -184,16 +182,17 @@ public final class PersistentAccountancy implements
 	// Inventory, Order, Calendar?) sind mit class
 	/**
 	 * Returns all <code>AccountancyEntry</code>s in between the dates
-	 * <code>from</code> and <code>to</code>, including from and to. So every
-	 * entry with an time stamp <= to and >= from is returned. If no entries
-	 * within the specified time span exist, an empty Iterable is returned.
+	 * <code>from</code> and <code>to</code>, including <code>from</code> and
+	 * <code>to</code>. So every entry with an time stamp <= <code>to</code> and
+	 * >= <code>from</code> is returned. If no entries within the specified time
+	 * span exist, an empty <code>Iterable</code> is returned.
 	 * 
 	 * @param from
 	 *            time stamp denoting the start of the requested time period
 	 * @param to
 	 *            time stamp denoting the end of the requested time period
-	 * @return an unmodifiable Iterable containing all entries between from and
-	 *         to
+	 * @return an unmodifiable <code>Iterable</code> containing all entries
+	 *         between <code>from</code> and <code>to</code>
 	 */
 	public final Iterable<PersistentAccountancyEntry> find(DateTime from,
 			DateTime to) {
@@ -206,9 +205,8 @@ public final class PersistentAccountancy implements
 				.createQuery(PersistentAccountancyEntry.class);
 		Root<PersistentAccountancyEntry> r = q
 				.from(PersistentAccountancyEntry.class);
-		Predicate p = cb.between(
-				r.get(PersistentAccountancyEntry_.date), from.toDate(),
-				to.toDate());
+		Predicate p = cb.between(r.get(PersistentAccountancyEntry_.date),
+				from.toDate(), to.toDate());
 		q.where(p);
 		TypedQuery<PersistentAccountancyEntry> tq = em.createQuery(q);
 
