@@ -9,6 +9,8 @@ import org.salespointframework.core.money.Money;
  * @author Paul Henke
  * 
  */
+//TODO if you have really time, check if generics are really needed.
+//OrderLine is an embeddable and has an elementcollection, so that may be an issue.
 public interface Order<O extends OrderLine, C extends ChargeLine>
 {
 
