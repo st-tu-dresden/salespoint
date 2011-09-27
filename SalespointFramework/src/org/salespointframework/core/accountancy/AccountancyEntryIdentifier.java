@@ -23,15 +23,17 @@ public final class AccountancyEntryIdentifier extends SalespointIdentifier {
 	 * Creates a new unique identifier for accountancy entries.
 	 */
 	public AccountancyEntryIdentifier() {
-	    super();
+		super();
 	}
 
 	/**
 	 * Only needed for property editor, shouldn't be used otherwise.
-	 * @param id The string representation of the identifier. 
+	 * 
+	 * @param identifier
+	 *            The string representation of the identifier.
 	 */
 	@Deprecated
-	public AccountancyEntryIdentifier(String id) {
-		super(id);
+	public AccountancyEntryIdentifier(String identifier) {
+		super(identifier);
 	}
 }
