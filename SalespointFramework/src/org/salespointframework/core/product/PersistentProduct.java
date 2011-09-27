@@ -52,7 +52,7 @@ public class PersistentProduct implements Product
 		this.price = productType.getPrice(); // TODO CLONE?
 		this.serialNumber = new SerialNumber();
 
-		// TODO zu hacky?
+		// TODO zu hacky? Jop.
 		for (Tuple<String, String> feature : features)
 		{
 			ProductFeature f = ProductFeature.create(feature.getItem1(), feature.getItem2());
