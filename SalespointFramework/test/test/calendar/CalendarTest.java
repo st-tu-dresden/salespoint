@@ -5,6 +5,10 @@ import static org.junit.Assume.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.matchers.JUnitMatchers.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.persistence.internal.jpa.metadata.structures.ArrayAccessor;
 import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -45,11 +49,11 @@ public class CalendarTest {
         PersistentCalendarEntry deleteEntry = new PersistentCalendarEntry(new UserIdentifier(), "deleteEntry", basicDateTime, basicDateTime.plusMinutes(10));
         calendar.add(deleteEntry);
         
-        assumeThat(calendar.get(deleteEntry.getCalendarEntryIdentifier()), is(deleteEntry));
+        assumeThat(calendar.find(deleteEntry.getCalendarEntryIdentifier()), is(deleteEntry));
         
         calendar.remove(deleteEntry.getCalendarEntryIdentifier());
         
-        assertNull(calendar.get(deleteEntry.getCalendarEntryIdentifier()));
+        assertNull(calendar.find(deleteEntry.getCalendarEntryIdentifier()));
     }
     
     @Test
@@ -74,13 +78,11 @@ public class CalendarTest {
         calendar.add(has);
         calendar.add(hasnot);
         
-        Iterable<PersistentCalendarEntry> actual = calendar.getEntries(new Filter<PersistentCalendarEntry>() {
-            @SuppressWarnings("boxing")
-            @Override
-            public Boolean invoke(PersistentCalendarEntry arg) {
-                return arg.getStart().isBefore(basicDateTime.plusMinutes(10));
-            }
-        });
+        List<PersistentCalendarEntry> actual = new ArrayList<PersistentCalendarEntry>();
+        for (PersistentCalendarEntry entry : calendar.getAllEntries()) {
+            if (entry.getStart().isBefore(basicDateTime.plusMinutes(10)))
+                actual.add(entry);
+        }
 
         assertThat(actual, hasItem(has));
         assertThat(actual, not(hasItem(hasnot)));
