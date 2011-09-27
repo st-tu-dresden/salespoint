@@ -90,7 +90,7 @@ public class PersistentServiceType extends PersistentProductType implements Serv
 		{
 			throw new IllegalArgumentException("A serviceType cannot end before it starts.");
 		}
-
+		//TODO maybe something better, than a constant offset?
 		if (start.isBefore(Shop.INSTANCE.getTime().getDateTime().minusMillis(500)) == true)
 		{
 			throw new IllegalArgumentException("A serviceType cannot start before its creation time.");
