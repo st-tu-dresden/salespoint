@@ -31,9 +31,15 @@ public class AccountancyTest {
 		a = new PersistentAccountancy();
 		System.out.println("Creating AccountancyEntries: ");
 		for (int year = 2000; year < 2010; year++) {
-			a.add(new ProductPaymentEntry(new OrderIdentifier(),
+			if((year % 2) == 0) {
+				System.out.println("ProductPaymentEntry");
+				a.add(new ProductPaymentEntry(new OrderIdentifier(),
 					new UserIdentifier(), new Money(1)));
-
+			} else {
+				System.out.println("PersistentAccountancyEntry");
+				a.add(new PersistentAccountancyEntry(new Money(2.22)));
+			}
+			
 			if (year == 2002)
 				from = new DateTime();
 			if (year == 2008)
