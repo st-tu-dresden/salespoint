@@ -11,6 +11,7 @@ import java.util.Arrays;
  * @author Paul Henke
  * 
  */
+//TODO rename class.
 public final class Objects
 {
 	// too bad there are no real static classes, -1 for java
