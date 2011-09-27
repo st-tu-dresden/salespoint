@@ -9,6 +9,7 @@ import org.salespointframework.core.product.ProductType;
  * 
  * @param <T>
  */
+//TODO fscking javadoc, biatch.
 public interface Catalog<T extends ProductType>
 {
 	void add(T productType);
