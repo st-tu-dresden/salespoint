@@ -6,19 +6,15 @@ import java.io.Serializable;
  * Immutable metric representation. A metric consists of a name, a symbol and a
  * description.
  * 
- * @author hannesweisbach
+ * @author Hannes Weisbach
  * 
  */
+@SuppressWarnings("serial")
 public class Metric implements Serializable {
 
 	public static final Metric PIECES = new Metric("Pieces", "pcs", "");
 	public static final Metric UNITS = new Metric("Units", "pcs", "");
 	public static final Metric EURO = new Metric("Euro", "€", "");
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3083275515261479296L;
 	
 	private String name;
 	private String symbol;
@@ -93,6 +89,10 @@ public class Metric implements Serializable {
 	 */
 	@Override
 	public boolean equals(Object obj) {
+		if(obj == null)
+			return false;
+		if(obj == this)
+			return true;
 		if (!(obj instanceof Metric))
 			return false;
 		else {
@@ -100,4 +100,6 @@ public class Metric implements Serializable {
 			return symbol.equals(m.symbol) && name.equals(m.name);
 		}
 	}
+	//TODO overwrite hashcode
+	//TODO toString
 }

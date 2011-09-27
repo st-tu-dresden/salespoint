@@ -14,21 +14,18 @@ import org.salespointframework.core.quantity.rounding.RoundingStrategy;
  * constructor. This way, every instance has a valid <code>amount</code>.
  * 
  * To allow arithmetic operations on
- * <code>Quantity<code> objects and instances of subclasses of <code>Quantity</code>
+ * <code>Quantity</code> objects and instances of subclasses of <code>Quantity</code>
  * to return the correct type (and thus avoiding casts), <code>Quantity</code>
  * instances are immutable and all subclasses of <code>Quantity</code> have to
  * be immutable or implement a suitable <code>clone()</code>-method.
  * 
- * @author hannesweisbach
+ * @author Hannes Weisbach
  * 
  */
 
+@SuppressWarnings("serial")
 public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5292263711685595615L;
 	// immutable
 	protected BigDecimal amount;
 	// immutable
@@ -168,6 +165,10 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 
 	@Override
 	public boolean equals(Object obj) {
+		if(obj == null)
+			return false;
+		if(obj == this)
+			return true;
 		if (!(obj instanceof Quantity))
 			return false;
 		else {
@@ -199,6 +200,7 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 		return clone;
 	}
 
+	//TODO merge underscore arithmetic to normal arithmetic; remove rest.
 	/**
 	 * Sums two quantities up. The <code>amount</code> of this and quantity are
 	 * added, and a new <code>Quantity</code>-instance is returned, representing
