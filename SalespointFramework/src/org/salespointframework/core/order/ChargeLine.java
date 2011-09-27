@@ -8,6 +8,7 @@ import org.salespointframework.core.money.Money;
  * @author Paul Henke
  * 
  */
+//TODO change to getIdentifier()
 public interface ChargeLine
 {
 	ChargeLineIdentifier getChargeLineIdentifier();
