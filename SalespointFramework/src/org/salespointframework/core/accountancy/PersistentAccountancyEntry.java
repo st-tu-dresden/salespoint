@@ -32,7 +32,7 @@ public class PersistentAccountancyEntry implements AccountancyEntry {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date = Shop.INSTANCE.getTime().getDateTime().toDate();
 
-	private String description;
+	private String description = "";
 
 	/**
 	 * Protected, parameterless Constructor required by the persistence layer.
@@ -50,21 +50,21 @@ public class PersistentAccountancyEntry implements AccountancyEntry {
 	 *            The value that is stored in this entry.
 	 */
 	public PersistentAccountancyEntry(Money value) {
-		this.value = Objects.requireNonNull(value, "value");
+		this(value, "");
 	}
 
 	/**
-	 * Creates a new <code>PersistentAccountancyEntry</code> with a specific value
-	 * and a user defined time.
+	 * Creates a new <code>PersistentAccountancyEntry</code> with a specific
+	 * value and a user defined time.
 	 * 
 	 * @param value
 	 *            The value that is stored in this entry.
-	 * @param date
-	 *            A user defined time stamp for this entry.
+	 * @param description
+	 *            A user-supplied description for this entry.
 	 */
-	public PersistentAccountancyEntry(Money value, DateTime date) {
+	public PersistentAccountancyEntry(Money value, String description) {
 		this.value = Objects.requireNonNull(value, "value");
-		this.date = Objects.requireNonNull(date, "date").toDate();
+		this.description = Objects.requireNonNull(description, "description");
 	}
 
 	@Override
@@ -72,6 +72,11 @@ public class PersistentAccountancyEntry implements AccountancyEntry {
 		return new DateTime(date);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The Money object is always non-<code>null</code>.
+	 */
 	@Override
 	public Money getValue() {
 		return value;
