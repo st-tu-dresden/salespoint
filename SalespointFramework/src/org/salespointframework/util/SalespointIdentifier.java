@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 /**
@@ -13,11 +15,12 @@ import javax.persistence.MappedSuperclass;
  * 
  */
 @SuppressWarnings("serial")
-@Embeddable
+//@Embeddable
 @MappedSuperclass
-public/* abstract */class SalespointIdentifier implements Serializable, Comparable<SalespointIdentifier>
+public class SalespointIdentifier implements Serializable, Comparable<SalespointIdentifier>
 {
-	// @Id
+	//@Id
+	//@GeneratedValue
 	private String id;
 
 	public SalespointIdentifier()
