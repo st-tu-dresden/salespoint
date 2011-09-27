@@ -3,6 +3,7 @@ package org.salespointframework.core.accountancy.payment;
 import java.io.Serializable;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.accountancy.AccountancyEntryIdentifier;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.Objects;
 
@@ -13,14 +14,14 @@ import org.salespointframework.util.Objects;
  * @author Hannes Weisbach
  * 
  */
+//TODO dateMade und dateCleared entfernen
+@SuppressWarnings("serial")
 public abstract class Payment implements Serializable {
-
-    private static final long serialVersionUID = 1L;
 
     /**
      * The <code>PaymentMethod</code> associated with this <code>Payment</code>
      */
-    private PaymentMethod     paymentMethod;
+    private final PaymentMethod     paymentMethod;
     
     /**
      * Represents the time the payment
@@ -40,7 +41,7 @@ public abstract class Payment implements Serializable {
      * Represents the time, when the
      * payee expects the payment.
      */
-    private DateTime          dateDue;
+    private final DateTime          dateDue;
 
     /**
      * Represents the time, the payment was cleared by a banking system, or
@@ -48,6 +49,9 @@ public abstract class Payment implements Serializable {
      */
     private DateTime          dateCleared;
 
+    //TODO make this work
+    private AccountancyEntryIdentifier accountancyEntryIdentifier;
+    
     /**
      * 
      * @param paymentMethod

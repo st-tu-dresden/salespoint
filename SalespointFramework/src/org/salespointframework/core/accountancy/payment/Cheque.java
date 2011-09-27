@@ -14,55 +14,26 @@ import org.salespointframework.core.accountancy.payment.PaymentMethod;
  * @author Hannes Weisbach
  * 
  */
-// @Entity
-public class Cheque extends PaymentMethod implements Serializable {
+@SuppressWarnings("serial")
+public final class Cheque extends PaymentMethod implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
-	/**
-	 * Name of the account holder.
-	 */
-	private String accountName;
+	private final String accountName;
 	
-	/**
-	 * Number of the account on which the cheque is drawn.
-	 */
-	private String accountNumber;
+	private final String accountNumber;
 	
-	/**
-	 * Number uniquely identifying this cheque.
-	 */
-	private String chequeNumber;
+	private final String chequeNumber;
 	
-	/**
-	 * Name of the payee.
-	 */
-	private String payee;
+	private final String payee;
 	
-	/**
-	 * Date on which the cheque was written.
-	 */
-	private DateTime dateWritten;
+	private final DateTime dateWritten;
 	
-	/**
-	 * Name of the bank, that issued the cheque.
-	 */
-	private String bankName;
+	private final String bankName;
 	// TODO Address class
 	
-	/**
-	 * Address of the bank, that issued the cheque.
-	 */
-	private String bankAddress;
+	private final String bankAddress;
 
-	/**
-	 * Unique identification number of this bank. Also known as routing number.
-	 */
-	private String bankIdentificationNumber;
+	private final String bankIdentificationNumber;
 
-	/*
-	 * @Deprecated protected Cheque() { }
-	 */
 	/**
 	 * Instantiate a new <code>Cheque</code> instance.
 	 * 
@@ -86,6 +57,7 @@ public class Cheque extends PaymentMethod implements Serializable {
 	 *            Unique identifier of the bank that issued the cheque. Also
 	 *            known as the bank routing number.
 	 */
+	//TODO null-checks
 	public Cheque(String accountName, String accountNumber,
 			String chequeNumber, String payee, DateTime dateWritten,
 			String bankName, String bankAddress, String bankIdentificationNumber) {

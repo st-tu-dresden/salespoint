@@ -8,24 +8,22 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Objects;
 
 /**
- * Entity implementation class for Entity: CreditCard
  * 
  * @author Hannes Weisbach
  * 
  */
-public class CreditCard extends PaymentCard implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@SuppressWarnings("serial")
+public final class CreditCard extends PaymentCard implements Serializable {
 
 	/**
 	 * The maximum amount of money, the card holder can dispose of within a day.
 	 */
-	private Money dailyWithdrawalLimit;
+	private final Money dailyWithdrawalLimit;
 	
 	/**
 	 * Line of credit extended by the issuing association to the card holder.
 	 */
-	private Money creditLimit;
+	private final Money creditLimit;
 
 	/**
 	 * Instantiates a specific credit card.

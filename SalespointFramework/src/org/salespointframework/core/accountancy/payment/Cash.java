@@ -9,9 +9,8 @@ import org.salespointframework.core.accountancy.payment.PaymentMethod;
  * 
  * @author Hannes Weisbach
  */
-// @Entity
-public class Cash extends PaymentMethod implements Serializable {
-    private static final long serialVersionUID = 1L;
+@SuppressWarnings("serial")
+public final class Cash extends PaymentMethod implements Serializable {
 	
 	/**
 	 * A convenience instance <code>CASH</code> is defined in this class, which

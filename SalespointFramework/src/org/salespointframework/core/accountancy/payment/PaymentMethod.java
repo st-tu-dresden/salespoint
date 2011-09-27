@@ -10,35 +10,35 @@ import org.salespointframework.util.Objects;
  * 
  * @author Hannes Weisbach
  */
+@SuppressWarnings("serial")
 public abstract class PaymentMethod implements Serializable {
-    private static final long serialVersionUID = 1L;
 
-    /**
-     * Description of the <code>PaymentMethod</code> in human-readable form. Is
-     * not null.
-     */
-    private String            desc;
+	/**
+	 * Description of the <code>PaymentMethod</code> in human-readable form. Is
+	 * not null.
+	 */
+	private final String description;
 
-    /**
-     * Constructor which takes a String, describing the
-     * <code>PaymentMethod</code> in human-readable form.
-     * 
-     * @param desc
-     *            Description of the <code>PaymentMethod</code> in
-     *            human-readable form. Must be non-null.
-     */
-    public PaymentMethod(String desc) {
-        this.desc = Objects.requireNonNull(desc, "desc");
-    }
+	/**
+	 * Constructor which takes a String, describing the
+	 * <code>PaymentMethod</code> in human-readable form.
+	 * 
+	 * @param description
+	 *            Description of the <code>PaymentMethod</code> in
+	 *            human-readable form. Must be non-null.
+	 */
+	public PaymentMethod(String description) {
+		this.description = Objects.requireNonNull(description, "description");
+	}
 
-    /**
-     * The string representation of this <code>PaymentMethod</code>. It's the
-     * description that was given to the constructor.
-     * 
-     * @return The description of this <code>PaymentMethod</code>.
-     */
-    @Override
-    public String toString() {
-        return desc;
-    }
+	/**
+	 * The string representation of this <code>PaymentMethod</code>. It's the
+	 * description that was given to the constructor.
+	 * 
+	 * @return The description of this <code>PaymentMethod</code>.
+	 */
+	@Override
+	public String toString() {
+		return description;
+	}
 }

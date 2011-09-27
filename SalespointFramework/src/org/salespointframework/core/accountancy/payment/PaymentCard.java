@@ -19,44 +19,22 @@ import org.salespointframework.util.Objects;
  * @author Hannes Weisbach
  * 
  */
+@SuppressWarnings("serial")
 public abstract class PaymentCard extends PaymentMethod implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
-	/**
-	 * The name of the association which issued the card
-	 */
-	private String cardAssociationName;
+	private final String cardAssociationName;
 	
-	/**
-	 * The number uniquely identifying this payment card.
-	 */
-	private String cardNumber;
+	private final String cardNumber;
 	
-	/**
-	 * The name of the party to which the card was issued to.
-	 */
-	private String nameOnCard;
+	private final String nameOnCard;
 	
-	/**
-	 * The billing address registered with this card.
-	 */
-	private String billingAddress;
+	private final String billingAddress;
 	
-	/**
-	 * The date from which on the card is valid.
-	 */
-	private DateTime validFrom;
+	private final DateTime validFrom;
 	
-	/**
-	 * The date on which the card expires.
-	 */
-	private DateTime expiryDate;
+	private final DateTime expiryDate;
 	
-	/**
-	 * The verification code or PIN of this card.
-	 */
-	private String cardVerificationCode;
+	private final String cardVerificationCode;
 
 	/**
 	 * Instantiates a <code>PaymentCard</code>.
@@ -95,8 +73,6 @@ public abstract class PaymentCard extends PaymentMethod implements Serializable 
 	}
 
 	/**
-	 * The name of the association which issued the card
-	 * 
 	 * @return String containing the name of the card association.
 	 */
 	public String getCardAssociationName() {

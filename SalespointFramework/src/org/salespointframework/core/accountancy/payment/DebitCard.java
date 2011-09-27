@@ -14,14 +14,13 @@ import org.salespointframework.util.Objects;
  * 
  * @author Hannes Weisbach
  */
-public class DebitCard extends PaymentCard implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@SuppressWarnings("serial")
+public final class DebitCard extends PaymentCard implements Serializable {
 
 	/**
 	 * Amount of money, the card holder can dispose of within a day.
 	 */
-	private Money dailyWithdrawalLimit;
+	private final Money dailyWithdrawalLimit;
 
 	/**
 	 * Instantiates a specific type of debit card.
