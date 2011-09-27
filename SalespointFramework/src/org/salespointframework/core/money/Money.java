@@ -15,14 +15,13 @@ import org.salespointframework.util.Objects;
  * <code>Quantity</code> class. The internal representation uses four digits
  * after the decimal separator.
  * 
- * @author hannesweisbach
+ * @author Hannes Weisbach
  * 
  */
+
+@SuppressWarnings("serial")
 public final class Money extends Quantity {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6400828491785686659L;
+	//TODO javadoc
 	public static final Money ZERO = new Money(0);
 	public static final Money OVER9000 = new Money(9001);
 
