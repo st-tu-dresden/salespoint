@@ -87,7 +87,7 @@ public class PersistentAccountancyEntry implements AccountancyEntry {
 	}
 
 	@Override
-	public AccountancyEntryIdentifier getAccountancyEntryIdentifier() {
+	public AccountancyEntryIdentifier getIdentifier() {
 		return accountancyEntryIdentifier;
 	}
 

@@ -133,7 +133,7 @@ public final class PersistentAccountancy implements
 	}
 
 	@Override
-	public final <T extends PersistentAccountancyEntry> Map<Interval, Money> getSalesVolume(
+	public final <T extends PersistentAccountancyEntry> Map<Interval, Money> salesVolume(
 			Class<T> clazz, DateTime from, DateTime to, Period period) {
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(from, "from");

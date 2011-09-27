@@ -89,7 +89,7 @@ public class AccountancyPeriodTest {
 			
 		}
 		System.out.println("Getting entries from " + from + " to " + to);
-		Map<Interval, Money> sales = a.getSalesVolume(ProductPaymentEntry.class, from, to, new Period(200));
+		Map<Interval, Money> sales = a.salesVolume(ProductPaymentEntry.class, from, to, new Period(200));
 		for(Entry<Interval, Money> e : sales.entrySet()) {
 			System.out.println("Money for interval " + e.getKey() + ": " + e.getValue());
 		}

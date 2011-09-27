@@ -382,7 +382,7 @@ public class PersistentOrder implements Order<PersistentOrderLine, PersistentCha
 		ProductPaymentEntry ppe = new ProductPaymentEntry(this.orderIdentifier, this.userIdentifier, this.getTotalPrice());
 		PersistentAccountancy pA = (PersistentAccountancy) Shop.INSTANCE.getAccountancy();
 		pA.add(ppe);
-		accountancyEntryIdentifier = ppe.getAccountancyEntryIdentifier();
+		accountancyEntryIdentifier = ppe.getIdentifier();
 		orderStatus = OrderStatus.PAYED;
 		return true;
 	}

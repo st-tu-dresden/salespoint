@@ -9,12 +9,12 @@ import org.salespointframework.core.money.Money;
  * consists at least of a date, some sort of description, and a monetary value
  * and a unique identifier
  * 
- * @author hannesweisbach
+ * @author Hannes Weisbach
  * 
  */
 public interface AccountancyEntry {
 	/**
-	 * @return the date, when this entry was was posted.
+	 * @return the date, when this entry was posted.
 	 */
 	public DateTime getDate();
 
@@ -35,5 +35,5 @@ public interface AccountancyEntry {
 	 *         entry.
 	 * 
 	 */
-	public AccountancyEntryIdentifier getAccountancyEntryIdentifier();
+	public AccountancyEntryIdentifier getIdentifier();
 }
