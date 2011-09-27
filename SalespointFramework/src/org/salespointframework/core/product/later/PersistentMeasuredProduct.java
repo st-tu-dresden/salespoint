@@ -38,6 +38,7 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 	 * @param quantity
 	 *            The quantity of this MeasuredProductInstance
 	 */
+	//TODO for later: Quantity to <T extends Quantity>
 	public PersistentMeasuredProduct(MeasuredProductType productType, Quantity quantity)
 	{
 		super(productType);
