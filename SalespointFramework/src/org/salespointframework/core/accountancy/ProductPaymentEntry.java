@@ -11,16 +11,14 @@ import org.salespointframework.core.users.UserIdentifier;
 import org.salespointframework.util.Objects;
 
 /**
- * A <code>ProductPaymentEntry</code> is an
- * <code>AbstractAccountancyEntry</code> used to store information of payments
+ * A <code>ProductPaymentEntry</code> is used to store information of payments
  * of orders.
  * 
  * @author Hannes Weisbach
  * @author Thomas Dedek
  */
 @Entity
-public class ProductPaymentEntry extends PersistentAccountancyEntry
-{
+public class ProductPaymentEntry extends PersistentAccountancyEntry {
 	/**
 	 * The <code>OrderIdentifier</code> to which this
 	 * <code>ProductPaymentEntry</code> refers to.
@@ -41,8 +39,7 @@ public class ProductPaymentEntry extends PersistentAccountancyEntry
 	 * Parameterless constructor required for JPA. Do not use.
 	 */
 	@Deprecated
-	protected ProductPaymentEntry()
-	{
+	protected ProductPaymentEntry() {
 	}
 
 	/**
@@ -59,40 +56,27 @@ public class ProductPaymentEntry extends PersistentAccountancyEntry
 	 * @param amount
 	 *            the <code>Money</code> that was payed.
 	 */
-	public ProductPaymentEntry(OrderIdentifier orderIdentifier, UserIdentifier userIdentifier, Money amount)
-	{
+	// TODO hand description to superclass ctor
+	public ProductPaymentEntry(OrderIdentifier orderIdentifier,
+			UserIdentifier userIdentifier, Money amount) {
 		super(amount);
-		this.orderIdentifier = Objects.requireNonNull(orderIdentifier, "orderIdentifier");
-		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier");
+		this.orderIdentifier = Objects.requireNonNull(orderIdentifier,
+				"orderIdentifier");
+		this.userIdentifier = Objects.requireNonNull(userIdentifier,
+				"userIdentifier");
 	}
 
 	/**
-	 * Return the amount of this Payment.
-	 * 
-	 * @return the amount of this Payment
-	 */
-	public Money getAmount()
-	{
-		return getValue();
-	}
-
-	/**
-	 * Return the <code>UserIdentifier</code> to which this payment refers to.
-	 * 
 	 * @return the <code>UserIdentifier</code>, to which this payment refers to
 	 */
-	public UserIdentifier getUserIdentifier()
-	{
+	public UserIdentifier getUserIdentifier() {
 		return userIdentifier;
 	}
 
 	/**
-	 * Return the <code>OrderIdentifier</code> to which this payment refers to.
-	 * 
 	 * @return the <code>OrderIdentifier</code>, to which this payment refers to
 	 */
-	public OrderIdentifier getOrderIdentifier()
-	{
+	public OrderIdentifier getOrderIdentifier() {
 		return orderIdentifier;
 	}
 }
