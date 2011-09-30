@@ -2,9 +2,25 @@ package org.salespointframework.core.quantity.rounding;
 
 import java.math.BigDecimal;
 
+/**
+ * This is interface is implemented by classes, which are used to round numbers.
+ * Specifically, <code>Quantity</code> uses classes implementing
+ * <code>RoundingStrategy</code> to facilitate arithmetic operations.
+ * 
+ * @author Hannes Weisbach
+ * 
+ */
 public interface RoundingStrategy {
+	/**
+	 * Convenience instance, which can be used for monetary rounding. Rounds
+	 * towards zero with 4 digits after the decimal delimiter.
+	 */
 	public static final RoundingStrategy MONETARY_ROUNDING = new RoundDownStrategy(
 			4);
+	/**
+	 * Convenience instance, which can be used for rounding of integral types.
+	 * Rounds towards zero, with 0 digits after the decimal delimiter.
+	 */
 	public static final RoundingStrategy ROUND_ONE = new RoundDownStrategy(0);
 
 	/**
