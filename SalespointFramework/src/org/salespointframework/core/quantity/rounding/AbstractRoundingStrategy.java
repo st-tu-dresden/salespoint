@@ -2,7 +2,7 @@ package org.salespointframework.core.quantity.rounding;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Objects;
+import org.salespointframework.util.Objects;
 
 /**
  * @author Hannes Weisbach
@@ -30,8 +30,7 @@ public abstract class AbstractRoundingStrategy implements RoundingStrategy,
 			BigDecimal roundingStep) {
 		this.numberOfDigits = numberOfDigits;
 		this.roundingDigit = roundingDigit;
-		this.roundingStep = Objects
-				.requireNonNull(roundingStep, "roundingStep");
+		this.roundingStep = Objects.requireNonNull(roundingStep, "roundingStep");
 	}
 
 	@Override
