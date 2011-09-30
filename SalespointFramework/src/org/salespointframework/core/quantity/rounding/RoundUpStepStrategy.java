@@ -10,12 +10,8 @@ import java.math.RoundingMode;
  * @author hannesweisbach
  * 
  */
+@SuppressWarnings("serial")
 public class RoundUpStepStrategy extends AbstractRoundingStrategy {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8030005799825781945L;
 
 	/**
 	 * Creates a new <code>RoundingStrategy</code> which away from zero to the

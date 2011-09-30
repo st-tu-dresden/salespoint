@@ -7,14 +7,11 @@ import java.math.RoundingMode;
  * Rounds towards zero, to the nearest value, divisible by
  * <code>roundingStep</code>
  * 
- * @author hannesweisbach
+ * @author Hannes Weisbach
  * 
  */
+@SuppressWarnings("serial")
 public class RoundDownStepStrategy extends AbstractRoundingStrategy {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -196807863994195126L;
 
 	/**
 	 * Creates a new <code>RoundingStrategy</code> which towards zero to the

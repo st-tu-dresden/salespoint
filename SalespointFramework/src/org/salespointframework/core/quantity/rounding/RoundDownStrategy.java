@@ -1,6 +1,5 @@
 package org.salespointframework.core.quantity.rounding;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -8,8 +7,8 @@ import java.math.BigDecimal;
  * numbers get less positive. This effectively truncates the number at the
  * specified numberOfDigits.
  */
-public class RoundDownStrategy extends AbstractRoundingStrategy implements Serializable, RoundingStrategy {
-	private static final long serialVersionUID = 1L;
+@SuppressWarnings("serial")
+public class RoundDownStrategy extends AbstractRoundingStrategy {
 
 	/**
 	 * Create a new <code>RoundingStrategy</code> which rounds towards zero,

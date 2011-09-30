@@ -1,17 +1,15 @@
 package org.salespointframework.core.quantity.rounding;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
  * Rounds towards negative infinity.
  * 
+ * @author Hannes Weisbach
  */
-public class RoundFloorStrategy extends AbstractRoundingStrategy implements Serializable, RoundingStrategy {
-
-	private static final long serialVersionUID = 1L;
-
+@SuppressWarnings("serial")
+public class RoundFloorStrategy extends AbstractRoundingStrategy {
 	/**
 	 * Creates a new <code>RoundingStrategy</code> which rounds towards negative
 	 * infinity, keeping <code>numberOfDigits</code> digits after the decimal

@@ -2,20 +2,36 @@ package org.salespointframework.core.quantity.rounding;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 
+/**
+ * @author Hannes Weisbach
+ * 
+ */
+@SuppressWarnings({ "serial", "javadoc" })
 public abstract class AbstractRoundingStrategy implements RoundingStrategy,
 		Serializable {
-	private static final long serialVersionUID = 7276214459340424642L;
-
 	protected int numberOfDigits;
 	protected int roundingDigit;
 	protected BigDecimal roundingStep;
 
+	/**
+	 * Sole constructor for invocation by sub classes.
+	 * 
+	 * @param numberOfDigits
+	 *            number of digits after the decimal delimiter to which will be
+	 *            rounded
+	 * @param roundingDigit
+	 *            digit, in which the decision is based to round up or down
+	 * @param roundingStep
+	 *            nearest step to which will be rounded
+	 */
 	public AbstractRoundingStrategy(int numberOfDigits, int roundingDigit,
 			BigDecimal roundingStep) {
 		this.numberOfDigits = numberOfDigits;
 		this.roundingDigit = roundingDigit;
-		this.roundingStep = roundingStep;
+		this.roundingStep = Objects
+				.requireNonNull(roundingStep, "roundingStep");
 	}
 
 	@Override
@@ -23,6 +39,10 @@ public abstract class AbstractRoundingStrategy implements RoundingStrategy,
 
 	@Override
 	public boolean equals(Object o) {
+		if (o == null)
+			return false;
+		if (o == this)
+			return true;
 		if (!(o instanceof AbstractRoundingStrategy))
 			return false;
 		else {
@@ -32,6 +52,18 @@ public abstract class AbstractRoundingStrategy implements RoundingStrategy,
 					&& roundingStep == s.roundingStep
 					&& this.getClass().equals(o.getClass());
 		}
+	}
+
+	/**
+	 * Returns a hash code for this <code>RoundingStrategy</code> object. The
+	 * hash code is the exclusive OR of the <code>numberOfDigits</code>,
+	 * <code>roundingDigit</code> and the hash code of <code>roundingStep</code>
+	 * .
+	 * 
+	 * @return hash code for this <code>RoundingStrategy</code> object.
+	 */
+	public final int hashcode() {
+		return numberOfDigits ^ roundingDigit ^ roundingStep.hashCode();
 	}
 
 	/**
@@ -54,6 +86,17 @@ public abstract class AbstractRoundingStrategy implements RoundingStrategy,
 	 */
 	public int getRoundingDigit() {
 		return roundingDigit;
+	}
+
+	/**
+	 * Returns the step, to which is rounded. After rounding, the result is
+	 * divisible by <code>roundingStep</code> with an integral result. If no
+	 * rounding step is used, <code>BigDecimal.ZERO</code> is returned.
+	 * 
+	 * @return step to which is rounded, or <code>BigDecimal.ZERO</code>
+	 */
+	public BigDecimal getRoundingStep() {
+		return roundingStep;
 	}
 
 }

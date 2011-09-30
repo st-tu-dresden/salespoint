@@ -1,6 +1,5 @@
 package org.salespointframework.core.quantity.rounding;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -8,9 +7,8 @@ import java.math.RoundingMode;
  * Rounds towards positive infinity.
  * 
  */
-public class RoundCeilStrategy extends AbstractRoundingStrategy implements Serializable, RoundingStrategy {
-
-	private static final long serialVersionUID = 1L;
+@SuppressWarnings("serial")
+public class RoundCeilStrategy extends AbstractRoundingStrategy {
 
 	/**
 	 * Create a new <code>RoundingStrategy</code> which rounds towards positive

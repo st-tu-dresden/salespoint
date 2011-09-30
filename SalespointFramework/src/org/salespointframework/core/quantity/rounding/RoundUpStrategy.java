@@ -1,6 +1,5 @@
 package org.salespointframework.core.quantity.rounding;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -8,9 +7,9 @@ import java.math.RoundingMode;
  * Round a value up, i.e. away from zero.
  * 
  */
-public class RoundUpStrategy implements Serializable, RoundingStrategy {
+@SuppressWarnings("serial")
+public class RoundUpStrategy extends AbstractRoundingStrategy {
 
-	private static final long serialVersionUID = 1L;
 	private int numberOfDigits;
 
 	/**
@@ -22,7 +21,7 @@ public class RoundUpStrategy implements Serializable, RoundingStrategy {
 	 *            kept.
 	 */
 	public RoundUpStrategy(int numberOfDigits) {
-		this.numberOfDigits = numberOfDigits;
+		super(numberOfDigits, 0, BigDecimal.ZERO);
 	}
 
 	@Override

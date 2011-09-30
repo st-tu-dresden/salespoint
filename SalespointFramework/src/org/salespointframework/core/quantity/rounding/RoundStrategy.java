@@ -1,6 +1,5 @@
 package org.salespointframework.core.quantity.rounding;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -8,11 +7,11 @@ import java.math.BigInteger;
  * <code>RoundingStrategy</code> which rounds away from zero, using the supplied
  * <code>roundingDigit</code> for rounding instead of 5.
  * 
- * @author hannesweisbach
+ * @author Hannes Weisbach
  * 
  */
-public class RoundStrategy implements Serializable, RoundingStrategy {
-	private static final long serialVersionUID = 1L;
+@SuppressWarnings("serial")
+public class RoundStrategy extends AbstractRoundingStrategy {
 
 	private int numberOfDigits;
 	private int roundingDigit;
@@ -30,8 +29,7 @@ public class RoundStrategy implements Serializable, RoundingStrategy {
 	 *            the number is rounded down.
 	 */
 	public RoundStrategy(int numberOfDigits, int roundingDigit) {
-		this.numberOfDigits = numberOfDigits;
-		this.roundingDigit = roundingDigit;
+		super(numberOfDigits, roundingDigit, BigDecimal.ZERO);
 	}
 
 	@Override
