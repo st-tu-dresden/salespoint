@@ -21,8 +21,13 @@ import org.salespointframework.util.Objects;
 
 @SuppressWarnings("serial")
 public final class Money extends Quantity {
-	//TODO javadoc
+	/**
+	 * Convenience instance, having a value of 0.
+	 */
 	public static final Money ZERO = new Money(0);
+	/**
+	 * Convenience instance, having a very high value. Also an easteregg.
+	 */
 	public static final Money OVER9000 = new Money(9001);
 
 	/**
