@@ -14,7 +14,7 @@ import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderIdentifier;
-import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.core.user.UserIdentifier;
 
 public class AccountancyPeriodTest {
 	private PersistentAccountancy a;
@@ -83,7 +83,7 @@ public class AccountancyPeriodTest {
 			total = Money.ZERO;
 			for(ProductPaymentEntry p : e.getValue()) {
 				System.out.println("\t" + p.getValue());
-				total = total.add_(p.getValue());
+				total = total.add(p.getValue());
 			}
 			System.out.println("Money for interval " + e.getKey() + ": " + total);
 			

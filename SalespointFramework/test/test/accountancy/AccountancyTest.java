@@ -13,7 +13,7 @@ import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderIdentifier;
-import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.core.user.UserIdentifier;
 
 public class AccountancyTest {
 	private PersistentAccountancy a;
@@ -56,7 +56,7 @@ public class AccountancyTest {
 
 	@Test
 	public void select() {
-		Iterable<PersistentAccountancyEntry> i = a.find(from, to);
+		Iterable<PersistentAccountancyEntry> i = a.find(PersistentAccountancyEntry.class, from, to);
 
 		// TODO not really a test, because the Iterable is always non-null.
 		// Instead, we need to test for non-emptyness of the Iterable, or three

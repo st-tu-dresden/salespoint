@@ -9,7 +9,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.accountancy.payment.Cash;
-import org.salespointframework.core.accountancy.payment.OrderPayment;
 import org.salespointframework.core.database.Database;
 
 public class MoneyTest {
@@ -47,12 +46,12 @@ public class MoneyTest {
 	public void CashTest() {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-		em.persist(new OrderPayment(Cash.CASH, new DateTime(), "from", "to"));
+		//em.persist(new Payment(Cash.CASH, new DateTime(), "from", "to"));
 		em.getTransaction().commit();
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		//c = new Cash();
-		em.persist(new OrderPayment(Cash.CASH, new DateTime(), "from", "to"));
+		//em.persist(new Payment(Cash.CASH, new DateTime(), "from", "to"));
 		em.getTransaction().commit();
 	}
 }
