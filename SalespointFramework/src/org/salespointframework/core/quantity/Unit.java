@@ -11,8 +11,17 @@ import org.salespointframework.core.quantity.rounding.RoundingStrategy;
  * 
  */
 public class Unit extends Quantity {
+	/**
+	 * Convenience instance of 0 units.
+	 */
 	public static final Unit ZERO = new Unit(0);
+	/**
+	 * Convenience instance of 1 unit.
+	 */
 	public static final Unit ONE = new Unit(1);
+	/**
+	 * Convenience instance of 10 units.
+	 */
 	public static final Unit TEN = new Unit(10);
 	/**
 	 * 
@@ -24,8 +33,9 @@ public class Unit extends Quantity {
 	 * <code>amount</code> units of something.
 	 * 
 	 * @param amount
+	 *            number of objects, this <code>Unit</code> object represents
 	 */
-	public Unit(int amount) {
+	public Unit(long amount) {
 		super(amount, Metric.PIECES, RoundingStrategy.ROUND_ONE);
 	}
 
