@@ -49,7 +49,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 		Objects.requireNonNull(name, "name");
 		this.quantityOnHand = Objects.requireNonNull(quantityOnHand, "quantityOnHand");
 		this.preferredMetric = quantityOnHand.getMetric();
-		this.unitPrice = price.divide_(new Money(quantityOnHand.getAmount()));
+		this.unitPrice = price.divide(new Money(quantityOnHand.getAmount()));
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	@Override
 	public Money getPrice()
 	{
-		return quantityOnHand.multiply_(unitPrice);
+		return quantityOnHand.multiply(unitPrice);
 	}
 
 	@Override

@@ -189,14 +189,14 @@ public class PersistentOrder implements
 
 	@Override
 	public final Money getTotalPrice() {
-		return this.getOrderedLinesPrice().add_(this.getChargeLinesPrice());
+		return this.getOrderedLinesPrice().add(this.getChargeLinesPrice());
 	}
 
 	@Override
 	public final Money getOrderedLinesPrice() {
 		Money price = Money.ZERO;
 		for (OrderLine orderLine : orderLines) {
-			price = price.add_(orderLine.getPrice());
+			price = price.add(orderLine.getPrice());
 		}
 		return price;
 	}
@@ -205,7 +205,7 @@ public class PersistentOrder implements
 	public final Money getChargeLinesPrice() {
 		Money price = Money.ZERO;
 		for (ChargeLine chargeLine : chargeLines) {
-			price = price.add_(chargeLine.getPrice());
+			price = price.add(chargeLine.getPrice());
 		}
 		return price;
 

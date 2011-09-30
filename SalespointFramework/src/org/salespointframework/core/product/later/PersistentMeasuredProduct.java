@@ -148,7 +148,7 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 	public Money getPrice()
 	{
 		// return (Money) productType.getUnitPrice().multiply(quantity);
-		return quantity.multiply_(this.unitPrice);
+		return quantity.multiply(this.unitPrice);
 	}
 
 	@Override

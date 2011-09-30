@@ -109,6 +109,6 @@ public final class Money extends Quantity {
 	 */
 	@Override
 	public String toString() {
-		return amount.setScale(2) + " " + metric.getSymbol();
+		return amount.setScale(2) + " " + getMetric().getSymbol();
 	}
 }

@@ -109,7 +109,7 @@ public class PersistentOrderLine implements OrderLine
 		Money price = productType.getPrice();
 		for (ProductFeature pf : this.productFeatures)
 		{
-			price = price.add_(pf.getPrice());
+			price = price.add(pf.getPrice());
 		}
 		this.price = price;
 	}

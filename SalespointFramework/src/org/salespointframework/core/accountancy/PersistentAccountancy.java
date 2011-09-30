@@ -147,7 +147,7 @@ public final class PersistentAccountancy implements
 		for (Entry<Interval, Iterable<T>> e : entries.entrySet()) {
 			total = Money.ZERO;
 			for (T t : e.getValue()) {
-				total = total.add_(t.getValue());
+				total = total.add(t.getValue());
 			}
 			sales.put(e.getKey(), total);
 		}
