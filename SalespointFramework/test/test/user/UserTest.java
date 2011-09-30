@@ -3,7 +3,7 @@ package test.user;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 
 

@@ -10,9 +10,9 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.salespointframework.core.database.Database;
-import org.salespointframework.core.users.PersistentUserManager;
-import org.salespointframework.core.users.UserCapability;
-import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.core.user.PersistentUserManager;
+import org.salespointframework.core.user.UserCapability;
+import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.Iterables;
 
 

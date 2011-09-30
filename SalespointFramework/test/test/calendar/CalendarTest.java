@@ -15,9 +15,8 @@ import org.junit.Test;
 import org.salespointframework.core.calendar.PersistentCalendar;
 import org.salespointframework.core.calendar.PersistentCalendarEntry;
 import org.salespointframework.core.database.Database;
-import org.salespointframework.core.users.PersistentUser;
-import org.salespointframework.core.users.UserIdentifier;
-import org.salespointframework.util.Filter;
+import org.salespointframework.core.user.PersistentUser;
+import org.salespointframework.core.user.UserIdentifier;
 
 @SuppressWarnings("javadoc")
 public class CalendarTest {
@@ -49,11 +48,11 @@ public class CalendarTest {
         PersistentCalendarEntry deleteEntry = new PersistentCalendarEntry(new UserIdentifier(), "deleteEntry", basicDateTime, basicDateTime.plusMinutes(10));
         calendar.add(deleteEntry);
         
-        assumeThat(calendar.get(deleteEntry.getIdentifier()), is(deleteEntry));
+        assumeThat(calendar.get(PersistentCalendarEntry.class, deleteEntry.getIdentifier()), is(deleteEntry));
         
         calendar.remove(deleteEntry.getIdentifier());
         
-        assertNull(calendar.get(deleteEntry.getIdentifier()));
+        assertNull(calendar.get(PersistentCalendarEntry.class, deleteEntry.getIdentifier()));
     }
     
     @Test
@@ -79,7 +78,7 @@ public class CalendarTest {
         calendar.add(hasnot);
         
         List<PersistentCalendarEntry> actual = new ArrayList<PersistentCalendarEntry>();
-        for (PersistentCalendarEntry entry : calendar.find(null)) {
+        for (PersistentCalendarEntry entry : calendar.find(PersistentCalendarEntry.class)) {
             if (entry.getStart().isBefore(basicDateTime.plusMinutes(10)))
                 actual.add(entry);
         }

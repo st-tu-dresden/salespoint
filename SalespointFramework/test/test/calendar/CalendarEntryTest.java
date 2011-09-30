@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.salespointframework.core.calendar.CalendarEntryCapability;
 import org.salespointframework.core.calendar.PersistentCalendarEntry;
 import org.salespointframework.core.database.Database;
-import org.salespointframework.core.users.UserIdentifier;
+import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 
 @SuppressWarnings("javadoc")
