@@ -112,6 +112,24 @@ public class Metric implements Serializable {
 			return symbol.equals(m.symbol) && name.equals(m.name);
 		}
 	}
-	// TODO overwrite hashcode
-	// TODO toString
+
+	/**
+	 * Returns a hash code for this <code>Metric</code> object. The result is
+	 * exclusive OR of the hash code of the name and the hash code of the
+	 * symbol.
+	 * 
+	 * @return a hash code for this <code>Metric</code> object.
+	 */
+	public final int hashcode() {
+		return symbol.hashCode() ^ name.hashCode();
+	}
+
+	/**
+	 * Returns a string representation of this <code>Metric</code> object. The
+	 * symbol is used to represent a <code>Metric</code> object as string.
+	 */
+	@Override
+	public String toString() {
+		return symbol;
+	}
 }
