@@ -32,7 +32,7 @@ public class UsermanagerTest {
 	
 	@Test
 	public void testEmployeeMangerContainsE3(){
-		assertEquals(userManager.get(MyEmployee.class, employee.getUserIdentifier()), employee);
+		assertEquals(userManager.get(MyEmployee.class, employee.getIdentifier()), employee);
 	}
 	
 	
@@ -43,7 +43,7 @@ public class UsermanagerTest {
 		
 		userManager.add(c);
 
-		assertEquals(userManager.get(MyCustomer.class, c.getUserIdentifier()), c);
+		assertEquals(userManager.get(MyCustomer.class, c.getIdentifier()), c);
 	}
 	
 	@Test
@@ -56,7 +56,7 @@ public class UsermanagerTest {
 		userManager.add(e);
 		
 		
-		MyEmployee currentE = userManager.get(MyEmployee.class, e.getUserIdentifier());
+		MyEmployee currentE = userManager.get(MyEmployee.class, e.getIdentifier());
 		assertEquals(currentE, e);
 	}
 	
@@ -71,7 +71,7 @@ public class UsermanagerTest {
 		userManager.add(e);
 		
 		
-		MyEmployee currentE = userManager.get(MyEmployee.class, e.getUserIdentifier());
+		MyEmployee currentE = userManager.get(MyEmployee.class, e.getIdentifier());
 		assertEquals(currentE, e);
 		
 		
@@ -103,7 +103,7 @@ public class UsermanagerTest {
 		final int newCount = Iterables.toList((empManager.find(MyEmployee.class))).size();
 		
 		for(MyEmployee employee : list) {
-			assertEquals(empManager.get(MyEmployee.class, employee.getUserIdentifier()), employee);
+			assertEquals(empManager.get(MyEmployee.class, employee.getIdentifier()), employee);
 		}
 		assertEquals(usersToAdd, newCount - oldCount); 
 	}

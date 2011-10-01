@@ -39,9 +39,9 @@ public class UsermangerPersistenceTest {
 		userManager.add(e3);
 
 		assertEquals(
-				userManager.get(MyEmployee.class, e3.getUserIdentifier()), e3);
+				userManager.get(MyEmployee.class, e3.getIdentifier()), e3);
 		assertEquals(
-				userManager.get(MyEmployee.class, e3.getUserIdentifier())
+				userManager.get(MyEmployee.class, e3.getIdentifier())
 						.verifyPassword("lala"), true);
 	}
 
