@@ -7,7 +7,7 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Objects;
 
 /**
- * 
+ * TODO
  * @author Thomas Dedek
  * @author Paul Henke
  * 
@@ -16,7 +16,7 @@ import org.salespointframework.util.Objects;
 public class PersistentChargeLine implements ChargeLine
 {
 	@EmbeddedId
-	private ChargeLineIdentifier chargeLineIdentifier;
+	private ChargeLineIdentifier chargeLineIdentifier = new ChargeLineIdentifier();
 
 	private Money amount;
 	private String description;
@@ -30,59 +30,53 @@ public class PersistentChargeLine implements ChargeLine
 	{
 	}
 
+	/**
+	 * Creates a new PersistentChargeLine
+	 * @param amount the value of the ChargeLine
+	 * @param description a description
+	 */
 	public PersistentChargeLine(Money amount, String description)
 	{
 		this(amount, description, "");
 	}
 
+	/**
+	 * Creates a new PersistentChargeLine
+	 * @param amount the value of the ChargeLine
+	 * @param description a description
+	 * @param comment a comment
+	 */
 	public PersistentChargeLine(Money amount, String description, String comment)
 	{
 		this.amount = Objects.requireNonNull(amount, "amount");
 		this.description = Objects.requireNonNull(description, "description");
 		this.comment = Objects.requireNonNull(comment, "comment");
-
-		this.chargeLineIdentifier = new ChargeLineIdentifier();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Money getPrice()
 	{
 		return amount;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String getDescription()
 	{
 		return description;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String getComment()
 	{
 		return comment;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public ChargeLineIdentifier getChargeLineIdentifier()
+	public ChargeLineIdentifier getIdentifier()
 	{
 		return chargeLineIdentifier;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object other)
 	{
@@ -94,41 +88,19 @@ public class PersistentChargeLine implements ChargeLine
 		{
 			return true;
 		}
-		if (!(other instanceof PersistentChargeLine))
+		if (other instanceof PersistentChargeLine)
 		{
-			return false;
+			return this.chargeLineIdentifier.equals(((PersistentChargeLine)other).chargeLineIdentifier);
 		}
-		return this.equals((PersistentChargeLine) other);
+		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public final boolean equals(PersistentChargeLine other)
-	{
-		if (other == null)
-		{
-			return false;
-		}
-		if (other == this)
-		{
-			return true;
-		}
-		return this.chargeLineIdentifier.equals(other.chargeLineIdentifier);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public final int hashCode()
 	{
 		return this.chargeLineIdentifier.hashCode();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString()
 	{

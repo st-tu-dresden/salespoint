@@ -1,11 +1,12 @@
 package org.salespointframework.core.user;
 
+// TODO nötig?
+
+@SuppressWarnings("serial")
 public class UnknownUserException extends RuntimeException
 {
-	private static final long serialVersionUID = 1L;
-
-	public UnknownUserException(String identifier)
+	public UnknownUserException(UserIdentifier userIdentifier)
 	{
-		super("User " + identifier + " is unknown");
+		super("User " + userIdentifier.toString() + " is unknown");
 	}
 }

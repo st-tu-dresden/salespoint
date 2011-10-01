@@ -14,6 +14,7 @@ public class AccountancyEntryIdentifierEditor extends PropertyEditorSupport
 	@Override
 	public void setAsText(String text)
 	{
+		@SuppressWarnings("deprecation")
 		AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier(text);
 		setValue(accountancyEntryIdentifier);
 	}

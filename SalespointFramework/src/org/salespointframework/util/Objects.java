@@ -2,11 +2,12 @@ package org.salespointframework.util;
 
 import java.util.Arrays;
 
-// inspired by http://download.oracle.com/javase/7/docs/api/java/util/Objects.html
+// 
 
 /**
  * This class provides useful methods for null-checking and hash calculation of
  * multiple objects.
+ * inspired by http://download.oracle.com/javase/7/docs/api/java/util/Objects.html
  * 
  * @author Paul Henke
  * 
@@ -31,6 +32,7 @@ public final class Objects
 	 * @param paramName
 	 *            The object's name to identify in exception description.
 	 * @return The given object if it isn't <code>null</code>
+	 * @throws ArgumentNullException if object is <code>null</code>
 	 */
 	public static <T> T requireNonNull(T object, String paramName)
 	{
@@ -41,6 +43,7 @@ public final class Objects
 		return object;
 	}
 
+	// TODO doku einfach aus der echten Objectsklasse klauen ^_^
 	/**
 	 * This method calculates one hash code for multiple objects.
 	 * 

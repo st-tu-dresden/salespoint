@@ -156,6 +156,6 @@ public class PersistentServiceType extends PersistentProductType implements Serv
 		{
 			return true;
 		}
-		return this.getProductIdentifier().equals(other.getProductIdentifier());
+		return this.getIdentifier().equals(other.getIdentifier());
 	}
 }

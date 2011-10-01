@@ -13,17 +13,23 @@ import javax.persistence.Entity;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.PersistentProductType;
+import org.salespointframework.core.product.Product;
 import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.ProductType;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
+/**
+ * TODO
+ * @author Paul Henke
+ *
+ */
 @Entity
 public class PersistentOrderLine implements OrderLine
 {
 	@EmbeddedId
-	private OrderLineIdentifier orderLineIdentifier;
+	private OrderLineIdentifier orderLineIdentifier = new OrderLineIdentifier();;
 
 	@Embedded
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
@@ -46,10 +52,10 @@ public class PersistentOrderLine implements OrderLine
 	{
 
 	}
-
+	
 	/**
 	 * 
-	 * @param productIdentifier
+	 * @param productIdentifier 
 	 */
 	public PersistentOrderLine(ProductIdentifier productIdentifier)
 	{
@@ -91,21 +97,16 @@ public class PersistentOrderLine implements OrderLine
 		{
 			throw new RuntimeException("ProductType is unknown");
 		}
-		this.productIdentifier = productType.getProductIdentifier();
+		this.productIdentifier = productType.getIdentifier();
 		this.productName = productType.getName();
-		this.productFeatures = Iterables.toSet(productFeatures); // has to be
-																	// evaluated,
-																	// lazyness
-																	// not
-																	// always
-																	// good
+		this.productFeatures = Iterables.toSet(productFeatures);
+
 		if (numberOrdered <= 0)
 		{
 			throw new IllegalArgumentException("numberOrdered must be greater than 0");
 		}
 		this.numberOrdered = numberOrdered;
-		orderLineIdentifier = new OrderLineIdentifier();
-
+		
 		Money price = productType.getPrice();
 		for (ProductFeature pf : this.productFeatures)
 		{
@@ -114,27 +115,18 @@ public class PersistentOrderLine implements OrderLine
 		this.price = price;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public final OrderLineIdentifier getOrderLineIdentifier()
+	public final OrderLineIdentifier getIdentifier()
 	{
 		return orderLineIdentifier;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public final Money getPrice()
 	{
 		return price;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public final ProductIdentifier getProductIdentifier()
 	{
@@ -142,28 +134,52 @@ public class PersistentOrderLine implements OrderLine
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Convenience method
+	 * @return the productname of the {@link Product} in this orderline
 	 */
 	public final String getProductName()
 	{
 		return productName;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public final int getNumberOrdered()
 	{
 		return numberOrdered;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public final Iterable<ProductFeature> getProductFeatures()
 	{
 		return Iterables.from(productFeatures);
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (other == null)
+		{
+			return false;
+		}
+		if (other == this)
+		{
+			return true;
+		}
+		if (other instanceof PersistentOrderLine)
+		{
+			return this.orderLineIdentifier.equals(((PersistentOrderLine)other).orderLineIdentifier);
+		}
+		return false;
+	}
+
+
+	@Override
+	public int hashCode() {
+		return orderLineIdentifier.hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return productIdentifier.toString() + " x " + numberOrdered;
 	}
 }

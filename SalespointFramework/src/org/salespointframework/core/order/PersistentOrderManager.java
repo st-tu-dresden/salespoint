@@ -20,13 +20,17 @@ import org.salespointframework.util.Objects;
  * @author Paul Henke
  * 
  */
-public class PersistentOrderManager implements OrderManager<PersistentOrder, PersistentOrderLine, PersistentChargeLine>
+public final class PersistentOrderManager implements OrderManager<PersistentOrder, PersistentOrderLine, PersistentChargeLine>
 {
 	private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 
 	/**
-	 * {@inheritDoc}
+	 * creates a new PersistentOrderManager
 	 */
+	public PersistentOrderManager() {
+		
+	}
+	
 	@Override
 	public final void add(PersistentOrder order)
 	{
@@ -36,26 +40,6 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 		beginCommit(em);
 	}
 
-	// TODO REALLY????
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final void remove(OrderIdentifier orderIdentifier)
-	{
-		Objects.requireNonNull(orderIdentifier, "orderIdentifier");
-		EntityManager em = emf.createEntityManager();
-		Object order = em.find(PersistentOrder.class, orderIdentifier);
-		if (order != null)
-		{
-			em.remove(order);
-			beginCommit(em);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public final PersistentOrder get(OrderIdentifier orderIdentifier)
 	{
@@ -64,9 +48,6 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 		return em.find(PersistentOrder.class, orderIdentifier);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public final boolean contains(OrderIdentifier orderIdentifier)
 	{
@@ -75,9 +56,6 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 		return em.find(PersistentOrder.class, orderIdentifier) != null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public final Iterable<PersistentOrder> find(DateTime from, DateTime to)
 	{
@@ -94,9 +72,6 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 		return Iterables.from(tq.getResultList());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public final Iterable<PersistentOrder> find(OrderStatus orderStatus)
 	{
@@ -112,9 +87,6 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 		return Iterables.from(tq.getResultList());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public final Iterable<PersistentOrder> find(UserIdentifier userIdentifier)
 	{
@@ -130,9 +102,6 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 		return Iterables.from(tq.getResultList());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public final Iterable<PersistentOrder> find(UserIdentifier userIdentifier, DateTime from, DateTime to)
 	{
@@ -152,10 +121,6 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 		return Iterables.from(tq.getResultList());
 	}
 
-	/**
-	 * 
-	 * @param order
-	 */
 	public final void update(PersistentOrder order)
 	{
 		Objects.requireNonNull(order, "order");

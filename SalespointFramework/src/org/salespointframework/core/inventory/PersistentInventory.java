@@ -31,7 +31,7 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 	private final EntityManager entityManager;
 
 	/**
-	 * 
+	 * Creates a new PersistentInventory.
 	 */
 	public PersistentInventory()
 	{
@@ -39,17 +39,15 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 	}
 
 	/**
-	 * 
-	 * @param entityManager
+	 * Creates an new PersistentInventory.
+	 * TODO
+	 * @param entityManager an {@link EntityManager}
 	 */
 	public PersistentInventory(EntityManager entityManager)
 	{
 		this.entityManager = Objects.requireNonNull(entityManager, "entityManager");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void add(PersistentProduct persistentProduct)
 	{
@@ -60,15 +58,27 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Adds multiple {@link PersistentProduct}s to this PersistentInventory
+	 * @param products an Iterable of {@link PersistentProduct}s to be added
 	 */
+	public final void addAll(Iterable<? extends PersistentProduct> products)
+	{
+		Objects.requireNonNull(products, "products");
+		EntityManager em = emf.createEntityManager();
+		for (PersistentProduct e : products)
+		{
+			em.persist(e);
+		}
+		beginCommit(em);
+	}
+
 	@Override
 	public boolean remove(SerialNumber serialNumber)
 	{
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		EntityManager em = getEntityManager();
 		Object product = em.find(PersistentProduct.class, serialNumber);
-		if (product != null)
+		if(product != null)
 		{
 			em.remove(product);
 			beginCommit(em);
@@ -79,9 +89,6 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean contains(SerialNumber serialNumber)
 	{
@@ -90,9 +97,6 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 		return em.find(PersistentProduct.class, serialNumber) != null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public <E extends PersistentProduct> E get(Class<E> clazz, SerialNumber serialNumber)
 	{
@@ -102,9 +106,6 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 		return em.find(clazz, serialNumber);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public <E extends PersistentProduct> Iterable<E> find(Class<E> clazz)
 	{
@@ -122,9 +123,6 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 		return Iterables.from(tq.getResultList());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public <E extends PersistentProduct> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier)
 	{
@@ -146,9 +144,6 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 		return Iterables.from(tq.getResultList());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public <E extends PersistentProduct> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures)
 	{
@@ -173,7 +168,7 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 		return Iterables.from(tq.getResultList());
 	}
 
-	public PersistentInventory createNew(EntityManager entityManager)
+	public PersistentInventory newInstance(EntityManager entityManager)
 	{
 		return new PersistentInventory(entityManager);
 	}
@@ -183,10 +178,9 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 		return entityManager != null ? entityManager : emf.createEntityManager();
 	}
 
-	// TODO not pretty
 	private final void beginCommit(EntityManager entityManager)
 	{
-		if (this.entityManager == null)
+		if(this.entityManager == null)
 		{
 			entityManager.getTransaction().begin();
 			entityManager.getTransaction().commit();

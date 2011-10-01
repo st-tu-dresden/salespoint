@@ -6,6 +6,8 @@ package org.salespointframework.core.user;
  * @author Christopher Bellmann
  * 
  */
+
+// TODO nötig?
 @SuppressWarnings("serial")
 public class DuplicateUserException extends IllegalArgumentException
 {

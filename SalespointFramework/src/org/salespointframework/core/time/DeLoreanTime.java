@@ -5,13 +5,12 @@ import org.joda.time.Duration;
 import org.salespointframework.util.Objects;
 
 /**
- * 
+ * TODO
  * @author Paul Henke
- * 
+ *
  */
 public class DeLoreanTime implements Time
 {
-
 	Duration duration = Duration.ZERO;
 
 	@Override
@@ -20,23 +19,32 @@ public class DeLoreanTime implements Time
 		return new DateTime().plus(duration);
 	}
 
+	/**
+	 * you need 1.21 gigawatts for this method
+	 */
 	@Override
 	public final void forward(Duration duration)
 	{
 		Objects.requireNonNull(duration, "duration");
-		beforeGoAhead(duration);
+		beforeForward(duration);
 		this.duration = this.duration.plus(duration);
-		afterGoAhead(duration);
+		afterForward(duration);
 	}
 
-	// Hook
-	public void beforeGoAhead(Duration duration)
+	/**
+	 * Hook method, is called before forward is called
+	 * @param duration
+	 */
+	public void beforeForward(Duration duration)
 	{
 
 	}
 
-	// Hook
-	public void afterGoAhead(Duration duration)
+	/**
+	 * Hook method, is called after forward was called
+	 * @param duration
+	 */
+	public void afterForward(Duration duration)
 	{
 
 	}

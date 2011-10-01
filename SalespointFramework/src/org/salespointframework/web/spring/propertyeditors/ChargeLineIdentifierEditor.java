@@ -14,6 +14,7 @@ public class ChargeLineIdentifierEditor extends PropertyEditorSupport
 	@Override
 	public void setAsText(String text)
 	{
+		@SuppressWarnings("deprecation")
 		ChargeLineIdentifier chargeLineIdentifier = new ChargeLineIdentifier(text);
 		setValue(chargeLineIdentifier);
 	}

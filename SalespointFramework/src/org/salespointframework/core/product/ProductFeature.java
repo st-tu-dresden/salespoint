@@ -1,17 +1,20 @@
 package org.salespointframework.core.product;
 
+import java.io.Serializable;
+
 import javax.persistence.Embeddable;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Objects;
 
 /**
- * 
+ * TODO
  * @author Paul Henke
  * 
  */
+@SuppressWarnings("serial")
 @Embeddable
-public final class ProductFeature
+public final class ProductFeature implements Serializable,Comparable<ProductFeature>
 {
 	private String featureType;
 	private String value;
@@ -35,11 +38,24 @@ public final class ProductFeature
 		this.percent = Objects.requireNonNull(percent, "percent");
 	}
 
+	
+	/**
+	 * @param featureType the featuretype of this ProductFeature
+	 * @param value the value of this ProductFeature
+	 * @return a new ProductFeature with the price value of 0 //TODO besser schreiben?
+	 */
 	public static ProductFeature create(String featureType, String value)
 	{
 		return new ProductFeature(featureType, value, Money.ZERO, 0);
 	}
 
+	/**
+	 * 
+	 * @param featureType the featuretype of this ProductFeature
+	 * @param value the value of this ProductFeature
+	 * @param price the price of this ProductFeature
+	 * @return a new ProductFeature
+	 */
 	public static ProductFeature create(String featureType, String value, Money price)
 	{
 		return new ProductFeature(featureType, value, price, 0);
@@ -50,28 +66,42 @@ public final class ProductFeature
 		return new ProductFeature(featureType, value, Money.ZERO, percent);
 	}
 
+	/**
+	 * 
+	 * @return the FeatureType of this ProductFeature
+	 */
 	public final String getFeatureType()
 	{
 		return featureType;
 	}
 
+	// TODO naming, value heißt woanders Money statt String
+	/**
+	 * 
+	 * @return the Value of this ProductFeature
+	 */
 	public final String getValue()
 	{
 		return value;
 	}
 
+	/**
+	 * 
+	 * @return the Price of the ProductFeature
+	 */
 	public final Money getPrice()
 	{
 		return price;
 	}
 
+	//TODO
 	public final double getPercent()
 	{
 		return percent;
 	}
 
 	@Override
-	public final boolean equals(final Object other)
+	public final boolean equals(Object other)
 	{
 		if (other == null)
 		{
@@ -81,24 +111,12 @@ public final class ProductFeature
 		{
 			return true;
 		}
-		if (!(other instanceof ProductFeature))
+		if (other instanceof ProductFeature)
 		{
-			return false;
+			ProductFeature rehto = (ProductFeature) other;
+			return this.featureType.equals(rehto.featureType) && this.value.equals(rehto.value);
 		}
-		return this.equals((ProductFeature) other);
-	}
-
-	public final boolean equals(final ProductFeature other)
-	{
-		if (other == null)
-		{
-			return false;
-		}
-		if (other == this)
-		{
-			return true;
-		}
-		return this.featureType.equals(other.featureType) && this.value.equals(other.value);
+		return false;
 	}
 
 	@Override
@@ -111,5 +129,11 @@ public final class ProductFeature
 	public final String toString()
 	{
 		return featureType + " | " + value;
+	}
+
+	@Override
+	public int compareTo(ProductFeature other)
+	{
+		return this.featureType.compareTo(other.featureType);
 	}
 }

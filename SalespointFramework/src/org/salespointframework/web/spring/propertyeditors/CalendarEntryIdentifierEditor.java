@@ -14,6 +14,7 @@ public class CalendarEntryIdentifierEditor extends PropertyEditorSupport
 	@Override
 	public void setAsText(String text)
 	{
+		@SuppressWarnings("deprecation")
 		CalendarEntryIdentifier serialNumber = new CalendarEntryIdentifier(text);
 		setValue(serialNumber);
 	}

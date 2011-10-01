@@ -1,5 +1,6 @@
 package org.salespointframework.core.user;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,8 +11,14 @@ import javax.persistence.Entity;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
+/**
+ * 
+ * @author Christopher Bellmann
+ * @author Paul Henke
+ *
+ */
 @Entity
-public class PersistentUser implements User
+public class PersistentUser implements User, Comparable<PersistentUser>
 {
 
 	@EmbeddedId
@@ -20,7 +27,7 @@ public class PersistentUser implements User
 	private String password;
 
 	@ElementCollection
-	Set<UserCapability> capabilities = new HashSet<UserCapability>();
+	private Set<Capability> capabilities = new HashSet<Capability>();
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
@@ -29,29 +36,50 @@ public class PersistentUser implements User
 	protected PersistentUser()
 	{
 	}
-
-	public PersistentUser(UserIdentifier userIdentifier, String password)
+	
+	/**
+	 * Creates an new PersistentUser
+	 * @param userIdentifier the {@link UserIdentifier} of the user
+	 * @param password the password of the user
+	 * @param capabilities an <code>Array</code> of {@link Capability}s for the user 
+	 */
+	public PersistentUser(UserIdentifier userIdentifier, String password, Capability... capabilities)
 	{
 		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier");
 		this.password = Objects.requireNonNull(password, "password");
+		Objects.requireNonNull(capabilities, "capabilities");
+		this.capabilities.addAll(Arrays.asList(capabilities));
 	}
 
-	boolean addCapability(UserCapability capability)
+	@Override
+	public UserIdentifier getIdentifier()
 	{
+		return userIdentifier;
+	}
+	
+	@Override
+	public boolean addCapability(Capability capability)
+	{
+		Objects.requireNonNull(capability, "capability");
 		return capabilities.add(capability);
 	}
 
-	boolean removeCapability(UserCapability capability)
+	@Override
+	public boolean removeCapability(Capability capability)
 	{
+		Objects.requireNonNull(capability, "capability");
 		return capabilities.remove(capability);
 	}
 
-	boolean hasCapability(UserCapability capability)
+	@Override
+	public boolean hasCapability(Capability capability)
 	{
+		Objects.requireNonNull(capability, "capability");
 		return capabilities.contains(capability);
 	}
 
-	Iterable<UserCapability> getCapabilities()
+	@Override
+	public Iterable<Capability> getCapabilities()
 	{
 		return Iterables.from(capabilities);
 	}
@@ -59,6 +87,8 @@ public class PersistentUser implements User
 	@Override
 	public boolean verifyPassword(String password)
 	{
+		Objects.requireNonNull(password, "password");
+		
 		if (this.password.equals(password))
 		{
 			return true;
@@ -69,18 +99,14 @@ public class PersistentUser implements User
 	@Override
 	public boolean changePassword(String newPassword, String oldPassword)
 	{
+		Objects.requireNonNull(newPassword, "newPassword");
+		Objects.requireNonNull(oldPassword, "oldPassword");
 		if (verifyPassword(oldPassword))
 		{
 			this.password = newPassword;
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public UserIdentifier getUserIdentifier()
-	{
-		return userIdentifier;
 	}
 
 	@Override
@@ -94,24 +120,12 @@ public class PersistentUser implements User
 		{
 			return true;
 		}
-		if (!(other instanceof PersistentUser))
+		if (other instanceof PersistentUser)
 		{
-			return false;
+			return this.userIdentifier.equals(((PersistentUser)other).userIdentifier);
 		}
-		return equals((PersistentUser) other);
-	}
-
-	public final boolean equals(PersistentUser other)
-	{
-		if (other == null)
-		{
-			return false;
-		}
-		if (other == this)
-		{
-			return true;
-		}
-		return this.userIdentifier.equals(other.userIdentifier);
+		return false;
+		
 	}
 
 	@Override
@@ -124,5 +138,11 @@ public class PersistentUser implements User
 	public String toString()
 	{
 		return userIdentifier.toString();
+	}
+
+	@Override
+	public int compareTo(PersistentUser other)
+	{
+		return this.userIdentifier.compareTo(other.getIdentifier());
 	}
 }

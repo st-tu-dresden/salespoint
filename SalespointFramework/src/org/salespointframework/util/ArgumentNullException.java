@@ -5,12 +5,12 @@ package org.salespointframework.util;
 // denn NullRefEx und IllegalArgumentEx sind beide unpassend
 
 /**
- * 
+ * TODO
  * @author Paul Henke
  * 
  */
 @SuppressWarnings("serial")
-public class ArgumentNullException extends IllegalArgumentException
+public class ArgumentNullException extends IllegalArgumentException // TODO NPE (Effective Java)?
 {
 	private final String paramName;
 
@@ -19,19 +19,32 @@ public class ArgumentNullException extends IllegalArgumentException
 		paramName = "";
 	}
 
+	/**
+	 * Creates a new ArgumentNullException.
+	 * @param paramName the name of the null parameter
+	 */
 	public ArgumentNullException(String paramName)
 	{
 		super(paramName + " must be not null");
 		this.paramName = paramName;
 	}
 
+	/**
+	 * Creates a new ArgumentNullException.
+	 * @param paramName the name of the null parameter
+	 * @param message an optional message
+	 */
 	public ArgumentNullException(String paramName, String message)
 	{
 		super(message);
 		this.paramName = paramName;
 	}
 
-	public String getParamName()
+	/**
+	 * 
+	 * @return the name of the null parameter
+	 */
+	public final String getParamName()
 	{
 		return paramName;
 	}

@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 /**
- * 
+ * TODO
  * @author Paul Henke
  * 
  */
@@ -16,9 +16,12 @@ public class DefaultTime implements Time
 		return new DateTime();
 	}
 
+	/**
+	 * this method does nothing
+	 */
 	@Override
 	public void forward(Duration duration)
 	{
-		// NO OP
+
 	}
 }

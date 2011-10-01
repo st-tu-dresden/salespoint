@@ -1,7 +1,7 @@
 package org.salespointframework.web;
 
 /**
- * TODO
+ * 
  * @author Lars Kreisz
  * @author Uwe Schmidt
  * @author Paul Henke

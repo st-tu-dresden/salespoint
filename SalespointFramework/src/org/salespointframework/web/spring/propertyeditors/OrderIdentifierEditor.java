@@ -14,6 +14,7 @@ public class OrderIdentifierEditor extends PropertyEditorSupport
 	@Override
 	public void setAsText(String text)
 	{
+		@SuppressWarnings("deprecation")
 		OrderIdentifier orderIdentifier = new OrderIdentifier(text);
 		setValue(orderIdentifier);
 	}

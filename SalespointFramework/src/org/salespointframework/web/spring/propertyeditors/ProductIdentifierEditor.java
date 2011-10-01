@@ -14,6 +14,7 @@ public class ProductIdentifierEditor extends PropertyEditorSupport
 	@Override
 	public void setAsText(String text)
 	{
+		@SuppressWarnings("deprecation")
 		ProductIdentifier productIdentifier = new ProductIdentifier(text);
 		setValue(productIdentifier);
 	}

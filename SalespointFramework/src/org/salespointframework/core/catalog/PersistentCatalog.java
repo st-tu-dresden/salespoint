@@ -14,99 +14,93 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.product.PersistentProductType;
 import org.salespointframework.core.product.PersistentProductType_;
 import org.salespointframework.core.product.ProductIdentifier;
-import org.salespointframework.core.product.ProductType;
+import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
 /**
- * 
+ * TODO
  * @author Paul Henke
  * 
  */
-// TODO add javadoc
-public class PersistentCatalog implements Catalog<PersistentProductType> {
-	private EntityManagerFactory emf = Database.INSTANCE
-			.getEntityManagerFactory();
+
+public class PersistentCatalog implements Catalog<PersistentProductType>
+{
+	private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 
 	/**
-	 * 
+	 * Creates a new PersistentCatalog.
 	 */
-	public PersistentCatalog() {
+	public PersistentCatalog()
+	{
 
 	}
 
-	// TODO y inherit?
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public final void add(PersistentProductType productType) {
+	public final void add(PersistentProductType productType)
+	{
 		Objects.requireNonNull(productType, "productType");
 		EntityManager em = emf.createEntityManager();
 		em.persist(productType);
 		beginCommit(em);
 	}
 
+	
 	/**
-	 * {@inheritDoc}
+	 * Adds multiple {@link PersistentProductType}s to this PersistentCatalog
+	 * @param productTypes an Iterable of {@link PersistentProductType}s to be added
 	 */
-	public final void addAll(
-			Iterable<? extends PersistentProductType> productTypes) {
+	public final void addAll(Iterable<? extends PersistentProductType> productTypes)
+	{
 		Objects.requireNonNull(productTypes, "productTypes");
 		EntityManager em = emf.createEntityManager();
-		for (ProductType productType : productTypes) {
+		for (PersistentProductType productType : productTypes)
+		{
 			em.persist(productType);
 		}
 		beginCommit(em);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	// TODO catch exception
+
+	
 	@Override
-	public final boolean remove(ProductIdentifier productIdentifier) {
+	public final boolean remove(ProductIdentifier productIdentifier)
+	{
+		// TODO catch exception
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		EntityManager em = emf.createEntityManager();
-		Object productType = em.find(PersistentProductType.class,
-				productIdentifier);
-		if (productType != null) {
+		Object productType = em.find(PersistentProductType.class, productIdentifier);
+		if(productType != null)
+		{
 			em.remove(productType);
 			beginCommit(em);
 			return true;
-		} else {
+		} else
+		{
 			return false;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public final boolean contains(ProductIdentifier productIdentifier) {
+	public final boolean contains(ProductIdentifier productIdentifier)
+	{
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		EntityManager em = emf.createEntityManager();
-		return em.find(ProductType.class, productIdentifier) != null;
+		return em.find(PersistentProductType.class, productIdentifier) != null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public final <T extends PersistentProductType> T get(Class<T> clazz,
-			ProductIdentifier productIdentifier) {
+	public final <T extends PersistentProductType> T get(Class<T> clazz, ProductIdentifier productIdentifier)
+	{
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		EntityManager em = emf.createEntityManager();
 		return em.find(clazz, productIdentifier);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public final <T extends PersistentProductType> Iterable<T> find(
-			Class<T> clazz) {
+	public final <T extends PersistentProductType> Iterable<T> find(Class<T> clazz)
+	{
 		Objects.requireNonNull(clazz, "clazz");
 
 		EntityManager em = emf.createEntityManager();
@@ -119,12 +113,9 @@ public class PersistentCatalog implements Catalog<PersistentProductType> {
 		return Iterables.from(tq.getResultList());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public final <T extends PersistentProductType> Iterable<T> findByName(
-			Class<T> clazz, String name) {
+	public final <T extends PersistentProductType> Iterable<T> findByName(Class<T> clazz, String name)
+	{
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(name, "name");
 
@@ -143,13 +134,9 @@ public class PersistentCatalog implements Catalog<PersistentProductType> {
 		return Iterables.from(tq.getResultList());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	// TODO have a 2nd look at overload resolution
 	@Override
-	public final <T extends PersistentProductType> Iterable<T> findByCategory(
-			Class<T> clazz, String category) {
+	public final <T extends PersistentProductType> Iterable<T> findByCategory(Class<T> clazz, String category)
+	{
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(category, "category");
 
@@ -158,8 +145,7 @@ public class PersistentCatalog implements Catalog<PersistentProductType> {
 		CriteriaQuery<T> cq = cb.createQuery(clazz);
 		Root<T> entry = cq.from(clazz);
 		Predicate p1 = entry.type().in(clazz);
-		Predicate p2 = cb.isMember(category,
-				entry.<Set<String>> get("categories"));
+		Predicate p2 = cb.isMember(category, entry.<Set<String>> get("categories"));
 
 		// Overload Resolution fail?
 		// Predicate p2 = cb.isMember(category,
@@ -175,17 +161,20 @@ public class PersistentCatalog implements Catalog<PersistentProductType> {
 	}
 
 	/**
-	 * 
-	 * @param productType
+	 * Updates and persists an existing {@link PersistentProductType} to the PersistentCatalog and the Database
+	 * @param productType the {@link PersistentProductType} to be updated
+	 * @throws ArgumentNullException if productType is null
 	 */
-	public final void update(PersistentProductType productType) {
+	public final void update(PersistentProductType productType)
+	{
 		Objects.requireNonNull(productType, "productType");
 		EntityManager em = emf.createEntityManager();
 		em.merge(productType);
 		beginCommit(em);
 	}
 
-	private final void beginCommit(EntityManager entityManager) {
+	private final void beginCommit(EntityManager entityManager)
+	{
 		entityManager.getTransaction().begin();
 		entityManager.getTransaction().commit();
 	}

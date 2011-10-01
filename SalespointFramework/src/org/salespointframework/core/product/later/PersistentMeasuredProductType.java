@@ -438,6 +438,6 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 		{
 			return true;
 		}
-		return this.getProductIdentifier().equals(other.getProductIdentifier());
+		return this.getIdentifier().equals(other.getIdentifier());
 	}
 }

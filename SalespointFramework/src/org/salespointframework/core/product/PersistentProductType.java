@@ -12,16 +12,16 @@ import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
 /**
- * 
+ * TODO
  * @author Paul Henke
  * 
  */
 
 @Entity
-public class PersistentProductType implements ProductType
+public class PersistentProductType implements ProductType, Comparable<PersistentProductType>
 {
 	@EmbeddedId
-	private ProductIdentifier productIdentifier;
+	private ProductIdentifier productIdentifier = new ProductIdentifier();;
 
 	protected String name;
 	protected Money price;
@@ -40,11 +40,15 @@ public class PersistentProductType implements ProductType
 	{
 	}
 
+	/**
+	 * Creates a new PersistentProductType
+	 * @param name the name of the PersistentProductType
+	 * @param price the price of the PersistentProductType
+	 */
 	public PersistentProductType(String name, Money price)
 	{
 		this.name = Objects.requireNonNull(name, "name");
 		this.price = Objects.requireNonNull(price, "price");
-		this.productIdentifier = new ProductIdentifier();
 	}
 
 	@Override
@@ -58,30 +62,23 @@ public class PersistentProductType implements ProductType
 		{
 			return true;
 		}
-		if (!(other instanceof ProductType))
+		if (other instanceof PersistentProductType)
 		{
-			return false;
+			return this.productIdentifier.equals(((PersistentProductType)other).productIdentifier);
 		}
-		return this.equals((ProductType) other);
-	}
-
-	public final boolean equals(ProductType other)
-	{
-		if (other == null)
-		{
-			return false;
-		}
-		if (other == this)
-		{
-			return true;
-		}
-		return this.productIdentifier.equals(other.getProductIdentifier());
+		return false;
 	}
 
 	@Override
 	public final int hashCode()
 	{
 		return productIdentifier.hashCode();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return name;
 	}
 
 	@Override
@@ -97,19 +94,13 @@ public class PersistentProductType implements ProductType
 	}
 
 	@Override
-	public String toString()
-	{
-		return name;
-	}
-
-	@Override
 	public final Iterable<ProductFeature> getProductFeatures()
 	{
 		return Iterables.from(productFeatures);
 	}
 
 	@Override
-	public final ProductIdentifier getProductIdentifier()
+	public final ProductIdentifier getIdentifier()
 	{
 		return productIdentifier;
 	}
@@ -144,5 +135,11 @@ public class PersistentProductType implements ProductType
 	public final Iterable<String> getCategories()
 	{
 		return Iterables.from(categories);
+	}
+
+	@Override
+	public int compareTo(PersistentProductType other)
+	{
+		return this.name.compareTo(other.name);
 	}
 }

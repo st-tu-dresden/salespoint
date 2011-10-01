@@ -2,6 +2,7 @@ package org.salespointframework.core.database;
 
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -15,29 +16,31 @@ import org.salespointframework.util.Objects;
  * @author Paul Henke
  * 
  */
-//TODO what happens, if double-init?
 public enum Database {
+	/**
+	 * A singleton instance of the Database.
+	 */
 	INSTANCE;
 
 	private EntityManagerFactory entityManagerFactory;
 
 	/**
-	 * Initialize an EntityManagerFactory for the named persistence unit.
+	 * Initialize an {@link EntityManagerFactory} for the named persistence unit.
 	 * 
 	 * @param persistenceUnitName
 	 *            The name of the persistence unit
 	 * @return <code>true</code> if the persistence unit exists,
 	 *         <code>false</code> otherwise
 	 */
-	public boolean initializeEntityManagerFactory(String persistenceUnitName) {
+	public boolean initializeEntityManagerFactory(String persistenceUnitName)
+	{
 		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName");
-		entityManagerFactory = Persistence
-				.createEntityManagerFactory(persistenceUnitName);
+		entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName);
 		return entityManagerFactory != null;
 	}
 
 	/**
-	 * Initialize an EntityManagerFactory for the named persistence unit.
+	 * Initialize an {@link EntityManagerFactory} for the named persistence unit.
 	 * 
 	 * @param persistenceUnitName
 	 *            The name of the persistence unit
@@ -48,22 +51,22 @@ public enum Database {
 	 * @return <code>true</code> if the persistence unit exists,
 	 *         <code>false</code> otherwise
 	 */
-	public boolean initializeEntityManagerFactory(String persistenceUnitName,
-			@SuppressWarnings("rawtypes") Map properties) {
+	public boolean initializeEntityManagerFactory(String persistenceUnitName, @SuppressWarnings("rawtypes") Map properties)
+	{
 		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName");
 		Objects.requireNonNull(properties, "properties");
-		entityManagerFactory = Persistence.createEntityManagerFactory(
-				persistenceUnitName, properties);
+		entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName, properties);
 		return entityManagerFactory != null;
 	}
 
 	/**
-	 * Returns the initialized EntityManagerFactory
+	 * Returns the initialized {@link EntityManagerFactory}
 	 * 
-	 * @return The factory that creates EntityManagers configured according to
+	 * @return The factory that creates {@link EntityManager}s configured according to
 	 *         the specified persistence unit.
 	 */
-	public EntityManagerFactory getEntityManagerFactory() {
+	public EntityManagerFactory getEntityManagerFactory()
+	{
 		return entityManagerFactory;
 	}
 }

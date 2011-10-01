@@ -3,9 +3,6 @@ package org.salespointframework.util;
 import java.io.Serializable;
 import java.util.UUID;
 
-import javax.persistence.Embeddable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 /**
@@ -19,9 +16,7 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public class SalespointIdentifier implements Serializable, Comparable<SalespointIdentifier>
 {
-	//@Id
-	//@GeneratedValue
-	private String id;
+	private final String id;
 
 	public SalespointIdentifier()
 	{
@@ -47,32 +42,19 @@ public class SalespointIdentifier implements Serializable, Comparable<Salespoint
 	@Override
 	public boolean equals(Object other)
 	{
-		if (other == this)
-		{
-			return true;
-		}
 		if (other == null)
 		{
 			return false;
 		}
-		if (!(other instanceof SalespointIdentifier))
-		{
-			return false;
-		}
-		return this.equals((SalespointIdentifier) other);
-	}
-
-	public boolean equals(SalespointIdentifier other)
-	{
 		if (other == this)
 		{
 			return true;
 		}
-		if (other == null)
+		if (other instanceof SalespointIdentifier)
 		{
-			return false;
+			return this.id.equals(((SalespointIdentifier) other).id);
 		}
-		return this.getIdentifier().equals(other.getIdentifier());
+		return false;
 	}
 
 	@Override

@@ -10,44 +10,34 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
 import org.salespointframework.core.database.Database;
+import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
 /**
  * @author Christopher Bellmann
  * @author Paul Henke
- * @author Hannes Weisbach
+ * @author Hannes Weissbach
  */
 
 public class PersistentUserManager implements UserManager<PersistentUser>
 {
-
 	private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.salespointframework.core.users.UserManage#addUser(T)
-	 */
 	@Override
-	public void add(final PersistentUser user)
+	public void add(PersistentUser user)
 	{
 		Objects.requireNonNull(user, "user");
 
 		EntityManager em = emf.createEntityManager();
-		if (em.find(PersistentUser.class, user.getUserIdentifier()) != null)
+		if (em.find(PersistentUser.class, user.getIdentifier()) != null)
 		{
-			throw new DuplicateUserException(user.getUserIdentifier());
+			throw new DuplicateUserException(user.getIdentifier());
 		}
 		em.persist(user);
 		beginCommit(em);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.salespointframework.core.users.UserManage#removeUser(T)
-	 */
 	@Override
 	public boolean remove(UserIdentifier userIdentifer)
 	{
@@ -56,7 +46,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		// If user is logged on, log him off.
 		for (Map.Entry<Object, PersistentUser> entry : userTokenMap.entrySet())
 		{
-			if (entry.getValue().getUserIdentifier().equals(userIdentifer))
+			if (entry.getValue().getIdentifier().equals(userIdentifer))
 			{
 				Object token = entry.getKey();
 				this.logOff(token);
@@ -86,63 +76,6 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		return em.find(PersistentUser.class, userIdentifier) != null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.salespointframework.core.users.UserManage#addCapability(T,
-	 * org.salespointframework.core.users.UserCapability)
-	 */
-	@Override
-	public boolean addCapability(PersistentUser user, UserCapability userCapability)
-	{
-		Objects.requireNonNull(user, "user");
-		Objects.requireNonNull(userCapability, "userCapability");
-
-		return user.addCapability(userCapability);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.salespointframework.core.users.UserManage#removeCapability(T,
-	 * org.salespointframework.core.users.UserCapability)
-	 */
-	@Override
-	public boolean removeCapability(PersistentUser user, UserCapability userCapability)
-	{
-		Objects.requireNonNull(user, "user");
-		Objects.requireNonNull(userCapability, "userCapability");
-
-		return user.removeCapability(userCapability);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.salespointframework.core.users.UserManage#hasCapability(T,
-	 * org.salespointframework.core.users.UserCapability)
-	 */
-	@Override
-	public boolean hasCapability(PersistentUser user, UserCapability userCapability)
-	{
-		Objects.requireNonNull(user, "user");
-		Objects.requireNonNull(userCapability, "userCapability");
-
-		return user.hasCapability(userCapability);
-	}
-
-	public Iterable<UserCapability> getCapabilities(PersistentUser user)
-	{
-		Objects.requireNonNull(user, "user");
-
-		return Iterables.from(user.getCapabilities());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.salespointframework.core.users.UserManage#getUsers()
-	 */
 	@Override
 	public <T extends PersistentUser> Iterable<T> find(Class<T> clazz)
 	{
@@ -156,13 +89,6 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		return Iterables.from(tq.getResultList());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.salespointframework.core.users.UserManage#getUserByIdentifier(org
-	 * .salespointframework.core.users.UserIdentifier)
-	 */
 	@Override
 	public <T extends PersistentUser> T get(Class<T> clazz, UserIdentifier userIdentifier)
 	{
@@ -171,20 +97,13 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 
 		EntityManager em = emf.createEntityManager();
 		return em.find(clazz, userIdentifier);
-
-		/*
-		 * why the hell must be things so complicated EntityManager em =
-		 * emf.createEntityManager(); CriteriaBuilder cb =
-		 * em.getCriteriaBuilder(); CriteriaQuery<T> cq = cb.createQuery(clazz);
-		 * Root<T> entry = cq.from(clazz); Predicate primaryKey =
-		 * cb.equal(entry.get(PersistentUser_.userIdentifier), userIdentifier);
-		 * Predicate type = entry.type().in(clazz); cq.where(primaryKey, type);
-		 * TypedQuery<T> tq = em.createQuery(cq);
-		 * 
-		 * return tq.getSingleResult();
-		 */
 	}
 
+	/**
+	 * Updates and persists an existing {@link PersistentUser} to the PersistentUserManager and the Database
+	 * @param user the {@link PersistentUser} to be updated
+	 * @throws ArgumentNullException if user is null
+	 */
 	public void update(PersistentUser user)
 	{
 		Objects.requireNonNull(user, "user");
@@ -199,53 +118,30 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 	// TODO naming kinda sucks
 
 	// associates a user with a token
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.salespointframework.core.users.UserManage#logOn(T,
-	 * java.lang.Object)
-	 */
-	// TODO really? no return type, but throwing exceptions?
 	@Override
-	public final void logOn(PersistentUser user, Object token)
+	public final boolean logOn(PersistentUser user, Object token)
 	{
 		Objects.requireNonNull(user, "user");
 		Objects.requireNonNull(token, "token");
 
-		PersistentUser temp = this.get(PersistentUser.class, user.getUserIdentifier());
+		PersistentUser temp = this.get(PersistentUser.class, user.getIdentifier());
 
 		if (temp == null)
 		{
-			throw new UnknownUserException(user.getUserIdentifier().toString());
-		}
-
-		if (user != null)
-		{
+			return false;
+		} else {
 			userTokenMap.put(token, user);
+			return true;
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.salespointframework.core.users.UserManage#logOff(java.lang.Object)
-	 */
 	@Override
-	public final void logOff(final Object token)
+	public final void logOff(Object token)
 	{
 		Objects.requireNonNull(token, "token");
 
 		userTokenMap.remove(token);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.salespointframework.core.users.UserManage#getUserByToken(java.lang
-	 * .Object)
-	 */
 
 	@Override
 	public final <T extends PersistentUser> T getUserByToken(Class<T> clazz, Object token)

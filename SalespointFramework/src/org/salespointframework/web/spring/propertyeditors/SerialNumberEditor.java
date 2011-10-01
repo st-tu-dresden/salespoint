@@ -14,6 +14,7 @@ public class SerialNumberEditor extends PropertyEditorSupport
 	@Override
 	public void setAsText(String text)
 	{
+		@SuppressWarnings("deprecation")
 		SerialNumber serialNumber = new SerialNumber(text);
 		setValue(serialNumber);
 	}

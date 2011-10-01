@@ -25,12 +25,7 @@ public final class Iterables
 	{
 	}
 
-	/**
-	 * 
-	 * @param iterable
-	 * @return
-	 */
-	public static <T> List<T> toList(final Iterable<T> iterable)
+	public static <T> List<T> toList(Iterable<T> iterable)
 	{
 		Objects.requireNonNull(iterable, "iterable");
 
@@ -42,7 +37,7 @@ public final class Iterables
 		return temp;
 	}
 
-	public static <T> Set<T> toSet(final Iterable<T> iterable)
+	public static <T> Set<T> toSet(Iterable<T> iterable)
 	{
 		Objects.requireNonNull(iterable, "iterable");
 
@@ -55,38 +50,24 @@ public final class Iterables
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T[] toArray(final Iterable<T> iterable)
+	public static <T> T[] toArray(Iterable<T> iterable)
 	{
 		Objects.requireNonNull(iterable, "iterable");
 		return (T[]) toList(iterable).toArray();
 	}
 
-	/**
-	 * 
-	 * @param iterable
-	 * @return
-	 */
-	public static <T> boolean isEmpty(final Iterable<T> iterable)
+	public static <T> boolean isEmpty(Iterable<T> iterable)
 	{
 		Objects.requireNonNull(iterable, "iterable");
 		return !iterable.iterator().hasNext();
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public static <T> Iterable<T> empty()
 	{
 		return from(new ArrayList<T>(0));
 	}
 
-	/**
-	 * 
-	 * @param iterable
-	 * @return
-	 */
-	public static <T> int size(final Iterable<T> iterable)
+	public static <T> int size(Iterable<T> iterable)
 	{
 		Objects.requireNonNull(iterable, "iterable");
 		int size = 0;
@@ -97,12 +78,7 @@ public final class Iterables
 		return size;
 	}
 
-	/**
-	 * 
-	 * @param iterable
-	 * @return
-	 */
-	public static <T> T first(final Iterable<T> iterable)
+	public static <T> T first(Iterable<T> iterable)
 	{
 		Objects.requireNonNull(iterable, "iterable");
 		Iterator<T> iterator = iterable.iterator();
@@ -115,12 +91,7 @@ public final class Iterables
 		}
 	}
 
-	/**
-	 * 
-	 * @param iterable
-	 * @return
-	 */
-	public static <T> Iterable<T> from(final Iterable<T> iterable)
+	public static <T> Iterable<T> from(Iterable<T> iterable)
 	{
 		Objects.requireNonNull(iterable, "iterable");
 
@@ -154,11 +125,6 @@ public final class Iterables
 		};
 	}
 
-	/**
-	 * 
-	 * @param array
-	 * @return
-	 */
 	public static <T> Iterable<T> from(final T[] array)
 	{
 		Objects.requireNonNull(array, "array");

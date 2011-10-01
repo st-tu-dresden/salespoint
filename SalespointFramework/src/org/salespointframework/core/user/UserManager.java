@@ -1,80 +1,58 @@
 package org.salespointframework.core.user;
 
+import org.salespointframework.util.ArgumentNullException;
+
 /**
- * 
+ * TODO
  * @author Christopher Bellmann
  * @author Paul Henke
  * @author Hannes Weissbach
  * 
- * @param <T>
+ * @param <T> Base type of the users managed by the UserManager; has to
+ *            implement {@link User}
+ * 
  */
-
+//TODO @throws and shit
 public interface UserManager<T extends User>
 {
 
 	/**
-	 * Adds a <code>User</code> to the <code>UserManager</code> if the user not
+	 * Adds a {@link User} to the <code>UserManager</code> if the user not
 	 * already exists.
 	 * 
 	 * @param user
-	 *            <code>User</code> to be stored.
+	 *           {@link User} to be stored.
+	 * @throws ArgumentNullException if user is null           
 	 */
 	void add(T user);
 
+	/**
+	 * 
+	 * @param userIdentifier 
+	 * @return true if removal was successful, otherwise false
+	 * @throws ArgumentNullException is userIdentifier is null
+	 */
 	boolean remove(UserIdentifier userIdentifier);
 
+	/**
+	 * Checks if the UserManager contains a {@link User}
+	 * @param userIdentifier the {@link UserIdentifier} of the {@link User}
+	 * @return true if UserManager contains the {@link User}, otherwise false
+	 * @throws ArgumentNullException is userIdentifier is null
+	 */
 	boolean contains(UserIdentifier userIdentifier);
-
-	/**
-	 * Adds a <code>UserCapability</code> to a <code>User</code>
-	 * 
-	 * @param user
-	 *            <code>User</code> which will receive the
-	 *            <code>UserCapability</code>
-	 * @param userCapability
-	 *            <code>UserCapability</code> which the <code>user</code> will
-	 *            receive.
-	 * @return <code>true</code> if successful, <code>false</code> otherwise.
-	 */
-	boolean addCapability(T user, UserCapability userCapability);
-
-	/**
-	 * Removes a <code>UserCapability<code> from a <code>User</code>.
-	 * 
-	 * @param user
-	 *            <code>User</code> from which the <code>UserCapability</code>
-	 *            will be removed.
-	 * @param userCapability
-	 *            <code>UserCapability</code> which will be removed from
-	 *            <code>user</code>
-	 * @return <code>true</code> if successful, <code>false</code> otherwise
-	 */
-	boolean removeCapability(T user, UserCapability userCapability);
-
-	/**
-	 * Checks if a <code>User</code> has a specific <code>UserCapability</code>
-	 * 
-	 * @param user
-	 *            <code>User</code> which will be checked if
-	 *            <code>userCapability</code> was granted.
-	 * @param userCapability
-	 *            <code>UserCabability</code> for which the <code>user</code>
-	 *            will be checked for.
-	 * @return <code>true</code> if <code>userCapability</code> was granted to
-	 *         <code>user</code>
-	 */
-	boolean hasCapability(T user, UserCapability userCapability);
 
 	/**
 	 * Logs the user on. When a user is logged on, an association is made
 	 * between the user, and a supplied token.
 	 * 
 	 * @param user
-	 *            <code>User<code> to be logged on.
+	 *            {@link User} to be logged on.
 	 * @param token
 	 *            token, with which the <code>user</code> will be associated.
+	 * @return TODO
 	 */
-	void logOn(T user, Object token);
+	boolean logOn(T user, Object token);
 
 	/**
 	 * Logs a user off. The user associated with <code>token</code> on log on is

@@ -4,11 +4,15 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 /**
- * 
+ * TODO
  * @author Paul Henke
  * 
  */
 public interface Time {
+	/**
+	 * 
+	 * @return the current {@link DateTime} 
+	 */
 	DateTime getDateTime();
 
 	void forward(Duration duration);
