@@ -8,7 +8,6 @@ import static org.junit.matchers.JUnitMatchers.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.persistence.internal.jpa.metadata.structures.ArrayAccessor;
 import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,11 +34,11 @@ public class CalendarTest {
         calendar = new PersistentCalendar();
         
         user = new PersistentUser(new UserIdentifier("user"), "test");
-        entry = new PersistentCalendarEntry(user.getUserIdentifier(), "entry", basicDateTime, basicDateTime.plusMinutes(30));
+        entry = new PersistentCalendarEntry(user.getIdentifier(), "entry", basicDateTime, basicDateTime.plusMinutes(30));
         calendar.add(entry);
         
         notUser = new PersistentUser(new UserIdentifier("notUser"), "test");
-        notEntry = new PersistentCalendarEntry(notUser.getUserIdentifier(), "notEntry", basicDateTime, basicDateTime.plusMinutes(30));
+        notEntry = new PersistentCalendarEntry(notUser.getIdentifier(), "notEntry", basicDateTime, basicDateTime.plusMinutes(30));
         calendar.add(notEntry);
     }
 
@@ -64,7 +63,7 @@ public class CalendarTest {
 
     @Test
     public void getEntriesByOwner() {
-        Iterable<PersistentCalendarEntry> actual = calendar.find(user.getUserIdentifier()); 
+        Iterable<PersistentCalendarEntry> actual = calendar.find(user.getIdentifier()); 
         assertThat(actual, hasItem(entry));
         assertThat(actual, not(hasItem(notEntry)));
     }

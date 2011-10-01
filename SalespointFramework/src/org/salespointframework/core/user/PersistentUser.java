@@ -27,7 +27,7 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 	private String password;
 
 	@ElementCollection
-	private Set<Capability> capabilities = new HashSet<Capability>();
+	private Set<UserCapability> capabilities = new HashSet<UserCapability>();
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
@@ -41,9 +41,9 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 	 * Creates an new PersistentUser
 	 * @param userIdentifier the {@link UserIdentifier} of the user
 	 * @param password the password of the user
-	 * @param capabilities an <code>Array</code> of {@link Capability}s for the user 
+	 * @param capabilities an <code>Array</code> of {@link UserCapability}s for the user 
 	 */
-	public PersistentUser(UserIdentifier userIdentifier, String password, Capability... capabilities)
+	public PersistentUser(UserIdentifier userIdentifier, String password, UserCapability... capabilities)
 	{
 		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier");
 		this.password = Objects.requireNonNull(password, "password");
@@ -58,28 +58,28 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 	}
 	
 	@Override
-	public boolean addCapability(Capability capability)
+	public boolean addCapability(UserCapability capability)
 	{
 		Objects.requireNonNull(capability, "capability");
 		return capabilities.add(capability);
 	}
 
 	@Override
-	public boolean removeCapability(Capability capability)
+	public boolean removeCapability(UserCapability capability)
 	{
 		Objects.requireNonNull(capability, "capability");
 		return capabilities.remove(capability);
 	}
 
 	@Override
-	public boolean hasCapability(Capability capability)
+	public boolean hasCapability(UserCapability capability)
 	{
 		Objects.requireNonNull(capability, "capability");
 		return capabilities.contains(capability);
 	}
 
 	@Override
-	public Iterable<Capability> getCapabilities()
+	public Iterable<UserCapability> getCapabilities()
 	{
 		return Iterables.from(capabilities);
 	}

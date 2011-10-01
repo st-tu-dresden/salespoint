@@ -45,7 +45,7 @@ public interface User
 	public boolean changePassword(String newPassword, String oldPassword);
 
 	/**
-	 * Adds a {@link Capability} to a <code>User</code>
+	 * Adds a {@link UserCapability} to a <code>User</code>
 	 * 
 	 * @param capability
 	 *            <code>capability</code> which the <code>user</code> will
@@ -53,10 +53,10 @@ public interface User
 	 * @return <code>true</code> if successful, <code>false</code> otherwise.
 	 * @throws ArgumentNullException if capability is null
 	 */
-	boolean addCapability(Capability capability);
+	boolean addCapability(UserCapability capability);
 
 	/**
-	 * Removes a {@link Capability} from a <code>User</code>.
+	 * Removes a {@link UserCapability} from a <code>User</code>.
 	 * 
 	 * @param capability
 	 *            <code>capability</code> which will be removed from
@@ -64,23 +64,23 @@ public interface User
 	 * @return <code>true</code> if successful, <code>false</code> otherwise
 	 * @throws ArgumentNullException if capability is null
 	 */
-	boolean removeCapability(Capability capability);
+	boolean removeCapability(UserCapability capability);
 
 	/**
-	 * Checks if a <code>User</code> has a specific {@link Capability}
+	 * Checks if a <code>User</code> has a specific {@link UserCapability}
 	 * 
 	 * @param capability
-	 *            {@link Capability} for which the <code>user</code>
+	 *            {@link UserCapability} for which the <code>user</code>
 	 *            will be checked for.
 	 * @return <code>true</code> if <code>capability</code> was granted to
 	 *         <code>user</code>
 	 * @throws ArgumentNullException if capability is null
 	 */
-	boolean hasCapability(Capability capability);
+	boolean hasCapability(UserCapability capability);
 	
 	/**
 	 * 
-	 * @return An <code>Iterable/code> with all {@link Capability}s of the user 
+	 * @return An <code>Iterable/code> with all {@link UserCapability}s of the user 
 	 */
-	Iterable<Capability> getCapabilities();
+	Iterable<UserCapability> getCapabilities();
 }
