@@ -16,7 +16,7 @@ import org.salespointframework.util.Objects;
  */
 @SuppressWarnings("serial")
 @Embeddable
-public final class Capability implements Serializable, Comparable<Capability>
+public final class UserCapability implements Serializable, Comparable<UserCapability>
 {
 	private final String name;
 
@@ -25,7 +25,7 @@ public final class Capability implements Serializable, Comparable<Capability>
 	 * Do not use it.
 	 */
 	@Deprecated
-	protected Capability() {
+	protected UserCapability() {
 		name = "";
 	}
 	
@@ -36,7 +36,7 @@ public final class Capability implements Serializable, Comparable<Capability>
 	 *            name you want the give the Capability
 	 * @throws ArgumentNullException if name is null
 	 */
-	public Capability(String name)
+	public UserCapability(String name)
 	{
 		this.name = Objects.requireNonNull(name, "name");
 	}
@@ -60,9 +60,9 @@ public final class Capability implements Serializable, Comparable<Capability>
 		{
 			return true;
 		}
-		if (other instanceof Capability)
+		if (other instanceof UserCapability)
 		{
-			return this.name.equals(((Capability) other).name);
+			return this.name.equals(((UserCapability) other).name);
 		}
 		return false;
 	}
@@ -80,7 +80,7 @@ public final class Capability implements Serializable, Comparable<Capability>
 	}
 
 	@Override
-	public int compareTo(Capability other)
+	public int compareTo(UserCapability other)
 	{
 		return this.name.compareTo(other.name);
 	}
