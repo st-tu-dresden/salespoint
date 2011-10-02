@@ -1,6 +1,7 @@
 package org.salespointframework.core.calendar;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +16,15 @@ import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.PostLoad;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
+import org.salespointframework.core.time.TimeAnomalyException;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
@@ -37,437 +43,478 @@ import org.salespointframework.util.Objects;
 @Entity
 public class PersistentCalendarEntry implements CalendarEntry {
 
-	@EmbeddedId
-	@AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID"))
-	private CalendarEntryIdentifier calendarEntryIdentifier;
+    @EmbeddedId
+    @AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID"))
+    private CalendarEntryIdentifier                               calendarEntryIdentifier;
 
-	@ElementCollection(targetClass = EnumSet.class)
-	@CollectionTable(joinColumns = @JoinColumn(referencedColumnName = "ENTRY_ID", name = "ENTRY_ID"))
-	@AttributeOverride(name = "key.id", column = @Column(name = "USER_ID"))
-	@Column(name = "ENUM")
-	private Map<UserIdentifier, EnumSet<CalendarEntryCapability>> capabilities = new HashMap<UserIdentifier, EnumSet<CalendarEntryCapability>>();
+    @ElementCollection(targetClass = EnumSet.class)
+    @CollectionTable(joinColumns = @JoinColumn(referencedColumnName = "ENTRY_ID", name = "ENTRY_ID"))
+    @AttributeOverride(name = "key.id", column = @Column(name = "USER_ID"))
+    @Column(name = "ENUM")
+    private Map<UserIdentifier, EnumSet<CalendarEntryCapability>> capabilities = new HashMap<UserIdentifier, EnumSet<CalendarEntryCapability>>();
 
-	private int count;
+    private int                                                   repeatCount;
 
-	private String description;
-	// TODO add start and end fields, annotated with @Temporal
-	// TODO make duration transient and load it with @postLoad annotated method
-	private Interval duration;
+    private String                                                description;
 
-	@Embedded
-	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))
-	private UserIdentifier owner;
+    @Transient
+    private Interval                                              duration;
 
-	private Period period;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date                                                  startDate;
 
-	private String title;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date                                                  endDate;
 
-	/**
-	 * This constructor should not be used. It only exists for persistence
-	 * reasons.
-	 */
-	@Deprecated
-	public PersistentCalendarEntry() {
-	}
+    @Embedded
+    @AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))
+    private UserIdentifier                                        owner;
 
-	/**
-	 * Creates a new calendar entry that can be persisted in a
-	 * {@link PersistentCalendar}.
-	 * 
-	 * @param owner
-	 *            The id of the user, who created this entry.
-	 * @param title
-	 *            The title of this entry.
-	 * @param start
-	 *            Start time and date.
-	 * @param end
-	 *            End time and date.
-	 * @throws ArgumentNullException
-	 *             if one or more arguments are <code>null</code>
-	 * @throws IllegalArgumentException
-	 *             if the end is before the start
-	 */
-	public PersistentCalendarEntry(UserIdentifier owner, String title,
-			DateTime start, DateTime end) {
-		/* new Interval throws IllegalArgumentE, if end < start */
-		this(owner, title, new Interval(start, end));
-	}
+    private Period                                                period;
 
-	/**
-	 * Creates a new calendar entry that can be persisted in a
-	 * {@link PersistentCalendar}.
-	 * 
-	 * @param owner
-	 *            The id of the user, who created this entry.
-	 * @param title
-	 *            The title of this entry.
-	 * @param duration
-	 *            The duration ({@link Interval}) of this entry. It contains
-	 *            start and end date.
-	 * @throws ArgumentNullException
-	 *             if one or more arguments are <code>null</code>
-	 * 
-	 * @see Interval
-	 */
-	public PersistentCalendarEntry(UserIdentifier owner, String title,
-			Interval duration) {
-		this(owner, title, duration, "", Period.ZERO, 0);
-	}
+    private String                                                title;
 
-	/**
-	 * Creates a new calendar entry that can be persisted in a
-	 * {@link PersistentCalendar}.
-	 * 
-	 * @param owner
-	 *            The id of the user, who created this entry.
-	 * @param title
-	 *            The title of this entry.
-	 * @param duration
-	 *            The duration ({@link Interval}) of this entry. It contains
-	 *            start and end date.
-	 * @param description
-	 *            The description of this entry.
-	 * @throws ArgumentNullException
-	 *             if one or more arguments are <code>null</code>
-	 * 
-	 * @see Interval
-	 */
-	public PersistentCalendarEntry(UserIdentifier owner, String title,
-			Interval duration, String description) {
-		this(owner, title, duration, description, Period.ZERO, 0);
-	}
+    /**
+     * This constructor should not be used. It only exists for persistence
+     * reasons.
+     */
+    @Deprecated
+    public PersistentCalendarEntry() {
+    }
 
-	/**
-	 * Creates a new cyclic calendar entry that will be repeated after a period.
-	 * There are parameters that define how often it will be repeated and how
-	 * much time between two repetitions will be.
-	 * 
-	 * @param owner
-	 *            The id of the user, who created this entry.
-	 * @param title
-	 *            The title of this entry.
-	 * @param duration
-	 *            The duration ({@link Interval}) of this entry. It contains
-	 *            start and end date.
-	 * @param description
-	 *            The description of this entry.
-	 * @param period
-	 *            The period of one repetition of this entry. This is the time
-	 *            between two starts and so it has to be less than the duration.
-	 * @param count
-	 *            Times how often the event is repeated. -1 means infinitely.
-	 * @throws ArgumentNullException
-	 *             if one ore more arguments are <code>null</code>
-	 * @throws IllegalArgumentException
-	 *             if the time between two repetitions should be smaller than
-	 *             the duration of the entry.
-	 * 
-	 * @see Interval
-	 * @see Period
-	 */
-	public PersistentCalendarEntry(UserIdentifier owner, String title,
-			Interval duration, String description, Period period, int count) {
-		this.owner = Objects.requireNonNull(owner, "owner");
-		this.title = Objects.requireNonNull(title, "title");
-		this.duration = Objects.requireNonNull(duration, "duration");
-		this.description = Objects.requireNonNull(description, "description");
-		this.period = Objects.requireNonNull(period, "period");
-		this.count = count;
+    /**
+     * Creates a new calendar entry that can be persisted in a
+     * {@link PersistentCalendar}.
+     * 
+     * @param owner
+     *            The id of the user, who created this entry.
+     * @param title
+     *            The title of this entry.
+     * @param start
+     *            Start time and date.
+     * @param end
+     *            End time and date.
+     * @throws ArgumentNullException
+     *             if one or more arguments are <code>null</code>
+     * @throws IllegalArgumentException
+     *             if the end is before the start
+     */
+    public PersistentCalendarEntry(UserIdentifier owner, String title, DateTime start, DateTime end) {
+        this(owner, title, start, end, "", Period.ZERO, 0);
+    }
 
-		this.calendarEntryIdentifier = new CalendarEntryIdentifier();
+    /**
+     * Creates a new calendar entry that can be persisted in a
+     * {@link PersistentCalendar}.
+     * 
+     * @param owner
+     *            The id of the user, who created this entry.
+     * @param title
+     *            The title of this entry.
+     * @param start
+     *            Start time and date.
+     * @param end
+     *            End time and date.
+     * @param description
+     *            The description of this entry.
+     * @throws ArgumentNullException
+     *             if one or more arguments are <code>null</code>
+     */
+    public PersistentCalendarEntry(UserIdentifier owner, String title, DateTime start, DateTime end, String description) {
+        this(owner, title, start, end, description, Period.ZERO, 0);
+    }
 
-		capabilities.put(owner, EnumSet.allOf(CalendarEntryCapability.class));
+    /**
+     * Creates a new cyclic calendar entry that will be repeated after a period.
+     * There are parameters that define how often it will be repeated and how
+     * much time between two repetitions will be.
+     * 
+     * @param owner
+     *            The id of the user, who created this entry.
+     * @param title
+     *            The title of this entry.
+     * @param start
+     *            Start time and date.
+     * @param end
+     *            End time and date.
+     * @param description
+     *            The description of this entry.
+     * @param period
+     *            The period of one repetition of this entry. This is the time
+     *            between two starts and so it has to be less than the duration.
+     * @param count
+     *            Times how often the event is repeated. -1 means infinitely.
+     * @throws ArgumentNullException
+     *             if one ore more arguments are <code>null</code>
+     * @throws IllegalArgumentException
+     *             if the time between two repetitions should be smaller than
+     *             the duration of the entry.
+     * 
+     * @see Interval
+     * @see Period
+     */
+    public PersistentCalendarEntry(UserIdentifier owner, String title, DateTime start, DateTime end, String description, Period period, int count) {
 
-		if ((count != 0)
-				&& duration.getStart().plus(period).isBefore(duration.getEnd()))
-			throw new IllegalArgumentException(
-					"The time between two repetitions can not be less than the duration of a calendar entry!");
-	}
+        detectDateAnomalies(Objects.requireNonNull(start, "start"), Objects.requireNonNull(end, "end"), count, Objects.requireNonNull(period, "period"));
 
-	@Override
-	public final void addCapability(UserIdentifier user,
-			CalendarEntryCapability capability) {
-		Objects.requireNonNull(user, "user");
-		Objects.requireNonNull(capabilities, "capability");
+        this.owner = Objects.requireNonNull(owner, "owner");
+        this.title = Objects.requireNonNull(title, "title");
+        this.description = Objects.requireNonNull(description, "description");
 
-		if (capabilities.containsKey(user))
-			capabilities.get(user).add(capability);
-		else
-			capabilities.put(user, EnumSet.of(capability));
-	}
+        this.repeatCount = count;
+        this.period = period;
 
-	@Override
-	public boolean equals(Object other) {
-		if (other == null)
-			return false;
-		if (other == this)
-			return true;
-		if (!(other instanceof PersistentCalendarEntry))
-			return false;
-		return this.equals((PersistentCalendarEntry) other);
-	}
+        setStartEnd(start.toDate(), end.toDate());
 
-	/**
-	 * Determines if the given {@link PersistentCalendarEntry} is equal to this
-	 * one or not. Two calendar entries are equal to each other, if their
-	 * identifiers are equal.
-	 * 
-	 * @param other
-	 *            The entry this one should be compared with.
-	 * @return <code>true</code> if and only if the identifier of this calendar
-	 *         entry equals the identifier of the entry that is given as
-	 *         parameter, <code>false</code> otherwise.
-	 */
-	public final boolean equals(PersistentCalendarEntry other) {
-		if (other == null)
-			return false;
-		if (other == this)
-			return true;
-		return this.calendarEntryIdentifier
-				.equals(other.calendarEntryIdentifier);
-	}
+        this.calendarEntryIdentifier = new CalendarEntryIdentifier();
+        capabilities.put(owner, EnumSet.allOf(CalendarEntryCapability.class));
+    }
 
-	@Override
-	public final CalendarEntryIdentifier getIdentifier() {
-		return calendarEntryIdentifier;
-	}
+    /**
+     * Initializes the <code>Interval</code> field out of <code>startDate</code>
+     * and <code>endDate</code> fields after they have been loaded from the
+     * database. Can also be used to update <code>duration</code> if
+     * <code>startDate</code> or <code>endDate</end> were changed manually.
+     */
+    @PostLoad
+    protected void updateDuration() {
+        duration = new Interval(new DateTime(startDate), new DateTime(endDate));
+    }
 
-	@Override
-	public final Iterable<CalendarEntryCapability> getCapabilities(
-			UserIdentifier user) {
-		Objects.requireNonNull(user, "user");
+    /*
+     * Use this method to set new start and end dates!
+     */
+    private final void setStartEnd(Date startDate, Date endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        updateDuration();
+    }
 
-		return Iterables.from(capabilities.get(user));
-	}
+    /*
+     * Throws an exceptions if a anomaly in time has been detected.
+     */
+    private final void detectDateAnomalies(DateTime start, DateTime end, int repeatCount, Period period) {
+        try {
+            Interval duration = new Interval(start, end);
+            
+            if (repeatCount < -1)
+                throw new IllegalArgumentException("The repeat count of an appointment can't be less than zero, except -1, but was " + repeatCount);
 
-	/**
-	 * Returns the number how often this appointment will be repeated, where -1
-	 * means indefinitely.
-	 * 
-	 * @return The number how often this appointment will be repeated.
-	 */
-	public final long getCount() {
-		return count;
-	}
+            if ((repeatCount != 0) && duration.getStart().plus(period).isBefore(duration.getEnd()))
+                throw new IllegalArgumentException("The time between two repetitions can not be less than the duration of a calendar entry!");
 
-	@Override
-	public final String getDescription() {
-		return description;
-	}
+        } catch (Exception e) {
+            throw new TimeAnomalyException(e);
+        }
+    }
 
-	/**
-	 * @see Interval#getEnd()
-	 */
-	@Override
-	public final DateTime getEnd() {
-		return duration.getEnd();
-	}
+    @Override
+    public final void addCapability(UserIdentifier user, CalendarEntryCapability capability) {
+        Objects.requireNonNull(user, "user");
+        Objects.requireNonNull(capabilities, "capability");
 
-	//TODO fix reference.
-	/**
-	 * Returns an {@link Iterable} which contains all time intervals of this
-	 * event and its repetitions. <code>maxEntries</code> is required to limit
-	 * the output for infinitely often repeated events. If
-	 * <code>maxEntries</code> is greater than
-	 * {@link PersistentCalendarEntry#count}, only <code>count</code> items will
-	 * be returned. Possible values for maxEntries are
-	 * <ul>
-	 * <li>&lt; 0 - output will be an empty iterable.</li>
-	 * <li>=0 - output will contain only the original event.</li>
-	 * <li>&gt; 0 - output will contain a maximum of <code>maxEntries</code>
-	 * repetitions, inclusive the original event.</li>
-	 * </ul>
-	 * 
-	 * @param maxEntries
-	 *            limits the output to a specified amount of repetitions.
-	 * @return An iterable that contains the original event and all repetitions,
-	 *         limited to <code>maxEntires</code>.
-	 */
-	// TODO add similar method, with Interval as parameter.
-	public final Iterable<Interval> getEntryList(int maxEntries) {
-		List<Interval> dates = new ArrayList<Interval>();
-		Interval last;
+        if (capabilities.containsKey(user))
+            capabilities.get(user).add(capability);
+        else
+            capabilities.put(user, EnumSet.of(capability));
+    }
 
-		if (count != -1)
-			maxEntries = (maxEntries < count) ? maxEntries : count;
+    @Override
+    public boolean equals(Object other) {
+        if (other == null)
+            return false;
+        if (other == this)
+            return true;
+        if (!(other instanceof PersistentCalendarEntry))
+            return false;
+        return this.equals((PersistentCalendarEntry) other);
+    }
 
-		if (maxEntries == 0)
-			return dates;
+    /**
+     * Determines if the given {@link PersistentCalendarEntry} is equal to this
+     * one or not. Two calendar entries are equal to each other, if their
+     * identifiers are equal.
+     * 
+     * @param other
+     *            The entry this one should be compared with.
+     * @return <code>true</code> if and only if the identifier of this calendar
+     *         entry equals the identifier of the entry that is given as
+     *         parameter, <code>false</code> otherwise.
+     */
+    public final boolean equals(PersistentCalendarEntry other) {
+        if (other == null)
+            return false;
+        if (other == this)
+            return true;
+        return this.calendarEntryIdentifier.equals(other.calendarEntryIdentifier);
+    }
 
-		dates.add(duration);
-		last = duration;
-		// >1, because duration itself is the first entry
-		for (; maxEntries > 1; maxEntries--) {
-			last = new Interval(last.getStart().plus(period), last.getEnd()
-					.plus(period));
-			dates.add(last);
-		}
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The ID is the entry's primary key, generated automatically when the entry
+     * has been created.
+     * </p>
+     */
+    @Override
+    public final CalendarEntryIdentifier getIdentifier() {
+        return calendarEntryIdentifier;
+    }
 
-		return Iterables.from(dates);
-	}
+    @Override
+    public final Iterable<CalendarEntryCapability> getCapabilities(UserIdentifier user) {
+        Objects.requireNonNull(user, "user");
 
-	@Override
-	public final UserIdentifier getOwner() {
-		return owner;
-	}
+        return Iterables.from(capabilities.get(user));
+    }
 
-	/**
-	 * Returns the timespan that was defined to be between two starts of this
-	 * appointment.
-	 * 
-	 * @return the time between two repetitions of this appointment as a
-	 *         {@link Period}
-	 */
-	public final Period getPeriod() {
-		return period;
-	}
+    /**
+     * Returns the number how often this appointment will be repeated, where -1
+     * means indefinitely.
+     * 
+     * @return The number how often this appointment will be repeated.
+     */
+    public final long getRepeatCount() {
+        return repeatCount;
+    }
 
-	/**
-	 * @see Interval#getStart()
-	 */
-	@Override
-	public final DateTime getStart() {
-		return duration.getStart();
-	}
+    @Override
+    public final String getDescription() {
+        return description;
+    }
 
-	@Override
-	public final String getTitle() {
-		return title;
-	}
+    /**
+     * @see Interval#getEnd()
+     */
+    @Override
+    public final DateTime getEnd() {
+        return duration.getEnd();
+    }
 
-	@Override
-	public final Iterable<UserIdentifier> getUsersByCapability(
-			CalendarEntryCapability capability) {
-		Objects.requireNonNull(capability, "capability");
+    /**
+     * Returns an {@link Iterable} which contains all time intervals of this
+     * event and its repetitions. <code>maxEntries</code> is required to limit
+     * the output for infinitely often repeated events. If
+     * <code>maxEntries</code> is greater than <code>repeatCount</code>, only
+     * <code>repeatCount</code> items will be returned. Possible values for
+     * maxEntries are
+     * <ul>
+     * <li>&lt; 0 - output will be an empty iterable.</li>
+     * <li>=&nbsp;0 - output will contain only the original event.</li>
+     * <li>&gt; 0 - output will contain a maximum of <code>maxEntries</code>
+     * repetitions, inclusive the original event.</li>
+     * </ul>
+     * 
+     * @param maxEntries
+     *            limits the output to a specified amount of repetitions.
+     * @return An iterable that contains the original event and all repetitions,
+     *         limited to <code>maxEntires</code>.
+     */
+    public final Iterable<Interval> getEntryList(int maxEntries) {
+        List<Interval> dates = new ArrayList<Interval>();
+        Interval last;
 
-		List<UserIdentifier> result = new ArrayList<UserIdentifier>();
-		for (Entry<UserIdentifier, EnumSet<CalendarEntryCapability>> e : capabilities
-				.entrySet()) {
-			if (e.getValue().contains(capability))
-				result.add(e.getKey());
-		}
+        if (repeatCount != -1)
+            maxEntries = (maxEntries < repeatCount) ? maxEntries : repeatCount;
 
-		return result;
-	}
+        if (maxEntries == 0)
+            return dates;
 
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * The hash of this object is the hash of its primary key.
-	 * </p>
-	 * 
-	 * @return The hash code for this entry.
-	 */
-	@Override
-	public final int hashCode() {
-		return calendarEntryIdentifier.hashCode();
-	}
+        dates.add(duration);
+        last = duration;
+        // >1, because duration itself is the first entry
+        for (; maxEntries > 1; maxEntries--) {
+            last = new Interval(last.getStart().plus(period), last.getEnd().plus(period));
+            dates.add(last);
+        }
 
-	@Override
-	public final void removeCapability(UserIdentifier user,
-			CalendarEntryCapability capability) {
-		Objects.requireNonNull(user, "user");
-		Objects.requireNonNull(capability, "capability");
-		if (user.equals(owner))
-			throw new IllegalArgumentException(
-					"Capabilities cannot be removed from the owner of the calendar entry");
+        return Iterables.from(dates);
+    }
 
-		capabilities.get(user).remove(capability);
+    /**
+     * Returns an {@link Iterable} which contains all time intervals of this
+     * event and its repetitions that overlaps with the given {@link Interval}.
+     * For a definition of <coder>overlaps()</code>, see
+     * {@link Interval#overlaps(org.joda.time.ReadableInterval)}. If the given
+     * interval is completely before the first occurence of this event, the
+     * result will be empty. The result also can contain a maximum of
+     * {@link Integer#MAX_VALUE} entries.
+     * 
+     * @param interval
+     *            all returned intervals should overlap with this given
+     *            interval.
+     * @return An iterable that contains all found intervals.
+     */
+    public final Iterable<Interval> getEntryList(Interval interval) {
+        List<Interval> dates = new ArrayList<Interval>();
 
-		if (capabilities.get(user).isEmpty())
-			capabilities.remove(user);
-	}
+        int maxCount = this.repeatCount;
 
-	/**
-	 * Sets the number how often this appointment should be repeated. -1 means
-	 * infinitely.
-	 * 
-	 * @param count
-	 *            Number how often this appointment should be repeated. This
-	 *            must be a positive value, including zero. Also -1 is allowed
-	 *            for indicating infinite repetitions.
-	 * 
-	 * @throws IllegalArgumentException
-	 *             if <code>count</code> is less than -1.
-	 */
-	public final void setCount(int count) {
-		if (count < -1) {
-			throw new IllegalArgumentException(
-					"The repeat count of an appointment can't be less than zero, except -1, but was "
-							+ count);
-		}
-		this.count = count;
-	}
+        maxCount = maxCount == -1 ? Integer.MAX_VALUE : maxCount;
 
-	@Override
-	public final void setDescription(String description) {
-		this.description = Objects.requireNonNull(description, "description");
-	}
+        Interval nextInterval = this.duration;
 
-	/**
-	 * @throws IllegalArgumentException
-	 *             if the end is before the start
-	 * 
-	 * @see Interval
-	 */
-	@Override
-	public final void setEnd(DateTime end) {
-		Objects.requireNonNull(end, "end");
-		duration = new Interval(duration.getStart(), end);
-	}
+        for (int i = 0; i <= maxCount && !interval.isBefore(nextInterval); i++) {
+            if (interval.overlaps(nextInterval)) {
+                dates.add(nextInterval);
+            }
+            nextInterval = new Interval(nextInterval.getStart().plus(this.period), nextInterval.getEnd().plus(this.period));
+        }
 
-	/**
-	 * Sets a new time span that should be between two starts of this entry. The
-	 * time span has to be larger than the duration of this appointment.
-	 * 
-	 * @param period
-	 *            The time span between two repetitions.
-	 * @throws ArgumentNullException
-	 *             if one ore more arguments are <code>null</code>
-	 * @throws IllegalArgumentException
-	 *             if the time between two repetitions should be smaller than
-	 *             the duration of the entry.
-	 */
-	public final void setPeriod(Period period) {
-		Objects.requireNonNull(period, "period");
+        return Iterables.from(dates);
+    }
 
-		if ((count != 0)
-				&& duration.getStart().plus(period).isBefore(duration.getEnd()))
-			throw new IllegalArgumentException(
-					"The time between two repetitions can not be less than the duration of a calendar entry!");
+    @Override
+    public final UserIdentifier getOwner() {
+        return owner;
+    }
 
-		this.period = period;
-	}
+    /**
+     * Returns the timespan that was defined to be between two starts of this
+     * appointment.
+     * 
+     * @return the time between two repetitions of this appointment as a
+     *         {@link Period}
+     */
+    public final Period getPeriod() {
+        return period;
+    }
 
-	/**
-	 * @throws IllegalArgumentException
-	 *             if the start is after the end
-	 * 
-	 * @see Interval
-	 */
-	@Override
-	public final void setStart(DateTime start) {
-		Objects.requireNonNull(start, "start");
-		duration = new Interval(start, duration.getEnd());
-		// this.startTime = start.toDate();
-	}
+    /**
+     * @see Interval#getStart()
+     */
+    @Override
+    public final DateTime getStart() {
+        return duration.getStart();
+    }
 
-	@Override
-	public final void setTitle(String title) {
-		this.title = Objects.requireNonNull(title, "title");
-	}
+    @Override
+    public final String getTitle() {
+        return title;
+    }
 
-	/**
-	 * Returns a string representation of this entry. The format of this string
-	 * is:
-	 * <p>
-	 * <code>title + " (" + getStart() + " - " + getEnd() + ")"</code>
-	 * </p>
-	 * 
-	 * @return The string representation of this entry.
-	 */
-	@Override
-	public String toString() {
-		return title + " (" + getStart() + " - " + getEnd() + ")";
-	}
+    @Override
+    public final Iterable<UserIdentifier> getUsersByCapability(CalendarEntryCapability capability) {
+        Objects.requireNonNull(capability, "capability");
+
+        List<UserIdentifier> result = new ArrayList<UserIdentifier>();
+        for (Entry<UserIdentifier, EnumSet<CalendarEntryCapability>> e : capabilities.entrySet()) {
+            if (e.getValue().contains(capability))
+                result.add(e.getKey());
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The hash of this object is the hash of its primary key.
+     * </p>
+     * 
+     * @return The hash code for this entry.
+     */
+    @Override
+    public final int hashCode() {
+        return calendarEntryIdentifier.hashCode();
+    }
+
+    @Override
+    public final void removeCapability(UserIdentifier user, CalendarEntryCapability capability) {
+        Objects.requireNonNull(user, "user");
+        Objects.requireNonNull(capability, "capability");
+        if (user.equals(owner))
+            throw new IllegalArgumentException("Capabilities cannot be removed from the owner of the calendar entry");
+
+        capabilities.get(user).remove(capability);
+
+        if (capabilities.get(user).isEmpty())
+            capabilities.remove(user);
+    }
+
+    /**
+     * Sets the number how often this appointment should be repeated. -1 means
+     * infinitely.
+     * 
+     * @param count
+     *            Number how often this appointment should be repeated. This
+     *            must be a positive value, including zero. Also -1 is allowed
+     *            for indicating infinite repetitions.
+     * 
+     * @throws IllegalArgumentException
+     *             if <code>count</code> is less than -1.
+     */
+    public final void setCount(int count) {
+        detectDateAnomalies(this.duration.getStart(), this.duration.getEnd(), count, this.period);
+
+        this.repeatCount = count;
+    }
+
+    @Override
+    public final void setDescription(String description) {
+        this.description = Objects.requireNonNull(description, "description");
+    }
+
+    /**
+     * @throws IllegalArgumentException
+     *             if the end is before the start
+     * 
+     * @see Interval
+     */
+    @Override
+    public final void setEnd(DateTime end) {
+        detectDateAnomalies(this.duration.getStart(), Objects.requireNonNull(end, "end"), this.repeatCount, this.period);
+
+        setStartEnd(this.startDate, end.toDate());
+    }
+
+    /**
+     * Sets a new time span that should be between two starts of this entry. The
+     * time span has to be larger than the duration of this appointment.
+     * 
+     * @param period
+     *            The time span between two repetitions.
+     * @throws ArgumentNullException
+     *             if one ore more arguments are <code>null</code>
+     * @throws IllegalArgumentException
+     *             if the time between two repetitions should be smaller than
+     *             the duration of the entry.
+     */
+    public final void setPeriod(Period period) {
+        detectDateAnomalies(this.duration.getStart(), this.duration.getEnd(), this.repeatCount, Objects.requireNonNull(period, "period"));
+
+        this.period = period;
+    }
+
+    /**
+     * @throws IllegalArgumentException
+     *             if the start is after the end
+     * 
+     * @see Interval
+     */
+    @Override
+    public final void setStart(DateTime start) {
+        detectDateAnomalies(Objects.requireNonNull(start, "start"), this.duration.getEnd(), this.repeatCount, this.period);
+
+        setStartEnd(start.toDate(), this.endDate);
+    }
+
+    @Override
+    public final void setTitle(String title) {
+        this.title = Objects.requireNonNull(title, "title");
+    }
+
+    /**
+     * Returns a string representation of this entry. The format of this string
+     * is:
+     * <p>
+     * <code>title + " (" + getStart() + " - " + getEnd() + ")"</code>
+     * </p>
+     * 
+     * @return The string representation of this entry.
+     */
+    @Override
+    public String toString() {
+        return title + " (" + getStart() + " - " + getEnd() + ")";
+    }
 }

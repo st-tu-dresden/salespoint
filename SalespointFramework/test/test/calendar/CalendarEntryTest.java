@@ -49,17 +49,17 @@ public class CalendarEntryTest {
 		testEntry1.setTitle(null);
 	}
 	/* Exceptions are bad anyway. */
-	@Test//(expected=ArgumentNullException.class)
+	@Test(expected=ArgumentNullException.class)
 	public void testNotNullStart() {
-		//null == now
+		//null == now --> null != now , see javadoc
 		@SuppressWarnings("unused")
 		PersistentCalendarEntry testEntry = new PersistentCalendarEntry(new UserIdentifier("owner"), "meeting", null, new DateTime());
 	}
 	
-	@Test//(expected=ArgumentNullException.class)
+	@Test(expected=ArgumentNullException.class)
 	public void testNotNullEnd() {
 		@SuppressWarnings("unused")
-		//null == now
+		//null == now --> null != now , see javadoc
 		PersistentCalendarEntry testEntry = new PersistentCalendarEntry(new UserIdentifier("owner"), "meeting", new DateTime(), null);
 	}
 	
@@ -295,12 +295,30 @@ public class CalendarEntryTest {
 	}
 	
 	@Test
-	public void countingTest() {
-		PersistentCalendarEntry e = new PersistentCalendarEntry(new UserIdentifier(), "test", new Interval(new DateTime(), new DateTime().plusHours(1)), "desc", Period.days(2), -1);
+	public void countingTest1() {
+		PersistentCalendarEntry e = new PersistentCalendarEntry(new UserIdentifier(), "test", new DateTime(), new DateTime().plusHours(1), "desc", Period.days(2), -1);
 		
+		int count = 0;
 		for(Interval i : e.getEntryList(11)) {
 			System.out.println(i);
+			count++;
 		}
+		
+		assertEquals(11, count);
 	}
 	
+	@Test
+	public void countingTest2() {
+	    DateTime now = new DateTime();
+	    
+	    PersistentCalendarEntry e = new PersistentCalendarEntry(new UserIdentifier(), "test", now, now.plusHours(1), "desc", Period.hours(2), -1);
+	    
+	    int count = 0;
+	    for (Interval i: e.getEntryList(new Interval(now.plusHours(12), now.plusHours(24)))) {
+	        System.out.println(i);
+	        count++;
+	    }
+	    
+	    assertEquals(6,count);
+	}
 }

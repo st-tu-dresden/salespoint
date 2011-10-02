@@ -56,14 +56,14 @@ public class CalendarTest {
     
     @Test
     public void getEntriesByTitle() {
-        Iterable<PersistentCalendarEntry> actual = calendar.findByTitle(entry.getTitle()); 
+        Iterable<PersistentCalendarEntry> actual = calendar.find(PersistentCalendarEntry.class, entry.getTitle()); 
         assertThat(actual, hasItem(entry));
         assertThat(actual, not(hasItem(notEntry)));
     }
 
     @Test
     public void getEntriesByOwner() {
-        Iterable<PersistentCalendarEntry> actual = calendar.find(user.getIdentifier()); 
+        Iterable<PersistentCalendarEntry> actual = calendar.find(PersistentCalendarEntry.class, user.getIdentifier()); 
         assertThat(actual, hasItem(entry));
         assertThat(actual, not(hasItem(notEntry)));
     }
