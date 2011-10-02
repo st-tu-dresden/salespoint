@@ -7,6 +7,13 @@ In the Salespointframework there is one \code{PersistenceUsermanger}, but it is 
 The Usermanger ist the main part of the UserPackage. It connects all parts:
 You can adds and removes User to/from the System and also adds and removes \code{UserCapabilities} of the Users in the System
 
+\begin{figure}[ht]
+	\centering
+  \includegraphics[width=1.0\textwidth]{images/User_Overview.eps}
+	\label{user_overview}
+	\caption{User - Class Overview}
+\end{figure}
+
 \subsection{Ensure correct Data}
 To ensure you have the correct data in your system you should only access \code{users} and their \code{UserCapabilities} via the \code{PersistenceUsermanger}:
 
