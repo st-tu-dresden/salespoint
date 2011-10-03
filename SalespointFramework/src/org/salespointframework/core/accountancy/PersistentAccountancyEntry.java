@@ -11,6 +11,7 @@ import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.Objects;
 
@@ -102,5 +103,34 @@ public class PersistentAccountancyEntry implements AccountancyEntry {
 	public AccountancyEntryIdentifier getIdentifier() {
 		return accountancyEntryIdentifier;
 	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (other == null)
+		{
+			return false;
+		}
+		if (other == this)
+		{
+			return true;
+		}
+		if (other instanceof PersistentProduct)
+		{
+			return this.accountancyEntryIdentifier.equals(((PersistentAccountancyEntry)other).accountancyEntryIdentifier);
+		}
+		return false;
+	}
 
+	@Override
+	public final int hashCode()
+	{
+		return accountancyEntryIdentifier.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return value.toString() + " | " + date.toString() + " | " + description;
+	}
+	
 }
