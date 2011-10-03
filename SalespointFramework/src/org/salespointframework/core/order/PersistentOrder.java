@@ -101,6 +101,7 @@ public class PersistentOrder implements
 
 	@Override
 	public final boolean addOrderLine(PersistentOrderLine orderLine) {
+		Objects.requireNonNull(orderLine, "orderLine");
 		if (orderStatus != OrderStatus.OPEN) {
 			return false;
 		}
@@ -109,6 +110,7 @@ public class PersistentOrder implements
 
 	@Override
 	public final boolean removeOrderLine(OrderLineIdentifier orderLineIdentifier) {
+		Objects.requireNonNull(orderLineIdentifier, "orderLineIdentifier");
 		if (orderStatus != OrderStatus.OPEN) {
 			return false;
 		}
@@ -124,6 +126,7 @@ public class PersistentOrder implements
 
 	@Override
 	public final boolean addChargeLine(PersistentChargeLine chargeLine) {
+		Objects.requireNonNull(chargeLine, "chargeLine");
 		if (orderStatus != OrderStatus.OPEN) {
 			return false;
 		}
@@ -131,8 +134,9 @@ public class PersistentOrder implements
 	}
 
 	@Override
-	public final boolean removeChargeLine(
-			ChargeLineIdentifier chargeLineIdentifier) {
+	public final boolean removeChargeLine(ChargeLineIdentifier chargeLineIdentifier) {
+		Objects.requireNonNull(chargeLineIdentifier, "chargeLineIdentifier");
+		
 		if (orderStatus != OrderStatus.OPEN) {
 			return false;
 		}
@@ -217,8 +221,7 @@ public class PersistentOrder implements
 
 	@Override
 	public String toString() {
-		return "User: " + userIdentifier + toString() + " | Order"
-				+ orderIdentifier.toString();
+		return "User: " + userIdentifier.toString() + " | Order" + orderIdentifier.toString();
 	}
 
 	@Override

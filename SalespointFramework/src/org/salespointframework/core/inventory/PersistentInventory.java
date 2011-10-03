@@ -28,7 +28,6 @@ import org.salespointframework.util.Objects;
  */
 public final class PersistentInventory implements Inventory<PersistentProduct>
 {
-
 	private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 	private final EntityManager entityManager;
 
@@ -166,11 +165,11 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 
 	/**
 	 * Creates an new Instance of the PersistentInventory
-	 * The {@link PersistentOrder} uses this method for transactional removal of {@link Product}
+	 * The {@link PersistentOrder} uses this method for transactional removal of {@link Product}s
 	 * @param entityManager the {@link EntityManager} to be used for all operations (methods) 
 	 * @return a new PersistentInventory
 	 */
-	public PersistentInventory newInstance(EntityManager entityManager)
+	public final PersistentInventory newInstance(EntityManager entityManager)
 	{
 		return new PersistentInventory(entityManager);
 	}

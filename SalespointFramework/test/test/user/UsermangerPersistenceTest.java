@@ -23,13 +23,11 @@ import org.salespointframework.core.user.UserIdentifier;
 @SuppressWarnings("javadoc")
 public class UsermangerPersistenceTest {
 
-	private static PersistentUserManager userManager;
+	private static final PersistentUserManager userManager = new PersistentUserManager(); ;
 
 	@BeforeClass
 	public static void setUp() {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
-
-		userManager = new PersistentUserManager();
 	}
 
 	@Test

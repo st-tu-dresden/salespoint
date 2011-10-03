@@ -10,11 +10,15 @@ import org.salespointframework.util.ArgumentNullException;
 @SuppressWarnings("javadoc")
 public class UserTest {
 	
-	private UserIdentifier ui1= new UserIdentifier("testCustomer");
-	private UserIdentifier ui2= new UserIdentifier("testEmployee");
+	private static final String passwordCustomer = "pw1234";
+	private static final String passwordEmployee = "4321pw"; 
 	
-	private Customer c = new Customer(ui1, "pw1234");
-	private Employee e = new Employee(ui2, "4321pw");
+	
+	private UserIdentifier ui1 = new UserIdentifier("testCustomer");
+	private UserIdentifier ui2 = new UserIdentifier("testEmployee");
+	
+	private Customer customer = new Customer(ui1, passwordCustomer);
+	private Employee employee = new Employee(ui2, passwordEmployee);
 	
 	@Test(expected = ArgumentNullException.class)
 	public void testNotNullUserId(){
@@ -32,26 +36,26 @@ public class UserTest {
 	@Test
 	public void testCustomerUserId(){
 		UserIdentifier u= new UserIdentifier("testCustomer");
-		assertEquals(u, c.getIdentifier());
+		assertEquals(u, customer.getIdentifier());
 	}
 	
 	@Test
 	public void testCustomerPassword(){
 		
-		assertEquals(true, c.verifyPassword("pw1234"));
+		assertEquals(true, customer.verifyPassword(passwordCustomer));
 	}
 	
 	
 	@Test
 	public void testEmployeeUserId(){
 		UserIdentifier u= new UserIdentifier("testEmployee");
-		assertEquals(u, e.getIdentifier());
+		assertEquals(u, employee.getIdentifier());
 	}
 	
 	@Test
 	public void testEmployeePassword(){
 		
-		assertEquals(true, e.verifyPassword("4321pw"));
+		assertEquals(true, employee.verifyPassword(passwordEmployee));
 	}
 	
 

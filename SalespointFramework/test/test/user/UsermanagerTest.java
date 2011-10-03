@@ -19,19 +19,19 @@ import org.salespointframework.util.Iterables;
 @SuppressWarnings("javadoc")
 public class UsermanagerTest {
 
+	private static final PersistentUserManager userManager = new PersistentUserManager();;
+	
 	private static UserIdentifier userIdentifier = new UserIdentifier();
 	private static Employee employee = new Employee(userIdentifier, "lala");
 	private UserCapability capa;
-	private static PersistentUserManager userManager;
+	
 	
 	@BeforeClass
-	public static void setUp() {
+	public static void beforeClass() {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
-
-		userManager = new PersistentUserManager();
 		userManager.add(employee);
 	}
-	
+		
 	@Test
 	public void testEmployeeMangerContainsE3(){
 		assertEquals(userManager.get(Employee.class, employee.getIdentifier()), employee);

@@ -59,7 +59,7 @@ public class PersistentOrderLine implements OrderLine
 	 */
 	public PersistentOrderLine(ProductIdentifier productIdentifier)
 	{
-		this(productIdentifier, Iterables.<ProductFeature> empty(), 1);
+		this(productIdentifier, Iterables.<ProductFeature>empty(), 1);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class PersistentOrderLine implements OrderLine
 	 */
 	public PersistentOrderLine(ProductIdentifier productIdentifier, int numberOrdered)
 	{
-		this(productIdentifier, Iterables.<ProductFeature> empty(), numberOrdered);
+		this(productIdentifier, Iterables.<ProductFeature>empty(), numberOrdered);
 	}
 
 	/**
