@@ -1,7 +1,6 @@
 package org.salespointframework.core.order;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Objects;
@@ -12,15 +11,13 @@ import org.salespointframework.util.Objects;
  * @author Paul Henke
  * 
  */
-@Entity
-public class PersistentChargeLine implements ChargeLine
+@Embeddable
+public class PersistentChargeLine  //implements ChargeLine TODO ganz removen, umbenennen, Serializable, final, etc
 {
-	@EmbeddedId
 	private ChargeLineIdentifier chargeLineIdentifier = new ChargeLineIdentifier();
 
 	private Money amount;
 	private String description;
-	private String comment;
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
@@ -33,45 +30,36 @@ public class PersistentChargeLine implements ChargeLine
 	/**
 	 * Creates a new PersistentChargeLine
 	 * @param amount the value of the ChargeLine
-	 * @param description a description
+	 * @param description a description of the ChargeLine
 	 */
 	public PersistentChargeLine(Money amount, String description)
 	{
-		this(amount, description, "");
+		this.amount = Objects.requireNonNull(amount, "amount");
+		this.description = Objects.requireNonNull(description, "description");
 	}
 
 	/**
-	 * Creates a new PersistentChargeLine
-	 * @param amount the value of the ChargeLine
-	 * @param description a description
-	 * @param comment a comment
+	 *  
+	 * @return the value of the chargeline
 	 */
-	public PersistentChargeLine(Money amount, String description, String comment)
-	{
-		this.amount = Objects.requireNonNull(amount, "amount");
-		this.description = Objects.requireNonNull(description, "description");
-		this.comment = Objects.requireNonNull(comment, "comment");
-	}
 
-	@Override
 	public Money getPrice()
 	{
 		return amount;
 	}
 
-	@Override
+	/**
+	 * 
+	 * @return the description of the chargeline
+	 */
 	public String getDescription()
 	{
 		return description;
 	}
 
-	@Override
-	public String getComment()
-	{
-		return comment;
-	}
-
-	@Override
+	/**
+	 * @return the {@link ChargeLineIdentifier} to uniquely identify this chargeline
+	 */
 	public ChargeLineIdentifier getIdentifier()
 	{
 		return chargeLineIdentifier;

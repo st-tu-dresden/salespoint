@@ -15,9 +15,8 @@ import org.salespointframework.util.ArgumentNullException;
  * @author Paul Henke
  *
  * @param <O>
- * @param <C>
  */
-public interface Order<O extends OrderLine, C extends ChargeLine>
+public interface Order<O extends OrderLine>
 {
 	/**
 	 * Adds a new {@link OrderLine} to this order.
@@ -57,7 +56,7 @@ public interface Order<O extends OrderLine, C extends ChargeLine>
 	 * @return true if this Order did not already contain this {@link ChargeLine}, otherwise false
 	 * @throws ArgumentNullException if chargeLine is null
 	 */
-	boolean addChargeLine(C chargeLine);
+	boolean addChargeLine(PersistentChargeLine chargeLine);
 	
 	/**
 	 * Removes a {@link ChargeLine} from this order
@@ -72,7 +71,7 @@ public interface Order<O extends OrderLine, C extends ChargeLine>
 	 * 
 	 * @return an Iterable of all {@link ChargeLine}s from this order
 	 */
-	Iterable<C> getChargeLines();
+	Iterable<PersistentChargeLine> getChargeLines();
 
 	/**
 	 * Returns the status [OPEN|CANCELLED|PAYED|COMPLETED] of this order

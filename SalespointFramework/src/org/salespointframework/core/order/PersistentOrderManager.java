@@ -21,7 +21,7 @@ import org.salespointframework.util.Objects;
  * @author Paul Henke
  * 
  */
-public final class PersistentOrderManager implements OrderManager<PersistentOrder, PersistentOrderLine, PersistentChargeLine>
+public final class PersistentOrderManager implements OrderManager<PersistentOrder, PersistentOrderLine>
 {
 	private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 

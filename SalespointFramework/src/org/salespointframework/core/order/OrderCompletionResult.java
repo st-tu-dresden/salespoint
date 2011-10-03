@@ -27,9 +27,8 @@ public interface OrderCompletionResult
 	 */
 	boolean rollBack();
 
-	Order<OrderLine, ChargeLine> splitOrder();
+	Order<OrderLine> splitOrder();
 
 	// TODO sinnvoll?
 	Throwable getException();
-
 }

@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -42,9 +43,7 @@ import org.salespointframework.util.Objects;
  * 
  */
 @Entity
-public class PersistentOrder implements
-		Order<PersistentOrderLine, PersistentChargeLine>,
-		Comparable<PersistentOrder> {
+public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<PersistentOrder> {
 	// TODO: Here, we also need to rename the column, or OWNER_ID will be the
 	// PK. Maybe we should rename the field in SalespointIdentifier, to avoid
 	// name clashes with "ID"?
@@ -67,7 +66,7 @@ public class PersistentOrder implements
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<PersistentOrderLine> orderLines = new HashSet<PersistentOrderLine>();
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@ElementCollection
 	private Set<PersistentChargeLine> chargeLines = new HashSet<PersistentChargeLine>();
 
 	/**
@@ -192,11 +191,10 @@ public class PersistentOrder implements
 	@Override
 	public final Money getChargeLinesPrice() {
 		Money price = Money.ZERO;
-		for (ChargeLine chargeLine : chargeLines) {
+		for(PersistentChargeLine chargeLine : chargeLines) {
 			price = price.add(chargeLine.getPrice());
 		}
 		return price;
-
 	}
 
 	@Override

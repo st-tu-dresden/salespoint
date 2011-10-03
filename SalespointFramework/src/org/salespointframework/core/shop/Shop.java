@@ -42,7 +42,7 @@ public enum Shop {
 	private Time time = new DefaultTime();
 	private Accountancy<? extends AccountancyEntry> accountancy;
 	private Calendar<? extends CalendarEntry> calendar;
-	private OrderManager<? extends Order<? extends OrderLine, ? extends ChargeLine>, ? extends OrderLine, ? extends ChargeLine> ordermanager;
+	private OrderManager<? extends Order<? extends OrderLine>, ? extends OrderLine> ordermanager;
 	private UserManager<? extends User> usermanager;
 	private Inventory<? extends Product> inventory;
 	private Catalog<? extends ProductType> catalog;
@@ -70,7 +70,7 @@ public enum Shop {
 	 * Gets the global {@link OrderManager}
 	 * @return an OrderManager instance
 	 */
-	public OrderManager<? extends Order<? extends OrderLine, ? extends ChargeLine>, ? extends OrderLine, ? extends ChargeLine> getOrderManager()
+	public OrderManager<? extends Order<? extends OrderLine>, ? extends OrderLine> getOrderManager()
 	{
 		return ordermanager;
 	}
@@ -80,7 +80,7 @@ public enum Shop {
 	 * @param ordermanager the OrderManager to be set
 	 * @throws ArgumentNullException if ordermanager is null
 	 */
-	public void setOrderManager(OrderManager<? extends Order<? extends OrderLine, ? extends ChargeLine>, ? extends OrderLine, ? extends ChargeLine> ordermanager)
+	public void setOrderManager(OrderManager<? extends Order<? extends OrderLine>, ? extends OrderLine> ordermanager)
 	{
 		this.ordermanager = Objects.requireNonNull(ordermanager, "ordermanager");
 	}

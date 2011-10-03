@@ -16,7 +16,7 @@ import org.salespointframework.util.ArgumentNullException;
  * @param <OL> generic orderline parameter
  * @param <CL> generic chargeline parameter
  */
-public interface OrderManager<O extends Order<OL, CL>, OL extends OrderLine, CL extends ChargeLine>
+public interface OrderManager<O extends Order<OL>, OL extends OrderLine>
 {
 	/**
 	 * Adds a new {@link Order} to the OrderManager
