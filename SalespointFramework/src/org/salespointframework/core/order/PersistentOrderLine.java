@@ -95,7 +95,7 @@ public class PersistentOrderLine implements OrderLine
 		ProductType productType = Database.INSTANCE.getEntityManagerFactory().createEntityManager().find(PersistentProductType.class, productIdentifier);
 		if (productType == null)
 		{
-			throw new RuntimeException("ProductType is unknown");
+			throw new IllegalStateException("ProductType " + productIdentifier + " is unknown/not in catalog");
 		}
 		this.productIdentifier = productType.getIdentifier();
 		this.productName = productType.getName();

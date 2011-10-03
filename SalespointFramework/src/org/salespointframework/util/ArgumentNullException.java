@@ -1,51 +1,51 @@
 package org.salespointframework.util;
 
-// TODO in ein anderes Package?
 // inspired by http://msdn.microsoft.com/en-us/library/system.argumentnullexception.aspx
 // denn NullRefEx und IllegalArgumentEx sind beide unpassend
+// erbt von NullRefEx wegen Effective Java 2 Item 60
 
 /**
- * TODO
+ * The exception is thrown when a null value is passed to a method that does not accept it as a valid argument.
  * @author Paul Henke
  * 
  */
 @SuppressWarnings("serial")
-public class ArgumentNullException extends IllegalArgumentException // TODO NPE (Effective Java)?
+public class ArgumentNullException extends NullPointerException 
 {
-	private final String paramName;
+	private final String parameterName;
 
 	protected ArgumentNullException()
 	{
-		paramName = "";
+		parameterName = "";
 	}
 
 	/**
 	 * Creates a new ArgumentNullException.
-	 * @param paramName the name of the null parameter
+	 * @param parameterName the name of the null parameter
 	 */
-	public ArgumentNullException(String paramName)
+	public ArgumentNullException(String parameterName)
 	{
-		super(paramName + " must be not null");
-		this.paramName = paramName;
+		super(parameterName + " must not be null");
+		this.parameterName = parameterName;
 	}
 
 	/**
 	 * Creates a new ArgumentNullException.
-	 * @param paramName the name of the null parameter
+	 * @param parameterName the name of the null parameter
 	 * @param message an optional message
 	 */
-	public ArgumentNullException(String paramName, String message)
+	public ArgumentNullException(String parameterName, String message)
 	{
 		super(message);
-		this.paramName = paramName;
+		this.parameterName = parameterName;
 	}
 
 	/**
 	 * 
 	 * @return the name of the null parameter
 	 */
-	public final String getParamName()
+	public final String getParameterName()
 	{
-		return paramName;
+		return parameterName;
 	}
 }

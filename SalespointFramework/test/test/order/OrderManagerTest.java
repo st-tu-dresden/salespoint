@@ -10,6 +10,7 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderManager;
 import org.salespointframework.core.user.PersistentUser;
+import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 
@@ -18,7 +19,7 @@ import org.salespointframework.util.ArgumentNullException;
 public class OrderManagerTest {
 	
 	private final PersistentOrderManager orderManager = new PersistentOrderManager();
-	private PersistentUser user;
+	private User user;
 	private PersistentOrder order;
 	
 	@BeforeClass

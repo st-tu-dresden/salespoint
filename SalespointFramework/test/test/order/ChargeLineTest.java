@@ -8,17 +8,20 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.PersistentChargeLine;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.user.PersistentUser;
+import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 
 @SuppressWarnings("javadoc")
 public class ChargeLineTest {
 
-	private PersistentUser user;
-	private PersistentOrder order;
+	private User user;
+	@SuppressWarnings("rawtypes")
+	private Order order;
 	private PersistentChargeLine chargeLine;
 	 
 	@BeforeClass
