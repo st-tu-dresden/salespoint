@@ -24,7 +24,7 @@ public interface Product
 	 * 
 	 * @return the {@link ProductIdentifier} of the {@link ProductType} of the Product
 	 */
-	ProductIdentifier getIdentifier();
+	ProductIdentifier getProductIdentifier();
 	
 	/**
 	 * 

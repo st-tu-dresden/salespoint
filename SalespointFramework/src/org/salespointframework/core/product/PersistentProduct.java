@@ -87,7 +87,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	}
 
 	@Override
-	public final ProductIdentifier getIdentifier()
+	public final ProductIdentifier getProductIdentifier()
 	{
 		return productIdentifier;
 	}
