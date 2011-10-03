@@ -34,7 +34,7 @@ public class AccountancyTest {
 			if((year % 2) == 0) {
 				System.out.println("ProductPaymentEntry");
 				a.add(new ProductPaymentEntry(new OrderIdentifier(),
-					new UserIdentifier(), new Money(1)));
+					new UserIdentifier(), new Money(1), "Rechnung nr " + year));
 			} else {
 				System.out.println("PersistentAccountancyEntry");
 				a.add(new PersistentAccountancyEntry(new Money(2.22)));

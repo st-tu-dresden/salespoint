@@ -33,7 +33,7 @@ public class AccountancyPeriodTest {
 		ProductPaymentEntry p;
 		System.out.println("Creating AccountancyEntries: ");
 		for(int i = 0; i < 20; i++) {
-			 p = new ProductPaymentEntry(new OrderIdentifier(), new UserIdentifier(), new Money(1));
+			 p = new ProductPaymentEntry(new OrderIdentifier(), new UserIdentifier(), new Money(1), "Rechnung nr. 3");
 			 System.out.println("Adding p " + p + " with time " + p.getDate());
 			 a.add(p);
 			 
