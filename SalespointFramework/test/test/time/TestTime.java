@@ -10,12 +10,12 @@ import org.salespointframework.core.time.DeLoreanTime;
 public class TestTime extends DeLoreanTime {
 	
 	@Override
-	public void beforeGoAhead(Duration d) {
+	public void beforeForward(Duration d) {
 		// TODO irgendwelche Aktionen ausführen
 	}
 	
 	@Override
-	public void afterGoAhead(Duration d) {
+	public void afterForward(Duration d) {
 		// TODO irgendwelche Aktionen ausführen
 	}
 	
@@ -30,11 +30,11 @@ public class TestTime extends DeLoreanTime {
 		
 
 		Duration d = new Duration(300000);
-		afterGoAhead(d);
+		afterForward(d);
 		
 		//assertEquals(Shop.INSTANCE.getTime().getDateTime().plus(300000).getSecondOfDay(), getDateTime().getSecondOfDay());
 		System.out.println(getDateTime());
-		afterGoAhead(d);
+		afterForward(d);
 		
 		System.out.println(Shop.INSTANCE.getTime().getDateTime().plus(30000).getMillis());
 	}
