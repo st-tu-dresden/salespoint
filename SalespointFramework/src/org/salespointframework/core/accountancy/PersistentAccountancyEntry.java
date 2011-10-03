@@ -11,7 +11,6 @@ import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.Objects;
 
