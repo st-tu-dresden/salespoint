@@ -12,12 +12,12 @@ import org.salespointframework.util.Objects;
  * 
  */
 @Embeddable
-public class PersistentChargeLine  //implements ChargeLine TODO ganz removen, umbenennen, Serializable, final, etc
+public final class PersistentChargeLine  //implements ChargeLine TODO ganz removen, umbenennen, Serializable, final, etc
 {
-	private ChargeLineIdentifier chargeLineIdentifier = new ChargeLineIdentifier();
+	private final ChargeLineIdentifier chargeLineIdentifier = new ChargeLineIdentifier();
 
-	private Money amount;
-	private String description;
+	private final Money amount;
+	private final String description;
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
@@ -25,6 +25,8 @@ public class PersistentChargeLine  //implements ChargeLine TODO ganz removen, um
 	@Deprecated
 	protected PersistentChargeLine()
 	{
+		amount = null;
+		description = null;
 	}
 
 	/**

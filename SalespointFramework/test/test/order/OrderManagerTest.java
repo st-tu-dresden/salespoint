@@ -2,7 +2,6 @@ package test.order;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -14,7 +13,6 @@ import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 
-import test.product.Keks;
 
 @SuppressWarnings("javadoc")
 public class OrderManagerTest {
@@ -28,6 +26,7 @@ public class OrderManagerTest {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Before
 	public void before() {
 		user = new PersistentUser(new UserIdentifier(), "");

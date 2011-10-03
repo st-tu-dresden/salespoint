@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.salespointframework.core.catalog.PersistentCatalog;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.product.PersistentProductType;
 import org.salespointframework.util.ArgumentNullException;
 

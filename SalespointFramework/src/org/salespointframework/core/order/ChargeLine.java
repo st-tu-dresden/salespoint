@@ -10,7 +10,7 @@ import org.salespointframework.core.money.Money;
  * @author Paul Henke
  * 
  */
-@Deprecated
+@Deprecated	//TODO delete and rename PersistentChargeLine to ChargeLine
 public interface ChargeLine
 {
 	/**

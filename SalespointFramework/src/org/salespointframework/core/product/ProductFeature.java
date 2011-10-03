@@ -16,10 +16,10 @@ import org.salespointframework.util.Objects;
 @Embeddable
 public final class ProductFeature implements Serializable,Comparable<ProductFeature>
 {
-	private String featureType;
-	private String value;
-	private Money price;
-	private double percent;
+	private final String featureType;
+	private final String value;
+	private final Money price;
+	private final double percent;
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
@@ -27,6 +27,10 @@ public final class ProductFeature implements Serializable,Comparable<ProductFeat
 	@Deprecated
 	protected ProductFeature()
 	{
+		featureType = null;
+		value = null;
+		price = null;
+		percent = 0;
 	}
 
 	// TODO ::::::: Check
@@ -61,6 +65,7 @@ public final class ProductFeature implements Serializable,Comparable<ProductFeat
 		return new ProductFeature(featureType, value, price, 0);
 	}
 
+	
 	public static ProductFeature create(String featureType, String value, double percent)
 	{
 		return new ProductFeature(featureType, value, Money.ZERO, percent);

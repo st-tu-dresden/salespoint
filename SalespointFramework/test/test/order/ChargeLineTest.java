@@ -10,8 +10,6 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.PersistentChargeLine;
 import org.salespointframework.core.order.PersistentOrder;
-import org.salespointframework.core.order.PersistentOrderLine;
-import org.salespointframework.core.order.PersistentOrderManager;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;

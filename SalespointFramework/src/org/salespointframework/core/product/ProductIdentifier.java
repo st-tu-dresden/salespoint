@@ -5,7 +5,13 @@ import javax.persistence.Embeddable;
 import org.salespointframework.util.SalespointIdentifier;
 
 /**
- * TODO
+ * <code>ProductIdentifier</code> serves as an identifier type for
+ * {@link ProductType} objects. The main reason for its existence is
+ * type safety for identifier across the Salespoint Framework. <br>
+ * <code>ProductIdentifier</code> instances serve as primary key
+ * attribute in {@link PersistentProductType}, but can also be used as
+ * a key for non-persistent, <code>Map</code>-based implementations.
+ * 
  * @author Paul Henke
  *
  */

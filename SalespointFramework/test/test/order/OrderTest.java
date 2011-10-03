@@ -5,7 +5,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
 
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.order.OrderStatus;
@@ -28,12 +27,14 @@ public class OrderTest {
 		user = new PersistentUser(new UserIdentifier(), "");
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void orderStatusOpentest() {
 		PersistentOrder order = new PersistentOrder(user.getIdentifier());
 		assertEquals(OrderStatus.OPEN, order.getOrderStatus());
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void cancelOrderTest() {
 		PersistentOrder order = new PersistentOrder(user.getIdentifier());

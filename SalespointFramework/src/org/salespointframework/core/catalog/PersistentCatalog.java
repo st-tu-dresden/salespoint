@@ -48,7 +48,7 @@ public class PersistentCatalog implements Catalog<PersistentProductType>
 	
 	/**
 	 * Adds multiple {@link PersistentProductType}s to this PersistentCatalog
-	 * @param productTypes an Iterable of {@link PersistentProductType}s to be added
+	 * @param productTypes an Iterable of {@link PersistentProductType}s or subtypes to be added
 	 */
 	public final void addAll(Iterable<? extends PersistentProductType> productTypes)
 	{

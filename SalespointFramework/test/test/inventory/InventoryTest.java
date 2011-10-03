@@ -13,6 +13,7 @@ import static org.junit.Assert.*;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.util.ArgumentNullException;
 
 import test.product.Keks;
@@ -35,6 +36,12 @@ public class InventoryTest {
 	@Before
 	public void before() {
 		keksType = new KeksType("Add Superkeks", Money.ZERO);
+		
+		ProductFeature feature1 = ProductFeature.create("Color", "Red");
+		ProductFeature feature2 = ProductFeature.create("Color", "Blue");
+		keksType.addProductFeature(feature1);
+		keksType.addProductFeature(feature2);
+		
 		keks = new Keks(keksType);
 	}
 	
@@ -72,5 +79,3 @@ public class InventoryTest {
 		assertEquals(keks, inventory.get(Keks.class, keks.getSerialNumber()));
 	}
 }
-
-

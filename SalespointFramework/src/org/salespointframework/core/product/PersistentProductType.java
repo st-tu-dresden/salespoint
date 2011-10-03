@@ -16,15 +16,14 @@ import org.salespointframework.util.Objects;
  * @author Paul Henke
  * 
  */
-
 @Entity
 public class PersistentProductType implements ProductType, Comparable<PersistentProductType>
 {
 	@EmbeddedId
-	private ProductIdentifier productIdentifier = new ProductIdentifier();;
+	private ProductIdentifier productIdentifier = new ProductIdentifier();
 
-	protected String name;
-	protected Money price;
+	private String name;
+	private Money price;
 
 	@ElementCollection
 	private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
@@ -122,12 +121,14 @@ public class PersistentProductType implements ProductType, Comparable<Persistent
 	@Override
 	public final boolean addCategory(String category)
 	{
+		Objects.requireNonNull(category, "category");
 		return categories.add(category);
 	}
 
 	@Override
 	public final boolean removeCategory(String category)
 	{
+		Objects.requireNonNull(category, "category");
 		return categories.remove(category);
 	}
 

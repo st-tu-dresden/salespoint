@@ -5,7 +5,11 @@ import javax.persistence.Embeddable;
 import org.salespointframework.util.SalespointIdentifier;
 
 /**
- * TODO
+ * <code>ChargeLineIdentifier</code> serves as an identifier type for
+ * {@link PersistentChargeLine} objects. The main reason for its existence is
+ * type safety for identifier across the Salespoint Framework.
+ * <code>ChargeLineIdentifier</code> 
+ * 
  * @author Paul Henke
  * 
  */
@@ -14,7 +18,7 @@ import org.salespointframework.util.SalespointIdentifier;
 public class ChargeLineIdentifier extends SalespointIdentifier
 {
 	/**
-	 * Creates a new unique identifier for {@link ChargeLine}s.
+	 * Creates a new unique identifier for {@link PersistentChargeLine}s.
 	 */
 	public ChargeLineIdentifier()
 	{
