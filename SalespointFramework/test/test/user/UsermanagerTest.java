@@ -1,5 +1,6 @@
 package test.user;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class UsermanagerTest {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
 
 		userManager = new PersistentUserManager();
+		userManager.add(employee);
 	}
 	
 	@Test
@@ -157,17 +159,11 @@ public class UsermanagerTest {
 		capa= new UserCapability("CrazyTestCapabilityAgain");
 		UserCapability capa2= new UserCapability("MustBeInDataBaseAfterTesting");
 		
-		boolean addCapa = userManager.addCapability(employee, capa);
-		boolean addCapa2 = userManager.addCapability(employee, capa2);
-
+		assertTrue(employee.addCapability(capa));
+		assertTrue(employee.addCapability(capa2));
 		
-		assertEquals("NoSuchUser!", true,  addCapa);
-		assertEquals("NoSuchUser!", true,  addCapa2);
-		
-		boolean hasCapa = userManager.hasCapability(employee, capa);
-		boolean hasCapa2 = userManager.hasCapability(employee, capa2);
-		assertEquals("1",true,  hasCapa);
-		assertEquals("2",true,  hasCapa2);
+		assertTrue(employee.hasCapability(capa));
+		assertTrue(employee.hasCapability(capa2));
 	}
 	
 	
@@ -176,19 +172,15 @@ public class UsermanagerTest {
 	public void testRemoveCapability(){
 		capa= new UserCapability("RemoveTestCapabilityAgain");
 		
-		userManager.addCapability(employee, capa);
+		employee.addCapability(capa);
 		
 		
-		boolean hasCapa = userManager.hasCapability(employee, capa);
-		assertEquals("befor removing", true,  hasCapa);
+		assertTrue(employee.hasCapability(capa));
 		
 		
-		boolean remo =userManager.removeCapability(employee, capa);
+		assertTrue(employee.removeCapability(capa));
 		
-		assertEquals("during removing", true,  remo);
-		
-		boolean hasCapa2 = userManager.hasCapability(employee, capa);
-		assertEquals("after removing", false,  hasCapa2);
+		assertFalse(employee.hasCapability(capa));
 	}
 	
 }

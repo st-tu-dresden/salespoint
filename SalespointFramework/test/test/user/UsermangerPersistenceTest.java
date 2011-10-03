@@ -54,9 +54,9 @@ public class UsermangerPersistenceTest {
 
 
 		userManager.add(e3);
-		userManager.addCapability(e3, capa2);
+		e3.addCapability(capa2);
 
-		assertTrue(userManager.hasCapability(e3, capa2));
+		assertTrue(e3.hasCapability(capa2));
 
 	}
 
@@ -68,7 +68,7 @@ public class UsermangerPersistenceTest {
 
 		userManager.add(e3);
 
-		assertFalse(userManager.hasCapability(e3, capa));
+		assertFalse(e3.hasCapability(capa));
 	}
 
 }
