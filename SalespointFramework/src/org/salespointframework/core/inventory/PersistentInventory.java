@@ -11,8 +11,10 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.salespointframework.core.database.Database;
+import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.product.PersistentProduct_;
+import org.salespointframework.core.product.Product;
 import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.SerialNumber;
@@ -114,10 +116,6 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
-		Root<E> entry = cq.from(clazz);
-
-		cq.where(entry.type().in(clazz));
-
 		TypedQuery<E> tq = em.createQuery(cq);
 
 		return Iterables.from(tq.getResultList());
@@ -134,10 +132,9 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
 		Root<E> entry = cq.from(clazz);
 
-		Predicate p0 = entry.type().in(clazz);
 		Predicate p1 = cb.equal(entry.get(PersistentProduct_.productIdentifier), productIdentifier);
 
-		cq.where(p0, p1);
+		cq.where(p1);
 
 		TypedQuery<E> tq = em.createQuery(cq);
 
@@ -158,16 +155,21 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
 		Root<E> entry = cq.from(clazz);
 
-		Predicate p0 = entry.type().in(clazz);
 		Predicate p1 = cb.equal(entry.get(PersistentProduct_.productIdentifier), productIdentifier);
 		Predicate p2 = cb.equal(entry.<Set<ProductFeature>> get("productFeatures"), featureSet);
 
-		cq.where(p0, p1, p2);
+		cq.where(p1, p2);
 
 		TypedQuery<E> tq = em.createQuery(cq);
 		return Iterables.from(tq.getResultList());
 	}
 
+	/**
+	 * Creates an new Instance of the PersistentInventory
+	 * The {@link PersistentOrder} uses this method for transactional removal of {@link Product}
+	 * @param entityManager the {@link EntityManager} to be used for all operations (methods) 
+	 * @return a new PersistentInventory
+	 */
 	public PersistentInventory newInstance(EntityManager entityManager)
 	{
 		return new PersistentInventory(entityManager);

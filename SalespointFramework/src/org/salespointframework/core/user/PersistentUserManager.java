@@ -15,6 +15,7 @@ import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
 /**
+ * TODO
  * @author Christopher Bellmann
  * @author Paul Henke
  * @author Hannes Weissbach
@@ -83,8 +84,8 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<T> q = cb.createQuery(clazz);
-		TypedQuery<T> tq = em.createQuery(q.where(q.from(clazz).type().in(clazz)));
+		CriteriaQuery<T> cq = cb.createQuery(clazz);
+		TypedQuery<T> tq = em.createQuery(cq);
 
 		return Iterables.from(tq.getResultList());
 	}

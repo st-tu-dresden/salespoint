@@ -75,8 +75,7 @@ public class PersistentCatalog implements Catalog<PersistentProductType>
 			em.remove(productType);
 			beginCommit(em);
 			return true;
-		} else
-		{
+		} else {
 			return false;
 		}
 	}
