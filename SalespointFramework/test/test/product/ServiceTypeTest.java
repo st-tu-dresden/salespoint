@@ -9,6 +9,7 @@ import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.ArgumentNullException;
 
 
+@SuppressWarnings("javadoc")
 public class ServiceTypeTest {
 
 	DateTime a = Shop.INSTANCE.getTime().getDateTime();

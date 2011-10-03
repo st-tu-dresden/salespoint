@@ -11,6 +11,7 @@ import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.quantity.rounding.RoundStrategy;
 import org.salespointframework.util.ArgumentNullException;
 
+@SuppressWarnings("javadoc")
 public class MeasuredProductInstanceTest {
 
 	Quantity q = new Quantity(300, new Metric("liter", "l"), new RoundStrategy(1, 1));

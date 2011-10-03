@@ -6,6 +6,7 @@ import org.salespointframework.core.product.later.PersistentMeasuredProduct;
 import org.salespointframework.core.product.later.MeasuredProductType;
 import org.salespointframework.core.quantity.Quantity;
 
+@SuppressWarnings("javadoc")
 public class TestMeasuredProductInstance extends PersistentMeasuredProduct{
 
 	@Deprecated

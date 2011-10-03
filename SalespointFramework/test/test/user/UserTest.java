@@ -7,25 +7,26 @@ import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 
 
+@SuppressWarnings("javadoc")
 public class UserTest {
 	
 	private UserIdentifier ui1= new UserIdentifier("testCustomer");
 	private UserIdentifier ui2= new UserIdentifier("testEmployee");
 	
-	private MyCustomer c = new MyCustomer(ui1, "pw1234");
-	private MyEmployee e = new MyEmployee(ui2, "4321pw");
+	private Customer c = new Customer(ui1, "pw1234");
+	private Employee e = new Employee(ui2, "4321pw");
 	
 	@Test(expected = ArgumentNullException.class)
 	public void testNotNullUserId(){
 		@SuppressWarnings("unused")
-		MyCustomer c0= new MyCustomer(null, "IHaveNoUserPassword");
+		Customer c0= new Customer(null, "IHaveNoUserPassword");
 	}
 
 	@Test(expected = ArgumentNullException.class)
 	public void testNotNullPassword(){
 		UserIdentifier ui3= new UserIdentifier("notWorkingGuy");
 		@SuppressWarnings("unused")
-		MyCustomer c0= new MyCustomer(ui3, null);
+		Customer c0= new Customer(ui3, null);
 	}
 	
 	@Test

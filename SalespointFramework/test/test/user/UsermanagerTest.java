@@ -1,7 +1,6 @@
 package test.user;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,10 +16,11 @@ import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.Iterables;
 
 
+@SuppressWarnings("javadoc")
 public class UsermanagerTest {
 
 	private static UserIdentifier userIdentifier = new UserIdentifier();
-	private static MyEmployee employee = new MyEmployee(userIdentifier, "lala");
+	private static Employee employee = new Employee(userIdentifier, "lala");
 	private UserCapability capa;
 	private static PersistentUserManager userManager;
 	
@@ -34,31 +34,31 @@ public class UsermanagerTest {
 	
 	@Test
 	public void testEmployeeMangerContainsE3(){
-		assertEquals(userManager.get(MyEmployee.class, employee.getIdentifier()), employee);
+		assertEquals(userManager.get(Employee.class, employee.getIdentifier()), employee);
 	}
 	
 	
 	@Test
 	public void testAddCostumer(){
 		UserIdentifier ui= new UserIdentifier("testCustomer");
-		MyCustomer c = new MyCustomer(ui, "pw1234");
+		Customer c = new Customer(ui, "pw1234");
 		
 		userManager.add(c);
 
-		assertEquals(userManager.get(MyCustomer.class, c.getIdentifier()), c);
+		assertEquals(userManager.get(Customer.class, c.getIdentifier()), c);
 	}
 	
 	@Test
 	public void testAddEmployee(){
 
 		UserIdentifier ui= new UserIdentifier("testEmployee");
-		MyEmployee e = new MyEmployee(ui, "4321pw");
+		Employee e = new Employee(ui, "4321pw");
 				
 		
 		userManager.add(e);
 		
 		
-		MyEmployee currentE = userManager.get(MyEmployee.class, e.getIdentifier());
+		Employee currentE = userManager.get(Employee.class, e.getIdentifier());
 		assertEquals(currentE, e);
 	}
 	
@@ -67,13 +67,13 @@ public class UsermanagerTest {
 	@Test
 	public void testDuplicateEmployee(){
 		UserIdentifier ui= new UserIdentifier("testDuplicateEmployee");
-		MyEmployee e = new MyEmployee(ui, "4321pw");
+		Employee e = new Employee(ui, "4321pw");
 		
 		
 		userManager.add(e);
 		
 		
-		MyEmployee currentE = userManager.get(MyEmployee.class, e.getIdentifier());
+		Employee currentE = userManager.get(Employee.class, e.getIdentifier());
 		assertEquals(currentE, e);
 		
 		
@@ -87,25 +87,25 @@ public class UsermanagerTest {
 	@Test
 	public void testGetAllUsersBETTER(){
 		final int usersToAdd = 4;
-		final List<MyEmployee> list = new ArrayList<MyEmployee>(usersToAdd);
+		final List<Employee> list = new ArrayList<Employee>(usersToAdd);
 		
 
 		final PersistentUserManager empManager = new PersistentUserManager();
 		
-		final int oldCount = Iterables.toList((empManager.find(MyEmployee.class))).size();
+		final int oldCount = Iterables.toList((empManager.find(Employee.class))).size();
 
 
 		for(int n = 0; n < usersToAdd; n++) {
-			MyEmployee employee = new MyEmployee(new UserIdentifier(), "egal");		//id egal, besser leer lassen, eigene wird generiert, clasht nicht mit anderen Tests 
+			Employee employee = new Employee(new UserIdentifier(), "egal");		//id egal, besser leer lassen, eigene wird generiert, clasht nicht mit anderen Tests 
 			list.add(employee);
 			empManager.add(employee);
 		}
 
 		
-		final int newCount = Iterables.toList((empManager.find(MyEmployee.class))).size();
+		final int newCount = Iterables.toList((empManager.find(Employee.class))).size();
 		
-		for(MyEmployee employee : list) {
-			assertEquals(empManager.get(MyEmployee.class, employee.getIdentifier()), employee);
+		for(Employee employee : list) {
+			assertEquals(empManager.get(Employee.class, employee.getIdentifier()), employee);
 		}
 		assertEquals(usersToAdd, newCount - oldCount); 
 	}
@@ -116,13 +116,13 @@ public class UsermanagerTest {
 	public void testGetAllUsers(){
 
 		UserIdentifier uie1= new UserIdentifier("me1");
-		MyEmployee me1= new MyEmployee(uie1 ,"egal");
+		Employee me1= new Employee(uie1 ,"egal");
 		UserIdentifier uie2= new UserIdentifier("me2");
-		MyEmployee me2= new MyEmployee(uie2 ,"egal");
+		Employee me2= new Employee(uie2 ,"egal");
 		UserIdentifier uie3= new UserIdentifier("me3");
-		MyEmployee me3= new MyEmployee(uie3 ,"egal");
+		Employee me3= new Employee(uie3 ,"egal");
 		UserIdentifier uie4= new UserIdentifier("me4");
-		MyEmployee me4= new MyEmployee(uie4 ,"egal");
+		Employee me4= new Employee(uie4 ,"egal");
 		
 		
 		userManager.add(me1);
@@ -135,15 +135,15 @@ public class UsermanagerTest {
 		//set this Number in order how many Employees u create during the hole test
 		int numberOfEmployees =6;
 		int countEmployees =0;
-		for(Iterator<MyEmployee> i = userManager.find(MyEmployee.class).iterator(); i.hasNext(); ){
-			userManager.find(MyEmployee.class);
+		for(Iterator<Employee> i = userManager.find(Employee.class).iterator(); i.hasNext(); ){
+			userManager.find(Employee.class);
 			countEmployees++;
 			i.next();
 		}
-		assertEquals("me1",userManager.get(MyEmployee.class, uie1), me1);
-		assertEquals("me2",userManager.get(MyEmployee.class, uie2), me2);
-		assertEquals("me3",userManager.get(MyEmployee.class, uie3), me3);
-		assertEquals("me4",userManager.get(MyEmployee.class, uie4), me4);
+		assertEquals("me1",userManager.get(Employee.class, uie1), me1);
+		assertEquals("me2",userManager.get(Employee.class, uie2), me2);
+		assertEquals("me3",userManager.get(Employee.class, uie3), me3);
+		assertEquals("me4",userManager.get(Employee.class, uie4), me4);
 		assertEquals("iterator", numberOfEmployees,countEmployees);
 	}
 	

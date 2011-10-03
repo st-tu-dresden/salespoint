@@ -4,15 +4,16 @@ import javax.persistence.Entity;
 
 import org.salespointframework.core.product.PersistentProduct;
 
+@SuppressWarnings("javadoc")
 @Entity
-public class KeksInstance extends PersistentProduct {
+public class Keks extends PersistentProduct {
 	
 	@Deprecated
-	public KeksInstance() {
+	public Keks() {
 		
 	}
 	
-	public KeksInstance(KeksProduct keks) {
+	public Keks(KeksType keks) {
 		super(keks);
 	}
 	

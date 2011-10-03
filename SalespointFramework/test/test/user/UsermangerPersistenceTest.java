@@ -20,6 +20,7 @@ import org.salespointframework.core.user.UserIdentifier;
  * @author Christopher Bellmann
  * 
  */
+@SuppressWarnings("javadoc")
 public class UsermangerPersistenceTest {
 
 	private static PersistentUserManager userManager;
@@ -34,21 +35,21 @@ public class UsermangerPersistenceTest {
 	@Test
 	public void testHasEmployeeE3AndHasPW() {
 		UserIdentifier ui3 = new UserIdentifier();
-		MyEmployee e3 = new MyEmployee(ui3, "lala");
+		Employee e3 = new Employee(ui3, "lala");
 
 		userManager.add(e3);
 
 		assertEquals(
-				userManager.get(MyEmployee.class, e3.getIdentifier()), e3);
+				userManager.get(Employee.class, e3.getIdentifier()), e3);
 		assertEquals(
-				userManager.get(MyEmployee.class, e3.getIdentifier())
+				userManager.get(Employee.class, e3.getIdentifier())
 						.verifyPassword("lala"), true);
 	}
 
 	@Test
 	public void testE3HasCapability() {
 		UserIdentifier ui3 = new UserIdentifier();
-		MyEmployee e3 = new MyEmployee(ui3, "lala");
+		Employee e3 = new Employee(ui3, "lala");
 		UserCapability capa2 = new UserCapability(
 				"MustBeInDataBaseAfterTesting");
 
@@ -63,7 +64,7 @@ public class UsermangerPersistenceTest {
 	@Test
 	public void testE3HasNOTCapability() {
 		UserIdentifier ui3 = new UserIdentifier();
-		MyEmployee e3 = new MyEmployee(ui3, "lala");
+		Employee e3 = new Employee(ui3, "lala");
 		UserCapability capa = new UserCapability("CrazyTestCapabilityAgain");
 
 		userManager.add(e3);

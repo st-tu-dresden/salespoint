@@ -5,15 +5,16 @@ import javax.persistence.Entity;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.PersistentProductType;
 
+@SuppressWarnings("javadoc")
 @Entity
-public class KeksProduct extends PersistentProductType {
+public class KeksType extends PersistentProductType {
 
 	@Deprecated
-	protected KeksProduct() {
+	protected KeksType() {
 		
 	}
 	
-	public KeksProduct(String name, Money price) {
+	public KeksType(String name, Money price) {
 		super(name, price);
 	}
 

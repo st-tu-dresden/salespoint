@@ -9,19 +9,14 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.ArgumentNullException;
 
-import test.product.KeksProduct;
+import test.product.KeksType;
 
+@SuppressWarnings("javadoc")
 public class ProductCatalogTest {
 
 	@BeforeClass
 	public static void setUp() {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
-	}
-
-	@SuppressWarnings("unused")
-	@Test(expected = ArgumentNullException.class)
-	public void testNullCheckConstructor() {
-		PersistentCatalog catalog = new PersistentCatalog();
 	}
 
 	@Test(expected = ArgumentNullException.class)
@@ -36,12 +31,12 @@ public class ProductCatalogTest {
 	@Test
 	public void testFindById() {
 
-		KeksProduct keks1 = new KeksProduct("bla", new Money(0));
+		KeksType keks1 = new KeksType("bla", new Money(0));
 		PersistentCatalog catalog = new PersistentCatalog();
 
 		catalog.add(keks1);
 
-		KeksProduct keks2 = catalog.get(KeksProduct.class, keks1.getIdentifier());
+		KeksType keks2 = catalog.get(KeksType.class, keks1.getIdentifier());
 
 		assertEquals(keks1, keks2);
 	}

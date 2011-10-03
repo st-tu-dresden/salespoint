@@ -7,6 +7,7 @@ import org.salespointframework.core.product.later.PersistentService;
 import org.salespointframework.core.product.later.ServiceType;
 
 
+@SuppressWarnings("javadoc")
 @Entity
 public class TestServiceInstance extends PersistentService{
 

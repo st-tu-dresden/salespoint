@@ -10,9 +10,10 @@ import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.ArgumentNullException;
 
-import test.product.KeksInstance;
-import test.product.KeksProduct;
+import test.product.Keks;
+import test.product.KeksType;
 
+@SuppressWarnings("javadoc")
 public class InventoryTest {
 	private EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 	
@@ -41,10 +42,10 @@ public class InventoryTest {
 	public void testAddInstance() {
 		EntityManager em = emf.createEntityManager();
 		
-		PersistentInventory inventory = new PersistentInventory(em);
+		PersistentInventory inventory = new PersistentInventory();
 		
-		KeksProduct kp = new KeksProduct("Wheee" ,new Money(0));
-		KeksInstance ki = new KeksInstance(kp);
+		KeksType kp = new KeksType("Wheee", Money.ZERO);
+		Keks ki = new Keks(kp);
 		
 		em.getTransaction().begin();
 		

@@ -5,16 +5,17 @@ import javax.persistence.Entity;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.UserIdentifier;
 
+@SuppressWarnings("javadoc")
 @Entity
-public class MyCustomer extends PersistentUser {
+public class Customer extends PersistentUser {
 	
 	
 	@Deprecated
-	public MyCustomer(){
+	public Customer(){
 	}
 	
 	
-	public MyCustomer(UserIdentifier userId, String pw){
+	public Customer(UserIdentifier userId, String pw){
 		super(userId, pw);
 	}
 

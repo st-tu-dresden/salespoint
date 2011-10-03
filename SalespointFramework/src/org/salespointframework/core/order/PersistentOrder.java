@@ -91,6 +91,13 @@ public class PersistentOrder implements
 				"userIdentifier");
 		this.payment = Objects.requireNonNull(payment, "payment");
 	}
+	
+	// TODO wegen payment, fliegt später raus
+	@Deprecated
+	public PersistentOrder(UserIdentifier userIdentifier) {
+		this.userIdentifier = Objects.requireNonNull(userIdentifier,
+				"userIdentifier");
+	}
 
 	@Override
 	public final boolean addOrderLine(PersistentOrderLine orderLine) {

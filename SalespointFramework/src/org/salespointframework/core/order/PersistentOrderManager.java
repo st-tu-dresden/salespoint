@@ -11,6 +11,7 @@ import javax.persistence.criteria.Root;
 import org.joda.time.DateTime;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
@@ -121,6 +122,11 @@ public final class PersistentOrderManager implements OrderManager<PersistentOrde
 		return Iterables.from(tq.getResultList());
 	}
 
+	/**
+	 * Updates and persists an existing {@link PersistentOrder} to the PersistentOrderManager and the Database
+	 * @param order the {@link PersistentOrder} to be updated
+	 * @throws ArgumentNullException if order is null
+	 */
 	public final void update(PersistentOrder order)
 	{
 		Objects.requireNonNull(order, "order");

@@ -12,6 +12,7 @@ import org.salespointframework.core.product.later.ServiceDeliveryStatus;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.ArgumentNullException;
 
+@SuppressWarnings("javadoc")
 public class ServiceInstanceTest {
 
 	private DateTime a = Shop.INSTANCE.getTime().getDateTime();

@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.time.DeLoreanTime;
 
+@SuppressWarnings("javadoc")
 public class TestTime extends DeLoreanTime {
 	
 	@Override
