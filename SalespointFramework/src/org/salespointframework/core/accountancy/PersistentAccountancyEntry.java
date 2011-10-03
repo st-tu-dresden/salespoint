@@ -115,7 +115,7 @@ public class PersistentAccountancyEntry implements AccountancyEntry {
 		{
 			return true;
 		}
-		if (other instanceof PersistentProduct)
+		if (other instanceof PersistentAccountancyEntry)
 		{
 			return this.accountancyEntryIdentifier.equals(((PersistentAccountancyEntry)other).accountancyEntryIdentifier);
 		}
