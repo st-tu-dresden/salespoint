@@ -2,6 +2,8 @@ package org.salespointframework.core.accountancy;
 
 import java.util.Date;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
@@ -22,9 +24,18 @@ import org.salespointframework.util.Objects;
  * 
  */
 @Entity
+//@Customizer(PersistentAccountancyEntryDescriptorCustomizer.class)
 public class PersistentAccountancyEntry implements AccountancyEntry {
 
+	// TODO: if the column is not renamed, it does not work. instead,
+	// ProductPaymentEntry's USER_ID column becomes PK. This fucks everything
+	// up, if a PersistentAccountancyEntry is retrieved from the database,
+	// because its "PK" (USER_ID) would be NULL. Renaming keeps ENTRY_ID the PK.
+	// IdClass annotation did not work. Maybe Using a DescriptorCustomizer can
+	// be used, to correct the mappings (don't forget to sacrifice a chicken, if
+	// it does).
 	@EmbeddedId
+	@AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID", nullable = false))
 	private AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();
 
 	private Money value = Money.ZERO;

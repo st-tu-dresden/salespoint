@@ -18,13 +18,14 @@ import org.salespointframework.util.Objects;
  * @author Thomas Dedek
  */
 @Entity
+// @Customizer(PersistentAccountancyEntryDescriptorCustomizer.class)
 public class ProductPaymentEntry extends PersistentAccountancyEntry {
 	/**
 	 * The <code>OrderIdentifier</code> to which this
 	 * <code>ProductPaymentEntry</code> refers to.
 	 */
 	@Embedded
-	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID"))
+	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID", nullable = true))
 	private OrderIdentifier orderIdentifier;
 
 	/**
@@ -32,7 +33,7 @@ public class ProductPaymentEntry extends PersistentAccountancyEntry {
 	 * <code>ProductPaymentEntry</code> refers to.
 	 */
 	@Embedded
-	@AttributeOverride(name = "id", column = @Column(name = "USER_ID"))
+	@AttributeOverride(name = "id", column = @Column(name = "USER_ID", nullable = true))
 	private UserIdentifier userIdentifier;
 
 	/**
@@ -55,11 +56,12 @@ public class ProductPaymentEntry extends PersistentAccountancyEntry {
 	 *            <code>ProductPaymentEntry</code> will refer to.
 	 * @param amount
 	 *            the <code>Money</code> that was payed.
+	 * @param description
+	 *            textual description of the payment entry
 	 */
-	// TODO hand description to superclass ctor
 	public ProductPaymentEntry(OrderIdentifier orderIdentifier,
-			UserIdentifier userIdentifier, Money amount) {
-		super(amount);
+			UserIdentifier userIdentifier, Money amount, String description) {
+		super(amount, description);
 		this.orderIdentifier = Objects.requireNonNull(orderIdentifier,
 				"orderIdentifier");
 		this.userIdentifier = Objects.requireNonNull(userIdentifier,
