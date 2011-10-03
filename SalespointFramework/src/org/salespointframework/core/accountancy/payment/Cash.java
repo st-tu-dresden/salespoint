@@ -1,6 +1,5 @@
 package org.salespointframework.core.accountancy.payment;
 
-import java.io.Serializable;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 
 /**
@@ -10,8 +9,8 @@ import org.salespointframework.core.accountancy.payment.PaymentMethod;
  * @author Hannes Weisbach
  */
 @SuppressWarnings("serial")
-public final class Cash extends PaymentMethod implements Serializable {
-	
+public final class Cash extends PaymentMethod {
+
 	/**
 	 * A convenience instance <code>CASH</code> is defined in this class, which
 	 * can be reused, instead of instantiating a new instance every time one is
@@ -20,8 +19,8 @@ public final class Cash extends PaymentMethod implements Serializable {
 	public static final Cash CASH = new Cash();
 
 	/**
-	 * Creates a new cash instance.
-	 * You can use {@link Cash#CASH} instead of instantiating a new one.
+	 * Creates a new cash instance. You can use {@link Cash#CASH} instead of
+	 * instantiating a new one.
 	 */
 	public Cash() {
 		super("Cash");

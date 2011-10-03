@@ -1,7 +1,5 @@
 package org.salespointframework.core.accountancy.payment;
 
-import java.io.Serializable;
-
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.payment.PaymentCard;
 import org.salespointframework.core.money.Money;
@@ -13,13 +11,13 @@ import org.salespointframework.util.Objects;
  * 
  */
 @SuppressWarnings("serial")
-public final class CreditCard extends PaymentCard implements Serializable {
+public final class CreditCard extends PaymentCard {
 
 	/**
 	 * The maximum amount of money, the card holder can dispose of within a day.
 	 */
 	private final Money dailyWithdrawalLimit;
-	
+
 	/**
 	 * Line of credit extended by the issuing association to the card holder.
 	 */
@@ -65,8 +63,9 @@ public final class CreditCard extends PaymentCard implements Serializable {
 						.requireNonNull(expiryDate, "expiryDate"), Objects
 						.requireNonNull(cardVerificationCode,
 								"cardVerficationCode"));
-		
-		this.dailyWithdrawalLimit = Objects.requireNonNull(dailyWithdrawalLimit, "dailyWithdrawalLimit");
+
+		this.dailyWithdrawalLimit = Objects.requireNonNull(
+				dailyWithdrawalLimit, "dailyWithdrawalLimit");
 		this.creditLimit = Objects.requireNonNull(creditLimit, "creditLimit");
 	}
 
@@ -107,7 +106,8 @@ public final class CreditCard extends PaymentCard implements Serializable {
 						.requireNonNull(expiryDate, "expiryDate"), Objects
 						.requireNonNull(cardVerificationCode,
 								"cardVerficationCode"));
-		this.dailyWithdrawalLimit = Objects.requireNonNull(dailyWithdrawalLimit, "dailyWithdrawalLimit");
+		this.dailyWithdrawalLimit = Objects.requireNonNull(
+				dailyWithdrawalLimit, "dailyWithdrawalLimit");
 		this.creditLimit = Objects.requireNonNull(creditLimit, "creditLimit");
 	}
 

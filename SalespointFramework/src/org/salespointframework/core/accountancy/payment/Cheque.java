@@ -1,7 +1,5 @@
 package org.salespointframework.core.accountancy.payment;
 
-import java.io.Serializable;
-
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 
@@ -15,21 +13,21 @@ import org.salespointframework.core.accountancy.payment.PaymentMethod;
  * 
  */
 @SuppressWarnings("serial")
-public final class Cheque extends PaymentMethod implements Serializable {
+public final class Cheque extends PaymentMethod {
 
 	private final String accountName;
-	
+
 	private final String accountNumber;
-	
+
 	private final String chequeNumber;
-	
+
 	private final String payee;
-	
+
 	private final DateTime dateWritten;
-	
+
 	private final String bankName;
 	// TODO Address class
-	
+
 	private final String bankAddress;
 
 	private final String bankIdentificationNumber;
@@ -57,7 +55,7 @@ public final class Cheque extends PaymentMethod implements Serializable {
 	 *            Unique identifier of the bank that issued the cheque. Also
 	 *            known as the bank routing number.
 	 */
-	//TODO null-checks
+	// TODO null-checks
 	public Cheque(String accountName, String accountNumber,
 			String chequeNumber, String payee, DateTime dateWritten,
 			String bankName, String bankAddress, String bankIdentificationNumber) {

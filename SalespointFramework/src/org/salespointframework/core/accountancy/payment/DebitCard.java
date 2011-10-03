@@ -1,7 +1,5 @@
 package org.salespointframework.core.accountancy.payment;
 
-import java.io.Serializable;
-
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.payment.PaymentCard;
 import org.salespointframework.core.money.Money;
@@ -15,7 +13,7 @@ import org.salespointframework.util.Objects;
  * @author Hannes Weisbach
  */
 @SuppressWarnings("serial")
-public final class DebitCard extends PaymentCard implements Serializable {
+public final class DebitCard extends PaymentCard {
 
 	/**
 	 * Amount of money, the card holder can dispose of within a day.

@@ -1,7 +1,5 @@
 package org.salespointframework.core.accountancy.payment;
 
-import java.io.Serializable;
-
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.util.Objects;
@@ -20,20 +18,20 @@ import org.salespointframework.util.Objects;
  * 
  */
 @SuppressWarnings("serial")
-public abstract class PaymentCard extends PaymentMethod implements Serializable {
+public abstract class PaymentCard extends PaymentMethod {
 
 	private final String cardAssociationName;
-	
+
 	private final String cardNumber;
-	
+
 	private final String nameOnCard;
-	
+
 	private final String billingAddress;
-	
+
 	private final DateTime validFrom;
-	
+
 	private final DateTime expiryDate;
-	
+
 	private final String cardVerificationCode;
 
 	/**
