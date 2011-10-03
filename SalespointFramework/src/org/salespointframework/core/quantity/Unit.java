@@ -10,6 +10,7 @@ import org.salespointframework.core.quantity.rounding.RoundingStrategy;
  * @author hannesweisbach
  * 
  */
+@SuppressWarnings("serial")
 public class Unit extends Quantity {
 	/**
 	 * Convenience instance of 0 units.
@@ -23,10 +24,6 @@ public class Unit extends Quantity {
 	 * Convenience instance of 10 units.
 	 */
 	public static final Unit TEN = new Unit(10);
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8974672849577920667L;
 
 	/**
 	 * Creates a new <code>Unit</code> instance, representing
