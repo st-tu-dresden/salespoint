@@ -42,11 +42,16 @@ import org.salespointframework.util.Objects;
  * 
  */
 @Entity
-public class PersistentOrder implements Order<PersistentOrderLine, PersistentChargeLine>, Comparable<PersistentOrder>
-{
+public class PersistentOrder implements
+		Order<PersistentOrderLine, PersistentChargeLine>,
+		Comparable<PersistentOrder> {
+	// TODO: Here, we also need to rename the column, or OWNER_ID will be the
+	// PK. Maybe we should rename the field in SalespointIdentifier, to avoid
+	// name clashes with "ID"?
 	@EmbeddedId
+	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID"))
 	private OrderIdentifier orderIdentifier = new OrderIdentifier();
-	
+
 	private Payment payment;
 
 	@Embedded
@@ -69,42 +74,40 @@ public class PersistentOrder implements Order<PersistentOrderLine, PersistentCha
 	 * Parameterless constructor required for JPA. Do not use.
 	 */
 	@Deprecated
-	public PersistentOrder()
-	{}
+	public PersistentOrder() {
+	}
 
 	/**
 	 * Creates a new PersistentOrder
-	 * @param userIdentifier The {@link UserIdentifier}/{@link User} connected to this order
-	 * @param payment The {@link Payment} connected to this order
+	 * 
+	 * @param userIdentifier
+	 *            The {@link UserIdentifier}/{@link User} connected to this
+	 *            order
+	 * @param payment
+	 *            The {@link Payment} connected to this order
 	 */
-	public PersistentOrder(UserIdentifier userIdentifier, Payment payment)
-	{
-		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier");
+	public PersistentOrder(UserIdentifier userIdentifier, Payment payment) {
+		this.userIdentifier = Objects.requireNonNull(userIdentifier,
+				"userIdentifier");
 		this.payment = Objects.requireNonNull(payment, "payment");
 	}
 
 	@Override
-	public final boolean addOrderLine(PersistentOrderLine orderLine)
-	{
-		if(orderStatus != OrderStatus.OPEN)
-		{
+	public final boolean addOrderLine(PersistentOrderLine orderLine) {
+		if (orderStatus != OrderStatus.OPEN) {
 			return false;
 		}
 		return orderLines.add(orderLine);
 	}
 
 	@Override
-	public final boolean removeOrderLine(OrderLineIdentifier orderLineIdentifier)
-	{
-		if(orderStatus != OrderStatus.OPEN)
-		{
+	public final boolean removeOrderLine(OrderLineIdentifier orderLineIdentifier) {
+		if (orderStatus != OrderStatus.OPEN) {
 			return false;
 		}
 		PersistentOrderLine temp = null;
-		for (PersistentOrderLine pol : orderLines)
-		{
-			if(pol.getIdentifier().equals(orderLineIdentifier))
-			{
+		for (PersistentOrderLine pol : orderLines) {
+			if (pol.getIdentifier().equals(orderLineIdentifier)) {
 				temp = pol;
 				break;
 			}
@@ -113,27 +116,22 @@ public class PersistentOrder implements Order<PersistentOrderLine, PersistentCha
 	}
 
 	@Override
-	public final boolean addChargeLine(PersistentChargeLine chargeLine)
-	{
-		if(orderStatus != OrderStatus.OPEN)
-		{
+	public final boolean addChargeLine(PersistentChargeLine chargeLine) {
+		if (orderStatus != OrderStatus.OPEN) {
 			return false;
 		}
 		return chargeLines.add(chargeLine);
 	}
 
 	@Override
-	public final boolean removeChargeLine(ChargeLineIdentifier chargeLineIdentifier)
-	{
-		if(orderStatus != OrderStatus.OPEN)
-		{
+	public final boolean removeChargeLine(
+			ChargeLineIdentifier chargeLineIdentifier) {
+		if (orderStatus != OrderStatus.OPEN) {
 			return false;
 		}
 		PersistentChargeLine temp = null;
-		for (PersistentChargeLine pcl : chargeLines)
-		{
-			if(pcl.getIdentifier().equals(chargeLineIdentifier))
-			{
+		for (PersistentChargeLine pcl : chargeLines) {
+			if (pcl.getIdentifier().equals(chargeLineIdentifier)) {
 				temp = pcl;
 				break;
 			}
@@ -142,59 +140,48 @@ public class PersistentOrder implements Order<PersistentOrderLine, PersistentCha
 	}
 
 	@Override
-	public final Iterable<PersistentOrderLine> getOrderLines()
-	{
+	public final Iterable<PersistentOrderLine> getOrderLines() {
 		return Iterables.from(orderLines);
 	}
 
 	@Override
-	public final Iterable<PersistentChargeLine> getChargeLines()
-	{
+	public final Iterable<PersistentChargeLine> getChargeLines() {
 		return Iterables.from(chargeLines);
 	}
 
 	@Override
-	public final OrderStatus getOrderStatus()
-	{
+	public final OrderStatus getOrderStatus() {
 		return orderStatus;
 	}
 
 	@Override
-	public final boolean cancelOrder()
-	{
-		if(orderStatus == OrderStatus.OPEN)
-		{
+	public final boolean cancelOrder() {
+		if (orderStatus == OrderStatus.OPEN) {
 			orderStatus = OrderStatus.CANCELLED;
 			return true;
-		} else
-		{
+		} else {
 			return false;
 		}
 	}
 
 	@Override
-	public final Money getTotalPrice()
-	{
+	public final Money getTotalPrice() {
 		return this.getOrderedLinesPrice().add(this.getChargeLinesPrice());
 	}
 
 	@Override
-	public final Money getOrderedLinesPrice()
-	{
+	public final Money getOrderedLinesPrice() {
 		Money price = Money.ZERO;
-		for (OrderLine orderLine : orderLines)
-		{
+		for (OrderLine orderLine : orderLines) {
 			price = price.add(orderLine.getPrice());
 		}
 		return price;
 	}
 
 	@Override
-	public final Money getChargeLinesPrice()
-	{
+	public final Money getChargeLinesPrice() {
 		Money price = Money.ZERO;
-		for (ChargeLine chargeLine : chargeLines)
-		{
+		for (ChargeLine chargeLine : chargeLines) {
 			price = price.add(chargeLine.getPrice());
 		}
 		return price;
@@ -202,179 +189,180 @@ public class PersistentOrder implements Order<PersistentOrderLine, PersistentCha
 	}
 
 	@Override
-	public boolean equals(Object other)
-	{
-		if(other == null)
-		{
+	public boolean equals(Object other) {
+		if (other == null) {
 			return false;
 		}
-		if(other == this)
-		{
+		if (other == this) {
 			return true;
 		}
-		if(other instanceof PersistentOrder)
-		{
-			return this.orderIdentifier.equals(((PersistentOrder)other).orderIdentifier);
+		if (other instanceof PersistentOrder) {
+			return this.orderIdentifier
+					.equals(((PersistentOrder) other).orderIdentifier);
 		}
 		return false;
 	}
 
 	@Override
-	public final int hashCode()
-	{
+	public final int hashCode() {
 		return this.orderIdentifier.hashCode();
 	}
 
 	@Override
-	public String toString()
-	{
-		return "User: " + userIdentifier+toString() + " | Order" + orderIdentifier.toString();
+	public String toString() {
+		return "User: " + userIdentifier + toString() + " | Order"
+				+ orderIdentifier.toString();
 	}
 
 	@Override
-	public final DateTime getDateCreated()
-	{
+	public final DateTime getDateCreated() {
 		return new DateTime(dateCreated);
 	}
 
 	@Override
-	public final OrderCompletionResult completeOrder()
-	{
+	public final OrderCompletionResult completeOrder() {
 		// TODO mehr CompletionStates? oder letzten Param (Exception)
 		// überdenken, String cause?
-		if(orderStatus != OrderStatus.PAYED)
-		{
-			return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED, null, null, null);
+		if (orderStatus != OrderStatus.PAYED) {
+			return new InternalOrderCompletionResult(
+					OrderCompletionStatus.FAILED, null, null, null);
 		}
 
 		Inventory<?> tempInventory = Shop.INSTANCE.getInventory();
-		if(!(tempInventory instanceof PersistentInventory))
-		{
+		if (!(tempInventory instanceof PersistentInventory)) {
 			// TODO Exception Name
 			throw new RuntimeException("Sorry, PersistentInventory only :(");
 		}
 
-		EntityManager em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
+		EntityManager em = Database.INSTANCE.getEntityManagerFactory()
+				.createEntityManager();
 
-		PersistentInventory inventory = ((PersistentInventory) tempInventory).newInstance(em);
-		Set<PersistentOrderLine> remainingOrderLines = new HashSet<PersistentOrderLine>(this.orderLines);
+		PersistentInventory inventory = ((PersistentInventory) tempInventory)
+				.newInstance(em);
+		Set<PersistentOrderLine> remainingOrderLines = new HashSet<PersistentOrderLine>(
+				this.orderLines);
 
 		em.getTransaction().begin();
 
-		for (PersistentOrderLine orderLine : orderLines)
-		{
+		for (PersistentOrderLine orderLine : orderLines) {
 			remainingOrderLines.remove(orderLine);
-			Iterable<PersistentProduct> tempProducts = inventory.find(PersistentProduct.class, orderLine.getProductIdentifier(), orderLine.getProductFeatures());
+			Iterable<PersistentProduct> tempProducts = inventory.find(
+					PersistentProduct.class, orderLine.getProductIdentifier(),
+					orderLine.getProductFeatures());
 
 			List<PersistentProduct> products = Iterables.toList(tempProducts);
 
 			int numberOrdered = orderLine.getNumberOrdered();
 			int removed = 0;
 
-			for (PersistentProduct product : products)
-			{
+			for (PersistentProduct product : products) {
 				boolean result = inventory.remove(product.getSerialNumber());
 
-				if(!result)
-				{
+				if (!result) {
 					// TODO payment clone?
-					PersistentOrder order = new PersistentOrder(this.userIdentifier, this.payment);
-					PersistentOrderLine pol = new PersistentOrderLine(orderLine.getProductIdentifier(), orderLine.getProductFeatures(), numberOrdered - removed);
+					PersistentOrder order = new PersistentOrder(
+							this.userIdentifier, this.payment);
+					PersistentOrderLine pol = new PersistentOrderLine(
+							orderLine.getProductIdentifier(),
+							orderLine.getProductFeatures(), numberOrdered
+									- removed);
 					order.orderLines.add(pol);
 					order.orderLines.addAll(remainingOrderLines);
 					order.chargeLines.addAll(this.chargeLines);
 					order.orderStatus = OrderStatus.PAYED;
 
-					return new InternalOrderCompletionResult(OrderCompletionStatus.SPLITORDER, order, em, null);
+					return new InternalOrderCompletionResult(
+							OrderCompletionStatus.SPLITORDER, order, em, null);
 
-				} else
-				{
+				} else {
 					removed++;
 				}
 
-				if(removed >= numberOrdered)
-				{
+				if (removed >= numberOrdered) {
 					break;
 				}
 			}
 		}
 
-		try
-		{
+		try {
 			em.getTransaction().commit();
-		} catch (RollbackException e)
-		{ // "RollbackException - if the commit fails"
-			return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED, null, em, e.getCause());
+		} catch (RollbackException e) { // "RollbackException - if the commit fails"
+			return new InternalOrderCompletionResult(
+					OrderCompletionStatus.FAILED, null, em, e.getCause());
 		}
 
-		return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL, null, em, null);
+		return new InternalOrderCompletionResult(
+				OrderCompletionStatus.SUCCESSFUL, null, em, null);
 	}
 
 	/**
 	 * Convenience method for checking if an order has the status PAYED
+	 * 
 	 * @return true if OrderStatus is PAYED, otherwise false
 	 */
-	
-	public final boolean isPayed()
-	{
+
+	public final boolean isPayed() {
 		return orderStatus == OrderStatus.PAYED;
 	}
 
 	/**
 	 * Convenience method for checking if an order has the status CANCELLED
+	 * 
 	 * @return true if OrderStatus is CANCELLED, otherwise false
 	 */
-	public final boolean isCanceled()
-	{
+	public final boolean isCanceled() {
 		return orderStatus == OrderStatus.CANCELLED;
 	}
 
 	/**
 	 * Convenience method for checking if an order has the status COMPLETED
+	 * 
 	 * @return true if OrderStatus is COMPLETED, otherwise false
 	 */
-	public final boolean isCompleted()
-	{
+	public final boolean isCompleted() {
 		return orderStatus == OrderStatus.COMPLETED;
 	}
 
 	/**
 	 * Convenience method for checking if an order has the status OPEN
+	 * 
 	 * @return true if OrderStatus is OPEN, otherwise false
 	 */
-	public final boolean isOpen()
-	{
+	public final boolean isOpen() {
 		return orderStatus == OrderStatus.OPEN;
 	}
 
-
 	@Override
-	public boolean payOrder()
-	{
-		if(!(orderStatus == OrderStatus.PAYED))
-		{
+	public boolean payOrder() {
+		if (!(orderStatus == OrderStatus.PAYED)) {
 			return false;
-		};
+		}
+		;
 		// TODO payment nutzen
-		
-		ProductPaymentEntry ppe = new ProductPaymentEntry(this.orderIdentifier, this.userIdentifier, this.getTotalPrice());
-		PersistentAccountancy pA = (PersistentAccountancy) Shop.INSTANCE.getAccountancy();	// TODO not only Persistent?
+
+		ProductPaymentEntry ppe = new ProductPaymentEntry(this.orderIdentifier,
+				this.userIdentifier, this.getTotalPrice(),
+				"a nice string goes here");
+		PersistentAccountancy pA = (PersistentAccountancy) Shop.INSTANCE
+				.getAccountancy(); // TODO not only Persistent?
 		pA.add(ppe);
 		orderStatus = OrderStatus.PAYED;
 		return true;
 	}
 
 	// gotta love inner classes
-	private final class InternalOrderCompletionResult implements OrderCompletionResult
-	{
+	private final class InternalOrderCompletionResult implements
+			OrderCompletionResult {
 
 		private final OrderCompletionStatus orderCompletionStatus;
 		private final PersistentOrder order;
 		private final EntityManager entityManager;
 		private Throwable exception;
 
-		public InternalOrderCompletionResult(OrderCompletionStatus orderCompletionStatus, PersistentOrder order, EntityManager entityManager, Throwable exception)
-		{
+		public InternalOrderCompletionResult(
+				OrderCompletionStatus orderCompletionStatus,
+				PersistentOrder order, EntityManager entityManager,
+				Throwable exception) {
 			this.orderCompletionStatus = orderCompletionStatus;
 			this.order = order;
 			this.entityManager = entityManager;
@@ -382,20 +370,15 @@ public class PersistentOrder implements Order<PersistentOrderLine, PersistentCha
 		}
 
 		// TODO SupressWarnings
-		@SuppressWarnings({"unchecked", "rawtypes"})
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
-		public final Order splitOrder()
-		{
-			if(this.orderCompletionStatus == OrderCompletionStatus.SPLITORDER)
-			{
-				if(this.entityManager.getTransaction().isActive())
-				{
-					try
-					{
+		public final Order splitOrder() {
+			if (this.orderCompletionStatus == OrderCompletionStatus.SPLITORDER) {
+				if (this.entityManager.getTransaction().isActive()) {
+					try {
 						// TODO Commit Fails -> Auto Rollback?
 						this.entityManager.getTransaction().commit();
-					} catch (RollbackException e)
-					{
+					} catch (RollbackException e) {
 						this.exception = e.getCause();
 						return null;
 					}
@@ -406,46 +389,37 @@ public class PersistentOrder implements Order<PersistentOrderLine, PersistentCha
 		}
 
 		@Override
-		public final boolean rollBack()
-		{
-			if(this.orderCompletionStatus == OrderCompletionStatus.SPLITORDER)
-			{
-				if(this.entityManager.getTransaction().isActive())
-				{
+		public final boolean rollBack() {
+			if (this.orderCompletionStatus == OrderCompletionStatus.SPLITORDER) {
+				if (this.entityManager.getTransaction().isActive()) {
 					this.entityManager.getTransaction().rollback();
 					return true;
-				} else
-				{
+				} else {
 					return false;
 				}
-			} else
-			{
+			} else {
 				return false;
 			}
 		}
 
 		@Override
-		public final OrderCompletionStatus getStatus()
-		{
+		public final OrderCompletionStatus getStatus() {
 			return this.orderCompletionStatus;
 		}
 
 		@Override
-		public Throwable getException()
-		{
+		public Throwable getException() {
 			return this.exception;
 		}
 	}
 
 	@Override
-	public int compareTo(PersistentOrder other)
-	{
+	public int compareTo(PersistentOrder other) {
 		return this.orderIdentifier.compareTo(other.orderIdentifier);
 	}
 
 	@Override
-	public OrderIdentifier getIdentifier()
-	{
+	public OrderIdentifier getIdentifier() {
 		return orderIdentifier;
 	}
 }
