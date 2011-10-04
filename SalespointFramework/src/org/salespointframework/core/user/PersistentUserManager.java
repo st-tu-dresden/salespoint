@@ -15,12 +15,14 @@ import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
 /**
- * TODO
+ * The <code>PersistentUserManager</code> is an implementation of
+ * <code>UserManager</code> that aggregates <code>PersistentUser</code>s and
+ * stores them in the underlaying database.
+ * 
  * @author Christopher Bellmann
  * @author Paul Henke
  * @author Hannes Weissbach
  */
-
 public class PersistentUserManager implements UserManager<PersistentUser>
 {
 	private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
@@ -45,10 +47,8 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		Objects.requireNonNull(userIdentifer, "userIdentifer");
 
 		// If user is logged on, log him off.
-		for (Map.Entry<Object, PersistentUser> entry : userTokenMap.entrySet())
-		{
-			if (entry.getValue().getIdentifier().equals(userIdentifer))
-			{
+		for (Map.Entry<Object, PersistentUser> entry : userTokenMap.entrySet()) {
+			if (entry.getValue().getIdentifier().equals(userIdentifer)) {
 				Object token = entry.getKey();
 				this.logOff(token);
 				break;
@@ -57,15 +57,13 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 
 		EntityManager em = emf.createEntityManager();
 		Object user = em.find(PersistentUser.class, userIdentifer);
-		if (user != null)
-		{
+		if (user != null) {
 			em.remove(user);
 			beginCommit(em);
 			return true;
-		} else
-		{
-			return false;
 		}
+		
+		return false;
 	}
 
 	@Override
@@ -100,11 +98,15 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		return em.find(clazz, userIdentifier);
 	}
 
-	/**
-	 * Updates and persists an existing {@link PersistentUser} to the PersistentUserManager and the Database
-	 * @param user the {@link PersistentUser} to be updated
-	 * @throws ArgumentNullException if user is null
-	 */
+    /**
+     * Updates and persists an existing {@link PersistentUser} to the
+     * {@link PersistentUserManager} and the Database
+     * 
+     * @param user
+     *            the <code>PersistentUser</code> to be updated
+     * @throws ArgumentNullException
+     *             if <code>user</code> is <code>null</code>
+     */
 	public void update(PersistentUser user)
 	{
 		Objects.requireNonNull(user, "user");
@@ -117,8 +119,6 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 	private final Map<Object, PersistentUser> userTokenMap = new ConcurrentHashMap<Object, PersistentUser>();
 
 	// TODO naming kinda sucks
-
-	// associates a user with a token
 	@Override
 	public final boolean logOn(PersistentUser user, Object token)
 	{
@@ -128,12 +128,10 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		PersistentUser temp = this.get(PersistentUser.class, user.getIdentifier());
 
 		if (temp == null)
-		{
 			return false;
-		} else {
-			userTokenMap.put(token, user);
-			return true;
-		}
+		
+		userTokenMap.put(token, user);
+		return true;
 	}
 
 	@Override
@@ -152,12 +150,9 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 
 		PersistentUser user = userTokenMap.get(token);
 		if (clazz.isInstance(user))
-		{
 			return clazz.cast(user);
-		} else
-		{
-			throw new ClassCastException();
-		}
+		
+		throw new ClassCastException();
 	}
 
 	private void beginCommit(EntityManager entityManager)
