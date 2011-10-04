@@ -15,8 +15,8 @@ public class ServiceTypeTest {
 	DateTime a = Shop.INSTANCE.getTime().getDateTime();
 	
 	TestServiceType t1 = new TestServiceType("Service", new Money(5));
-	TestServiceType t2 = new TestServiceType("Service2", new Money(5), a, a.plusHours(5));
-	TestServiceType t3 = new TestServiceType("Service3", Money.ZERO, a, a);
+	TestServiceType t2 = new TestServiceType("Service2", new Money(5), new DateTime(), new DateTime().plusHours(5));
+	TestServiceType t3 = new TestServiceType("Service3", Money.ZERO, new DateTime(), new DateTime());
 	TestServiceType t4 = new TestServiceType("Service", new Money(5));
 	
 	@Test(expected=ArgumentNullException.class)
@@ -59,6 +59,11 @@ public class ServiceTypeTest {
 	public void testEndBeforeCreationTime1() {
 		@SuppressWarnings("unused")
 		TestServiceType t = new TestServiceType("Service", Money.ZERO, a.minusDays(7), a.minusDays(3));
+	}
+	
+	public void testStartNow() {
+		@SuppressWarnings("unused")
+		TestServiceType t = new TestServiceType("Service", Money.ZERO, new DateTime(), new DateTime().plusDays(3));
 	}
 	
 	@Test

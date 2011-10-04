@@ -1,5 +1,7 @@
 package org.salespointframework.core.inventory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -26,32 +28,31 @@ import org.salespointframework.util.Objects;
  * @author Paul Henke
  * 
  */
-public final class PersistentInventory implements Inventory<PersistentProduct>
-{
-	private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
+public final class PersistentInventory implements Inventory<PersistentProduct> {
+	private final EntityManagerFactory emf = Database.INSTANCE
+			.getEntityManagerFactory();
 	private final EntityManager entityManager;
 
 	/**
 	 * Creates a new PersistentInventory.
 	 */
-	public PersistentInventory()
-	{
+	public PersistentInventory() {
 		this.entityManager = null;
 	}
 
 	/**
-	 * Creates an new PersistentInventory.
-	 * TODO
-	 * @param entityManager an {@link EntityManager}
+	 * Creates an new PersistentInventory. TODO
+	 * 
+	 * @param entityManager
+	 *            an {@link EntityManager}
 	 */
-	public PersistentInventory(EntityManager entityManager)
-	{
-		this.entityManager = Objects.requireNonNull(entityManager, "entityManager");
+	public PersistentInventory(EntityManager entityManager) {
+		this.entityManager = Objects.requireNonNull(entityManager,
+				"entityManager");
 	}
 
 	@Override
-	public void add(PersistentProduct persistentProduct)
-	{
+	public void add(PersistentProduct persistentProduct) {
 		Objects.requireNonNull(persistentProduct, "persistentProduct");
 		EntityManager em = getEntityManager();
 		em.persist(persistentProduct);
@@ -60,27 +61,25 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 
 	/**
 	 * Adds multiple {@link PersistentProduct}s to this PersistentInventory
-	 * @param products an Iterable of {@link PersistentProduct}s to be added
+	 * 
+	 * @param products
+	 *            an Iterable of {@link PersistentProduct}s to be added
 	 */
-	public final void addAll(Iterable<? extends PersistentProduct> products)
-	{
+	public final void addAll(Iterable<? extends PersistentProduct> products) {
 		Objects.requireNonNull(products, "products");
 		EntityManager em = emf.createEntityManager();
-		for (PersistentProduct e : products)
-		{
+		for (PersistentProduct e : products) {
 			em.persist(e);
 		}
 		beginCommit(em);
 	}
 
 	@Override
-	public boolean remove(SerialNumber serialNumber)
-	{
+	public boolean remove(SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		EntityManager em = getEntityManager();
 		Object product = em.find(PersistentProduct.class, serialNumber);
-		if(product != null)
-		{
+		if (product != null) {
 			em.remove(product);
 			beginCommit(em);
 			return true;
@@ -91,16 +90,15 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 	}
 
 	@Override
-	public boolean contains(SerialNumber serialNumber)
-	{
+	public boolean contains(SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		EntityManager em = getEntityManager();
 		return em.find(PersistentProduct.class, serialNumber) != null;
 	}
 
 	@Override
-	public <E extends PersistentProduct> E get(Class<E> clazz, SerialNumber serialNumber)
-	{
+	public <E extends PersistentProduct> E get(Class<E> clazz,
+			SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		Objects.requireNonNull(clazz, "clazz");
 		EntityManager em = getEntityManager();
@@ -108,8 +106,7 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 	}
 
 	@Override
-	public <E extends PersistentProduct> Iterable<E> find(Class<E> clazz)
-	{
+	public <E extends PersistentProduct> Iterable<E> find(Class<E> clazz) {
 		Objects.requireNonNull(clazz, "clazz");
 
 		EntityManager em = emf.createEntityManager();
@@ -121,8 +118,8 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 	}
 
 	@Override
-	public <E extends PersistentProduct> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier)
-	{
+	public <E extends PersistentProduct> Iterable<E> find(Class<E> clazz,
+			ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 
@@ -131,7 +128,9 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
 		Root<E> entry = cq.from(clazz);
 
-		Predicate p1 = cb.equal(entry.get(PersistentProduct_.productIdentifier), productIdentifier);
+		Predicate p1 = cb.equal(
+				entry.get(PersistentProduct_.productIdentifier),
+				productIdentifier);
 
 		cq.where(p1);
 
@@ -141,8 +140,9 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 	}
 
 	@Override
-	public <E extends PersistentProduct> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures)
-	{
+	public <E extends PersistentProduct> Iterable<E> find(Class<E> clazz,
+			ProductIdentifier productIdentifier,
+			Iterable<ProductFeature> productFeatures) {
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		Objects.requireNonNull(productFeatures, "productFeatures");
@@ -154,39 +154,73 @@ public final class PersistentInventory implements Inventory<PersistentProduct>
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
 		Root<E> entry = cq.from(clazz);
 
-		Predicate p1 = cb.equal(entry.get(PersistentProduct_.productIdentifier), productIdentifier);
-		Predicate p2 = cb.equal(entry.<Set<ProductFeature>> get("productFeatures"), featureSet);
+		Predicate p1 = cb.equal(
+				entry.get(PersistentProduct_.productIdentifier),
+				productIdentifier);
+		// Predicate p2 = cb.equal(
+		// entry.<Set<ProductFeature>> get("productFeatures"), featureSet);
 
-		cq.where(p1, p2);
+		cq.where(p1);
 
 		TypedQuery<E> tq = em.createQuery(cq);
-		return Iterables.from(tq.getResultList());
+		List<E> query = tq.getResultList();
+		List<E> result = new ArrayList<E>();
+		int query_entries = 0;
+		boolean match = true;
+		for (E e : query) {
+			query_entries = 0;
+			for (ProductFeature have : e.getProductFeatures()) {
+				query_entries += 1;
+				match = false;
+
+				for (ProductFeature should : featureSet) {
+					if (have.equals(should)) {
+						// System.out.println("Found match between " + have +
+						// " ("
+						// + query_entries + ")" + " and " + should);
+						match = true;
+						break;
+					}
+				}
+
+				if (!match)
+					break;
+			}
+			/*
+			 * same length and all entries matched. if lengths differ, all
+			 * entries may match, but they are still not the same
+			 */
+			if (query_entries == featureSet.size() && match)
+				result.add(e);
+		}
+
+		return Iterables.from(result);
 	}
 
 	/**
-	 * Creates an new Instance of the PersistentInventory
-	 * The {@link PersistentOrder} uses this method for transactional removal of {@link Product}s
-	 * @param entityManager the {@link EntityManager} to be used for all operations (methods) 
+	 * Creates an new Instance of the PersistentInventory The
+	 * {@link PersistentOrder} uses this method for transactional removal of
+	 * {@link Product}s
+	 * 
+	 * @param entityManager
+	 *            the {@link EntityManager} to be used for all operations
+	 *            (methods)
 	 * @return a new PersistentInventory
 	 */
-	public final PersistentInventory newInstance(EntityManager entityManager)
-	{
+	public final PersistentInventory newInstance(EntityManager entityManager) {
 		return new PersistentInventory(entityManager);
 	}
 
-	private final EntityManager getEntityManager()
-	{
-		return entityManager != null ? entityManager : emf.createEntityManager();
+	private final EntityManager getEntityManager() {
+		return entityManager != null ? entityManager : emf
+				.createEntityManager();
 	}
 
-	private final void beginCommit(EntityManager entityManager)
-	{
-		if(this.entityManager == null)
-		{
+	private final void beginCommit(EntityManager entityManager) {
+		if (this.entityManager == null) {
 			entityManager.getTransaction().begin();
 			entityManager.getTransaction().commit();
-		} else
-		{
+		} else {
 			this.entityManager.getTransaction().begin();
 			this.entityManager.getTransaction().commit();
 		}
