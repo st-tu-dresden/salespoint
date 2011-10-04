@@ -18,7 +18,7 @@ public final class Tuple<T1, T2>
 		this.item2 = Objects.requireNonNull(item2, "item2");
 	}
 
-	public final Tuple<T1, T2> create(T1 item1, T2 item2)
+	public static final <T1, T2> Tuple<T1, T2> create(T1 item1, T2 item2)
 	{
 		return new Tuple<T1, T2>(item1, item2);
 	}
