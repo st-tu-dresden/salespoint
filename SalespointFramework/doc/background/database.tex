@@ -1,9 +1,9 @@
 \section{JPA - Java Persistence API}
 %The persistence layer was one of the biggest problems in Salespoint 2010. We wanted a solution that acknowledges latitudes for persisting objects with relatively low effort.
-One of the key features of Salespoint 2011 is its integrated persistence layer. The goal is to allow data persistence, while minimising programming effort and training period as well as maximising flexibility for framework users.
+One of the key features of \salespoint is its integrated persistence layer. The goal is to allow data persistence, while minimising programming effort and training period as well as maximising flexibility for framework users.
 
 %Therefore and because of the huge community support, we decided to use the Java Persistence API (JPA). JPA is a Java Programming Language Framework managing relational data in applications. The API itself is defined in the javax.persistence package.
-The obvious choice was the Java Persistence API (JPA), a Java framework managing relational data in Java SE or EE applications. Salespoint 2011 uses JPA 2.0, developed under JSR 317 and finalised in Dec, 2009.
+The obvious choice was the Java Persistence API (JPA), a Java framework managing relational data in Java SE or EE applications. \salespoint uses JPA 2.0, developed under JSR 317 and finalised in Dec, 2009.
 
 Additional to the API itself, which is defined in the \texttt{javax.persistence} package, JPA also consists of \textit{Persistence Entities}, \textit{ORM Metadata} and the \textit{Java Persistence Query Language} (JPQL).
 
@@ -21,5 +21,5 @@ Salespoint 2011 however, uses the \textit{Criteria API} to facilitate type safe 
 %Some of the most popular vendors of JPA are Hibernate and EclipseLink. For developing Salespoint 2011 we used JPA 2.0 with EclipseLink without vendor specific functionality. So it should also be possible to use other JPA 2.0 vendors like Hibernate with this framework.
 Multiple implementations of JPA 2.0 exist, for example TopLink \cite{toplink}, EclipseLink \cite{eclipselink}.
 The open source persistence and ORM framework Hibernate \cite{hibernate} also supports JPA 2.0.
-Salespoint 2011 uses the JPA 2.0 reference implementation, EclipseLink.
-No implementation specific code is used in Salespoint 2011, therefore it should be possible to interchange EclipseLink with another JPA implementation.
+\salespoint uses the JPA 2.0 reference implementation, EclipseLink.
+No implementation specific code is used in \salespoint, therefore it should be possible to interchange EclipseLink with another JPA implementation.
