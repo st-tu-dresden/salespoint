@@ -219,34 +219,21 @@ public class PersistentCalendarEntry implements CalendarEntry {
             capabilities.put(user, EnumSet.of(capability));
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Two <code>PersistentCalendarEntry</code>s are equal to each other, if their identifiers are equal.
+     * </p>
+     */
     @Override
     public boolean equals(Object other) {
         if (other == null)
             return false;
         if (other == this)
             return true;
-        if (!(other instanceof PersistentCalendarEntry))
-            return false;
-        return this.equals((PersistentCalendarEntry) other);
-    }
-
-    /**
-     * Determines if the given {@link PersistentCalendarEntry} is equal to this
-     * one or not. Two calendar entries are equal to each other, if their
-     * identifiers are equal.
-     * 
-     * @param other
-     *            The entry this one should be compared with.
-     * @return <code>true</code> if and only if the identifier of this calendar
-     *         entry equals the identifier of the entry that is given as
-     *         parameter, <code>false</code> otherwise.
-     */
-    public final boolean equals(PersistentCalendarEntry other) {
-        if (other == null)
-            return false;
-        if (other == this)
-            return true;
-        return this.calendarEntryIdentifier.equals(other.calendarEntryIdentifier);
+        if (other instanceof PersistentCalendarEntry)
+            return this.calendarEntryIdentifier.equals(((PersistentCalendarEntry)other).calendarEntryIdentifier);
+        return false;
     }
 
     /**
