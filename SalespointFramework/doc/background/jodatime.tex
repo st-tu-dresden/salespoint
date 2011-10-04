@@ -1,2 +1,27 @@
-\section{Joda-Time}
-Joda-Time is a Java date and time API. It provides a quality replacement for the Java date and time classes. We used this API because the Java Date and Calendar classes are badly designed. Furthermore Joda-Time is very easy to use and provide functionality to handle Java Date and Calendar.
+\section{Joda Time}
+Joda Time~\cite{jodatime} is a Java date and time API.
+It provides a quality replacement for the Java date and time classes.
+%We used this API because the Java Date and Calendar classes are badly designed.
+\salespoint incorporates Joda Time, because it is open source, easy to use and offers better performance characteristics than Java date and time classes.
+
+Key concepts from Joda Time used in \salespoint{} are \textit{Instant}, \textit{Interval}, \textit{Duration} and \textit{Period}.
+From Joda Time documentation:
+\begin{quote}
+The most frequently used concept in Joda-Time is that of the \textit{instant}.
+An Instant is defined as \textit{an instant in the datetime continuum specified as a number of milliseconds from 1970-01-01T00:00Z}.
+This definition of milliseconds is consistent with that of the JDK in \code{Date} or \code{Calendar}.
+Interoperating between the two APIs is thus simple.
+\end{quote}
+
+\textit{Intervals} are defined by two Instants.
+An Interval is \textit{half-open}, that is to say the start is inclusive but the end is not
+Also, the end is always greater or equal than the start.
+
+\textit{Durations} in Joda Time represent a duration in time, exact to the milisecond.
+Durations can be thought of as length of an Interval.
+
+\textit{Periods} also represent durations in time, but in a more abstract way
+A Period may be a month, which may be 28, 29, 30 or 31 days, thus the length in miliseconds of those periods differ.
+
+If you, for example have an Instant of February, 1st and add a Period of one month, the result will be an Instant of March, 1st.
+Adding instead a Period of 30 days to an Instant of February, 1st will result in an Instant of March, 2nd or March 3rd, depending if the Instant is in a leap year or not.
