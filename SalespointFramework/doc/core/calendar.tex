@@ -38,7 +38,7 @@ Because a calendar entry does not check if a user has the capability to do somet
 Besides the minimum information a calendar entry can also have a description which provides more information about it and a repeat count and repeat step which say how 
 often the entry will be repeated and how long the time span between two repetitions is.
 There are some conditions for the time specific attributes of an calendar entry:
-\begin{itemize]
+\begin{itemize}
     \item First, the start must not be after the end. So a appointment can have a time span if the end is after the start or it can be a single point in time, like a deadline or something like this, if start and end are equal.
     \item Second, the repeat step, which is the time between two repetitions must be greater than the duration of the entry, so an entry does not overlap with the next repetition of itself.
     \item Third, if repeat count is zero, the repeat step will not be attended, if repeat count is greater zero or -1, what means endless repetition, the repeat step will be checked to follow the second point.
