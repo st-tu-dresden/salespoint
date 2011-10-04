@@ -3,8 +3,8 @@
 
 \subsection{How does it work?}
 
-In the Salespointframework there is one \code{PersistenceUsermanger}, but it is not a singleton. You can instantiate a new
-\code{PersistenceUsermanger} whenever you need it (it always manages the same data!).
+In the Salespointframework there is one \code{PersistentUsermanger}, but it is not a singleton. You can instantiate a new
+\code{PersistentUsermanger} whenever you need it (it always manages the same data!).
 The \code{UserManger} is the main part of the \code{user}-package. It connects all parts:
 You can add and remove users to/from the system and also add and remove \code{UserCapability}s of the users in the system.
 
@@ -16,9 +16,9 @@ You can add and remove users to/from the system and also add and remove \code{Us
 \end{figure}
 
 \subsection{Ensure correct data}
-To ensure you have the correct data in your system you should only access users and their capabilities via the \code{PersistenceUsermanger}:
+To ensure you have the correct data in your system you should only access users and their capabilities via the \code{PersistentUsermanger}:
 
-During the process of adding a user to the system the \code{PersistenceUsermanger} ensures that there will be no duplicate users. If you try to add a \code{User} with an \code{UserIdentifier} that is already in the system a \code{DuplicateUserException} will be thrown. This will help you to identify \code{Users} correctly, e.g. during the login process.
+During the process of adding a user to the system the \code{PersistentUsermanger} ensures that there will be no duplicate users. If you try to add a \code{User} with an \code{UserIdentifier} that is already in the system a \code{DuplicateUserException} will be thrown. This will help you to identify \code{Users} correctly, e.g. during the login process.
 
 You should notice that it is not possible to remove users with open \code{Order}s! You have to close/finish them before.
 
@@ -27,7 +27,7 @@ This ensures that a new \code{User} will have no \code{UserCapabilities}.
 
 \subsection{Why are there so many users?}
 First of all we do have the \code{User} interface. This provides all basic methods. There is an implementation of it: The
-\code{PersistenceUser} class which also has the basic attributes of an user.
+\code{PersistentUser} class which also has the basic attributes of an user.
 
 \subsection{Login}
 
