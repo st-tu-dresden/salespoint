@@ -12,7 +12,14 @@ A row in such a database table corresponds to a specific instance of such an ent
 Relational data between entities (and therefor tables) may be specified in an XML descriptor file or as annotations in Java source code.
 Salespoint 2011 uses annotations to provide object/relational metadata.
 
-A query language similar to SQL - JPQL - is used to retrieve entity information from the database. In contrast to SQL, JPQL queries act on entity objects instead of database tables. JPA Implementations translate a JPQL statement to SQL statements at run time, thus it is possible to replace the DBMS, while keeping the Java classes. It is possible to interface directly with the DBMS using \textit{Native Queries}.
+A query language similar to SQL - JPQL - is used to retrieve entity information from the database.
+In contrast to SQL, JPQL queries act on entity objects instead of database tables.
+JPA Implementations translate a JPQL statement to SQL statements at run time, thus it is possible to replace the DBMS, while keeping the Java classes
+It is possible to interface directly with the DBMS using \textit{Native Queries}.
+Salespoint 2011 however, uses the \textit{Criteria API} to facilitate type safe querying.
 
 %Some of the most popular vendors of JPA are Hibernate and EclipseLink. For developing Salespoint 2011 we used JPA 2.0 with EclipseLink without vendor specific functionality. So it should also be possible to use other JPA 2.0 vendors like Hibernate with this framework.
-Multiple implementations of JPA 2.0 exist, for example TopLink \cite{toplink}, EclipseLink \cite{eclipselink}. The open source persistence and ORM framework Hibernate \cite{hibernate} also supports JPA 2.0. Salespoint 2011 uses the JPA 2.0 reference implementation, EclipseLink. No implementation specific code is used in Salespoint 2011, therefore it should be possible to interchange EclipseLink with another JPA implementation.
+Multiple implementations of JPA 2.0 exist, for example TopLink \cite{toplink}, EclipseLink \cite{eclipselink}.
+The open source persistence and ORM framework Hibernate \cite{hibernate} also supports JPA 2.0.
+Salespoint 2011 uses the JPA 2.0 reference implementation, EclipseLink.
+No implementation specific code is used in Salespoint 2011, therefore it should be possible to interchange EclipseLink with another JPA implementation.
