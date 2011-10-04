@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
+import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderIdentifier;
 import org.salespointframework.core.user.UserIdentifier;
@@ -36,6 +37,8 @@ public class ProductPaymentEntry extends PersistentAccountancyEntry {
 	@AttributeOverride(name = "id", column = @Column(name = "USER_ID", nullable = true))
 	private UserIdentifier userIdentifier;
 
+	private PaymentMethod paymentMethod;
+
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
 	 */
@@ -60,12 +63,15 @@ public class ProductPaymentEntry extends PersistentAccountancyEntry {
 	 *            textual description of the payment entry
 	 */
 	public ProductPaymentEntry(OrderIdentifier orderIdentifier,
-			UserIdentifier userIdentifier, Money amount, String description) {
+			UserIdentifier userIdentifier, Money amount, String description,
+			PaymentMethod paymentMethod) {
 		super(amount, description);
 		this.orderIdentifier = Objects.requireNonNull(orderIdentifier,
 				"orderIdentifier");
 		this.userIdentifier = Objects.requireNonNull(userIdentifier,
 				"userIdentifier");
+		this.paymentMethod = Objects.requireNonNull(paymentMethod,
+				"paymentMethod");
 	}
 
 	/**
@@ -80,5 +86,14 @@ public class ProductPaymentEntry extends PersistentAccountancyEntry {
 	 */
 	public OrderIdentifier getOrderIdentifier() {
 		return orderIdentifier;
+	}
+
+	/**
+	 * 
+	 * @return the <code>PaymentMethod</code> chosen for the order belonging to
+	 *         this <code>ProductPaymentEntry</code>
+	 */
+	public PaymentMethod getPaymentMethod() {
+		return paymentMethod;
 	}
 }

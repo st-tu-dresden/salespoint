@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.PersistentAccountancy;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
-import org.salespointframework.core.accountancy.payment.Payment;
+import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.PersistentInventory;
@@ -51,7 +51,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID"))
 	private OrderIdentifier orderIdentifier = new OrderIdentifier();
 
-	private Payment payment;
+	private PaymentMethod paymentMethod;
 
 	@Embedded
 	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))
@@ -82,13 +82,13 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	 * @param userIdentifier
 	 *            The {@link UserIdentifier}/{@link User} connected to this
 	 *            order
-	 * @param payment
+	 * @param paymentMethod
 	 *            The {@link Payment} connected to this order
 	 */
-	public PersistentOrder(UserIdentifier userIdentifier, Payment payment) {
+	public PersistentOrder(UserIdentifier userIdentifier, PaymentMethod paymentMethod) {
 		this.userIdentifier = Objects.requireNonNull(userIdentifier,
 				"userIdentifier");
-		this.payment = Objects.requireNonNull(payment, "payment");
+		this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod");
 	}
 	
 	// TODO wegen payment, fliegt später raus
@@ -269,7 +269,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 				if (!result) {
 					// TODO payment clone?
 					PersistentOrder order = new PersistentOrder(
-							this.userIdentifier, this.payment);
+							this.userIdentifier, this.paymentMethod);
 					PersistentOrderLine pol = new PersistentOrderLine(
 							orderLine.getProductIdentifier(),
 							orderLine.getProductFeatures(), numberOrdered
@@ -350,7 +350,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 
 		ProductPaymentEntry ppe = new ProductPaymentEntry(this.orderIdentifier,
 				this.userIdentifier, this.getTotalPrice(),
-				"a nice string goes here");
+				"Rechnung Nr. " + this.orderIdentifier, this.paymentMethod);
 		PersistentAccountancy pA = (PersistentAccountancy) Shop.INSTANCE
 				.getAccountancy(); // TODO not only Persistent?
 		pA.add(ppe);

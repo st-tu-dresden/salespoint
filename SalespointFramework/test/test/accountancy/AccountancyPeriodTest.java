@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.accountancy.PersistentAccountancy;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
+import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderIdentifier;
@@ -33,7 +34,7 @@ public class AccountancyPeriodTest {
 		ProductPaymentEntry p;
 		System.out.println("Creating AccountancyEntries: ");
 		for(int i = 0; i < 20; i++) {
-			 p = new ProductPaymentEntry(new OrderIdentifier(), new UserIdentifier(), new Money(1), "Rechnung nr. 3");
+			 p = new ProductPaymentEntry(new OrderIdentifier(), new UserIdentifier(), new Money(1), "Rechnung nr. 3", Cash.CASH);
 			 System.out.println("Adding p " + p + " with time " + p.getDate());
 			 a.add(p);
 			 
