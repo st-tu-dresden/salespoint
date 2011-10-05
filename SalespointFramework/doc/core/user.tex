@@ -3,7 +3,6 @@ To manage system accounts, \salespoint{} has a notion of a user in the form of t
 Users are managed by the \code{UserManager}, which is also an interface.
 The implementing classes handling the persistence aspects are \code{PersistentUser} and \code{PersistentUserManager}, respectively.
 Every user is uniquely identified by a \code{UserIdentifier}, which also serves as primary key attribute for the database in the peristent implementation.
-Extensibility is achieved by using capabilities, which are aggregated by \code{User}s.
 The UML model is depicted in Figure \ref{user_overview}.\\
 
 \begin{figure}
@@ -18,8 +17,10 @@ Moreover, a peculiarity of \code{PersistentUserManager} is, that a new instance 
 The reason for this behaviour is, that data is not stored inside the \code{PersistentUserManager} object itself, as it may be done with a collection-based implementation, but \code{PersistenUserManager} is merely a transparent interface to the JPA.\\
 
 \subsection*{UserCapabilities}
-Capabilities in conjunction with a \code{CapabilityTag} (Section \ref{spring}) can be used to change the appearance of a View, depending on a users status.
+Capabilities in conjunction with a \code{HasCapabilityTag} (Section \ref{spring}) can be used to change the appearance of a View, depending on a users status.
 For example, a View for a user having an ``administrator'' capability may display different content, for example delete buttons, than for a user not having that capability.
+Thus, capabilities allow for flexibility and assist in code reuse, when designing the View.
+%Extensibility is achieved by using capabilities in conjunction with the \code{Has, which are aggregated by \code{User}s.
 
 \subsection*{Login}
 To reduce code repetition, \salespoint{} contains code to automate user log in.
