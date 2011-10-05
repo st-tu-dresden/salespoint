@@ -183,4 +183,25 @@ public class UsermanagerTest {
 		assertFalse(employee.hasCapability(capa));
 	}
 	
+	@Test
+	public void testUpdateEmployee{
+		Employee e= new Employee(new UserIdentifier, "", "Torsten", "Lehmann");
+		final PersistentUserManager empManager = new PersistentUserManager();
+		
+		empManager.add(e);
+		
+		Employee e2= empManger.get(Employee.class, e.getIdentifier);
+		assertEquals(e.getName, e2.getName);
+		assertEquals(e.getLastname, e2.getLastname);
+		
+		e2.setName("Hans");
+		empMaanger.update(e2);
+		
+		Employee e3= empManger.get(Employee.class, e.getIdentifier);
+		assertEquals(e2.getName, e3.getName);
+		
+		
+		
+	}
+	
 }
