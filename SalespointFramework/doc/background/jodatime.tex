@@ -14,13 +14,13 @@ Interoperating between the two APIs is thus simple.
 \end{quote}
 
 \textit{Intervals} are defined by two Instants.
-An Interval is \textit{half-open}, that is to say the start is inclusive but the end is not
+An Interval is \textit{half-open}, that is to say the start is inclusive but the end is not.
 Also, the end is always greater or equal than the start.
 
 \textit{Durations} in Joda Time represent a duration in time, exact to the milisecond.
 Durations can be thought of as length of an Interval.
 
-\textit{Periods} also represent durations in time, but in a more abstract way
+\textit{Periods} also represent durations in time, but in a more abstract way.
 A Period may be a month, which may be 28, 29, 30 or 31 days, thus the length in miliseconds of those periods differ.
 
 If you, for example have an Instant of February, 1st and add a Period of one month, the result will be an Instant of March, 1st.
