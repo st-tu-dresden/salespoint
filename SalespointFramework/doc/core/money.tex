@@ -1,7 +1,7 @@
 \newpage
 \section{Quantity}
 \code{Quantity} is used to represent amounts of anything.
-Three attributes allow \code{Quantity} to specify everything: a numerical value (\code{BigDecimal}), a (measurement) unit or metric (\code{Metric}), and a type specifying the rounding of the numerical type (\code{RoudingStrategy}).
+Three attributes allow \code{Quantity} to specify everything: a numerical value (\code{BigDecimal}), a (measurement) unit or metric (\code{Metric}), and a type specifying the rounding of the numerical type (\code{RoudingStrategy}), as can be seen in Figure \ref{quantity_overview}.
 
 \code{Quantity} objects are immutable and the class implements the \code{Comparable} interface.
 
@@ -27,7 +27,7 @@ Convenience instances exist for euros, pieces and units.
 \subsection{\code{RoundingStrategy} - How to handle half a person}
 When handling quantities of unkown metric, standard rounding rules cannot always be employed.
 The case of natural persons is just one example, when rounding rules have to be restricted to yield a useful result.
-You can round in for general directions: away from zero, towards zero, towards positive infinity, and towards negative infinity.
+You can round in four general directions: away from zero, towards zero, towards positive infinity, and towards negative infinity.
 
 Additionally, you can specify the digits after the decimal delimiter.
 Monetary values in \euro{} or \$US are often just represented with two digits after the decimal delimiter.
@@ -38,18 +38,24 @@ The third parameter for rounding is the rounding digit, i.e. the number specifyi
 Usually, this number is five.
 In case of persons, it is one: if you have $n.0\,persons$, you round down, otherwise up.
 If you are calculation a capacity for persons, you will have to round down, this can be done by specifying the correct rouding direction.
+\\
 
 Sometimes, it is necessary to round a number to a nearest ``step'', i.e. if you sell something in packs of $50$, and someone punches in $40$, you will have to round up to $50$.
 So your rounding step is $50$.
 Another example is material, which is sold by the meter or yard.
 You have to round the amount specified by your customer accordingly.
 Of course, a rouding step can be smaller than $1$, i.e. $0.25$.
+\\
 
 Two convenience rounding strategies exist so far: \code{RoudingStrategy.MONETARY} rouding with four digits after the decimal delimiter and rouding towards zero, and \code{RoudingStrategy.ROUND\_ONE} with zero digits after the decimal delimiter and also rouding towards zero.
+\\
 
+Rounding is implemented as strategy pattern, but an abstract class (\code{AbstractRoundingStrategy}) is introduced in the pattern (Figure \ref{quantity_overview}).
+\code{AbstractRoundingStrategy} contains common methods such as \code{equals()} and \code{hashcode} and getters, thus reducing code repetition.
 \subsection{\code{Money} - A usecase for \code{Quantity}}
 Objects of class \code{Money} are used to represent amounts of currency within Salespoint.
 The following paragraphs detail the intended use, internal modelling and implementation of \code{Money}.
+The UML model is given in Figure \ref{money_overview}.
 
 \begin{figure}[ht]
 	\centering
@@ -58,7 +64,7 @@ The following paragraphs detail the intended use, internal modelling and impleme
 	\caption{Money - Class Overview}
 \end{figure}
 
-A \code{Money} object can be instatiated by just passing the numerical value as constructor parameter.
+A \code{Money} object can be instantiated by just passing the numerical value as constructor parameter.
 In this case, the metric \code{Metric.EURO} is used, as well as \code{RoundingStrategy.MONETARY} for the rounding strategy attribute.
 
 For other currencies, a \code{Metric} parameter can be passed to the constructor along with a numerical paramter.
