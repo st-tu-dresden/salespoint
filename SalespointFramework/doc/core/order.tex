@@ -37,16 +37,16 @@ As well as \code{Orders}, \code{OrderLines} can also contain \code{ChargeLines} 
 \subsection{\code{ChargeLine} - Representing additional charge}
 \code{ChargeLines} representing additional charge for \code{OrderLines} and \code{OrderEntrys}. 
 
-Every \code{ChargeLine} is identified by one unique \code{ChargeLineIdentifier}. They can have a description and a comment. The amount of ChargeLines will be involved in price calculation of \code{Orders} and \code{OrderLines}. The \code{PersistentChargeLine} class is a basic implementation of \code{ChargeLine} interface and will be sufficient at most use cases.
+Every \code{ChargeLine} is identified by one unique \code{ChargeLineIdentifier}. They can have a description and a comment. The amount of ChargeLines will be involved in price calculation of \code{Orders} and \code{OrderLines}.
 
 \subsection{\code{OrderCompletionResults} - Cases of completed \code{Orders}}
-As per description in chapters before the \code{completeOrder()} method will remove the product instances from \code{Inventory}. But what will happen if these instances are no more present in the inventory because they are removed from other transactions? As you can see it is a little bit more complicated. 
+As per description in chapters before the \code{completeOrder()} method will remove the product instances from \code{Inventory}. But what will happen if these instances are no more present in the inventory because they are removed by other transactions? As you can see it is a little bit more complicated. 
 
-Therefore we provide \code{OrderCompletionResult} interface. The \code{OrderCompletionResult} will be returned from the \code{completeOrder()} method and can actually have three results:
+Therefore we provide \code{OrderCompletionResult} interface. The \code{OrderCompletionResult} will be returned from the \code{completeOrder()} method and has three possible results:
 
 \begin{itemize}
-\item \code{SUCCESSFULL}: This result will only be returned if all product instances could successfully removed from \code{Inventory} and the \code{Order} is really completed. 
-\item \code{SPLIT}: If not all product instances could be found in the \code{Inventory} the order will be splitted into two \code{Orders}. One complete \code{Order}, that contains all product instances that are removed successfully from \code{Inventory} and one \code{Order} in \code{PAYED} state, which contains all product instances that could not be removed from \code{Inventory}. Last one is contained in the returned \code{OrderCompletionResult} with \code{SPLIT} state.
+\item \code{SUCCESSFULL}: This result will only be returned if all product instances we successfully removed from \code{Inventory} and the \code{Order} is truly completed. 
+\item \code{SPLIT}: If not all product instances were found in the \code{Inventory} the order will be splitted into two \code{Orders}. One complete \code{Order}, that contains all product instances that are removed successfully from \code{Inventory} and one \code{Order} in \code{PAYED} state, which contains all product instances that could not be removed from \code{Inventory}. The uncompleted is contained in the returned \code{OrderCompletionResult} with \code{SPLIT} state.
 \item \code{FAILED}: If the \code{completeOrder()} method fails, an \code{OrderCompletionResult} in \code{FAILED} state will be returned. This can happen if the \code{completeOrder()} method is used with \code{Orders} that are not in \code{PAYED} state for example.
 \end{itemize}
 
