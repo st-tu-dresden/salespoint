@@ -1,10 +1,7 @@
 package dvdshop;
 
-import javax.persistence.EntityManager;
-
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.order.PersistentOrderManager;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.user.UserIdentifier;
 
@@ -23,46 +20,18 @@ public class Main {
 	public Main() {
 		Database.INSTANCE.initializeEntityManagerFactory("DVDShop");
 
-		init();
+		Shop.initializeShop();
+		
 		//initData();
 	}
 
-	private void init() {
-
-		EntityManager em = Database.INSTANCE.getEntityManagerFactory()
-				.createEntityManager();
-
-	}
-
 	private void initData() {
-		EntityManager em = Database.INSTANCE.getEntityManagerFactory()
-				.createEntityManager();
+		CustomerManager customerManager = new CustomerManager();
+		Customer customer = new Customer(new UserIdentifier("hans"), "wurst", "221 Baker Street London");
+		customerManager.add(customer);
 
-		Shop.INSTANCE.setOrderManager(new PersistentOrderManager());
-		
-		CustomerManager cm = new CustomerManager();
-		Shop.INSTANCE.setUserManager(cm);
-
-		Customer cus = new Customer(new UserIdentifier("hans"), "wurst",
-				"221 Baker Street London");
-		cm.add(cus);
-
-		VideoCatalog dc = new VideoCatalog();
-		Dvd dvd1 = new Dvd("Last Action Hero", Money.ZERO, "Action");
-		Dvd dvd2 = new Dvd("Back to the Future", Money.ZERO, "Sci-Fi");
-		dc.add(dvd1);
-		dc.add(dvd2);
-
-		em.getTransaction().begin();
-		em.getTransaction().commit();
-
-		System.out.println("______________________");
-		System.out.println("______________________");
-		System.out.println("______________________");
-		System.out.println("______________________");
-		System.out.println("______________________");
-		System.out.println("______________________");
-		System.out.println("______________________");
-
+		VideoCatalog videoCatalog = new VideoCatalog();
+		videoCatalog.add(new Dvd("Last Action Hero", Money.ZERO, "Action"));
+		videoCatalog.add(new Dvd("Back to the Future", Money.ZERO, "Sci-Fi"));
 	}
 }

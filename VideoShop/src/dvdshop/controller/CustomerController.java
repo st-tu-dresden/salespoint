@@ -17,8 +17,7 @@ import dvdshop.model.CustomerManager;
 
 @Controller
 public class CustomerController {
-	
-	
+
 	{
 		Database.INSTANCE.initializeEntityManagerFactory("DVDShop");
 	}
