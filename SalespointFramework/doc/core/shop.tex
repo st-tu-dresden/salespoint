@@ -8,16 +8,10 @@
 	\caption{Shop - Class Overview}
 \end{figure}
 
-\subsection{\code{Shop} - Starting your SalesPoint-application}
-Every salesman needs one \code{Shop} to have a basement to sell his goods to his customer, so the \code{Shop}-enumeration is the basis of every SalesPoint-application and they exist no 
-instances of it. With the method \code{initializeShop()} it will be initialize all interfaces to the database. All of these interfaces are very important to work perfectly with SalesPoint,
-there are
-\begin{itemize}
-\item \code{UserManager}: Main-part of the user-package to manage \code{User}s and is used to log on and off them from the system.
-\item \code{Calendar}: Main-part of the calendar-package to persist and manage \code{CalendarEntry}s.
-\item \code{Catalog}: Persisting, updating and presenting \code{ProductType}s.
-\item \code{Inventory}: Persisting, managing and storing \code{Product}s.
-\item \code{OrderManager}: Main-part of corder-package to persist, update and remove {OrderEntry}s.
-\end{itemize}
-Also you can set these interfaces manually. Look at the uml-diagram above the text. You find a set-method for each interface.\\ If you want to know the updating time of your shop, you can get 
-it or you can set the time to any point of time.
+%\subsection{\code{Shop} - Starting your SalesPoint-application}
+\code{Shop} is a central class in \salespoint{}, it holds references to all manager classes and a reference to an implementation of the \code{Time} interface.
+There are six manager classes in \salespoint{}: PersistentAccountancy, PersistentCalendar, PersistentCatalog, PersistentInventory, PersistentOrderManager and PersistentUserManager.
+Other classes use the \code{Shop} to access the manager classes, for example \code{Order.completeOrder()} uses \code{Shop.INSTANCE.getInventory()} for product removal.
+\code{PersistentCalendar} uses \code{Shop.INSTANCE.getTime()} for time based operations.
+There is also a convenience method to minimize boilerplate code \code{Shop.initializeShop()}, it's used for setting all managers of \code{Shop} to Salespoints persistent class implementations and the time to \code{DefaultTime}.
+\code{Shop} is implemented as singleton.
