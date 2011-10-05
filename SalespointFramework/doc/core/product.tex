@@ -29,33 +29,33 @@ If you create a \code{PersistentProduct}, it gets a \code{SerialNumber} ,the \co
 There are subclasses of \code{ProductType} and \code{Product}, with them the functionality will be extended. The subclasses of \code{ProductType} are \code{ServiceType} and 
 \code{MeasuredProductType}, the subclasses of \code{Product} are \code{Service} and \code{MeasuredProduct}. 
 
-\subsection{\code{ServiceType} - Realizing Services}
-The interface \code{ServiceType} is implemented by the class \code{PersistentServiceType}. With this class you can realize services in your implementation, which represents a process 
-or activity that is offered for sale, for example a haircut on a barber shop or a driving lesson on a driving school.\\
-Every \code{PersistentServiceType} has a name and a price and can contains a start time and an end time. Between these dates the \code{PersistentServiceType} can be executed. If these dates 
-don't exist, the \code{PersistentServiceType always} is offered.
+%\subsection{\code{ServiceType} - Realizing Services}
+%The interface \code{ServiceType} is implemented by the class \code{PersistentServiceType}. With this class you can realize services in your implementation, which represents a process 
+%or activity that is offered for sale, for example a haircut on a barber shop or a driving lesson on a driving school.\\
+%Every \code{PersistentServiceType} has a name and a price and can contains a start time and an end time. Between these dates the \code{PersistentServiceType} can be executed. If these dates 
+%don't exist, the \code{PersistentServiceType always} is offered.
 
-\subsection{\code{Service} - Representing ServiceTypes}
-The interface \code{Service} is implemented by \code{PersistentService}, which represents one specified \code{PersistentServiceType}. The \code{PersistentService} has a 
-start time and an end time like its \code{PersistentServiceType}. The start time must be after the start time of \code{PersistentServiceType} and before the end time of 
-\code{PersistentService}. The end time must be before the end time of \code{PersistentServiceType}.\\
-Otherwise it will be thrown exceptions:
-\begin{itemize}
-\item \code{IllegalArgumentException}: If the \code{Service} end before it starts.
-\item \code{IllegalArgumentException}: If the \code{Service} begin before the period of \code{ServiceType} has begun.
-\item \code{IllegalArgumentException}: If the \code{ServiceType} end after the period of \code{ServiceType} was finished.
-\end{itemize}
-Also you can cancelled the \code{PersistentService} with the method \code{public void cancelServiceInstance()} and so the end time is now and you can get the 
-\code{ServiceDeliveryStatus} of the \code{PersistentService} at every time.
-  
-\subsection{\code{ServiceDeliveryStatus}}
-The \code{ServiceDeliverystatus} is an enumeration with follow attributes:
-\begin{itemize}
-\item \code{SCHEDULED}: If the start of the \code{Service} is in the future.
-\item \code{EXECUTING}: If the \code{Service} is executing now.
-\item \code{CANCELLED}: If the \code{Service} was cancelled.
-\item \code{COMPLETED}: If the \code{Service} is completed, so the end of the \code{Service} is in the past and it wasn't cancelled.
-\end{itemize}
+%\subsection{\code{Service} - Representing ServiceTypes}
+%The interface \code{Service} is implemented by \code{PersistentService}, which represents one specified \code{PersistentServiceType}. The \code{PersistentService} has a 
+%start time and an end time like its \code{PersistentServiceType}. The start time must be after the start time of \code{PersistentServiceType} and before the end time of 
+%\code{PersistentService}. The end time must be before the end time of \code{PersistentServiceType}.\\
+%Otherwise it will be thrown exceptions:
+%\begin{itemize}
+%\item \code{IllegalArgumentException}: If the \code{Service} end before it starts.
+%\item \code{IllegalArgumentException}: If the \code{Service} begin before the period of \code{ServiceType} has begun.
+%\item \code{IllegalArgumentException}: If the \code{ServiceType} end after the period of \code{ServiceType} was finished.
+%\end{itemize}
+%Also you can cancelled the \code{PersistentService} with the method \code{public void cancelServiceInstance()} and so the end time is now and you can get the 
+%\code{ServiceDeliveryStatus} of the \code{PersistentService} at every time.
+%  
+%\subsection{\code{ServiceDeliveryStatus}}
+%The \code{ServiceDeliverystatus} is an enumeration with follow attributes:
+%\begin{itemize}
+%\item \code{SCHEDULED}: If the start of the \code{Service} is in the future.
+%\item \code{EXECUTING}: If the \code{Service} is executing now.
+%\item \code{CANCELLED}: If the \code{Service} was cancelled.
+%\item \code{COMPLETED}: If the \code{Service} is completed, so the end of the \code{Service} is in the past and it wasn't cancelled.
+%\end{itemize}
 
 \subsection{\code{MeasuredProductType} - Creating MeasuredProducts}
 The interface \code{MeasuredProductType} is implemented by \code{PersistentMeasuredProductType}. With this class you can realize products, which are not sold as predefined unit, but rather 
