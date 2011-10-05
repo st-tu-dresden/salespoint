@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import dvdshop.model.Customer;
 import dvdshop.model.CustomerManager;
-import dvdshop.model.DVD;
+import dvdshop.model.Dvd;
 import dvdshop.model.VideoCatalog;
 
 @Component
@@ -48,8 +48,8 @@ public class Main {
 		cm.add(cus);
 
 		VideoCatalog dc = new VideoCatalog();
-		DVD dvd1 = new DVD("Last Action Hero", Money.ZERO, "Action");
-		DVD dvd2 = new DVD("Back to the Future", Money.ZERO, "Sci-Fi");
+		Dvd dvd1 = new Dvd("Last Action Hero", Money.ZERO, "Action");
+		Dvd dvd2 = new Dvd("Back to the Future", Money.ZERO, "Sci-Fi");
 		dc.add(dvd1);
 		dc.add(dvd2);
 

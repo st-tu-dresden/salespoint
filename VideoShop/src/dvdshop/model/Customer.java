@@ -21,5 +21,4 @@ public class Customer extends PersistentUser {
 		super(useridentifier, password);
 		this.adress = adress;
 	}
-	
 }

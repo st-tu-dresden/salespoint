@@ -5,11 +5,15 @@ import javax.persistence.Entity;
 import org.salespointframework.core.money.Money;
 
 @Entity
-public class Dvd extends Disc {
-	@Deprecated
-	protected Dvd() {}
+public class BlueRay extends Disc {
 	
-	public Dvd(String name, Money price, String genre) {
+	@Deprecated
+	public BlueRay() {
+		
+	}
+	
+	public BlueRay(String name, Money price, String genre) {
 		super(name, price, genre);
 	}
+
 }

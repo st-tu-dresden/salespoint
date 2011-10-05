@@ -6,7 +6,6 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.util.Iterables;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,10 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import dvdshop.model.Comment;
 import dvdshop.model.Customer;
 import dvdshop.model.CustomerManager;
-import dvdshop.model.DVD;
+import dvdshop.model.Dvd;
 import dvdshop.model.VideoCatalog;
-import dvdshop.model.DVDInstance;
-import dvdshop.model.DVDInventory;
 
 @Controller
 public class ShopController {
@@ -32,7 +29,7 @@ public class ShopController {
 
 	CustomerManager customerManager = new CustomerManager();
 
-	DVDInventory dvdInventory = new DVDInventory();
+	
 
 	/*
 	 * @RequestMapping("/") public String index() { return "index"; }
@@ -41,14 +38,14 @@ public class ShopController {
 	@RequestMapping("/")
 	public ModelAndView index(ModelAndView mav) {
 		mav.addObject("items",
-				Iterables.toList(new VideoCatalog().getProductTypes()));
+				Iterables.toList(new VideoCatalog().find(Dvd.class)));
 		mav.setViewName("index");
 		return mav;
 	}
 
 	@RequestMapping("/catalog")
 	public ModelAndView catalog(ModelAndView mav) {
-		mav.addObject("items", dvdCatalog.getProductTypes());
+		mav.addObject("items", dvdCatalog.find(Dvd.class));
 		mav.setViewName("catalog");
 		return mav;
 	}
@@ -57,7 +54,7 @@ public class ShopController {
 	public ModelAndView catalog(ModelAndView mav,
 			@RequestParam("pid") String pid) {
 		ProductIdentifier pi = new ProductIdentifier(/* pid */); // TODO
-		DVD dvd = dvdCatalog.findProductTypeByProductIdentifier(pi);
+		Dvd dvd = dvdCatalog.get(Dvd.class, pi);
 		mav.setViewName("detail");
 		mav.addObject("dvd", dvd);
 		return mav;
@@ -70,7 +67,7 @@ public class ShopController {
 			@RequestParam("rating") int rating) {
 
 		ProductIdentifier pi = new ProductIdentifier(/* pid */); // TODO
-		DVD dvd = dvdCatalog.findProductTypeByProductIdentifier(pi);
+		Dvd dvd = dvdCatalog.get(Dvd.class,pi);
 
 		dvd.addComment(new Comment(comment, rating));
 
@@ -83,7 +80,7 @@ public class ShopController {
 	public ModelAndView buy(HttpServletRequest request, ModelAndView mav,
 			@RequestParam("pid") String pid) {
 
-		Customer customer = customerManager.getUserByToken(request.getSession());
+		Customer customer = customerManager.getUserByToken(Customer.class, request.getSession());
 
 		PersistentOrder PersistentOrder = (PersistentOrder) request.getSession().getAttribute("PersistentOrder");
 		
@@ -92,14 +89,13 @@ public class ShopController {
 		}
 
 		ProductIdentifier pi = new ProductIdentifier(pid); // TODO
-		DVD dvd = dvdCatalog.find(DVD.class, pi);
-		DVDInstance dvdi = new DVDInstance(dvd);
+		Dvd dvd = dvdCatalog.get(Dvd.class, pi);
 
-		dvdInventory.addProductInstance(dvdi);
+		//dvdInventory.addProductInstance(dvdi);
 
-		PersistentOrder.addOrderLine(dvdInventory, dvdi.getSerialNumber());
+		
 
-		mav.addObject("items", dvdCatalog.getProductTypes());
+		//mav.addObject("items", dvdCatalog.getProductTypes());
 		mav.setViewName("catalog");
 		return mav;
 	}

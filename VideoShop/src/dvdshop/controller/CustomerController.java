@@ -28,7 +28,7 @@ public class CustomerController {
 		CustomerManager cm = new CustomerManager();	
 		PersistentOrderManager pom = new PersistentOrderManager();
 
-		Customer c = cm.getUserByToken(request.getSession());
+		Customer c = cm.getUserByToken(Customer.class, request.getSession());
 		
 		mav.addObject("customer", c);
 		mav.setViewName("settings");
@@ -45,7 +45,7 @@ public class CustomerController {
 
 		EntityManager em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
 		CustomerManager cm = new CustomerManager();
-		Customer c = cm.getUserByToken(request.getSession());
+		Customer c = cm.getUserByToken(Customer.class, request.getSession());
 		boolean result = c.changePassword(newPassword, oldPassword);
 		
 		em.getTransaction().begin();
@@ -61,7 +61,7 @@ public class CustomerController {
 		CustomerManager cm = new CustomerManager();	
 		PersistentOrderManager pom = new PersistentOrderManager();
 
-		Customer c = cm.getUserByToken(request.getSession());
+		Customer c = cm.getUserByToken(Customer.class, request.getSession());
 
 		Iterable<PersistentOrder> orders = pom.find(c.getIdentifier());
 		
