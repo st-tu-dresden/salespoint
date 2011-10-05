@@ -1,0 +1,55 @@
+/* sinvoll da damit 1em == 10px */
+
+* {
+	padding:0;
+	margin:0;
+	font-size:1em;
+	font-weight:normal;
+}
+
+body {
+	font-size:62,5%;
+	color:#444;
+}
+
+/* sinvoll da damit 1em == 10px */
+
+h1 {
+	font-size: 2em;
+	color:grey;
+	text-align:center;
+	font-variant: small-caps;
+}
+
+h2 {
+	font-size: 1em;
+	color: #BA0000;
+}
+
+p {
+	text-align:center;
+}
+
+a {
+	font: 0.8em sans-serif;
+	text-decoration: none;
+	color: black;
+	font-variant: small-caps;
+}
+
+a:hover {
+	font: 1em sans-serif;
+	text-decoration: none;
+	color: #BA0000;
+}
+
+h3 a:hover {
+	font: 0.9em sans-serif;
+	text-decoration: underline;
+	color: white;
+}
+
+a.active {
+	font: 1.0em sans-serif;
+	font-weight: 600;
+}
