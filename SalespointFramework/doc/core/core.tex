@@ -1,6 +1,34 @@
 \newpage
 \chapter{\salespoint{} Components}
 %This chapter overviews the core functionality of \salespoint and gives a short introduction.
+Integrating a persistence layer into the \salespoint{} Framework had a great influence on some design decisions made during development of \salespoint{}.
+Early on it became obvious that necessities of JPA could dictate the design and implementations of \salespoint{}.
+
+To guard against the influence of JPA requirements on design decisions, \salespoint{} strongly follows the \textit{programming against interfaces} programming style.
+Although, creating an interface for almost every class violates the \textit{KISS} principle, the developers deemed programming against interfaces necessary because \salespoint{} is intrinsically tied to JPA.
+Using interfaces allowed us to cleanly define the behaviour of an object, without relying on a specific implementation.
+\\
+
+Objects, which need to be persisted to safe the current state of an application, are called persistence entities.
+Usually, a persistence entity is a \textit{Plain Old Java Object} (POJO).
+Every persistence entity class is an implementation of a corresponding Java interface.
+Each persistence entity has a manager class, which in turn is an implementation of a manager interface.
+The specific manager implementations in \salespoint{} facilitate persisting the objects to a database.
+However, it is possible to implement every persistence entity and manager class in \salespoint{} non-persistent, for example collection-based.
+\\
+
+\salespoint{} is designed to be developer-friendly.
+A crucial part of its easy-to-use feel is the consistency in interfaces, persistence entities and managers across the framework, including, but not limited to naming of methods and behaviour of managers.
+\\
+
+\begin{figure}
+	\centering
+  \includegraphics[width=1.0\textwidth]{images/Package_Overview.eps}
+	\label{package_overview}
+	\caption{Package Overview}
+\end{figure}
+
+Figure \ref{package_overview} depicts the package structure of \salespoint{}.
 \salespoint{} components are grouped into packages according to their respective functionality.
 Key concepts of \salespoint{} are illustrated in the following paragraphs.
 \input{core/overview.tex}
