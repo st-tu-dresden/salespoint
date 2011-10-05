@@ -37,6 +37,8 @@ public class ShopController {
 
 	@RequestMapping("/")
 	public ModelAndView index(ModelAndView mav) {
+		
+		
 		mav.addObject("items",
 				Iterables.toList(new VideoCatalog().find(Dvd.class)));
 		mav.setViewName("index");

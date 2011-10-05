@@ -8,7 +8,7 @@
 		<class>dvdshop.model.BlueRay</class>
 		<class>dvdshop.model.Disc</class>
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:derby:e:\dvdshopshit;create=true"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:derby:C:\Profile\s6040437\VideoShopDB;create=true"/>
 			<property name="javax.persistence.jdbc.user" value=""/>
 			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>

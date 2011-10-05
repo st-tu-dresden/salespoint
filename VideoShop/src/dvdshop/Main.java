@@ -5,7 +5,7 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.user.UserIdentifier;
 
-import org.springframework.core.annotation.Order;
+//import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import dvdshop.model.Customer;
@@ -14,15 +14,22 @@ import dvdshop.model.Dvd;
 import dvdshop.model.VideoCatalog;
 
 @Component
-@Order(value=0)
+//@Order(value=0)
 public class Main {
 
 	public Main() {
+		
+		System.out.println("MAAAAAAAAAAAAAAAAIN");
+		System.out.println("MAAAAAAAAAAAAAAAAIN");
+		System.out.println("MAAAAAAAAAAAAAAAAIN");
+		System.out.println("MAAAAAAAAAAAAAAAAIN");
+		System.out.println("MAAAAAAAAAAAAAAAAIN");
+		
 		Database.INSTANCE.initializeEntityManagerFactory("DVDShop");
 
 		Shop.initializeShop();
 		
-		//initData();
+		initData();
 	}
 
 	private void initData() {
