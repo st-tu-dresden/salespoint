@@ -10,8 +10,8 @@ import org.salespointframework.core.user.UserIdentifier;
 @Entity
 public class Employee extends PersistentUser {
 	
-	private string name;
-	private string lastname;
+	private String name;
+	private String lastname;
 	
 	@Deprecated
 	public Employee(){
@@ -41,7 +41,7 @@ public class Employee extends PersistentUser {
 	}
 	
 	public void setLastname(String lastname){
-		this.lastname=lastname
+		this.lastname=lastname;
 	}
 
 }

@@ -19,7 +19,7 @@ import org.salespointframework.util.Iterables;
 @SuppressWarnings("javadoc")
 public class UsermanagerTest {
 
-	private static final PersistentUserManager userManager = new PersistentUserManager();;
+	private static PersistentUserManager userManager;
 	
 	private static UserIdentifier userIdentifier = new UserIdentifier();
 	private static Employee employee = new Employee(userIdentifier, "lala");
@@ -29,6 +29,7 @@ public class UsermanagerTest {
 	@BeforeClass
 	public static void beforeClass() {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
+		userManager = new PersistentUserManager();
 		userManager.add(employee);
 	}
 		
@@ -184,21 +185,22 @@ public class UsermanagerTest {
 	}
 	
 	@Test
-	public void testUpdateEmployee{
-		Employee e= new Employee(new UserIdentifier, "", "Torsten", "Lehmann");
+	public void testUpdateEmployee() {
+		Employee e= new Employee(new UserIdentifier(), "", "Torsten", "Lehmann");
 		final PersistentUserManager empManager = new PersistentUserManager();
 		
 		empManager.add(e);
 		
-		Employee e2= empManger.get(Employee.class, e.getIdentifier);
-		assertEquals(e.getName, e2.getName);
-		assertEquals(e.getLastname, e2.getLastname);
+		Employee e2= empManager.get(Employee.class, e.getIdentifier());
+		assertEquals(e.getName(), e2.getName());
+		assertEquals(e.getLastname(), e2.getLastname());
 		
-		e2.setName("Hans");
-		empMaanger.update(e2);
+		//e2.setName("Hans");
+		e2.addCapability(new UserCapability("test"));
+		empManager.update(e2);
 		
-		Employee e3= empManger.get(Employee.class, e.getIdentifier);
-		assertEquals(e2.getName, e3.getName);
+		Employee e3= empManager.get(Employee.class, e.getIdentifier());
+		assertTrue(e3.hasCapability(new UserCapability("test")));
 		
 		
 		
