@@ -11,37 +11,38 @@ Figure \ref{calendar_overview} shows the UML model of the calendar.
 	\caption{Calendar - Class Overview}
 \end{figure}
 
-\subsection{\code{Calendar} - The central management for appointments}
-The calendar is an interface that provides simple functionality to store calendar entries persistently in and recover them from the underlaying database.
-With the \code{PersistentCalendar}-class there exists an implementation of the calendar interface that can be worked with. This class provides methods
-to add and remove entries and filter them by different criteria.
-There are some predefined methods for useful filters. If the user wants to use a self-defined filter, it is required to fetch all entries that are stored and
-iterate manually over the result.  
-The \code{PersistentCalendar} itself has no identifier or other attributes, it's just a container that provides methods to easy manage all calendar entries.
-So there is no need to keep a reference to any calendar object, every time one is needed, it can be created new.
+\code{Calendar} is an interface that provides simple functionality to store calendar entries and retrieve \code{CalendarEntries}.
+\code{CalendarEntry} is an interface to set, store and access information about a single appointment.
+Both interfaces are implemented by \code{PersistentCalendar} and \code{PersitentCalendarEntry}, respectively.
+\code{PersistentCalendarEntry} is a persistence entity containing all information and \code{PersistentCalendar} manages the JPA access.
+\\
 
+Every calendar entry is uniquely identified by a \code{CalendarEntryIdentifier}.
+This identifier also serves as primary key attribute when persisting an entry to the database.
+Additionally, a \code{PersistentCalendarEntry} must have an owner, a title, a start and an end date.
+The user who created the entry is known as the owner.
+\\
 
-\subsection{\code{CalendarEntry} - Keeps information about a single appointment}
-
-With \code{CalendarEntry} there exists an interface to set, store and access information about a single appointment, which is implemented
-by \code{PersistentCalendarEntry}.
-Every \code{PersistentCalendarEntry} must have an owner, title, start and end date.
-Typically the owner is the creator of the entry and also gets all capabilities for it.
-Capabilities are
+The access of other users than the owner to a calendar entry is restricted by capabilities.
+For each calendar entry, a user identifier and a set of capabilities are stored.
+Possible capabilities are:
 \begin{itemize}
-    \item \code{READ} - indicates who can read this entry
-    \item \code{WRITE} - indicates who can change this entry
-    \item \code{DELETE} - indicates who can delete the entry
-    \item \code{SHARE} - indicates who can share the entry to other users
+    \item \code{READ} - indicates if a user can read this entry
+    \item \code{WRITE} - indicates if a user can change this entry
+    \item \code{DELETE} - indicates if a user can delete the entry
+    \item \code{SHARE} - indicates if a user can share the entry to other users
 \end{itemize}.
-All of these capabilities can be given to and removed from a user in relation to this specific entry.
-Because a calendar entry does not check if a user has the capability to do something with it, the programmer has to check the capabilities before manipulating the entry.
-Besides the minimum information a calendar entry can also have a description which provides more information about it and a repeat count and repeat step which say how 
-often the entry will be repeated and how long the time span between two repetitions is.
-There are some conditions for the time specific attributes of an calendar entry:
+
+Because \salespoint{} only implements the Model, the developer has to check and enforce capabilities in the controller.
+\\
+
+Besides the minimum information a calendar entry can also have a description, which may contain more information.
+Periodic appointments are also supported, by specifing the number of repetitions and a time span between two appointments.
+\\
+
+There are some conditions for temporal attributes of an calendar entry:
 \begin{itemize}
-    \item First, the start must not be after the end. So a appointment can have a time span if the end is after the start or it can be a single point in time, like a deadline or something like this, if start and end are equal.
-    \item Second, the repeat step, which is the time between two repetitions must be greater than the duration of the entry, so an entry does not overlap with the next repetition of itself.
-    \item Third, if repeat count is zero, the repeat step will not be attended, if repeat count is greater zero or -1, what means endless repetition, the repeat step will be checked to follow the second point.
+    \item the start must not be after the end
+    \item the time between two repetitions of an appointment need to be longer than the appointment, so appointments do not overlap
 \end{itemize}
-All attributes of the entry can be changed, except of the owner, who will be defined when the entry is created and then becomes immutable. 
+%All attributes of the entry can be changed, except of the owner, who will be defined when the entry is created and then becomes immutable. 
