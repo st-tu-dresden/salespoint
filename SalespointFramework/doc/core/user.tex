@@ -1,42 +1,31 @@
-\newpage
 \section{User}
+To manage system accounts, \salespoint{} has a notion of a user in the form of the \code{User} interface.
+Users are managed by the \code{UserManager}, which is also an interface.
+The implementing classes handling the persistence aspects are \code{PersistentUser} and \code{PersistentUserManager}, respectively.
+Every user is uniquely identified by a \code{UserIdentifier}, which also serves as primary key attribute for the database in the peristent implementation.
+Extensibility is achieved by using capabilities, which are aggregated by \code{User}s.
+The UML model is depicted in Figure \ref{user_overview}.\\
 
-
-\begin{figure}[ht]
+\begin{figure}
 	\centering
   \includegraphics[width=1.0\textwidth]{images/User_Overview.eps}
 	\label{user_overview}
 	\caption{User - Class Overview}
 \end{figure}
 
-For implementing against interfaces we provide two in the userpackage: the \code{User} and the \code{UserManager}. The given implementions of the interfaces 
-are the \code {PersistentUser} and the \code{PersistentenUserManger}. Also those two classes already provide storing \code{User}s in the database.
-A \code{User} is identified by one \code{UserIdentifier} and has multiple \code{UserCapability}.
+Although \code{Shop} (Section \ref{shop}) holds a reference to a \code{UserManager}, \code{PersistentUserManager} does not need to be a singleton instance and is indeed not.
+Moreover, a peculiarity of \code{PersistentUserManager} is, that a new instance can be created whenever one is needed.
+The reason for this behaviour is, that data is not stored inside the \code{PersistentUserManager} object itself, as it may be done with a collection-based implementation, but \code{PersistenUserManager} is merely a transparent interface to the JPA.\\
 
+\subsection*{UserCapabilities}
+Capabilities in conjunction with a \code{CapabilityTag} (Section \ref{spring}) can be used to change the appearance of a View, depending on a users status.
+For example, a View for a user having an ``administrator'' capability may display different content, for example delete buttons, than for a user not having that capability.
 
-\subsection{How does it work?}
+\subsection*{Login}
+To reduce code repetition, \salespoint{} contains code to automate user log in.
+Using a JSP template, a special login form is generated, which is handled by an interceptor.
+\footnote{An interceptor is a Spring concept.}
+The interceptor verifies the user password and associates the current session with the user.
+The session is required, because multiple users can be logged in at the same time.\\
 
-In the Salespointframework there is one \code{PersistentUsermanger}, but it is not a singleton. You can instantiate a new \code{PersistentUsermanger} whenever you need it and it always manages the same data.
-The \code{UserManger} is the main part of the \code{user}-package.
-You can add and remove users to/from the system.
-
-
-\subsection{Ensure correct data}
-To ensure having the correct data in your system you should only access users via the \code{PersistentUsermanger}:
-
-During the process of adding a user to the system the \code{PersistentUsermanger} ensures that there will be no duplicate users. If you try to add a \code{User} with an \code{UserIdentifier} that is already in the system a \code{DuplicateUserException} will be thrown. This will help you to identify \code{Users} correctly, e.g. during the login process.
-
-\subsection{UserCapability}
-The \code{UserCapability} is a the point that helps you managing the accesses of your \code{users} in the different sections, e.g. an administrator area. Most times you combine \code{UserCapability} with your GUI to provide the different secured sections.
-The \code{UserCapability} are set directly in the user. In the \code{User} you can add, remove them and ask if a the \code{User} owns a \code
-{UserCapability}.
-
-
-\subsection{Login}
-
-You log in and log off your\code{User}s in the \code{PersistenceUserManger}. Therefore you generate a token and associate the token with the \code{User} in 
-\code{PersistenceUserManger}.
-
-
-
-
+To modify the content of the View, depending on wether a user is logged in or not, the \code{LoggedInTag} can be used.
