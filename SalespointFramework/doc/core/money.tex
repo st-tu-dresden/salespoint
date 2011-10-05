@@ -68,10 +68,9 @@ A \code{Money} object can be instantiated by just passing the numerical value as
 In this case, the metric \code{Metric.EURO} is used, as well as \code{RoundingStrategy.MONETARY} for the rounding strategy attribute.
 
 For other currencies, a \code{Metric} parameter can be passed to the constructor along with a numerical paramter.
-However, conversion between currencies is not supported, as is was not deemed necessary.
+However, conversion between currencies is not supported, as it was not deemed necessary.
 
 The rounding strategy cannot be overridden.
-
 Internally, \code{Money} objects calculate with and are rounded to four digits after the decimal delimiter to minimize the rounding error.
 The \code{toString()} method, however, limits the output to the expected two digits after the decimal delimiter and appends the symbol of the associated \code{Metric}.
 
