@@ -11,7 +11,7 @@
 %\subsection{\code{Inventory} - Managing products} 
 
 \code{Inventory} is an interface and provides methods for adding and removing products as well as finding products based on the \code{ProductType} via the \code{ProductTypeIdentifier} and a set of \code{ProductFeature}s.
-\code{PersistentInventory} is an implementation of the \code{Inventory} interface. Every operation is delegated to the database, via \code{CriteriaQuery}s, but some methods require additional processing of query results with Java.
+\code{PersistentInventory} is an implementation of the \code{Inventory} interface. Every operation is delegated to the database, via \code{CriteriaQuery}s. Some methods require additional processing of query results with Java.
 \code{Inventory} aggregates \code{Product}s, \code{PersistentInventory} aggregates \code{PersistentProduct}s 
 
 %A shop must store products in an inventory, because the customer should get your good on order very quickly. If there are no amount of this product inside, it must be ordered by its producer.
