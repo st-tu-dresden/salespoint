@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.salespoint-framework.org/web/taglib" prefix="sp"%>
 
 <!DOCTYPE html>
 
@@ -16,7 +17,17 @@
 </head>
 <body>
 	<h1>Salespoint Framework</h1>
-	<p>welcome</p>
+	<p>
+	<sp:LoggedIn status="true">
+		<p> hello, user</p>
+	</sp:LoggedIn>
+	<sp:LoggedIn status="false">
+	<jsp:include page="templates/login.jsp"></jsp:include>
+	<a href="register">Register account</a>
+	</sp:LoggedIn>
+	</p>
+
+
 	<br />
 	<p>TODO Links zu den einzelnen Punkten der Doku hier rein</p>
 
@@ -27,8 +38,6 @@
 		</c:forEach>
 	</ul>
 	<p>----</p>
-	
-	<jsp:include page="templates/login.jsp" />
 
 </body>
 </html>

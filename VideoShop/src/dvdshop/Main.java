@@ -10,6 +10,7 @@ import org.salespointframework.core.user.UserIdentifier;
 //import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import dvdshop.model.Comment;
 import dvdshop.model.Customer;
 import dvdshop.model.Dvd;
 import dvdshop.model.VideoCatalog;
@@ -47,7 +48,10 @@ public class Main {
 		userManager.add(customer2);
 		
 		VideoCatalog videoCatalog = new VideoCatalog();
-		videoCatalog.add(new Dvd("Last Action Hero", Money.ZERO, "Action"));
+		Dvd lah = new Dvd("Last Action Hero", Money.ZERO, "Action");
+		lah.addComment(new Comment("Test comment", 10));
+		videoCatalog.add(lah);
+		
 		videoCatalog.add(new Dvd("Back to the Future", Money.ZERO, "Sci-Fi"));
 	}
 }
