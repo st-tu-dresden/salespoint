@@ -4,11 +4,14 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<div>
+<div style="border: 2px solid #FAD614;">
 	<!--  TODO multiple values select/dropdown/shit -->
 	<form method="post" action="">
 		<input type="text" name="SP_LOGIN_PARAM" hidden="true" />
-		<input type="text" name="SP_LOGIN_PARAM_IDENTIFIER" />
-		<input type="text" name="SP_LOGIN_PARAM_PASSWORD" />
+		<label for="SP_LOGIN_PARAM_IDENTIFIER">UserIdentifier</label>
+		<input id="SP_LOGIN_PARAM_IDENTIFIER" type="text" name="SP_LOGIN_PARAM_IDENTIFIER" />
+		<br />
+		<label for="SP_LOGIN_PARAM_PASSWORD">Password</label>
+		<input id="SP_LOGIN_PARAM_PASSWORD" type="text" name="SP_LOGIN_PARAM_PASSWORD" />
 	</form>
 </div>
