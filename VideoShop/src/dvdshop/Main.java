@@ -3,13 +3,14 @@ package dvdshop;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.shop.Shop;
+import org.salespointframework.core.user.PersistentUser;
+import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.core.user.UserIdentifier;
 
 //import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import dvdshop.model.Customer;
-import dvdshop.model.CustomerManager;
 import dvdshop.model.Dvd;
 import dvdshop.model.VideoCatalog;
 
@@ -33,10 +34,18 @@ public class Main {
 	}
 
 	private void initData() {
-		CustomerManager customerManager = new CustomerManager();
-		Customer customer = new Customer(new UserIdentifier("hans"), "wurst", "221 Baker Street London");
-		customerManager.add(customer);
-
+		PersistentUserManager userManager = new PersistentUserManager();
+		UserIdentifier chef = new UserIdentifier("chef");
+		
+		if(userManager.contains(chef)) return;
+		
+		userManager.add(new PersistentUser(chef, "chef"));
+		
+		Customer customer1 = new Customer(new UserIdentifier("hans"), "wurst", "221 Baker Street London");
+		Customer customer2 = new Customer(new UserIdentifier("dexter"), "morgan", "");
+		userManager.add(customer1);
+		userManager.add(customer2);
+		
 		VideoCatalog videoCatalog = new VideoCatalog();
 		videoCatalog.add(new Dvd("Last Action Hero", Money.ZERO, "Action"));
 		videoCatalog.add(new Dvd("Back to the Future", Money.ZERO, "Sci-Fi"));

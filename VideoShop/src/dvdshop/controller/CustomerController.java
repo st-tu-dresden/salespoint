@@ -7,13 +7,13 @@ import org.salespointframework.core.database.Database;
 
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderManager;
+import org.salespointframework.core.user.PersistentUserManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import dvdshop.model.Customer;
-import dvdshop.model.CustomerManager;
 
 @Controller
 public class CustomerController {
@@ -24,12 +24,12 @@ public class CustomerController {
 	
 	@RequestMapping("settings")
 	public ModelAndView settings(HttpServletRequest request, ModelAndView mav) {
-		CustomerManager cm = new CustomerManager();	
-		PersistentOrderManager pom = new PersistentOrderManager();
+		PersistentUserManager userManager = new PersistentUserManager();	
+		PersistentOrderManager orderManager = new PersistentOrderManager();
 
-		Customer c = cm.getUserByToken(Customer.class, request.getSession());
+		Customer customer = userManager.getUserByToken(Customer.class, request.getSession());
 		
-		mav.addObject("customer", c);
+		mav.addObject("customer", customer);
 		mav.setViewName("settings");
 
 		return mav;
@@ -42,14 +42,10 @@ public class CustomerController {
 			@RequestParam("") String oldPassword,
 			@RequestParam("") String adress) {
 
-		EntityManager em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
-		CustomerManager cm = new CustomerManager();
+		PersistentUserManager cm = new PersistentUserManager();
 		Customer c = cm.getUserByToken(Customer.class, request.getSession());
 		boolean result = c.changePassword(newPassword, oldPassword);
 		
-		em.getTransaction().begin();
-		em.getTransaction().commit();
-
 		mav.addObject("result", result);
 		mav.setViewName("settings");
 		return mav;
@@ -57,7 +53,7 @@ public class CustomerController {
 
 	@RequestMapping("orders")
 	public ModelAndView myOrders(HttpServletRequest request, ModelAndView mav) {
-		CustomerManager cm = new CustomerManager();	
+		PersistentUserManager cm = new PersistentUserManager();	
 		PersistentOrderManager pom = new PersistentOrderManager();
 
 		Customer c = cm.getUserByToken(Customer.class, request.getSession());
