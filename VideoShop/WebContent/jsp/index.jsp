@@ -23,7 +23,7 @@
 	<p>----</p>
 	<ul>
 		<c:forEach var="item" items="${items}">
-			<li>${item.name} - ${item.price}</li>
+			<li><a href="detail?pid=${item.identifier}">${item.name} - ${item.price}</a></li>
 		</c:forEach>
 	</ul>
 	<p>----</p>
