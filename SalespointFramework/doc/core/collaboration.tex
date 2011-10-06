@@ -1,16 +1,16 @@
 \chapter{Collaboration}
 
-The \salespoint{} framework is much more than a pure collection of classes and interfaces. It provides also processes between packages that are triggered automatic and facilitate consistent employment. This chapter gives attention to that dependencies between packages and describes how they collaborate.  
+The \salespoint{} framework is more than just a collection of classes and interfaces. It provides also processes between packages that are triggered automatically and ensure consistent work. This chapter gives attention to that dependencies between packages and describes how they collaborate.  
 
-Figure \ref{package_overview} illustrates the most important dependencies between \salespoint{} packages. As you can see nearly all packages depending among each other.\\ 
+Figure \ref{package_overview} illustrates the main dependencies between \salespoint{} packages. As can be seen nearly all packages are interdependent.\\ 
 
-The central class that connects all features in \salespoint{} is the \code{Shop}. The most packages access this class to communicate with other packages. Therefore the \code{Shop} contains all interfaces which are global connected. This class should also be the first accesspoint for software engineers to request the seperate regions of \salespoint{}.\\
+The central class that connects all features in \salespoint{} is the \code{Shop}. The most packages access this class to communicate with other packages. Therefore the \code{Shop} contains all interfaces which are global connected. This class should also be the first point for software engineers to request the seperate regions of \salespoint{}.\\
 
-Another package that collaborate with nearly all packages is the \code{Order} package. \code{OrderLines} are using the interfaces from \code{Product} package to identify product instances and calculate their prices. The \code{Catalog} package is used to check whether the catalog contains added products. \code{Orders} also communicate with the \code{UserManager}, to get information about involved users.\par 
-When the \code{Order} will be completed, it communicates with the \code{Inventory} (via \code{Shop} class) and removes the considered product instances from that \code{Inventory}. \par
-Before completion, the \code{Order} have to be payed. An \code{Order} which has changed to status \code{PAYED} will automatic access the accountancy and create a corresponding \code{AccountancyEntry} which represents the payment.\\ 
+Another package that collaborates with nearly all packages is the \code{Order} package. \code{OrderLines} using interfaces from \code{Product} package to identify product instances and calculate their prices. The \code{Catalog} package is used to check whether the catalog contains added products. \code{Orders} are also associated with the \code{UserManager}, to receive information about involved users.\par 
+Completed \code{Orders} will communicate with the \code{Inventory} (via \code{Shop} class) to remove considered product instances. \par
+Before completion, \code{Orders} have to be payed. An \code{Order} which changed its status to \code{PAYED} will automatically access the accountancy and create the corresponding \code{AccountancyEntry} which represents that payment.\\ 
 
-\code{Catalogs} and \code{Inventorys} also work closely together with all classes in the \code{Product} package. There are a lot of other packages and classes that provide structures which are used in \salespoint{} like the \code{Money} and \code{Quantity} packages. After all there are much more smaller collaborations in \salespoint{}, but the described above are the most important ones.
+\code{Catalogs} and \code{Inventorys} also work closely together with all classes in \code{Product} package. There are a lot of other packages and classes that provide structures which are used in \salespoint{} like the \code{Money} and \code{Quantity} packages. After all there are much more smaller collaborations in \salespoint{}, but the above described are the most important ones.
 
 
 
