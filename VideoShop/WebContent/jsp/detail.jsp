@@ -15,9 +15,16 @@
 </head>
 <title>${dvd.name}</title>
 <body>
-This is the detail page of ${dvd.name}.<br>
-You can purchase it for ${dvd.price }.<br>
-What other Customers said about ${dvd.name }:<br>
+
+<div class="navi">
+	<jsp:include page="templates/navigation.jsp"></jsp:include>
+</div>
+	
+<div class="content">
+
+	This is the detail page of ${dvd.name}.<br>
+	You can purchase it for ${dvd.price }.<br>
+	What other Customers said about ${dvd.name }:<br>
 
 <form method="post" action="addDisc">
 	<input type="hidden" name="pid" value="${dvd.identifier}" />
@@ -30,6 +37,7 @@ What other Customers said about ${dvd.name }:<br>
 </c:forEach>
 </ul>
 
+
 <p> add comment</p>
 
 <form method="post" action="comment">
@@ -38,6 +46,8 @@ What other Customers said about ${dvd.name }:<br>
 	<input type="text" name="rating" value="5" />
 	<input type="submit" value="senden" />
 </form>
+
+</div>
 
 </body>
 </html>

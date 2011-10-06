@@ -12,25 +12,27 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/res/css/style.css" />" />
-<title>DVD Catalog</title>
+<title>DVD Katalog</title>
 </head>
 <body>
-	<h1>DVD Catalog</h1>
-	<p>welcome</p>
-	<br />
-	<p>----</p>
-	<div class="allItems">
+
+		
+	<div class="navi">
+		<h1>DVD Katalog</h1>
+		<jsp:include page="templates/navigation.jsp"></jsp:include>
+	</div>
+	
+	<div class="content">
 		<c:forEach var="item" items="${items}">
 			<a class="item" href="detail?pid=${item.identifier}">
 				<div class="item">
-					<h3>${item.name}</h3>
+					<h4>${item.name}</h4>
 					<img class="itemThumbnail" src="<c:url value="/res/img/imageDummy.png" />" />
-					<p class="price">${item.price}</p>
+					<p class="price">Preis: ${item.price}</p>
 				</div>
 			</a>
 		</c:forEach>
 	</div>
-	
-	<p>----</p>
+		
 </body>
 </html>
