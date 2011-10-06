@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import dvdshop.model.Comment;
 import dvdshop.model.Customer;
+import dvdshop.model.Disc;
 import dvdshop.model.Dvd;
 import dvdshop.model.VideoCatalog;
 
@@ -91,24 +92,20 @@ public class ShopController {
 		return mav;
 	}
 
-	@RequestMapping("/buy")
-	public ModelAndView buy(HttpServletRequest request, ModelAndView mav,
-			@RequestParam("pid") ProductIdentifier pid) {
+	@RequestMapping("/addDisc")
+	public ModelAndView addDisc(HttpServletRequest request, ModelAndView mav, @RequestParam("pid") ProductIdentifier pid) {
 
-		Customer customer = userManager.getUserByToken(Customer.class,
-				request.getSession());
+		Customer customer = userManager.getUserByToken(Customer.class, request.getSession());
 
-		PersistentOrder order = (PersistentOrder) request.getSession()
-				.getAttribute("order");
+		PersistentOrder order = (PersistentOrder) request.getSession().getAttribute("order");
 
 		if (order == null) {
 			order = new PersistentOrder(customer.getIdentifier(), Cash.CASH);
 		}
 
-		Dvd dvd = dvdCatalog.getDvd(pid);
+		Disc disc = dvdCatalog.get(Disc.class, pid);
 
-		PersistentOrderLine orderLine = new PersistentOrderLine(
-				dvd.getIdentifier());
+		PersistentOrderLine orderLine = new PersistentOrderLine(disc.getIdentifier());
 
 		order.addOrderLine(orderLine);
 
@@ -118,16 +115,9 @@ public class ShopController {
 	}
 
 	@RequestMapping("basket")
-	public ModelAndView basket(HttpServletRequest request,
+	public ModelAndView basket(HttpServletRequest request, ModelAndView mav) {
 
-	ModelAndView mav) {
-		Customer customer =
-
-		userManager.getUserByToken(Customer.class, request.getSession());
-
-		PersistentOrder order = (PersistentOrder)
-
-		request.getSession().getAttribute("order");
+		PersistentOrder order = (PersistentOrder) request.getSession().getAttribute("order");
 
 		if (order != null) {
 			mav.addObject("items", Iterables.toList(order.getOrderLines()));
@@ -139,10 +129,8 @@ public class ShopController {
 		return mav;
 	}
 
-	@RequestMapping("buy2")
-	public ModelAndView buy2(HttpServletRequest request, ModelAndView mav) {
-
-		Customer customer =	userManager.getUserByToken(Customer.class, request.getSession());
+	@RequestMapping("buy")
+	public ModelAndView buy(HttpServletRequest request, ModelAndView mav) {
 
 		PersistentOrder order = (PersistentOrder) request.getSession().getAttribute("order");
 

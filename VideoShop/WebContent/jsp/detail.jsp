@@ -19,6 +19,11 @@ This is the detail page of ${dvd.name}.<br>
 You can purchase it for ${dvd.price }.<br>
 What other Customers said about ${dvd.name }:<br>
 
+<form method="post" action="addDisc">
+	<input type="hidden" name="pid" value="${dvd.identifier}" />
+	<input type="submit" value="zum warenkorb hinzufügen" />
+</form>
+
 <ul>
 <c:forEach var="comment" items="${comments}">
 <li>${comment.text}</li>

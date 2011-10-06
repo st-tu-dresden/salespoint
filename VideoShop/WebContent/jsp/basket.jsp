@@ -30,8 +30,8 @@
 	</c:forEach>
 	</ul>
 
-	<form method="post" action="buy2">
-		<input type="submit" value="buy" />
+	<form method="post" action="buy">
+		<input type="submit" value="buy!!!" />
 	</form>
 	
 </body>
