@@ -21,20 +21,20 @@ Also you can add categories to your \code{ProductType}, in this case you would c
 Every \code{ProductFeature} has a featureType, a value and a price, which define it. Any {\code{ProductFeatures}} can offer the same featureType. For example the features red or green 
 offer the featureType color. Mahogany, oak or beech offer the featureType wood.\\
 The value defines the number of this \code{ProductFeature} in its \code{ProductType}. If you want to create a table, which offered four table-legs, then your table has a \code{ProductFeature} 
-table-leg with a value 4.   
+table-leg with value 4.   
 
 \subsection{\code{Product} - Representing ProductTypes}
 A \code{Product} is an interface which represents one specified \code{ProductType}. The \code{PersistentProduct}-class is an implementation of this interface to worked with it.
 If you create a \code{PersistentProduct}, it gets a \code{SerialNumber} ,the \code{ProductIdentifier} of its \code{PersistentProductType} and the price will be calculated.
 \code{SerialNumber} and \code{ProductIdentifier} are unique \code{SalespointIdentifier} to identify \code{ProductInstances} and \code{ProductTypes} in the database. 
-There are subclasses of \code{ProductType} and \code{Product}, with them the functionality will be extended. The subclasses of \code{ProductType} are \code{ServiceType} and 
+There are subclasses of \code{ProductType} and \code{Product}, which extends the functionality of them. The subclasses of \code{ProductType} are \code{ServiceType} and 
 \code{MeasuredProductType}, the subclasses of \code{Product} are \code{Service} and \code{MeasuredProduct}. 
 
 %\subsection{\code{ServiceType} - Realizing Services}
 %The interface \code{ServiceType} is implemented by the class \code{PersistentServiceType}. With this class you can realize services in your implementation, which represents a process 
 %or activity that is offered for sale, for example a haircut on a barber shop or a driving lesson on a driving school.\\
 %Every \code{PersistentServiceType} has a name and a price and can contains a start time and an end time. Between these dates the \code{PersistentServiceType} can be executed. If these dates 
-%don't exist, the \code{PersistentServiceType always} is offered.
+%don't exist, the \code{PersistentServiceType} always is offered.
 
 %\subsection{\code{Service} - Representing ServiceTypes}
 %The interface \code{Service} is implemented by \code{PersistentService}, which represents one specified \code{PersistentServiceType}. The \code{PersistentService} has a 
@@ -59,14 +59,14 @@ There are subclasses of \code{ProductType} and \code{Product}, with them the fun
 %\end{itemize}
 
 \subsection{\code{MeasuredProductType} - Creating MeasuredProducts}
-The interface \code{MeasuredProductType} is implemented by \code{PersistentMeasuredProductType}. With this class you can realize products, which are not sold as predefined unit, but rather 
-as measures of something. For example flooring may be sold by square foot or fresh products by kilogram.
+The interface \code{MeasuredProductType} is implemented by \code{PersistentMeasuredProductType}. If you use the functionality of this interface, you can realize products, which are not sold as 
+predefined unit, but rather as measures of something. For example flooring may be sold by square foot or fresh products by kilogram.
 A \code{PersistentMeasuredProductType} has a name, a price and a quantity on hand. The quantity on hand, is the quantity of this \code{PersistentMeasuredProductType}, which is available to 
 be sold. You can also add or reduce a specified quantity of the \code{PersistentMeasuredProductType} to it. 
 The price of the \code{PersistentMeasuredProductType} is not the price for an unit of that, but the price of the quantity on hand of that. The unit price will be calculated automatically 
 and you can get it with the method \code{getUnitPrice()}.
 
 \subsection{\code{MeasuredProduct} - Representing MeasuredProductTypes}
-The interface \code{MeasuredProductType} is implemented by \code{PersistentMeasuredProductType}, which represents a specified quantity of the \code{PersistentMeasuredProductType}. If it is 
-created, the quantity of that, will be reduce from the quantity on hand of the \code{PersistentMeasuredProductType}, because this quantity is used and no more available for other 
+The interface \code{MeasuredProductType} is implemented by \code{PersistentMeasuredProductType}, who represents a specified quantity of the \code{PersistentMeasuredProductType}. After you 
+create it, the quantity of that, will be reduce from the quantity on hand of the \code{PersistentMeasuredProductType}, because this quantity is used and no more available for other 
 \code{PersistentMeasuredProducts}. If this quantity is greater than the quantity on hand, an exception will be thrown.
