@@ -41,9 +41,10 @@ public class Main {
 		if(userManager.contains(chef)) return;
 		
 		userManager.add(new PersistentUser(chef, "chef"));
+
 		
-		Customer customer1 = new Customer(new UserIdentifier("hans"), "wurst", "221 Baker Street London");
-		Customer customer2 = new Customer(new UserIdentifier("dexter"), "morgan", "");
+		Customer customer1 = new Customer(new UserIdentifier("hans"), "a", "");
+		Customer customer2 = new Customer(new UserIdentifier("dexter"), "morgan", "221 Baker Street London");
 		userManager.add(customer1);
 		userManager.add(customer2);
 		
