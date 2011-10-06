@@ -29,7 +29,7 @@ import dvdshop.model.Disc;
 import dvdshop.model.Dvd;
 import dvdshop.model.VideoCatalog;
 
-@Interceptors({ LoginInterceptor.class, AlwaysInterceptor.class })
+@Interceptors({ LoginInterceptor.class, UserInterceptor.class })
 @Controller
 public class ShopController {
 
