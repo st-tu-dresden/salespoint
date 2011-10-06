@@ -4,8 +4,9 @@ import org.salespointframework.util.ArgumentNullException;
 
 /**
  * The <code>UserManager</code> is an interface that provides methods to store
- * and manage users that should be able to interact with the shop.
- * The <code>UserManager</code> is also used to log on and off users from the system.
+ * and manage users that should be able to interact with the shop. The
+ * <code>UserManager</code> is also used to log on and off users from the
+ * system.
  * 
  * @author Christopher Bellmann
  * @author Paul Henke
@@ -124,7 +125,8 @@ public interface UserManager<T extends User> {
      *            the identifier of the user
      * 
      * @return the user of class type <code>clazz</code> with the identifier
-     *         equal to <code>userIdentifier</code>
+     *         equal to <code>userIdentifier</code> or <code>null</code> if no
+     *         user exists with the given identifier
      * 
      * @throws ArgumentNullException
      *             if <code>clazz</code> or <code>userIdentifer</code> or both
