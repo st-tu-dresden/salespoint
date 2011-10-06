@@ -34,10 +34,19 @@
 	<p>----</p>
 	<ul>
 		<c:forEach var="item" items="${items}">
-			<li><a href="detail?pid=${item.identifier}">${item.name} - ${item.price}</a></li>
+			<c:url value="detail" var="url">
+				<c:param name="pid" value="${item.identifier}" />
+			</c:url>
+			
+			<li><a href="${url}">${item.name} - ${item.price}</a></li>
 		</c:forEach>
 	</ul>
 	<p>----</p>
+
+	
+	<a href="dvdCatalog">Dvd Catalog</a>
+	<br />
+	<a href="bluerayCatalog">BlueRay Catalog</a>
 
 </body>
 </html>
