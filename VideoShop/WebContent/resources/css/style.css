@@ -14,6 +14,8 @@ body {
 
 /* sinvoll da damit 1em == 10px */
 
+/* überschriften */
+
 h1 {
 	font-size: 2em;
 	color:grey;
@@ -34,7 +36,6 @@ a {
 	font: 0.8em sans-serif;
 	text-decoration: none;
 	color: black;
-	font-variant: small-caps;
 }
 
 a:hover {
@@ -53,3 +54,45 @@ a.active {
 	font: 1.0em sans-serif;
 	font-weight: 600;
 }
+
+
+/*item*/
+
+div.allItems{
+	float:left;
+	width:100%;
+}
+
+div.item{
+	border: 1px #a4a4a4 solid;
+	background-color: #f9f9f9;
+	width: 200px;
+	height: 200px;
+	padding: 10px;
+	margin: 5px;
+	float: left;
+	color: black;
+	font-size: 12px;
+	
+}
+
+div.item:hover{
+	background-color: #f0f0f0;
+	
+}
+
+a.item{
+
+}
+
+img.itemThumbnail{
+	margin-top: 8px;
+	margin-left: 25px;
+	
+	
+}
+
+p.price{
+	align: left;
+}
+

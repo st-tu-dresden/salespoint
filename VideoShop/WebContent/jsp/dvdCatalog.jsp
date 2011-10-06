@@ -19,11 +19,18 @@
 	<p>welcome</p>
 	<br />
 	<p>----</p>
-	<ul>
+	<div class="allItems">
 		<c:forEach var="item" items="${items}">
-			<li><a href="detail?pid=${item.identifier}">${item.name} - ${item.price}</a></li>
+			<a class="item" href="detail?pid=${item.identifier}">
+				<div class="item">
+					<h3>${item.name}</h3>
+					<img class="itemThumbnail" src="<c:url value="/res/img/imageDummy.png" />" />
+					<p class="price">${item.price}</p>
+				</div>
+			</a>
 		</c:forEach>
-	</ul>
+	</div>
+	
 	<p>----</p>
 </body>
 </html>
