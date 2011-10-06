@@ -15,16 +15,15 @@
 <title>Salespoint 5 - Calendar</title>
 </head>
 <body>
-	<p>Here you can register a new user!</p>
-	<br />
-	<p>
+	<h2>Here you can register a new user!</h2>
     
     <form:form method="post" action="registerUser">
         <fieldset>
             <legend>Register</legend>
+            <h2>${message}</h2>
             <label for="username">Username</label>
             <br />
-            <input type="text" name="username" id="username" type="text" />
+            <input type="text" name="username" id="username" type="text" value="${user}"/>
             <br />
             <label for="pwOne">Password</label>
             <br />
@@ -37,6 +36,5 @@
             <button type="submit">Register</button>
         </fieldset>
     </form:form>    
-    </p>
 </body>
 </html>

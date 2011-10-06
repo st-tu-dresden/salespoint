@@ -16,29 +16,26 @@
 </head>
 <body>
 	<h1>Calendar Demo</h1>
-	<p>Welcome to the demo of the new feature of Salespoint 5: The
-		Calendar :)</p>
-	<p>Please log in!</p>
+	<br />
+	<h2>Welcome to the demo of the new feature of Salespoint 5: The
+		Calendar :)</h2>
 	<br />
 	<p>
 
 
-	<form:form method="post" action="loginUser">
-        <fieldset>
-            <legend>Login</legend>
-            <label for="username">Username</label>
-            <br />
-            <input type="text" name="username" id="username" type="text" />
-            <br />
-            <label for="password">Password</label>
-            <br />
-			<input type="password" name="password" id="password" />
-            <br />
-            <button type="submit">Login</button>
-            
-            <a href="<c:url value="register" />">Register</a>
-        </fieldset>
-    </form:form>
+		<form:form method="post" action="loginUser">
+			<fieldset>
+				<legend>Login</legend>
+				<h2>${message}</h2>
+				<label for="username">Username</label> <br /> <input type="text"
+					name="username" id="username" type="text" value="${user}"/> <br /> <label
+					for="password">Password</label> <br /> <input type="password"
+					name="password" id="password" /> <br />
+				<button type="submit">Login</button>
+
+				<a href="<c:url value="register" />">Register</a>
+			</fieldset>
+		</form:form>
 	</p>
 </body>
 </html>

@@ -22,8 +22,6 @@ public class UserController {
 
     @RequestMapping("/")
     public ModelAndView index(ModelAndView mav, HttpSession session) {
-        System.out.println("got session: "+session);
-        
         PersistentUser user = null;
         
         if (session != null) {
@@ -65,17 +63,24 @@ public class UserController {
                 mav.addObject("user", user);
                 mav.setViewName("redirect:/calendar");
             } else {
-                mav.addObject("message","Wrong password");
+                mav.addObject("message","Wrong password!");
+                mav.addObject("user",name);
                 mav.setViewName("login");
             }
         } else {
             mav.addObject("message","Unknown user");
+            mav.addObject("user",name);
             mav.setViewName("login");
         }
 
         return mav;
     }
 
+    @RequestMapping(value = "/loginUser", method = RequestMethod.GET)
+    public String loginUser() {
+        return "login";
+    }
+    
     @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
     public ModelAndView registerUser(@RequestParam("username") String name, @RequestParam("pwOne") String pwOne, @RequestParam("pwTwo") String pwTwo,
                     ModelAndView mav, HttpSession session) {
@@ -86,7 +91,8 @@ public class UserController {
             try {
                 mgr.add(user);
             } catch (DuplicateUserException ex) {
-                mav.addObject("message", "Duplicate user");
+                mav.addObject("message", "User already exists, please try a different name!");
+                mav.addObject("user", name);
                 mav.setViewName("register");
                 return mav;
             }
@@ -98,10 +104,16 @@ public class UserController {
             mav.setViewName("redirect:/calendar");
 
         } else {
-            mav.addObject("message", "Passwords are different");
+            mav.addObject("message", "Password doesn't match with confirmation!");
+            mav.addObject("user", name);
             mav.setViewName("register");
         }
 
         return mav;
+    }
+    
+    @RequestMapping(value = "/registerUser", method = RequestMethod.GET)
+    public String registerUser() {
+        return "register";
     }
 }
