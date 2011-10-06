@@ -8,10 +8,9 @@ import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.core.user.UserIdentifier;
-
-//import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import dvdshop.model.BlueRay;
 import dvdshop.model.Comment;
 import dvdshop.model.Customer;
 import dvdshop.model.Disc;
@@ -22,14 +21,7 @@ import dvdshop.model.VideoCatalog;
 //@Order(value=0)
 public class Main {
 
-	public Main() {
-		
-		System.out.println("MAAAAAAAAAAAAAAAAIN");
-		System.out.println("MAAAAAAAAAAAAAAAAIN");
-		System.out.println("MAAAAAAAAAAAAAAAAIN");
-		System.out.println("MAAAAAAAAAAAAAAAAIN");
-		System.out.println("MAAAAAAAAAAAAAAAAIN");
-		
+	public Main() {	
 		Database.INSTANCE.initializeEntityManagerFactory("DVDShop");
 
 		Shop.initializeShop();
@@ -57,6 +49,7 @@ public class Main {
 		videoCatalog.add(lah);
 		
 		videoCatalog.add(new Dvd("Back to the Future", Money.ZERO, "Sci-Fi"));
+		videoCatalog.add(new BlueRay("The Godfather", new Money(19.99), "Crime/Drama"));
 		
 		PersistentInventory inventory = new PersistentInventory();
 		
