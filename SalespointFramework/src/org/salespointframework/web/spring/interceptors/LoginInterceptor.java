@@ -1,6 +1,7 @@
 package org.salespointframework.web.spring.interceptors;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  */
 public class LoginInterceptor extends HandlerInterceptorAdapter
 {
+	private Logger log = Logger.getLogger(this.getClass().getName());
+	
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView mav) throws Exception
 	{
@@ -46,6 +49,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter
 			if (user.verifyPassword(password))
 			{
 				usermanager.logOn(user, request.getSession());
+				log.info("LoginInterceptor: User " + user + " logged in");
+			}
+			else {
+				log.info("LoginInterceptor: User " + user + " not logged in (Password mismatch)");
 			}
 		}
 	}
