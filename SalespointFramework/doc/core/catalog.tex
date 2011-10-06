@@ -10,10 +10,9 @@
 \end{figure}
 
 \subsection{\code{Catalog} - Organizing and presenting \code{ProductTypes}}
-\code{Catalog} is an interface and provides methods for adding and removing \code{ProductTypes} as well as finding them based on the \code{ProductType} via its name and category.
-\code{PersistentCatalog} is an implementation of the \code{Catalog}-interface and provides the \code{update(PersistentProductType productType)} method for updating and persisting an existing \code{PersistentProductType} to the \code{PersistentCatalog} and the database. 
-Every operation is delegated to the database, via \code{CriteriaQuery}s. Some methods require additional processing of query results with Java.
-\code{Catalog} aggregates \code{ProductType}s, \code{PersistentCatalog} aggregates \code{PersistentProductType}s.
+The \code{Catalog} interface was designed to manage \code{ProductTypes} and \code{ProductFeatures} in the system. It provides functionality for adding and removing \code{ProductTypes} as well as finding them based on its name and category. \code{ProductTypes} and \code{ProductFeatures} are more closely described in chapter \ref{sec:product}.\par
+The \code{PersistentCatalog} is an implementation of this interface and also provides an \code{update()} method to update and merge existing \code{PersistentProductTypes} to \code{Catalog} and database.\par
+The \code{find()} methods request the database in the form of \code{CriteriaQuerys} which will be processed by JPA and results are returned in the form of \code{Iterables}. The reason for this is to make returned objects immutable without making it difficult to iterate over these results. 
 
 
 
