@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.salespointframework.core.shop.Shop;
+import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.core.user.UserManager;
@@ -25,20 +26,20 @@ public class LoginInterceptor extends HandlerInterceptorAdapter
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView mav) throws Exception
 	{
 		Map<String, String[]> params = request.getParameterMap();
-
-		if (!params.containsKey(WebConstants.SP_LOGIN_PARAM))
+		
+		if (!params.containsKey(WebConstants.SP_LOGIN_PARAM.toString()))
 		{
 			return;
 		}
 
-		String identifier = params.get(WebConstants.SP_LOGIN_PARAM_IDENTIFIER)[0];
-		String password = params.get(WebConstants.SP_LOGIN_PARAM_PASSWORD)[0];
+		String identifier = params.get(WebConstants.SP_LOGIN_PARAM_IDENTIFIER.toString())[0];
+		String password = params.get(WebConstants.SP_LOGIN_PARAM_PASSWORD.toString())[0];
 
 		UserIdentifier userIdentifier = new UserIdentifier(identifier);
 		@SuppressWarnings("unchecked")
 		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
 
-		User user = usermanager.get(User.class, userIdentifier);
+		User user = usermanager.get(PersistentUser.class, userIdentifier);
 
 		if (user != null)
 		{

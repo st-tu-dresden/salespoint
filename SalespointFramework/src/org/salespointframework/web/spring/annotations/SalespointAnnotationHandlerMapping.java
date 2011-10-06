@@ -2,6 +2,7 @@ package org.salespointframework.web.spring.annotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -84,6 +85,7 @@ public class SalespointAnnotationHandlerMapping extends DefaultAnnotationHandler
 						((MessageSourceAware) hi).setMessageSource(messageSource);
 					}
 
+					log.log(Level.ALL, "Registering interceptor " + hi.getClass().getCanonicalName());
 					interceptors.add(hi);
 				}
 			}
@@ -94,7 +96,6 @@ public class SalespointAnnotationHandlerMapping extends DefaultAnnotationHandler
 	protected void raiseIllegalInterceptorValue(Class<?> handlerClass, Class<? extends HandlerInterceptor> interceptorClass)
 	{
 		throw new IllegalArgumentException(interceptorClass + " specified on " + handlerClass + " does not implement " + HandlerInterceptor.class.getName());
-
 	}
 
 }
