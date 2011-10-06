@@ -149,6 +149,9 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		Objects.requireNonNull(token, "token");
 
 		PersistentUser user = userTokenMap.get(token);
+		if(user == null)
+			return null;
+		
 		if (clazz.isInstance(user))
 			return clazz.cast(user);
 		
