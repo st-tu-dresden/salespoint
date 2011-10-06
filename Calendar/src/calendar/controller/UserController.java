@@ -33,7 +33,7 @@ public class UserController {
         
         if (user != null) {
             mav.addObject("user", user);
-            mav.setViewName("calendar");
+            mav.setViewName("redirect:/calendar");
         } else {
             mav.setViewName("login");
         }
@@ -63,7 +63,7 @@ public class UserController {
                 mgr.logOn(user, session);
                 
                 mav.addObject("user", user);
-                mav.setViewName("calendar");
+                mav.setViewName("redirect:/calendar");
             } else {
                 mav.addObject("message","Wrong password");
                 mav.setViewName("login");
@@ -95,7 +95,7 @@ public class UserController {
             mgr.logOn(user, session);
             
             mav.addObject("user", user);
-            mav.setViewName("calendar");
+            mav.setViewName("redirect:/calendar");
 
         } else {
             mav.addObject("message", "Passwords are different");
