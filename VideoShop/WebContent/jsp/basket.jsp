@@ -21,12 +21,7 @@
 
 	<ul>
 	<c:forEach var="item" items="${items}">
-	<!--  
-		<c:url value="detail" var="url">
-			<c:param name="pid" value="${item.identifier}" />
-		</c:url>
-		<li><a href="${url}">${item.name} - ${item.price}</a></li>
-	 -->
+		<li>${item.productName} -- ${item.numberOrdered}</li>
 	</c:forEach>
 	</ul>
 

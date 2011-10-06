@@ -1,7 +1,9 @@
 package dvdshop;
 
 import org.salespointframework.core.database.Database;
+import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.PersistentUserManager;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import dvdshop.model.Comment;
 import dvdshop.model.Customer;
+import dvdshop.model.Disc;
 import dvdshop.model.Dvd;
 import dvdshop.model.VideoCatalog;
 
@@ -54,5 +57,15 @@ public class Main {
 		videoCatalog.add(lah);
 		
 		videoCatalog.add(new Dvd("Back to the Future", Money.ZERO, "Sci-Fi"));
+		
+		PersistentInventory inventory = new PersistentInventory();
+		
+		for(Disc disc : videoCatalog.find(Disc.class)) {
+			for(int n = 0; n < 10; n++) {
+				inventory.add(new PersistentProduct(disc));
+			}
+		}
+		
+		
 	}
 }

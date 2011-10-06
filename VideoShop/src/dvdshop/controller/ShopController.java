@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.database.Database;
+import org.salespointframework.core.order.OrderCompletionResult;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderLine;
 import org.salespointframework.core.product.ProductIdentifier;
@@ -101,6 +102,7 @@ public class ShopController {
 
 		if (order == null) {
 			order = new PersistentOrder(customer.getIdentifier(), Cash.CASH);
+			request.getSession().setAttribute("order", order);
 		}
 
 		Disc disc = dvdCatalog.get(Disc.class, pid);
@@ -109,8 +111,8 @@ public class ShopController {
 
 		order.addOrderLine(orderLine);
 
-		mav.addObject("items", dvdCatalog.findDvds());
-		mav.setViewName("catalog");
+		mav.addObject("items", Iterables.toList(dvdCatalog.findDvds()));
+		mav.setViewName("dvdCatalog");
 		return mav;
 	}
 
@@ -137,7 +139,9 @@ public class ShopController {
 		if (order != null) {
 			request.getSession().setAttribute("order", null);
 			order.payOrder();
-			order.completeOrder();
+			OrderCompletionResult ocr = order.completeOrder();
+			
+			System.out.println(ocr.getStatus());
 		}
 
 		mav.setViewName("index");
