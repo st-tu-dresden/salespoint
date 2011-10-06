@@ -55,10 +55,10 @@ public class ShopController {
 	@RequestMapping("/detail")
 	public ModelAndView catalog(ModelAndView mav,
 			@RequestParam("pid") ProductIdentifier pid) {
-		//ProductIdentifier pi = new ProductIdentifier(/* pid */); // TODO
 		Dvd dvd = dvdCatalog.getDvd(pid);
 		mav.setViewName("detail");
 		mav.addObject("dvd", dvd);
+		mav.addObject("comments", Iterables.toList(dvd.getComments()));
 		return mav;
 	}
 
@@ -68,7 +68,6 @@ public class ShopController {
 			@RequestParam("comment") String comment,
 			@RequestParam("rating") int rating) {
 
-		//ProductIdentifier pi = new ProductIdentifier(/* pid */); // TODO
 		Dvd dvd = dvdCatalog.getDvd(pid);
 
 		dvd.addComment(new Comment(comment, rating));
