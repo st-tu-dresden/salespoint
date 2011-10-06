@@ -10,15 +10,17 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css"
+    href="<c:url value="/res/css/style.css" />" />
 <title>Salespoint 5 - Calendar</title>
 </head>
 <body>
 	<h1>Welcome ${user.identifier}</h1>
 
-	<table id="calendar">
+	<table class="calendar">
 		<c:set var="days" value="WEEK,MON,TUE,WED,THU,FRI,SAT,SUN" />
 
-		<tr id="calHead">
+		<tr class="calHead">
 			<c:forEach var="col" items="${days}">
 				<th>${col}</th>
 			</c:forEach>
@@ -32,6 +34,6 @@
 			</tr>
 		</c:forEach>
 	</table>
-	<a href="<c:url value="logout" />">Logout</a>
+	<div align="center"><a href="<c:url value="logout" />">Logout</a></div>
 </body>
 </html>

@@ -1,32 +1,32 @@
 /* sinvoll da damit 1em == 10px */
-
 * {
-	padding:0;
-	margin:0;
-	font-size:1em;
-	font-weight:normal;
+	padding: 0;
+	margin: 0;
+	font-size: 1em;
+	font-weight: normal;
 }
 
 body {
-	font-size:62,5%;
-	color:#444;
+	font-size: 62, 5%;
+	color: #444;
 }
 
 /* sinvoll da damit 1em == 10px */
-
 h1 {
 	line-height: 250%;
 	font-size: 2em;
-	color:grey;
-	text-align:center;
+	color: grey;
+	text-align: center;
 	font-variant: small-caps;
+	font-size: 2em;
 }
 
 h2 {
 	line-height: 250%;
 	font-size: 1em;
-	text-align:center;
+	text-align: center;
 	color: #BA0000;
+	font-size: 1em;
 }
 
 div.entries {
@@ -34,14 +34,12 @@ div.entries {
 	width: 50%;
 }
 
-
 div.entry {
 	padding: 1em;
 	border-top: 1px solid grey;
 	margin-left: auto;
 	margin-right: auto;
 }
-
 
 div.entry:nth-child(odd) {
 	background-color: #f0f0f0;
@@ -53,40 +51,40 @@ div.entry:nth-child(even) {
 
 div p.entrytext {
 	font-size: 1em;
-	margin-left: 1em;	
+	margin-left: 1em;
 }
 
 div p.date {
 	font-size: 0.8em;
-	margin-top:0.5em;
+	margin-top: 0.5em;
 }
 
 fieldset {
-    width: 20%;
+	width: 20%;
 	margin-left: auto;
-	margin-right: auto;	
+	margin-right: auto;
 	padding: 1em 1em 1em 1em;
 	margin-top: 1em;
 	margin-bottom: 1em;
 }
 
-fieldset legend{
+fieldset legend {
 	color: black;
 }
 
-fieldset label{
+fieldset label {
 	color: black;
 }
 
-fieldset input{
+fieldset input {
 	width: 100%;
 	margin: 0.2em 0em 0.4em 0em;
 }
 
-fieldset textarea{
+fieldset textarea {
 	margin: 0.2em 0em 0.4em 0em;
-  	width: 100%;
-  	height: 50px;
+	width: 100%;
+	height: 50px;
 }
 
 a {
@@ -114,38 +112,67 @@ a.active {
 }
 
 button {
-	margin-top:10px;
-  	border-top: 1px solid gray;
-  	border-bottom: 1px solid black;
-  	border-right: 1px solid black;
-  	border-left: 1px solid gray;
-  	background-color: #dedede;
-  	padding: 2px;
-  	color: black;
+	margin-top: 10px;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+	border-left: 1px solid gray;
+	background-color: #dedede;
+	padding: 2px;
+	color: black;
 }
 
 button.delBtn {
 	margin: -0.5em;
-	padding:0;
-	float:right;
-	color: red;	
+	padding: 0;
+	float: right;
+	color: red;
 	border: 0px;
 }
+
 button.delBtn span {
-	color:red;
-	display:block;
-	margin-top:-3px;
+	color: red;
+	display: block;
+	margin-top: -3px;
 }
 
 .center {
-    text-align:center;
-    margin-top:0px;
-    margin-bottom:0px;
-    padding:0px;
+	text-align: center;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding: 0px;
 }
 
-img.center {   
+img.center {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+table.calendar {
+	table-layout: fixed;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: verdana, arial, sans-serif;
+	font-size: 11px;
+	color: #333333;
+	font-family: verdana, arial, sans-serif;
+	margin-right: auto;
+}
+
+table.calendar th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+
+table.calendar td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
 }

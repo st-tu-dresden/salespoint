@@ -97,7 +97,6 @@ public class UserController {
                 return mav;
             }
 
-            //TODO if registered --> login user
             mgr.logOn(user, session);
             
             mav.addObject("user", user);
