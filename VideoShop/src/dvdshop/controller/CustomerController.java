@@ -8,6 +8,7 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderManager;
 import org.salespointframework.core.user.PersistentUserManager;
+import org.salespointframework.core.user.UserIdentifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,4 +66,22 @@ public class CustomerController {
 		
 		return mav;
 	}
+	
+	@RequestMapping("/new")
+	public ModelAndView register(HttpServletRequest request, ModelAndView mav,
+			@RequestParam("name") UserIdentifier userIdentifier,
+			@RequestParam("password") String password,
+			@RequestParam("street") String street,
+			@RequestParam("city") String city) {
+		mav.setViewName("redirect:/");
+
+		PersistentUserManager pm = new PersistentUserManager();
+		Customer customer = new Customer(userIdentifier, password,
+				street + "\n" + city);
+		pm.add(customer);
+		pm.logOn(customer, request.getSession());
+
+		return mav;
+	}
+
 }

@@ -1,5 +1,7 @@
 package dvdshop.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.salespointframework.core.accountancy.payment.Cash;
@@ -7,7 +9,10 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderLine;
 import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.shop.Shop;
+import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.PersistentUserManager;
+import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.web.spring.annotations.Interceptors;
 import org.salespointframework.web.spring.interceptors.LoginInterceptor;
@@ -21,7 +26,7 @@ import dvdshop.model.Customer;
 import dvdshop.model.Dvd;
 import dvdshop.model.VideoCatalog;
 
-@Interceptors(LoginInterceptor.class)
+@Interceptors({LoginInterceptor.class, AlwaysInterceptor.class})
 @Controller
 public class ShopController {
 
@@ -29,12 +34,9 @@ public class ShopController {
 		Database.INSTANCE.initializeEntityManagerFactory("DVDShop");
 	}
 
-
 	VideoCatalog dvdCatalog = new VideoCatalog();
 
 	PersistentUserManager userManager = new PersistentUserManager();
-
-	
 
 	/*
 	 * @RequestMapping("/") public String index() { return "index"; }
@@ -42,11 +44,11 @@ public class ShopController {
 
 	@RequestMapping("/")
 	public ModelAndView index(ModelAndView mav) {
-		
-		
+
 		mav.addObject("items",
 				Iterables.toList(new VideoCatalog().findDvds()));
 		mav.setViewName("index");
+
 		return mav;
 	}
 
@@ -93,10 +95,12 @@ public class ShopController {
 	public ModelAndView buy(HttpServletRequest request, ModelAndView mav,
 			@RequestParam("pid") ProductIdentifier pid) {
 
-		Customer customer = userManager.getUserByToken(Customer.class, request.getSession());
+		Customer customer = userManager.getUserByToken(Customer.class,
+				request.getSession());
 
-		PersistentOrder order = (PersistentOrder) request.getSession().getAttribute("order");
-		
+		PersistentOrder order = (PersistentOrder) request.getSession()
+				.getAttribute("order");
+
 		if (order == null) {
 			order = new PersistentOrder(customer.getIdentifier(), Cash.CASH);
 		}
@@ -111,4 +115,11 @@ public class ShopController {
 		mav.setViewName("catalog");
 		return mav;
 	}
+
+	@RequestMapping("/register")
+	public ModelAndView customer(HttpServletRequest request, ModelAndView mav) {
+		mav.setViewName("register");
+		return mav;
+	}
+
 }
