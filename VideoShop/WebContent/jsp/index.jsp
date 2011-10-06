@@ -27,6 +27,8 @@
 		</c:forEach>
 	</ul>
 	<p>----</p>
+	
+	<jsp:include page="templates/login.jsp" />
 
 </body>
 </html>
