@@ -1,5 +1,6 @@
 package dvdshop.controller;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ import dvdshop.model.Customer;
 import dvdshop.model.Dvd;
 import dvdshop.model.VideoCatalog;
 
-@Interceptors({LoginInterceptor.class, AlwaysInterceptor.class})
+@Interceptors({ LoginInterceptor.class, AlwaysInterceptor.class })
 @Controller
 public class ShopController {
 
@@ -45,8 +46,7 @@ public class ShopController {
 	@RequestMapping("/")
 	public ModelAndView index(ModelAndView mav) {
 
-		mav.addObject("items",
-				Iterables.toList(new VideoCatalog().findDvds()));
+		mav.addObject("items", Iterables.toList(new VideoCatalog().findDvds()));
 		mav.setViewName("index");
 
 		return mav;
@@ -58,7 +58,7 @@ public class ShopController {
 		mav.setViewName("dvdCatalog");
 		return mav;
 	}
-	
+
 	@RequestMapping("/bluerayCatalog")
 	public ModelAndView bluerayCatalog(ModelAndView mav) {
 		mav.addObject("items", dvdCatalog.findBlueRays());
@@ -107,19 +107,57 @@ public class ShopController {
 
 		Dvd dvd = dvdCatalog.getDvd(pid);
 
-		PersistentOrderLine orderLine = new PersistentOrderLine(dvd.getIdentifier());
-		
+		PersistentOrderLine orderLine = new PersistentOrderLine(
+				dvd.getIdentifier());
+
 		order.addOrderLine(orderLine);
-		
+
 		mav.addObject("items", dvdCatalog.findDvds());
 		mav.setViewName("catalog");
 		return mav;
 	}
 
-	@RequestMapping("/register")
-	public ModelAndView customer(HttpServletRequest request, ModelAndView mav) {
-		mav.setViewName("register");
+	@RequestMapping("basket")
+	public ModelAndView basket(HttpServletRequest request,
+
+	ModelAndView mav) {
+		Customer customer =
+
+		userManager.getUserByToken(Customer.class, request.getSession());
+
+		PersistentOrder order = (PersistentOrder)
+
+		request.getSession().getAttribute("order");
+
+		if (order != null) {
+			mav.addObject("items", Iterables.toList(order.getOrderLines()));
+		} else {
+			mav.addObject("items", new ArrayList<PersistentOrderLine>());
+		}
+
+		mav.setViewName("basket");
 		return mav;
 	}
 
+	@RequestMapping("buy2")
+	public ModelAndView buy2(HttpServletRequest request, ModelAndView mav) {
+
+		Customer customer =	userManager.getUserByToken(Customer.class, request.getSession());
+
+		PersistentOrder order = (PersistentOrder) request.getSession().getAttribute("order");
+
+		if (order != null) {
+			request.getSession().setAttribute("order", null);
+			order.payOrder();
+			order.completeOrder();
+		}
+
+		mav.setViewName("index");
+		return mav;
+	}
+
+	@RequestMapping("/register")
+	public String registerCustomer() {
+		return "register";
+	}
 }
