@@ -116,7 +116,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		beginCommit(em);
 	}
 
-	private final Map<Object, PersistentUser> userTokenMap = new ConcurrentHashMap<Object, PersistentUser>();
+	private static final Map<Object, PersistentUser> userTokenMap = new ConcurrentHashMap<Object, PersistentUser>();
 
 	// TODO naming kinda sucks
 	@Override
