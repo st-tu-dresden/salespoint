@@ -1,11 +1,11 @@
 \chapter{Collaboration}
 \label{chap:collaboration}
 
-\salespoint{} is more than just a collection of classes and interfaces. It also provides processes between packages that are triggered automatically and ensure consistent work. This chapter draws attention to those dependencies between packages and describes how they collaborate.  
+\salespoint{} is more than just a collection of classes and interfaces. It also provides processes between packages that are triggered automatically to facilitate working. This chapter draws attention to those dependencies between packages and describes how they collaborate.  
 
 Figure \ref{package_overview} illustrates the main dependencies between \salespoint{} packages. As can be seen nearly all packages are interdependent.\\ 
 
-The central class that connects all features in \salespoint{} is the \code{Shop}. The most packages access this class to communicate with other packages. Therefore the \code{Shop} contains all interfaces which are global connected. This class should also be the first point for software engineers to request the seperate regions of \salespoint{}.\\
+The central class that connects all features in \salespoint{} is the \code{Shop}. The most packages access this class to communicate with other packages. Therefore the \code{Shop} contains all interfaces which are global connected. This class should also be the first point for software engineers to request the individual parts of \salespoint{}.\\
 
 Another package that collaborates with nearly all packages is the \code{Order} package. \code{OrderLines} using interfaces from \code{Product} package to identify product instances and calculate their prices. The \code{Catalog} package is used to check whether the catalog contains added products. \code{Orders} are also associated with the \code{UserManager}, to receive information about involved users.\par 
 Completed \code{Orders} will communicate with the \code{Inventory} (via \code{Shop} class) to remove considered product instances. \par
