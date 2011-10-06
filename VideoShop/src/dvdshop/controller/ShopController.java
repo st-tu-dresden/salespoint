@@ -45,14 +45,14 @@ public class ShopController {
 		
 		
 		mav.addObject("items",
-				Iterables.toList(new VideoCatalog().find(Dvd.class)));
+				Iterables.toList(new VideoCatalog().findDvds()));
 		mav.setViewName("index");
 		return mav;
 	}
 
 	@RequestMapping("/dvdCatalog")
 	public ModelAndView dvdCatalog(ModelAndView mav) {
-		mav.addObject("items", dvdCatalog.findDvds());
+		mav.addObject("items", Iterables.toList(new VideoCatalog().findDvds()));
 		mav.setViewName("dvdCatalog");
 		return mav;
 	}
