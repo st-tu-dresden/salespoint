@@ -23,7 +23,10 @@
 
 	<!-- standard viewresolver -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/jsp/" p:suffix=".jsp"/>
-        
+	
+	<!-- use the interceptor-enabled annotation based handler mapping -->
+    <bean class="org.salespointframework.web.spring.annotations.SalespointAnnotationHandlerMapping" />
+
     <!-- needs to be activated for easy ajax -->
 	<mvc:annotation-driven />
 	
