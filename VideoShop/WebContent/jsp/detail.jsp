@@ -30,5 +30,14 @@ What other Customers said about ${dvd.name }:<br>
 </c:forEach>
 </ul>
 
+<p> add comment</p>
+
+<form method="post" action="comment">
+	<input type="hidden" name="pid" value="${dvd.identifier}" />
+	<input type="text" name="comment" value="" />
+	<input type="text" name="rating" value="5" />
+	<input type="submit" value="senden" />
+</form>
+
 </body>
 </html>
