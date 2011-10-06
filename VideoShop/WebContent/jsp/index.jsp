@@ -31,10 +31,6 @@
 	</sp:LoggedIn>
 	</p>
 
-
-	<br />
-	<p>TODO Links zu den einzelnen Punkten der Doku hier rein</p>
-
 	<p>----</p>
 	<ul>
 		<c:forEach var="item" items="${items}">
@@ -49,8 +45,11 @@
 
 	
 	<a href="dvdCatalog">Dvd Catalog</a>
-	<br />
+	<br /><br />
 	<a href="bluerayCatalog">BlueRay Catalog</a>
+	<br /><br />
+	<a href="basket">warenkorb</a>
+	
 
 </body>
 </html>
