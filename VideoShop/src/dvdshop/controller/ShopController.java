@@ -2,11 +2,15 @@ package dvdshop.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.order.PersistentOrder;
+import org.salespointframework.core.order.PersistentOrderLine;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.util.Iterables;
+import org.salespointframework.web.spring.annotations.Interceptors;
+import org.salespointframework.web.spring.interceptors.LoginInterceptor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +21,7 @@ import dvdshop.model.Customer;
 import dvdshop.model.Dvd;
 import dvdshop.model.VideoCatalog;
 
+@Interceptors(LoginInterceptor.class)
 @Controller
 public class ShopController {
 
@@ -45,10 +50,17 @@ public class ShopController {
 		return mav;
 	}
 
-	@RequestMapping("/catalog")
-	public ModelAndView catalog(ModelAndView mav) {
+	@RequestMapping("/dvdCatalog")
+	public ModelAndView dvdCatalog(ModelAndView mav) {
 		mav.addObject("items", dvdCatalog.findDvds());
-		mav.setViewName("catalog");
+		mav.setViewName("dvdCatalog");
+		return mav;
+	}
+	
+	@RequestMapping("/bluerayCatalog")
+	public ModelAndView bluerayCatalog(ModelAndView mav) {
+		mav.addObject("items", dvdCatalog.findBlueRays());
+		mav.setViewName("bluerayCatalog");
 		return mav;
 	}
 
@@ -86,16 +98,16 @@ public class ShopController {
 		PersistentOrder order = (PersistentOrder) request.getSession().getAttribute("order");
 		
 		if (order == null) {
-			//PersistentOrder = new PersistentOrder(customer.getIdentifier(), "");
+			order = new PersistentOrder(customer.getIdentifier(), Cash.CASH);
 		}
 
 		Dvd dvd = dvdCatalog.getDvd(pid);
 
-		//dvdInventory.addProductInstance(dvdi);
-
+		PersistentOrderLine orderLine = new PersistentOrderLine(dvd.getIdentifier());
 		
-
-		//mav.addObject("items", dvdCatalog.getProductTypes());
+		order.addOrderLine(orderLine);
+		
+		mav.addObject("items", dvdCatalog.findDvds());
 		mav.setViewName("catalog");
 		return mav;
 	}
