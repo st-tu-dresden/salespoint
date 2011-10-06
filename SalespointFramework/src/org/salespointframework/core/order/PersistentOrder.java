@@ -342,7 +342,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 
 	@Override
 	public boolean payOrder() {
-		if (!(orderStatus == OrderStatus.PAYED)) {
+		if (orderStatus != OrderStatus.OPEN) {
 			return false;
 		}
 		;
