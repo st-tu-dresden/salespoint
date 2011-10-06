@@ -25,6 +25,6 @@
 	<mvc:resources mapping="/res/**" location="/resources/" />
 	 
 	<!-- scan this package for annotated controllers -->
-	<context:component-scan base-package="example" />
+	<context:component-scan base-package="calendar" />
 	
 </beans>
