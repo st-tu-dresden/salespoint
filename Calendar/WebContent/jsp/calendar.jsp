@@ -10,11 +10,13 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css"
-	href="<c:url value="/res/css/style.css" />" />
 <title>Salespoint 5 - Calendar</title>
 </head>
 <body>
-	<h1>Your Calendar:</h1>
+	<h1>Welcome ${user.identifier}</h1>
+	
+	
+	
+    <a href="<c:url value="logout" />">Logout</a>
 </body>
 </html>

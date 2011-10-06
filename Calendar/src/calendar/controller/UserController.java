@@ -21,15 +21,38 @@ public class UserController {
     }
 
     @RequestMapping("/")
-    public String index() {
-        return "/user/login";
+    public ModelAndView index(ModelAndView mav, HttpSession session) {
+        System.out.println("got session: "+session);
+        
+        PersistentUser user = null;
+        
+        if (session != null) {
+            PersistentUserManager mgr = new PersistentUserManager();
+            user = mgr.getUserByToken(PersistentUser.class, session);
+        }
+        
+        if (user != null) {
+            mav.addObject("user", user);
+            mav.setViewName("calendar");
+        } else {
+            mav.setViewName("login");
+        }
+        
+        return mav;
     }
 
     @RequestMapping("/register")
     public String register() {
-        return "/user/register";
+        return "register";
     }
 
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
+        PersistentUserManager mgr = new PersistentUserManager();
+        mgr.logOff(session);
+        return "login";
+    }
+    
     @RequestMapping(value = "/loginUser", method = RequestMethod.POST)
     public ModelAndView loginUser(@RequestParam("username") String name, @RequestParam("password") String password, ModelAndView mav, HttpSession session) {
         PersistentUserManager mgr = new PersistentUserManager();
@@ -39,15 +62,15 @@ public class UserController {
             if (user.verifyPassword(password)) {
                 mgr.logOn(user, session);
                 
-                mav.addObject(user);
-                mav.setViewName("redirect:/calendar/");
+                mav.addObject("user", user);
+                mav.setViewName("calendar");
             } else {
-                mav.addObject("Wrong password");
-                mav.setViewName("/user/login");
+                mav.addObject("message","Wrong password");
+                mav.setViewName("login");
             }
         } else {
-            mav.addObject("Unknown user");
-            mav.setViewName("/user/login");
+            mav.addObject("message","Unknown user");
+            mav.setViewName("login");
         }
 
         return mav;
@@ -55,7 +78,7 @@ public class UserController {
 
     @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
     public ModelAndView registerUser(@RequestParam("username") String name, @RequestParam("pwOne") String pwOne, @RequestParam("pwTwo") String pwTwo,
-                    ModelAndView mav) {
+                    ModelAndView mav, HttpSession session) {
         PersistentUserManager mgr = new PersistentUserManager();
 
         if (pwOne.equals(pwTwo)) {
@@ -63,17 +86,20 @@ public class UserController {
             try {
                 mgr.add(user);
             } catch (DuplicateUserException ex) {
-                mav.addObject("Duplicate user");
-                mav.setViewName("/user/register");
+                mav.addObject("message", "Duplicate user");
+                mav.setViewName("register");
                 return mav;
             }
 
-            mav.addObject(user);
-            mav.setViewName("redirect:/calendar/");
+            //TODO if registered --> login user
+            mgr.logOn(user, session);
+            
+            mav.addObject("user", user);
+            mav.setViewName("calendar");
 
         } else {
-            mav.addObject("Passwords are different");
-            mav.setViewName("/user/register");
+            mav.addObject("message", "Passwords are different");
+            mav.setViewName("register");
         }
 
         return mav;
