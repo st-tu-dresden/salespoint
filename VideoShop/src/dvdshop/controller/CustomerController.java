@@ -83,5 +83,13 @@ public class CustomerController {
 
 		return mav;
 	}
+	
+	@RequestMapping("/logout")
+	public ModelAndView logout(HttpServletRequest request, ModelAndView mav) {
+		mav.setViewName("redirect:/");
+		PersistentUserManager pm = new PersistentUserManager();
+		pm.logOff(request.getSession());
+		return mav;
+	}
 
 }
