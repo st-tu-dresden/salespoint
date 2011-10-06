@@ -28,6 +28,7 @@
     <bean class="org.salespointframework.web.spring.annotations.SalespointAnnotationHandlerMapping " />
 
     <!-- needs to be activated for easy ajax -->
+    <!-- vorerst auskommentiert, sonst funktioniert Interceptors (LoginInterceptor) nicht mehr -->
 	<!-- mvc:annotation-driven /-->
 	
 	<!-- for static resources like images and css files --> 
