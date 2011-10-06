@@ -54,6 +54,15 @@ public class ShopController {
 		return mav;
 	}
 
+	@RequestMapping("/index")
+	public ModelAndView index__(ModelAndView mav) {
+
+		mav.addObject("items", Iterables.toList(new VideoCatalog().findDvds()));
+		mav.setViewName("index");
+
+		return mav;
+	}
+	
 	@RequestMapping("/dvdCatalog")
 	public ModelAndView dvdCatalog(ModelAndView mav) {
 		mav.addObject("items", Iterables.toList(new VideoCatalog().findDvds()));
@@ -142,6 +151,7 @@ public class ShopController {
 			OrderCompletionResult ocr = order.completeOrder();
 			
 			System.out.println(ocr.getStatus());
+			System.out.println(ocr.getException().toString());
 		}
 
 		mav.setViewName("index");
