@@ -15,7 +15,7 @@ public class CalendarEntryIdentifierEditor extends PropertyEditorSupport
 	public void setAsText(String text)
 	{
 		@SuppressWarnings("deprecation")
-		CalendarEntryIdentifier serialNumber = new CalendarEntryIdentifier(text);
-		setValue(serialNumber);
+		CalendarEntryIdentifier calendarEntryIdentifier = new CalendarEntryIdentifier(text);
+		setValue(calendarEntryIdentifier);
 	}
 }

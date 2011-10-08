@@ -23,11 +23,11 @@ import org.salespointframework.util.Objects;
 public class PersistentProduct implements Product, Comparable<PersistentProduct>
 {
 	@EmbeddedId
-	private ProductIdentifier serialNumber = new ProductIdentifier();
+	private ProductIdentifier productIdentifier = new ProductIdentifier();
 
 	@Embedded
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
-	private ProductTypeIdentifier productIdentifier;
+	private ProductTypeIdentifier productTypeIdentifier;
 
 	private String name;
 	private Money price;
@@ -51,7 +51,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	public PersistentProduct(ProductType productType, ProductFeatureIdentifier... productFeatureIdentifiers)
 	{
 		Objects.requireNonNull(productFeatureIdentifiers, "productFeatureIdentifiers");
-		this.productIdentifier = Objects.requireNonNull(productType, "productType").getIdentifier();
+		this.productTypeIdentifier = Objects.requireNonNull(productType, "productType").getIdentifier();
 		this.name = productType.getName();
 		this.price = productType.getPrice(); // TODO CLONE?
 		
@@ -67,7 +67,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	@Override
 	public final ProductTypeIdentifier getProductTypeIdentifier()
 	{
-		return productIdentifier;
+		return productTypeIdentifier;
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	@Override
 	public final ProductIdentifier getIdentifier()
 	{
-		return serialNumber;
+		return productIdentifier;
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 		}
 		if (other instanceof PersistentProduct)
 		{
-			return this.serialNumber.equals(((PersistentProduct)other).serialNumber);
+			return this.productIdentifier.equals(((PersistentProduct)other).productIdentifier);
 		}
 		return false;
 	}
@@ -109,7 +109,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	@Override
 	public final int hashCode()
 	{
-		return serialNumber.hashCode();
+		return productIdentifier.hashCode();
 	}
 
 	@Override

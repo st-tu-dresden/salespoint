@@ -20,43 +20,43 @@ public interface Inventory<T extends Product>
 
 	/**
 	 * Adds a new Product to the Inventory
-	 * @param product the Product to be added
+	 * @param product the {@link Product} to be added
 	 * @throws ArgumentNullException if product is null
 	 */
 	void add(T product);
 
 	/**
 	 * Removes a Product from the Inventory
-	 * @param serialNumber the SerialNumber of the Product to be removed
+	 * @param productIdentifier the {@link ProductIdentifier} of the Product to be removed
 	 * @return true is removal was successful, otherwise false
-	 * @throws ArgumentNullException if serialNumber is null
+	 * @throws ArgumentNullException if productIdentifier is null
 	 */
-	boolean remove(ProductIdentifier serialNumber);
+	boolean remove(ProductIdentifier productIdentifier);
 
 	/**
 	 * Checks if this Inventory contains a Product
-	 * @param serialNumber the SerialNumer of the Product
+	 * @param productIdentifier the {@link ProductIdentifier} of the Product
 	 * @return true if the Inventory contains the Product, otherwise false
-	 * @throws ArgumentNullException if serialNumber is null
+	 * @throws ArgumentNullException if productIdentifier is null
 	 */
-	boolean contains(ProductIdentifier serialNumber);
+	boolean contains(ProductIdentifier productIdentifier);
 
 	/**
 	 * Returns the <code>Product</code> of type <code>clazz</code> and
-	 * all sub-types, identified by SerialNumber.
+	 * all sub-types, identified by {@link ProductIdentifier}.
 	 * @param clazz type of the Product to be returned; has to implement
 	 *            <code>Product</code>
-	 * @param serialNumber the SerialNumber of the Product to be returned
-	 * @return  the Product or a subtype if the serialNumber matches, otherwise null 
-	 * @throws ArgumentNullException if clazz or serialNumber are null
+	 * @param productIdentifier the {@link ProductIdentifier} of the Product to be returned
+	 * @return  the Product or a subtype if the productIdentifier matches, otherwise null 
+	 * @throws ArgumentNullException if clazz or productIdentifier are null
 	 */
-	<E extends T> E get(Class<E> clazz, ProductIdentifier serialNumber);
+	<E extends T> E get(Class<E> clazz, ProductIdentifier productIdentifier);
 
 	/**
 	 * 
 	 * @param clazz type of the Product to be returned; has to implement
 	 *            <code>Product</code>
-	 * @return an Iterable containing all Products of type clazz
+	 * @return an {@link Iterable} containing all Products of type clazz
 	 * @throws ArgumentNullException if clazz is null
 	 */
 	<E extends T> Iterable<E> find(Class<E> clazz);
@@ -65,20 +65,25 @@ public interface Inventory<T extends Product>
 	 * 
 	 * @param clazz type of the Product to be returned; has to implement
 	 *            <code>Product</code>
-	 * @param productIdentifier the {@link ProductTypeIdentifier} of the Product to be returned
-	 * @return an Iterable containing all Products of type clazz and the given productIdentifier
- 	 * @throws ArgumentNullException if clazz or productType are null
+	 * @param productTypeIdentifier the {@link ProductTypeIdentifier} of the Product to be returned
+	 * @return an {@link Iterable} containing all Products of type clazz and the given productIdentifier
+ 	 * @throws ArgumentNullException if clazz or productTypeIdentifier are null
 	 */
-	<E extends T> Iterable<E> find(Class<E> clazz, ProductTypeIdentifier productIdentifier);
+	<E extends T> Iterable<E> find(Class<E> clazz, ProductTypeIdentifier productTypeIdentifier);
 
 	/**
 	 * 
 	 * @param clazz type of the Product to be returned; has to implement
 	 *            <code>Product</code>
-	 * @param productIdentifier the {@link ProductTypeIdentifier} of the Product to be returned
-	 * @param productFeatures the ProductFeatures of the Product to be returned
-	 * @return an Iterable containing all {@link Product}s of type clazz, whose {@link ProductTypeIdentifier} matches productIdentifier and whose {@link ProductFeature}s matches productFeatures
-	 * @throws ArgumentNullException if clazz or productType or productFeatures are null
+	 * @param productTypeIdentifier the {@link ProductTypeIdentifier} of the Product to be returned
+	 * @param productFeatures the {@link ProductFeature} of the Product to be returned
+	 * @return an {@link Iterable} containing all {@link Product}s of type clazz, whose {@link ProductTypeIdentifier} matches productTypeIdentifier and whose {@link ProductFeature}s matches productFeatures
+	 * @throws ArgumentNullException if clazz or productTypeIdentifier or productFeatures are null
 	 */
-	<E extends T> Iterable<E> find(Class<E> clazz, ProductTypeIdentifier productIdentifier, Iterable<ProductFeature> productFeatures);
+	<E extends T> Iterable<E> find(Class<E> clazz, ProductTypeIdentifier productTypeIdentifier, Iterable<ProductFeature> productFeatures);
+	
+	// TODO comment
+	long count(ProductTypeIdentifier productTypeIdentifier);
+	// TODO comment
+	long count(ProductTypeIdentifier productTypeIdentifier, Iterable<ProductFeature> productFeatures);
 }

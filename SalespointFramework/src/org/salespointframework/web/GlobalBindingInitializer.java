@@ -5,6 +5,7 @@ import org.salespointframework.core.calendar.CalendarEntryIdentifier;
 import org.salespointframework.core.order.ChargeLineIdentifier;
 import org.salespointframework.core.order.OrderIdentifier;
 import org.salespointframework.core.order.OrderLineIdentifier;
+import org.salespointframework.core.product.ProductFeatureIdentifier;
 import org.salespointframework.core.product.ProductTypeIdentifier;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.user.UserIdentifier;
@@ -13,6 +14,7 @@ import org.salespointframework.web.spring.propertyeditors.CalendarEntryIdentifie
 import org.salespointframework.web.spring.propertyeditors.ChargeLineIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.OrderIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.OrderLineIdentifierEditor;
+import org.salespointframework.web.spring.propertyeditors.ProductFeatureIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.ProductTypeIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.ProductIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.UserIdentifierEditor;
@@ -38,8 +40,9 @@ public class GlobalBindingInitializer implements WebBindingInitializer
 		binder.registerCustomEditor(CalendarEntryIdentifier.class, new CalendarEntryIdentifierEditor());
 		binder.registerCustomEditor(OrderIdentifier.class, new OrderIdentifierEditor());
 		binder.registerCustomEditor(OrderLineIdentifier.class, new OrderLineIdentifierEditor());
-		binder.registerCustomEditor(ProductTypeIdentifier.class, new ProductTypeIdentifierEditor());
 		binder.registerCustomEditor(ProductIdentifier.class, new ProductIdentifierEditor());
+		binder.registerCustomEditor(ProductFeatureIdentifier.class, new ProductFeatureIdentifierEditor());
+		binder.registerCustomEditor(ProductTypeIdentifier.class, new ProductTypeIdentifierEditor());
 		binder.registerCustomEditor(UserIdentifier.class, new UserIdentifierEditor());
 	}
 }
