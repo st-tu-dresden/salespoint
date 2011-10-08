@@ -7,6 +7,8 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
+import org.salespointframework.core.calendar.PersistentCalendar;
+import org.salespointframework.core.calendar.PersistentCalendarEntry;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.core.user.UserIdentifier;
@@ -18,13 +20,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class CalendarController {
-
     private static final DateTimeFormatter monthFormatter = new DateTimeFormatterBuilder().appendMonthOfYearText().toFormatter();
-    private static final Period ONE_MONTH = new Period(0, 1, 0, 0, 0, 0, 0, 0);
-    private static final Period ONE_DAY = new Period(0, 0, 0, 1, 0, 0, 0, 0);
+    // 2011-10-08T17:30
+    private static final DateTimeFormatter inputFormatter = new DateTimeFormatterBuilder().appendYear(4, 4).appendLiteral("-").appendMonthOfYear(2)
+                                                                          .appendLiteral("-").appendDayOfMonth(2).appendLiteral("T").appendHourOfDay(2)
+                                                                          .appendLiteral(":").appendMinuteOfHour(2).toFormatter();
+    private static final Period            ONE_MONTH      = new Period(0, 1, 0, 0, 0, 0, 0, 0);
+    private static final Period            ONE_DAY        = new Period(0, 0, 0, 1, 0, 0, 0, 0);
     
     private ModelAndView addMonthData(int year, int month, ModelAndView mav) {
-        //FIXME: calculation of weeks
         DateTime firstDayOfMonth = new DateTime(year, month, 1, 0, 0, 0, 0);
         int week = 0;
 
@@ -102,12 +106,16 @@ public class CalendarController {
     }
 
     @RequestMapping(value = "/newEntry", method = RequestMethod.POST)
-    public String newEntry(@RequestParam("title") String title, @RequestParam("description") String description, ModelAndView mav, HttpSession session) {
+    public ModelAndView newEntry(@RequestParam("title") String title, @RequestParam("description") String description, @RequestParam("startDate") String startDate,
+                    @RequestParam("endDate") String endDate, ModelAndView mav, HttpSession session) {
+        PersistentCalendarEntry entry = new PersistentCalendarEntry(getCurrentUser(session), title, inputFormatter.parseDateTime(startDate),
+                        inputFormatter.parseDateTime(endDate), description);
 
-        // PersistentCalendarEntry entry = new
-        // PersistentCalendarEntry(getCurrentUser(session), title, start, end,
-        // description);
-
-        return null;
+        PersistentCalendar cal = new PersistentCalendar();
+        cal.add(entry);
+        
+        mav.setViewName("redirect:/calendar");
+        
+        return mav;
     }
 }

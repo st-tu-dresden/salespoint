@@ -31,20 +31,10 @@
 				<textarea name="description" id="description"></textarea>
 				<br />
 				<label for="startDate">Start</label>
-				<table>
-					<tr>
-						<td><input type="text" name="startDate" id="startDate" /></td>
-						<td><input type="text" name="startTime" id="startTime" /></td>
-					</tr>
-				</table>
+                <input type="datetime-local" name="startDate" id="startDate"/>
 				<br />
                 <label for="endDate">End</label>
-				<table>
-					<tr>
-						<td><input type="text" name="endDate" id="endDate" /></td>
-						<td><input type="text" name="endTime" id="endTime" /></td>
-					</tr>
-				</table>
+				<input type="datetime-local" name="endDate" id="startDate"/>
 				<br />
 				<table>
 					<tr>
