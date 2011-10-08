@@ -8,7 +8,7 @@
 	<uri>http://www.salespoint-framework.org/web/taglib</uri>
 
 	<tag>
-		<name>HasCapability</name>
+		<name>hasCapability</name>
 		<tag-class>org.salespointframework.web.taglib.HasCapabilityTag</tag-class>
 		<description>If the current User has the given Capability, the content
 			of the tag will be rendered - otherwise not.</description>
@@ -22,7 +22,7 @@
 	</tag>
 
 	<tag>
-		<name>LoggedIn</name>
+		<name>loggedIn</name>
 		<tag-class>org.salespointframework.web.taglib.LoggedInTag</tag-class>
 		<description>Depending on boolean value the body will rendered if the
 			current user is logged in else not</description>
@@ -34,5 +34,27 @@
 				is logged in, else the body will be rendered when the current user
 				is not logged in</description>
 		</attribute>
+	</tag>
+	
+	<tag>
+		<name>forEach</name>
+		<tag-class>org.salespointframework.web.taglib.ForEachTag</tag-class>
+		<description>TOODO</description>
+		<attribute>
+			<name>var</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>TODO</description>
+		</attribute>
+		
+		<attribute>
+			<name>items</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Iterable</type>
+			<description>TODO</description>
+		</attribute>
+		
 	</tag>
 </taglib>
