@@ -107,7 +107,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	@Override
 	public final Iterable<ProductFeature> getProductFeatures()
 	{
-		return Iterables.from(productFeatures);
+		return Iterables.of(productFeatures);
 	}
 
 	@Override

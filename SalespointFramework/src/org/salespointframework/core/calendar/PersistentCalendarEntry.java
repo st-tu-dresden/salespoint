@@ -252,7 +252,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
     public final Iterable<CalendarEntryCapability> getCapabilities(UserIdentifier user) {
         Objects.requireNonNull(user, "user");
 
-        return Iterables.from(capabilities.get(user));
+        return Iterables.of(capabilities.get(user));
     }
 
     /**
@@ -315,7 +315,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
             dates.add(last);
         }
 
-        return Iterables.from(dates);
+        return Iterables.of(dates);
     }
 
     /**
@@ -348,7 +348,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
             nextInterval = new Interval(nextInterval.getStart().plus(this.period), nextInterval.getEnd().plus(this.period));
         }
 
-        return Iterables.from(dates);
+        return Iterables.of(dates);
     }
 
     @Override

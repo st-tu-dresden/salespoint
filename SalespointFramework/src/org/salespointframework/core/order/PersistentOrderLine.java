@@ -99,7 +99,7 @@ public class PersistentOrderLine implements OrderLine
 		}
 		this.productIdentifier = productType.getIdentifier();
 		this.productName = productType.getName();
-		this.productFeatures = Iterables.toSet(productFeatures);
+		this.productFeatures = Iterables.asSet(productFeatures);
 
 		if (numberOrdered <= 0)
 		{
@@ -151,7 +151,7 @@ public class PersistentOrderLine implements OrderLine
 	@Override
 	public final Iterable<ProductFeature> getProductFeatures()
 	{
-		return Iterables.from(productFeatures);
+		return Iterables.of(productFeatures);
 	}
 	
 	@Override

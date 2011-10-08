@@ -25,7 +25,7 @@ public final class Iterables
 	{
 	}
 
-	public static <T> List<T> toList(Iterable<T> iterable)
+	public static <T> List<T> asList(Iterable<T> iterable)
 	{
 		Objects.requireNonNull(iterable, "iterable");
 
@@ -37,7 +37,7 @@ public final class Iterables
 		return temp;
 	}
 
-	public static <T> Set<T> toSet(Iterable<T> iterable)
+	public static <T> Set<T> asSet(Iterable<T> iterable)
 	{
 		Objects.requireNonNull(iterable, "iterable");
 
@@ -50,10 +50,10 @@ public final class Iterables
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T[] toArray(Iterable<T> iterable)
+	public static <T> T[] asArray(Iterable<T> iterable)
 	{
 		Objects.requireNonNull(iterable, "iterable");
-		return (T[]) toList(iterable).toArray();
+		return (T[]) asList(iterable).toArray();
 	}
 
 	public static <T> boolean isEmpty(Iterable<T> iterable)
@@ -64,7 +64,7 @@ public final class Iterables
 
 	public static <T> Iterable<T> empty()
 	{
-		return from(new ArrayList<T>(0));
+		return of(new ArrayList<T>(0));
 	}
 
 	public static <T> int size(Iterable<T> iterable)
@@ -91,7 +91,7 @@ public final class Iterables
 		}
 	}
 
-	public static <T> Iterable<T> from(Iterable<T> iterable)
+	public static <T> Iterable<T> of(Iterable<T> iterable)
 	{
 		Objects.requireNonNull(iterable, "iterable");
 
@@ -125,7 +125,7 @@ public final class Iterables
 		};
 	}
 
-	public static <T> Iterable<T> from(final T[] array)
+	public static <T> Iterable<T> of(final T[] array)
 	{
 		Objects.requireNonNull(array, "array");
 

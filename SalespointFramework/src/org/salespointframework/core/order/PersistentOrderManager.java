@@ -70,7 +70,7 @@ public final class PersistentOrderManager implements OrderManager<PersistentOrde
 		cq.where(cb.between(entry.get(PersistentOrder_.dateCreated), from.toDate(), to.toDate()));
 		TypedQuery<PersistentOrder> tq = em.createQuery(cq);
 
-		return Iterables.from(tq.getResultList());
+		return Iterables.of(tq.getResultList());
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public final class PersistentOrderManager implements OrderManager<PersistentOrde
 		cq.where(cb.equal(entry.get(PersistentOrder_.orderStatus), orderStatus));
 		TypedQuery<PersistentOrder> tq = em.createQuery(cq);
 
-		return Iterables.from(tq.getResultList());
+		return Iterables.of(tq.getResultList());
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public final class PersistentOrderManager implements OrderManager<PersistentOrde
 		cq.where(cb.equal(entry.get(PersistentOrder_.userIdentifier), userIdentifier));
 		TypedQuery<PersistentOrder> tq = em.createQuery(cq);
 
-		return Iterables.from(tq.getResultList());
+		return Iterables.of(tq.getResultList());
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public final class PersistentOrderManager implements OrderManager<PersistentOrde
 		cq.where(p1, p2);
 		TypedQuery<PersistentOrder> tq = em.createQuery(cq);
 
-		return Iterables.from(tq.getResultList());
+		return Iterables.of(tq.getResultList());
 	}
 
 	/**

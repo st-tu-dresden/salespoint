@@ -85,7 +85,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		CriteriaQuery<T> cq = cb.createQuery(clazz);
 		TypedQuery<T> tq = em.createQuery(cq);
 
-		return Iterables.from(tq.getResultList());
+		return Iterables.of(tq.getResultList());
 	}
 
 	@Override

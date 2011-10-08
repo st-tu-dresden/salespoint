@@ -81,7 +81,7 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 	@Override
 	public Iterable<UserCapability> getCapabilities()
 	{
-		return Iterables.from(capabilities);
+		return Iterables.of(capabilities);
 	}
 
 	@Override

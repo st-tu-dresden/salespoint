@@ -93,7 +93,7 @@ public class UsermanagerTest {
 
 		final PersistentUserManager empManager = new PersistentUserManager();
 		
-		final int oldCount = Iterables.toList((empManager.find(Employee.class))).size();
+		final int oldCount = Iterables.asList((empManager.find(Employee.class))).size();
 
 
 		for(int n = 0; n < usersToAdd; n++) {
@@ -103,7 +103,7 @@ public class UsermanagerTest {
 		}
 
 		
-		final int newCount = Iterables.toList((empManager.find(Employee.class))).size();
+		final int newCount = Iterables.asList((empManager.find(Employee.class))).size();
 		
 		for(Employee employee : list) {
 			assertEquals(empManager.get(Employee.class, employee.getIdentifier()), employee);

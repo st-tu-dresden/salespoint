@@ -95,7 +95,7 @@ public class PersistentProductType implements ProductType, Comparable<Persistent
 	@Override
 	public final Iterable<ProductFeature> getProductFeatures()
 	{
-		return Iterables.from(productFeatures);
+		return Iterables.of(productFeatures);
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class PersistentProductType implements ProductType, Comparable<Persistent
 	@Override
 	public final Iterable<String> getCategories()
 	{
-		return Iterables.from(categories);
+		return Iterables.of(categories);
 	}
 
 	@Override

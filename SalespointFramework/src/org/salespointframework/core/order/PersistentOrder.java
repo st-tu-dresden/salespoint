@@ -151,12 +151,12 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 
 	@Override
 	public final Iterable<PersistentOrderLine> getOrderLines() {
-		return Iterables.from(orderLines);
+		return Iterables.of(orderLines);
 	}
 
 	@Override
 	public final Iterable<PersistentChargeLine> getChargeLines() {
-		return Iterables.from(chargeLines);
+		return Iterables.of(chargeLines);
 	}
 
 	@Override
@@ -258,7 +258,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 					PersistentProduct.class, orderLine.getProductIdentifier(),
 					orderLine.getProductFeatures());
 
-			List<PersistentProduct> products = Iterables.toList(tempProducts);
+			List<PersistentProduct> products = Iterables.asList(tempProducts);
 
 			int numberOrdered = orderLine.getNumberOrdered();
 			int removed = 0;

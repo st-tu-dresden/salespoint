@@ -8,6 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.order.ChargeLine;
 import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.PersistentChargeLine;
 import org.salespointframework.core.order.PersistentOrder;
@@ -67,5 +68,14 @@ public class ChargeLineTest {
 	@Test
 	public void removeTest2() {
 		assertFalse(order.removeChargeLine(chargeLine.getIdentifier()));
+	}
+	
+	@Test
+	public void foo() {
+		order.addChargeLine(chargeLine);
+		Iterable<PersistentChargeLine> iter = order.getChargeLines();
+		for(PersistentChargeLine c : iter) {
+			System.out.println(c.getIdentifier());
+		}
 	}
 }

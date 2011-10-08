@@ -83,7 +83,7 @@ public final class PersistentAccountancy implements
 
 		TypedQuery<T> tq = em.createQuery(q);
 
-		return Iterables.from(tq.getResultList());
+		return Iterables.of(tq.getResultList());
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public final class PersistentAccountancy implements
 		q.where(p1);
 		TypedQuery<T> tq = em.createQuery(q);
 
-		return Iterables.from(tq.getResultList());
+		return Iterables.of(tq.getResultList());
 	}
 
 	@Override

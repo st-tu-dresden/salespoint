@@ -85,7 +85,7 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
 
         TypedQuery<T> tq = em.createQuery(q);
 
-        return Iterables.from(tq.getResultList());
+        return Iterables.of(tq.getResultList());
     }
 
     /**
@@ -135,7 +135,7 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
         q.where(pOwner);
         TypedQuery<T> tq = em.createQuery(q);
 
-        return Iterables.from(tq.getResultList());
+        return Iterables.of(tq.getResultList());
     }
 
     /**
@@ -284,7 +284,7 @@ public final class PersistentCalendar implements Calendar<PersistentCalendarEntr
         CriteriaQuery<T> q = cb.createQuery(clazz);
         TypedQuery<T> tq = em.createQuery(q);
 
-        return Iterables.from(tq.getResultList());
+        return Iterables.of(tq.getResultList());
     }
 
     @Override

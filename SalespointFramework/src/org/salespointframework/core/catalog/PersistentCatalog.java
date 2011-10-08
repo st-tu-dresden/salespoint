@@ -109,7 +109,7 @@ public class PersistentCatalog implements Catalog<PersistentProductType>
 		cq.where(entry.type().in(clazz));
 		TypedQuery<T> tq = em.createQuery(cq);
 
-		return Iterables.from(tq.getResultList());
+		return Iterables.of(tq.getResultList());
 	}
 
 	@Override
@@ -130,7 +130,7 @@ public class PersistentCatalog implements Catalog<PersistentProductType>
 
 		TypedQuery<T> tq = em.createQuery(cq);
 
-		return Iterables.from(tq.getResultList());
+		return Iterables.of(tq.getResultList());
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class PersistentCatalog implements Catalog<PersistentProductType>
 		cq.where(p1, p2);
 		TypedQuery<T> tq = em.createQuery(cq);
 
-		return Iterables.from(tq.getResultList());
+		return Iterables.of(tq.getResultList());
 	}
 
 	/**

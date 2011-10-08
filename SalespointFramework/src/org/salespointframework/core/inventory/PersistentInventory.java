@@ -114,7 +114,7 @@ public final class PersistentInventory implements Inventory<PersistentProduct> {
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
 		TypedQuery<E> tq = em.createQuery(cq);
 
-		return Iterables.from(tq.getResultList());
+		return Iterables.of(tq.getResultList());
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public final class PersistentInventory implements Inventory<PersistentProduct> {
 
 		TypedQuery<E> tq = em.createQuery(cq);
 
-		return Iterables.from(tq.getResultList());
+		return Iterables.of(tq.getResultList());
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public final class PersistentInventory implements Inventory<PersistentProduct> {
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		Objects.requireNonNull(productFeatures, "productFeatures");
 
-		Set<ProductFeature> featureSet = Iterables.toSet(productFeatures);
+		Set<ProductFeature> featureSet = Iterables.asSet(productFeatures);
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -194,7 +194,7 @@ public final class PersistentInventory implements Inventory<PersistentProduct> {
 				result.add(e);
 		}
 
-		return Iterables.from(result);
+		return Iterables.of(result);
 	}
 
 	/**
