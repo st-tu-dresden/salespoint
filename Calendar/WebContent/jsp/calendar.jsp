@@ -20,16 +20,26 @@
 	<h2>${monthTxt} ${year}</h2>
 	<table class="calendar">
 		<c:set var="days" value="WEEK,MON,TUE,WED,THU,FRI,SAT,SUN" />
+		<c:set var="currentDay" value="1"/>
 		<tr class="calHead">
 			<c:forEach var="col" items="${days}">
 				<th>${col}</th>
 			</c:forEach>
 		</tr>
-		<c:forEach var="week" items="${weekNumbers}">
+		<c:forEach var="week" items="${weekNumbers}" varStatus="w">
 			<tr>
 				<th id="kwCell">KW ${week}</th>
-				<c:forEach begin="1" end="7" varStatus="x">
-					<td id="dayCell"></td>
+				<c:forEach begin="1" end="7" varStatus="d">
+					<td id="dayCell">
+					   
+					   <c:if test="${(d.index >= firstWeekday || w.index>0) && (currentDay<=numberOfDays)}">
+					       <div class="dayNumber">
+					       ${currentDay}
+					       </div>
+					       <c:set var="currentDay" value="${currentDay+1}"/>
+					   </c:if>
+					   
+					</td>
 				</c:forEach>
 			</tr>
 		</c:forEach>

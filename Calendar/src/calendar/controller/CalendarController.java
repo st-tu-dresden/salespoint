@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 import org.salespointframework.core.user.PersistentUser;
@@ -19,7 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class CalendarController {
 
     private static final DateTimeFormatter monthFormatter = new DateTimeFormatterBuilder().appendMonthOfYearText().toFormatter();
-
+    private static final Period ONE_MONTH = new Period(0, 1, 0, 0, 0, 0, 0, 0);
+    private static final Period ONE_DAY = new Period(0, 0, 0, 1, 0, 0, 0, 0);
+    
     private ModelAndView addMonthData(int year, int month, ModelAndView mav) {
         //FIXME: calculation of weeks
         DateTime firstDayOfMonth = new DateTime(year, month, 1, 0, 0, 0, 0);
@@ -48,6 +51,11 @@ public class CalendarController {
             weekNumbers[i]=week++;
         }
         
+        int firstWeekdayOfMonth = firstDayOfMonth.getDayOfWeek();
+        int numberOfDaysPerMonth = firstDayOfMonth.plus(ONE_MONTH).minus(ONE_DAY).getDayOfMonth();
+        
+        mav.addObject("firstWeekday", Integer.valueOf(firstWeekdayOfMonth));
+        mav.addObject("numberOfDays", Integer.valueOf(numberOfDaysPerMonth));
         mav.addObject("weekNumbers", weekNumbers);
         mav.addObject("year", Integer.valueOf(year));
         mav.addObject("month", Integer.valueOf(firstDayOfMonth.getMonthOfYear()));

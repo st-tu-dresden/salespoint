@@ -59,6 +59,18 @@ div p.date {
 	margin-top: 0.5em;
 }
 
+div.dayNumber {
+	background-color: #efefef;
+	line-height: 200%;
+    width: 100%;
+}
+
+div.entry {
+    width: 100%;
+    line-height: 150%;
+    text-align: left;
+}
+
 fieldset {
 	width: 20%;
 	margin-left: auto;
@@ -175,8 +187,9 @@ table.calendar th {
 }
 
 table.calendar td {
+	valign: top;
 	border-width: 1px;
-	padding: 8px;
+	padding: 0px;
 	border-style: solid;
 	border-color: #666666;
 	background-color: #ffffff;
