@@ -19,7 +19,6 @@ import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.util.ArgumentNullException;
-import org.salespointframework.util.Tuple;
 
 import test.product.Keks;
 import test.product.KeksType;
@@ -91,23 +90,19 @@ public class InventoryTest {
 
 	@Test
 	public void find() {
-		// inventory.add(keks);
-		List<Tuple<String, String>> features = new ArrayList<Tuple<String, String>>();
-		features.add(Tuple.create("Color", "Red"));
-		keks = new Keks(keksType, features);
+
+		keks = new Keks(keksType, featureRed.getIdentifier());
 
 		inventory.add(keks);
 
-		features.add(Tuple.create("Color", "Blue"));
-		keks = new Keks(keksType, features);
+		keks = new Keks(keksType, featureBlue.getIdentifier());
 		inventory.add(keks);
 
 		/*
 		 * this is also a test: because Yellow is not in keksType, it should not
 		 * be in Keks. this test is passed.
 		 */
-		features.add(Tuple.create("Color", "Yellow"));
-		keks = new Keks(keksType, features);
+		keks = new Keks(keksType, featureYellow.getIdentifier());
 		inventory.add(keks);
 
 		System.out.println("Alle Kekse: ");

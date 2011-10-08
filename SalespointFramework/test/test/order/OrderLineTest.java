@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.catalog.PersistentCatalog;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
@@ -37,7 +38,7 @@ public class OrderLineTest {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
 	}
 	
-	@SuppressWarnings("deprecation")
+
 	@Before
 	public void before() {
 		PersistentProductType keksType = new KeksType("OrderLine Keks " + keksCounter++, Money.ZERO);
@@ -46,7 +47,7 @@ public class OrderLineTest {
 		catalog.add(keksType);
 		
 		user = new PersistentUser(new UserIdentifier(), "");
-		order = new PersistentOrder(user.getIdentifier());	//TODO
+		order = new PersistentOrder(user.getIdentifier(), Cash.CASH);	//TODO
 		orderLine = new PersistentOrderLine(keksType.getIdentifier());
 	}
 	

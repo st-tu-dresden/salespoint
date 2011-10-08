@@ -34,12 +34,12 @@ public interface ProductType
 	 */
 	boolean addProductFeature(ProductFeature productFeature);
 	
-	/**
-	 * 
-	 * @param productFeature
-	 * @return if this ProductType contained the {@link ProductFeature}, otherwise false
-	 */
-	boolean removeProductFeature(ProductFeature productFeature);
+	// TODO comment
+	boolean removeProductFeature(ProductFeatureIdentifier productFeatureIdentifier);
+	
+	
+	// TODO comment
+	ProductFeature getProductFeature(ProductFeatureIdentifier productFeatureIdentifier);
 
 	/**
 	 * 

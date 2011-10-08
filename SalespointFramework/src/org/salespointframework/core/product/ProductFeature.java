@@ -16,6 +16,9 @@ import org.salespointframework.util.Objects;
 @Embeddable
 public final class ProductFeature implements Serializable,Comparable<ProductFeature>
 {
+	private final ProductFeatureIdentifier productFeatureIdentifier = new ProductFeatureIdentifier();
+	
+	
 	private final String featureType;
 	private final String value;
 	private final Money price;
@@ -32,8 +35,7 @@ public final class ProductFeature implements Serializable,Comparable<ProductFeat
 		price = null;
 		percent = 0;
 	}
-
-	// TODO ::::::: Check
+	
 	private ProductFeature(String featureType, String value, Money price, double percent)
 	{
 		this.featureType = Objects.requireNonNull(featureType, "featureType");
@@ -71,6 +73,10 @@ public final class ProductFeature implements Serializable,Comparable<ProductFeat
 		return new ProductFeature(featureType, value, Money.ZERO, percent);
 	}
 
+	public final ProductFeatureIdentifier getIdentifier() {
+		return productFeatureIdentifier;
+	}
+	
 	/**
 	 * 
 	 * @return the FeatureType of this ProductFeature

@@ -50,13 +50,13 @@ public class ProductTypeTest {
 	public void removeProductFeature() {
 		ProductFeature feature = ProductFeature.create("Color", "Green");
 		keksType.addProductFeature(feature);
-		assertTrue(keksType.removeProductFeature(feature));
+		assertTrue(keksType.removeProductFeature(feature.getIdentifier()));
 	}
 	
 	@Test
 	public void removeProductFeature2() {
 		ProductFeature feature = ProductFeature.create("Color", "Red");
-		assertFalse(keksType.removeProductFeature(feature));
+		assertFalse(keksType.removeProductFeature(feature.getIdentifier()));
 	}
 
 	@Test(expected=ArgumentNullException.class)

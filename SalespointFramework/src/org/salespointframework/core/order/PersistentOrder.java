@@ -83,21 +83,13 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	 *            The {@link UserIdentifier}/{@link User} connected to this
 	 *            order
 	 * @param paymentMethod
-	 *            The {@link Payment} connected to this order
+	 *            The {@link PaymentMethod} connected to this order
 	 */
 	public PersistentOrder(UserIdentifier userIdentifier, PaymentMethod paymentMethod) {
-		this.userIdentifier = Objects.requireNonNull(userIdentifier,
-				"userIdentifier");
+		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier");
 		this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod");
 	}
 	
-	// TODO wegen payment, fliegt später raus
-	@Deprecated
-	public PersistentOrder(UserIdentifier userIdentifier) {
-		this.userIdentifier = Objects.requireNonNull(userIdentifier,
-				"userIdentifier");
-	}
-
 	@Override
 	public final boolean addOrderLine(PersistentOrderLine orderLine) {
 		Objects.requireNonNull(orderLine, "orderLine");

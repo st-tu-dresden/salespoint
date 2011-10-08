@@ -3,7 +3,7 @@ package test.product;
 import javax.persistence.Entity;
 
 import org.salespointframework.core.product.PersistentProduct;
-import org.salespointframework.util.Tuple;
+import org.salespointframework.core.product.ProductFeatureIdentifier;
 
 @SuppressWarnings("javadoc")
 @Entity
@@ -18,7 +18,7 @@ public class Keks extends PersistentProduct {
 		super(keks);
 	}
 	
-   public Keks(KeksType productType, Iterable<Tuple<String, String>> features) {
+   public Keks(KeksType productType, ProductFeatureIdentifier... features) {
        super(productType, features);
    }
 

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.ChargeLine;
@@ -30,11 +31,10 @@ public class ChargeLineTest {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Before
 	public void before() {
 		user = new PersistentUser(new UserIdentifier(), "");
-		order = new PersistentOrder(user.getIdentifier());
+		order = new PersistentOrder(user.getIdentifier(), Cash.CASH);
 		chargeLine = new PersistentChargeLine(Money.ZERO, "gaaar nix");
 	}
 	

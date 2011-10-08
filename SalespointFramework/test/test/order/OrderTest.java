@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 
+import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderStatus;
@@ -26,11 +27,10 @@ public class OrderTest {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Before
 	public void before() {
 		user = new PersistentUser(new UserIdentifier(), "");
-		order = new PersistentOrder(user.getIdentifier());
+		order = new PersistentOrder(user.getIdentifier(), Cash.CASH);
 	}
 
 	@Test

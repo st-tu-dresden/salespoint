@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
-import org.salespointframework.util.Tuple;
 
 /**
  * TODO
@@ -45,47 +44,26 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	}
 	
 	/**
-	 * Creates an new PersistentProduct
-	 * @param productType the {@link ProductType} of the PersistentProduct
-	 */
-	public PersistentProduct(ProductType productType)
-	{
-		this(productType, Iterables.<Tuple<String, String>> empty());
-	}
-
-	/**
 	 * Creates a new PersistentProduct with a specified {@link ProductFeature}set
 	 * @param productType the {@link ProductType} of the PersistentProduct
-	 * @param features an Iterable of Tuples of {@link ProductFeature}s for the PersistentProduct
+	 * @param productFeatureIdentifiers an optional  of Tuples of {@link ProductFeature}s for the PersistentProduct		//TODO STIMMT NICHT MEHR wegen varargs
 	 */
-	public PersistentProduct(ProductType productType, Iterable<Tuple<String, String>> features)
+	public PersistentProduct(ProductType productType, ProductFeatureIdentifier... productFeatureIdentifiers)
 	{
-		Objects.requireNonNull(features, "features");
+		Objects.requireNonNull(productFeatureIdentifiers, "productFeatureIdentifiers");
 		this.productIdentifier = Objects.requireNonNull(productType, "productType").getIdentifier();
 		this.name = productType.getName();
 		this.price = productType.getPrice(); // TODO CLONE?
-
-		// TODO zu hacky? Jop.
-		for (Tuple<String, String> feature : features)
-		{
-			ProductFeature f = ProductFeature.create(feature.getItem1(), feature.getItem2());
-
-			for (ProductFeature realFeature : productType.getProductFeatures())
-			{
-				if (f.equals(realFeature))
-				{
-					if (!productFeatures.contains(realFeature))
-					{
-						productFeatures.add(realFeature);
-					} else
-					{
-						// TODO Exception ?
-					}
-				}
-			}
+		
+		for(ProductFeatureIdentifier pfi : productFeatureIdentifiers) {
+			ProductFeature productFeature = productType.getProductFeature(pfi);
+			productFeatures.add(productFeature);
+			// TODO preis mit einberechnen :D
+			// klärungsbedarf bei %%%%%
 		}
+		
 	}
-
+	
 	@Override
 	public final ProductTypeIdentifier getProductTypeIdentifier()
 	{
