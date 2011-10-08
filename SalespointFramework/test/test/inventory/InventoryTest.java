@@ -73,20 +73,20 @@ public class InventoryTest {
 	@Test
 	public void testRemove() {
 		inventory.add(keks);
-		inventory.remove(keks.getSerialNumber());
-		assertFalse(inventory.contains(keks.getSerialNumber()));
+		inventory.remove(keks.getIdentifier());
+		assertFalse(inventory.contains(keks.getIdentifier()));
 	}
 
 	@Test
 	public void testContains() {
 		inventory.add(keks);
-		assertTrue(inventory.contains(keks.getSerialNumber()));
+		assertTrue(inventory.contains(keks.getIdentifier()));
 	}
 
 	@Test
 	public void testGet() {
 		inventory.add(keks);
-		assertEquals(keks, inventory.get(Keks.class, keks.getSerialNumber()));
+		assertEquals(keks, inventory.get(Keks.class, keks.getIdentifier()));
 	}
 
 	@Test
@@ -129,7 +129,7 @@ public class InventoryTest {
 		//featureSet.add(featureYellow);
 
 		Iterable<Keks> kekse = inventory.find(Keks.class,
-				keks.getProductIdentifier(), featureSet);
+				keks.getProductTypeIdentifier(), featureSet);
 		for (Keks k : kekse) {
 			System.out.println(k);
 			for (ProductFeature p : k.getProductFeatures()) {

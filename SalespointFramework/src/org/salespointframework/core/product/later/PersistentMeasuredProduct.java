@@ -191,7 +191,7 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 		{
 			return true;
 		}
-		return this.getSerialNumber().equals(other.getSerialNumber());
+		return this.getIdentifier().equals(other.getIdentifier());
 	}
 
 }

@@ -19,7 +19,7 @@ import org.salespointframework.core.product.PersistentProduct_;
 import org.salespointframework.core.product.Product;
 import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductTypeIdentifier;
-import org.salespointframework.core.product.SerialNumber;
+import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
@@ -75,7 +75,7 @@ public final class PersistentInventory implements Inventory<PersistentProduct> {
 	}
 
 	@Override
-	public boolean remove(SerialNumber serialNumber) {
+	public boolean remove(ProductIdentifier serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		EntityManager em = getEntityManager();
 		Object product = em.find(PersistentProduct.class, serialNumber);
@@ -90,7 +90,7 @@ public final class PersistentInventory implements Inventory<PersistentProduct> {
 	}
 
 	@Override
-	public boolean contains(SerialNumber serialNumber) {
+	public boolean contains(ProductIdentifier serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		EntityManager em = getEntityManager();
 		return em.find(PersistentProduct.class, serialNumber) != null;
@@ -98,7 +98,7 @@ public final class PersistentInventory implements Inventory<PersistentProduct> {
 
 	@Override
 	public <E extends PersistentProduct> E get(Class<E> clazz,
-			SerialNumber serialNumber) {
+			ProductIdentifier serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		Objects.requireNonNull(clazz, "clazz");
 		EntityManager em = getEntityManager();

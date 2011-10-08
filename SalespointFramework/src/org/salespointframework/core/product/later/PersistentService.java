@@ -200,6 +200,6 @@ public class PersistentService extends PersistentProduct implements ServiceInsta
 		{
 			return true;
 		}
-		return this.getSerialNumber().equals(other.getSerialNumber());
+		return this.getIdentifier().equals(other.getIdentifier());
 	}
 }

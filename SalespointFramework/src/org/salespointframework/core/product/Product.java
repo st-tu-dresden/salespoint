@@ -16,15 +16,15 @@ public interface Product
 	Money getPrice();
 	/**
 	 * 
-	 * @return the unique {@link SerialNumber} of the Product
+	 * @return the unique {@link ProductIdentifier} of the Product
 	 */
-	SerialNumber getSerialNumber();
+	ProductIdentifier getIdentifier();
 	
 	/**
 	 * 
 	 * @return the {@link ProductTypeIdentifier} of the {@link ProductType} of the Product
 	 */
-	ProductTypeIdentifier getProductIdentifier();
+	ProductTypeIdentifier getProductTypeIdentifier();
 	
 	/**
 	 * 

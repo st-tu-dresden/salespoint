@@ -264,7 +264,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 			int removed = 0;
 
 			for (PersistentProduct product : products) {
-				boolean result = inventory.remove(product.getSerialNumber());
+				boolean result = inventory.remove(product.getIdentifier());
 
 				if (!result) {
 					// TODO payment clone?

@@ -3,7 +3,7 @@ package org.salespointframework.core.inventory;
 import org.salespointframework.core.product.Product;
 import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductTypeIdentifier;
-import org.salespointframework.core.product.SerialNumber;
+import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 
 /**
@@ -31,7 +31,7 @@ public interface Inventory<T extends Product>
 	 * @return true is removal was successful, otherwise false
 	 * @throws ArgumentNullException if serialNumber is null
 	 */
-	boolean remove(SerialNumber serialNumber);
+	boolean remove(ProductIdentifier serialNumber);
 
 	/**
 	 * Checks if this Inventory contains a Product
@@ -39,7 +39,7 @@ public interface Inventory<T extends Product>
 	 * @return true if the Inventory contains the Product, otherwise false
 	 * @throws ArgumentNullException if serialNumber is null
 	 */
-	boolean contains(SerialNumber serialNumber);
+	boolean contains(ProductIdentifier serialNumber);
 
 	/**
 	 * Returns the <code>Product</code> of type <code>clazz</code> and
@@ -50,7 +50,7 @@ public interface Inventory<T extends Product>
 	 * @return  the Product or a subtype if the serialNumber matches, otherwise null 
 	 * @throws ArgumentNullException if clazz or serialNumber are null
 	 */
-	<E extends T> E get(Class<E> clazz, SerialNumber serialNumber);
+	<E extends T> E get(Class<E> clazz, ProductIdentifier serialNumber);
 
 	/**
 	 * 

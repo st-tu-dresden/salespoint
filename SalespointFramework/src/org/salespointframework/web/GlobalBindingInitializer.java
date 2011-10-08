@@ -6,7 +6,7 @@ import org.salespointframework.core.order.ChargeLineIdentifier;
 import org.salespointframework.core.order.OrderIdentifier;
 import org.salespointframework.core.order.OrderLineIdentifier;
 import org.salespointframework.core.product.ProductTypeIdentifier;
-import org.salespointframework.core.product.SerialNumber;
+import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.web.spring.propertyeditors.AccountancyEntryIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.CalendarEntryIdentifierEditor;
@@ -14,7 +14,7 @@ import org.salespointframework.web.spring.propertyeditors.ChargeLineIdentifierEd
 import org.salespointframework.web.spring.propertyeditors.OrderIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.OrderLineIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.ProductTypeIdentifierEditor;
-import org.salespointframework.web.spring.propertyeditors.SerialNumberEditor;
+import org.salespointframework.web.spring.propertyeditors.ProductIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.UserIdentifierEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.support.WebBindingInitializer;
@@ -39,7 +39,7 @@ public class GlobalBindingInitializer implements WebBindingInitializer
 		binder.registerCustomEditor(OrderIdentifier.class, new OrderIdentifierEditor());
 		binder.registerCustomEditor(OrderLineIdentifier.class, new OrderLineIdentifierEditor());
 		binder.registerCustomEditor(ProductTypeIdentifier.class, new ProductTypeIdentifierEditor());
-		binder.registerCustomEditor(SerialNumber.class, new SerialNumberEditor());
+		binder.registerCustomEditor(ProductIdentifier.class, new ProductIdentifierEditor());
 		binder.registerCustomEditor(UserIdentifier.class, new UserIdentifierEditor());
 	}
 }

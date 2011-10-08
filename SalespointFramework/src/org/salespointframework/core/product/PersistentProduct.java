@@ -24,7 +24,7 @@ import org.salespointframework.util.Tuple;
 public class PersistentProduct implements Product, Comparable<PersistentProduct>
 {
 	@EmbeddedId
-	private SerialNumber serialNumber = new SerialNumber();
+	private ProductIdentifier serialNumber = new ProductIdentifier();
 
 	@Embedded
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
@@ -87,7 +87,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	}
 
 	@Override
-	public final ProductTypeIdentifier getProductIdentifier()
+	public final ProductTypeIdentifier getProductTypeIdentifier()
 	{
 		return productIdentifier;
 	}
@@ -99,7 +99,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	}
 
 	@Override
-	public final SerialNumber getSerialNumber()
+	public final ProductIdentifier getIdentifier()
 	{
 		return serialNumber;
 	}
