@@ -17,7 +17,7 @@
 </head>
 <body>
 	<h1>Welcome ${user.identifier}</h1>
-
+	<h2>${monthTxt} ${year}</h2>
 	<table class="calendar">
 		<c:set var="days" value="WEEK,MON,TUE,WED,THU,FRI,SAT,SUN" />
 		<tr class="calHead">
@@ -25,9 +25,9 @@
 				<th>${col}</th>
 			</c:forEach>
 		</tr>
-		<c:forEach begin="${firstWeek}" end="${lastWeek}" varStatus="y">
+		<c:forEach var="week" items="${weekNumbers}">
 			<tr>
-				<th id="kwCell">KW ${y.index}</th>
+				<th id="kwCell">KW ${week}</th>
 				<c:forEach begin="1" end="7" varStatus="x">
 					<td id="dayCell"></td>
 				</c:forEach>
@@ -35,8 +35,43 @@
 		</c:forEach>
 	</table>
 	<div align="center">
-		<a href="<c:url value="newEntry" />">Create New</a> | <a
-			href="<c:url value="logout" />">Logout</a>
+	    <a href="
+            <c:url value="calendar">
+                <c:param name="year" value="${year-1}" />
+                <c:param name="month" value="${month}" />
+            </c:url>">
+            Last Year
+        </a>
+        |
+        <a href="
+            <c:url value="calendar">
+                <c:param name="year" value="${year}" />
+                <c:param name="month" value="${month-1}" />
+            </c:url>">
+            Last Month
+        </a>
+        |
+		<a href="<c:url value="newEntry" />">Create New</a>
+		|
+		<a href="
+            <c:url value="calendar">
+                <c:param name="year" value="${year}" />
+                <c:param name="month" value="${month+1}" />
+		    </c:url>">
+		    Next Month
+	    </a>
+		|
+		<a href="
+            <c:url value="calendar">
+                <c:param name="year" value="${year+1}" />
+                <c:param name="month" value="${month}" />
+            </c:url>">
+            Next Year
+		</a>
+		
+		<p>
+		<a href="<c:url value="logout" />">Logout</a>
+		</p>
 	</div>
 </body>
 </html>

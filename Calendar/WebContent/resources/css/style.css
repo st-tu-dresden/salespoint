@@ -149,6 +149,11 @@ img.center {
 	margin-right: auto;
 }
 
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
 table.calendar {
 	table-layout: fixed;
 	width: 90%;
