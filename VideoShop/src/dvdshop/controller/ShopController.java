@@ -10,6 +10,7 @@ import org.salespointframework.core.order.OrderCompletionResult;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderLine;
 import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.product.ProductTypeIdentifier;
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.web.spring.annotations.Interceptors;
@@ -44,7 +45,7 @@ public class ShopController {
 	@RequestMapping("/")
 	public ModelAndView index(ModelAndView mav) {
 
-		mav.addObject("items", Iterables.toList(new VideoCatalog().findDvds()));
+		mav.addObject("items", Iterables.asList(new VideoCatalog().findDvds()));
 		mav.setViewName("index");
 
 		return mav;
@@ -53,7 +54,7 @@ public class ShopController {
 	@RequestMapping("/index")
 	public ModelAndView index__(ModelAndView mav) {
 
-		mav.addObject("items", Iterables.toList(new VideoCatalog().findDvds()));
+		mav.addObject("items", Iterables.asList(new VideoCatalog().findDvds()));
 		mav.setViewName("index");
 
 		return mav;
@@ -61,7 +62,7 @@ public class ShopController {
 	
 	@RequestMapping("/dvdCatalog")
 	public ModelAndView dvdCatalog(ModelAndView mav) {
-		mav.addObject("items", Iterables.toList(new VideoCatalog().findDvds()));
+		mav.addObject("items", Iterables.asList(new VideoCatalog().findDvds()));
 		mav.setViewName("dvdCatalog");
 		return mav;
 	}
@@ -76,17 +77,17 @@ public class ShopController {
 	
 	@RequestMapping("/detail")
 	public ModelAndView catalog(ModelAndView mav,
-			@RequestParam("pid") ProductIdentifier pid) {
+			@RequestParam("pid") ProductTypeIdentifier pid) {
 		Dvd dvd = videoCatalog.getDvd(pid);
 		mav.setViewName("detail");
 		mav.addObject("dvd", dvd);
-		mav.addObject("comments", Iterables.toList(dvd.getComments()));
+		mav.addObject("comments", Iterables.asList(dvd.getComments()));
 		return mav;
 	}
 
 	@RequestMapping("/comment")
 	public ModelAndView catalog(ModelAndView mav,
-			@RequestParam("pid") ProductIdentifier pid,
+			@RequestParam("pid") ProductTypeIdentifier pid,
 			@RequestParam("comment") String comment,
 			@RequestParam("rating") int rating ) {
 
@@ -105,7 +106,7 @@ public class ShopController {
 		 
 
 	@RequestMapping("/addDisc")
-	public ModelAndView addDisc(HttpServletRequest request, ModelAndView mav, @RequestParam("pid") ProductIdentifier pid) {
+	public ModelAndView addDisc(HttpServletRequest request, ModelAndView mav, @RequestParam("pid") ProductTypeIdentifier pid) {
 
 		Customer customer = userManager.getUserByToken(Customer.class, request.getSession());
 
@@ -122,7 +123,7 @@ public class ShopController {
 
 		order.addOrderLine(orderLine);
 
-		mav.addObject("items", Iterables.toList(videoCatalog.findDvds()));
+		mav.addObject("items", Iterables.asList(videoCatalog.findDvds()));
 		mav.setViewName("dvdCatalog");
 		return mav;
 	}
@@ -133,7 +134,7 @@ public class ShopController {
 		PersistentOrder order = (PersistentOrder) request.getSession().getAttribute("order");
 
 		if (order != null) {
-			mav.addObject("items", Iterables.toList(order.getOrderLines()));
+			mav.addObject("items", Iterables.asList(order.getOrderLines()));
 		} else {
 			mav.addObject("items", new ArrayList<PersistentOrderLine>());
 		}

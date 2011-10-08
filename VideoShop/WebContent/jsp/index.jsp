@@ -18,17 +18,17 @@
 <body>
 	<h1>Salespoint Framework</h1>
 	<p>
-	<sp:LoggedIn status="true">
+	<sp:loggedIn status="true">
 		<p> hello, ${loggedInUser.identifier}</p>
 		<p>
 			<c:url value="logout" var="logout"></c:url>
 			<a href="${logout}">Logout</a>
 		</p>
-	</sp:LoggedIn>
-	<sp:LoggedIn status="false">
+	</sp:loggedIn>
+	<sp:loggedIn status="false">
 	<jsp:include page="templates/login.jsp"></jsp:include>
 	<a href="register">Register account</a>
-	</sp:LoggedIn>
+	</sp:loggedIn>
 	</p>
 
 	<p>----</p>

@@ -36,6 +36,6 @@ public class Disc extends PersistentProductType {
 	}
 	
 	public Iterable<Comment> getComments() {
-		return Iterables.from(comments);
+		return Iterables.of(comments);
 	}
 }
