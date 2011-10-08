@@ -15,7 +15,7 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.PersistentProductType;
 import org.salespointframework.core.product.Product;
 import org.salespointframework.core.product.ProductFeature;
-import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.product.ProductTypeIdentifier;
 import org.salespointframework.core.product.ProductType;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
@@ -33,7 +33,7 @@ public class PersistentOrderLine implements OrderLine
 
 	@Embedded
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
-	private ProductIdentifier productIdentifier;
+	private ProductTypeIdentifier productIdentifier;
 
 	@ElementCollection
 	private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
@@ -57,7 +57,7 @@ public class PersistentOrderLine implements OrderLine
 	 * 
 	 * @param productIdentifier 
 	 */
-	public PersistentOrderLine(ProductIdentifier productIdentifier)
+	public PersistentOrderLine(ProductTypeIdentifier productIdentifier)
 	{
 		this(productIdentifier, Iterables.<ProductFeature>empty(), 1);
 	}
@@ -67,7 +67,7 @@ public class PersistentOrderLine implements OrderLine
 	 * @param productIdentifier
 	 * @param numberOrdered
 	 */
-	public PersistentOrderLine(ProductIdentifier productIdentifier, int numberOrdered)
+	public PersistentOrderLine(ProductTypeIdentifier productIdentifier, int numberOrdered)
 	{
 		this(productIdentifier, Iterables.<ProductFeature>empty(), numberOrdered);
 	}
@@ -77,7 +77,7 @@ public class PersistentOrderLine implements OrderLine
 	 * @param productIdentifier
 	 * @param productFeatures
 	 */
-	public PersistentOrderLine(ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures)
+	public PersistentOrderLine(ProductTypeIdentifier productIdentifier, Iterable<ProductFeature> productFeatures)
 	{
 		this(productIdentifier, productFeatures, 1);
 	}
@@ -88,7 +88,7 @@ public class PersistentOrderLine implements OrderLine
 	 * @param productFeatures
 	 * @param numberOrdered
 	 */
-	public PersistentOrderLine(ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures, int numberOrdered)
+	public PersistentOrderLine(ProductTypeIdentifier productIdentifier, Iterable<ProductFeature> productFeatures, int numberOrdered)
 	{
 
 		Objects.requireNonNull(productFeatures, "productFeatures");
@@ -128,7 +128,7 @@ public class PersistentOrderLine implements OrderLine
 	}
 
 	@Override
-	public final ProductIdentifier getProductIdentifier()
+	public final ProductTypeIdentifier getProductIdentifier()
 	{
 		return productIdentifier;
 	}

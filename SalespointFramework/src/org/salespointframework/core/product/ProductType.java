@@ -11,9 +11,9 @@ public interface ProductType
 {
 	/**
 	 * 
-	 * @return the unique {@link ProductIdentifier} of the ProductType
+	 * @return the unique {@link ProductTypeIdentifier} of the ProductType
 	 */
-	ProductIdentifier getIdentifier();
+	ProductTypeIdentifier getIdentifier();
 	
 	/**
 	 * 

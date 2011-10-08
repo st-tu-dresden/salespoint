@@ -18,7 +18,7 @@ import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.product.PersistentProduct_;
 import org.salespointframework.core.product.Product;
 import org.salespointframework.core.product.ProductFeature;
-import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.product.ProductTypeIdentifier;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
@@ -119,7 +119,7 @@ public final class PersistentInventory implements Inventory<PersistentProduct> {
 
 	@Override
 	public <E extends PersistentProduct> Iterable<E> find(Class<E> clazz,
-			ProductIdentifier productIdentifier) {
+			ProductTypeIdentifier productIdentifier) {
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 
@@ -141,7 +141,7 @@ public final class PersistentInventory implements Inventory<PersistentProduct> {
 
 	@Override
 	public <E extends PersistentProduct> Iterable<E> find(Class<E> clazz,
-			ProductIdentifier productIdentifier,
+			ProductTypeIdentifier productIdentifier,
 			Iterable<ProductFeature> productFeatures) {
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(productIdentifier, "productIdentifier");

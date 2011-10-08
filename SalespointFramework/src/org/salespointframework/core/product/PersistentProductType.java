@@ -20,7 +20,7 @@ import org.salespointframework.util.Objects;
 public class PersistentProductType implements ProductType, Comparable<PersistentProductType>
 {
 	@EmbeddedId
-	private ProductIdentifier productIdentifier = new ProductIdentifier();
+	private ProductTypeIdentifier productIdentifier = new ProductTypeIdentifier();
 
 	private String name;
 	private Money price;
@@ -99,7 +99,7 @@ public class PersistentProductType implements ProductType, Comparable<Persistent
 	}
 
 	@Override
-	public final ProductIdentifier getIdentifier()
+	public final ProductTypeIdentifier getIdentifier()
 	{
 		return productIdentifier;
 	}

@@ -17,12 +17,12 @@ import org.salespointframework.util.SalespointIdentifier;
  */
 @SuppressWarnings("serial")
 @Embeddable
-public final class ProductIdentifier extends SalespointIdentifier
+public final class ProductTypeIdentifier extends SalespointIdentifier
 {
 	/**
 	 * Creates a new unique identifier for {@link ProductType}s.
 	 */
-	public ProductIdentifier()
+	public ProductTypeIdentifier()
 	{
 		super();
 	}
@@ -34,7 +34,7 @@ public final class ProductIdentifier extends SalespointIdentifier
 	 *            The string representation of the identifier.
 	 */
 	@Deprecated
-	public ProductIdentifier(String productIdentifier)
+	public ProductTypeIdentifier(String productIdentifier)
 	{
 		super(productIdentifier);
 	}

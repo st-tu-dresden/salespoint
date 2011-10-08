@@ -2,7 +2,7 @@ package org.salespointframework.core.inventory;
 
 import org.salespointframework.core.product.Product;
 import org.salespointframework.core.product.ProductFeature;
-import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.product.ProductTypeIdentifier;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.util.ArgumentNullException;
 
@@ -65,20 +65,20 @@ public interface Inventory<T extends Product>
 	 * 
 	 * @param clazz type of the Product to be returned; has to implement
 	 *            <code>Product</code>
-	 * @param productIdentifier the {@link ProductIdentifier} of the Product to be returned
+	 * @param productIdentifier the {@link ProductTypeIdentifier} of the Product to be returned
 	 * @return an Iterable containing all Products of type clazz and the given productIdentifier
  	 * @throws ArgumentNullException if clazz or productType are null
 	 */
-	<E extends T> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier);
+	<E extends T> Iterable<E> find(Class<E> clazz, ProductTypeIdentifier productIdentifier);
 
 	/**
 	 * 
 	 * @param clazz type of the Product to be returned; has to implement
 	 *            <code>Product</code>
-	 * @param productIdentifier the {@link ProductIdentifier} of the Product to be returned
+	 * @param productIdentifier the {@link ProductTypeIdentifier} of the Product to be returned
 	 * @param productFeatures the ProductFeatures of the Product to be returned
-	 * @return an Iterable containing all {@link Product}s of type clazz, whose {@link ProductIdentifier} matches productIdentifier and whose {@link ProductFeature}s matches productFeatures
+	 * @return an Iterable containing all {@link Product}s of type clazz, whose {@link ProductTypeIdentifier} matches productIdentifier and whose {@link ProductFeature}s matches productFeatures
 	 * @throws ArgumentNullException if clazz or productType or productFeatures are null
 	 */
-	<E extends T> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures);
+	<E extends T> Iterable<E> find(Class<E> clazz, ProductTypeIdentifier productIdentifier, Iterable<ProductFeature> productFeatures);
 }

@@ -2,20 +2,20 @@ package org.salespointframework.web.spring.propertyeditors;
 
 import java.beans.PropertyEditorSupport;
 
-import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.product.ProductTypeIdentifier;
 
 /**
  * 
  * @author Paul Henke
  * 
  */
-public class ProductIdentifierEditor extends PropertyEditorSupport
+public class ProductTypeIdentifierEditor extends PropertyEditorSupport
 {
 	@Override
 	public void setAsText(String text)
 	{
 		@SuppressWarnings("deprecation")
-		ProductIdentifier productIdentifier = new ProductIdentifier(text);
+		ProductTypeIdentifier productIdentifier = new ProductTypeIdentifier(text);
 		setValue(productIdentifier);
 	}
 }

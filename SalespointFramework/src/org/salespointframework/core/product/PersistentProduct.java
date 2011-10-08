@@ -28,7 +28,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 
 	@Embedded
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
-	private ProductIdentifier productIdentifier;
+	private ProductTypeIdentifier productIdentifier;
 
 	private String name;
 	private Money price;
@@ -87,7 +87,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	}
 
 	@Override
-	public final ProductIdentifier getProductIdentifier()
+	public final ProductTypeIdentifier getProductIdentifier()
 	{
 		return productIdentifier;
 	}

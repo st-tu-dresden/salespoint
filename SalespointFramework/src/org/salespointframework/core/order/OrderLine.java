@@ -2,7 +2,7 @@ package org.salespointframework.core.order;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.ProductFeature;
-import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.product.ProductTypeIdentifier;
 import org.salespointframework.core.product.ProductType;
 
 /**
@@ -20,9 +20,9 @@ public interface OrderLine
 	OrderLineIdentifier getIdentifier();
 	/**
 	 * 
-	 * @return the {@link ProductIdentifier} of this orderline 
+	 * @return the {@link ProductTypeIdentifier} of this orderline 
 	 */
-	ProductIdentifier getProductIdentifier();
+	ProductTypeIdentifier getProductIdentifier();
 	/**
 	 * 
 	 * @return an Iterable of {@link ProductFeature}s from this orderline

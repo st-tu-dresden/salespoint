@@ -13,7 +13,7 @@ import javax.persistence.criteria.Root;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.product.PersistentProductType;
 import org.salespointframework.core.product.PersistentProductType_;
-import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.product.ProductTypeIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
@@ -64,7 +64,7 @@ public class PersistentCatalog implements Catalog<PersistentProductType>
 
 	
 	@Override
-	public final boolean remove(ProductIdentifier productIdentifier)
+	public final boolean remove(ProductTypeIdentifier productIdentifier)
 	{
 		// TODO catch exception
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
@@ -81,7 +81,7 @@ public class PersistentCatalog implements Catalog<PersistentProductType>
 	}
 
 	@Override
-	public final boolean contains(ProductIdentifier productIdentifier)
+	public final boolean contains(ProductTypeIdentifier productIdentifier)
 	{
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		EntityManager em = emf.createEntityManager();
@@ -89,7 +89,7 @@ public class PersistentCatalog implements Catalog<PersistentProductType>
 	}
 
 	@Override
-	public final <T extends PersistentProductType> T get(Class<T> clazz, ProductIdentifier productIdentifier)
+	public final <T extends PersistentProductType> T get(Class<T> clazz, ProductTypeIdentifier productIdentifier)
 	{
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
