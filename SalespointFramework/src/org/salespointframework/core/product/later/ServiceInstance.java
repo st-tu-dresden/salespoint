@@ -1,14 +1,14 @@
 package org.salespointframework.core.product.later;
 
 import org.joda.time.DateTime;
-import org.salespointframework.core.product.Product;
+import org.salespointframework.core.product.ProductInstance;
 
 /**
  * This is an interface which provides basic methods to handle ServiceInstances.
  * 
  */
 
-public interface ServiceInstance extends Product
+public interface ServiceInstance extends ProductInstance
 {
 	/**
 	 * Returns the Status of the ServiceInstance

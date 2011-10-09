@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import javax.persistence.Entity;
 
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.PersistentProduct;
+import org.salespointframework.core.product.PersistentProductInstance;
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Objects;
 
@@ -17,7 +17,7 @@ import org.salespointframework.util.Objects;
  */
 
 @Entity
-public class PersistentMeasuredProduct extends PersistentProduct implements MeasuredProduct
+public class PersistentMeasuredProductInstance extends PersistentProductInstance implements MeasuredProductInstance
 {
 	private Quantity quantity;
 	private Money unitPrice;
@@ -26,7 +26,7 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 	 * Parameterless constructor required for JPA. Do not use.
 	 */
 	@Deprecated
-	protected PersistentMeasuredProduct()
+	protected PersistentMeasuredProductInstance()
 	{
 	}
 
@@ -39,7 +39,7 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 	 *            The quantity of this MeasuredProductInstance
 	 */
 	//TODO for later: Quantity to <T extends Quantity>
-	public PersistentMeasuredProduct(MeasuredProductType productType, Quantity quantity)
+	public PersistentMeasuredProductInstance(MeasuredProductType productType, Quantity quantity)
 	{
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
@@ -57,7 +57,7 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as Integer Value.
 	 */
-	public PersistentMeasuredProduct(MeasuredProductType productType, int amount)
+	public PersistentMeasuredProductInstance(MeasuredProductType productType, int amount)
 	{
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
@@ -75,7 +75,7 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as BigDecimal Value.
 	 */
-	public PersistentMeasuredProduct(MeasuredProductType productType, BigDecimal amount)
+	public PersistentMeasuredProductInstance(MeasuredProductType productType, BigDecimal amount)
 	{
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
@@ -93,7 +93,7 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as Long Value.
 	 */
-	public PersistentMeasuredProduct(MeasuredProductType productType, long amount)
+	public PersistentMeasuredProductInstance(MeasuredProductType productType, long amount)
 	{
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
@@ -111,7 +111,7 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as Float Value.
 	 */
-	public PersistentMeasuredProduct(MeasuredProductType productType, float amount)
+	public PersistentMeasuredProductInstance(MeasuredProductType productType, float amount)
 	{
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
@@ -129,7 +129,7 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as Double Value.
 	 */
-	public PersistentMeasuredProduct(MeasuredProductType productType, double amount)
+	public PersistentMeasuredProductInstance(MeasuredProductType productType, double amount)
 	{
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
@@ -162,15 +162,15 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 		{
 			return true;
 		}
-		if (!(other instanceof PersistentMeasuredProduct))
+		if (!(other instanceof PersistentMeasuredProductInstance))
 		{
 			return false;
 		}
-		return this.equals((PersistentMeasuredProduct) other);
+		return this.equals((PersistentMeasuredProductInstance) other);
 	}
 
 	/**
-	 * Determines if the given {@link MeasuredProduct} is equal to this one or
+	 * Determines if the given {@link MeasuredProductInstance} is equal to this one or
 	 * not. Two MeasuredProductInstances are equal to each other, if their hash
 	 * code is the same.
 	 * 
@@ -181,7 +181,7 @@ public class PersistentMeasuredProduct extends PersistentProduct implements Meas
 	 *         <code>false</code> otherwise.
 	 */
 
-	public boolean equals(PersistentMeasuredProduct other)
+	public boolean equals(PersistentMeasuredProductInstance other)
 	{
 		if (other == null)
 		{

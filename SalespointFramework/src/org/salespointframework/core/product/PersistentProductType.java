@@ -20,7 +20,7 @@ import org.salespointframework.util.Objects;
 public class PersistentProductType implements ProductType, Comparable<PersistentProductType>
 {
 	@EmbeddedId
-	private ProductTypeIdentifier productIdentifier = new ProductTypeIdentifier();
+	private ProductTypeIdentifier productTypeIdentifier = new ProductTypeIdentifier();
 
 	private String name;
 	private Money price;
@@ -63,7 +63,7 @@ public class PersistentProductType implements ProductType, Comparable<Persistent
 		}
 		if (other instanceof PersistentProductType)
 		{
-			return this.productIdentifier.equals(((PersistentProductType)other).productIdentifier);
+			return this.productTypeIdentifier.equals(((PersistentProductType)other).productTypeIdentifier);
 		}
 		return false;
 	}
@@ -71,7 +71,7 @@ public class PersistentProductType implements ProductType, Comparable<Persistent
 	@Override
 	public final int hashCode()
 	{
-		return productIdentifier.hashCode();
+		return productTypeIdentifier.hashCode();
 	}
 	
 	@Override
@@ -101,7 +101,7 @@ public class PersistentProductType implements ProductType, Comparable<Persistent
 	@Override
 	public final ProductTypeIdentifier getIdentifier()
 	{
-		return productIdentifier;
+		return productTypeIdentifier;
 	}
 
 	@Override

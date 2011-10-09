@@ -2,12 +2,12 @@ package test.product;
 
 import javax.persistence.Entity;
 
-import org.salespointframework.core.product.PersistentProduct;
+import org.salespointframework.core.product.PersistentProductInstance;
 import org.salespointframework.core.product.ProductFeatureIdentifier;
 
 @SuppressWarnings("javadoc")
 @Entity
-public class Keks extends PersistentProduct {
+public class Keks extends PersistentProductInstance {
 	
 	@Deprecated
 	public Keks() {

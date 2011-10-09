@@ -64,12 +64,12 @@ public class PersistentCatalog implements Catalog<PersistentProductType>
 
 	
 	@Override
-	public final boolean remove(ProductTypeIdentifier productIdentifier)
+	public final boolean remove(ProductTypeIdentifier productTypeIdentifier)
 	{
 		// TODO catch exception
-		Objects.requireNonNull(productIdentifier, "productIdentifier");
+		Objects.requireNonNull(productTypeIdentifier, "productTypeIdentifier");
 		EntityManager em = emf.createEntityManager();
-		Object productType = em.find(PersistentProductType.class, productIdentifier);
+		Object productType = em.find(PersistentProductType.class, productTypeIdentifier);
 		if(productType != null)
 		{
 			em.remove(productType);
@@ -81,20 +81,20 @@ public class PersistentCatalog implements Catalog<PersistentProductType>
 	}
 
 	@Override
-	public final boolean contains(ProductTypeIdentifier productIdentifier)
+	public final boolean contains(ProductTypeIdentifier productTypeIdentifier)
 	{
-		Objects.requireNonNull(productIdentifier, "productIdentifier");
+		Objects.requireNonNull(productTypeIdentifier, "productTypeIdentifier");
 		EntityManager em = emf.createEntityManager();
-		return em.find(PersistentProductType.class, productIdentifier) != null;
+		return em.find(PersistentProductType.class, productTypeIdentifier) != null;
 	}
 
 	@Override
-	public final <T extends PersistentProductType> T get(Class<T> clazz, ProductTypeIdentifier productIdentifier)
+	public final <T extends PersistentProductType> T get(Class<T> clazz, ProductTypeIdentifier productTypeIdentifier)
 	{
 		Objects.requireNonNull(clazz, "clazz");
-		Objects.requireNonNull(productIdentifier, "productIdentifier");
+		Objects.requireNonNull(productTypeIdentifier, "productTypeIdentifier");
 		EntityManager em = emf.createEntityManager();
-		return em.find(clazz, productIdentifier);
+		return em.find(clazz, productTypeIdentifier);
 	}
 
 	@Override

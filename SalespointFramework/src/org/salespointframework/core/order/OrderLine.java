@@ -22,7 +22,7 @@ public interface OrderLine
 	 * 
 	 * @return the {@link ProductTypeIdentifier} of this orderline 
 	 */
-	ProductTypeIdentifier getProductIdentifier();
+	ProductTypeIdentifier getProductTypeIdentifier();
 	/**
 	 * 
 	 * @return an Iterable of {@link ProductFeature}s from this orderline

@@ -23,19 +23,19 @@ public interface Catalog<T extends ProductType>
 
 	/**
 	 * Removes a {@link ProductType} from the Catalog
-	 * @param productIdentifier the {@link ProductTypeIdentifier} of the {@link ProductType} to be removed
+	 * @param productTypeIdentifier the {@link ProductTypeIdentifier} of the {@link ProductType} to be removed
 	 * @return true if removal was successful, otherwise false
 	 * @throws ArgumentNullException if productIdentifier is null
 	 */
-	boolean remove(ProductTypeIdentifier productIdentifier);
+	boolean remove(ProductTypeIdentifier productTypeIdentifier);
 
 	/**
 	 * Checks if this Catalog contains a {@link ProductType}
-	 * @param productIdentifier the {@link ProductTypeIdentifier} of the {@link ProductType}
+	 * @param productTypeIdentifier the {@link ProductTypeIdentifier} of the {@link ProductType}
 	 * @return true if the catalog contains the ProductType, otherwise false
 	 * @throws ArgumentNullException if productIdentifier is null
 	 */
-	boolean contains(ProductTypeIdentifier productIdentifier);
+	boolean contains(ProductTypeIdentifier productTypeIdentifier);
 
 	//TODO mehrzahl?
 	/**
@@ -43,11 +43,11 @@ public interface Catalog<T extends ProductType>
 	 * all sub-types, identified by <code>productIdentifier</code>.
 	 * 
 	 * @param clazz type of the {@link ProductType} to be returned; has to implement {@link ProductType}
-	 * @param productIdentifier	the {@link ProductTypeIdentifier} of the {@link ProductType} to be returned
+	 * @param productTypeIdentifier	the {@link ProductTypeIdentifier} of the {@link ProductType} to be returned
 	 * @return the ProductType or a subtype if the productIdentifier matches, otherwise null 
 	 * @throws ArgumentNullException if clazz or productIdentifier are null
 	 */
-	<E extends T> E get(Class<E> clazz, ProductTypeIdentifier productIdentifier);
+	<E extends T> E get(Class<E> clazz, ProductTypeIdentifier productTypeIdentifier);
 
 	/**
 	 * TODO

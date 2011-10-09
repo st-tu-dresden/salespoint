@@ -17,7 +17,7 @@ import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderLine;
 import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.order.PersistentOrderManager;
-import org.salespointframework.core.product.Product;
+import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.product.ProductType;
 import org.salespointframework.core.time.DefaultTime;
 import org.salespointframework.core.time.Time;
@@ -44,7 +44,7 @@ public enum Shop {
 	private Calendar<? extends CalendarEntry> calendar;
 	private OrderManager<? extends Order<? extends OrderLine>, ? extends OrderLine> ordermanager;
 	private UserManager<? extends User> usermanager;
-	private Inventory<? extends Product> inventory;
+	private Inventory<? extends ProductInstance> inventory;
 	private Catalog<? extends ProductType> catalog;
 
 	/**
@@ -127,7 +127,7 @@ public enum Shop {
 	 * Gets the global {@link Inventory}
 	 * @return an Inventory instance
 	 */
-	public Inventory<? extends Product> getInventory()
+	public Inventory<? extends ProductInstance> getInventory()
 	{
 		return inventory;
 	}
@@ -137,7 +137,7 @@ public enum Shop {
 	 * @param inventory the Inventory to be set
 	 * @throws ArgumentNullException if inventory is null
 	 */
-	public void setInventory(Inventory<? extends Product> inventory)
+	public void setInventory(Inventory<? extends ProductInstance> inventory)
 	{
 		this.inventory = Objects.requireNonNull(inventory, "inventory");
 	}

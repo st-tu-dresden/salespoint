@@ -13,7 +13,7 @@ import javax.persistence.Entity;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.PersistentProductType;
-import org.salespointframework.core.product.Product;
+import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductTypeIdentifier;
 import org.salespointframework.core.product.ProductType;
@@ -33,7 +33,7 @@ public class PersistentOrderLine implements OrderLine
 
 	@Embedded
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
-	private ProductTypeIdentifier productIdentifier;
+	private ProductTypeIdentifier productTypeIdentifier;
 
 	@ElementCollection
 	private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
@@ -97,7 +97,7 @@ public class PersistentOrderLine implements OrderLine
 		{
 			throw new IllegalStateException("ProductType " + productIdentifier + " is unknown/not in catalog");
 		}
-		this.productIdentifier = productType.getIdentifier();
+		this.productTypeIdentifier = productType.getIdentifier();
 		this.productName = productType.getName();
 		this.productFeatures = Iterables.asSet(productFeatures);
 
@@ -128,14 +128,14 @@ public class PersistentOrderLine implements OrderLine
 	}
 
 	@Override
-	public final ProductTypeIdentifier getProductIdentifier()
+	public final ProductTypeIdentifier getProductTypeIdentifier()
 	{
-		return productIdentifier;
+		return productTypeIdentifier;
 	}
 
 	/**
 	 * Convenience method
-	 * @return the productname of the {@link Product} in this orderline
+	 * @return the productname of the {@link ProductInstance} in this orderline
 	 */
 	public final String getProductName()
 	{
@@ -180,6 +180,6 @@ public class PersistentOrderLine implements OrderLine
 	
 	@Override
 	public String toString() {
-		return productIdentifier.toString() + " x " + numberOrdered;
+		return productTypeIdentifier.toString() + " x " + numberOrdered;
 	}
 }

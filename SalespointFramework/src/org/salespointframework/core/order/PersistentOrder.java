@@ -29,7 +29,7 @@ import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderCompletionResult.OrderCompletionStatus;
-import org.salespointframework.core.product.PersistentProduct;
+import org.salespointframework.core.product.PersistentProductInstance;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
@@ -246,16 +246,16 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 
 		for (PersistentOrderLine orderLine : orderLines) {
 			remainingOrderLines.remove(orderLine);
-			Iterable<PersistentProduct> tempProducts = inventory.find(
-					PersistentProduct.class, orderLine.getProductIdentifier(),
+			Iterable<PersistentProductInstance> tempProducts = inventory.find(
+					PersistentProductInstance.class, orderLine.getProductTypeIdentifier(),
 					orderLine.getProductFeatures());
 
-			List<PersistentProduct> products = Iterables.asList(tempProducts);
+			List<PersistentProductInstance> products = Iterables.asList(tempProducts);
 
 			int numberOrdered = orderLine.getNumberOrdered();
 			int removed = 0;
 
-			for (PersistentProduct product : products) {
+			for (PersistentProductInstance product : products) {
 				boolean result = inventory.remove(product.getIdentifier());
 
 				if (!result) {
@@ -263,7 +263,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 					PersistentOrder order = new PersistentOrder(
 							this.userIdentifier, this.paymentMethod);
 					PersistentOrderLine pol = new PersistentOrderLine(
-							orderLine.getProductIdentifier(),
+							orderLine.getProductTypeIdentifier(),
 							orderLine.getProductFeatures(), numberOrdered
 									- removed);
 					order.orderLines.add(pol);

@@ -2,12 +2,12 @@ package test.product;
 
 import java.math.BigDecimal;
 
-import org.salespointframework.core.product.later.PersistentMeasuredProduct;
+import org.salespointframework.core.product.later.PersistentMeasuredProductInstance;
 import org.salespointframework.core.product.later.MeasuredProductType;
 import org.salespointframework.core.quantity.Quantity;
 
 @SuppressWarnings("javadoc")
-public class TestMeasuredProductInstance extends PersistentMeasuredProduct{
+public class TestMeasuredProductInstance extends PersistentMeasuredProductInstance{
 
 	@Deprecated
 	public TestMeasuredProductInstance(){

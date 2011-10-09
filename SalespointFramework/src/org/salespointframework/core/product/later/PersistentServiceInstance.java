@@ -8,7 +8,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
-import org.salespointframework.core.product.PersistentProduct;
+import org.salespointframework.core.product.PersistentProductInstance;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.Objects;
 
@@ -20,7 +20,7 @@ import org.salespointframework.util.Objects;
  */
 
 @Entity
-public class PersistentService extends PersistentProduct implements ServiceInstance
+public class PersistentServiceInstance extends PersistentProductInstance implements ServiceInstance
 {
 	// has embeddedid
 	@JoinColumn(name = "SERVICETYPE_ID", referencedColumnName = "ID")
@@ -36,7 +36,7 @@ public class PersistentService extends PersistentProduct implements ServiceInsta
 	 * Parameterless constructor required for JPA. Do not use.
 	 */
 	@Deprecated
-	protected PersistentService()
+	protected PersistentServiceInstance()
 	{
 	}
 
@@ -56,7 +56,7 @@ public class PersistentService extends PersistentProduct implements ServiceInsta
 	 * @throws IllegalArgumentException
 	 *             if the end is after the end of the ServiceType
 	 */
-	public PersistentService(ServiceType serviceType, DateTime start, DateTime end)
+	public PersistentServiceInstance(ServiceType serviceType, DateTime start, DateTime end)
 	{
 		super(serviceType);
 		this.serviceType = Objects.requireNonNull(serviceType, "serviceType");
@@ -171,11 +171,11 @@ public class PersistentService extends PersistentProduct implements ServiceInsta
 		{
 			return true;
 		}
-		if (!(other instanceof PersistentService))
+		if (!(other instanceof PersistentServiceInstance))
 		{
 			return false;
 		}
-		return this.equals((PersistentService) other);
+		return this.equals((PersistentServiceInstance) other);
 	}
 
 	/**
@@ -190,7 +190,7 @@ public class PersistentService extends PersistentProduct implements ServiceInsta
 	 *         <code>false</code> otherwise.
 	 */
 
-	public final boolean equals(PersistentService other)
+	public final boolean equals(PersistentServiceInstance other)
 	{
 		if (other == null)
 		{
