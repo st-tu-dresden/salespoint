@@ -5,7 +5,7 @@ import org.salespointframework.core.money.Money;
 
 /**
  * Implementing the <code>AccountancyEntry</code> interface allows objects to be
- * used with the <code>Accountancy</code>. An <code>AccountancyEntry</code>
+ * used with the {@link Accountancy}. An <code>AccountancyEntry</code>
  * consists at least of a date, some sort of description, and a monetary value
  * and a unique identifier
  * 
@@ -14,7 +14,7 @@ import org.salespointframework.core.money.Money;
  */
 public interface AccountancyEntry {
 	/**
-	 * @return the date, when this entry was posted.
+	 * @return the {@link DateTime} when this entry was posted.
 	 */
 	public DateTime getDate();
 
@@ -31,7 +31,7 @@ public interface AccountancyEntry {
 	public Money getValue();
 
 	/**
-	 * @return <code>AccountancyEntryIdentifier</code> to uniquely identify this
+	 * @return {@link AccountancyEntryIdentifier} to uniquely identify this
 	 *         entry.
 	 * 
 	 */

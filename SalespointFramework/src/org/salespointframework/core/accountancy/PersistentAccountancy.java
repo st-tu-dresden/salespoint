@@ -22,7 +22,7 @@ import org.salespointframework.util.Objects;
 
 /**
  * This class represents an accountancy. An accountancy aggregates of
- * <code>AccountancyEntries</code>.
+ * {@link AccountancyEntry}s.
  * 
  * @author Hannes Weisbach
  * @author Thomas Dedek
@@ -31,7 +31,7 @@ import org.salespointframework.util.Objects;
 public final class PersistentAccountancy implements
 		Accountancy<PersistentAccountancyEntry> {
 	/**
-	 * <code>EntityManager</code> which is used for this Accountancy. The
+	 * {@link EntityManager} which is used for this Accountancy. The
 	 * <code>Database.INSTANCE</code> has to be initialized first.
 	 */
 	private final EntityManagerFactory emf = Database.INSTANCE
@@ -48,7 +48,7 @@ public final class PersistentAccountancy implements
 	 * {@inheritDoc}
 	 * <p>
 	 * The new entry is persisted transparently into the underlying database.
-	 * Once an <code>AccountancyEntry</code> has been written to the database,
+	 * Once an {@link PersistentAccountancyEntry} has been written to the database,
 	 * it cannot be modified later on or added a second time. Doing so will
 	 * result in a runtime exception to be thrown.
 	 */
@@ -156,7 +156,7 @@ public final class PersistentAccountancy implements
 	}
 
 	/**
-	 * Adds multiple <code>AccountancyEntry</code>s to this
+	 * Adds multiple {@link AccountancyEntry}>s to this
 	 * <code>Accountancy</code> and persists them to underlying database. Once
 	 * an <code>AccountancyEntry</code> has been added to the persistence layer,
 	 * it cannot be modified or added again. Doing so would result in a runtime

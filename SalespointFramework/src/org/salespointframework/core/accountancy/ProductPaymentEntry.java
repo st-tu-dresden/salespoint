@@ -22,7 +22,7 @@ import org.salespointframework.util.Objects;
 // @Customizer(PersistentAccountancyEntryDescriptorCustomizer.class)
 public class ProductPaymentEntry extends PersistentAccountancyEntry {
 	/**
-	 * The <code>OrderIdentifier</code> to which this
+	 * The {@link OrderIdentifier} to which this
 	 * <code>ProductPaymentEntry</code> refers to.
 	 */
 	@Embedded
@@ -30,7 +30,7 @@ public class ProductPaymentEntry extends PersistentAccountancyEntry {
 	private OrderIdentifier orderIdentifier;
 
 	/**
-	 * The <code>UserIdentifier</code> to which this
+	 * The {@link UserIdentifier} to which this
 	 * <code>ProductPaymentEntry</code> refers to.
 	 */
 	@Embedded
@@ -48,19 +48,20 @@ public class ProductPaymentEntry extends PersistentAccountancyEntry {
 
 	/**
 	 * A <code>ProductPaymentEntry</code> is constructed for a specific
-	 * <code>OrderIdentifier</code> attached to it. This Entry saves also the
-	 * <code>UserIdentifier</code> and the specified amount that was payed.
+	 * {@link OrderIdentifier} attached to it. This Entry saves also the
+	 * {@link UserIdentifier} and the specified amount that was payed.
 	 * 
 	 * @param orderIdentifier
-	 *            the <code>OrderIdentifier</code> to which this
+	 *            the {@link OrderIdentifier} to which this
 	 *            <code>ProductPaymentEntry</code> will refer to.
 	 * @param userIdentifier
-	 *            the <code>UserIdentifier</code> to which this
+	 *            the {@link UserIdentifier} to which this
 	 *            <code>ProductPaymentEntry</code> will refer to.
 	 * @param amount
-	 *            the <code>Money</code> that was payed.
+	 *            the {@link Money} that was payed.
 	 * @param description
 	 *            textual description of the payment entry
+	 * @param paymentMethod TODO ergänzen
 	 */
 	public ProductPaymentEntry(OrderIdentifier orderIdentifier,
 			UserIdentifier userIdentifier, Money amount, String description,
@@ -75,14 +76,14 @@ public class ProductPaymentEntry extends PersistentAccountancyEntry {
 	}
 
 	/**
-	 * @return the <code>UserIdentifier</code>, to which this payment refers to
+	 * @return the {@link UserIdentifier}, to which this payment refers to
 	 */
 	public UserIdentifier getUserIdentifier() {
 		return userIdentifier;
 	}
 
 	/**
-	 * @return the <code>OrderIdentifier</code>, to which this payment refers to
+	 * @return the {@link OrderIdentifier}, to which this payment refers to
 	 */
 	public OrderIdentifier getOrderIdentifier() {
 		return orderIdentifier;
@@ -90,7 +91,7 @@ public class ProductPaymentEntry extends PersistentAccountancyEntry {
 
 	/**
 	 * 
-	 * @return the <code>PaymentMethod</code> chosen for the order belonging to
+	 * @return the {@link PaymentMethod} chosen for the order belonging to
 	 *         this <code>ProductPaymentEntry</code>
 	 */
 	public PaymentMethod getPaymentMethod() {

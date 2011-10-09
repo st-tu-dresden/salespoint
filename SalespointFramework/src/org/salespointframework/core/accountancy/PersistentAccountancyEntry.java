@@ -18,7 +18,7 @@ import org.salespointframework.util.Objects;
  * This class represents an accountancy entry. The
  * <code>PersistentAccountancyEntry</code> may be used directly, but it is
  * advisable to sub-class it, to define specific entry types for an accountancy,
- * for example a <code>ProductPaymentEntry</code>.
+ * for example a {@link ProductPaymentEntry}.
  * 
  * @author Hannes Weisbach
  * 
