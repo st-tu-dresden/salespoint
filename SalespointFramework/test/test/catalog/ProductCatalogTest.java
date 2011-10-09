@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.salespointframework.core.catalog.PersistentCatalog;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.PersistentProductType;
+import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.util.ArgumentNullException;
 
 import test.product.KeksType;
@@ -36,7 +36,7 @@ public class ProductCatalogTest {
 	public void emFindTest() {
 		catalog.add(keksType);
 		KeksType kT1 = catalog.get(KeksType.class, keksType.getIdentifier());
-		PersistentProductType kT2 = catalog.get(PersistentProductType.class, keksType.getIdentifier());
+		PersistentProduct kT2 = catalog.get(PersistentProduct.class, keksType.getIdentifier());
 		assertEquals(kT1,kT2);
 	}
 

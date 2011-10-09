@@ -2,8 +2,8 @@ package test.product;
 
 import java.math.BigDecimal;
 
-import org.salespointframework.core.product.later.PersistentMeasuredProductInstance;
-import org.salespointframework.core.product.later.MeasuredProductType;
+import org.salespointframework.core.product.measured.MeasuredProduct;
+import org.salespointframework.core.product.measured.PersistentMeasuredProductInstance;
 import org.salespointframework.core.quantity.Quantity;
 
 @SuppressWarnings("javadoc")
@@ -14,27 +14,27 @@ public class TestMeasuredProductInstance extends PersistentMeasuredProductInstan
 		
 	}
 	
-	public TestMeasuredProductInstance(MeasuredProductType productType, Quantity quantity) {
+	public TestMeasuredProductInstance(MeasuredProduct productType, Quantity quantity) {
 		super(productType, quantity);
 	}
 	
-	public TestMeasuredProductInstance(MeasuredProductType productType, int amount) {
+	public TestMeasuredProductInstance(MeasuredProduct productType, int amount) {
 		super(productType, amount);
 	}
 	
-	public TestMeasuredProductInstance(MeasuredProductType productType, float amount) {
+	public TestMeasuredProductInstance(MeasuredProduct productType, float amount) {
 		super(productType, amount);
 	}
 	
-	public TestMeasuredProductInstance(MeasuredProductType productType, long amount) {
+	public TestMeasuredProductInstance(MeasuredProduct productType, long amount) {
 		super(productType, amount);
 	}
 	
-	public TestMeasuredProductInstance(MeasuredProductType productType, BigDecimal amount) {
+	public TestMeasuredProductInstance(MeasuredProduct productType, BigDecimal amount) {
 		super(productType, amount);
 	}
 	
-	public TestMeasuredProductInstance(MeasuredProductType productType, double amount) {
+	public TestMeasuredProductInstance(MeasuredProduct productType, double amount) {
 		super(productType, amount);
 	}
 

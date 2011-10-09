@@ -1,4 +1,4 @@
-package org.salespointframework.core.product.later;
+package org.salespointframework.core.product.service;
 
 import java.util.Date;
 
@@ -8,7 +8,7 @@ import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.PersistentProductType;
+import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.Objects;
 
@@ -20,7 +20,7 @@ import org.salespointframework.util.Objects;
  */
 
 @Entity
-public class PersistentServiceType extends PersistentProductType implements ServiceType
+public class PersistentService extends PersistentProduct implements Service
 {
 	@Temporal(TemporalType.TIMESTAMP)
 	protected Date startOfPeriodOfOperation;
@@ -31,7 +31,7 @@ public class PersistentServiceType extends PersistentProductType implements Serv
 	 * Parameterless constructor required for JPA. Do not use.
 	 */
 	@Deprecated
-	protected PersistentServiceType()
+	protected PersistentService()
 	{
 	}
 
@@ -47,7 +47,7 @@ public class PersistentServiceType extends PersistentProductType implements Serv
 	 *            of the ServiceType is now.
 	 * 
 	 */
-	public PersistentServiceType(String name, Money price)
+	public PersistentService(String name, Money price)
 	{
 		super(name, price);
 		Objects.requireNonNull(name, "name");
@@ -78,7 +78,7 @@ public class PersistentServiceType extends PersistentProductType implements Serv
 	 * @throws IllegalArgumentException
 	 *             if the end is before now
 	 */
-	public PersistentServiceType(String name, Money price, DateTime start, DateTime end)
+	public PersistentService(String name, Money price, DateTime start, DateTime end)
 	{
 		super(name, price);
 		Objects.requireNonNull(name, "name");
@@ -128,15 +128,15 @@ public class PersistentServiceType extends PersistentProductType implements Serv
 		{
 			return true;
 		}
-		if (!(other instanceof ServiceType))
+		if (!(other instanceof Service))
 		{
 			return false;
 		}
-		return this.equals((ServiceType) other);
+		return this.equals((Service) other);
 	}
 
 	/**
-	 * Determines if the given {@link ServiceType} is equal to this one or not.
+	 * Determines if the given {@link Service} is equal to this one or not.
 	 * Two ServiceTypes are equal to each other, if their hash code is the same.
 	 * 
 	 * @param other
@@ -146,7 +146,7 @@ public class PersistentServiceType extends PersistentProductType implements Serv
 	 *         <code>false</code> otherwise.
 	 */
 
-	public final boolean equals(ServiceType other)
+	public final boolean equals(Service other)
 	{
 		if (other == null)
 		{

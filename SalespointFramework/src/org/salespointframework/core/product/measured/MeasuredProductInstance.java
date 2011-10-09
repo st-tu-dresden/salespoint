@@ -1,4 +1,4 @@
-package org.salespointframework.core.product.later;
+package org.salespointframework.core.product.measured;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.ProductInstance;

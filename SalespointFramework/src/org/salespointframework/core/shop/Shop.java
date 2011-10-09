@@ -18,7 +18,7 @@ import org.salespointframework.core.order.OrderLine;
 import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.order.PersistentOrderManager;
 import org.salespointframework.core.product.ProductInstance;
-import org.salespointframework.core.product.ProductType;
+import org.salespointframework.core.product.Product;
 import org.salespointframework.core.time.DefaultTime;
 import org.salespointframework.core.time.Time;
 import org.salespointframework.core.user.User;
@@ -45,7 +45,7 @@ public enum Shop {
 	private OrderManager<? extends Order<? extends OrderLine>, ? extends OrderLine> ordermanager;
 	private UserManager<? extends User> usermanager;
 	private Inventory<? extends ProductInstance> inventory;
-	private Catalog<? extends ProductType> catalog;
+	private Catalog<? extends Product> catalog;
 
 	/**
 	 * Gets the global {@link Accountancy}
@@ -165,7 +165,7 @@ public enum Shop {
 	 * Gets the global {@link Catalog}
 	 * @return a Catalog instance
 	 */
-	public Catalog<? extends ProductType> getCatalog()
+	public Catalog<? extends Product> getCatalog()
 	{
 		return catalog;
 	}
@@ -175,7 +175,7 @@ public enum Shop {
 	 * @param catalog the Catalog to be set
 	 * @throws ArgumentNullException if catalog is null
 	 */
-	public void setCatalog(Catalog<? extends ProductType> catalog)
+	public void setCatalog(Catalog<? extends Product> catalog)
 	{
 		this.catalog = catalog;
 	}

@@ -1,7 +1,7 @@
-package org.salespointframework.core.product.later;
+package org.salespointframework.core.product.measured;
 
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.ProductType;
+import org.salespointframework.core.product.Product;
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Quantity;
 
@@ -11,7 +11,7 @@ import org.salespointframework.core.quantity.Quantity;
  * 
  */
 
-public interface MeasuredProductType extends ProductType
+public interface MeasuredProduct extends Product
 {
 	/**
 	 * Returns the quantity of the MeasuredProductType, which is available
@@ -40,7 +40,7 @@ public interface MeasuredProductType extends ProductType
 	 * 
 	 * @param quantity
 	 *            which add to the
-	 *            {@link PersistentMeasuredProductType#quantityOnHand} of this
+	 *            {@link PersistentMeasuredProduct#quantityOnHand} of this
 	 *            MeasuredProductType
 	 */
 	public void addQuantity(Quantity quantity);
@@ -51,7 +51,7 @@ public interface MeasuredProductType extends ProductType
 	 * 
 	 * @param quantity
 	 *            which reduces the
-	 *            {@link PersistentMeasuredProductType#quantityOnHand} of the
+	 *            {@link PersistentMeasuredProduct#quantityOnHand} of the
 	 *            MeasuredProductType
 	 * @throws IllegalArgumentException
 	 *             The {@link IllegalArgumentException} will be thrown, if the

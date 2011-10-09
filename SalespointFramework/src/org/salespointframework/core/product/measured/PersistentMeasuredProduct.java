@@ -1,11 +1,11 @@
-package org.salespointframework.core.product.later;
+package org.salespointframework.core.product.measured;
 
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.PersistentProductType;
+import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Objects;
@@ -18,7 +18,7 @@ import org.salespointframework.util.Objects;
  */
 
 @Entity
-public class PersistentMeasuredProductType extends PersistentProductType implements MeasuredProductType
+public class PersistentMeasuredProduct extends PersistentProduct implements MeasuredProduct
 {
 	private Quantity quantityOnHand;
 	private Metric preferredMetric;
@@ -28,7 +28,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	 * Parameterless constructor required for JPA. Do not use.
 	 */
 	@Deprecated
-	protected PersistentMeasuredProductType()
+	protected PersistentMeasuredProduct()
 	{
 	}
 
@@ -43,7 +43,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	 *            The quantity of this MeasuredProductType, which is available.
 	 */
 	//TODO price to unitPrice
-	public PersistentMeasuredProductType(String name, Money price, Quantity quantityOnHand)
+	public PersistentMeasuredProduct(String name, Money price, Quantity quantityOnHand)
 	{
 		super(name, price);
 		Objects.requireNonNull(name, "name");
@@ -96,7 +96,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	 * 
 	 * @param amount
 	 *            of the quantity which add to the
-	 *            {@link PersistentMeasuredProductType#quantityOnHand} of this
+	 *            {@link PersistentMeasuredProduct#quantityOnHand} of this
 	 *            MeasuredProductType
 	 * @throws IllegalArgumentException
 	 *             The {@link IllegalArgumentException} will be thrown, if the
@@ -121,7 +121,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	 * 
 	 * @param amount
 	 *            of the quantity which add to the
-	 *            {@link PersistentMeasuredProductType#quantityOnHand} of this
+	 *            {@link PersistentMeasuredProduct#quantityOnHand} of this
 	 *            MeasuredProductType
 	 * @throws IllegalArgumentException
 	 *             The {@link IllegalArgumentException} will be thrown, if the
@@ -146,7 +146,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	 * 
 	 * @param amount
 	 *            of the quantity which add to the
-	 *            {@link PersistentMeasuredProductType#quantityOnHand} of this
+	 *            {@link PersistentMeasuredProduct#quantityOnHand} of this
 	 *            MeasuredProductType
 	 * @throws IllegalArgumentException
 	 *             The {@link IllegalArgumentException} will be thrown, if the
@@ -171,7 +171,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	 * 
 	 * @param amount
 	 *            of the quantity which add to the
-	 *            {@link PersistentMeasuredProductType#quantityOnHand} of this
+	 *            {@link PersistentMeasuredProduct#quantityOnHand} of this
 	 *            MeasuredProductType
 	 * @throws IllegalArgumentException
 	 *             The {@link IllegalArgumentException} will be thrown, if the
@@ -196,7 +196,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	 * 
 	 * @param amount
 	 *            of the quantity which add to the
-	 *            {@link PersistentMeasuredProductType#quantityOnHand} of this
+	 *            {@link PersistentMeasuredProduct#quantityOnHand} of this
 	 *            MeasuredProductType
 	 * @throws IllegalArgumentException
 	 *             The {@link IllegalArgumentException} will be thrown, if the
@@ -239,7 +239,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	 * 
 	 * @param amount
 	 *            of the quantity which reduces the
-	 *            {@link PersistentMeasuredProductType#quantityOnHand} of the
+	 *            {@link PersistentMeasuredProduct#quantityOnHand} of the
 	 *            MeasuredProductType
 	 * @throws IllegalArgumentException
 	 *             The {@link IllegalArgumentException} will be thrown, if the
@@ -272,7 +272,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	 * 
 	 * @param amount
 	 *            of the quantity which reduces the
-	 *            {@link PersistentMeasuredProductType#quantityOnHand} of the
+	 *            {@link PersistentMeasuredProduct#quantityOnHand} of the
 	 *            MeasuredProductType
 	 * @throws IllegalArgumentException
 	 *             The {@link IllegalArgumentException} will be thrown, if the
@@ -305,7 +305,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	 * 
 	 * @param amount
 	 *            of the quantity which reduces the
-	 *            {@link PersistentMeasuredProductType#quantityOnHand} of the
+	 *            {@link PersistentMeasuredProduct#quantityOnHand} of the
 	 *            MeasuredProductType
 	 * @throws IllegalArgumentException
 	 *             The {@link IllegalArgumentException} will be thrown, if the
@@ -338,7 +338,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	 * 
 	 * @param amount
 	 *            of the quantity which reduces the
-	 *            {@link PersistentMeasuredProductType#quantityOnHand} of the
+	 *            {@link PersistentMeasuredProduct#quantityOnHand} of the
 	 *            MeasuredProductType
 	 * @throws IllegalArgumentException
 	 *             The {@link IllegalArgumentException} will be thrown, if the
@@ -371,7 +371,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	 * 
 	 * @param amount
 	 *            of the quantity which reduces the
-	 *            {@link PersistentMeasuredProductType#quantityOnHand} of the
+	 *            {@link PersistentMeasuredProduct#quantityOnHand} of the
 	 *            MeasuredProductType
 	 * @throws IllegalArgumentException
 	 *             The {@link IllegalArgumentException} will be thrown, if the
@@ -409,15 +409,15 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 		{
 			return true;
 		}
-		if (!(other instanceof MeasuredProductType))
+		if (!(other instanceof MeasuredProduct))
 		{
 			return false;
 		}
-		return this.equals((MeasuredProductType) other);
+		return this.equals((MeasuredProduct) other);
 	}
 
 	/**
-	 * Determines if the given {@link MeasuredProductType} is equal to this one
+	 * Determines if the given {@link MeasuredProduct} is equal to this one
 	 * or not. Two MeasuredProductTypes are equal to each other, if their hash
 	 * code is the same.
 	 * 
@@ -428,7 +428,7 @@ public class PersistentMeasuredProductType extends PersistentProductType impleme
 	 *         <code>false</code> otherwise.
 	 */
 
-	public final boolean equals(MeasuredProductType other)
+	public final boolean equals(MeasuredProduct other)
 	{
 		if (other == null)
 		{

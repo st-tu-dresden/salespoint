@@ -1,14 +1,14 @@
-package org.salespointframework.core.product.later;
+package org.salespointframework.core.product.service;
 
 import org.joda.time.DateTime;
-import org.salespointframework.core.product.ProductType;
+import org.salespointframework.core.product.Product;
 
 /**
  * This is an interface which provides basic methods to handle ServiceTypes.
  * 
  */
 
-public interface ServiceType extends ProductType
+public interface Service extends Product
 {
 	/**
 	 * Returns the Start of the ServiceType

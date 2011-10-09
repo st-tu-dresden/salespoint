@@ -1,4 +1,4 @@
-package org.salespointframework.core.product.later;
+package org.salespointframework.core.product.measured;
 
 import java.math.BigDecimal;
 
@@ -39,7 +39,7 @@ public class PersistentMeasuredProductInstance extends PersistentProductInstance
 	 *            The quantity of this MeasuredProductInstance
 	 */
 	//TODO for later: Quantity to <T extends Quantity>
-	public PersistentMeasuredProductInstance(MeasuredProductType productType, Quantity quantity)
+	public PersistentMeasuredProductInstance(MeasuredProduct productType, Quantity quantity)
 	{
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
@@ -57,7 +57,7 @@ public class PersistentMeasuredProductInstance extends PersistentProductInstance
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as Integer Value.
 	 */
-	public PersistentMeasuredProductInstance(MeasuredProductType productType, int amount)
+	public PersistentMeasuredProductInstance(MeasuredProduct productType, int amount)
 	{
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
@@ -75,7 +75,7 @@ public class PersistentMeasuredProductInstance extends PersistentProductInstance
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as BigDecimal Value.
 	 */
-	public PersistentMeasuredProductInstance(MeasuredProductType productType, BigDecimal amount)
+	public PersistentMeasuredProductInstance(MeasuredProduct productType, BigDecimal amount)
 	{
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
@@ -93,7 +93,7 @@ public class PersistentMeasuredProductInstance extends PersistentProductInstance
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as Long Value.
 	 */
-	public PersistentMeasuredProductInstance(MeasuredProductType productType, long amount)
+	public PersistentMeasuredProductInstance(MeasuredProduct productType, long amount)
 	{
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
@@ -111,7 +111,7 @@ public class PersistentMeasuredProductInstance extends PersistentProductInstance
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as Float Value.
 	 */
-	public PersistentMeasuredProductInstance(MeasuredProductType productType, float amount)
+	public PersistentMeasuredProductInstance(MeasuredProduct productType, float amount)
 	{
 		super(productType);
 		Objects.requireNonNull(productType, "productType");
@@ -129,7 +129,7 @@ public class PersistentMeasuredProductInstance extends PersistentProductInstance
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as Double Value.
 	 */
-	public PersistentMeasuredProductInstance(MeasuredProductType productType, double amount)
+	public PersistentMeasuredProductInstance(MeasuredProduct productType, double amount)
 	{
 		super(productType);
 		Objects.requireNonNull(productType, "productType");

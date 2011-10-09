@@ -124,7 +124,7 @@ public class InventoryTest {
 		//featureSet.add(featureYellow);
 
 		Iterable<Keks> kekse = inventory.find(Keks.class,
-				keks.getProductTypeIdentifier(), featureSet);
+				keks.getProductIdentifier(), featureSet);
 		for (Keks k : kekse) {
 			System.out.println(k);
 			for (ProductFeature p : k.getProductFeatures()) {

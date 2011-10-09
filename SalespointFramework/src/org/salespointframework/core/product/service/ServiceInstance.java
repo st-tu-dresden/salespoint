@@ -1,4 +1,4 @@
-package org.salespointframework.core.product.later;
+package org.salespointframework.core.product.service;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.product.ProductInstance;
@@ -50,7 +50,7 @@ public interface ServiceInstance extends ProductInstance
 	 * @return the ServiceType of the ServiceInstance
 	 */
 
-	ServiceType getServiceType();
+	Service getServiceType();
 
 	/**
 	 * Cancels the ServiceInstance and so it will not be executed. The

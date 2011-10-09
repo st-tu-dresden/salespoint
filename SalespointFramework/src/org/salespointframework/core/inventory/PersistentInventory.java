@@ -18,7 +18,7 @@ import org.salespointframework.core.product.PersistentProductInstance;
 import org.salespointframework.core.product.PersistentProductInstance_;
 import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.product.ProductFeature;
-import org.salespointframework.core.product.ProductTypeIdentifier;
+import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
@@ -118,9 +118,9 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 
 	@Override
 	public <E extends PersistentProductInstance> Iterable<E> find(Class<E> clazz,
-			ProductTypeIdentifier productTypeIdentifier) {
+			ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(clazz, "clazz");
-		Objects.requireNonNull(productTypeIdentifier, "productTypeIdentifier");
+		Objects.requireNonNull(productIdentifier, "productIdentifier");
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -128,8 +128,8 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		Root<E> entry = cq.from(clazz);
 
 		Predicate p1 = cb.equal(
-				entry.get(PersistentProductInstance_.productTypeIdentifier),
-				productTypeIdentifier);
+				entry.get(PersistentProductInstance_.productIdentifier),
+				productIdentifier);
 
 		cq.where(p1);
 
@@ -140,10 +140,10 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 
 	@Override
 	public <E extends PersistentProductInstance> Iterable<E> find(Class<E> clazz,
-			ProductTypeIdentifier productTypeIdentifier,
+			ProductIdentifier productIdentifier,
 			Iterable<ProductFeature> productFeatures) {
 		Objects.requireNonNull(clazz, "clazz");
-		Objects.requireNonNull(productTypeIdentifier, "productTypeIdentifier");
+		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		Objects.requireNonNull(productFeatures, "productFeatures");
 
 		Set<ProductFeature> featureSet = Iterables.asSet(productFeatures);
@@ -154,8 +154,8 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		Root<E> entry = cq.from(clazz);
 
 		Predicate p1 = cb.equal(
-				entry.get(PersistentProductInstance_.productTypeIdentifier),
-				productTypeIdentifier);
+				entry.get(PersistentProductInstance_.productIdentifier),
+				productIdentifier);
 		// Predicate p2 = cb.equal(
 		// entry.<Set<ProductFeature>> get("productFeatures"), featureSet);
 
@@ -230,8 +230,8 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	
 	// TODO comment & test
 	@Override
-	public long count(ProductTypeIdentifier productTypeIdentifier) {
-		Objects.requireNonNull(productTypeIdentifier, "productTypeIdentifier");
+	public long count(ProductIdentifier productIdentifier) {
+		Objects.requireNonNull(productIdentifier, "productIdentifier");
 
 		EntityManager em = emf.createEntityManager();
 
@@ -239,7 +239,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		Root<PersistentProductInstance> entry = cq.from(PersistentProductInstance.class);
 
-		cq.where(cb.equal(entry.get(PersistentProductInstance_.productTypeIdentifier), productTypeIdentifier));
+		cq.where(cb.equal(entry.get(PersistentProductInstance_.productIdentifier), productIdentifier));
 		cq.select(cb.count(entry));
 
 		return em.createQuery(cq).getSingleResult();
@@ -249,8 +249,8 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	// FIXME QUICK HACK ENTFERNEN
 	// TODO comment
 	@Override
-	public long count(ProductTypeIdentifier productTypeIdentifier, Iterable<ProductFeature> productFeatures) {
-		return Iterables.asList(this.find(PersistentProductInstance.class, productTypeIdentifier, productFeatures)).size();
+	public long count(ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures) {
+		return Iterables.asList(this.find(PersistentProductInstance.class, productIdentifier, productFeatures)).size();
 	}
 	// FIXME QUICK HACK ENTFERNEN
 }

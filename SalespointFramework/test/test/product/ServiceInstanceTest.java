@@ -8,7 +8,7 @@ import static org.junit.Assert.assertTrue;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.later.ServiceDeliveryStatus;
+import org.salespointframework.core.product.service.ServiceDeliveryStatus;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.util.ArgumentNullException;
 

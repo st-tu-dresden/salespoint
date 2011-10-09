@@ -2,7 +2,7 @@ package org.salespointframework.core.inventory;
 
 import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.product.ProductFeature;
-import org.salespointframework.core.product.ProductTypeIdentifier;
+import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.util.ArgumentNullException;
 
@@ -65,25 +65,25 @@ public interface Inventory<T extends ProductInstance>
 	 * 
 	 * @param clazz type of the Product to be returned; has to implement
 	 *            <code>Product</code>
-	 * @param productTypeIdentifier the {@link ProductTypeIdentifier} of the Product to be returned
+	 * @param productIdentifier the {@link ProductIdentifier} of the Product to be returned
 	 * @return an {@link Iterable} containing all Products of type clazz and the given serialNumber
- 	 * @throws ArgumentNullException if clazz or productTypeIdentifier are null
+ 	 * @throws ArgumentNullException if clazz or productIdentifier are null
 	 */
-	<E extends T> Iterable<E> find(Class<E> clazz, ProductTypeIdentifier productTypeIdentifier);
+	<E extends T> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier);
 
 	/**
 	 * 
 	 * @param clazz type of the Product to be returned; has to implement
 	 *            <code>Product</code>
-	 * @param productTypeIdentifier the {@link ProductTypeIdentifier} of the Product to be returned
+	 * @param productIdentifier the {@link ProductIdentifier} of the Product to be returned
 	 * @param productFeatures the {@link ProductFeature} of the Product to be returned
-	 * @return an {@link Iterable} containing all {@link ProductInstance}s of type clazz, whose {@link ProductTypeIdentifier} matches productTypeIdentifier and whose {@link ProductFeature}s matches productFeatures
-	 * @throws ArgumentNullException if clazz or productTypeIdentifier or productFeatures are null
+	 * @return an {@link Iterable} containing all {@link ProductInstance}s of type clazz, whose {@link ProductIdentifier} matches productIdentifier and whose {@link ProductFeature}s matches productFeatures
+	 * @throws ArgumentNullException if clazz or productIdentifier or productFeatures are null
 	 */
-	<E extends T> Iterable<E> find(Class<E> clazz, ProductTypeIdentifier productTypeIdentifier, Iterable<ProductFeature> productFeatures);
+	<E extends T> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures);
 	
 	// TODO comment
-	long count(ProductTypeIdentifier productTypeIdentifier);
+	long count(ProductIdentifier productIdentifier);
 	// TODO comment
-	long count(ProductTypeIdentifier productTypeIdentifier, Iterable<ProductFeature> productFeatures);
+	long count(ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures);
 }

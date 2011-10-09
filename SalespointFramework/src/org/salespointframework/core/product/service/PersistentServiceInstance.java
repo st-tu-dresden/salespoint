@@ -1,4 +1,4 @@
-package org.salespointframework.core.product.later;
+package org.salespointframework.core.product.service;
 
 import java.util.Date;
 
@@ -24,7 +24,7 @@ public class PersistentServiceInstance extends PersistentProductInstance impleme
 {
 	// has embeddedid
 	@JoinColumn(name = "SERVICETYPE_ID", referencedColumnName = "ID")
-	private ServiceType serviceType;
+	private Service serviceType;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date scheduledStart;
@@ -44,7 +44,7 @@ public class PersistentServiceInstance extends PersistentProductInstance impleme
 	 * Parameterized constructor with
 	 * 
 	 * @param serviceType
-	 *            The {@link ServiceType} of this ServiceInstance
+	 *            The {@link Service} of this ServiceInstance
 	 * @param start
 	 *            The start time of the ServiceInstance.
 	 * @param end
@@ -56,7 +56,7 @@ public class PersistentServiceInstance extends PersistentProductInstance impleme
 	 * @throws IllegalArgumentException
 	 *             if the end is after the end of the ServiceType
 	 */
-	public PersistentServiceInstance(ServiceType serviceType, DateTime start, DateTime end)
+	public PersistentServiceInstance(Service serviceType, DateTime start, DateTime end)
 	{
 		super(serviceType);
 		this.serviceType = Objects.requireNonNull(serviceType, "serviceType");
@@ -155,7 +155,7 @@ public class PersistentServiceInstance extends PersistentProductInstance impleme
 	}
 
 	@Override
-	public ServiceType getServiceType()
+	public Service getServiceType()
 	{
 		return this.serviceType;
 	}

@@ -27,7 +27,7 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 
 	@Embedded
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
-	private ProductTypeIdentifier productTypeIdentifier;
+	private ProductIdentifier productIdentifier;
 
 	private String name;
 	private Money price;
@@ -45,13 +45,13 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 	
 	/**
 	 * Creates a new PersistentProduct with a specified {@link ProductFeature}set
-	 * @param productType the {@link ProductType} of the PersistentProduct
+	 * @param productType the {@link Product} of the PersistentProduct
 	 * @param productFeatureIdentifiers an optional  of Tuples of {@link ProductFeature}s for the PersistentProduct		//TODO STIMMT NICHT MEHR wegen varargs
 	 */
-	public PersistentProductInstance(ProductType productType, ProductFeatureIdentifier... productFeatureIdentifiers)
+	public PersistentProductInstance(Product productType, ProductFeatureIdentifier... productFeatureIdentifiers)
 	{
 		Objects.requireNonNull(productFeatureIdentifiers, "productFeatureIdentifiers");
-		this.productTypeIdentifier = Objects.requireNonNull(productType, "productType").getIdentifier();
+		this.productIdentifier = Objects.requireNonNull(productType, "productType").getIdentifier();
 		this.name = productType.getName();
 		this.price = productType.getPrice(); // TODO CLONE?
 		
@@ -65,9 +65,9 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 	}
 	
 	@Override
-	public final ProductTypeIdentifier getProductTypeIdentifier()
+	public final ProductIdentifier getProductIdentifier()
 	{
-		return productTypeIdentifier;
+		return productIdentifier;
 	}
 
 	@Override

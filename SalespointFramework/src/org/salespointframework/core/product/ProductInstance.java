@@ -22,9 +22,9 @@ public interface ProductInstance
 	
 	/**
 	 * 
-	 * @return the {@link ProductTypeIdentifier} of the {@link ProductType} of the Product
+	 * @return the {@link ProductIdentifier} of the {@link Product} of the Product
 	 */
-	ProductTypeIdentifier getProductTypeIdentifier();
+	ProductIdentifier getProductIdentifier();
 	
 	/**
 	 * 

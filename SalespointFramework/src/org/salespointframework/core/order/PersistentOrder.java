@@ -247,7 +247,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		for (PersistentOrderLine orderLine : orderLines) {
 			remainingOrderLines.remove(orderLine);
 			Iterable<PersistentProductInstance> tempProducts = inventory.find(
-					PersistentProductInstance.class, orderLine.getProductTypeIdentifier(),
+					PersistentProductInstance.class, orderLine.getProductIdentifier(),
 					orderLine.getProductFeatures());
 
 			List<PersistentProductInstance> products = Iterables.asList(tempProducts);
@@ -263,7 +263,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 					PersistentOrder order = new PersistentOrder(
 							this.userIdentifier, this.paymentMethod);
 					PersistentOrderLine pol = new PersistentOrderLine(
-							orderLine.getProductTypeIdentifier(),
+							orderLine.getProductIdentifier(),
 							orderLine.getProductFeatures(), numberOrdered
 									- removed);
 					order.orderLines.add(pol);

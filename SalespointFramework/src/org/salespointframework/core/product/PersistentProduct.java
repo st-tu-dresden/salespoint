@@ -3,10 +3,7 @@ package org.salespointframework.core.product;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
@@ -17,7 +14,7 @@ import org.salespointframework.util.Objects;
 /**
  * TODO
  * @author Paul Henke
- *
+ * 
  */
 @Entity
 public class PersistentProduct implements Product, Comparable<PersistentProduct>
@@ -25,15 +22,14 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	@EmbeddedId
 	private ProductIdentifier productIdentifier = new ProductIdentifier();
 
-	@Embedded
-	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
-	private ProductTypeIdentifier productTypeIdentifier;
-
 	private String name;
 	private Money price;
 
 	@ElementCollection
 	private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
+
+	@ElementCollection
+	private Set<String> categories = new HashSet<String>();
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
@@ -42,50 +38,16 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	protected PersistentProduct()
 	{
 	}
-	
+
 	/**
-	 * Creates a new PersistentProduct with a specified {@link ProductFeature}set
-	 * @param productType the {@link ProductType} of the PersistentProduct
-	 * @param productFeatureIdentifiers an optional  of Tuples of {@link ProductFeature}s for the PersistentProduct		//TODO STIMMT NICHT MEHR wegen varargs
+	 * Creates a new PersistentProductType
+	 * @param name the name of the PersistentProductType
+	 * @param price the price of the PersistentProductType
 	 */
-	public PersistentProduct(ProductType productType, ProductFeatureIdentifier... productFeatureIdentifiers)
+	public PersistentProduct(String name, Money price)
 	{
-		Objects.requireNonNull(productFeatureIdentifiers, "productFeatureIdentifiers");
-		this.productTypeIdentifier = Objects.requireNonNull(productType, "productType").getIdentifier();
-		this.name = productType.getName();
-		this.price = productType.getPrice(); // TODO CLONE?
-		
-		for(ProductFeatureIdentifier pfi : productFeatureIdentifiers) {
-			ProductFeature productFeature = productType.getProductFeature(pfi);
-			productFeatures.add(productFeature);
-			// TODO preis mit einberechnen :D
-			// klärungsbedarf bei %%%%%
-		}
-		
-	}
-	
-	@Override
-	public final ProductTypeIdentifier getProductTypeIdentifier()
-	{
-		return productTypeIdentifier;
-	}
-
-	@Override
-	public Money getPrice()
-	{
-		return price;
-	}
-
-	@Override
-	public final ProductIdentifier getIdentifier()
-	{
-		return productIdentifier;
-	}
-
-	@Override
-	public final Iterable<ProductFeature> getProductFeatures()
-	{
-		return Iterables.of(productFeatures);
+		this.name = Objects.requireNonNull(name, "name");
+		this.price = Objects.requireNonNull(price, "price");
 	}
 
 	@Override
@@ -111,7 +73,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	{
 		return productIdentifier.hashCode();
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -119,8 +81,93 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	}
 
 	@Override
+	public final String getName()
+	{
+		return name;
+	}
+
+	@Override
+	public Money getPrice()
+	{
+		return price;
+	}
+
+	@Override
+	public final Iterable<ProductFeature> getProductFeatures()
+	{
+		return Iterables.of(productFeatures);
+	}
+
+	@Override
+	public final ProductIdentifier getIdentifier()
+	{
+		return productIdentifier;
+	}
+
+	@Override
+	public final boolean addProductFeature(ProductFeature productFeature)
+	{
+		Objects.requireNonNull(productFeature, "productFeature");
+		return productFeatures.add(productFeature);
+	}
+
+	
+	// TODO remove und get DRYen?
+	
+	@Override
+	public final boolean removeProductFeature(ProductFeatureIdentifier productFeatureIdentifier)
+	{
+		Objects.requireNonNull(productFeatureIdentifier, "productFeatureIdentifier");
+		
+		ProductFeature temp = null;
+		for (ProductFeature pf : productFeatures) {
+			if (pf.getIdentifier().equals(productFeatureIdentifier)) {
+				temp = pf;
+				break;
+			}
+		}
+		return productFeatures.remove(temp);
+	}
+	
+	@Override
+	public ProductFeature getProductFeature(ProductFeatureIdentifier productFeatureIdentifier) {
+		Objects.requireNonNull(productFeatureIdentifier, "productFeatureIdentifier");
+		
+		ProductFeature productFeature = null;
+		for (ProductFeature pf : productFeatures) {
+			if (pf.getIdentifier().equals(productFeatureIdentifier)) {
+				productFeature = pf;
+				break;
+			}
+		}
+		return productFeature;
+	}
+
+	@Override
+	public final boolean addCategory(String category)
+	{
+		Objects.requireNonNull(category, "category");
+		return categories.add(category);
+	}
+
+	@Override
+	public final boolean removeCategory(String category)
+	{
+		Objects.requireNonNull(category, "category");
+		return categories.remove(category);
+	}
+
+	@Override
+	public final Iterable<String> getCategories()
+	{
+		return Iterables.of(categories);
+	}
+
+	@Override
 	public int compareTo(PersistentProduct other)
 	{
 		return this.name.compareTo(other.name);
 	}
+
+
 }

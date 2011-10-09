@@ -15,8 +15,8 @@ import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderLine;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderLine;
-import org.salespointframework.core.product.PersistentProductType;
-import org.salespointframework.core.product.ProductTypeIdentifier;
+import org.salespointframework.core.product.PersistentProduct;
+import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
@@ -41,7 +41,7 @@ public class OrderLineTest {
 
 	@Before
 	public void before() {
-		PersistentProductType keksType = new KeksType("OrderLine Keks " + keksCounter++, Money.ZERO);
+		PersistentProduct keksType = new KeksType("OrderLine Keks " + keksCounter++, Money.ZERO);
 		
 		PersistentCatalog catalog = new PersistentCatalog();
 		catalog.add(keksType);
@@ -87,6 +87,6 @@ public class OrderLineTest {
 	@Test(expected=IllegalArgumentException.class)
 	@Ignore
 	public void numberOrderedNegativeTest() {
-		new PersistentOrderLine(new ProductTypeIdentifier(), -1337);
+		new PersistentOrderLine(new ProductIdentifier(), -1337);
 	}
 }

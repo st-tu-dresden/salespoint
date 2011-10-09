@@ -2,8 +2,8 @@ package org.salespointframework.core.order;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.ProductFeature;
-import org.salespointframework.core.product.ProductTypeIdentifier;
-import org.salespointframework.core.product.ProductType;
+import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.product.Product;
 
 /**
  * TODO
@@ -20,9 +20,9 @@ public interface OrderLine
 	OrderLineIdentifier getIdentifier();
 	/**
 	 * 
-	 * @return the {@link ProductTypeIdentifier} of this orderline 
+	 * @return the {@link ProductIdentifier} of this orderline 
 	 */
-	ProductTypeIdentifier getProductTypeIdentifier();
+	ProductIdentifier getProductIdentifier();
 	/**
 	 * 
 	 * @return an Iterable of {@link ProductFeature}s from this orderline
@@ -30,7 +30,7 @@ public interface OrderLine
 	Iterable<ProductFeature> getProductFeatures();
 	/**
 	 * 
-	 * @return the number of ordered {@link ProductType}s
+	 * @return the number of ordered {@link Product}s
 	 */
 	int getNumberOrdered();
 	/**
