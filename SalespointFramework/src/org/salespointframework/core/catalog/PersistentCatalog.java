@@ -105,8 +105,6 @@ public class PersistentCatalog implements Catalog<PersistentProductType>
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(clazz);
-		Root<T> entry = cq.from(clazz);
-		cq.where(entry.type().in(clazz));
 		TypedQuery<T> tq = em.createQuery(cq);
 
 		return Iterables.of(tq.getResultList());
@@ -122,12 +120,7 @@ public class PersistentCatalog implements Catalog<PersistentProductType>
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(clazz);
 		Root<T> entry = cq.from(clazz);
-
-		Predicate p1 = entry.type().in(clazz);
-		Predicate p2 = cb.like(entry.get(PersistentProductType_.name), name);
-
-		cq.where(p1, p2);
-
+		cq.where(cb.like(entry.get(PersistentProductType_.name), name));
 		TypedQuery<T> tq = em.createQuery(cq);
 
 		return Iterables.of(tq.getResultList());
@@ -143,7 +136,7 @@ public class PersistentCatalog implements Catalog<PersistentProductType>
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(clazz);
 		Root<T> entry = cq.from(clazz);
-		Predicate p1 = entry.type().in(clazz);
+
 		Predicate p2 = cb.isMember(category, entry.<Set<String>> get("categories"));
 
 		// Overload Resolution fail?
@@ -153,7 +146,7 @@ public class PersistentCatalog implements Catalog<PersistentProductType>
 		// collection = PersistentProductType_.categories;
 		// Expression<Set<String>> ex = entry.get(collection);
 
-		cq.where(p1, p2);
+		cq.where(p2);
 		TypedQuery<T> tq = em.createQuery(cq);
 
 		return Iterables.of(tq.getResultList());
