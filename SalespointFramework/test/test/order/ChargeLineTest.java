@@ -9,9 +9,8 @@ import org.junit.Test;
 import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.order.ChargeLine;
 import org.salespointframework.core.order.Order;
-import org.salespointframework.core.order.PersistentChargeLine;
+import org.salespointframework.core.order.ChargeLine;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.User;
@@ -24,7 +23,7 @@ public class ChargeLineTest {
 	private User user;
 	@SuppressWarnings("rawtypes")
 	private Order order;
-	private PersistentChargeLine chargeLine;
+	private ChargeLine chargeLine;
 	 
 	@BeforeClass
 	public static void beforeClass() {
@@ -35,7 +34,7 @@ public class ChargeLineTest {
 	public void before() {
 		user = new PersistentUser(new UserIdentifier(), "");
 		order = new PersistentOrder(user.getIdentifier(), Cash.CASH);
-		chargeLine = new PersistentChargeLine(Money.ZERO, "gaaar nix");
+		chargeLine = new ChargeLine(Money.ZERO, "gaaar nix");
 	}
 	
 	@Test(expected=ArgumentNullException.class)
@@ -73,8 +72,8 @@ public class ChargeLineTest {
 	@Test
 	public void foo() {
 		order.addChargeLine(chargeLine);
-		Iterable<PersistentChargeLine> iter = order.getChargeLines();
-		for(PersistentChargeLine c : iter) {
+		Iterable<ChargeLine> iter = order.getChargeLines();
+		for(ChargeLine c : iter) {
 			System.out.println(c.getIdentifier());
 		}
 	}

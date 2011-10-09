@@ -53,28 +53,28 @@ public interface Order<O extends OrderLine>
 	OrderIdentifier getIdentifier();
 	
 	/**
-	 * Adds a new {@link PersistentChargeLine} to the order
+	 * Adds a new {@link ChargeLine} to the order
 	 * A ChargeLine can only be added if the {@link OrderStatus} is OPEN
-	 * @param chargeLine the {@link PersistentChargeLine} to be added
-	 * @return true if this Order did not already contain this {@link PersistentChargeLine}, otherwise false
+	 * @param chargeLine the {@link ChargeLine} to be added
+	 * @return true if this Order did not already contain this {@link ChargeLine}, otherwise false
 	 * @throws ArgumentNullException if chargeLine is null
 	 */
-	boolean addChargeLine(PersistentChargeLine chargeLine);
+	boolean addChargeLine(ChargeLine chargeLine);
 	
 	/**
-	 * Removes a {@link PersistentChargeLine} from this order
+	 * Removes a {@link ChargeLine} from this order
 	 * A ChargeLine can only be removed if the {@link OrderStatus} is OPEN
-	 * @param chargeLineIdentifier the identifier of the {@link PersistentChargeLine} to be removed
-	 * @return true if this order contained the {@link PersistentChargeLine}, otherwise false
+	 * @param chargeLineIdentifier the identifier of the {@link ChargeLine} to be removed
+	 * @return true if this order contained the {@link ChargeLine}, otherwise false
 	 * @throws ArgumentNullException if chargeLineIdentifier is null
 	 */
 	boolean removeChargeLine(ChargeLineIdentifier chargeLineIdentifier);
 	
 	/**
 	 * 
-	 * @return an Iterable of all {@link PersistentChargeLine}s from this order
+	 * @return an Iterable of all {@link ChargeLine}s from this order
 	 */
-	Iterable<PersistentChargeLine> getChargeLines();
+	Iterable<ChargeLine> getChargeLines();
 
 	/**
 	 * Returns the status [OPEN|CANCELLED|PAYED|COMPLETED] of this order
@@ -96,21 +96,21 @@ public interface Order<O extends OrderLine>
 	
 	
 	/**
-	 * Calculates the total price of this Order. The number of ordered objects ({@link OrderLine}s) and {@link PersistentChargeLine}s are included in the calculation.
+	 * Calculates the total price of this Order. The number of ordered objects ({@link OrderLine}s) and {@link ChargeLine}s are included in the calculation.
 	 * 
 	 * @return the total price of this Order
 	 */
 	Money getTotalPrice();
 	
 	/**
-	 * Calculates the price of all ordered objects ({@link OrderLine}s) from this Order without {@link PersistentChargeLine}s.
+	 * Calculates the price of all ordered objects ({@link OrderLine}s) from this Order without {@link ChargeLine}s.
 	 * 
 	 * @return the cumulative price of ordered objects from this Order
 	 */
 	Money getOrderedLinesPrice();
 	
 	/**
-	 * Calculates the price of all {@link PersistentChargeLine}s from this Order.
+	 * Calculates the price of all {@link ChargeLine}s from this Order.
 	 * 
 	 * @return the charged price of this Order
 	 */

@@ -67,7 +67,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	private Set<PersistentOrderLine> orderLines = new HashSet<PersistentOrderLine>();
 
 	@ElementCollection
-	private Set<PersistentChargeLine> chargeLines = new HashSet<PersistentChargeLine>();
+	private Set<ChargeLine> chargeLines = new HashSet<ChargeLine>();
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
@@ -116,7 +116,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	}
 
 	@Override
-	public final boolean addChargeLine(PersistentChargeLine chargeLine) {
+	public final boolean addChargeLine(ChargeLine chargeLine) {
 		Objects.requireNonNull(chargeLine, "chargeLine");
 		if (orderStatus != OrderStatus.OPEN) {
 			return false;
@@ -131,8 +131,8 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		if (orderStatus != OrderStatus.OPEN) {
 			return false;
 		}
-		PersistentChargeLine temp = null;
-		for (PersistentChargeLine pcl : chargeLines) {
+		ChargeLine temp = null;
+		for (ChargeLine pcl : chargeLines) {
 			if (pcl.getIdentifier().equals(chargeLineIdentifier)) {
 				temp = pcl;
 				break;
@@ -147,7 +147,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	}
 
 	@Override
-	public final Iterable<PersistentChargeLine> getChargeLines() {
+	public final Iterable<ChargeLine> getChargeLines() {
 		return Iterables.of(chargeLines);
 	}
 
@@ -183,7 +183,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	@Override
 	public final Money getChargeLinesPrice() {
 		Money price = Money.ZERO;
-		for(PersistentChargeLine chargeLine : chargeLines) {
+		for(ChargeLine chargeLine : chargeLines) {
 			price = price.add(chargeLine.getPrice());
 		}
 		return price;

@@ -1,38 +1,99 @@
 package org.salespointframework.core.order;
 
+import javax.persistence.Embeddable;
+
 import org.salespointframework.core.money.Money;
+import org.salespointframework.util.Objects;
 
 /**
- * ChargeLine interface
  * TODO
- * 
  * @author Thomas Dedek
  * @author Paul Henke
  * 
  */
-@Deprecated	//TODO delete and rename PersistentChargeLine to ChargeLine
-public interface ChargeLine
+@Embeddable
+public final class ChargeLine
 {
+	private final ChargeLineIdentifier chargeLineIdentifier = new ChargeLineIdentifier();
+
+	private final Money amount;
+	private final String description;
+
 	/**
-	 * @return the {@link ChargeLineIdentifier} to uniquely identify this chargeline
+	 * Parameterless constructor required for JPA. Do not use.
 	 */
-	ChargeLineIdentifier getIdentifier();
-	
+	@Deprecated
+	protected ChargeLine()
+	{
+		amount = null;
+		description = null;
+	}
+
+	/**
+	 * Creates a new PersistentChargeLine
+	 * @param amount the value of the ChargeLine
+	 * @param description a description of the ChargeLine
+	 */
+	public ChargeLine(Money amount, String description)
+	{
+		this.amount = Objects.requireNonNull(amount, "amount");
+		this.description = Objects.requireNonNull(description, "description");
+	}
+
 	/**
 	 *  
 	 * @return the value of the chargeline
 	 */
-	Money getPrice();
+
+	public Money getPrice()
+	{
+		return amount;
+	}
+
 	/**
 	 * 
 	 * @return the description of the chargeline
 	 */
-	String getDescription();
-	
-	// TODO notwendig?
+	public String getDescription()
+	{
+		return description;
+	}
+
 	/**
-	 * 
-	 * @return a comment of the chargeline
+	 * @return the {@link ChargeLineIdentifier} to uniquely identify this chargeline
 	 */
-	String getComment();
+	public ChargeLineIdentifier getIdentifier()
+	{
+		return chargeLineIdentifier;
+	}
+
+	@Override
+	public boolean equals(Object other)
+	{
+		if (other == null)
+		{
+			return false;
+		}
+		if (other == this)
+		{
+			return true;
+		}
+		if (other instanceof ChargeLine)
+		{
+			return this.chargeLineIdentifier.equals(((ChargeLine)other).chargeLineIdentifier);
+		}
+		return false;
+	}
+
+	@Override
+	public final int hashCode()
+	{
+		return this.chargeLineIdentifier.hashCode();
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Amount: " + amount.toString() + "| Description:" + description;
+	}
 }

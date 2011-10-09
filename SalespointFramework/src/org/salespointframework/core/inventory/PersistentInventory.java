@@ -1,6 +1,7 @@
 package org.salespointframework.core.inventory;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +21,7 @@ import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.SerialNumber;
+import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
@@ -62,13 +64,13 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	/**
 	 * Adds multiple {@link PersistentProductInstance}s to this PersistentInventory
 	 * 
-	 * @param products
-	 *            an Iterable of {@link PersistentProductInstance}s to be added
+	 * @param productInstances
+	 *            an {@link Iterable} of {@link PersistentProductInstance}s to be added
 	 */
-	public final void addAll(Iterable<? extends PersistentProductInstance> products) {
-		Objects.requireNonNull(products, "products");
+	public final void addAll(Iterable<? extends PersistentProductInstance> productInstances) {
+		Objects.requireNonNull(productInstances, "products");
 		EntityManager em = emf.createEntityManager();
-		for (PersistentProductInstance e : products) {
+		for (PersistentProductInstance e : productInstances) {
 			em.persist(e);
 		}
 		beginCommit(em);
@@ -139,13 +141,14 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	}
 
 	@Override
-	public <E extends PersistentProductInstance> Iterable<E> find(Class<E> clazz,
-			ProductIdentifier productIdentifier,
-			Iterable<ProductFeature> productFeatures) {
+	public <E extends PersistentProductInstance> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures) {
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		Objects.requireNonNull(productFeatures, "productFeatures");
+		return Iterables.of(this.findInternal(clazz, productIdentifier, productFeatures));
+	}
 
+	private <E extends PersistentProductInstance> List<E> findInternal(Class<E> clazz, ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures) {
 		Set<ProductFeature> featureSet = Iterables.asSet(productFeatures);
 
 		EntityManager em = emf.createEntityManager();
@@ -153,19 +156,27 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
 		Root<E> entry = cq.from(clazz);
 
-		Predicate p1 = cb.equal(
-				entry.get(PersistentProductInstance_.productIdentifier),
-				productIdentifier);
-		// Predicate p2 = cb.equal(
-		// entry.<Set<ProductFeature>> get("productFeatures"), featureSet);
+		Predicate p1 = cb.equal(entry.get(PersistentProductInstance_.productIdentifier), productIdentifier);
+		// Predicate p2 = cb.equal(entry.<Set<ProductFeature>> get("productFeatures"), featureSet);
 
 		cq.where(p1);
 
-		// TODO use Set.equals
-		
 		TypedQuery<E> tq = em.createQuery(cq);
 		List<E> query = tq.getResultList();
-		List<E> result = new ArrayList<E>();
+		List<E> result = new LinkedList<E>();
+		
+		if(featureSet.size() == 0) {
+			for(E e : query) {
+				if(Iterables.isEmpty(e.getProductFeatures())) result.add(e);
+			}
+		} else {
+			for(E e : query) {
+				Set<ProductFeature> entryFeatureSet = Iterables.asSet(e.getProductFeatures());
+				if(featureSet.equals(entryFeatureSet)) result.add(e);
+			}
+		}
+		
+		/*
 		int query_entries = 0;
 		boolean match = true;
 		for (E e : query) {
@@ -187,34 +198,34 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 				if (!match)
 					break;
 			}
-			/*
-			 * same length and all entries matched. if lengths differ, all
-			 * entries may match, but they are still not the same
-			 */
+			
+			 // same length and all entries matched. if lengths differ, all
+			 // entries may match, but they are still not the same
+			
 			if (query_entries == featureSet.size() && match)
 				result.add(e);
 		}
+	*/
 
-		return Iterables.of(result);
+		return result;
 	}
-
+	
+	
 	/**
-	 * Creates an new Instance of the PersistentInventory The
-	 * {@link PersistentOrder} uses this method for transactional removal of
-	 * {@link ProductInstance}s
+	 * Creates an new instance of the PersistentInventory The
+	 * {@link PersistentOrder} uses this method for transactional removal of {@link ProductInstance}s
 	 * 
-	 * @param entityManager
-	 *            the {@link EntityManager} to be used for all operations
-	 *            (methods)
+	 * @param entityManager the {@link EntityManager} to be used for all operations (methods)
 	 * @return a new PersistentInventory
+	 * @throws ArgumentNullException if entityManager is null
 	 */
 	public final PersistentInventory newInstance(EntityManager entityManager) {
+		Objects.requireNonNull(entityManager, "entityManager");
 		return new PersistentInventory(entityManager);
 	}
 
 	private final EntityManager getEntityManager() {
-		return entityManager != null ? entityManager : emf
-				.createEntityManager();
+		return entityManager != null ? entityManager : emf.createEntityManager();
 	}
 
 	private final void beginCommit(EntityManager entityManager) {
@@ -246,11 +257,11 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		
 	}
 	
-	// FIXME QUICK HACK ENTFERNEN
-	// TODO comment
+	// TODO comment & test
 	@Override
 	public long count(ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures) {
-		return Iterables.asList(this.find(PersistentProductInstance.class, productIdentifier, productFeatures)).size();
+		Objects.requireNonNull(productIdentifier, "productIdentifier");
+		Objects.requireNonNull(productFeatures, "productFeatures");
+		return findInternal(PersistentProductInstance.class, productIdentifier, productFeatures).size();
 	}
-	// FIXME QUICK HACK ENTFERNEN
 }

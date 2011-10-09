@@ -6,7 +6,7 @@ import org.salespointframework.util.SalespointIdentifier;
 
 /**
  * <code>ChargeLineIdentifier</code> serves as an identifier type for
- * {@link PersistentChargeLine} objects. The main reason for its existence is
+ * {@link ChargeLine} objects. The main reason for its existence is
  * type safety for identifier across the Salespoint Framework.
  * <code>ChargeLineIdentifier</code> 
  * 
@@ -18,7 +18,7 @@ import org.salespointframework.util.SalespointIdentifier;
 public class ChargeLineIdentifier extends SalespointIdentifier
 {
 	/**
-	 * Creates a new unique identifier for {@link PersistentChargeLine}s.
+	 * Creates a new unique identifier for {@link ChargeLine}s.
 	 */
 	public ChargeLineIdentifier()
 	{

@@ -12,7 +12,6 @@ import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.catalog.PersistentCatalog;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.PersistentInventory;
-import org.salespointframework.core.order.ChargeLine;
 import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderLine;
 import org.salespointframework.core.order.OrderManager;
