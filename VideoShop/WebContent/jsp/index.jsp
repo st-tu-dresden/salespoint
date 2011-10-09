@@ -16,7 +16,12 @@
 <title>Salespoint Framework</title>
 </head>
 <body>
-	<h1>Salespoint Framework</h1>
+	<div class="navi">
+		<h1>Salespoint Framework</h1>
+		<jsp:include page="templates/navigation.jsp"></jsp:include>
+	</div>
+	
+	<div class="content">
 	<p>
 	<sp:loggedIn status="true">
 		<p> hello, ${loggedInUser.identifier}</p>
@@ -50,6 +55,7 @@
 	<br /><br />
 	<a href="basket">warenkorb</a>
 	
+	</div>
 
 </body>
 </html>
