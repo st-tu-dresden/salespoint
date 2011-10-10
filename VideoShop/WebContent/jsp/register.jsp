@@ -18,32 +18,33 @@
 </head>
 
 <body>
-	<div class="navi">
+<div class="all">
+	<div class="top">
 		<h1>Register new Customer</h1>
 		<jsp:include page="templates/navigation.jsp"></jsp:include>
 	</div>
 	
 	<div class="content">
-		<div style="border: 1px solid #7010fa;">
+		<div class="login">
 			<form method="post" action="new">
-				<p>
-					<label for="name">Name</label>
+					<label for="name">Name</label><br />
 					<input id="name" type="text" name="name" />
 					<br />
-					<label for="password">Password</label>
+					<label for="password">Password</label><br />
 					<input id="password" type="text" name="password" />
-				</p>
-				<p>
-					<label for="address">Street</label>
+					<br/>
+					<br/>
+					<label for="address">Street</label><br />
 					<input id="address" type="text" name="street" />
 					<br/>
-					<label for="city">City</label>
-					<input id="city" type="text" name="city" />
-				</p>
+					<label for="city">City</label><br />
+					<input id="city" type="text" name="city" /><br/>
+				
 				<input type="submit" name="submit" /> 
 			</form>
 		</div>
 	</div>
-
+	<jsp:include page="templates/footer.jsp"></jsp:include>
+</div>
 </body>
 </html>

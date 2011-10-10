@@ -7,10 +7,10 @@
 <div class="login">
 	<form method="post" action="">
 		<input type="text" name="SP_LOGIN_PARAM" hidden="true" />
-		<label for="SP_LOGIN_PARAM_IDENTIFIER">UserIdentifier</label>
+		<label for="SP_LOGIN_PARAM_IDENTIFIER">UserIdentifier</label><br />
 		<input id="SP_LOGIN_PARAM_IDENTIFIER" type="text" name="SP_LOGIN_PARAM_IDENTIFIER" />
 		<br />
-		<label for="SP_LOGIN_PARAM_PASSWORD">Password</label>
+		<label for="SP_LOGIN_PARAM_PASSWORD">Password</label><br />
 		<input id="SP_LOGIN_PARAM_PASSWORD" type="text" name="SP_LOGIN_PARAM_PASSWORD" />
 		<br />
 		<input type="submit" name="button" value="Login" />

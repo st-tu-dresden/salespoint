@@ -15,7 +15,8 @@
 </head>
 
 <body>
-	<div class="navi">
+<div class="all">
+	<div class="top">
 		<h1>Video Shop</h1>
 		<jsp:include page="templates/navigation.jsp"></jsp:include>
 	</div>
@@ -36,6 +37,7 @@
 		</sp:loggedIn>
 		</p>
 	</div>
-
+	<jsp:include page="templates/footer.jsp"></jsp:include>
+</div>
 </body>
 </html>

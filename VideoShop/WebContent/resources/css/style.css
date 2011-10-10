@@ -9,7 +9,8 @@
 
 body {
 	font-size:62,5%;
-	color:#444;
+	background-color: #e0e0e0;
+	font: 1em sans-serif;
 }
 
 /* sinvoll da damit 1em == 10px */
@@ -18,25 +19,27 @@ body {
 /* überschriften */
 
 h1 {
-	color: #BA0000;
+	color: #ffffff;
 	font: 2em sans-serif;
-	font-variant: small-caps
+	font-variant: small-caps;
+	padding-top: 10px;
+	padding-left: 10px;
 }
 
 h2 {
 	font-size: 1.5em;
-	color: #BA0000;
+	color: #2e7cdc;
 }
 
 h3 {
-	color: #BA0000;
+	color: #2e7cdc;
 	font: 0.9em sans-serif;
 	text-decoration: underline;
 	color: white;
 }
 
 h4 {
-	color: #BA0000;
+	color: #2e7cdc;
 	font-size:1.2em;
 	font-weight: bold;
 }
@@ -48,53 +51,62 @@ p {
 a {
 	font: 0.8em sans-serif;
 	text-decoration: none;
-	color: #BA0000;
+	color: #2e7cdc;
 }
 
 a:hover {
 	font: 0.8em sans-serif;
 	text-decoration: none;
 	color: white;
-	background-color: #BA0000;
+	background-color: #2e7cdc;
+}
+
+div.all{
+	width: 1024px;
+	margin: 0 auto;
+}
+
+p.about{
+	text-align:right;
+	font-size: 11px;
 }
 
 /*navigation*/
 
-ul.navi{
-	float: right;
-	margin-right: 3px;
-	position: absolute;
-	top: 75px;
-	right: 5px;
-}
-
-ul.navi li{
-	list-style:none;
-	float:left;	
-}
-
-div.navi{
-	width: 100%;
+div.top{
+	width:100%;
 	height: 100px;
-	background-color: #df5e00;
-	border-bottom: 1px solid #BA0000;
-	background-image: url(../img/cds.jpg)  ;
+	background-color: #2e7cdc;
+	border-bottom: 1px solid #a4a4a4;
+	background-image: url(../img/cds.jpg);
 	background-position: right;
 	background-repeat: no-repeat;
 	font-size: 20px;
+}
+
+div.top a{
+	font-size: 20px;
+	color: white;
 	
 }
 
-div.navi a{
-	font-size: 20px;
+
+nav{
+	float:right;
+	margin-top: 22px;
+	margin-right: 0px;
+	background-color: #333333;
+	opacity: 0.9;
+	
 }
 
 /*content*/
 
 div.content{
-	margin: 15px;
 	float:left;
 	width:100%;
+	background-color:white;
+	min-height:500px;
 }
 
 ul{
@@ -141,8 +153,10 @@ p.price{
 	align: left;
 }
 
+/* login */
+
 div.login {
-	border: 2px solid #FAD614; 
+	border: 2px solid #2e7cdc; 
 	margin:2em; 
 	padding:1em;
 	width: 30%;

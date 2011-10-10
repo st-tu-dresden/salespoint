@@ -15,9 +15,9 @@
 <title>BluRay Katalog</title>
 </head>
 <body>
-
+<div class="all">
 		
-	<div class="navi">
+	<div class="top">
 		<h1>BluRay Katalog</h1>
 		<jsp:include page="templates/navigation.jsp"></jsp:include>
 	</div>
@@ -33,6 +33,7 @@
 			</a>
 		</c:forEach>
 	</div>
-		
+	<jsp:include page="templates/footer.jsp"></jsp:include>
+</div>		
 </body>
 </html>
