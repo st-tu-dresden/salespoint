@@ -102,7 +102,8 @@ public interface UserManager<T extends User> {
      * @param token
      *            token, which was associated with the user, on log on.
      * @return the user which is associated with <code>token</code> and of class
-     *         type <code>clazz</code>.
+     *         type <code>clazz</code> or <code>null</code> if no user is
+     *         associated with the <code>token</code>
      * @throws ClassCastException
      *             if user associated with <code>token</code> is not of type
      *             <code>clazz</code>.
