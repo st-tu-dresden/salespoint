@@ -52,7 +52,7 @@ public interface Catalog<T extends Product>
 	/**
 	 * TODO
 	 * @param clazz type of the {@link Product} to be returned; has to implement {@link Product}
-	 * @return an {@link Iterable<E>} containing all {@link Product}s of type clazz
+	 * @return an {@link Iterable} containing all {@link Product}s of type clazz
 	 * @throws ArgumentNullException if clazz is null
 	 */
 	<E extends T> Iterable<E> find(Class<E> clazz);
@@ -60,7 +60,7 @@ public interface Catalog<T extends Product>
 	/**
 	 * @param clazz type of the {@link Product} to be returned; has to implement {@link Product}
 	 * @param name the name of the {@link Product}
-	 * @return an {@link Iterable<E>} containing all {@link Product}s of type clazz, whose productName matches name
+	 * @return an {@link Iterable} containing all {@link Product}s of type clazz, whose productName matches name
 	 * @throws ArgumentNullException if clazz or name are null
 	 */
 	<E extends T> Iterable<E> findByName(Class<E> clazz, String name);

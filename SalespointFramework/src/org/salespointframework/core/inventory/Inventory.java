@@ -54,7 +54,7 @@ public interface Inventory<T extends ProductInstance>
 	/**
 	 * 
 	 * @param clazz type of the productinstance to be returned; has to implement {@link ProductInstance}
-	 * @return an {@link Iterable<E>} containing all {@link ProductInstance}s of type clazz
+	 * @return an {@link Iterable} containing all {@link ProductInstance}s of type clazz
 	 * @throws ArgumentNullException if clazz is null
 	 */
 	<E extends T> Iterable<E> find(Class<E> clazz);
@@ -63,7 +63,7 @@ public interface Inventory<T extends ProductInstance>
 	 * 
 	 * @param clazz type of the productinstance to be returned; has to implement {@link ProductInstance}
 	 * @param productIdentifier the {@link ProductIdentifier} of the {@link ProductInstance}s to be returned
-	 * @return an {@link Iterable<E>} containing all {@link ProductInstance}s of type clazz and the given productIdentifier
+	 * @return an {@link Iterable} containing all {@link ProductInstance}s of type clazz and the given productIdentifier
  	 * @throws ArgumentNullException if clazz or productIdentifier are null
 	 */
 	<E extends T> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier);
