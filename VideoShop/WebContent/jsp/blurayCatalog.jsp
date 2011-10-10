@@ -10,20 +10,29 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css"	href="<c:url value="/res/css/style.css"/>" />
-<title>BluRay Catalog</title>
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/res/css/style.css" />" />
+<title>BluRay Katalog</title>
 </head>
-
 <body>
 
 		
 	<div class="navi">
-		<h1>BluRay Catalog</h1>
+		<h1>BluRay Katalog</h1>
 		<jsp:include page="templates/navigation.jsp"></jsp:include>
 	</div>
 	
 	<div class="content">
+		<c:forEach var="item" items="${items}">
+			<a class="item" href="detail?pid=${item.identifier}">
+				<div class="item">
+					<h4>${item.name}</h4>
+					<img class="itemThumbnail" src="<c:url value="/res/img/imageDummy.png" />" />
+					<p class="price">Preis: ${item.price}</p>
+				</div>
+			</a>
+		</c:forEach>
 	</div>
-
+		
 </body>
 </html>

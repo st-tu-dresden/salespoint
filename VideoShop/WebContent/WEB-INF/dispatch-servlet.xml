@@ -16,6 +16,12 @@
 	        <bean class="org.salespointframework.web.GlobalBindingInitializer"/>
 	    </property>
 	</bean>
+	
+	<bean class="org.salespointframework.web.PersistenceUnitInitializer">
+		<property name="persistenceUnitName">
+			<value>DVDShop</value>
+		</property>
+	</bean>
 
     <!-- messages for i18n -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"

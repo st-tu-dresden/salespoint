@@ -141,3 +141,9 @@ p.price{
 	align: left;
 }
 
+div.login {
+	border: 2px solid #FAD614; 
+	margin:2em; 
+	padding:1em;
+	width: 30%;
+}

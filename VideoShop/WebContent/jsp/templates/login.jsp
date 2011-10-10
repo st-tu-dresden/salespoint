@@ -4,8 +4,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<div style="border: 2px solid #FAD614; margin:2em; padding:1em;">
-	<!--  TODO multiple values select/dropdown/shit -->
+<div class="login">
 	<form method="post" action="">
 		<input type="text" name="SP_LOGIN_PARAM" hidden="true" />
 		<label for="SP_LOGIN_PARAM_IDENTIFIER">UserIdentifier</label>

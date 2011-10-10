@@ -15,8 +15,7 @@
 <title>DVD Katalog</title>
 </head>
 <body>
-
-		
+	
 	<div class="navi">
 		<h1>DVD Katalog</h1>
 		<jsp:include page="templates/navigation.jsp"></jsp:include>

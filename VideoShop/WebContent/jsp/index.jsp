@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
@@ -10,63 +9,32 @@
 
 <html>
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css"
-	href="<c:url value="/res/css/style.css" />" />
-<title>Salespoint Framework</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/style.css" />" />
+	<title>Video Shop</title>
 </head>
+
 <body>
 	<div class="navi">
-		<h1>Salespoint Framework</h1>
+		<h1>Video Shop</h1>
 		<jsp:include page="templates/navigation.jsp"></jsp:include>
 	</div>
 	
 	<div class="content">
-	<p>
-	<sp:loggedIn status="true">
-		<p> hello, ${loggedInUser.identifier}</p>
 		<p>
-			<c:url value="logout" var="logout"></c:url>
-			<a href="${logout}">Logout</a>
+		<sp:loggedIn status="true">
+			<p> hello, ${loggedInUser.identifier}</p>
+			<p>
+				<c:url value="logout" var="logout"></c:url>
+				<a href="${logout}">Logout</a>
+			</p>
+		</sp:loggedIn>
+		
+		<sp:loggedIn status="false">
+			<jsp:include page="templates/login.jsp" />
+			<a href="register">Register account</a>
+		</sp:loggedIn>
 		</p>
-	</sp:loggedIn>
-	<sp:loggedIn status="false">
-	<jsp:include page="templates/login.jsp"></jsp:include>
-	<a href="register">Register account</a>
-	</sp:loggedIn>
-	</p>
-
-	<p>----</p>
-	<ul>
-		<c:forEach var="item" items="${items}">
-			<c:url value="detail" var="url">
-				<c:param name="pid" value="${item.identifier}" />
-			</c:url>
-			
-			<li><a href="${url}">${item.name} - ${item.price}</a></li>
-		</c:forEach>
-	</ul>
-	<p>----</p>
-	
-	<p>----</p>
-	<ul>
-		<sp:forEach var="item" items="${items}">
-			<c:url value="detail" var="url">
-				<c:param name="pid" value="${item.identifier}" />
-			</c:url>
-			
-			<li><a href="${url}">${item.name} - ${item.price}</a></li>
-		</sp:forEach>
-	</ul>
-	<p>----</p>
-
-	
-	<a href="dvdCatalog">Dvd Catalog</a>
-	<br /><br />
-	<a href="bluerayCatalog">BlueRay Catalog</a>
-	<br /><br />
-	<a href="basket">warenkorb</a>
-	
 	</div>
 
 </body>

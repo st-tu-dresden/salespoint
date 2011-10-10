@@ -1,9 +1,6 @@
 package dvdshop.controller;
 
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
-
-import org.salespointframework.core.database.Database;
 
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderManager;
@@ -18,33 +15,17 @@ import dvdshop.model.Customer;
 
 @Controller
 public class CustomerController {
-
-	{
-		Database.INSTANCE.initializeEntityManagerFactory("DVDShop");
-	}
 	
-	@RequestMapping("settings")
-	public ModelAndView settings(HttpServletRequest request, ModelAndView mav) {
-		PersistentUserManager userManager = new PersistentUserManager();	
-		PersistentOrderManager orderManager = new PersistentOrderManager();
+	PersistentUserManager userManager = new PersistentUserManager();
 
-		Customer customer = userManager.getUserByToken(Customer.class, request.getSession());
-		
-		mav.addObject("customer", customer);
-		mav.setViewName("settings");
-
-		return mav;
-	}
-
-	@RequestMapping("settingssubmit")
+	@RequestMapping("/settingssubmit")
 	public ModelAndView settingsSubmit(HttpServletRequest request,
 			ModelAndView mav, 
 			@RequestParam("") String newPassword,
 			@RequestParam("") String oldPassword,
 			@RequestParam("") String adress) {
 
-		PersistentUserManager cm = new PersistentUserManager();
-		Customer c = cm.getUserByToken(Customer.class, request.getSession());
+		Customer c = userManager.getUserByToken(Customer.class, request.getSession());
 		boolean result = c.changePassword(newPassword, oldPassword);
 		
 		mav.addObject("result", result);
@@ -52,9 +33,10 @@ public class CustomerController {
 		return mav;
 	}
 
-	@RequestMapping("orders")
+	// /basket im BasketController machts
+	/*
+	@RequestMapping("/orders")
 	public ModelAndView myOrders(HttpServletRequest request, ModelAndView mav) {
-		PersistentUserManager cm = new PersistentUserManager();	
 		PersistentOrderManager pom = new PersistentOrderManager();
 
 		Customer c = cm.getUserByToken(Customer.class, request.getSession());
@@ -66,6 +48,7 @@ public class CustomerController {
 		
 		return mav;
 	}
+	*/
 	
 	@RequestMapping("/new")
 	public ModelAndView register(HttpServletRequest request, ModelAndView mav,
@@ -75,11 +58,11 @@ public class CustomerController {
 			@RequestParam("city") String city) {
 		mav.setViewName("redirect:/");
 
-		PersistentUserManager pm = new PersistentUserManager();
+		
 		Customer customer = new Customer(userIdentifier, password,
 				street + "\n" + city);
-		pm.add(customer);
-		pm.logOn(customer, request.getSession());
+		userManager.add(customer);
+		userManager.logOn(customer, request.getSession());
 
 		return mav;
 	}
@@ -87,9 +70,13 @@ public class CustomerController {
 	@RequestMapping("/logout")
 	public ModelAndView logout(HttpServletRequest request, ModelAndView mav) {
 		mav.setViewName("redirect:/");
-		PersistentUserManager pm = new PersistentUserManager();
-		pm.logOff(request.getSession());
+		userManager.logOff(request.getSession());
 		return mav;
+	}
+	
+	@RequestMapping("/register")
+	public String registerCustomer() {
+		return "register";
 	}
 
 }

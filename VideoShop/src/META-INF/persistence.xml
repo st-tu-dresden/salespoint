@@ -5,7 +5,7 @@
 		<class>dvdshop.model.Customer</class>
 		<class>dvdshop.model.Comment</class>
 		<class>dvdshop.model.Dvd</class>
-		<class>dvdshop.model.BlueRay</class>
+		<class>dvdshop.model.BluRay</class>
 		<class>dvdshop.model.Disc</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:derby:C:\Profile\s6040437\VideoShopDB;create=true"/>

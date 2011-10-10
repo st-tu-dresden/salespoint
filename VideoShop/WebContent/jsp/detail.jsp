@@ -32,9 +32,9 @@
 </form>
 
 <ul>
-<c:forEach var="comment" items="${comments}">
+<sp:forEach var="comment" items="${comments}">
 <li>${comment.text}</li>
-</c:forEach>
+</sp:forEach>
 </ul>
 
 
