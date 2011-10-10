@@ -3,6 +3,8 @@ package org.salespointframework.core.product;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -20,6 +22,7 @@ import org.salespointframework.util.Objects;
 public class PersistentProduct implements Product, Comparable<PersistentProduct>
 {
 	@EmbeddedId
+	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
 	private ProductIdentifier productIdentifier = new ProductIdentifier();
 
 	private String name;

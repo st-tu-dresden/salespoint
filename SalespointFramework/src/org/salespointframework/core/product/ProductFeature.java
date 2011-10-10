@@ -14,7 +14,7 @@ import org.salespointframework.util.Objects;
  */
 @SuppressWarnings("serial")
 @Embeddable
-public final class ProductFeature implements Serializable,Comparable<ProductFeature>
+public final class ProductFeature implements Serializable, Comparable<ProductFeature>
 {
 	private final ProductFeatureIdentifier productFeatureIdentifier = new ProductFeatureIdentifier();
 	

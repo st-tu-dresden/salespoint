@@ -23,6 +23,7 @@ import org.salespointframework.util.Objects;
 public class PersistentProductInstance implements ProductInstance, Comparable<PersistentProductInstance>
 {
 	@EmbeddedId
+	@AttributeOverride(name = "id", column = @Column(name = "SERIALNUMBER_ID"))
 	private SerialNumber serialNumber = new SerialNumber();
 
 	@Embedded
