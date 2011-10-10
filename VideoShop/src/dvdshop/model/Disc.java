@@ -7,11 +7,11 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.PersistentProductType;
+import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.util.Iterables;
 
 @Entity
-public class Disc extends PersistentProductType {
+public class Disc extends PersistentProduct {
 	private String genre;
 	
 	@ElementCollection

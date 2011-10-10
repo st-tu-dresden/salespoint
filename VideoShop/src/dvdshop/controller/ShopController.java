@@ -10,7 +10,6 @@ import org.salespointframework.core.order.OrderCompletionResult;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderLine;
 import org.salespointframework.core.product.ProductIdentifier;
-import org.salespointframework.core.product.ProductTypeIdentifier;
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.web.spring.annotations.Interceptors;
@@ -77,7 +76,7 @@ public class ShopController {
 	
 	@RequestMapping("/detail")
 	public ModelAndView catalog(ModelAndView mav,
-			@RequestParam("pid") ProductTypeIdentifier pid) {
+			@RequestParam("pid") ProductIdentifier pid) {
 		Dvd dvd = videoCatalog.getDvd(pid);
 		mav.setViewName("detail");
 		mav.addObject("dvd", dvd);
@@ -87,7 +86,7 @@ public class ShopController {
 
 	@RequestMapping("/comment")
 	public ModelAndView catalog(ModelAndView mav,
-			@RequestParam("pid") ProductTypeIdentifier pid,
+			@RequestParam("pid") ProductIdentifier pid,
 			@RequestParam("comment") String comment,
 			@RequestParam("rating") int rating ) {
 
@@ -106,7 +105,7 @@ public class ShopController {
 		 
 
 	@RequestMapping("/addDisc")
-	public ModelAndView addDisc(HttpServletRequest request, ModelAndView mav, @RequestParam("pid") ProductTypeIdentifier pid) {
+	public ModelAndView addDisc(HttpServletRequest request, ModelAndView mav, @RequestParam("pid") ProductIdentifier pid) {
 
 		Customer customer = userManager.getUserByToken(Customer.class, request.getSession());
 

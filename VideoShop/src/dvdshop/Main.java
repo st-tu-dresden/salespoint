@@ -3,7 +3,7 @@ package dvdshop;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.PersistentProduct;
+import org.salespointframework.core.product.PersistentProductInstance;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.PersistentUserManager;
@@ -55,7 +55,7 @@ public class Main {
 		
 		for(Disc disc : videoCatalog.find(Disc.class)) {
 			for(int n = 0; n < 10; n++) {
-				inventory.add(new PersistentProduct(disc));
+				inventory.add(new PersistentProductInstance(disc));
 			}
 		}
 		

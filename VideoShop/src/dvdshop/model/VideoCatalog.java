@@ -1,18 +1,19 @@
 package dvdshop.model;
 
 import org.salespointframework.core.catalog.PersistentCatalog;
-import org.salespointframework.core.product.ProductTypeIdentifier;
+import org.salespointframework.core.product.ProductIdentifier;
+
 
 
 public class VideoCatalog extends PersistentCatalog {
 
 	
-	public Dvd getDvd(ProductTypeIdentifier productTypeIdentifier) {
-		return super.get(Dvd.class, productTypeIdentifier);
+	public Dvd getDvd(ProductIdentifier productIdentifier) {
+		return super.get(Dvd.class, productIdentifier);
 	}
 	
-	public BlueRay getBlueRay(ProductTypeIdentifier productTypeIdentifier) {
-		return super.get(BlueRay.class, productTypeIdentifier);
+	public BlueRay getBlueRay(ProductIdentifier productIdentifier) {
+		return super.get(BlueRay.class, productIdentifier);
 	}
 	
 	public Iterable<Dvd> findDvds() {

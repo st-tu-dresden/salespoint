@@ -47,6 +47,18 @@
 		</c:forEach>
 	</ul>
 	<p>----</p>
+	
+	<p>----</p>
+	<ul>
+		<sp:forEach var="item" items="${items}">
+			<c:url value="detail" var="url">
+				<c:param name="pid" value="${item.identifier}" />
+			</c:url>
+			
+			<li><a href="${url}">${item.name} - ${item.price}</a></li>
+		</sp:forEach>
+	</ul>
+	<p>----</p>
 
 	
 	<a href="dvdCatalog">Dvd Catalog</a>
