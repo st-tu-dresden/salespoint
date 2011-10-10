@@ -1,6 +1,8 @@
 package test.user;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -205,5 +207,18 @@ public class UsermanagerTest {
 		
 		
 	}
+	
+	@Test
+	public void testTokenGetter() {
+	    Employee e = new Employee(new UserIdentifier(), "test");
+	    PersistentUserManager mgr = new PersistentUserManager();
+	    
+	    mgr.add(e);
+	    mgr.logOn(e, "SESSION");
+	    
+	    assertEquals(e, mgr.getUserByToken(Employee.class, "SESSION"));
+	}
+	
+	
 	
 }
