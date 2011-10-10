@@ -29,52 +29,6 @@ h2 {
 	font-size: 1em;
 }
 
-div.entries {
-	margin: auto;
-	width: 50%;
-}
-
-div.entry {
-	padding: 1em;
-	border-top: 1px solid grey;
-	margin-left: auto;
-	margin-right: auto;
-    width: 100%;
-    line-height: 150%;
-    text-align: left;
-}
-
-div.entry:nth-child(odd) {
-	background-color: #f0f0f0;
-}
-
-div.entry:nth-child(even) {
-	background-color: #dadada;
-}
-
-div p.entrytext {
-	font-size: 1em;
-	margin-left: 1em;
-}
-
-div p.date {
-	font-size: 0.8em;
-	margin-top: 0.5em;
-}
-
-div.dayNumber {
-	background-color: #efefef;
-	line-height: 200%;
-    width: 95%;
-    padding-left: 5%;
-}
-
-div.dayEntry {
-    line-height: 150%;
-    width: 100%;
-    margin-left: 1em;
-}
-
 fieldset {
 	width: 20%;
 	margin-left: auto;
@@ -116,16 +70,10 @@ a:hover {
 	color: #BA0000;
 }
 
-h3 a:hover {
-	font: 0.9em sans-serif;
-	text-decoration: underline;
-	color: white;
-}
-
-a.active {
+/* a.active {
 	font: 1.0em sans-serif;
 	font-weight: 600;
-}
+} */
 
 button {
 	margin-top: 10px;
@@ -138,36 +86,11 @@ button {
 	color: black;
 }
 
-button.delBtn {
-	margin: -0.5em;
-	padding: 0;
-	float: right;
-	color: red;
-	border: 0px;
-}
-
-button.delBtn span {
-	color: red;
-	display: block;
-	margin-top: -3px;
-}
-
 .center {
 	text-align: center;
 	margin-top: 0px;
 	margin-bottom: 0px;
 	padding: 0px;
-}
-
-img.center {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-table {
-    table-layout: fixed;
-    width: 100%;
 }
 
 table.calendar {
@@ -178,8 +101,6 @@ table.calendar {
 	font-family: verdana, arial, sans-serif;
 	font-size: 11px;
 	color: #333333;
-	font-family: verdana, arial, sans-serif;
-	margin-right: auto;
 }
 
 table.calendar th {
@@ -191,10 +112,24 @@ table.calendar th {
 }
 
 table.calendar td {
-	valign: top;
+	valign:top;
 	border-width: 1px;
 	padding: 0px;
+	margin: 0px;
 	border-style: solid;
 	border-color: #666666;
 	background-color: #ffffff;
+}
+
+div.dayNumber {
+    background-color: #efefef;
+    line-height: 200%;
+    width: 95%;
+    padding-left: 5%;
+}
+
+div.dayEntry {
+    line-height: 150%;
+    width: 100%;
+    margin-left: 1em;
 }

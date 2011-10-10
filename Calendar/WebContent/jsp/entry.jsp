@@ -18,7 +18,7 @@
 	<h2>Create a new calendar entry</h2>
 	<br />
 	<p>
-		<form:form method="post" action="newEntry">
+		<form:form method="post" action="entry">
 			<fieldset>
 				<legend>Create entry</legend>
 				<h2>${message}</h2>
@@ -28,14 +28,15 @@
 				<br />
 				<label for="description">Description</label>
 				<br />
-				<textarea name="description" id="description"></textarea>
+				<textarea name="description" id="description">${description}</textarea>
 				<br />
 				<label for="startDate">Start</label>
-                <input type="datetime-local" name="startDate" id="startDate"/>
+                <input type="datetime-local" name="startDate" id="startDate" value="${start}"/>
 				<br />
                 <label for="endDate">End</label>
-				<input type="datetime-local" name="endDate" id="startDate"/>
+				<input type="datetime-local" name="endDate" id="startDate" value="${end}"/>
 				<br />
+				<input type="hidden" value="${id}" />
 				<table>
 					<tr>
 						<td><input type="submit" value="Save"/></td>

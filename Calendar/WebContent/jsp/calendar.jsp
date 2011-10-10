@@ -36,14 +36,21 @@
 					   <c:if test="${(d.index >= firstWeekday || w.index>0) && (currentDay<=numberOfDays)}">
 					       <div class="dayNumber">
 					       ${currentDay}
-					       </div>
-					       <div class="dayEntry">					       
-					       <c:forEach var="entry" items="${entries}">
-					           <c:if test="${entry.key == currentDay}">
-					               ${entry.value.title}
+					       </div>					       
+					       <c:forEach var="dayEntries" items="${entries}">
+					           <c:if test="${dayEntries.key == currentDay}">
+					               <c:forEach var="entry" items="${dayEntries.value}">
+					                   <div class="dayEntry">
+							               <a class="entry" href="
+		                                       <c:url value="entry">
+		                                           <c:param name="id" value="${entry.identifier}"/>
+		                                       </c:url>">
+		                                       ${entry.title}
+		                                   </a>
+	                                   </div>
+					               </c:forEach>
 					           </c:if>
 					       </c:forEach>
-					       </div>
 					       <c:set var="currentDay" value="${currentDay+1}"/>
 					   </c:if>
 					   
@@ -69,7 +76,7 @@
             Last Month
         </a>
         |
-		<a href="<c:url value="newEntry" />">Create New</a>
+		<a href="<c:url value="entry" />">Create New</a>
 		|
 		<a href="
             <c:url value="calendar">
