@@ -5,6 +5,6 @@
 		<li><a class="navi" href="index"> Home</a> |&nbsp;</li>
 		<li><a class="navi" href="dvdCatalog"> DVD Katalog</a> |&nbsp;</li>
 		<li><a class="navi" href="blurayCatalog"> BluRay Katalog</a> |&nbsp;</li>
-		<li><a class="navi" href="basket"> Shopping Basket </a></li>
+		<li><a class="navi" href="basket"> Shopping Cart</a></li>
 	</ul>
 </nav>
