@@ -11,24 +11,24 @@ public interface ProductInstance
 {
 	/**
 	 * 
-	 * @return the value of the Product
+	 * @return the {@link Money} value of the ProductInstance
 	 */
 	Money getPrice();
 	/**
 	 * 
-	 * @return the unique {@link SerialNumber} of the Product
+	 * @return the {@link SerialNumber} of the ProductInstance
 	 */
-	SerialNumber getIdentifier();
+	SerialNumber getSerialNumber();
 	
 	/**
 	 * 
-	 * @return the {@link ProductIdentifier} of the {@link Product} of the Product
+	 * @return the {@link ProductIdentifier} of the {@link Product}, to which the ProductInstance refers 
 	 */
 	ProductIdentifier getProductIdentifier();
 	
 	/**
 	 * 
-	 * @return an Iterable of {@link ProductFeature}s of the Product
+	 * @return an {@link Iterable} of {@link ProductFeature}s of the ProductInstance
 	 */
 	Iterable<ProductFeature> getProductFeatures();
 }

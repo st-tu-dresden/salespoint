@@ -200,6 +200,6 @@ public class PersistentServiceInstance extends PersistentProductInstance impleme
 		{
 			return true;
 		}
-		return this.getIdentifier().equals(other.getIdentifier());
+		return this.getSerialNumber().equals(other.getSerialNumber());
 	}
 }

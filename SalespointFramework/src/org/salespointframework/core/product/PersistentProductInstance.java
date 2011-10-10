@@ -77,7 +77,7 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 	}
 
 	@Override
-	public final SerialNumber getIdentifier()
+	public final SerialNumber getSerialNumber()
 	{
 		return serialNumber;
 	}
@@ -114,6 +114,12 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 
 	@Override
 	public String toString()
+	{
+		return name;
+	}
+	
+	//TODO comment ins interface?
+	public String getName() 
 	{
 		return name;
 	}

@@ -72,20 +72,20 @@ public class InventoryTest {
 	@Test
 	public void testRemove() {
 		inventory.add(keks);
-		inventory.remove(keks.getIdentifier());
-		assertFalse(inventory.contains(keks.getIdentifier()));
+		inventory.remove(keks.getSerialNumber());
+		assertFalse(inventory.contains(keks.getSerialNumber()));
 	}
 
 	@Test
 	public void testContains() {
 		inventory.add(keks);
-		assertTrue(inventory.contains(keks.getIdentifier()));
+		assertTrue(inventory.contains(keks.getSerialNumber()));
 	}
 
 	@Test
 	public void testGet() {
 		inventory.add(keks);
-		assertEquals(keks, inventory.get(Keks.class, keks.getIdentifier()));
+		assertEquals(keks, inventory.get(Keks.class, keks.getSerialNumber()));
 	}
 
 	@Test

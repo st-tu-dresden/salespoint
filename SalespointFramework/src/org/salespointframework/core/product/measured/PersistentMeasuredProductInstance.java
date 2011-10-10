@@ -191,7 +191,7 @@ public class PersistentMeasuredProductInstance extends PersistentProductInstance
 		{
 			return true;
 		}
-		return this.getIdentifier().equals(other.getIdentifier());
+		return this.getSerialNumber().equals(other.getSerialNumber());
 	}
 
 }
