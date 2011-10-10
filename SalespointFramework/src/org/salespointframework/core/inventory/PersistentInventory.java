@@ -85,8 +85,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 			em.remove(product);
 			beginCommit(em);
 			return true;
-		}
-		{
+		} else {
 			return false;
 		}
 	}
