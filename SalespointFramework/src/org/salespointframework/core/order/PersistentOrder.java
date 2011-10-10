@@ -246,7 +246,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 
 		em.getTransaction().begin();
 
-		System.out.println("BEGIN LOOP");
+		System.out.println("BEGIN ORDERLINE LOOP");
 		for (PersistentOrderLine orderLine : orderLines) {
 			System.out.println("remaining orderlines:" + remainingOrderLines.size());
 			remainingOrderLines.remove(orderLine);
@@ -262,7 +262,9 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 			
 			int removed = 0;
 
+			System.out.println("BEGIN PRODUCT LOOP");
 			for (PersistentProductInstance product : products) {
+				System.out.println("SerialNumber:" + product.getSerialNumber());
 				boolean result = inventory.remove(product.getSerialNumber());
 				System.out.println("removal result:" + result);
 
