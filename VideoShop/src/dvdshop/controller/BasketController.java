@@ -54,15 +54,18 @@ public class BasketController {
 
 	@RequestMapping("/basket")
 	public ModelAndView basket(HttpServletRequest request, ModelAndView mav) {
-
+		boolean isEmpty = true;
 		PersistentOrder order = (PersistentOrder) request.getSession().getAttribute("order");
 
 		if (order != null) {
 			mav.addObject("items", Iterables.asList(order.getOrderLines()));
+			isEmpty = Iterables.isEmpty(order.getOrderLines());
 		} else {
 			mav.addObject("items", new ArrayList<PersistentOrderLine>());
 		}
 
+		mav.addObject("isEmpty", isEmpty);
+		
 		mav.setViewName("basket");
 		return mav;
 	}
