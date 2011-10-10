@@ -157,7 +157,7 @@ public class CalendarController {
 
         PersistentCalendar cal = new PersistentCalendar();
 
-        if (id == null) {
+        if (id == null || id.getIdentifier().equals("")) {
             PersistentCalendarEntry entry = new PersistentCalendarEntry(getCurrentUser(session), title, inputFormatter.parseDateTime(startDate),
                             inputFormatter.parseDateTime(endDate), description);
             cal.add(entry);

@@ -36,7 +36,7 @@
                 <label for="endDate">End</label>
 				<input type="datetime-local" name="endDate" id="startDate" value="${end}"/>
 				<br />
-				<input type="hidden" value="${id}" />
+				<input name="id" id="id" type="hidden" value="${id}" />
 				<table>
 					<tr>
 						<td><input type="submit" value="Save"/></td>

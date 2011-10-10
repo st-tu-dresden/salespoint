@@ -41,14 +41,12 @@
 					           <c:if test="${dayEntries.key == currentDay}">
 					               <c:forEach var="entry" items="${dayEntries.value}">
 					                   <div class="dayEntry">
-<%-- 							               <a class="entry" href="
+     							               <a class="entry" href="
 		                                       <c:url value="entry">
 		                                           <c:param name="id" value="${entry.identifier}"/>
 		                                       </c:url>">
 		                                       ${entry.title}
 		                                   </a>
---%>
-		                                   ${entry.title}
 	                                   </div>
 					               </c:forEach>
 					           </c:if>
