@@ -29,18 +29,21 @@ public class CatalogController {
 	@RequestMapping("/blurayCatalog")
 	public ModelAndView blurayCatalog(ModelAndView mav) {
 		mav.addObject("items", Iterables.asList(videoCatalog.findBlueRays()));
-		mav.setViewName("bluerayCatalog");
+		mav.setViewName("blurayCatalog");
 		return mav;
 	}
 
 	
 	@RequestMapping("/detail")
-	public ModelAndView detail(ModelAndView mav,
-			@RequestParam("pid") ProductIdentifier pid) {
+	public ModelAndView detail(ModelAndView mav, @RequestParam("pid") ProductIdentifier pid) {
+		
 		Disc disc = videoCatalog.getDisc(pid);
-		mav.setViewName("detail");
+		
 		mav.addObject("dvd", disc);
 		mav.addObject("comments", disc.getComments());
+		
+		mav.setViewName("detail");
+		
 		return mav;
 	}
 
@@ -57,6 +60,8 @@ public class CatalogController {
 		videoCatalog.update(disc);
 		
 		mav.addObject("dvd", disc);
+		mav.addObject("comments", disc.getComments());
+		
 		mav.setViewName("detail");
 		
 		return mav;
