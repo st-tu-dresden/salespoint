@@ -221,6 +221,8 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 
 	@Override
 	public final OrderCompletionResult completeOrder() {
+		System.out.println("---COMPLETE ORDER BEGIN");
+		
 		// TODO mehr CompletionStates? oder letzten Param (Exception)
 		// überdenken, String cause?
 		if (orderStatus != OrderStatus.PAYED) {
@@ -239,22 +241,33 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		PersistentInventory inventory = ((PersistentInventory) tempInventory).newInstance(em);
 		
 		Set<PersistentOrderLine> remainingOrderLines = new HashSet<PersistentOrderLine>(this.orderLines);
+		
+		
 
 		em.getTransaction().begin();
 
+		System.out.println("BEGIN LOOP");
 		for (PersistentOrderLine orderLine : orderLines) {
+			System.out.println("remaining orderlines:" + remainingOrderLines.size());
 			remainingOrderLines.remove(orderLine);
 			Iterable<PersistentProductInstance> tempProducts = inventory.find(PersistentProductInstance.class, orderLine.getProductIdentifier(),orderLine.getProductFeatures());
 
 			List<PersistentProductInstance> products = Iterables.asList(tempProducts);
+			
+			System.out.println("products count:" + products.size());
 
 			int numberOrdered = orderLine.getNumberOrdered();
+			
+			System.out.println("number ordered:" + numberOrdered);
+			
 			int removed = 0;
 
 			for (PersistentProductInstance product : products) {
 				boolean result = inventory.remove(product.getSerialNumber());
+				System.out.println("removal result:" + result);
 
 				if (!result) {
+					System.out.println("not removed");
 					// TODO payment clone?
 					PersistentOrder order = new PersistentOrder(this.userIdentifier, this.paymentMethod);
 					PersistentOrderLine pol = new PersistentOrderLine(orderLine.getProductIdentifier(),	orderLine.getProductFeatures(), numberOrdered - removed);
@@ -265,10 +278,13 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 
 					return new InternalOrderCompletionResult(OrderCompletionStatus.SPLITORDER, order, em, null);
 				} else {
+					System.out.println("removed++");
 					removed++;
 				}
 
 				if (removed >= numberOrdered) {
+					System.out.println("removed >= numberordered");
+					System.out.println(removed + ">=" + numberOrdered);
 					break;
 				}
 			}
@@ -280,6 +296,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 			return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED, null, em, e.getCause());
 		}
 
+		System.out.println("----COMPLETE ORDER END");
 		return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL, null, em, null);
 	}
 
