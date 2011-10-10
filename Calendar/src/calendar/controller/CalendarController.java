@@ -1,5 +1,8 @@
 package calendar.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.joda.time.DateTime;
@@ -73,6 +76,21 @@ public class CalendarController {
         return mgr.getUserByToken(PersistentUser.class, session).getIdentifier();
     }
 
+    private Map<Integer, PersistentCalendarEntry> getAppointments(int year, int month) {
+        PersistentCalendar cal = new PersistentCalendar();
+        
+        DateTime start = new DateTime(year, month, 1, 0, 0);
+        DateTime end = start.plusMonths(1);
+
+        Map<Integer, PersistentCalendarEntry> entries = new HashMap<Integer, PersistentCalendarEntry>();
+        
+        for (PersistentCalendarEntry entry : cal.between(PersistentCalendarEntry.class, start, end)) {
+            entries.put(entry.getStart().getDayOfMonth(), entry);
+        }
+        
+        return entries;
+    }
+    
     @SuppressWarnings("boxing")
     @RequestMapping("/calendar")
     public ModelAndView index(ModelAndView mav, @RequestParam(value = "year", required = false) Integer year,
@@ -96,6 +114,7 @@ public class CalendarController {
         }
         
         mav.addObject("user", getCurrentUser(session));
+        mav.addObject("entries", getAppointments(year, month));
         mav.setViewName("calendar");
         return addMonthData(year, month, mav);
     }
@@ -115,7 +134,6 @@ public class CalendarController {
         cal.add(entry);
         
         mav.setViewName("redirect:/calendar");
-        
         return mav;
     }
 }

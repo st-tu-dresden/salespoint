@@ -1,3 +1,4 @@
+<%@page import="org.salespointframework.core.calendar.PersistentCalendar"%>
 <%@page import="org.joda.time.DateTime"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -35,6 +36,13 @@
 					   <c:if test="${(d.index >= firstWeekday || w.index>0) && (currentDay<=numberOfDays)}">
 					       <div class="dayNumber">
 					       ${currentDay}
+					       </div>
+					       <div class="dayEntry">					       
+					       <c:forEach var="entry" items="${entries}">
+					           <c:if test="${entry.key == currentDay}">
+					               ${entry.value.title}
+					           </c:if>
+					       </c:forEach>
 					       </div>
 					       <c:set var="currentDay" value="${currentDay+1}"/>
 					   </c:if>
