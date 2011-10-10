@@ -233,8 +233,10 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 			entityManager.getTransaction().begin();
 			entityManager.getTransaction().commit();
 		} else {
+			/*
 			this.entityManager.getTransaction().begin();
 			this.entityManager.getTransaction().commit();
+			*/
 		}
 	}
 

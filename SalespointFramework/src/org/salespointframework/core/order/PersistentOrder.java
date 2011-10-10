@@ -234,21 +234,17 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 			throw new RuntimeException("Sorry, PersistentInventory only :(");
 		}
 
-		EntityManager em = Database.INSTANCE.getEntityManagerFactory()
-				.createEntityManager();
+		EntityManager em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
 
-		PersistentInventory inventory = ((PersistentInventory) tempInventory)
-				.newInstance(em);
-		Set<PersistentOrderLine> remainingOrderLines = new HashSet<PersistentOrderLine>(
-				this.orderLines);
+		PersistentInventory inventory = ((PersistentInventory) tempInventory).newInstance(em);
+		
+		Set<PersistentOrderLine> remainingOrderLines = new HashSet<PersistentOrderLine>(this.orderLines);
 
 		em.getTransaction().begin();
 
 		for (PersistentOrderLine orderLine : orderLines) {
 			remainingOrderLines.remove(orderLine);
-			Iterable<PersistentProductInstance> tempProducts = inventory.find(
-					PersistentProductInstance.class, orderLine.getProductIdentifier(),
-					orderLine.getProductFeatures());
+			Iterable<PersistentProductInstance> tempProducts = inventory.find(PersistentProductInstance.class, orderLine.getProductIdentifier(),orderLine.getProductFeatures());
 
 			List<PersistentProductInstance> products = Iterables.asList(tempProducts);
 
@@ -260,20 +256,14 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 
 				if (!result) {
 					// TODO payment clone?
-					PersistentOrder order = new PersistentOrder(
-							this.userIdentifier, this.paymentMethod);
-					PersistentOrderLine pol = new PersistentOrderLine(
-							orderLine.getProductIdentifier(),
-							orderLine.getProductFeatures(), numberOrdered
-									- removed);
+					PersistentOrder order = new PersistentOrder(this.userIdentifier, this.paymentMethod);
+					PersistentOrderLine pol = new PersistentOrderLine(orderLine.getProductIdentifier(),	orderLine.getProductFeatures(), numberOrdered - removed);
 					order.orderLines.add(pol);
 					order.orderLines.addAll(remainingOrderLines);
 					order.chargeLines.addAll(this.chargeLines);
 					order.orderStatus = OrderStatus.PAYED;
 
-					return new InternalOrderCompletionResult(
-							OrderCompletionStatus.SPLITORDER, order, em, null);
-
+					return new InternalOrderCompletionResult(OrderCompletionStatus.SPLITORDER, order, em, null);
 				} else {
 					removed++;
 				}
@@ -287,12 +277,10 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		try {
 			em.getTransaction().commit();
 		} catch (RollbackException e) { // "RollbackException - if the commit fails"
-			return new InternalOrderCompletionResult(
-					OrderCompletionStatus.FAILED, null, em, e.getCause());
+			return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED, null, em, e.getCause());
 		}
 
-		return new InternalOrderCompletionResult(
-				OrderCompletionStatus.SUCCESSFUL, null, em, null);
+		return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL, null, em, null);
 	}
 
 	/**
@@ -340,19 +328,16 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		;
 		// TODO payment nutzen
 
-		ProductPaymentEntry ppe = new ProductPaymentEntry(this.orderIdentifier,
-				this.userIdentifier, this.getTotalPrice(),
-				"Rechnung Nr. " + this.orderIdentifier, this.paymentMethod);
-		PersistentAccountancy pA = (PersistentAccountancy) Shop.INSTANCE
-				.getAccountancy(); // TODO not only Persistent?
+		// TODO "Rechnung Nr " deutsch?
+		ProductPaymentEntry ppe = new ProductPaymentEntry(this.orderIdentifier,	this.userIdentifier, this.getTotalPrice(), "Rechnung Nr. " + this.orderIdentifier, this.paymentMethod);
+		PersistentAccountancy pA = (PersistentAccountancy) Shop.INSTANCE.getAccountancy(); // TODO not only Persistent?
 		pA.add(ppe);
 		orderStatus = OrderStatus.PAYED;
 		return true;
 	}
 
 	// gotta love inner classes
-	private final class InternalOrderCompletionResult implements
-			OrderCompletionResult {
+	private final class InternalOrderCompletionResult implements OrderCompletionResult {
 
 		private final OrderCompletionStatus orderCompletionStatus;
 		private final PersistentOrder order;
