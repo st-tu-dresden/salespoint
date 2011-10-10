@@ -69,7 +69,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	 */
 	public final void addAll(Iterable<? extends PersistentProductInstance> productInstances) {
 		Objects.requireNonNull(productInstances, "products");
-		EntityManager em = emf.createEntityManager();
+		EntityManager em = getEntityManager();
 		for (PersistentProductInstance e : productInstances) {
 			em.persist(e);
 		}
@@ -80,6 +80,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	public boolean remove(SerialNumber serialNumber) {
 		Objects.requireNonNull(serialNumber, "serialNumber");
 		EntityManager em = getEntityManager();
+		System.out.println("Remove: " + em);
 		Object product = em.find(PersistentProductInstance.class, serialNumber);
 		if (product != null) {
 			em.remove(product);
@@ -109,7 +110,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	public <E extends PersistentProductInstance> Iterable<E> find(Class<E> clazz) {
 		Objects.requireNonNull(clazz, "clazz");
 
-		EntityManager em = emf.createEntityManager();
+		EntityManager em = getEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
 		TypedQuery<E> tq = em.createQuery(cq);
@@ -123,7 +124,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		Objects.requireNonNull(clazz, "clazz");
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 
-		EntityManager em = emf.createEntityManager();
+		EntityManager em = getEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
 		Root<E> entry = cq.from(clazz);
@@ -150,7 +151,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	private <E extends PersistentProductInstance> List<E> findInternal(Class<E> clazz, ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures) {
 		Set<ProductFeature> featureSet = Iterables.asSet(productFeatures);
 
-		EntityManager em = emf.createEntityManager();
+		EntityManager em = getEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
 		Root<E> entry = cq.from(clazz);
@@ -220,6 +221,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	 */
 	public final PersistentInventory newInstance(EntityManager entityManager) {
 		Objects.requireNonNull(entityManager, "entityManager");
+		System.out.println("newInstance: " + entityManager);
 		return new PersistentInventory(entityManager);
 	}
 
@@ -233,6 +235,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 			entityManager.getTransaction().commit();
 		} else {
 			System.out.println("AUSSEN");
+			System.out.println("beginCommit: " + this.entityManager);
 			/*
 			this.entityManager.getTransaction().begin();
 			this.entityManager.getTransaction().commit();
@@ -246,7 +249,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	public long count(ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 
-		EntityManager em = emf.createEntityManager();
+		EntityManager em = getEntityManager();
 
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
