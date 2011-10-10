@@ -23,9 +23,11 @@
 	
 <div class="content">
 
-	This is the detail page of ${dvd.name}.<br>
-	You can purchase it for ${dvd.price }.<br>
-	What other Customers said about ${dvd.name }:<br>
+	This is the detail page of ${dvd.name}.<br />
+	You can purchase it for ${dvd.price }.<br />
+	Auf Lager: ${count} <br />
+	What other Customers said about ${dvd.name }:<br />
+	
 
 <form method="post" action="addDisc">
 	<input type="hidden" name="pid" value="${dvd.identifier}" />

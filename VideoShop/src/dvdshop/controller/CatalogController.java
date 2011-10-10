@@ -1,5 +1,6 @@
 package dvdshop.controller;
 
+import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.util.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class CatalogController {
 		
 		mav.addObject("dvd", disc);
 		mav.addObject("comments", disc.getComments());
+		mav.addObject("count", new PersistentInventory().count(disc.getIdentifier()));
 		
 		mav.setViewName("detail");
 		
