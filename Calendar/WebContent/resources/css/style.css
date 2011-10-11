@@ -112,7 +112,7 @@ table.calendar th {
 }
 
 table.calendar td {
-	valign:top;
+	vertical-align:top;
 	border-width: 1px;
 	padding: 0px;
 	margin: 0px;
@@ -129,6 +129,7 @@ div.dayNumber {
 }
 
 div.dayEntry {
+	font-size:150%;
     line-height: 150%;
     width: 100%;
     margin-left: 1em;
