@@ -137,7 +137,9 @@ div.item:hover{
 }
 
 a.item{
-
+	display:block;
+	width: 200px;
+	height: 280px;
 }
 
 img.itemThumbnail{

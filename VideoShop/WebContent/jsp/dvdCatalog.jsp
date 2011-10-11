@@ -24,16 +24,16 @@
 	
 	<div class="content">
 		<c:forEach var="item" items="${items}">
-			<a class="item" href="detail?pid=${item.identifier}">
-				<div class="item">
+				<div class="item" onclick="location.href='detail?pid=${item.identifier}';" style="cursor:pointer;">
 					<h4>${item.name}</h4>
 					<img class="itemThumbnail" src="<c:url value="/res/img/imageDummy.png" />" />
 					<p class="price">Preis: ${item.price}</p>
 				</div>
-			</a>
+			
 		</c:forEach>
 	</div>
 	<jsp:include page="templates/footer.jsp"></jsp:include>
+	
 </div>		
 </body>
 </html>
