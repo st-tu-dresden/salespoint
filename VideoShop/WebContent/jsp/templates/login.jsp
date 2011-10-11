@@ -13,6 +13,6 @@
 		<label for="SP_LOGIN_PARAM_PASSWORD">Password</label><br />
 		<input id="SP_LOGIN_PARAM_PASSWORD" type="text" name="SP_LOGIN_PARAM_PASSWORD" />
 		<br />
-		<input type="submit" name="button" value="Login" />
+		<input type="submit" name="button" value="<spring:message code="org.salespointframework.form.login" />" />
 	</form>
 </div>
