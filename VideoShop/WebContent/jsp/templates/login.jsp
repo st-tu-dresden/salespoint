@@ -7,12 +7,12 @@
 <div class="login">
 	<form method="post" action="">
 		<input type="text" name="SP_LOGIN_PARAM" hidden="true" />
-		<label for="SP_LOGIN_PARAM_IDENTIFIER">UserIdentifier</label><br />
+		<label for="SP_LOGIN_PARAM_IDENTIFIER"><spring:message code="org.salespointframework.form.login.name" /></label><br />
 		<input id="SP_LOGIN_PARAM_IDENTIFIER" type="text" name="SP_LOGIN_PARAM_IDENTIFIER" />
 		<br />
-		<label for="SP_LOGIN_PARAM_PASSWORD">Password</label><br />
+		<label for="SP_LOGIN_PARAM_PASSWORD"><spring:message code="org.salespointframework.form.login.password" /></label><br />
 		<input id="SP_LOGIN_PARAM_PASSWORD" type="text" name="SP_LOGIN_PARAM_PASSWORD" />
 		<br />
-		<input type="submit" name="button" value="<spring:message code="org.salespointframework.form.login" />" />
+		<input type="submit" name="button" value="<spring:message code="org.salespointframework.form.login.button" />" />
 	</form>
 </div>
