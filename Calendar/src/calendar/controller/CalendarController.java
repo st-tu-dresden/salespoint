@@ -12,12 +12,14 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
+import org.salespointframework.core.calendar.CalendarEntryCapability;
 import org.salespointframework.core.calendar.CalendarEntryIdentifier;
 import org.salespointframework.core.calendar.PersistentCalendar;
 import org.salespointframework.core.calendar.PersistentCalendarEntry;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.util.Iterables;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -82,7 +84,7 @@ public class CalendarController {
         return mgr.getUserByToken(PersistentUser.class, session).getIdentifier();
     }
 
-    private Map<Integer, List<PersistentCalendarEntry>> getAppointments(int year, int month) {
+    private Map<Integer, List<PersistentCalendarEntry>> getAppointments(int year, int month, UserIdentifier user) {
         PersistentCalendar cal = new PersistentCalendar();
 
         DateTime start = new DateTime(year, month, 1, 0, 0);
@@ -91,17 +93,22 @@ public class CalendarController {
         Map<Integer, List<PersistentCalendarEntry>> entries = new HashMap<Integer, List<PersistentCalendarEntry>>();
 
         for (PersistentCalendarEntry entry : cal.between(PersistentCalendarEntry.class, start, end)) {
-            int startDay = entry.getStart().getDayOfMonth();
-            int endDay = entry.getEnd().getDayOfMonth();
-            List<PersistentCalendarEntry> dayEntries;
-
-            for (; startDay <= endDay; startDay++) {
-                if ((dayEntries = entries.get(startDay)) == null) {
-                    dayEntries = new LinkedList<PersistentCalendarEntry>();
-                    entries.put(startDay, dayEntries);
+            Iterable<CalendarEntryCapability> caps = (entry.getCapabilities(user));
+            if (caps != null)
+                if (Iterables.asList(caps).contains(CalendarEntryCapability.READ)) {
+                
+                int startDay = entry.getStart().getDayOfMonth();
+                int endDay = entry.getEnd().getDayOfMonth();
+                List<PersistentCalendarEntry> dayEntries;
+    
+                for (; startDay <= endDay; startDay++) {
+                    if ((dayEntries = entries.get(startDay)) == null) {
+                        dayEntries = new LinkedList<PersistentCalendarEntry>();
+                        entries.put(startDay, dayEntries);
+                    }
+    
+                    dayEntries.add(entry);
                 }
-
-                dayEntries.add(entry);
             }
         }
 
@@ -131,7 +138,7 @@ public class CalendarController {
         }
 
         mav.addObject("user", getCurrentUser(session));
-        mav.addObject("entries", getAppointments(year, month));
+        mav.addObject("entries", getAppointments(year, month, getCurrentUser(session)));
         mav.setViewName("calendar");
         return addMonthData(year, month, mav);
     }
