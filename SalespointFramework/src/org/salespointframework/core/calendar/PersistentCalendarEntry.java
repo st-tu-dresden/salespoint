@@ -252,7 +252,9 @@ public class PersistentCalendarEntry implements CalendarEntry {
     public final Iterable<CalendarEntryCapability> getCapabilities(UserIdentifier user) {
         Objects.requireNonNull(user, "user");
 
-        return Iterables.of(capabilities.get(user));
+        EnumSet<CalendarEntryCapability> caps = capabilities.get(user);
+       
+        return caps == null ? null : Iterables.of(caps);
     }
 
     /**
