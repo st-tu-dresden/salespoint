@@ -66,14 +66,16 @@ div.all{
 	margin: 0 auto;
 }
 
-p.about{
+
+p.about {
 	text-align:right;
 	font-size: 11px;
 }
 
+
 /*navigation*/
 
-div.top{
+header.top {
 	width:100%;
 	height: 100px;
 	background-color: #2e7cdc;
@@ -84,14 +86,13 @@ div.top{
 	font-size: 20px;
 }
 
-div.top a{
+header.top a {
 	font-size: 20px;
 	color: white;
-	
 }
 
 
-nav{
+nav {
 	float:right;
 	margin-top: 22px;
 	margin-right: 0px;
@@ -102,14 +103,14 @@ nav{
 
 /*content*/
 
-div.content{
+div.content {
 	float:left;
 	width:100%;
 	background-color:white;
 	min-height:500px;
 }
 
-ul{
+ul {
 	list-style:none;
 }
 
@@ -118,7 +119,7 @@ ul{
 
 
 
-div.item{
+div.item {
 	border: 1px #a4a4a4 solid;
 	background-color: #f9f9f9;
 	width: 200px;
@@ -131,18 +132,18 @@ div.item{
 	
 }
 
-div.item:hover{
+div.item:hover {
 	background-color: #eeeeee;
 	
 }
 
-a.item{
+a.item {
 	display:block;
 	width: 200px;
 	height: 280px;
 }
 
-img.itemThumbnail{
+img.itemThumbnail {
 	margin-top: 8px;
 	margin-left: 25px;
 	width:150px;
@@ -150,7 +151,7 @@ img.itemThumbnail{
 	
 }
 
-p.price{
+p.price {
 	padding-top:3px;
 	align: left;
 }

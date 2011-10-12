@@ -8,6 +8,7 @@ import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.order.OrderCompletionResult;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderLine;
+import org.salespointframework.core.order.PersistentOrderManager;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.util.Iterables;
@@ -83,6 +84,7 @@ public class BasketController {
 			
 			System.out.println(ocr.getStatus());
 			//System.out.println(ocr.getException().toString());
+			new PersistentOrderManager().add(order);
 		}
 
 		mav.setViewName("index");

@@ -40,7 +40,7 @@ public class CatalogController {
 		
 		Disc disc = videoCatalog.getDisc(pid);
 		
-		mav.addObject("dvd", disc);
+		mav.addObject("disc", disc);
 		mav.addObject("comments", disc.getComments());
 		mav.addObject("count", new PersistentInventory().count(disc.getIdentifier()));
 		
@@ -61,8 +61,7 @@ public class CatalogController {
 
 		videoCatalog.update(disc);
 		
-		mav.addObject("dvd", disc);
-		mav.addObject("comments", disc.getComments());
+		mav.addObject("disc", disc);
 		
 		mav.setViewName("detail");
 		

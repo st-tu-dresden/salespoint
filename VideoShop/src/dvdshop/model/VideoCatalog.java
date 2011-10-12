@@ -13,6 +13,7 @@ public class VideoCatalog extends PersistentCatalog {
 		return super.get(Disc.class, productIdentifier);
 	}
 	
+	/*
 	public Dvd getDvd(ProductIdentifier productIdentifier) {
 		return super.get(Dvd.class, productIdentifier);
 	}
@@ -20,6 +21,7 @@ public class VideoCatalog extends PersistentCatalog {
 	public BluRay getBluRay(ProductIdentifier productIdentifier) {
 		return super.get(BluRay.class, productIdentifier);
 	}
+	*/
 	
 	public Iterable<Dvd> findDvds() {
 		return super.find(Dvd.class);
