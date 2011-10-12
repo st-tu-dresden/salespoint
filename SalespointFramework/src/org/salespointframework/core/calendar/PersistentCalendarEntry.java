@@ -24,7 +24,6 @@ import javax.persistence.Transient;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
-import org.salespointframework.core.time.TimeAnomalyException;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
@@ -194,18 +193,13 @@ public class PersistentCalendarEntry implements CalendarEntry {
      * Throws an exceptions if a anomaly in time has been detected.
      */
     private final void detectDateAnomalies(DateTime start, DateTime end, int repeatCount, Period period) {
-        try {
-            Interval duration = new Interval(start, end);
-            
-            if (repeatCount < -1)
-                throw new IllegalArgumentException("The repeat count of an appointment can't be less than zero, except -1, but was " + repeatCount);
+        Interval duration = new Interval(start, end);
+        
+        if (repeatCount < -1)
+            throw new IllegalArgumentException("The repeat count of an appointment can't be less than zero, except -1, but was " + repeatCount);
 
-            if ((repeatCount != 0) && duration.getStart().plus(period).isBefore(duration.getEnd()))
-                throw new IllegalArgumentException("The time between two repetitions can not be less than the duration of a calendar entry!");
-
-        } catch (Exception e) {
-            throw new TimeAnomalyException(e);
-        }
+        if ((repeatCount != 0) && duration.getStart().plus(period).isBefore(duration.getEnd()))
+            throw new IllegalArgumentException("The time between two repetitions can not be less than the duration of a calendar entry!");
     }
 
     @Override
@@ -452,9 +446,17 @@ public class PersistentCalendarEntry implements CalendarEntry {
      */
     @Override
     public final void setEnd(DateTime end) {
-        detectDateAnomalies(this.duration.getStart(), Objects.requireNonNull(end, "end"), this.repeatCount, this.period);
+        DateTime start;
+        
+        if (end.isBefore(this.duration.getStart())) {
+            start = this.duration.getStart().minus(this.duration.getEndMillis() - this.duration.getStartMillis());
+        } else {
+            start = this.duration.getStart();
+        }
+        
+        detectDateAnomalies(start, Objects.requireNonNull(end, "end"), this.repeatCount, this.period);
 
-        setStartEnd(this.startDate, end.toDate());
+        setStartEnd(start.toDate(), end.toDate());
     }
 
     /**
@@ -483,9 +485,16 @@ public class PersistentCalendarEntry implements CalendarEntry {
      */
     @Override
     public final void setStart(DateTime start) {
-        detectDateAnomalies(Objects.requireNonNull(start, "start"), this.duration.getEnd(), this.repeatCount, this.period);
-
-        setStartEnd(start.toDate(), this.endDate);
+        DateTime end;
+        
+        if (start.isAfter(this.duration.getEnd())) {
+            end = this.duration.getEnd().plus(this.duration.getEndMillis() - this.duration.getStartMillis());
+        } else {
+            end = this.duration.getEnd();
+        }
+        
+        detectDateAnomalies(Objects.requireNonNull(start, "start"), end, this.repeatCount, this.period);
+        setStartEnd(start.toDate(), end.toDate());
     }
 
     @Override

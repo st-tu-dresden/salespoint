@@ -95,6 +95,8 @@ public interface CalendarEntry {
      *            The capability for that all users should be returned.
      * @return An iterable of all user identifications who have the given
      *         capability for this entry.
+     * @throws ArgumentNullException
+     *             if <code>capability</code> is <code>null</code>
      */
     Iterable<UserIdentifier> getUsersByCapability(CalendarEntryCapability capability);
 
@@ -106,7 +108,8 @@ public interface CalendarEntry {
      * @param capability
      *            the capability that the user should loose.
      * @throws ArgumentNullException
-     *             if one ore more arguments are <code>null</code>
+     *             if <code>user</code> or <code>capability</code> or both are
+     *             <code>null</code>
      * @throws IllegalArgumentException
      *             if a capability from the owner should be removed.
      */
@@ -118,27 +121,31 @@ public interface CalendarEntry {
      * @param description
      *            the new description
      * @throws ArgumentNullException
-     *             if one ore more arguments are <code>null</code>
+     *             if <code>description</code> is <code>null</code>
      */
     void setDescription(String description);
 
     /**
-     * Sets a new end date.
+     * Sets a new end date. If it is before the current start date, the start
+     * will be set back, too. The length of the appointment will be the same as
+     * before.
      * 
      * @param end
      *            the new end date.
      * @throws ArgumentNullException
-     *             if one ore more arguments are <code>null</code>
+     *             if <code>end</code> is <code>null</code>
      */
     void setEnd(DateTime end);
 
     /**
-     * Sets a new start date.
+     * Sets a new start date. If it is after the current end date, the end will
+     * be set forward, too. The length of the appointment will be the same as
+     * before.
      * 
      * @param start
      *            the new start date.
      * @throws ArgumentNullException
-     *             if one ore more arguments are <code>null</code>
+     *             if <code>is</code> is <code>null</code>
      */
     void setStart(DateTime start);
 
@@ -148,7 +155,7 @@ public interface CalendarEntry {
      * @param title
      *            the new title.
      * @throws ArgumentNullException
-     *             if one ore more arguments are <code>null</code>
+     *             if <code>title</code> is <code>null</code>
      */
     void setTitle(String title);
 }
