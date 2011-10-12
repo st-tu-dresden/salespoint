@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
@@ -10,52 +9,52 @@
 
 <html>
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css"
-	href="<c:url value="/res/css/style.css" />" />
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css"	href="<c:url value="/res/css/style.css" />" />
+	<title>${disc.name}</title>
 </head>
-<title>${dvd.name}</title>
+
 <body>
-<div class="all">
-	<div class="top">
-		<h1>Details</h1>
-		<jsp:include page="templates/navigation.jsp"></jsp:include>
-	</div>
+	<div class="all">
+		<header class="top">
+			<h1>${disc.name}</h1>
+			<jsp:include page="templates/navigation.jsp"></jsp:include>
+		</header>
+			
+		<div class="content">
+			${disc.name}.<br /> 
+			<spring:message code="catalog.price" />: ${disc.price }.<br /> 
+			<spring:message code="detail.numberInStock" />: ${count} <br />
+			
+			<sp:loggedIn status="true">
+				<form method="post" action="addDisc">
+					<input type="hidden" name="pid" value="${disc.identifier}" /> 
+					<input	type="submit" value="<spring:message code="detail.addToBasket" />" />
+				</form>
+			</sp:loggedIn>
+	
+			<p>
+				What other Customers said about "${disc.name}":<br />
+			</p>
 		
-	<div class="content">
-	
-		This is the detail page of ${dvd.name}.<br /> You can purchase it for
-		${dvd.price }.<br /> Auf Lager: ${count} <br />
+			<ul>
+				<sp:forEach var="comment" items="${disc.comments}">
+					<li>${comment.text}</li>
+				</sp:forEach>
+			</ul>
 		
-		<sp:loggedIn status="true">
-	<form method="post" action="addDisc">
-				<input type="hidden" name="pid" value="${dvd.identifier}" /> <input
-					type="submit" value="zum warenkorb hinzufügen" />
-	</form>
-		</sp:loggedIn>
-		<p>
-			What other Customers said about "${dvd.name }":<br />
-		</p>
-	
-	<ul>
-	<sp:forEach var="comment" items="${comments}">
-	<li>${comment.text}</li>
-	</sp:forEach>
-	</ul>
-	
-	
-		<p>Add comment:</p>
-		<p>
-	<form method="post" action="comment">
-		<input type="hidden" name="pid" value="${dvd.identifier}" />
-			<textarea name="comment" cols="40" rows="5"></textarea><br>
-			<label for="rating">Rating: </label>
-			<input type="text"
-				name="rating" value="5" /> <input type="submit" value="senden" />
-	</form>
-		</p>
+			<p><spring:message code="detail.comment.addComment" />:</p>
+
+			<form method="post" action="comment">
+				<input type="hidden" name="pid" value="${disc.identifier}" />
+				<textarea name="comment" cols="40" rows="5"></textarea><br>
+				<label for="rating"><spring:message code="detail.comment.rating" />:</label>
+				<input type="text" 	name="rating" value="5" /> 
+				<input type="submit" value="<spring:message code="detail.comment.submit" />" />
+			</form>
+		</div>
+		
+		<jsp:include page="templates/footer.jsp"></jsp:include>
 	</div>
-	<jsp:include page="templates/footer.jsp"></jsp:include>
-</div>
 </body>
 </html>

@@ -4,4 +4,6 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<p class="about">created with Salespoint 5</p>
+<footer>
+	<p class="about">created with Salespoint 5</p>
+</footer>

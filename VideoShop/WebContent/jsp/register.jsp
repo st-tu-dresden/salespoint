@@ -5,46 +5,42 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.salespoint-framework.org/web/taglib" prefix="sp"%>
 
-    
 <!DOCTYPE html>
-
-
 
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/style.css" />" />
-	<title>Register new Customer</title>
+	<title><spring:message code="register.title" /></title>
 </head>
-
 <body>
-<div class="all">
-	<div class="top">
-		<h1>Register new Customer</h1>
-		<jsp:include page="templates/navigation.jsp"></jsp:include>
-	</div>
-	
-	<div class="content">
-		<div class="login">
-			<form method="post" action="new">
-					<label for="name">Name</label><br />
+	<div class="all">
+		<header class="top">
+			<h1><spring:message code="register.title" /></h1>
+			<jsp:include page="templates/navigation.jsp"></jsp:include>
+		</header>
+		
+		<div class="content">
+			<div class="login">
+				<form method="post" action="new">
+					<label for="name"><spring:message code="register.name" /></label><br />
 					<input id="name" type="text" name="name" />
 					<br />
-					<label for="password">Password</label><br />
+					<label for="password"><spring:message code="register.password" /></label><br />
 					<input id="password" type="text" name="password" />
 					<br/>
 					<br/>
-					<label for="address">Street</label><br />
+					<label for="address"><spring:message code="register.street" /></label><br />
 					<input id="address" type="text" name="street" />
 					<br/>
-					<label for="city">City</label><br />
+					<label for="city"><spring:message code="register.city" /></label><br />
 					<input id="city" type="text" name="city" /><br/>
-				
-				<input type="submit" name="submit" /> 
-			</form>
+					<input type="submit" name="submit" /> 
+				</form>
+			</div>
 		</div>
+		
+		<jsp:include page="templates/footer.jsp"></jsp:include>
 	</div>
-	<jsp:include page="templates/footer.jsp"></jsp:include>
-</div>
 </body>
 </html>

@@ -11,33 +11,33 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/style.css" />" />
-	<title>Video Shop</title>
+	<title><spring:message code="home.title" /></title>
 </head>
-
 <body>
-<div class="all">
-	<div class="top">
-		<h1>Video Shop</h1>
-		<jsp:include page="templates/navigation.jsp"></jsp:include>
-	</div>
-	
-	<div class="content">
-		<p>
-		<sp:loggedIn status="true">
-			<p> hello, ${loggedInUser.identifier}</p>
-			<p>
-				<c:url value="logout" var="logout"></c:url>
-				<a href="${logout}">Logout</a>
-			</p>
-		</sp:loggedIn>
+	<div class="all">
+		<header class="top">
+			<h1><spring:message code="home.title" /></h1>
+			<jsp:include page="templates/navigation.jsp"></jsp:include>
+		</header>
 		
-		<sp:loggedIn status="false">
-			<jsp:include page="templates/login.jsp" />
-			<a href="register">Register account</a>
-		</sp:loggedIn>
-		</p>
+		<div class="content">
+			<p>
+			<sp:loggedIn status="true">
+				<p> hello, ${loggedInUser.identifier}</p>
+				<p>
+					<c:url value="logout" var="logout"></c:url>
+					<a href="${logout}">Logout</a>
+				</p>
+			</sp:loggedIn>
+			
+			<sp:loggedIn status="false">
+				<jsp:include page="templates/login.jsp" />
+				<a href="register"><spring:message code="register.new" /></a>
+			</sp:loggedIn>
+			</p>
+		</div>
+		
+		<jsp:include page="templates/footer.jsp"></jsp:include>
 	</div>
-	<jsp:include page="templates/footer.jsp"></jsp:include>
-</div>
 </body>
 </html>
