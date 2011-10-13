@@ -8,18 +8,43 @@ Early on it became obvious that necessities of JPA could dictate the design and 
 To guard against JPA requirements influencing design decisions, \salespoint{} strongly follows the \textit{programming against interfaces} programming style.
 Although, creating an interface for almost every class violates the \textit{KISS} (Keep it simpe, Stupid! Also, a hard-rock band.) principle, the developers deemed programming against interfaces necessary because \salespoint{} is intrinsically tied to JPA.
 Using interfaces allowed us to cleanly define the behaviour of an object, without relying on a specific implementation.
+%As in other packages, interfaces are used to separate between behaviour and implementation.
 \\
 
 Objects, which need to be persisted to safe the current state of an application, are called persistence entities.
 Usually, a persistence entity is a \textit{Plain Old Java Object} (POJO).
-Every persistence entity class is an implementation of a corresponding Java interface.
-Each persistence entity has a manager class, which in turn is an implementation of a manager interface.
-The specific manager implementations in \salespoint{} facilitate persisting the objects to a database.
-However, it is possible to implement every persistence entity and manager class in \salespoint{} non-persistent, for example collection-based.
+%Separating behaviour and implementation is employed throughout the framework.
+However, Java interfaces are used to separate behaviour and implementation.
+An interface defines only the behaviour of an object.
+Every persistence entity class is an implementation of a corresponding Java interface, to avoid JPA requirements to impact on design decision and, for example, influence the \salespoint{} API.
+Each persistence entity has an aggregating class, which also implements an interface.
+The interface of an aggregating class specifies its API, but not implementation details.
+%Each persistence entity has a manager class, which in turn is an implementation of a manager interface.
+%Each persistence entity has an aggregating class, which handles JPA access transparently
+Aggregating classes and their respective interfaces are also called manager classes (interfaces), for example \code{UserManager} and \code{OrderManager}.
+Sometimes, class and interface names deviate from this naming scheme, for example \code{Calendar}, \code{Inventory} or \code{Accountancy}.
+The reason for this break in naming scheme is clarity: because a \code{Calendar} aggregates \code{CalendarEntry}s\footnote{
+	The correct plural form would be \code{CalendarEntries}, which is not a type name.
+	The form "\code{CalendarEntry}s" is used to support full text search.
+	Futhermore, "\code{CalendarEntry}s" should be read as "\code{CalendarEntry} objects" or "objects of the type \code{CalendarEntry}"},
+its name according to the scheme would be \code{CalendarEntryManager}.
+Everybody knows what a \code{Calendar} is for, but not necessarily what a \code{CalendarEntryManager} does.
+The specific manager implementations included \salespoint{} facilitate storing objects to a database.
+%However, it is possible to implement every persistence entity and manager class in \salespoint{} non-persistent, for example collection-based.
+However, an implementation based on Java collections rather than a database is entirely possible.
 \\
 
 \salespoint{} is designed to be developer-friendly.
 A crucial part of its easy-to-use feeling is the consistency of interfaces, persistence entities and managers across the framework, including, but not limited to the naming of methods and behaviour of managers.
+All aggregating classes share a set of methods, namely \code{add}, \code{get}, \code{contains}, \code{remove} and \code{find}.
+The methods have the same semantics on every manager and have a similar method signature.
+Concise method names speed up development by reducing typing overhead.
+Instead of having an \code{addUser} method for the user manager or an \code{addOrder} method for the order manager, all managers have a method just named \code{add}.
+Consistency in the API is achieved by similar method signature.
+Consider the \code{get} method: it takes only one parameter which is an identifier.
+The precise type of the identifier is easily guessed: the order manager requires an \code{OrderIdentifier} and the \code{Accountancy} an \code{AccountancyEntryIdentifier}.
+The name of the identifier type is derived from the name of class which is aggregated by the manager.
+This consistency allows a developer to use an unknown manager, when he is familiar with another manager.
 \\
 
 \begin{figure}
@@ -31,7 +56,7 @@ A crucial part of its easy-to-use feeling is the consistency of interfaces, pers
 
 Figure \ref{package_overview} depicts the package structure of \salespoint{}.
 \salespoint{} components are grouped into packages according to their respective functionality.
-Key concepts of \salespoint{} are illustrated in the following paragraphs.
+Key concepts of \salespoint{} are illustrated in the following paragraphs, whose structure closely follows the package structure of \salespoint{} \code{core} package.
 \input{core/overview.tex}
 \input{core/shop.tex}
 \input{core/user.tex}
