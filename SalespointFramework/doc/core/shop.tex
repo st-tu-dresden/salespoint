@@ -26,3 +26,9 @@ There is also a convenience method to minimize boilerplate code\footnote{
 it is used for setting all managers of \code{Shop} to Salespoints persistent class implementations and the time to \code{DefaultTime}.
 This behaviour is also known as \textit{convention over configuration}, which means reasonable default values are supplied, eliminating the need to explicitly specify those values in most cases.
 \code{Shop} is implemented as a singleton.
+
+Although \code{Shop} holds a references to all managers and aggregating classes (see Section \ref{chap:components}), persistent implementations do not need to be singletons and are infact not.
+Moreover, a peculiarity of all managers and aggregating classes is, that a new instance can be created whenever one is needed.
+The reason for this behaviour is, that data is not stored inside the manager object itself, as it may be done with a collection-based implementation, but the manager class is merely a transparent interface to the JPA and database.\\
+
+
