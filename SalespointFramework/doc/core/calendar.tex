@@ -34,16 +34,16 @@ Possible capabilities are:
     \item \code{SHARE} - indicates if a user can share this entry with other users
 \end{itemize}.
 
-Because \salespoint{} only implements the Model, the developer has to check and enforce capabilities in the controller.
+Because \salespoint{} only implements the model of the MVC pattern (see Section~\ref{spring}), the developer has to check and enforce capabilities in the controller.
 \\
 
-Besides the minimum information a calendar entry can also have a description, which may contain more information.
-Periodic appointments are also supported, by specifing the number of repetitions and a time span between two appointments.
+Besides the minimum information of owner, title, start and end a calendar entry can also have a description, which may contain more information.
+Periodic appointments are also supported, by specifing the number of repetitions (\code{count} in Figure \ref{calendar_overview}) and a time span between two appointments (\code{period} in Figure \ref{calendar_overview}).
 \\
 
 There are some conditions for temporal attributes of an calendar entry:
 \begin{itemize}
     \item the start must not be after the end
-    \item the time between two repetitions of an appointment need to be longer than the appointment, so appointments do not overlap
+    \item the time between two repetitions of an appointment need to be longer than the duration of the appointment, so that appointments do not overlap
 \end{itemize}
 %All attributes of the entry can be changed, except of the owner, who will be defined when the entry is created and then becomes immutable. 
