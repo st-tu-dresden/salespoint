@@ -1,25 +1,26 @@
 \section{JPA - Java Persistence API}
 %The persistence layer was one of the biggest problems in Salespoint 2010. We wanted a solution that acknowledges latitudes for persisting objects with relatively low effort.
-One of the key features of \salespoint is its integrated persistence layer. The goal is to allow data persistence, while minimising programming effort and training period as well as maximising flexibility for framework users.
+One of the key features of \salespoint{} is its integrated persistence layer. The goal is to allow data persistence, while minimising programming effort and training period as well as maximising flexibility for framework users.
 
 %Therefore and because of the huge community support, we decided to use the Java Persistence API (JPA). JPA is a Java Programming Language Framework managing relational data in applications. The API itself is defined in the javax.persistence package.
-The obvious choice was the Java Persistence API (JPA), a Java framework managing relational data in Java SE or EE applications. \salespoint uses JPA 2.0, developed under JSR 317 and finalised in Dec, 2009.
+The obvious choice was the Java Persistence API (JPA), a Java framework managing relational data in Java Standard Edition or Enterprise Edition applications. \salespoint{} uses JPA 2.0, developed under JSR 317 and finalised in Dec, 2009 \cite{jpa}.
 
-Additional to the API itself, which is defined in the \texttt{javax.persistence} package, JPA also consists of \textit{Persistence Entities}, \textit{ORM Metadata} and the \textit{Java Persistence Query Language} (JPQL).
+Additionally to the API itself, which is defined in the \texttt{javax.persistence} package, JPA also consists of \textit{Persistence Entities}, \textit{ORM Metadata} and the \textit{Java Persistence Query Language} (JPQL).
 
 A persistence entity is usually a \textit{Plain Old Java Object} (POJO), which is mapped to a single table in a database.
 A row in such a database table corresponds to a specific instance of such an entity.
-Relational data between entities (and therefor tables) may be specified in an XML descriptor file or as annotations in Java source code.
+Relational data between entities (and therefore tables) may be specified in an XML descriptor file or as annotations in Java source code.
 \salespoint{} uses annotations to provide object/relational metadata.
 
-A query language similar to SQL - JPQL - is used to retrieve entity information from the database.
+The query language JPQL, which is similar to SQL, is used to retrieve entity information from the database.
 In contrast to SQL, JPQL queries act on entity objects instead of database tables.
-JPA Implementations translate a JPQL statement to SQL statements at run time, thus it is possible to replace the DBMS, while keeping the Java classes.
+JPA implementations translate a JPQL statement to SQL statements at run time.
+It is possible to replace the DBMS while keeping the Java classes.
 It is possible to interface directly with the DBMS using \textit{Native Queries}.
-\salespoint{} however, uses the \textit{Criteria API} to facilitate type safe querying.
+\salespoint{} however, uses the \textit{Criteria API} \cite{jpa, eclipselink-javadoc} to facilitate type safe querying.
 
 %Some of the most popular vendors of JPA are Hibernate and EclipseLink. For developing Salespoint 2011 we used JPA 2.0 with EclipseLink without vendor specific functionality. So it should also be possible to use other JPA 2.0 vendors like Hibernate with this framework.
-Multiple implementations of JPA 2.0 exist, for example TopLink \cite{toplink}, EclipseLink \cite{eclipselink}.
+Multiple implementations of JPA 2.0 exist, for example TopLink \cite{toplink} and EclipseLink \cite{eclipselink}.
 The open source persistence and ORM framework Hibernate \cite{hibernate} also supports JPA 2.0.
-\salespoint uses the JPA 2.0 reference implementation, EclipseLink.
-No implementation specific code is used in \salespoint, therefore it should be possible to interchange EclipseLink with another JPA implementation.
+\salespoint{} uses the JPA 2.0 reference implementation, EclipseLink.
+No implementation specific code is used in \salespoint{}, therefore it should be possible to interchange EclipseLink with another JPA 2.0 implementation.\footnote{This document will be updated, as soon as another JPA provider is tested with \salespoint{}.}
