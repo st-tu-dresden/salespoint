@@ -2,7 +2,7 @@
 \section{Calendar}
 \label{sec:calendar}
 
-The calendar is a new feature in \salespoint{} to manage appointments.
+The calendar is a new feature in \salespoint{} to manage appointments and events.
 Figure \ref{calendar_overview} shows the UML model of the calendar.
 
 \begin{figure}[ht]
@@ -12,16 +12,16 @@ Figure \ref{calendar_overview} shows the UML model of the calendar.
 	\caption{Calendar - Class Overview}
 \end{figure}
 
-\code{Calendar} is an interface that provides simple functionality to store calendar entries and retrieve \code{CalendarEntries}.
-\code{CalendarEntry} is an interface to set, store and access information about a single appointment.
-Both interfaces are implemented by \code{PersistentCalendar} and \code{PersitentCalendarEntry}, respectively.
+\code{Calendar} is an interface that provides simple functionality to store and retrieve \code{CalendarEntry}s.
+\code{CalendarEntry} is an interface to set, store and access information of a single appointment/event.
+Both interfaces are implemented by \code{PersistentCalendar} and \code{PersistentCalendarEntry}, respectively.
 \code{PersistentCalendarEntry} is a persistence entity containing all information and \code{PersistentCalendar} manages the JPA access.
 \\
 
 Every calendar entry is uniquely identified by a \code{CalendarEntryIdentifier}.
 This identifier also serves as primary key attribute when persisting an entry to the database.
 Additionally, a \code{PersistentCalendarEntry} must have an owner, a title, a start and an end date.
-The user who created the entry is known as the owner.
+The user who created the entry is known as the owner and identified by \code{ownerID} of the type \code{UserIdentifier}.
 \\
 
 The access of other users than the owner to a calendar entry is restricted by capabilities.
@@ -30,8 +30,8 @@ Possible capabilities are:
 \begin{itemize}
     \item \code{READ} - indicates if a user can read this entry
     \item \code{WRITE} - indicates if a user can change this entry
-    \item \code{DELETE} - indicates if a user can delete the entry
-    \item \code{SHARE} - indicates if a user can share the entry to other users
+    \item \code{DELETE} - indicates if a user can delete this entry
+    \item \code{SHARE} - indicates if a user can share this entry with other users
 \end{itemize}.
 
 Because \salespoint{} only implements the Model, the developer has to check and enforce capabilities in the controller.
