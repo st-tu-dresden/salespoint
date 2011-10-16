@@ -10,14 +10,15 @@ import org.salespointframework.core.database.Database;
  */
 public class PersistenceUnitInitializer {
 
-	//private String persistenceUnitName;
-	
 	public PersistenceUnitInitializer() {
 		
 	}
 	
 	public void setPersistenceUnitName(String persistenceUnitName) {
 		//this.persistenceUnitName = persistenceUnitName;
-		Database.INSTANCE.initializeEntityManagerFactory(persistenceUnitName);
+		boolean result = Database.INSTANCE.initializeEntityManagerFactory(persistenceUnitName);
+		if(!result) {
+			throw new IllegalArgumentException("The PersistentUnit: " + persistenceUnitName + " does not exist!");
+		}
 	}
 }
