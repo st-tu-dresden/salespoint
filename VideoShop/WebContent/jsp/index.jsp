@@ -11,6 +11,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/style.css" />" />
+	<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/login.css" />" />
 	<title><spring:message code="home.title" /></title>
 </head>
 <body>

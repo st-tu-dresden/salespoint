@@ -11,17 +11,6 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-	    <property name="webBindingInitializer">
-	        <bean class="org.salespointframework.web.GlobalBindingInitializer"/>
-	    </property>
-	</bean>
-	
-	<bean class="org.salespointframework.web.PersistenceUnitInitializer">
-		<property name="persistenceUnitName">
-			<value>DVDShop</value>
-		</property>
-	</bean>
 
     <!-- messages for i18n -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
@@ -32,6 +21,18 @@
 	
 	<!-- use the interceptor-enabled annotation based handler mapping -->
     <bean class="org.salespointframework.web.spring.annotations.SalespointAnnotationHandlerMapping " />
+    
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	    <property name="webBindingInitializer">
+	        <bean class="org.salespointframework.web.GlobalBindingInitializer"/>
+	    </property>
+	</bean>
+	
+	<bean class="org.salespointframework.web.PersistenceUnitInitializer">
+		<property name="persistenceUnitName">
+			<value>DVDShop</value>
+		</property>
+	</bean>
 
     <!-- needs to be activated for easy ajax -->
     <!-- vorerst auskommentiert, sonst funktioniert Interceptors (LoginInterceptor) nicht mehr -->

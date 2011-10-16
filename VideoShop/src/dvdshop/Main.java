@@ -1,5 +1,8 @@
 package dvdshop;
 
+import javax.persistence.EntityManagerFactory;
+
+import org.salespointframework.core.database.Database;
 import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.PersistentProductInstance;
@@ -23,6 +26,18 @@ public class Main {
 		Shop.initializeShop();
 		
 		initData();
+		
+		EntityManagerFactory blub = Database.INSTANCE.getEntityManagerFactory();
+		if(blub == null) {
+			System.out.println("nulllll");
+			System.out.println("nulllll");
+			System.out.println("nulllll");
+			System.out.println("nulllll");
+			System.out.println("nulllll");
+			System.out.println("nulllll");
+			System.out.println("nulllll");
+			System.out.println("nulllll");
+		}
 	}
 
 	private void initData() {

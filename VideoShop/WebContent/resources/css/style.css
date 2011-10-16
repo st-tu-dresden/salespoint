@@ -1,5 +1,6 @@
 /* sinvoll da damit 1em == 10px */
 
+/*
 * {
 	padding:0;
 	margin:0;
@@ -15,6 +16,18 @@ body {
 
 /* sinvoll da damit 1em == 10px */
 
+
+{
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	margin: 0 auto;
+	width: 940px;
+	font: 13px/22px Helvetica, Arial, sans-serif;
+	background: #f0f0f0; 
+}
 
 /* überschriften */
 
@@ -118,7 +131,6 @@ ul {
 /*item*/
 
 
-
 div.item {
 	border: 1px #a4a4a4 solid;
 	background-color: #f9f9f9;
@@ -154,13 +166,4 @@ img.itemThumbnail {
 p.price {
 	padding-top:3px;
 	align: left;
-}
-
-/* login */
-
-div.login {
-	border: 2px solid #2e7cdc; 
-	margin:2em; 
-	padding:1em;
-	width: 30%;
 }

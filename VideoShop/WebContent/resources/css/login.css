@@ -1,0 +1,10 @@
+div.salespointloginlogin {
+	padding:1em;
+	width: 20em;
+}
+
+div.salespointloginlogin fieldset {
+	border: 2px solid grey; 
+	padding:1em;
+	margin:2em; 
+}
