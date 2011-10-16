@@ -29,8 +29,8 @@ public class GuestbookController {
 	public ModelAndView addEntry(          
 		  @RequestParam("name") String name,
           @RequestParam("text") String text,
-          ModelAndView mav) 
-	{
+          ModelAndView mav) {
+		
 		guestbook.addEntry(name, text);
 		lastName = name;
 		
@@ -41,8 +41,8 @@ public class GuestbookController {
 	@RequestMapping(value="/removeEntry",method=RequestMethod.GET)
 	public ModelAndView removeEntry(	
 			  @RequestParam("id") int id,
-	          ModelAndView mav) 
-	{
+	          ModelAndView mav) {
+		
 		guestbook.removeEntry(id);
 		mav.setViewName("redirect:/guestbook/");
 		return addStuff(mav);

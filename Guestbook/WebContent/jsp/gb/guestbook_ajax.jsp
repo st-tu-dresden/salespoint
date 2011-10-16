@@ -12,14 +12,14 @@
 		<script type="text/javascript" src="../res/js/jquery-1.4.3.min.js"> </script>
 		<script type="text/javascript" src="../res/js/jquery.tmpl.min.js"> </script>
 		<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/style.css" />" />
-		<title>Guestbook AJAX</title>
+		<title><spring:message code="guestbook.ajax.title" /></title>
 	</head>
 	<body>
 	
 
-		<h1>Guestbook AJAX</h1>
+		<h1><spring:message code="guestbook.ajax.title" /></h1>
 		<div class="entries">
-			<c:forEach var="e" items="${guestbookEntries}" varStatus="status">
+			<c:forEach var="e" items="${guestbookEntries}">
 				<div class="entry" id="entry${e.id}">
 					<button class="delBtn">x</button>
 					<h2>${e.name}</h2>
@@ -34,21 +34,21 @@
 		<div class="login"> 
 			<form id="form" action=""> 
 				<fieldset> 
-					<legend>add Entry</legend> 
-					<label for="name">Name</label><br /> 
+					<legend><spring:message code="guestbook.form.title" /></legend> 
+					<label for="name"><spring:message code="guestbook.form.name" /></label><br /> 
 					<input name="name" id="name" type="text" /><br /> 
-					<label for="text">Text</label><br /> 
+					<label for="text"><spring:message code="guestbook.form.text" /></label><br /> 
 					<textarea name="text" id="text"></textarea><br /> 
-					<button class="btn">send</button>
+					<button class="btn"><spring:message code="guestbook.form.submit" /></button>
 				</fieldset> 
 			</form> 
 		</div>
 		
-		<p class="center"><a href="<c:url value="/really" />">back</a></p>
+		<p class="center"><a href="<c:url value="/really" />"><spring:message code="guestbook.back" /></a></p>
 		
 		<!--  http://api.jquery.com/category/plugins/templates/ -->
 		<script id="entryTemplate" type="text/x-jquery-tmpl">
-			<div class="entry_odd" id="entry{{= id}}">
+			<div class="entry" id="entry{{= id}}">
 				<button class="delBtn">x</button>
 				<h2>{{= name}}</h2>
 				<p class="entrytext">{{= text}}</p>

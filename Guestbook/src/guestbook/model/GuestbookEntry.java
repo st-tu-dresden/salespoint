@@ -9,8 +9,7 @@ public class GuestbookEntry {
 	private final Date date;
 	private final int id;
 
-	// package visibility
-	GuestbookEntry(String name, String text) {
+	public GuestbookEntry(String name, String text) {
 		this.name = name;
 		this.text = text;
 		this.date = new Date();
@@ -34,5 +33,4 @@ public class GuestbookEntry {
 	public String getText() {
 		return text;
 	}
-
 }

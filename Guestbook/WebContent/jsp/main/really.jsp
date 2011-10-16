@@ -18,7 +18,6 @@
 			<img class="center" src="res/img/owl_orly.png" alt="" />
 			<br />
 			<p class="center"><a href="<c:url value="/guestbook/" />">Ya rly!</a></p>
-			<p class="center"><a href="<c:url value="/restbook/" />">Ya rly! REST</a></p>
 			<p class="center"><a href="<c:url value="/ajaxbook/" />">Ya rly! AJAX</a></p>
 		</div>
 	</body>

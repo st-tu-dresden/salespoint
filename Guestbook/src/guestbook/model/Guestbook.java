@@ -10,8 +10,7 @@ public class Guestbook {
 	// Entry.id -> Entry
 	private final Map<Integer, GuestbookEntry> entries = new TreeMap<Integer, GuestbookEntry>();
 	
-	public Guestbook()
-	{
+	public Guestbook() {
 		addEntry("H4xx0r", "first!!!");
 		addEntry("Arni", "Hasta la vista, baby");
 		addEntry("Duke Nukem", "It's time to kick ass and chew bubble gum. And I'm all out of gum.");
