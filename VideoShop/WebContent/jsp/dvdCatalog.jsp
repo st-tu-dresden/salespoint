@@ -15,24 +15,25 @@
 </head>
 <body>
 	<div class="all">
-			
-		<header class="top">
+		<header>
 			<h1>DVD Katalog</h1>
 			<jsp:include page="templates/navigation.jsp"></jsp:include>
 		</header>
 		
 		<div class="content">
-			<c:forEach var="item" items="${items}">
-					<div class="item" onclick="location.href='detail?pid=${item.identifier}';" style="cursor:pointer;">
+			<sp:forEach var="item" items="${items}">
+				<c:url value="detail" var="url">
+					<c:param name="pid" value="${item.identifier}" />
+				</c:url>
+				<a href="${url}">
+					<div class="item">  
 						<h4>${item.name}</h4>
-						<img class="itemThumbnail" src="<c:url value="/res/img/imageDummy.png" />" />
+						<img class="thumbnail" src="<c:url value="/res/img/imageDummy.png" />" alt="" />
 						<p class="price"><spring:message code="catalog.price" />: ${item.price}</p>
 					</div>
-				
-			</c:forEach>
+				</a>
+			</sp:forEach>
 		</div>
-		
-		<jsp:include page="templates/footer.jsp"></jsp:include>
 	</div>		
 </body>
 </html>

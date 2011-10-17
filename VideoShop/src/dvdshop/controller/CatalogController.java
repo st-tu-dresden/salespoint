@@ -2,8 +2,6 @@ package dvdshop.controller;
 
 import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.product.ProductIdentifier;
-import org.salespointframework.util.Iterables;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,19 +15,18 @@ import dvdshop.model.VideoCatalog;
 @Controller
 public class CatalogController {
 	
-	@Autowired
-	VideoCatalog videoCatalog;
+	private VideoCatalog videoCatalog = new VideoCatalog();
 
 	@RequestMapping("/dvdCatalog")
 	public ModelAndView dvdCatalog(ModelAndView mav) {
-		mav.addObject("items", Iterables.asList(videoCatalog.findDvds()));
+		mav.addObject("items", videoCatalog.findDvds());
 		mav.setViewName("dvdCatalog");
 		return mav;
 	}
 
 	@RequestMapping("/blurayCatalog")
 	public ModelAndView blurayCatalog(ModelAndView mav) {
-		mav.addObject("items", Iterables.asList(videoCatalog.findBlueRays()));
+		mav.addObject("items", videoCatalog.findBlueRays());
 		mav.setViewName("blurayCatalog");
 		return mav;
 	}

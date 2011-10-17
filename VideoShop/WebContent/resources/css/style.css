@@ -1,23 +1,6 @@
-/* sinvoll da damit 1em == 10px */
+/* CSS RESET */
 
-/*
 * {
-	padding:0;
-	margin:0;
-	font-size:1em;
-	font-weight:normal;
-}
-
-body {
-	font-size:62,5%;
-	background-color: #e0e0e0;
-	font: 1em sans-serif;
-}
-
-/* sinvoll da damit 1em == 10px */
-
-
-{
 	margin: 0;
 	padding: 0;
 }
@@ -28,6 +11,7 @@ body {
 	font: 13px/22px Helvetica, Arial, sans-serif;
 	background: #f0f0f0; 
 }
+
 
 /* überschriften */
 
@@ -67,14 +51,16 @@ a {
 	color: #2e7cdc;
 }
 
+
 a:hover {
-	font: 0.8em sans-serif;
+	/* font: 0.8em sans-serif; */
 	text-decoration: none;
 	color: white;
 	background-color: #2e7cdc;
 }
 
-div.all{
+
+div.all {
 	width: 1024px;
 	margin: 0 auto;
 }
@@ -88,7 +74,7 @@ p.about {
 
 /*navigation*/
 
-header.top {
+header {
 	width:100%;
 	height: 100px;
 	background-color: #2e7cdc;
@@ -99,13 +85,13 @@ header.top {
 	font-size: 20px;
 }
 
-header.top a {
+header a {
 	font-size: 20px;
 	color: white;
 }
 
 
-nav {
+header nav {
 	float:right;
 	margin-top: 22px;
 	margin-right: 0px;
@@ -155,15 +141,24 @@ a.item {
 	height: 280px;
 }
 
-img.itemThumbnail {
+img.thumbnail {
 	margin-top: 8px;
 	margin-left: 25px;
 	width:150px;
-	
-	
 }
 
 p.price {
 	padding-top:3px;
 	align: left;
 }
+
+article {  
+	margin: auto;
+	width: 50%;
+    border-radius: 5px;  
+	background: #e0e0e0;
+	border-width: 3px;
+	border: 2px solid #a0a0a0;
+	padding: 10px 20px;
+	margin: 10px 0px;
+} 

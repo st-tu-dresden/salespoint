@@ -16,29 +16,24 @@
 </head>
 <body>
 	<div class="all">
-		<header class="top">
+		<header>
 			<h1><spring:message code="home.title" /></h1>
 			<jsp:include page="templates/navigation.jsp"></jsp:include>
 		</header>
 		
 		<div class="content">
-			<p>
+			<br />
+			<p><spring:message code="home.welcome" /></p>
 			<sp:loggedIn status="true">
-				<p> hello, ${loggedInUser.identifier}</p>
-				<p>
-					<c:url value="logout" var="logout"></c:url>
-					<a href="${logout}">Logout</a>
-				</p>
+				<%-- <p> hello, ${loggedInUser.identifier}</p> --%>
+				<p><a href="logout">Logout</a></p>
 			</sp:loggedIn>
 			
 			<sp:loggedIn status="false">
 				<jsp:include page="templates/login.jsp" />
-				<a href="register"><spring:message code="register.new" /></a>
+				<p><a href="register"><spring:message code="register.new" /></a></p>
 			</sp:loggedIn>
-			</p>
 		</div>
-		
-		<jsp:include page="templates/footer.jsp"></jsp:include>
 	</div>
 </body>
 </html>

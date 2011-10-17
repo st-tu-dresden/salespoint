@@ -11,26 +11,29 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css"	href="<c:url value="/res/css/style.css" />" />
-	<title><spring:message code="catalog.blueray.title" /></title>
+	<title><spring:message code="catalog.bluray.title" /></title>
 </head>
 <body>
 	<div class="all">
-		<header class="top">
-			<h1><spring:message code="catalog.blueray.title" /></h1>
-			<jsp:include page="templates/navigation.jsp"></jsp:include>
+		<header>
+			<h1><spring:message code="catalog.bluray.title" /></h1>
+			<jsp:include page="templates/navigation.jsp" />
 		</header>
 		
 		<div class="content">
-			<c:forEach var="item" items="${items}">
-				<div class="item" onclick="location.href='detail?pid=${item.identifier}';" style="cursor:pointer;">
-					<h4>${item.name}</h4>
-					<img class="itemThumbnail" src="<c:url value="/res/img/imageDummy.png" />" />
-					<p class="price"><spring:message code="catalog.price" />: ${item.price}</p>
-				</div>
-			</c:forEach>
+			<sp:forEach var="item" items="${items}">
+				<c:url value="detail" var="url">
+					<c:param name="pid" value="${item.identifier}" />
+				</c:url>
+				<a href="${url}">
+					<div class="item">
+						<h4>${item.name}</h4>
+						<img class="thumbnail" src="<c:url value="/res/img/imageDummy.png" />" alt="" />
+						<p class="price"><spring:message code="catalog.price" />: ${item.price}</p>
+					</div>
+				</a>
+			</sp:forEach>
 		</div>
-		
-		<jsp:include page="templates/footer.jsp"></jsp:include>
 	</div>		
 </body>
 </html>

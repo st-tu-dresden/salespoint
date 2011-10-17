@@ -11,33 +11,33 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css"	href="<c:url value="/res/css/style.css" />" />
-	<title>Shopping Basket</title>
+	<title><spring:message code="shoppingBasket.title" /></title>
 </head>
 <body>
 	<div class="all">
-		<header class="top">
-			<h1>Shopping Basket</h1>
-			<jsp:include page="templates/navigation.jsp"></jsp:include>
+		<header>
+			<h1><spring:message code="shoppingBasket.title" /></h1>
+			<jsp:include page="templates/navigation.jsp" />
 		</header>
 		
 		<div class="content">
+			<br />
 			<c:choose>
 				<c:when test="${!isEmpty}">
-			<ul>
-				<sp:forEach var="item" items="${items}">
-					<li>${item.productName} -- ${item.numberOrdered}</li>
-				</sp:forEach>
-			</ul>
-		
-			<form method="post" action="buy">
-				<input type="submit" value="buy!!!" />
-			</form>
+					<ul>
+						<sp:forEach var="item" items="${items}">
+							<li>${item.productName}</li>
+						</sp:forEach>
+					</ul>
+					<form method="post" action="buy">
+						<button type="submit"><spring:message code="shoppingBasket.buy" /></button>
+					</form>
 				</c:when>
-				<c:otherwise>Your cart is empty.</c:otherwise>
+				<c:otherwise>
+					<p><spring:message code="shoppingBasket.empty" /></p>
+				</c:otherwise>
 			</c:choose>
 		</div>
-		
-		<jsp:include page="templates/footer.jsp"></jsp:include>
 	</div>
 </body>
 </html>

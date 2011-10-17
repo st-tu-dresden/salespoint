@@ -5,14 +5,12 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 
 import org.salespointframework.core.accountancy.payment.Cash;
-import org.salespointframework.core.order.OrderCompletionResult;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderLine;
 import org.salespointframework.core.order.PersistentOrderManager;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.util.Iterables;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,10 +23,8 @@ import dvdshop.model.VideoCatalog;
 @Controller
 public class BasketController {
 	
-	PersistentUserManager userManager = new PersistentUserManager();
-	
-	@Autowired
-	VideoCatalog videoCatalog;
+	private PersistentUserManager userManager = new PersistentUserManager();
+	private VideoCatalog videoCatalog = new VideoCatalog();
 	
 	@RequestMapping("/addDisc")
 	public ModelAndView addDisc(HttpServletRequest request, ModelAndView mav, @RequestParam("pid") ProductIdentifier pid) {
@@ -53,13 +49,13 @@ public class BasketController {
 		return mav;
 	}
 
-	@RequestMapping("/basket")
+	@RequestMapping("/shoppingBasket")
 	public ModelAndView basket(HttpServletRequest request, ModelAndView mav) {
 		boolean isEmpty = true;
 		PersistentOrder order = (PersistentOrder) request.getSession().getAttribute("order");
 
 		if (order != null) {
-			mav.addObject("items", Iterables.asList(order.getOrderLines()));
+			mav.addObject("items", order.getOrderLines());
 			isEmpty = Iterables.isEmpty(order.getOrderLines());
 		} else {
 			mav.addObject("items", new ArrayList<PersistentOrderLine>());
@@ -72,23 +68,16 @@ public class BasketController {
 	}
 
 	@RequestMapping("/buy")
-	public ModelAndView buy(HttpServletRequest request, ModelAndView mav) {
+	public String buy(HttpServletRequest request) {
 
 		PersistentOrder order = (PersistentOrder) request.getSession().getAttribute("order");
 
 		if (order != null) {
 			request.getSession().setAttribute("order", null);
 			order.payOrder();
-			System.out.println(order.getOrderStatus());
-			OrderCompletionResult ocr = order.completeOrder();
-			
-			System.out.println(ocr.getStatus());
-			//System.out.println(ocr.getException().toString());
+			order.completeOrder();
 			new PersistentOrderManager().add(order);
 		}
-
-		mav.setViewName("index");
-		return mav;
+		return "index";
 	}
-
 }

@@ -11,36 +11,38 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/style.css" />" />
+	<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/login.css" />" />	
 	<title><spring:message code="register.title" /></title>
 </head>
 <body>
 	<div class="all">
-		<header class="top">
+		<header>
 			<h1><spring:message code="register.title" /></h1>
-			<jsp:include page="templates/navigation.jsp"></jsp:include>
+			<jsp:include page="templates/navigation.jsp" />
 		</header>
 		
 		<div class="content">
-			<div class="login">
-				<form method="post" action="new">
-					<label for="name"><spring:message code="register.name" /></label><br />
-					<input id="name" type="text" name="name" />
-					<br />
-					<label for="password"><spring:message code="register.password" /></label><br />
-					<input id="password" type="text" name="password" />
-					<br/>
-					<br/>
-					<label for="address"><spring:message code="register.street" /></label><br />
-					<input id="address" type="text" name="street" />
-					<br/>
-					<label for="city"><spring:message code="register.city" /></label><br />
-					<input id="city" type="text" name="city" /><br/>
-					<input type="submit" name="submit" /> 
+			<div class="salespointlogin">
+				<form method="post" action="registerNew">
+					<fieldset>
+						<legend><spring:message code="register.title" /></legend>
+						<label for="name"><spring:message code="register.name" /></label><br />
+						<input id="name" type="text" name="name" />
+						<br />
+						<label for="password"><spring:message code="register.password" /></label><br />
+						<input id="password" type="text" name="password" />
+						<br/>
+						<br/>
+						<label for="address"><spring:message code="register.street" /></label><br />
+						<input id="address" type="text" name="street" />
+						<br/>
+						<label for="city"><spring:message code="register.city" /></label><br />
+						<input id="city" type="text" name="city" /><br/>
+						<button type="submit"><spring:message code="register.submit" /></button>
+					</fieldset> 
 				</form>
 			</div>
 		</div>
-		
-		<jsp:include page="templates/footer.jsp"></jsp:include>
 	</div>
 </body>
 </html>
