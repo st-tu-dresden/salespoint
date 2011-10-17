@@ -1,6 +1,5 @@
 package org.salespointframework.core.inventory;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -17,9 +16,9 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.product.PersistentProductInstance;
 import org.salespointframework.core.product.PersistentProductInstance_;
-import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
@@ -31,8 +30,7 @@ import org.salespointframework.util.Objects;
  * 
  */
 public class PersistentInventory implements Inventory<PersistentProductInstance> {
-	private final EntityManagerFactory emf = Database.INSTANCE
-			.getEntityManagerFactory();
+	private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 	private final EntityManager entityManager;
 
 	/**
@@ -42,15 +40,15 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		this.entityManager = null;
 	}
 
+	// TODO längerer comment und @throws
 	/**
-	 * Creates an new PersistentInventory. TODO
+	 * Creates an new PersistentInventory. 
 	 * 
 	 * @param entityManager
 	 *            an {@link EntityManager}
 	 */
 	public PersistentInventory(EntityManager entityManager) {
-		this.entityManager = Objects.requireNonNull(entityManager,
-				"entityManager");
+		this.entityManager = Objects.requireNonNull(entityManager, "entityManager");
 	}
 
 	@Override
@@ -61,11 +59,13 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		beginCommit(em);
 	}
 
+	// TODO throws
 	/**
 	 * Adds multiple {@link PersistentProductInstance}s to this PersistentInventory
 	 * 
 	 * @param productInstances
 	 *            an {@link Iterable} of {@link PersistentProductInstance}s to be added
+	 *            
 	 */
 	public final void addAll(Iterable<? extends PersistentProductInstance> productInstances) {
 		Objects.requireNonNull(productInstances, "products");
@@ -129,9 +129,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
 		Root<E> entry = cq.from(clazz);
 
-		Predicate p1 = cb.equal(
-				entry.get(PersistentProductInstance_.productIdentifier),
-				productIdentifier);
+		Predicate p1 = cb.equal(entry.get(PersistentProductInstance_.productIdentifier), productIdentifier);
 
 		cq.where(p1);
 
@@ -229,22 +227,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		return entityManager != null ? entityManager : emf.createEntityManager();
 	}
 
-	private final void beginCommit(EntityManager entityManager) {
-		if (this.entityManager == null) {
-			entityManager.getTransaction().begin();
-			entityManager.getTransaction().commit();
-		} else {
-			System.out.println("AUSSEN");
-			System.out.println("beginCommit: " + this.entityManager);
-			/*
-			this.entityManager.getTransaction().begin();
-			this.entityManager.getTransaction().commit();
-			*/
-		}
-	}
-
-	
-	// TODO comment & test
+	// TODO test
 	@Override
 	public long count(ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
@@ -262,11 +245,18 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		
 	}
 	
-	// TODO comment & test
+	// TODO test
 	@Override
 	public long count(ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures) {
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		Objects.requireNonNull(productFeatures, "productFeatures");
 		return findInternal(PersistentProductInstance.class, productIdentifier, productFeatures).size();
+	}
+	
+	private final void beginCommit(EntityManager entityManager) {
+		if (this.entityManager == null) {
+			entityManager.getTransaction().begin();
+			entityManager.getTransaction().commit();
+		} 
 	}
 }

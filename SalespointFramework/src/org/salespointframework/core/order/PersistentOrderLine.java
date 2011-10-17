@@ -20,8 +20,9 @@ import org.salespointframework.core.product.Product;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
+// TODO comment
 /**
- * TODO
+ * 
  * @author Paul Henke
  *
  */

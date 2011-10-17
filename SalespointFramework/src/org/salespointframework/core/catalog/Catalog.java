@@ -4,9 +4,11 @@ import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.Product;
 import org.salespointframework.util.ArgumentNullException;
 
+// TODO comment
+
 /**
  * Catalog interface
- * TODO
+ *
  * @author Paul Henke
  * 
  * @param <T> Base type of the products managed by the catalog; has to
@@ -49,14 +51,16 @@ public interface Catalog<T extends Product>
 	 */
 	<E extends T> E get(Class<E> clazz, ProductIdentifier productIdentifier);
 
+	// TODO comment
 	/**
-	 * TODO
+	 * 
 	 * @param clazz type of the {@link Product} to be returned; has to implement {@link Product}
 	 * @return an {@link Iterable} containing all {@link Product}s of type clazz
 	 * @throws ArgumentNullException if clazz is null
 	 */
 	<E extends T> Iterable<E> find(Class<E> clazz);
 
+	// TODO comment
 	/**
 	 * @param clazz type of the {@link Product} to be returned; has to implement {@link Product}
 	 * @param name the name of the {@link Product}
@@ -65,6 +69,7 @@ public interface Catalog<T extends Product>
 	 */
 	<E extends T> Iterable<E> findByName(Class<E> clazz, String name);
 	
+	// TODO comment
 	/**
 	 * @param clazz type of the {@link Product} to be returned; has to implement {@link Product}
 	 * @param category the category of the {@link Product}

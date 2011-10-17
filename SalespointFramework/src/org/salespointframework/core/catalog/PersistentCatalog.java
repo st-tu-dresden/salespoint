@@ -18,8 +18,9 @@ import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
+// TODO comment
 /**
- * TODO
+ * 
  * @author Paul Henke
  * 
  */

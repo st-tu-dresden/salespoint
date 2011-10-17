@@ -224,7 +224,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		System.out.println("---COMPLETE ORDER BEGIN");
 		
 		// TODO mehr CompletionStates? oder letzten Param (Exception)
-		// überdenken, String cause?
+		// überdenken, String cause? -> log4j nutzen!!
 		if (orderStatus != OrderStatus.PAYED) {
 			return new InternalOrderCompletionResult(
 					OrderCompletionStatus.FAILED, null, null, null);
@@ -232,7 +232,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 
 		Inventory<?> tempInventory = Shop.INSTANCE.getInventory();
 		if (!(tempInventory instanceof PersistentInventory)) {
-			// TODO Exception Name
+			// TODO which Exception
 			throw new RuntimeException("Sorry, PersistentInventory only :(");
 		}
 
@@ -345,7 +345,6 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 			return false;
 		}
 		;
-		// TODO payment nutzen
 
 		// TODO "Rechnung Nr " deutsch?
 		ProductPaymentEntry ppe = new ProductPaymentEntry(this.orderIdentifier,	this.userIdentifier, this.getTotalPrice(), "Rechnung Nr. " + this.orderIdentifier, this.paymentMethod);

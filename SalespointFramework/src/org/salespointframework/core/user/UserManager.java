@@ -27,8 +27,6 @@ public interface UserManager<T extends User> {
      *            {@link User} to be stored.
      * @throws ArgumentNullException
      *             if <code>user</code> is <code>null</code>.
-     * @throws DuplicateUserException
-     *             if <code>user</code> already exists.
      */
     void add(T user);
 
@@ -76,7 +74,7 @@ public interface UserManager<T extends User> {
      *             if <code>user</code> or <code>token</code> or both are
      *             <code>null</code>.
      */
-    boolean logOn(T user, Object token);
+    boolean login(T user, Object token);
 
     /**
      * Logs a user off. The user associated with <code>token</code> on log on is
@@ -88,7 +86,7 @@ public interface UserManager<T extends User> {
      * @throws ArgumentNullException
      *             if <code>token</code> is <code>null</code>.
      */
-    void logOff(Object token);
+    void logout(Object token);
 
     /**
      * Gets a logged-on user by its token.

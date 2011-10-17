@@ -90,6 +90,8 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 */
 	<E extends T> Iterable<E> find(Class<E> clazz, DateTime from, DateTime to);
 
+	
+	// TODO comment fortsetzen? -> " If no entries for an interval exist"
 	/**
 	 * Returns all {@link AccountancyEntry}s of type <code>clazz</code> and
 	 * all sub-types, which have their <code>date</code> within (including)
@@ -102,7 +104,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * an {@link Iterable} as value. The <code>Iterable</code>
 	 * contains all entries of the specific type with its date in the interval
 	 * specified by the key.<br>
-	 * If no entries for an interval exist, the <code>Iterable</code>	// TODO comment fortsetzen?
+	 * If no entries for an interval exist, the <code>Iterable</code>	
 	 * 
 	 * 
 	 * @param <E>

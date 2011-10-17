@@ -4,9 +4,10 @@ import org.joda.time.DateTime;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 
+
+// TODO comment
 /**
  * OrderManager interface
- * TODO
  * 
  * @author Thomas Dedek
  * @author Paul Henke

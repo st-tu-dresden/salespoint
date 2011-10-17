@@ -214,7 +214,7 @@ public class UsermanagerTest {
 	    PersistentUserManager mgr = new PersistentUserManager();
 	    
 	    mgr.add(e);
-	    mgr.logOn(e, "SESSION");
+	    mgr.login(e, "SESSION");
 	    
 	    assertEquals(e, mgr.getUserByToken(Employee.class, "SESSION"));
 	}

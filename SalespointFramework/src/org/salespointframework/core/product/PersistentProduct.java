@@ -13,8 +13,9 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
+// TODO comment
 /**
- * TODO
+ * 
  * @author Paul Henke
  * 
  */

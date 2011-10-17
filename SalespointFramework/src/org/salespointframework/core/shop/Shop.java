@@ -1,7 +1,5 @@
 package org.salespointframework.core.shop;
 
-import javax.naming.TimeLimitExceededException;
-
 import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.accountancy.AccountancyEntry;
 import org.salespointframework.core.accountancy.PersistentAccountancy;
@@ -16,19 +14,19 @@ import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderLine;
 import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.order.PersistentOrderManager;
-import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.product.Product;
+import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.time.DefaultTime;
 import org.salespointframework.core.time.Time;
+import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserManager;
-import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Objects;
 
+// TODO Comment
 /**
  * Shop Singleton
- * TODO
  * @author Paul Henke
  * 
  */

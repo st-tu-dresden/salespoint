@@ -14,8 +14,9 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
+// TODO comment
 /**
- * TODO
+ * 
  * @author Paul Henke
  *
  */
@@ -44,10 +45,12 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 	{
 	}
 	
+	
+	//TODO STIMMT NICHT MEHR wegen varargs -> @param productFeatureIdentifiers
 	/**
 	 * Creates a new PersistentProduct with a specified {@link ProductFeature}set
 	 * @param productType the {@link Product} of the PersistentProduct
-	 * @param productFeatureIdentifiers an optional  of Tuples of {@link ProductFeature}s for the PersistentProduct		//TODO STIMMT NICHT MEHR wegen varargs
+	 * @param productFeatureIdentifiers an optional  of Tuples of {@link ProductFeature}s for the PersistentProduct		
 	 */
 	public PersistentProductInstance(Product productType, ProductFeatureIdentifier... productFeatureIdentifiers)
 	{

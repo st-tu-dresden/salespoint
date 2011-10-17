@@ -4,8 +4,9 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.salespointframework.util.Objects;
 
+// TODO comment
 /**
- * TODO
+ * 
  * @author Paul Henke
  *
  */

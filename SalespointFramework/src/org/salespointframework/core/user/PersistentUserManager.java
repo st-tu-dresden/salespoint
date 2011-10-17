@@ -17,7 +17,7 @@ import org.salespointframework.util.Objects;
 /**
  * The <code>PersistentUserManager</code> is an implementation of
  * <code>UserManager</code> that aggregates <code>PersistentUser</code>s and
- * stores them in the underlaying database.
+ * stores them in the underlying database.
  * 
  * @author Christopher Bellmann
  * @author Paul Henke
@@ -31,12 +31,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 	public void add(PersistentUser user)
 	{
 		Objects.requireNonNull(user, "user");
-
 		EntityManager em = emf.createEntityManager();
-		if (em.find(PersistentUser.class, user.getIdentifier()) != null)
-		{
-			throw new DuplicateUserException(user.getIdentifier());
-		}
 		em.persist(user);
 		beginCommit(em);
 	}
@@ -50,7 +45,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		for (Map.Entry<Object, PersistentUser> entry : userTokenMap.entrySet()) {
 			if (entry.getValue().getIdentifier().equals(userIdentifer)) {
 				Object token = entry.getKey();
-				this.logOff(token);
+				this.logout(token);
 				break;
 			}
 		}
@@ -118,9 +113,8 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 
 	private static final Map<Object, PersistentUser> userTokenMap = new ConcurrentHashMap<Object, PersistentUser>();
 
-	// TODO naming kinda sucks
 	@Override
-	public final boolean logOn(PersistentUser user, Object token)
+	public final boolean login(PersistentUser user, Object token)
 	{
 		Objects.requireNonNull(user, "user");
 		Objects.requireNonNull(token, "token");
@@ -135,7 +129,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 	}
 
 	@Override
-	public final void logOff(Object token)
+	public final void logout(Object token)
 	{
 		Objects.requireNonNull(token, "token");
 

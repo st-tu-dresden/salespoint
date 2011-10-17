@@ -2,8 +2,9 @@ package org.salespointframework.core.product;
 
 import org.salespointframework.core.money.Money;
 
+// TODO comment
 /**
- * TODO
+ * 
  * @author Paul Henke
  * 
  */

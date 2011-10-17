@@ -1,7 +1,6 @@
 package org.salespointframework.core.order;
 
-// TODO
-
+// TODO comment
 /**
  * An <code>OrderCompletionResult</code> is returned after you call Order.completeOrder()
  *  

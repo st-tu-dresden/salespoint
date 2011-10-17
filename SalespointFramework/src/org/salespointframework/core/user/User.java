@@ -2,9 +2,12 @@ package org.salespointframework.core.user;
 
 import org.salespointframework.util.ArgumentNullException;
 
+//TODO gibt ja nur noch eine "implemented by all user classes."
+//TODO mehr comment?
+
 /**
  * This interface is the base interface, implemented by all user classes.
- * TODO gibt ja nur noch eine
+ * 
  * 
  * @author Christopher Bellmann
  * 

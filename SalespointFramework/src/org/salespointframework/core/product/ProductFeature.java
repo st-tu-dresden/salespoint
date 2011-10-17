@@ -7,8 +7,9 @@ import javax.persistence.Embeddable;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Objects;
 
+// TODO comment
 /**
- * TODO
+ * 
  * @author Paul Henke
  * 
  */
@@ -105,7 +106,7 @@ public final class ProductFeature implements Serializable, Comparable<ProductFea
 		return price;
 	}
 
-	//TODO
+	// TODO comment
 	public final double getPercent()
 	{
 		return percent;

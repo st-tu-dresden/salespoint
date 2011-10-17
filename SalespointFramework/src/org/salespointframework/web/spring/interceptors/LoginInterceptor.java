@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.user.PersistentUser;
+import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.core.user.UserManager;
@@ -15,6 +16,7 @@ import org.salespointframework.web.WebConstants;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+// TODO comment
 /**
  * 
  * @author Lars Kreisz
@@ -25,6 +27,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter
 {
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView mav) throws Exception
 	{
@@ -35,20 +38,27 @@ public class LoginInterceptor extends HandlerInterceptorAdapter
 			return;
 		}
 
+		// TODO errorhandling 
+		
 		String identifier = params.get(WebConstants.SP_LOGIN_PARAM_IDENTIFIER.toString())[0];
 		String password = params.get(WebConstants.SP_LOGIN_PARAM_PASSWORD.toString())[0];
 
 		UserIdentifier userIdentifier = new UserIdentifier(identifier);
-		@SuppressWarnings("unchecked")
-		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
 
-		User user = usermanager.get(PersistentUser.class, userIdentifier);
+		UserManager<? extends User> usermanager = Shop.INSTANCE.getUserManager();
+		
+		User user;
+		if(usermanager instanceof PersistentUserManager) {
+			user = ((PersistentUserManager)usermanager).get(PersistentUser.class, userIdentifier);
+		} else {
+			user = ((UserManager<User>)usermanager).get(User.class, userIdentifier);
+		}
 
 		if (user != null)
 		{
 			if (user.verifyPassword(password))
 			{
-				usermanager.logOn(user, request.getSession());
+				((UserManager<User>)usermanager).login(user, request.getSession());
 				log.info("LoginInterceptor: User " + user + " logged in");
 			}
 			else {

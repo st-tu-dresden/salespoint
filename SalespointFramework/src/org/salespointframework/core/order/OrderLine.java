@@ -5,8 +5,10 @@ import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.Product;
 
+// TODO comment
+// TODO convert to embedabble class!?
 /**
- * TODO
+ * 
  * @author Thomas Dedek
  * @author Paul Henke
  * 

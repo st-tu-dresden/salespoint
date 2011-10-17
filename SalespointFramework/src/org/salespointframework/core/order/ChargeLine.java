@@ -5,8 +5,9 @@ import javax.persistence.Embeddable;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Objects;
 
+// TODO comment
 /**
- * TODO
+ * 
  * @author Thomas Dedek
  * @author Paul Henke
  * 

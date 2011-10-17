@@ -3,8 +3,9 @@ package org.salespointframework.core.time;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+// TODO comment
 /**
- * TODO
+ * 
  * @author Paul Henke
  * 
  */
