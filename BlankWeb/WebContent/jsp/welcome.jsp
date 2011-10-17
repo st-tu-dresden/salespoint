@@ -37,10 +37,10 @@
 			<li><a href="http://download.oracle.com/javase/6/docs/api/">Java 1.6 Javadoc</a></li>
 			<li><a href="http://download.oracle.com/javase/7/docs/api/">Java 1.7 Javadoc (looks a lot nicer)</a></li>
 			<li><a href="TODO">Salespoint5 Javadoc</a></li>
+			<li><a href="http://joda-time.sourceforge.net/">Jodatime</a></li>
 			<li><a href="http://static.springsource.org/spring/docs/current/spring-framework-reference/html/mvc.html">Introduction to Spring Web MVC framework</a></li>
 			<li><a href="http://download.oracle.com/javaee/6/tutorial/doc/gjddd.html">Expression Language</a></li>
 			<li><a href="http://download.oracle.com/javaee/5/tutorial/doc/bnbpz.html">Introduction to the Java Persistence API</a></li>
-
 		</ul>
 	</article>
 	<br />
