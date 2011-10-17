@@ -60,10 +60,10 @@ public class PersistentCalendarEntry implements CalendarEntry {
     private Interval                                              duration;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date                                                  startDate;
+    private Date                                                  start;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date                                                  endDate;
+    private Date                                                  end;
 
     @Embedded
     @AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))
@@ -177,15 +177,15 @@ public class PersistentCalendarEntry implements CalendarEntry {
      */
     @PostLoad
     protected void updateDuration() {
-        duration = new Interval(new DateTime(startDate), new DateTime(endDate));
+        duration = new Interval(new DateTime(start), new DateTime(end));
     }
 
     /*
      * Use this method to set new start and end dates!
      */
     private final void setStartEnd(Date startDate, Date endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.start = startDate;
+        this.end = endDate;
         updateDuration();
     }
 
