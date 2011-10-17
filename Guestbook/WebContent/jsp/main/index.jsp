@@ -15,9 +15,6 @@
 	<body>
 		<h1>Softwarepraktikum</h1>
 		<div>
-			<img class="center" alt="SalesPoint" src="res/img/sp.png" alt=""/>
-		
-		
 			<h2 class="center">Viel Spaß beim Programmieren. Anbei ein kleines Gästebuch.</h2>
 			<br />
 			<p class="center"><a href="<c:url value="/really" />">Das will ich sehen!</a></p>
