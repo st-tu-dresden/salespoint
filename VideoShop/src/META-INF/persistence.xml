@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-	<persistence-unit name="DVDShop" transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="Videoshop" transaction-type="RESOURCE_LOCAL">
 		<jar-file>../lib/salespoint5.jar</jar-file>
 		<class>dvdshop.model.Dvd</class>
 		<class>dvdshop.model.Disc</class>
@@ -8,7 +8,7 @@
 		<class>dvdshop.model.Comment</class>
 		<class>dvdshop.model.BluRay</class>
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:derby:e:\gleichzusteffi;create=true"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:derby:d\videoshopDB;create=true"/>
 			<property name="javax.persistence.jdbc.user" value=""/>
 			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>

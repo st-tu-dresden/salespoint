@@ -17,7 +17,7 @@
 	<div class="all">
 		<header>
 			<h1>DVD Katalog</h1>
-			<jsp:include page="templates/navigation.jsp"></jsp:include>
+			<jsp:include page="templates/navigation.jsp" />
 		</header>
 		
 		<div class="content">

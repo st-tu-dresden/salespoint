@@ -12,7 +12,7 @@
 		http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<!-- JPA, name of persistent unit, has to be before context:component-scan -->
-	<bean class="org.salespointframework.web.PersistenceUnitInitializer" p:persistenceUnitName="DVDShop" />
+	<bean class="org.salespointframework.web.PersistenceUnitInitializer" p:persistenceUnitName="Videoshop" />
 
 	<!-- messages for i18n -->
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" p:basename="messages" />

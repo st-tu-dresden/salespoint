@@ -18,7 +18,7 @@
 	<div class="all">
 		<header>
 			<h1><spring:message code="home.title" /></h1>
-			<jsp:include page="templates/navigation.jsp"></jsp:include>
+			<jsp:include page="templates/navigation.jsp" />
 		</header>
 		
 		<div class="content">
