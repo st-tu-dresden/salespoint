@@ -24,7 +24,7 @@
 		</header>
 		<ul>
 			<li><a href="http://st.inf.tu-dresden.de/content/index.php?node=teaching&leaf=1&subject=195">Softwarepraktikum</a></li>
-			<li><a href="http://www.st.inf.tu-dresden.de/SalesPoint/v5.0/mediawiki/index.php/Main_Page">Salespoint5 Wiki</a></li>
+			<li><a href="http://www.st.inf.tu-dresden.de/SalesPoint/v5.0/wiki">Salespoint5 Wiki</a></li>
 			<li><a href="http://st.inf.tu-dresden.de/SalesPoint/forum/viewforum.php?f=135">Salespoint5 Board</a></li>
 		</ul>
 	</article>
