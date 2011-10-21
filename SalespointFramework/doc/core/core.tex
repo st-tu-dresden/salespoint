@@ -1,4 +1,3 @@
-\newpage
 \chapter{\salespoint{} Components}
 \label{chap:components}
 %This chapter overviews the core functionality of \salespoint and gives a short introduction.
@@ -46,6 +45,8 @@ Consider the \code{get} method: it takes only one parameter which is an identifi
 The precise type of the identifier is easily guessed: the order manager requires an \code{OrderIdentifier} and the \code{Accountancy} an \code{AccountancyEntryIdentifier}.
 The name of the identifier type is derived from the name of class which is aggregated by the manager.
 This consistency allows a developer to use an unknown manager, when he is familiar with another manager.
+
+\salespoint{} does not contain checked exceptions, thus avoiding ``the handcuffs they put on programmers''~\cite{checked-exceptions}.
 \\
 
 \begin{figure}
