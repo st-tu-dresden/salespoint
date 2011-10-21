@@ -13,12 +13,13 @@ This definition of milliseconds is consistent with that of the JDK in \code{Date
 Interoperating between the two APIs is thus simple.
 \end{quote}
 
-An \textit{Interval} is defined by two Instants.
+An \textit{Interval} is defined by two Instants, the start and the end.
 An Interval is \textit{half-open}, that is to say the start is inclusive but the end is not.
 The end is always greater or equal than the start.
 
 A \textit{Duration} in Joda Time represents a duration in time, exact to the milisecond.
 Durations can be thought of as length of an Interval.
+A Duration does not have a start and an end, but is rather the difference $end - start$.
 
 A \textit{Period} also represents a duration in time, but in a more abstract way.
 A Period may be a month, which may have 28, 29, 30 or 31 days. The absolute length in miliseconds of those periods differ.
