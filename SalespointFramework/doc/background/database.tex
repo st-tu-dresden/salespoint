@@ -12,6 +12,29 @@ A row in such a database table corresponds to a specific instance of such an ent
 Relational data between entities (and therefore tables) may be specified in an XML descriptor file or as annotations in Java source code.
 \salespoint{} uses annotations to provide object/relational metadata.
 
+Persistence entities may be related to each other by an inheritance hierarchy.
+A persistence entity may have a non-persistent superclass.
+Fields declared by a non-persistent superclass are not stored in the database if an inheriting entity is persisted.
+Three schemes exist to persist entites with an inheritance relationship: \textit{SINLE\_TABLE}, \textit{JOIN\_TABLE}, and \textit{TABLE\_PER\_CLASS}.
+
+The SINGLE\_TABLE strategy stores all instances of classes of an inheritance hierarchy in the same table.
+The table contains columns for every attribute a persistence entity in the hierarchy declares.
+The different types are distinguished by a type discriminator column.
+The discriminator value for each persistence entity in an inheritance hierarchy is generated automatically or can be supplied by the user.
+
+The JOIN\_TABLE strategy uses a table for the root persistence entity of the inheritance hierarchy.
+Additionally, a table is addded for each persistence entity in the inheritance hierarchy.
+In the supplementary tables, a foreign key is used to reference a row in the table of the parent persistence entity.
+Each table contains only columns for fields declared by a specific persistence entity in the inheritance hierarchy, but neither for the entities children nor parents.
+To reconstruct an object from the database, the different tables have to be joined using this foreign key, thus the name of this strategy.
+
+The TABLE\_PER\_CLASS strategy creates a table for each persistence entity containing all fields of the class, including inherited fields.
+
+The inheritance strategy of an inheritance hierarchy has to be declared at the root persistence entity.
+The inheritance stratety may not be changes for a sub-hierarchy, because JPA 2.0 does not require this feature.
+JPA 2.0 only requires the SINGLE\_TABLE and JOIN\_TABLE strategies to be implemented.
+\salespoint{} uses the SINGLE\_TABLE strategy exclusively.
+
 The query language JPQL, which is similar to SQL, is used to retrieve entity information from the database.
 In contrast to SQL, JPQL queries act on entity objects instead of database tables.
 JPA implementations translate a JPQL statement to SQL statements at run time.
