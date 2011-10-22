@@ -1,24 +1,18 @@
-\newpage
 \section{Accountancy}
 \label{sec:accountancy}
 
 The accountancy package contains functionality pertaining to book keeping.
-As in other packages, interfaces are used to separate between behaviour and implementation.
 \code{AccountancyEntry} is a representation of an accounting entry.
 \code{Accountancy} aggregates \code{AccountancyEntry}s.
-By implementing and subclassing \code{AccountancyEntry} the notion of different accounts, as known from double-entry bookkepping, can be realised.
 Every \code{AccountancyEntry} is uniquely identified by an \code{AccountancyEntryIdentifier}.
 \\
 
-\code{PersistentAccountancyEntry} implements \code{AccountancyEntry} and serves as persistence entity, while \code{PersistentAccountancy} implements \code{Accountancy} and provides opaque access to the JPA layer.
-\code{AccountancyEntryIdentifier} is used as primary key attribute, when persisting entities to the database.
+\code{PersistentAccountancyEntry} implements \code{AccountancyEntry} and serves as persistence entity, while \code{PersistentAccountancy} implements \code{Accountancy} and provides transparent access to the JPA layer.
+\code{AccountancyEntryIdentifier} is used as primary key attribute, when entities are stored in the database.
 \\
 
-As can be seen in Figure \ref{accountancy_overview}, \code{PersistentAccountancyEntry} is sub classed to create a second ``account'' used to store payment information, namely \code{ProductPaymentEntry}.
-To access entries of only one type, thus belonging to one ``account'', \code{get()} and \code{find()} methods in \code{Accountancy} have a type parameter.
-
-Payment information also includes a user identifier referencing the buyer, an order identifier referring to the \code{Order} which was payed, and a \code{PaymentMethod} describing the money transfer.
-The inheritance hierarchy of \code{PaymentMethod} is depicted in Figure \ref{payment_overview}.
+By implementing and subclassing \code{AccountancyEntry} the notion of different accounts, as known from double-entry bookkepping, can be realised.
+As can be seen in Figure~\ref{accountancy_overview}, \code{PersistentAccountancyEntry} is sub-classed to create a second ``account'' used to store payment information, namely \code{ProductPaymentEntry}.
 \begin{figure}
 	\centering
   \includegraphics[width=1.0\textwidth]{images/Accountancy_Overview.eps}
@@ -26,9 +20,31 @@ The inheritance hierarchy of \code{PaymentMethod} is depicted in Figure \ref{pay
 	\caption{Accountancy - Class Overview}
 \end{figure}
 
+Payment information also includes a user identifier referencing the buyer, an order identifier referring to the \code{Order} which was payed, and a \code{PaymentMethod} describing the money transfer.
+The attributes are named \code{userIdentifier}, \code{orderIdentifier}, and \code{paymentMethod} respectively.
+The inheritance hierarchy of \code{PaymentMethod} is depicted in Figure \ref{payment_overview}.
+
 \begin{figure}
 \centering
   \includegraphics[width=1.0\textwidth]{images/Payment_Overview.eps}
 	\label{payment_overview}
 	\caption{Payment - Class Overview}
 \end{figure}
+
+To create a new account, \code{AccountancyEntry} has to be sub-classed.
+Every (persisted) object of such a class belongs to the same account.
+Accessing per-account entries is facilitated by specifiying the desired class type when calling \code{get()} or \code{find()} methods of \code{Accountancy}.
+The type parameter does not request a specific type, but rather has \code{instanceof} behaviour.
+That means, a type parameter does not only match to objects of the same type, but also all objects which have the type of a sub-class of the requested type.
+Consider Figure~\ref{matches} for an example: if \code{ProductPaymentEntry.class} is supplied as type parameter, only objects of type \code{ProductPaymentEntry} would be returned, if any.
+Using \code{FooEntry.class} as type parameter would return objects of type \code{FooEntry} and objects of type \code{BarEntry}, if any.
+\begin{figure}
+	\centering
+  \includegraphics[width=0.5\textwidth]{images/type_matches.pdf}
+	\label{matches}
+	\caption{Exemplary class hierarchy of \code{PersistentAccountancyEntry}s.}
+\end{figure}
+\code{PersistenceAccountancyEntry.class} matches all class types.
+%To access entries of only one type, thus belonging to one ``account'', \code{get()} and \code{find()} methods in \code{Accountancy} have a type parameter.
+	
+
