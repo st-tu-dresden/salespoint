@@ -17,7 +17,7 @@ Because an inventory contains specific product instances, \code{PersistentInvent
 A \code{SerialNumber} is used to reference a specific \code{ProductInstance}.
 A \code{ProductIdentifier} identifies a \code{Product} uniquely, thus all \code{PersistentProductInstance}s of the \code{PersistentProduct} specified by the supplied \code{ProductIdentifier} are returned.
 Additionally an \code{Iterable<ProductFeature>} can be supplied to the \code{find()}-method along with a \code{ProductIdentifier} to retrieve all instances of a product, where the \code{ProductFeature}s match exactly those specified.
-Matching a set of \code{ProductFeatures} against a \code{PersistentProductInstance} is hard to express in JPQL or Criteria Queries.
+Matching a set of \code{ProductFeatures} against a \code{PersistentProductInstance} is hard to express in JPQL or Criteria Queries (see Section \ref{sec:jpa}).
 Therefore, only the \code{ProductIdentifier} is used to build a Criteria Query, which is executed on the database.
 Selecting only those \code{PersistentProductInstances} which match the specified \code{ProductFeature}s is done in Java code.
 %\code{Inventory} aggregates \code{Product}s, \code{PersistentInventory} aggregates \code{PersistentProduct}s 
