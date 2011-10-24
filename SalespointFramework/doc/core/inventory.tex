@@ -1,4 +1,3 @@
-\newpage
 \section{Inventory}
 \label{sec:inventory}
 
@@ -9,11 +8,19 @@
 	\caption{Inventory - Class Overview}
 \end{figure}
 
-%\subsection{\code{Inventory} - Managing products} 
+An inventory is a place, where products are stored.
+In \salespoint{}, an abstract representation if the \code{Inventory} interface and its implementing class \code{PersistentInventory}.
+The interface and declares methods to add, remove and find products.
+Because an inventory contains specific product instances, \code{PersistentInventory} aggregates \code{PersistentProductInstance}s.
 
-\code{Inventory} is an interface and provides methods for adding and removing products as well as finding products based on the \code{ProductType} via the \code{ProductTypeIdentifier} and a set of \code{ProductFeature}s.
-\code{PersistentInventory} is an implementation of the \code{Inventory} interface. Every operation is delegated to the database, via \code{CriteriaQuery}s. Some methods require additional processing of query results with Java.
-\code{Inventory} aggregates \code{Product}s, \code{PersistentInventory} aggregates \code{PersistentProduct}s 
+\code{PersistentProductInstance}s can be retrieved from \code{PersistentInventory} by specifying a \code{SerialNumber} or a \code{ProductIdentifier}.
+A \code{SerialNumber} is used to reference a specific \code{ProductInstance}.
+A \code{ProductIdentifier} identifies a \code{Product} uniquely, thus all \code{PersistentProductInstance}s of the \code{PersistentProduct} specified by the supplied \code{ProductIdentifier} are returned.
+Additionally an \code{Iterable<ProductFeature>} can be supplied to the \code{find()}-method along with a \code{ProductIdentifier} to retrieve all instances of a product, where the \code{ProductFeature}s match exactly those specified.
+Matching a set of \code{ProductFeatures} against a \code{PersistentProductInstance} is hard to express in JPQL or Criteria Queries.
+Therefore, only the \code{ProductIdentifier} is used to build a Criteria Query, which is executed on the database.
+Selecting only those \code{PersistentProductInstances} which match the specified \code{ProductFeature}s is done in Java code.
+%\code{Inventory} aggregates \code{Product}s, \code{PersistentInventory} aggregates \code{PersistentProduct}s 
 
 %A shop must store products in an inventory, because the customer should get your good on order very quickly. If there are no amount of this product inside, it must be ordered by its producer.
 %This procedure can be implemented by the \code{PersistentInventory}-class. This class is an implementation of the interface \code{Inventory}, to used its functionality and also 
