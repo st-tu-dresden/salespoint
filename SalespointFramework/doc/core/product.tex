@@ -1,34 +1,36 @@
-\newpage
 \section{Product}
 \label{sec:product}
+\salespoint{} is intended as framework for point-of-sale applications.
+The items for sale are called ``products'' and represented by instances of classes who implement the \code{Product} interface.
+A general overview of the \salespoint{} products subsystem is given in Figure \ref{product_overview}.
+To represent different kinds of products, \code{PersistentProduct} can be sub-classed; see Section \ref{jpa-types} for more information.
+\code{PersistentProduct}s are aggregated by \code{PersistentCatalog} (see Section \ref{sec:catalog}).
 
-Products are represented by ProductTypes.
-
-\begin{figure}[ht]
+\begin{figure}[h]
 	\centering
   \includegraphics[width=1.0\textwidth]{images/Product_Overview.eps}
 	\label{product_overview}
 	\caption{Product - Class Overview}
 \end{figure}
 
-\subsection{\code{ProductType} - Representing specified products}
-A \code{ProductType} is an interface which represents a specified product. The \code{PersistentProductType}-class is an implementation of this interface to worked with it.
-An \code{PersistentProductType} contains \code{ProductFeatures} to specify your product. You can add any \code{ProductFeatures}  to this set or remove them from it.
-An example: Our specified \code{ProductType} is a table. About to sell any variations of this table, you need any \code{ProductFeatures} like its color or the material of it. 
-Also you can add categories to your \code{ProductType}, in this case you would choose the category: furniture or living room.
+\code{Product}s are supposed to be an abstraction, like an item on display or a picture in a catalog.
+\code{ProductInstance}s are used to represent the actual item you get, when you a buy a product.
+\code{Product}s are identified using a \code{ProductIndentifier}, whereas \code{ProductInstance}s are identified by a \code{SerialNumber}.
+\code{ProductInstance}s can be thought of as identifiable instances of a certain product, which are identical apart from their \code{SerialNumber}.
+\\
 
-\subsection{\code{ProductFeature} - Creating Features}
-Every \code{ProductFeature} has a featureType, a value and a price, which define it. Any {\code{ProductFeatures}} can offer the same featureType. For example the features red or green 
-offer the featureType color. Mahogany, oak or beech offer the featureType wood.\\
-The value defines the number of this \code{ProductFeature} in its \code{ProductType}. If you want to create a table, which offered four table-legs, then your table has a \code{ProductFeature} 
-table-leg with value 4.   
+To conviently handle products, which are essentially the same but differ in certain aspects, such as color or size \salespoint{} has the concept of a \code{ProductFeature}.
+\code{ProductFeature}s are specified by a \code{featureType}, for example color or size, and a corresponding \code{value}, for example ``black'' or ``blue'' for the feature ``color''.
+Additionally a \code{ProductFeature} may reference a \code{Money} object, to describe an increase or decrease in price of a \code{Product}, if it has a certain \code{ProductFeature}.
+Alternatively, a change in price can be expressed as a percentage of the price of the \code{Product}.
 
-\subsection{\code{Product} - Representing ProductTypes}
-A \code{Product} is an interface which represents one specified \code{ProductType}. The \code{PersistentProduct}-class is an implementation of this interface to worked with it.
-If you create a \code{PersistentProduct}, it gets a \code{SerialNumber} ,the \code{ProductIdentifier} of its \code{PersistentProductType} and the price will be calculated.
-\code{SerialNumber} and \code{ProductIdentifier} are unique \code{SalespointIdentifier} to identify \code{ProductInstances} and \code{ProductTypes} in the database. 
-There are subclasses of \code{ProductType} and \code{Product}, which extends the functionality of them. The subclasses of \code{ProductType} are \code{ServiceType} and 
-\code{MeasuredProductType}, the subclasses of \code{Product} are \code{Service} and \code{MeasuredProduct}. 
+An example: A class \code{Shoe} extends \code{PersistentProduct} and has a \code{Set<ProductFeature>} containg the values 36, 37, 38, 39, 40, 41, 42, 43, 44, 45 of the \code{productType} ``size''.
+The set of \code{ProductFeature}s declared in \code{PersistentProduct} defines, which \code{ProductFeature}s can be aggregated by the corresponding \code{ProductInstance}.
+An instance of \code{Shoe} represents a specific model a vendor might have.
+Additionally, a class \code{ShoeInstance} may sub-class \code{PersistentProductInstance}.
+An instance of \code{ShoeInstance} represents a specific pair of shoes.
+\code{ProductInstance} also aggregates \code{ProductFeature}s, but in contrast to \code{Product} exactly one \code{ProductFeature} is allowed for any \code{featureType}.
+In other words: a shoe has a size - exactly one size.
 
 %\subsection{\code{ServiceType} - Realizing Services}
 %The interface \code{ServiceType} is implemented by the class \code{PersistentServiceType}. With this class you can realize services in your implementation, which represents a process 
