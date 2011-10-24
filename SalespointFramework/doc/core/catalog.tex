@@ -1,4 +1,3 @@
-\newpage
 \section{Catalog}
 \label{sec:catalog}
 
@@ -9,9 +8,14 @@
 	\caption{Catalog - Class Overview}
 \end{figure}
 
-\subsection{\code{Catalog} - Organizing and presenting \code{ProductTypes}}
-The \code{Catalog} interface was designed to manage \code{ProductTypes} and \code{ProductFeatures} in the system. It provides functionality for adding and removing \code{ProductTypes} as well as finding them based on its name and category. \code{ProductTypes} and \code{ProductFeatures} are more closely described in chapter \ref{sec:product}.\par
-The \code{PersistentCatalog} is an implementation of this interface and also provides an \code{update()} method to update and merge existing \code{PersistentProductTypes} to \code{Catalog} and database.\par
+The \code{Catalog} interface was designed to manage \code{Product}s and \code{ProductFeature}s in the system.
+It provides functionality to add, remove, and find \code{Product}s.
+\code{Product}s can be searched by their name or category.
+\code{Product}s and \code{ProductFeature}s are more closely described in Section \ref{sec:product}.
+
+The \code{PersistentCatalog} is an implementation of the \code{Catalog} interface.
+Additionally \code{PersistentCatalog} provides an \code{update()}-method to update and merge existing \code{PersistentProduct}s to the database.\footnote{\code{update()} to the interface. Misuse \code{add()} for updates? this seems inconsistent.}
+
 The \code{find()} methods request the database in the form of \code{CriteriaQuerys} which will be processed by JPA and results are returned in the form of \code{Iterables}. The reason for this is to make returned objects immutable without making it difficult to iterate over these results. 
 
 
