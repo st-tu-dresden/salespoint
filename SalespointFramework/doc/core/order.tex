@@ -1,38 +1,47 @@
-\newpage
 \section{Order}
 \label{sec:order}
 
 \begin{figure}
 	\centering
-  \includegraphics[width=1.0\textwidth]{images/Order_Overview.eps}
+  \includegraphics[height=1.0\textwidth,angle=90]{images/Order_Overview.eps}
 	\label{order_overview}
 	\caption{Order - Class Overview}
 \end{figure}
 %An Order is a new concept in \salespoint, replacing databaskets from earlier versions.
 %An Order provides facilities for individual pricing of products (additional costs or deductions) and state information and manipulation.
 
-An \code{Order} can be imagined as sheet of paper which basically consists of lines representing the ordered products.
+An \code{Order} can be considered as a sheet of paper which basically consists of lines, each representing an ordered product.
 %(\code{OrderLine}) and lines that are not bound to a concrete product but which cause a charge (\code{ChargeLine}), for example shipping and packaging.
 An order can be uniquely identified by an \code{OrderIdentifier}.
 
-Every product of an order is stored in separate \code{OrderLine}.
-An \code{OrderLine} is uniquely identified by an \code{OrderLineIdentifier}.
-\code{OrderLine}s contain all information to identify product instances, like a \code{ProductType} and \code{ProductFeatures}.
+Every product of an order is stored in a separate \code{OrderLine}.
+An \code{OrderLine} in turn is uniquely identified by an \code{OrderLineIdentifier}.
+An \code{OrderLine} contains all information to identify a \code{ProductInstance} (see Section \ref{sec:product}).
+A \code{ProductInstance} is identified by a \code{ProductIdentifier}, and an optional set of \code{ProductFeature}s.
 \\
 
-\code{ChargeLine}s represent additional costs or discounts and can be applied to \code{OrderLine}s or \code{Order}s. 
-For example, they can be used to handle special taxes or handling fees.
+A \code{ChargeLine} represents additional costs or discounts and can be applied to an \code{OrderLine} or an \code{Order}. 
+For example, \code{ChargeLine}s can be used to handle special taxes or handling fees.
 A \code{ChargeLine} is uniquely identified by a \code{ChargeLineIdentifier}.
 %ChargeLines will be involved in price calculation of \code{Order}s and \code{OrderLine}s.
 \\
 
 \code{Orders} are lifecycle-objects.
-The lifecycle covers four states which are defined by enumeration type \code{OrderEntryStatus}.
+The lifecycle covers four states which are defined by enumeration type \code{OrderStatus}.
 %The lifecycle has restrictions in changing states, which are transposed automatic by the according methods.
-Changing lifecylce states is restricted, which is automatically governed by the according methods, for example \code{cancelOrder()}.
-\code{COMPLETED} is one of the final states and it is not possible to change the state of such orders.
+%Changing lifecylce states is restricted, which is automatically governed by the according methods, for example \code{cancelOrder()}.
+The lifecycle state cannot be arbitrarily changed, but follows a fixed scheme and is represented as field \code{orderStatus} in the class \code{PersistentOrder}.
+State transistions are automatically carried out when certain methods are called on an \code{Order} object, for example \code{cancelOrder()}.
 %The figure \ref{order_statemachine} shows a state machine which illustrates the lifecycle of \code{Orders}.
+\\
 
+
+As you can see in Figure \ref{order_statemachine}, a PersistentOrder can only be modified in state \code{OPEN}.
+\code{PAYED}, \code{CANCELLED} and \code{COMPLETED} \code{Orders} are immutable.
+Calling the \code{payOrder()} method changes the state and calls the accountancy to create a \code{ProductPaymentEntry}
+Ordered objects will only be removed from inventory when the \code{completeOrder()} method is called.  
+\code{COMPLETED} is one of the final states and it is not possible to change the state of such orders.
+\\
 \begin{figure}
 	\centering
   \includegraphics[width=1.0\textwidth]{images/Order_StateMachine.eps}
@@ -40,19 +49,13 @@ Changing lifecylce states is restricted, which is automatically governed by the 
 	\caption{Order - Lifecycle}
 \end{figure}  
 
-As you can see in Figure \ref{order_statemachine}, a PersistentOrder can only be modified in state \code{OPEN}.
-\code{PAYED}, \code{CANCELLED} and \code{COMPLETED} \code{Orders} are immutable.
-Calling the \code{payOrder()} method changes the state and calls the accountancy to create a \code{ProductPaymentEntry}
-Ordered objects will only be removed from inventory when the \code{completeOrder()} method is called.  
-\\
-
 Completing an order causes product instances to be removed from the inventory.
 Because product instances may not be present anymore in the inventory, or their number may not be suffice to fulfill an order, completing an order requires special attention.
 To handle these situations, the \code{OrderCompletionResult} interface was introduced.
 First of all, three \code{OrderCompletionStatus} are possible:
 
 \begin{itemize}
-\item \code{SUCCESSFULL}: The order was completed successfully, and all products were removed from the inventory. 
+\item \code{SUCCESSFUL}: The order was completed successfully, and all products were removed from the inventory. 
 \item \code{SPLIT}: Some products could be found in the inventory and were removed.
 \item \code{FAILED}: An error from which recovery is impossible occured.
 \end{itemize}
