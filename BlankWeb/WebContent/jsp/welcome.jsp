@@ -24,8 +24,8 @@
 		</header>
 		<ul>
 			<li><a href="http://st.inf.tu-dresden.de/content/index.php?node=teaching&leaf=1&subject=195">Softwarepraktikum</a></li>
-			<li><a href="http://www.st.inf.tu-dresden.de/SalesPoint/v5.0/wiki">Salespoint5 Wiki</a></li>
-			<li><a href="http://st.inf.tu-dresden.de/SalesPoint/forum/viewforum.php?f=135">Salespoint5 Board</a></li>
+			<li><a href="http://www.st.inf.tu-dresden.de/SalesPoint/v5.0/wiki">Salespoint 5 Wiki</a></li>
+			<li><a href="http://st.inf.tu-dresden.de/SalesPoint/forum/viewforum.php?f=135">Salespoint 5 Forum</a></li>
 		</ul>
 	</article>
 	
@@ -34,16 +34,16 @@
 			<h2>Documentation</h2>
 		</header>
 		<ul>
-			<li><a href="http://download.oracle.com/javase/6/docs/api/">Java 1.6 Javadoc</a></li>
-			<li><a href="http://download.oracle.com/javase/7/docs/api/">Java 1.7 Javadoc (looks a lot nicer)</a></li>
-			<li><a href="TODO">Salespoint5 Javadoc</a></li>
-			<li><a href="http://joda-time.sourceforge.net/">Jodatime</a></li>
+			<li><a href="http://www.st.inf.tu-dresden.de/SalesPoint/v5.0/download/JavaDoc/index.html">Salespoint 5 Javadoc</a></li>
+			<li><a href="http://download.oracle.com/javase/7/docs/api/">Java 1.7 Javadoc</a></li>
 			<li><a href="http://static.springsource.org/spring/docs/current/spring-framework-reference/html/mvc.html">Introduction to Spring Web MVC framework</a></li>
 			<li><a href="http://download.oracle.com/javaee/6/tutorial/doc/gjddd.html">Expression Language</a></li>
+			<li><a href="http://download.oracle.com/javaee/5/tutorial/doc/bnakc.html">JavaServer Pages Standard Tag Library</a></li>
 			<li><a href="http://download.oracle.com/javaee/5/tutorial/doc/bnbpz.html">Introduction to the Java Persistence API</a></li>
+			<li><a href="http://joda-time.sourceforge.net/">Joda Time - Java date and time API</a></li>
 		</ul>
 	</article>
 	<br />
-	<h3>happy coding :)</h3>
+	<h3>happy coding :-)</h3>
 </body>
 </html>
