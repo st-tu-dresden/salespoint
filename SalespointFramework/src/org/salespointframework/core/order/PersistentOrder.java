@@ -221,13 +221,13 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 
 	@Override
 	public final OrderCompletionResult completeOrder() {
-		System.out.println("---COMPLETE ORDER BEGIN");
+		//System.out.println("---COMPLETE ORDER BEGIN");
 		
 		// TODO mehr CompletionStates? oder letzten Param (Exception)
 		// überdenken, String cause? -> log4j nutzen!!
 		if (orderStatus != OrderStatus.PAYED) {
 			return new InternalOrderCompletionResult(
-					OrderCompletionStatus.FAILED, null, null, null);
+					OrderCompletionStatus.FAILED, null, null);
 		}
 
 		Inventory<?> tempInventory = Shop.INSTANCE.getInventory();
@@ -242,34 +242,32 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		
 		Set<PersistentOrderLine> remainingOrderLines = new HashSet<PersistentOrderLine>(this.orderLines);
 		
-		
-
 		em.getTransaction().begin();
 
-		System.out.println("BEGIN ORDERLINE LOOP");
+		//System.out.println("BEGIN ORDERLINE LOOP");
 		for (PersistentOrderLine orderLine : orderLines) {
-			System.out.println("remaining orderlines:" + remainingOrderLines.size());
+			//System.out.println("remaining orderlines:" + remainingOrderLines.size());
 			remainingOrderLines.remove(orderLine);
 			Iterable<PersistentProductInstance> tempProducts = inventory.find(PersistentProductInstance.class, orderLine.getProductIdentifier(),orderLine.getProductFeatures());
 
 			List<PersistentProductInstance> products = Iterables.asList(tempProducts);
 			
-			System.out.println("products count:" + products.size());
+			//System.out.println("products count:" + products.size());
 
 			int numberOrdered = orderLine.getNumberOrdered();
 			
-			System.out.println("number ordered:" + numberOrdered);
+			//System.out.println("number ordered:" + numberOrdered);
 			
 			int removed = 0;
 
-			System.out.println("BEGIN PRODUCT LOOP");
+			//System.out.println("BEGIN PRODUCT LOOP");
 			for (PersistentProductInstance product : products) {
 				System.out.println("SerialNumber:" + product.getSerialNumber());
 				boolean result = inventory.remove(product.getSerialNumber());
 				System.out.println("removal result:" + result);
 
 				if (!result) {
-					System.out.println("not removed");
+					//System.out.println("not removed");
 					// TODO payment clone?
 					PersistentOrder order = new PersistentOrder(this.userIdentifier, this.paymentMethod);
 					PersistentOrderLine pol = new PersistentOrderLine(orderLine.getProductIdentifier(),	orderLine.getProductFeatures(), numberOrdered - removed);
@@ -278,15 +276,15 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 					order.chargeLines.addAll(this.chargeLines);
 					order.orderStatus = OrderStatus.PAYED;
 
-					return new InternalOrderCompletionResult(OrderCompletionStatus.SPLITORDER, order, em, null);
+					return new InternalOrderCompletionResult(OrderCompletionStatus.SPLITORDER, order, em);
 				} else {
 					System.out.println("removed++");
 					removed++;
 				}
 
 				if (removed >= numberOrdered) {
-					System.out.println("removed >= numberordered");
-					System.out.println(removed + ">=" + numberOrdered);
+					//System.out.println("removed >= numberordered");
+					//System.out.println(removed + ">=" + numberOrdered);
 					break;
 				}
 			}
@@ -295,11 +293,11 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		try {
 			em.getTransaction().commit();
 		} catch (RollbackException e) { // "RollbackException - if the commit fails"
-			return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED, null, em, e.getCause());
+			return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED, null, em);
 		}
 
-		System.out.println("----COMPLETE ORDER END");
-		return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL, null, em, null);
+		//System.out.println("----COMPLETE ORDER END");
+		return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL, null, em);
 	}
 
 	/**
@@ -360,16 +358,14 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		private final OrderCompletionStatus orderCompletionStatus;
 		private final PersistentOrder order;
 		private final EntityManager entityManager;
-		private Throwable exception;
 
 		public InternalOrderCompletionResult(
 				OrderCompletionStatus orderCompletionStatus,
-				PersistentOrder order, EntityManager entityManager,
-				Throwable exception) {
+				PersistentOrder order, EntityManager entityManager
+				) {
 			this.orderCompletionStatus = orderCompletionStatus;
 			this.order = order;
 			this.entityManager = entityManager;
-			this.exception = exception;
 		}
 
 		// TODO SupressWarnings
@@ -382,7 +378,6 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 						// TODO Commit Fails -> Auto Rollback?
 						this.entityManager.getTransaction().commit();
 					} catch (RollbackException e) {
-						this.exception = e.getCause();
 						return null;
 					}
 				}
@@ -408,11 +403,6 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		@Override
 		public final OrderCompletionStatus getStatus() {
 			return this.orderCompletionStatus;
-		}
-
-		@Override
-		public Throwable getException() {
-			return this.exception;
 		}
 	}
 
