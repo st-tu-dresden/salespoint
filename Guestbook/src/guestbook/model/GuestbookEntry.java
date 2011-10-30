@@ -2,7 +2,7 @@ package guestbook.model;
 
 import java.util.Date;
 
-public class GuestbookEntry {
+public class GuestbookEntry implements Comparable<GuestbookEntry> {
 	private static int globalId = 0;
 	
 	private final String name, text;
@@ -32,5 +32,10 @@ public class GuestbookEntry {
 
 	public String getText() {
 		return text;
+	}
+
+	@Override
+	public int compareTo(GuestbookEntry other) {
+		return Integer.valueOf(this.id).compareTo(other.getId());
 	}
 }

@@ -19,8 +19,7 @@ public class GuestbookController {
 	String lastName = "";
 	
 	@RequestMapping("/")
-	public ModelAndView guestBook(ModelAndView mav)
-	{
+	public ModelAndView guestBook(ModelAndView mav) {
 		mav.setViewName("/gb/guestbook");
 		return addStuff(mav);
 	}

@@ -17,7 +17,8 @@
 		<div>
 			<h2 class="center">Viel Spaß beim Programmieren. Anbei ein kleines Gästebuch.</h2>
 			<br />
-			<p class="center"><a href="<c:url value="/really" />">Das will ich sehen!</a></p>
+			<p class="center"><a href="<c:url value="/guestbook/" />">Gästebuch</a></p>
+			<p class="center"><a href="<c:url value="/ajaxbook/" />">Gästebuch AJAX</a></p>
 		</div>
 	</body>
 </html>

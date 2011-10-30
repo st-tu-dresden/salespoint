@@ -14,9 +14,8 @@
 		<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/style.css" />" />
 		<title><spring:message code="guestbook.ajax.title" /></title>
 	</head>
-	<body>
 	
-
+	<body>
 		<h1><spring:message code="guestbook.ajax.title" /></h1>
 		<div class="entries">
 			<c:forEach var="e" items="${guestbookEntries}">
@@ -44,7 +43,7 @@
 			</form> 
 		</div>
 		
-		<p class="center"><a href="<c:url value="/really" />"><spring:message code="guestbook.back" /></a></p>
+		<p class="center"><a href="<c:url value="/" />"><spring:message code="guestbook.back" /></a></p>
 		
 		<!--  http://api.jquery.com/category/plugins/templates/ -->
 		<script id="entryTemplate" type="text/x-jquery-tmpl">

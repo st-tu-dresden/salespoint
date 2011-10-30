@@ -7,13 +7,13 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css"
-	href="<c:url value="/res/css/style.css" />" />
-<title><spring:message code="guestbook.title" /></title>
-</head>
-<body>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/style.css" />" />
+		<title><spring:message code="guestbook.title" /></title>
+	</head>
+	
+	<body>
 	<h1><spring:message code="guestbook.title" /></h1>
 
 	<!-- http://download.oracle.com/javaee/5/jstl/1.1/docs/tlddocs/overview-summary.html -->
@@ -50,7 +50,7 @@
 	</div>
 
 	<p class="center">
-		<a href="<c:url value="/really" />"><spring:message code="guestbook.back" /></a>
+		<a href="<c:url value="/" />"><spring:message code="guestbook.back" /></a>
 	</p>
 </body>
 </html>

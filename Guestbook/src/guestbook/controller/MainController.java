@@ -8,11 +8,6 @@ public class MainController {
 
 	@RequestMapping("/")
 	public String index() {
-		return "/main/index";
-	}
-
-	@RequestMapping("/really")
-	public String really() {
-		return "/main/really";
+		return "index";
 	}
 }
