@@ -34,18 +34,12 @@ public interface User
 	
 	/**
 	 * Changes the password of the <code>User</code> to <code>newPassword</code>
-	 * . Before the change is made, <code>oldPassword</code> is checked against
-	 * the current password. If the check is successful, the password is
-	 * changed.
 	 * 
 	 * @param newPassword
 	 *            new password.
-	 * @param oldPassword
-	 *            old password, which is checked against the current password.
-	 * @return true if change was succesful, otherwise false
-	 * @throws ArgumentNullException if newPassword or oldPassword are null
+	 * @throws ArgumentNullException if newPassword is null
 	 */
-	public boolean changePassword(String newPassword, String oldPassword);
+	public void changePassword(String newPassword);
 
 	/**
 	 * Adds a {@link UserCapability} to a <code>User</code>

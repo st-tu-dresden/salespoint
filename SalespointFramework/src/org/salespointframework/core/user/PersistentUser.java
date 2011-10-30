@@ -97,16 +97,10 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 	}
 
 	@Override
-	public boolean changePassword(String newPassword, String oldPassword)
+	public void changePassword(String newPassword)
 	{
 		Objects.requireNonNull(newPassword, "newPassword");
-		Objects.requireNonNull(oldPassword, "oldPassword");
-		if (verifyPassword(oldPassword))
-		{
-			this.password = newPassword;
-			return true;
-		}
-		return false;
+		this.password = newPassword;
 	}
 
 	@Override
