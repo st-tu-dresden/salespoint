@@ -16,11 +16,11 @@ import org.salespointframework.core.user.UserManager;
 @SuppressWarnings("serial")
 public class LoggedInTag extends BodyTagSupport
 {
-	private boolean status = true;
+	private boolean test = true;
 
-	public void setStatus(boolean status)
+	public void setTest(boolean test)
 	{
-		this.status = status;
+		this.test = test;
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class LoggedInTag extends BodyTagSupport
 		//UserManager<? extends User> usermanager = Shop.INSTANCE.getUserManager();
 		User user = usermanager.getUserByToken(User.class, pageContext.getSession());
 
-		if (status)
+		if (test)
 		{
 			return user == null ? SKIP_BODY : EVAL_BODY_INCLUDE;
 		} else

@@ -18,11 +18,18 @@ import org.salespointframework.core.user.UserManager;
 public class HasCapabilityTag extends BodyTagSupport
 {
 	private String capabilityName;
+	private boolean test = true;
 
 	public void setCapabilityName(String capabilityName)
 	{
 		this.capabilityName = capabilityName;
 	}
+	
+	public void setTest(boolean test)
+	{
+		this.test = test;
+	}
+
 
 	@Override
 	public int doStartTag() throws JspException
@@ -32,13 +39,24 @@ public class HasCapabilityTag extends BodyTagSupport
 		User user = usermanager.getUserByToken(User.class, pageContext.getSession());
 		UserCapability capability = new UserCapability(capabilityName);
 
+				
 		if (user != null)
 		{
-			if (user.hasCapability(capability))
-			{
-				return EVAL_BODY_INCLUDE;
+			boolean hasCapability = user.hasCapability(capability);
+					
+			if(test) {
+				if (hasCapability)
+				{
+					return EVAL_BODY_INCLUDE;
+				}
+			} else {
+				if (!user.hasCapability(capability))
+				{
+					return EVAL_BODY_INCLUDE;
+				}
 			}
 		}
 		return SKIP_BODY;
 	}
 }
+ 

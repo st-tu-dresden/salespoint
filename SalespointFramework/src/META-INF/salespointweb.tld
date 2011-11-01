@@ -19,6 +19,15 @@
 			<type>java.lang.String</type>
 			<description>The name of the Capability</description>
 		</attribute>
+		<attribute>
+			<name>test</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+			<description>if true, the body will be rendered when the current user
+				is logged in, else the body will be rendered when the current user
+				is not logged in</description>
+		</attribute>
 	</tag>
 
 	<tag>
@@ -27,8 +36,9 @@
 		<description>Depending on boolean value the body will rendered if the
 			current user is logged in else not</description>
 		<attribute>
-			<name>status</name>
-			<required>true</required>
+			<name>test</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
 			<type>boolean</type>
 			<description>if true, the body will be rendered when the current user
 				is logged in, else the body will be rendered when the current user
