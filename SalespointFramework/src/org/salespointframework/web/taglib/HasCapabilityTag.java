@@ -25,6 +25,10 @@ public class HasCapabilityTag extends BodyTagSupport
 		this.capabilityName = capabilityName;
 	}
 	
+	/**
+	 * The test condition that determines whether or not the body content should be processed.
+	 * @param test a boolean condition
+	 */
 	public void setTest(boolean test)
 	{
 		this.test = test;
@@ -42,18 +46,12 @@ public class HasCapabilityTag extends BodyTagSupport
 				
 		if (user != null)
 		{
-			boolean hasCapability = user.hasCapability(capability);
-					
-			if(test) {
-				if (hasCapability)
-				{
-					return EVAL_BODY_INCLUDE;
-				}
-			} else {
-				if (!user.hasCapability(capability))
-				{
-					return EVAL_BODY_INCLUDE;
-				}
+			if(user.hasCapability(capability) && test) {
+				return EVAL_BODY_INCLUDE;
+			}
+		} else {
+			if(!test) {
+				return EVAL_BODY_INCLUDE;
 			}
 		}
 		return SKIP_BODY;

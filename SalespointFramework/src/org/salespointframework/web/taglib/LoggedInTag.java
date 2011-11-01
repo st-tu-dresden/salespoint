@@ -18,6 +18,10 @@ public class LoggedInTag extends BodyTagSupport
 {
 	private boolean test = true;
 
+	/**
+	 * The test condition that determines whether or not the body content should be processed.
+	 * @param test a boolean condition
+	 */
 	public void setTest(boolean test)
 	{
 		this.test = test;

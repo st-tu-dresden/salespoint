@@ -9,7 +9,7 @@ import org.salespointframework.util.Objects;
 
 /**
  * A Capability is only identified by a name.
- * This class is immutable
+ * This class is immutable.
  * 
  * @author Christopher Bellmann
  * 
@@ -32,8 +32,8 @@ public final class UserCapability implements Serializable, Comparable<UserCapabi
 	/**
 	 * Creates a new Capability
 	 * 
-	 * @param name
-	 *            name you want the give the Capability
+	 * @param name the name of the capability  
+	 *             
 	 * @throws ArgumentNullException if name is null
 	 */
 	public UserCapability(String name)
@@ -74,13 +74,13 @@ public final class UserCapability implements Serializable, Comparable<UserCapabi
 	}
 
 	@Override
-	public String toString()
+	public final String toString()
 	{
 		return name;
 	}
 
 	@Override
-	public int compareTo(UserCapability other)
+	public final int compareTo(UserCapability other)
 	{
 		return this.name.compareTo(other.name);
 	}

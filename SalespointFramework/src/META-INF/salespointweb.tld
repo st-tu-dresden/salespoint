@@ -24,9 +24,7 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 			<type>boolean</type>
-			<description>if true, the body will be rendered when the current user
-				is logged in, else the body will be rendered when the current user
-				is not logged in</description>
+			<description>TODO</description>
 		</attribute>
 	</tag>
 
@@ -55,7 +53,7 @@
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 			<type>java.lang.String</type>
-			<description>TODO</description>
+			<description>Name of the exported scoped variable for the current item of the iteration</description>
 		</attribute>
 		
 		<attribute>
@@ -63,7 +61,7 @@
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 			<type>java.lang.Iterable</type>
-			<description>TODO</description>
+			<description>Iterable of items to iterate over.</description>
 		</attribute>
 		
 	</tag>

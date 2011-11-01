@@ -23,6 +23,8 @@ import org.salespointframework.util.Objects;
 // TODO comment
 /**
  * 
+ * This class is immutable.
+ * 
  * @author Paul Henke
  *
  */
