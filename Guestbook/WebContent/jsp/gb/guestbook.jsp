@@ -36,7 +36,7 @@
 	</div>
 
 	<div class="login"> 
-		<form id="form" action=""> 
+		<form id="form" action="addEntry" method="post"> 
 			<fieldset> 
 				<legend><spring:message code="guestbook.form.title" /></legend> 
 				<label for="name"><spring:message code="guestbook.form.name" /></label><br /> 
