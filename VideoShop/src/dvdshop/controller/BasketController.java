@@ -53,12 +53,9 @@ public class BasketController {
 		
 		// hack
 		if(disc instanceof Dvd) {
-			//mav.addObject("items", videoCatalog.findDvds());
 			mav.setViewName("redirect:dvdCatalog");
 		} else {
-			mav.addObject("items", videoCatalog.findBluRays());
-			mav.setViewName("blurayCatalog");
-			//mav.setViewName("redirect:blurayCatalog");
+			mav.setViewName("redirect:blurayCatalog");
 		}
 		return mav;
 	}
