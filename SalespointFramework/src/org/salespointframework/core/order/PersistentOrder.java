@@ -158,6 +158,11 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	public final OrderStatus getOrderStatus() {
 		return orderStatus;
 	}
+	
+	@Override
+	public final UserIdentifier getUserIdentifier() {
+		return userIdentifier;
+	}
 
 	@Override
 	public final boolean cancelOrder() {

@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 
 //TODO if you have really time, check if generics are really needed.
@@ -51,6 +52,9 @@ public interface Order<O extends OrderLine>
 	 */
 	
 	OrderIdentifier getIdentifier();
+	
+	// TODO comment
+	UserIdentifier getUserIdentifier();
 	
 	/**
 	 * Adds a new {@link ChargeLine} to the order
