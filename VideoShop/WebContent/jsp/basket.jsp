@@ -24,8 +24,8 @@
 			<c:choose>
 				<c:when test="${!isEmpty}">
 					<ul>
-						<sp:forEach var="item" items="${items}">
-							<li>${item.productName}</li>
+						<sp:forEach var="orderline" items="${items}">
+							<li>${orderline.productName} - ${orderline.numberOrdered}</li>
 						</sp:forEach>
 					</ul>
 					<form method="post" action="buy">

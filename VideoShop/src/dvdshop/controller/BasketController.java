@@ -39,7 +39,7 @@ public class BasketController {
 
 		if (order == null) {
 			order = new PersistentOrder(customer.getIdentifier(), Cash.CASH);
-			//orderManager.add(order);
+			orderManager.add(order);
 			request.getSession().setAttribute("order", order);
 		}
 
@@ -51,7 +51,6 @@ public class BasketController {
 		
 		orderManager.update(order);
 		
-		// hack
 		if(disc instanceof Dvd) {
 			mav.setViewName("redirect:dvdCatalog");
 		} else {

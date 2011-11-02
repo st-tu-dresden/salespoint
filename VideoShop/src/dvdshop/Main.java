@@ -49,8 +49,8 @@ public class Main {
 		videoCatalog.add(new Dvd("Last Action Hero","lac",new Money(9.99), "Äktschn/Comedy"));
 		videoCatalog.add(new Dvd("Back to the Future","bttf", new Money(9.99), "Sci-Fi"));
 		videoCatalog.add(new Dvd("Fido", "fido",new Money(9.99), "Comedy/Drama/Horror"));
-		videoCatalog.add(new Dvd("Super Fuzz", "sf", new Money(9.99), "Action/Sci-Fi/Comedy"));
-		videoCatalog.add(new Dvd("Armour of God II: Operation Condor","aog2oc", new Money(9.99), "Action/Adventure/Comedy"));
+		videoCatalog.add(new Dvd("Super Fuzz", "sf", new Money(19.99), "Action/Sci-Fi/Comedy"));
+		videoCatalog.add(new Dvd("Armour of God II: Operation Condor","aog2oc", new Money(14.99), "Action/Adventure/Comedy"));
 		videoCatalog.add(new Dvd("Persepolis","pers", new Money(14.99), "Animation/Biography/Drama"));
 		videoCatalog.add(new Dvd("Hot Shots! Part Deux","hspd", Money.OVER9000, "Action/Comedy/War"));
 		videoCatalog.add(new Dvd("Avatar: The Last Airbender","tla", new Money(19.99), "Animation/Action/Adventure"));

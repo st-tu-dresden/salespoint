@@ -1,0 +1,309 @@
+/* Paul */
+
+.fehler {
+	border:1px dashed #F00;
+}
+
+ul {
+	list-style: disc;
+	margin:0 0 0 1em;
+}
+
+table{
+	border-top:1px solid #B3C2C7;
+	border-left:1px solid #B3C2C7;
+	border-right:1px solid #B3C2C7;
+	font-size:1em;
+	border-spacing:0;
+	text-align:center;
+	margin-left:auto; 
+	margin-right:auto;
+}
+
+	table td,
+	table th {
+		padding:2px;
+	}
+	
+	table thead tr {
+		background-color:#D9E1E5;
+		border-bottom:1px solid #B3C2C7;
+		font-variant:small-caps;
+	}
+	
+	table tbody td {
+		border-bottom:1px solid #B3C2C7;
+		border-right:1px solid #DDD;
+	}
+	
+	table tbody td.edit {
+		border-right:0;
+	}
+	
+	table tbody tr:hover {
+		background-color:#DFEEF7;
+	}
+	
+	table tbody td.euro {
+		text-align:right;
+	}
+	
+	table tbody td.euro:after {
+		content: " €";
+	}
+
+
+div.calendar {
+	width:14em;
+}
+
+div.calendar p {
+	padding-bottom: 0.2em;
+}
+
+	div.calendar table {
+		font-size:1em;
+		border-spacing:0;
+		text-align:center;
+	}
+
+	div.calendar table thead tr {
+		background-color:#D9E1E5;
+		border-bottom:1px solid #B3C2C7;
+		font-variant:small-caps;
+	}
+	div.calendar table thead tr th{
+		width:1.5em;
+		height:1.5em;
+	}
+	div.calendar table tbody td {
+		border-bottom:1px solid #B3C2C7;
+		border-right:1px solid #DDD;
+		width:1.5em;
+		height:1.5em;
+	}
+	
+	div.calendar table tbody tr:hover {
+		background-color: inherit;
+	}
+
+	div.calendar table tbody tr td div.info {
+		background-color:#AAE1FF;
+	}
+	
+	div.calendar table tbody tr td div.info span{
+		display:none;
+	}
+
+
+	div.calendar table tbody tr td div:hover {
+		background-color:#FFFFFF;
+		border:1px solid #000000;
+		cursor:pointer;
+		font-size:large;
+		height:1.4em;
+		margin:-0.8em 0pt 0pt -0.25em;
+		position:absolute;
+		width:1.4em;
+	}
+
+	
+	div.calendar table tbody tr td div.info:hover span {
+		padding:0.1em 0.1em 0.1em 0.1em;
+		position:absolute;
+		display:block;
+		min-width:300px;
+		min-height:50px;
+		margin:-5px 0 0 5px;
+		font-size:small;
+		background-color: #DFEEF7;
+		border:1px dashed #000;
+		opacity:0.8;
+	}
+
+
+span.true span,
+span.false span {
+	display:none;
+}
+span.false {
+	display:block;
+	width:10px;
+	height:10px;
+	background-image:url(img/bool/false.png);
+	background-position:center;
+}
+span.true {
+	display:block;
+	width:10px;
+	height:10px;
+	background-image:url(img/bool/true.png);
+	background-position:center;
+}
+
+dl.impressum {
+	border:1px solid #b3c2c7;
+    float:left;
+    width:30em;
+    margin:1em 0 1em 4.5em;
+    padding:0.5em 0 0.5em 0.5em;
+}
+
+	dl.impressum:hover {
+		border:1px dashed #b3c2c7;
+		background-color:#DFEEF7;
+	}
+
+	dl.impressum dt.img {
+	    display:none;
+	}
+	
+	dl.impressum dd.img {
+	    width:10em;
+	    height:10em;
+	    float:left;
+	}
+	
+	dl.impressum * {
+	    text-align:left;
+	}
+	
+	dl.impressum dt.name,
+	dl.impressum dt.aufgabe {
+	    float:left;
+	    width:5em;
+	    margin-left:1em;
+		display:none;
+	}
+	
+	dl.impressum dd.name
+	 {
+		/*float:left;*/
+		font-size:large;
+		/* width:12em; */
+	    margin-left:7em;
+	}
+	
+	dl.impressum dd.aufgabe {
+		/*float:left;*/
+	    margin-left:11em;
+	}
+
+dl.catalog {
+	border:1px solid #b3c2c7;
+    float:left;
+    width:30em;
+	height:15em;
+    margin:1em 0 1em 4.5em;
+    padding:0.5em 0 0.5em 0.5em;
+    overflow: hidden;
+}
+	dl.catalog dt.img {
+	    display:none;
+	}
+	
+	dl.catalog dd.img {
+	    width:8em;
+	    height:8em;
+	    float:left;
+		margin: 0 1em 0 0;
+	}
+	
+	dl.catalog dd.img:hover {
+	    width:15em;
+	    height:15em;
+	}
+	
+	dl.catalog:hover {
+		border:1px dotted #b3c2c7;
+	}
+	
+	dl.catalog * {
+	    text-align:left;
+	}
+	
+	dl.catalog dt {
+	    font-style:italic;
+	}
+	
+	dl.catalog dt.name,
+	dl.catalog dt.price,
+	dl.catalog dt.time,
+	dl.catalog dt.exp	{
+	    float:left;
+	    width:5em;
+	    margin-left:0em;
+	}
+	
+	dl.catalog dd.name,
+	dl.catalog dd.price,
+	dl.catalog dd.time,
+	dl.catalog dd.exp {
+		font-weight:bold;
+	}
+
+	dl.catalog dd.price:after {
+		content:" €";
+	}
+	
+	dl.catalog dd.time:after {
+		content:" Tage";
+	}
+	
+	dl.catalog dt.desc {
+	    /*clear:left;*/
+		display:none;
+	    float:left;
+	    width:5em;
+	    margin-left:1em;
+	}
+	
+	dl.catalog dd.desc {
+	    /* height:10em; */
+		/* margin-left:9em; */
+		padding-left:1em;
+	    /* overflow:scroll; */
+	}
+
+form label {
+	width:13em;
+	float:left;
+}
+
+	form br {
+		clear:left;
+	}
+
+	form div {
+	    border:1px solid #D9E1E5;
+	    /* margin:3em auto 2em auto; */
+	    margin:0 auto 2em auto;
+	    width:30em;
+	    padding:0.5em;
+	}
+
+	form div label,
+	form div input.text,
+	form div select {
+	    text-align:left;
+	}
+
+	form div select {
+	   width:15em;
+	    margin:0 0 2px 0;
+	}
+
+	form div input#password {
+	    width:15em;
+	}
+
+input.submit {
+    border:1px solid #B3C2C7;
+    background-color:#D9E1E5;
+    margin:1em 0 0 0;
+    width:8em;
+}
+
+input.submit:hover {
+    background-color:#B3C2C7;
+}
