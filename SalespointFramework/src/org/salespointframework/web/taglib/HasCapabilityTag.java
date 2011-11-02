@@ -42,11 +42,17 @@ public class HasCapabilityTag extends BodyTagSupport
 		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
 		User user = usermanager.getUserByToken(User.class, pageContext.getSession());
 		UserCapability capability = new UserCapability(capabilityName);
-
-				
+		
+			
 		if (user != null)
 		{
-			if(user.hasCapability(capability) && test) {
+			boolean hasCapability = user.hasCapability(capability);
+			
+			if(hasCapability && test) {
+				return EVAL_BODY_INCLUDE;
+			} 
+			
+			if(!hasCapability && !test) {
 				return EVAL_BODY_INCLUDE;
 			}
 		} else {
@@ -54,6 +60,7 @@ public class HasCapabilityTag extends BodyTagSupport
 				return EVAL_BODY_INCLUDE;
 			}
 		}
+		
 		return SKIP_BODY;
 	}
 }
