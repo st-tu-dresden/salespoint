@@ -13,16 +13,16 @@ import dvdshop.model.Customer;
 @Controller
 public class CustomerController {
 	
-	private PersistentUserManager userManager = new PersistentUserManager();
+	private final PersistentUserManager userManager = new PersistentUserManager();
 
 	@RequestMapping("/registerNew")
-	public String register(HttpServletRequest request,
+	public String registerNew(HttpServletRequest request,
 			@RequestParam("name") UserIdentifier userIdentifier,
 			@RequestParam("password") String password,
 			@RequestParam("street") String street,
 			@RequestParam("city") String city) {
 		
-		Customer customer = new Customer(userIdentifier, password,	street + "\n" + city);
+		Customer customer = new Customer(userIdentifier, password, street + "\n" + city);
 		userManager.add(customer);
 		userManager.login(customer, request.getSession());
 
@@ -36,7 +36,7 @@ public class CustomerController {
 	}
 	
 	@RequestMapping("/register")
-	public String registerCustomer() {
+	public String register() {
 		return "register";
 	}
 }

@@ -13,17 +13,17 @@ import org.salespointframework.util.Iterables;
 @Entity
 public class Disc extends PersistentProduct {
 	private String genre;
+	private String image;
 	
 	@ElementCollection
 	private List<Comment> comments = new LinkedList<Comment>();
 	
 	@Deprecated
-	public Disc() {
-		
-	}
+	public Disc() {}
 	
-	public Disc(String name, Money price, String genre) {
+	public Disc(String name, String image, Money price, String genre) {
 		super(name, price);
+		this.image = image;
 		this.genre = genre;
 	}
 	
@@ -37,5 +37,9 @@ public class Disc extends PersistentProduct {
 	
 	public Iterable<Comment> getComments() {
 		return Iterables.of(comments);
+	}
+
+	public String getImage() {
+		return image;
 	}
 }

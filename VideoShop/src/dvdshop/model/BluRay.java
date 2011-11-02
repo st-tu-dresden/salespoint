@@ -8,12 +8,9 @@ import org.salespointframework.core.money.Money;
 public class BluRay extends Disc {
 	
 	@Deprecated
-	public BluRay() {
-		
-	}
+	public BluRay() {}
 	
-	public BluRay(String name, Money price, String genre) {
-		super(name, price, genre);
+	public BluRay(String name, String image, Money price, String genre) {
+		super(name, image, price, genre);
 	}
-
 }

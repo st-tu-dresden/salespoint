@@ -10,30 +10,39 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" type="text/css"	href="<c:url value="/res/css/style.css" />" />
-	<title><spring:message code="catalog.dvd.title" /></title>
+	<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/style.css" />" />
+	<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/login.css" />" />
+	<title></title>
 </head>
 <body>
 	<div class="all">
 		<header>
-			<h1>DVD Katalog</h1>
+			<h1>Bestellungen</h1>
 			<jsp:include page="templates/navigation.jsp" />
 		</header>
 		
 		<div class="content">
-			<div class="catalogItems">
-				<sp:forEach var="item" items="${items}">
-					<c:url var="url" value="detail/${item.identifier}" />
-					<a href="${url}">
-						<div class="item">  
-							<h4>${item.name}</h4>
-							<img class="thumbnail" src="<c:url value="/res/img/imageDummy.png" />" alt="" />
-							<p class="price"><spring:message code="catalog.price" />: ${item.price}</p>
-						</div>
-					</a>
+			<p>Offene Bestellungen</p>
+			<table>
+				<caption>FOOBAR</caption>
+				<thead>
+					<tr>
+						<th>Identifier</th>
+						<th>Customer</th>
+						<th>Price</th>
+					</tr>
+				</thead>
+			<tbody>
+				<sp:forEach var="o" items="${openOrders}">
+					<tr>
+					<td></td>
+					</tr>
 				</sp:forEach>
-			</div>
+			</tbody>
+			</table>
+			
+			<p>Abgeschlossene Bestellungen</p>
 		</div>
-	</div>		
+	</div>
 </body>
 </html>

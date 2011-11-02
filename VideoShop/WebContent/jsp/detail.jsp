@@ -21,16 +21,17 @@
 			<h1>${disc.name}</h1>
 			<jsp:include page="templates/navigation.jsp" />
 		</header>
-			
+		
 		<div class="content">
 			<h2><spring:message code="catalog.title" />: ${disc.name}</h2>
 			<br /> 
 			<spring:message code="catalog.price" />: ${disc.price }.<br /> 
 			<spring:message code="detail.numberInStock" />: ${count} <br />
 			
-			<sp:loggedIn status="true">
-				<form method="post" action="addDisc">
+			<sp:loggedIn>
+				<form method="post" action="<c:url value="/addDisc" />">
 					<input type="hidden" name="pid" value="${disc.identifier}" /> 
+					<input type="number" name="number" min="0" max="5" step="1" value="1" />
 					<input	type="submit" value="<spring:message code="detail.addToBasket" />" />
 				</form>
 			</sp:loggedIn>
@@ -44,7 +45,7 @@
 
 			<br />
 			<div class="salespointlogin">
-				<form method="post" action="comment">
+				<form method="post" action="<c:url value="/comment" />">
 					<fieldset>
 						<legend><spring:message code="detail.comment.addComment" /></legend>
 						<input type="hidden" name="pid" value="${disc.identifier}" />

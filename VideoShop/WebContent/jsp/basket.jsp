@@ -19,9 +19,8 @@
 			<h1><spring:message code="shoppingBasket.title" /></h1>
 			<jsp:include page="templates/navigation.jsp" />
 		</header>
-		
+	
 		<div class="content">
-			<br />
 			<c:choose>
 				<c:when test="${!isEmpty}">
 					<ul>

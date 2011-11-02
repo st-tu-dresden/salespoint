@@ -18,13 +18,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import dvdshop.model.Customer;
 import dvdshop.model.Disc;
+import dvdshop.model.Dvd;
 import dvdshop.model.VideoCatalog;
 
 @Controller
 public class BasketController {
 	
-	private PersistentUserManager userManager = new PersistentUserManager();
-	private VideoCatalog videoCatalog = new VideoCatalog();
+	private final PersistentUserManager userManager = new PersistentUserManager();
+	private final PersistentOrderManager orderManager = new PersistentOrderManager();
+	private final VideoCatalog videoCatalog = new VideoCatalog();
 	
 	@RequestMapping("/addDisc")
 	public ModelAndView addDisc(HttpServletRequest request, ModelAndView mav, @RequestParam("pid") ProductIdentifier pid) {
@@ -35,6 +37,7 @@ public class BasketController {
 
 		if (order == null) {
 			order = new PersistentOrder(customer.getIdentifier(), Cash.CASH);
+			//orderManager.add(order);
 			request.getSession().setAttribute("order", order);
 		}
 
@@ -43,9 +46,18 @@ public class BasketController {
 		PersistentOrderLine orderLine = new PersistentOrderLine(disc.getIdentifier());
 
 		order.addOrderLine(orderLine);
-
-		mav.addObject("items", Iterables.asList(videoCatalog.findDvds()));
-		mav.setViewName("dvdCatalog");
+		
+		orderManager.update(order);
+		
+		// hack
+		if(disc instanceof Dvd) {
+			//mav.addObject("items", videoCatalog.findDvds());
+			mav.setViewName("redirect:dvdCatalog");
+		} else {
+			mav.addObject("items", videoCatalog.findBluRays());
+			mav.setViewName("blurayCatalog");
+			//mav.setViewName("redirect:blurayCatalog");
+		}
 		return mav;
 	}
 
@@ -76,7 +88,7 @@ public class BasketController {
 			request.getSession().setAttribute("order", null);
 			order.payOrder();
 			order.completeOrder();
-			new PersistentOrderManager().add(order);
+			orderManager.update(order);
 		}
 		return "index";
 	}

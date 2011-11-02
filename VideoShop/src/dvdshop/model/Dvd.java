@@ -6,10 +6,11 @@ import org.salespointframework.core.money.Money;
 
 @Entity
 public class Dvd extends Disc {
+	
 	@Deprecated
 	protected Dvd() {}
 	
-	public Dvd(String name, Money price, String genre) {
-		super(name, price, genre);
+	public Dvd(String name, String image, Money price, String genre) {
+		super(name, image, price, genre);
 	}
 }

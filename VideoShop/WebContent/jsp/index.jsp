@@ -22,16 +22,15 @@
 		</header>
 		
 		<div class="content">
-			<br />
 			<p><spring:message code="home.welcome" /></p>
-			<sp:loggedIn status="true">
-				<%-- <p> hello, ${loggedInUser.identifier}</p> --%>
-				<p><a href="logout">Logout</a></p>
+			
+			<sp:loggedIn>
+				<p><a href="<c:url value="/logout" />"><spring:message code="home.logout" /></a></p>
 			</sp:loggedIn>
 			
-			<sp:loggedIn status="false">
+			<sp:loggedIn test="false">
 				<jsp:include page="templates/login.jsp" />
-				<p><a href="register"><spring:message code="register.new" /></a></p>
+				<p><a href="<c:url value="/register" />"><spring:message code="register.new" /></a></p>
 			</sp:loggedIn>
 		</div>
 	</div>

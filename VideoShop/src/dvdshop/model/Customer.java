@@ -13,9 +13,7 @@ public class Customer extends PersistentUser {
 	private String adress;
 	
 	@Deprecated
-	protected Customer() {
-		
-	}
+	protected Customer() {}
 	
 	public Customer(UserIdentifier useridentifier, String password, String adress) {
 		super(useridentifier, password);

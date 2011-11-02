@@ -21,18 +21,18 @@
 		</header>
 		
 		<div class="content">
-			<sp:forEach var="item" items="${items}">
-				<c:url value="detail" var="url">
-					<c:param name="pid" value="${item.identifier}" />
-				</c:url>
-				<a href="${url}">
-					<div class="item">
-						<h4>${item.name}</h4>
-						<img class="thumbnail" src="<c:url value="/res/img/imageDummy.png" />" alt="" />
-						<p class="price"><spring:message code="catalog.price" />: ${item.price}</p>
-					</div>
-				</a>
-			</sp:forEach>
+			<div class="catalogItems">
+				<sp:forEach var="item" items="${items}">
+					<c:url var="url" value="detail/${item.identifier}" />
+					<a href="${url}">
+						<div class="item">
+							<h4>${item.name}</h4>
+							<img class="thumbnail" src="<c:url value="/res/img/imageDummy.png" />" alt="" />
+							<p class="price"><spring:message code="catalog.price" />: ${item.price}</p>
+						</div>
+					</a>
+				</sp:forEach>
+			</div>
 		</div>
 	</div>		
 </body>

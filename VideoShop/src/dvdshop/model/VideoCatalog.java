@@ -2,9 +2,7 @@ package dvdshop.model;
 
 import org.salespointframework.core.catalog.PersistentCatalog;
 import org.salespointframework.core.product.ProductIdentifier;
-import org.springframework.stereotype.Component;
 
-@Component
 public class VideoCatalog extends PersistentCatalog {
 	
 	public Disc getDisc(ProductIdentifier productIdentifier) {
@@ -15,7 +13,7 @@ public class VideoCatalog extends PersistentCatalog {
 		return super.find(Dvd.class);
 	}
 	
-	public Iterable<BluRay> findBlueRays() {
+	public Iterable<BluRay> findBluRays() {
 		return super.find(BluRay.class);
 	}
 }

@@ -6,8 +6,15 @@
 <%@ taglib uri="http://www.salespoint-framework.org/web/taglib" prefix="sp"%>
 
 <nav>
-	<a href="index"><spring:message code="nav.home" /></a> | 
-	<a href="dvdCatalog"><spring:message code="nav.dvdCatalog" /></a> | 
-	<a href="blurayCatalog"><spring:message code="nav.bluerayCatalog" /></a> | 
-	<a href="shoppingBasket"><spring:message code="nav.shoppingBasket" /></a>
+	<a href="<c:url value="/index" />"><spring:message code="nav.home" /></a> |
+
+	<sp:hasCapability capabilityName="boss">
+		<a href="<c:url value="/ordersPerCustomer" />"><spring:message code="nav.customers" /></a> |
+	</sp:hasCapability>
+	
+	<sp:hasCapability capabilityName="boss" test="false">
+		<a href="<c:url value="/dvdCatalog" />"><spring:message code="nav.dvdCatalog" /></a> | 
+		<a href="<c:url value="/blurayCatalog" />"><spring:message code="nav.bluerayCatalog" /></a> | 
+		<a href="<c:url value="/shoppingBasket" />"><spring:message code="nav.shoppingBasket" /></a>
+	</sp:hasCapability>
 </nav>

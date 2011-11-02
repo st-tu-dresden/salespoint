@@ -3,6 +3,7 @@ package dvdshop.controller;
 import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,7 +16,7 @@ import dvdshop.model.VideoCatalog;
 @Controller
 public class CatalogController {
 	
-	private VideoCatalog videoCatalog = new VideoCatalog();
+	private final VideoCatalog videoCatalog = new VideoCatalog();
 
 	@RequestMapping("/dvdCatalog")
 	public ModelAndView dvdCatalog(ModelAndView mav) {
@@ -26,14 +27,13 @@ public class CatalogController {
 
 	@RequestMapping("/blurayCatalog")
 	public ModelAndView blurayCatalog(ModelAndView mav) {
-		mav.addObject("items", videoCatalog.findBlueRays());
+		mav.addObject("items", videoCatalog.findBluRays());
 		mav.setViewName("blurayCatalog");
 		return mav;
 	}
-
 	
-	@RequestMapping("/detail")
-	public ModelAndView detail(ModelAndView mav, @RequestParam("pid") ProductIdentifier pid) {
+	@RequestMapping("/detail/{pid}")
+	public ModelAndView detail(ModelAndView mav, @PathVariable("pid") ProductIdentifier pid) {
 		
 		Disc disc = videoCatalog.getDisc(pid);
 		
@@ -45,6 +45,7 @@ public class CatalogController {
 		
 		return mav;
 	}
+
 
 	@RequestMapping("/comment")
 	public ModelAndView comment(ModelAndView mav,
