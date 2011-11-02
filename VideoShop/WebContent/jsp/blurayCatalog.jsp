@@ -21,14 +21,14 @@
 		</header>
 		
 		<div class="content">
-			<div class="catalogItems">
-				<sp:forEach var="item" items="${items}">
-					<c:url var="url" value="detail/${item.identifier}" />
+			<div class="catalog">
+				<sp:forEach var="disc" items="${items}">
+					<c:url var="url" value="detail/${disc.identifier}" />
 					<a href="${url}">
-						<div class="item">
-							<h4>${item.name}</h4>
-							<img class="thumbnail" src="<c:url value="/res/img/imageDummy.png" />" alt="" />
-							<p class="price"><spring:message code="catalog.price" />: ${item.price}</p>
+						<div class="disc">
+							<h4>${disc.name}</h4>
+							<img class="thumbnail" src="<c:url value="/res/img/cover/${disc.image}.jpg" />" alt="" />
+							<p class="price"><spring:message code="catalog.price" />: ${disc.price}</p>
 						</div>
 					</a>
 				</sp:forEach>

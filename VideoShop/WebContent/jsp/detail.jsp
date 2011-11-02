@@ -23,27 +23,36 @@
 		</header>
 		
 		<div class="content">
-			<h2><spring:message code="catalog.title" />: ${disc.name}</h2>
-			<br /> 
-			<spring:message code="catalog.price" />: ${disc.price }.<br /> 
-			<spring:message code="detail.numberInStock" />: ${count} <br />
-			
-			<sp:loggedIn>
-				<form method="post" action="<c:url value="/addDisc" />">
-					<input type="hidden" name="pid" value="${disc.identifier}" /> 
-					<input type="number" name="number" min="0" max="5" step="1" value="1" />
-					<input	type="submit" value="<spring:message code="detail.addToBasket" />" />
-				</form>
-			</sp:loggedIn>
+			<div class="detailImg">
+				<img src="<c:url value="/res/img/cover/${disc.image}.jpg" />" alt="" />
+			</div>
+			<div class="detailDescription">
+				<h2>${disc.name}</h2>
+				<spring:message code="catalog.price" />: ${disc.price }.<br />
+				<spring:message code="detail.genre" />: ${disc.genre }.<br />  
+				<spring:message code="detail.numberInStock" />: ${count} <br />
+				
+				<sp:loggedIn>
+					<form method="post" action="<c:url value="/addDisc" />">
+						<input type="hidden" name="pid" value="${disc.identifier}" /> 
+						<label for="number"><spring:message code="detail.number" /></label>
+						<input id="number" type="number" name="number" min="0" max="5" step="1" value="1" /><br />
+						<input	type="submit" value="<spring:message code="detail.addToBasket" />" />
+					</form>
+				</sp:loggedIn>
+			</div>
+
 	
-			<spring:message code="detail.comment.comments" />
+			<div class="detailComments">
+				<spring:message code="detail.comment.comments" />
+				<br />
+				<sp:forEach var="comment" items="${disc.comments}">
+					<article class="comment">${comment.text}</article>
+				</sp:forEach>
+			</div>
+			
 			<br />
-
-			<sp:forEach var="comment" items="${disc.comments}">
-				<article>${comment.text}</article>
-			</sp:forEach>
-
-			<br />
+			
 			<div class="salespointlogin">
 				<form method="post" action="<c:url value="/comment" />">
 					<fieldset>

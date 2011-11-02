@@ -9,7 +9,7 @@
 	<a href="<c:url value="/index" />"><spring:message code="nav.home" /></a> |
 
 	<sp:hasCapability capabilityName="boss">
-		<a href="<c:url value="/ordersPerCustomer" />"><spring:message code="nav.customers" /></a> |
+		<a href="<c:url value="/orders" />"><spring:message code="nav.customers" /></a> |
 	</sp:hasCapability>
 	
 	<sp:hasCapability capabilityName="boss" test="false">

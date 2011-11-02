@@ -46,14 +46,24 @@ public class Main {
 		
 		VideoCatalog videoCatalog = new VideoCatalog();
 		
-		videoCatalog.add(new Dvd("Last Action Hero","",new Money(9.99), "Äktschn/Comedy"));
-		videoCatalog.add(new Dvd("Back to the Future","", new Money(9.99), "Sci-Fi"));
-		videoCatalog.add(new Dvd("Fido", "",new Money(9.99), "Comedy/Drama/Horror"));
+		videoCatalog.add(new Dvd("Last Action Hero","lac",new Money(9.99), "Äktschn/Comedy"));
+		videoCatalog.add(new Dvd("Back to the Future","bttf", new Money(9.99), "Sci-Fi"));
+		videoCatalog.add(new Dvd("Fido", "fido",new Money(9.99), "Comedy/Drama/Horror"));
+		videoCatalog.add(new Dvd("Super Fuzz", "sf", new Money(9.99), "Action/Sci-Fi/Comedy"));
+		videoCatalog.add(new Dvd("Armour of God II: Operation Condor","aog2oc", new Money(9.99), "Action/Adventure/Comedy"));
+		videoCatalog.add(new Dvd("Persepolis","pers", new Money(14.99), "Animation/Biography/Drama"));
+		videoCatalog.add(new Dvd("Hot Shots! Part Deux","hspd", Money.OVER9000, "Action/Comedy/War"));
+		videoCatalog.add(new Dvd("Avatar: The Last Airbender","tla", new Money(19.99), "Animation/Action/Adventure"));
 
 		
-		videoCatalog.add(new BluRay("The Godfather", "",new Money(19.99), "Crime/Drama"));
-		videoCatalog.add(new BluRay("No Retreat, No Surrender", "",new Money(29.99), "Martial Arts")); 
-		videoCatalog.add(new BluRay("The Princess Bride", "",new Money(39.99), "Adventure/Comedy/Family")); 
+		videoCatalog.add(new BluRay("The Godfather", "tg",new Money(19.99), "Crime/Drama"));
+		videoCatalog.add(new BluRay("No Retreat, No Surrender", "nrns",new Money(29.99), "Martial Arts")); 
+		videoCatalog.add(new BluRay("The Princess Bride", "tpb",new Money(39.99), "Adventure/Comedy/Family"));
+		videoCatalog.add(new BluRay("Top Secret!","ts", new Money(39.99), "Comedy"));
+		videoCatalog.add(new BluRay("The Iron Giant","tig", new Money(34.99), "Animation/Action/Adventure"));
+		videoCatalog.add(new BluRay("Battle Royale","br", new Money(19.99), "Action/Drama/Thriller"));
+		videoCatalog.add(new BluRay("Oldboy","old", new Money(24.99), "Action/Drama/Thriller"));
+		videoCatalog.add(new BluRay("Bill & Ted's Excellent Adventure","bt", new Money(29.99), "Adventure/Comedy/Family"));
 		
 		PersistentInventory inventory = new PersistentInventory();
 		

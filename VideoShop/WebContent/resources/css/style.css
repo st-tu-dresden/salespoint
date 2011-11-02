@@ -109,15 +109,19 @@ div.content {
 	min-height:500px;
 }
 
+div.catalog {
+	
+}
+
 ul {
 	list-style:none;
 }
 
 
-/*item*/
+/* disc */
 
 
-div.item {
+div.disc {
 	border: 1px #a4a4a4 solid;
 	background-color: #f9f9f9;
 	width: 200px;
@@ -130,12 +134,12 @@ div.item {
 	
 }
 
-div.item:hover {
+div.disc:hover {
 	background-color: #eeeeee;
 	
 }
 
-a.item {
+a.disc {
 	display:block;
 	width: 200px;
 	height: 280px;
@@ -152,7 +156,25 @@ p.price {
 	align: left;
 }
 
-article {  
+
+div.detailImg {
+	float:left;
+	padding:10px;
+}
+
+div.detailDescription {
+	float:left;
+	padding:10px;
+	width=300px;
+}
+
+div.detailComments {
+	clear:both;
+	width:50%;
+	margin:auto;
+}
+
+article.comment {  
 	margin: auto;
 	width: 50%;
     border-radius: 5px;  
@@ -161,4 +183,27 @@ article {
 	border: 2px solid #a0a0a0;
 	padding: 10px 20px;
 	margin: 10px 0px;
-} 
+}
+
+
+table.orders {
+	/*border: 1px solid black;*/
+	border-spacing: 0em;
+	margin:auto;
+}
+
+table.orders thead {
+	
+	background-color: #f9f9f9;
+	color:#2e7cdc;
+}
+
+table.orders th {
+	padding: 0.3em 1.5em ;
+	border-bottom: 1px solid #BA0000;
+}
+
+table.orders td {
+	padding: 0.3em 1.5em ;
+	border-bottom: 1px solid #BA0000;
+}

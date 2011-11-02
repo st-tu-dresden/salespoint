@@ -22,9 +22,8 @@
 		</header>
 		
 		<div class="content">
-			<p>Offene Bestellungen</p>
-			<table>
-				<caption>FOOBAR</caption>
+			<table class="orders">
+				<caption>Offene Bestellungen</caption>
 				<thead>
 					<tr>
 						<th>Identifier</th>
@@ -33,15 +32,36 @@
 					</tr>
 				</thead>
 			<tbody>
-				<sp:forEach var="o" items="${openOrders}">
+				<sp:forEach var="order" items="${ordersOpen}">
 					<tr>
-					<td></td>
+					<td>${order.identifier}</td>
+					<td>${order.userIdentifier}</td>
+					<td>${order.totalPrice}</td>
+					</tr>
+				</sp:forEach>
+			</tbody>
+			</table>
+			<br />
+			<table class="orders">
+				<caption>Abgeschlossene Bestellungen</caption>
+				<thead>
+					<tr>
+						<th>Identifier</th>
+						<th>Customer</th>
+						<th>Price</th>
+					</tr>
+				</thead>
+			<tbody>
+				<sp:forEach var="order" items="${ordersCompleted}">
+					<tr>
+					<td>${order.identifier}</td>
+					<td>${order.userIdentifier}</td>
+					<td>${order.totalPrice}</td>
 					</tr>
 				</sp:forEach>
 			</tbody>
 			</table>
 			
-			<p>Abgeschlossene Bestellungen</p>
 		</div>
 	</div>
 </body>
