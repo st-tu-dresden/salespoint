@@ -35,18 +35,17 @@
 		</c:forEach>
 	</div>
 
-	<div>
-		<form:form method="post" action="addEntry">
-			<fieldset>
-				<legend><spring:message code="guestbook.form.title" /></legend>
+	<div class="login"> 
+		<form id="form" action=""> 
+			<fieldset> 
+				<legend><spring:message code="guestbook.form.title" /></legend> 
 				<label for="name"><spring:message code="guestbook.form.name" /></label><br /> 
-				<input name="name" id="name" type="text" value="${lastName}" /><br />
-				<label for="text"><spring:message code="guestbook.form.text" /></label><br />
-				<textarea name="text" id="text"></textarea>
-				<br />
-				<button type="submit"><spring:message code="guestbook.form.submit" /></button>
-			</fieldset>
-		</form:form>
+				<input name="name" id="name" type="text" /><br /> 
+				<label for="text"><spring:message code="guestbook.form.text" /></label><br /> 
+				<textarea name="text" id="text"></textarea><br /> 
+				<button class="btn"><spring:message code="guestbook.form.submit" /></button>
+			</fieldset> 
+		</form> 
 	</div>
 
 	<p class="center">
