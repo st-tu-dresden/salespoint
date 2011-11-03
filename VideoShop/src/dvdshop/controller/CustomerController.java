@@ -1,6 +1,6 @@
 package dvdshop.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.core.user.UserIdentifier;
@@ -16,7 +16,7 @@ public class CustomerController {
 	private final PersistentUserManager userManager = new PersistentUserManager();
 
 	@RequestMapping("/registerNew")
-	public String registerNew(HttpServletRequest request,
+	public String registerNew(HttpSession session,
 			@RequestParam("name") UserIdentifier userIdentifier,
 			@RequestParam("password") String password,
 			@RequestParam("street") String street,
@@ -24,14 +24,14 @@ public class CustomerController {
 		
 		Customer customer = new Customer(userIdentifier, password, street + "\n" + city);
 		userManager.add(customer);
-		userManager.login(customer, request.getSession());
+		userManager.login(customer, session);
 
 		return "redirect:/";
 	}
 	
 	@RequestMapping("/logout")
-	public String logout(HttpServletRequest request) {
-		userManager.logout(request.getSession());
+	public String logout(HttpSession session) {
+		userManager.logout(session);
 		return "redirect:/";
 	}
 	

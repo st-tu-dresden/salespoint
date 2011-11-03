@@ -1,6 +1,6 @@
 package dvdshop.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.order.PersistentOrder;
@@ -27,18 +27,18 @@ public class BasketController {
 	private final VideoCatalog videoCatalog = new VideoCatalog();
 	
 	@RequestMapping("/addDisc")
-	public ModelAndView addDisc(HttpServletRequest request, ModelAndView mav, @RequestParam("pid") ProductIdentifier pid, @RequestParam("number") int number) {
+	public ModelAndView addDisc(HttpSession session, ModelAndView mav, @RequestParam("pid") ProductIdentifier pid, @RequestParam("number") int number) {
 
-		Customer customer = userManager.getUserByToken(Customer.class, request.getSession());
+		Customer customer = userManager.getUserByToken(Customer.class, session);
 		
 		if(number <= 0 || number > 5) number = 1;
 		
-		PersistentOrder order = (PersistentOrder) request.getSession().getAttribute("order");
+		PersistentOrder order = (PersistentOrder) session.getAttribute("order");
 
 		if (order == null) {
 			order = new PersistentOrder(customer.getIdentifier(), Cash.CASH);
 			orderManager.add(order);
-			request.getSession().setAttribute("order", order);
+			session.setAttribute("order", order);
 		}
 
 		Disc disc = videoCatalog.get(Disc.class, pid);
@@ -58,9 +58,9 @@ public class BasketController {
 	}
 
 	@RequestMapping("/shoppingBasket")
-	public ModelAndView basket(HttpServletRequest request, ModelAndView mav) {
+	public ModelAndView basket(HttpSession session, ModelAndView mav) {
 		boolean isEmpty = true;
-		PersistentOrder order = (PersistentOrder) request.getSession().getAttribute("order");
+		PersistentOrder order = (PersistentOrder) session.getAttribute("order");
 
 		if (order != null) {
 			mav.addObject("order", order);
@@ -74,12 +74,12 @@ public class BasketController {
 	}
 
 	@RequestMapping("/buy")
-	public String buy(HttpServletRequest request) {
+	public String buy(HttpSession session) {
 
-		PersistentOrder order = (PersistentOrder) request.getSession().getAttribute("order");
+		PersistentOrder order = (PersistentOrder) session.getAttribute("order");
 
 		if (order != null) {
-			request.getSession().setAttribute("order", null);
+			session.setAttribute("order", null);
 			order.payOrder();
 			order.completeOrder();
 			orderManager.update(order);

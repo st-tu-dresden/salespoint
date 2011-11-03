@@ -1,7 +1,11 @@
 package dvdshop.controller;
 
+import java.util.Locale;
+
 import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.product.ProductIdentifier;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,20 +23,24 @@ public class CatalogController {
 	private final VideoCatalog videoCatalog = new VideoCatalog();
 	private final PersistentInventory inventory = new PersistentInventory();
 
+	@Autowired
+	private MessageSource messageSource;
+	
+	
 	@RequestMapping("/dvdCatalog")
-	public ModelAndView dvdCatalog(ModelAndView mav) {
+	public ModelAndView dvdCatalog(ModelAndView mav, Locale locale) {
 		mav.addObject("catalog", videoCatalog.findDvds());
-		mav.addObject("title", "Dvd Catalog");
-
+		String title = messageSource.getMessage("catalog.dvd.title", null , locale);
+		mav.addObject("title", title);
 		mav.setViewName("catalog");
 		return mav;
 	}
 
 	@RequestMapping("/blurayCatalog")
-	public ModelAndView blurayCatalog(ModelAndView mav) {
+	public ModelAndView blurayCatalog(ModelAndView mav, Locale locale) {
 		mav.addObject("catalog", videoCatalog.findBluRays());
-		mav.addObject("title", "BluRay Catalog");
-
+		String title = messageSource.getMessage("catalog.bluray.title", null , locale);
+		mav.addObject("title", title);
 		mav.setViewName("catalog");
 		return mav;
 	}
