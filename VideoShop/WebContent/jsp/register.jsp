@@ -23,7 +23,7 @@
 		</header>
 		
 		<div class="content">
-			<div class="salespointlogin">
+			<div class="salespoint">
 				<form method="post" action="registerNew">
 					<fieldset>
 						<legend><spring:message code="register.title" /></legend>

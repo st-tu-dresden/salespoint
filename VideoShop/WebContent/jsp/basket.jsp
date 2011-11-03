@@ -43,7 +43,7 @@
 							</sp:forEach>
 						</tbody>
 					</table>
-					<p>Summe: ${order.totalPrice}</p>
+					<p><spring:message code="shoppingBasket.sum" />: ${order.totalPrice}</p>
 					<div style="width=5em;margin:auto;">
 						<form method="post" action="buy">
 							<button type="submit"><spring:message code="shoppingBasket.buy" /></button>

@@ -54,7 +54,7 @@
 			
 			<br />
 			
-			<div class="salespointlogin">
+			<div class="salespoint">
 				<form method="post" action="<c:url value="/comment" />">
 					<fieldset>
 						<legend><spring:message code="detail.comment.addComment" /></legend>

@@ -32,15 +32,15 @@
 						<th><spring:message code="orders.payed" /></th>
 					</tr>
 				</thead>
-			<tbody>
-				<sp:forEach var="order" items="${ordersCompleted}">
-					<tr>
-					<td><joda:format value="${order.dateCreated}" style="SM" /></td>
-					<td>${order.userIdentifier}</td>
-					<td>${order.totalPrice}</td>
-					</tr>
-				</sp:forEach>
-			</tbody>
+				<tbody>
+					<sp:forEach var="order" items="${ordersCompleted}">
+						<tr>
+							<td><joda:format value="${order.dateCreated}" style="SM" /></td>
+							<td>${order.userIdentifier}</td>
+							<td>${order.totalPrice}</td>
+						</tr>
+					</sp:forEach>
+				</tbody>
 			</table>
 		</div>
 	</div>

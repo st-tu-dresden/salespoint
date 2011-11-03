@@ -4,7 +4,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<div class="salespointlogin">
+<div class="salespoint">
 	<form action=" " method="post">
 		<fieldset>
 			<legend><spring:message code="org.salespointframework.form.login.title" /></legend>
