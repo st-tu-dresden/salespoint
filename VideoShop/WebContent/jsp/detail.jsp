@@ -1,9 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib uri="http://www.salespoint-framework.org/web/taglib" prefix="sp"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://www.joda.org/joda/time/tags" prefix="joda" %>
+<%@ taglib uri="http://www.salespoint-framework.org/web/taglib" prefix="sp" %>
 
 <!DOCTYPE html>
 
@@ -36,7 +37,7 @@
 					<form method="post" action="<c:url value="/addDisc" />">
 						<input type="hidden" name="pid" value="${disc.identifier}" /> 
 						<label for="number"><spring:message code="detail.number" /></label>
-						<input id="number" type="number" name="number" min="0" max="5" step="1" value="1" /><br />
+						<input id="number" type="number" name="number" min="1" max="5" step="1" value="1" /><br />
 						<input	type="submit" value="<spring:message code="detail.addToBasket" />" />
 					</form>
 				</sp:loggedIn>

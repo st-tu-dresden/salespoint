@@ -1,7 +1,5 @@
 package dvdshop.controller;
 
-import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.salespointframework.core.accountancy.payment.Cash;
@@ -65,10 +63,8 @@ public class BasketController {
 		PersistentOrder order = (PersistentOrder) request.getSession().getAttribute("order");
 
 		if (order != null) {
-			mav.addObject("items", order.getOrderLines());
+			mav.addObject("order", order);
 			isEmpty = Iterables.isEmpty(order.getOrderLines());
-		} else {
-			mav.addObject("items", new ArrayList<PersistentOrderLine>());
 		}
 
 		mav.addObject("isEmpty", isEmpty);

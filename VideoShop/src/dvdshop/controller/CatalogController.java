@@ -17,32 +17,33 @@ import dvdshop.model.VideoCatalog;
 public class CatalogController {
 	
 	private final VideoCatalog videoCatalog = new VideoCatalog();
+	private final PersistentInventory inventory = new PersistentInventory();
 
 	@RequestMapping("/dvdCatalog")
 	public ModelAndView dvdCatalog(ModelAndView mav) {
-		mav.addObject("items", videoCatalog.findDvds());
-		mav.setViewName("dvdCatalog");
+		mav.addObject("catalog", videoCatalog.findDvds());
+		mav.addObject("title", "Dvd Catalog");
+
+		mav.setViewName("catalog");
 		return mav;
 	}
 
 	@RequestMapping("/blurayCatalog")
 	public ModelAndView blurayCatalog(ModelAndView mav) {
-		mav.addObject("items", videoCatalog.findBluRays());
-		mav.setViewName("blurayCatalog");
+		mav.addObject("catalog", videoCatalog.findBluRays());
+		mav.addObject("title", "BluRay Catalog");
+
+		mav.setViewName("catalog");
 		return mav;
 	}
 	
 	@RequestMapping("/detail/{pid}")
 	public ModelAndView detail(ModelAndView mav, @PathVariable("pid") ProductIdentifier pid) {
-		
 		Disc disc = videoCatalog.getDisc(pid);
-		
 		mav.addObject("disc", disc);
-		mav.addObject("comments", disc.getComments());
-		mav.addObject("count", new PersistentInventory().count(disc.getIdentifier()));
+		mav.addObject("count", inventory.count(disc.getIdentifier()));
 		
 		mav.setViewName("detail");
-		
 		return mav;
 	}
 
@@ -60,9 +61,9 @@ public class CatalogController {
 		videoCatalog.update(disc);
 		
 		mav.addObject("disc", disc);
+		mav.addObject("count", inventory.count(disc.getIdentifier()));
 		
 		mav.setViewName("detail");
-		
 		return mav;
 	}
 }

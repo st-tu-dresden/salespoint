@@ -13,34 +13,32 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/style.css" />" />
 	<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/login.css" />" />
-	<title></title>
+	<title><spring:message code="home.title" /></title>
 </head>
 <body>
 	<div class="all">
 		<header>
-			<h1><spring:message code="orders.title" /></h1>
+			<h1><spring:message code="stock.title" /></h1>
 			<jsp:include page="templates/navigation.jsp" />
 		</header>
 		
 		<div class="content">
 			<table>
-				<caption><spring:message code="orders.completed" /></caption>
+				<caption><spring:message code="stock.title" /></caption>
 				<thead>
 					<tr>
-						<th><spring:message code="orders.date" /></th>
-						<th><spring:message code="orders.customer" /></th>
-						<th><spring:message code="orders.payed" /></th>
+						<th><spring:message code="shoppingBasket.movieTitle" /></th>
+					<th><spring:message code="shoppingBasket.count" /></th>
 					</tr>
 				</thead>
-			<tbody>
-				<sp:forEach var="order" items="${ordersCompleted}">
-					<tr>
-					<td><joda:format value="${order.dateCreated}" style="SM" /></td>
-					<td>${order.userIdentifier}</td>
-					<td>${order.totalPrice}</td>
-					</tr>
-				</sp:forEach>
-			</tbody>
+				<tbody>
+					<sp:forEach var="disc" items="${discs}">
+						<tr>
+							<td>${disc.name}</td>
+						<td>${inventory.count(disc.identifier)}</td>
+						</tr>
+					</sp:forEach>
+				</tbody>
 			</table>
 		</div>
 	</div>

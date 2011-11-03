@@ -185,25 +185,39 @@ article.comment {
 	margin: 10px 0px;
 }
 
-
-table.orders {
-	/*border: 1px solid black;*/
-	border-spacing: 0em;
-	margin:auto;
+table {
+	border:1px solid #B3C2C7;
+	font-size:1em;
+	border-spacing:0;
+	text-align:center;
+	margin-left:auto; 
+	margin-right:auto;
 }
 
-table.orders thead {
-	
+
+table thead {
+	border:1px solid #B3C2C7;
 	background-color: #f9f9f9;
-	color:#2e7cdc;
+	/* color:#2e7cdc; */
+	background-color: white;
 }
 
-table.orders th {
+
+table th {
+	border:1px solid #B3C2C7;
 	padding: 0.3em 1.5em ;
-	border-bottom: 1px solid #BA0000;
 }
 
-table.orders td {
+table td {
+	border:1px solid #B3C2C7;
 	padding: 0.3em 1.5em ;
-	border-bottom: 1px solid #BA0000;
 }
+
+table tbody tr:nth-child(odd) {
+	background-color: #f9f9f9;
+}
+
+table tbody tr:nth-child(even) {
+	background-color: #eeeeee;
+}
+

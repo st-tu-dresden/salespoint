@@ -17,7 +17,6 @@ public class Comment {
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date date;
 	
-	
 	@Deprecated
 	protected Comment() { }
 	
