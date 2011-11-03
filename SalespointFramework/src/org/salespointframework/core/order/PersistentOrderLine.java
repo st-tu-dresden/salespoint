@@ -17,6 +17,9 @@ import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.Product;
+import org.salespointframework.core.quantity.Metric;
+import org.salespointframework.core.quantity.Quantity;
+import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
@@ -43,7 +46,7 @@ public class PersistentOrderLine implements OrderLine
 
 	private int numberOrdered;
 
-	private Money price;
+	private Money price = Money.ZERO;
 
 	private String productName;
 
@@ -115,7 +118,15 @@ public class PersistentOrderLine implements OrderLine
 		{
 			price = price.add(pf.getPrice());
 		}
-		this.price = price;
+		// TODO @Hannes need something like this:
+		// this.price = price.multiply(numberOrdered)
+		// OR
+		// Quantity quantity = new Quantity(numberOrdered, Metric.PIECES, RoundingStrategy.ROUND_ONE);
+		// this.price = price.multiply(quantity);
+		// but have to use this, kind of hacky
+		for(int n = 0; n < numberOrdered; n++) {
+			this.price = this.price.add(price);
+		}
 	}
 
 	@Override
