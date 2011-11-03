@@ -310,6 +310,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		}
 
 		//System.out.println("----COMPLETE ORDER END");
+		this.orderStatus = OrderStatus.COMPLETED;
 		return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL, null, em, removedProducts);
 	}
 
@@ -396,6 +397,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 						return null;
 					}
 				}
+				orderStatus = OrderStatus.COMPLETED;
 				return order;
 			}
 			return null;
