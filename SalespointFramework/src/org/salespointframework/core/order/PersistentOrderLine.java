@@ -35,7 +35,8 @@ import org.salespointframework.util.Objects;
 public class PersistentOrderLine implements OrderLine
 {
 	@EmbeddedId
-	private OrderLineIdentifier orderLineIdentifier = new OrderLineIdentifier();;
+	@AttributeOverride(name = "id", column = @Column(name = "ORDERLINE_ID"))
+	private OrderLineIdentifier orderLineIdentifier = new OrderLineIdentifier();
 
 	@Embedded
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
@@ -46,6 +47,7 @@ public class PersistentOrderLine implements OrderLine
 
 	private int numberOrdered;
 
+	//TODO potential bug with videoshop and PersistentOrderLines, WTF
 	private Money price = Money.ZERO;
 
 	private String productName;
