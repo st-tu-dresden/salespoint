@@ -2,9 +2,12 @@ package org.salespointframework.core.product;
 
 import java.io.Serializable;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import org.salespointframework.core.money.Money;
+import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Objects;
 
 // TODO comment
@@ -18,8 +21,8 @@ import org.salespointframework.util.Objects;
 @Embeddable
 public final class ProductFeature implements Serializable, Comparable<ProductFeature>
 {
+	@AttributeOverride(name = "id", column = @Column(name = "PRODUCTFEATURE_ID"))
 	private final ProductFeatureIdentifier productFeatureIdentifier = new ProductFeatureIdentifier();
-	
 	
 	private final String featureType;
 	private final String value;
@@ -51,6 +54,7 @@ public final class ProductFeature implements Serializable, Comparable<ProductFea
 	 * @param featureType the featuretype of this ProductFeature
 	 * @param value the value of this ProductFeature
 	 * @return a new ProductFeature with the price value of 0 //TODO besser schreiben?
+	 * @throws ArgumentNullException if featureType or value are null
 	 */
 	public static ProductFeature create(String featureType, String value)
 	{
@@ -63,6 +67,7 @@ public final class ProductFeature implements Serializable, Comparable<ProductFea
 	 * @param value the value of this ProductFeature
 	 * @param price the price of this ProductFeature
 	 * @return a new ProductFeature
+	 * @throws ArgumentNullException if featureType, value or price are null
 	 */
 	public static ProductFeature create(String featureType, String value, Money price)
 	{

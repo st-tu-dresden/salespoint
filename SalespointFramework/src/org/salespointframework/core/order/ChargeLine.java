@@ -3,6 +3,7 @@ package org.salespointframework.core.order;
 import javax.persistence.Embeddable;
 
 import org.salespointframework.core.money.Money;
+import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Objects;
 
 // TODO comment
@@ -36,6 +37,7 @@ public final class ChargeLine
 	 * Creates a new PersistentChargeLine
 	 * @param amount the value of the ChargeLine
 	 * @param description a description of the ChargeLine
+	 * @throws ArgumentNullException if amout or description is null
 	 */
 	public ChargeLine(Money amount, String description)
 	{

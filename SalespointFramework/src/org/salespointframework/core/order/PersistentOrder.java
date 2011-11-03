@@ -20,7 +20,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.RollbackException;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.PersistentAccountancy;

@@ -2,6 +2,7 @@ package org.salespointframework.core.time;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
+import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Objects;
 
 // TODO comment

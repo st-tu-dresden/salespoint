@@ -47,11 +47,10 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 	}
 	
 	
-	//TODO STIMMT NICHT MEHR wegen varargs -> @param productFeatureIdentifiers
+	//TODO comment productFeatureIdentifiers
 	/**
 	 * Creates a new PersistentProduct with a specified {@link ProductFeature}set
 	 * @param productType the {@link Product} of the PersistentProduct
-	 * @param productFeatureIdentifiers an optional  of Tuples of {@link ProductFeature}s for the PersistentProduct		
 	 */
 	public PersistentProductInstance(Product productType, ProductFeatureIdentifier... productFeatureIdentifiers)
 	{
