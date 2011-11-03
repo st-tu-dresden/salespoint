@@ -47,7 +47,6 @@ public class PersistentOrderLine implements OrderLine
 
 	private int numberOrdered;
 
-	//TODO potential bug with videoshop and PersistentOrderLines, WTF
 	private Money price = Money.ZERO;
 
 	private String productName;
