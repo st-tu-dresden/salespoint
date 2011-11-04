@@ -6,7 +6,7 @@ A general overview of the \salespoint{} products subsystem is given in Figure \r
 To represent different kinds of products, \code{PersistentProduct} can be sub-classed; see Section \ref{jpa-types} for more information.
 \code{PersistentProduct}s are aggregated by \code{PersistentCatalog} (see Section \ref{sec:catalog}).
 
-\begin{figure}[h]
+\begin{figure}
 	\centering
   \includegraphics[width=1.0\textwidth]{images/Product_Overview.eps}
 	\label{product_overview}
@@ -31,6 +31,7 @@ Additionally, a class \code{ShoeInstance} may sub-class \code{PersistentProductI
 An instance of \code{ShoeInstance} represents a specific pair of shoes.
 \code{ProductInstance} also aggregates \code{ProductFeature}s, but in contrast to \code{Product} exactly one \code{ProductFeature} is allowed for any \code{featureType}.
 In other words: a shoe has a size - exactly one size.
+\\
 
 %\subsection{\code{ServiceType} - Realizing Services}
 %The interface \code{ServiceType} is implemented by the class \code{PersistentServiceType}. With this class you can realize services in your implementation, which represents a process 
@@ -60,15 +61,21 @@ In other words: a shoe has a size - exactly one size.
 %\item \code{COMPLETED}: If the \code{Service} is completed, so the end of the \code{Service} is in the past and it wasn't cancelled.
 %\end{itemize}
 
-\subsection{\code{MeasuredProductType} - Creating MeasuredProducts}
-The interface \code{MeasuredProductType} is implemented by \code{PersistentMeasuredProductType}. If you use the functionality of this interface, you can realize products, which are not sold as 
-predefined unit, but rather as measures of something. For example flooring may be sold by square foot or fresh products by kilogram.
-A \code{PersistentMeasuredProductType} has a name, a price and a quantity on hand. The quantity on hand, is the quantity of this \code{PersistentMeasuredProductType}, which is available to 
-be sold. You can also add or reduce a specified quantity of the \code{PersistentMeasuredProductType} to it. 
-The price of the \code{PersistentMeasuredProductType} is not the price for an unit of that, but the price of the quantity on hand of that. The unit price will be calculated automatically 
-and you can get it with the method \code{getUnitPrice()}.
+%TODO collapse Product with MeasuredProduct and be done with it.
+Not all items might by sold by number.
+Other units, such as litres, kilo grams, or meters are conceivable.
+To accomodate for the sell of such items, the \code{MeasuredProduct} interface was created.
+%TODO why has a catalog an amount?
+Implemented by \code{PersistentMeasuredProduct}, a \code{MeasuredProduct} is specified by a name, price and quantity available.
+%remove the stupid price shit. nobody needs it anyway.
+When an amount from a \code{MeasuredProduct} is removed or added, the \code{price} attribute is automatically modified to represent the total monetary value of the \code{MeasuredProduct}.
+The \code{getUnitPrice()} method can be used to access the price of a single unit.
 
-\subsection{\code{MeasuredProduct} - Representing MeasuredProductTypes}
-The interface \code{MeasuredProductType} is implemented by \code{PersistentMeasuredProductType}, who represents a specified quantity of the \code{PersistentMeasuredProductType}. After you 
-create it, the quantity of that, will be reduce from the quantity on hand of the \code{PersistentMeasuredProductType}, because this quantity is used and no more available for other 
-\code{PersistentMeasuredProducts}. If this quantity is greater than the quantity on hand, an exception will be thrown.
+\code{MeasuredProduct}s bought by customers are represented by classes implementing the \code{MeasuredProductInstance} interface.
+An instance of a \code{MeasuredProductInstance} stands for a certain amount of a product.
+%TODO rename methods, clean shit up.
+When instanciating an object of a class implementing \code{MeasuredProductInstance}, the corresponding \code{MeasuredProduct} has to be known.
+Furthermore, the amount of the product represented by the new instance of \code{MeasuredProductInstance} is removed from the \code{MeasuredProduct} instance.
+%TODO do not throw exception from ctors vs early fail
+If an instance is to be created, which would remove a higher quantity than is available in the \code{MeasuredProduct}, the instantiation fails with an exception.
+
