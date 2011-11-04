@@ -11,7 +11,7 @@
 %TODO reference figure.
 %\subsection{\code{Shop} - Starting your SalesPoint-application}
 \code{Shop} is a central class in \salespoint{}; it holds references to all manager interfaces and a reference to the \code{Time} interface.
-There are six manager interfaces and interfaces aggregating (persistent) objects in \salespoint{}: Accountancy, Calendar, Catalog, Inventory, OrderManager and UserManager.
+There are six manager interfaces and interfaces aggregating (persistent) objects in \salespoint{}: \code{Accountancy}, \code{Calendar}, \code{Catalog}, \code{Inventory}, \code{OrderManager} and \code{UserManager}.
 Other classes use the \code{Shop} to access the manager interfaces, for example \code{Order.completeOrder()} uses \code{Shop.INSTANCE.getInventory()} for product removal.
 \code{PersistentCalendar} uses \code{Shop.INSTANCE.getTime()} for time based operations.
 There is also a convenience method to minimize boilerplate code\footnote{
@@ -27,7 +27,7 @@ it is used for setting all managers of \code{Shop} to Salespoints persistent cla
 This behaviour is also known as \textit{convention over configuration}, which means reasonable default values are supplied, eliminating the need to explicitly specify those values in most cases.
 \code{Shop} is implemented as a singleton.
 
-Although \code{Shop} holds a references to all managers and aggregating classes (see Section \ref{chap:components}), persistent implementations do not need to be singletons and are infact not.
+Although \code{Shop} holds references to all managers and aggregating classes (see Section \ref{chap:components}), persistent implementations do not need to be singletons and are infact not.
 Moreover, a peculiarity of all managers and aggregating classes is, that a new instance can be created whenever one is needed.
 The reason for this behaviour is, that data is not stored inside the manager object itself, as it may be done with a collection-based implementation, but the manager class is merely a transparent interface to the JPA and database.\\
 
