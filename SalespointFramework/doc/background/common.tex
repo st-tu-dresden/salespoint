@@ -1,4 +1,5 @@
 \section[General Design Aspects]{General Design Decisions and Aspects of \salespoint{}}
+%TODO add something about early fail and null-check exceptions in ctors
 This chapter summarises design decisions and aspects common to all \salespoint{} subsection and details, why those decisions were made.
 
 \subsection{Notes on Interfaces ...\protect\footnote{continued in the next sub-section}}
@@ -53,7 +54,20 @@ This consistency allows a developer to use an unknown manager, when he is famili
 
 \salespoint{} does not contain checked exceptions, thus avoiding ``the handcuffs they put on programmers''~\cite{checked-exceptions}.
 
-%TODO add explanation of iterables
+\label{iterable}
+In Java 1.5 a new interface was introduced, the \code{Iterable} interface.
+The \code{Iterable} is implemented by classes, which aggregate objects and allow to iterate over those objects.
+The well known \code{Collection} interface is now a sub-interface of \code{Iterable}.
+An object implementing the \code{Iterable} interface is immutable in contrast to sub-interfaces of \code{Collection}, for example the \code{List} interface.
+\code{Iterable}s are easy to handle, because compiler support to use the \code{foreach} construct is available.
+Also, there is no reason for a programmer to touch an iterator by himself because it is not idiomatic language use.
+
+In \salespoint{} \code{Iterable}s are return on \code{find()} methods.
+Having an \code{Iterable} signals the developer, that he may not modify the object.
+Although an \code{Iterable} may be converted to a \code{List} or \code{Set}, changes to the resulting object, are not reflected in the original \code{Iterable} object.
+Thus, it has to be noted, that objects \textbf{cannot} be added by modifying a \salespoint{} return value.
+The proper \code{add()} or \code{addAll()} methods have to be used.
+
 \subsection{Type-based queries in JPA}
 \label{jpa-types}
 The \code{get()} and \code{find()} methods of aggregating classes in \salespoint{} have a type parameter of \code{Class<E>}.
@@ -66,7 +80,7 @@ Thus, \code{PersistentCatalog} aggregates instances of \code{PersistentProduct} 
 When \code{Catalog} is queried for \code{Product}s using the \code{get()} and \code{find()} methods, a type parameter has to be supplied.
 This type parameter has two purposes: first, it ensures type-safety, and second it narrows the result set.
 
-When a certain type, for example \code{T~extends~PersistentProduct}, is requested from an aggregating class, let's say the \code{PersistentCatalog}, the return type is \code{T} for the \code{get()} method and \code{Iterable<T>}\footnote{More on \code{Iterables} in sub-section~\ref{iterable}.} for the \code{find()} method.
+When a certain type, for example \code{T~extends~PersistentProduct}, is requested from an aggregating class, let's say the \code{PersistentCatalog}, the return type is \code{T} for the \code{get()} method and \code{Iterable<T>}\footnote{More on \code{Iterable}s in sub-section~\ref{iterable}.} for the \code{find()} method.
 Thus, the return type depends on the request-type and is not a static type, for example \code{PersistentProduct}.
 The dependency of the return type on the requested type avoids type casts, which can fail at run-time and therefore increases type-safety.
 Because JPA is aware of persistence entities types, the result is always of the correct type, or empty, if no matching object could be found.
@@ -82,7 +96,7 @@ By using the type parameters \code{Dvd.class} and \code{BluRay.class}, it requir
 	\centering
   \includegraphics[width=0.5\textwidth]{images/type_matches.pdf}
 	\label{matches}
-	\caption{Exemplary class hierarchy of \code{PersistentAccountancyEntry}s.}
+	\caption[Example for a type hierarchy.]{Exemplary class hierarchy of \code{PersistentAccountancyEntry}s.}
 \end{figure}
 \code{PersistenceAccountancyEntry.class} matches all class types.
 
