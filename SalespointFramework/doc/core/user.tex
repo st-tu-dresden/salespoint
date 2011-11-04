@@ -22,7 +22,7 @@ Thus, capabilities allow for flexibility and assist in code reuse, when designin
 \subsection*{Login}
 To reduce code repetition, \salespoint{} contains code to automate user log in.
 Using a JSP template, a special login form is generated, which is handled by an interceptor.\footnote{An interceptor is a Spring concept.}
-The interceptor verifies the user password and associates the current session with the user using \code{logOn} and \code{logOff}.
+The interceptor verifies the user password and associates the current session with the user using \code{login} and \code{logoff}.
 The session is required, because multiple users can be logged on at the same time.\\
 
 To modify the content of the View, depending on whether a user is logged in or not, the \code{LoggedInTag} can be used.
