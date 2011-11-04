@@ -24,7 +24,9 @@
 		<div class="content">
 			<div class="catalog">
 				<sp:forEach var="disc" items="${catalog}">
-					<c:url var="url" value="detail/${disc.identifier}" />
+					<spring:url var="url" value="detail/{id}">
+						<spring:param name="id" value="${disc.identifier}" />
+					</spring:url>
 					<a href="${url}">
 						<div class="disc">  
 							<h4>${disc.name}</h4>
