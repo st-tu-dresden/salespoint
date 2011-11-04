@@ -24,7 +24,7 @@
 	<bean class="org.salespointframework.web.spring.annotations.SalespointAnnotationHandlerMapping" />
 
 	<!-- needs to be activated for easy AJAX, but Inteceptors (like LoginInterceptor) won't work with it -->
-	<!-- mvc:annotation-driven /-->
+	<!-- <mvc:annotation-driven /> -->
 	
 	<!-- for static resources like images and css files --> 
 	<mvc:resources mapping="/res/**" location="/resources/" />
