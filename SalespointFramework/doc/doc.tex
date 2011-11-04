@@ -25,15 +25,25 @@
 \usepackage{tikz}
 \usepackage{rotating}
 \usepackage[left]{eurosym}
+%\usepackage{fontspec}
+\usepackage{pifont}
+\usepackage{color}
+
+%\defaultfontfeatures{Scale=MatchLowercase}
+%\setmainfont[]{Liberation Sans}
+%\setsansfont{Liberation Sans}
+%\setmonofont{Liberation Mono}
 
 \usetikzlibrary{positioning}
 \usepackage[left,pagewise,modulo,]{lineno}
 %\linenumbers
 
+%90,102,204 - nice light blue
+\definecolor{code}{rgb}{.35, .4,.8}
 
 \newcommand{\todo}{\footnote}
 \newcommand{\comment}[1]{}
-\newcommand{\code}{\texttt}
+\newcommand{\code}[1]{\mbox{\textcolor{code}{\texttt{#1}}}}
 \newcommand{\salespoint}{Salespoint~5}
 \tolerance 2414
 \hbadness 2414
@@ -76,15 +86,15 @@
 \subtitle{Preliminary Version}
 \author{Christopher Bellmann, Thomas Dedek, Stanley F\"orster, \\ Paul Henke, Hendrik Neubert, Hannes Weisbach}
 \publishers{Dresden University of Technology\\
-				Faculty of Computer Science\\
+				Department of Computer Science\\
 				Institute of Software- and Multimedia-Technology\\
-				Chair of Software Technology\\
+				Software Technology Group\\
 \vskip 6cm
 \hangafter=0
 \footnotesize
 	\begin{tabular}{ll}
  		Address                                        & Telephone: 0351 463 38442 \\
-		Faculty of Computer Science                    & Fax: 0351 463 38459\\
+		Departement of Computer Science                & Fax: 0351 463 38459\\
 		Insitute of Software and Multimedia Technology & birgit.demuth@tu-dresden.de\\
 		TU Dresden                                     & http://tu-dresden.de\\
 		01062 Dresden                                  & \\
@@ -94,7 +104,7 @@
 %\comment{
 
 \hypersetup{
-    pdfkeywords={salespoint, swt, praktikum},
+    pdfkeywords={salespoint, swt, swp, praktikum},
     pdfsubject={\salespoint - Technical Overview},
 }
 
