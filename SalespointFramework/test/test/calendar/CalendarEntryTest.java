@@ -44,7 +44,7 @@ public class CalendarEntryTest {
 		PersistentCalendarEntry testEntry = new PersistentCalendarEntry(new UserIdentifier("owner"), null, new DateTime(), new DateTime());
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=ArgumentNullException.class)
 	public void testNotNullTitle2() {
 		testEntry1.setTitle(null);
 	}
@@ -69,16 +69,16 @@ public class CalendarEntryTest {
 		PersistentCalendarEntry testEntry = new PersistentCalendarEntry(new UserIdentifier("owner"), "meeting", a.plusDays(3), a);
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testEndBeforeStart2() {
-		
 		testEntry1.setStart(a.plusDays(10));
+		assertTrue(testEntry1.getEnd().equals(a.plusHours(5).plusDays(10)));
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testEndBeforeStart3() {
-		
 		testEntry1.setEnd(a.minusDays(10));
+		assertTrue(testEntry1.getStart().equals(a.minusHours(5).minusDays(10)));
 	}
 	
 	@Test 
