@@ -59,9 +59,11 @@ public class PersistentCalendarEntry implements CalendarEntry {
     @Transient
     private Interval                                              duration;
 
+    @Column(name="START_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date                                                  start;
 
+    @Column(name="END_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date                                                  end;
 
@@ -449,7 +451,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
         DateTime start;
         
         if (end.isBefore(this.duration.getStart())) {
-            start = this.duration.getStart().minus(this.duration.getEndMillis() - this.duration.getStartMillis());
+            start = end.minus(this.duration.getEndMillis() - this.duration.getStartMillis());
         } else {
             start = this.duration.getStart();
         }
@@ -488,7 +490,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
         DateTime end;
         
         if (start.isAfter(this.duration.getEnd())) {
-            end = this.duration.getEnd().plus(this.duration.getEndMillis() - this.duration.getStartMillis());
+            end = start.plus(this.duration.getEndMillis() - this.duration.getStartMillis());
         } else {
             end = this.duration.getEnd();
         }
