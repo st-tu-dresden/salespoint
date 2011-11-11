@@ -67,6 +67,9 @@ public enum Database {
 	 */
 	public EntityManagerFactory getEntityManagerFactory()
 	{
+		if(entityManagerFactory == null) {
+			throw new RuntimeException("Please initialize persistence unit first. For exampe by adding \"PersistenceUnitInitializer\" as bean in dispatch-servlet.xml");
+		}
 		return entityManagerFactory;
 	}
 }
