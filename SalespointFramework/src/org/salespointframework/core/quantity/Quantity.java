@@ -177,7 +177,7 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 		else {
 			Quantity q = (Quantity) obj;
 			return roundingStrategy.equals(q.roundingStrategy)
-					&& amount.equals(q.amount) && metric.equals(metric);
+					&& amount.compareTo(q.amount) == 0 && metric.equals(metric);
 		}
 	}
 
