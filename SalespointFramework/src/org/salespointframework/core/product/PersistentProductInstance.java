@@ -73,7 +73,7 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 			showMeTheMoney = showMeTheMoney.add(productFeature.getPrice());
 			
 			// TODO Hannes, das ist unschön mit dem new Money(percent)
-			this.price = this.price.multiply(new Money(productFeature.getPercent()));
+			this.price = this.price.multiply(new Money(productFeature.getPercent()/100));
 		}
 		this.price = this.price.add(showMeTheMoney);
 	}
