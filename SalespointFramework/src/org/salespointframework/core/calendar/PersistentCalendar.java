@@ -27,7 +27,7 @@ import org.salespointframework.util.Objects;
  * 
  * @author Stanley Förster
  */
-public final class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
+public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
 
     private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 
