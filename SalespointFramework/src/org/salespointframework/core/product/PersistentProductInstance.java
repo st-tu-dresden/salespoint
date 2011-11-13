@@ -11,6 +11,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
@@ -57,15 +58,24 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 		Objects.requireNonNull(productFeatureIdentifiers, "productFeatureIdentifiers");
 		this.productIdentifier = Objects.requireNonNull(product, "product").getIdentifier();
 		this.name = product.getName();
-		this.price = product.getPrice(); // TODO CLONE?
+		this.price = product.getPrice(); 
+		
+		Money showMeTheMoney = Money.ZERO;
 		
 		for(ProductFeatureIdentifier pfi : productFeatureIdentifiers) {
 			ProductFeature productFeature = product.getProductFeature(pfi);
+			// TODO bessere Exception
+			if(productFeature == null) {
+				throw new RuntimeException("No ProductFeature found for Id: "+ pfi);
+			}
 			productFeatures.add(productFeature);
-			// TODO preis mit einberechnen :D
-			// klärungsbedarf bei %%%%%
+			
+			showMeTheMoney = showMeTheMoney.add(productFeature.getPrice());
+			
+			// TODO Hannes, das ist unschön mit dem new Money(percent)
+			this.price = this.price.multiply(new Money(productFeature.getPercent()));
 		}
-		
+		this.price = this.price.add(showMeTheMoney);
 	}
 	
 	@Override
