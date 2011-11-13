@@ -40,6 +40,11 @@ public class HasCapabilityTag extends BodyTagSupport
 	{
 		@SuppressWarnings("unchecked")
 		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
+		
+		if(usermanager == null) {
+			throw new RuntimeException("Shop.INSTANCE.getUserManager() returned null");
+		}
+		
 		User user = usermanager.getUserByToken(User.class, pageContext.getSession());
 		UserCapability capability = new UserCapability(capabilityName);
 		

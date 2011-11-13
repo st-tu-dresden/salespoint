@@ -47,6 +47,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter
 
 		UserManager<? extends User> usermanager = Shop.INSTANCE.getUserManager();
 		
+		if(usermanager == null) {
+			throw new RuntimeException("Shop.INSTANCE.getUserManager() returned null");
+		}
+		
 		User user;
 		if(usermanager instanceof PersistentUserManager) {
 			user = ((PersistentUserManager)usermanager).get(PersistentUser.class, userIdentifier);

@@ -33,6 +33,12 @@ public class LoggedInTag extends BodyTagSupport
 
 		@SuppressWarnings("unchecked")
 		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
+		
+		if(usermanager == null) {
+			throw new RuntimeException("Shop.INSTANCE.getUserManager() returned null");
+		}
+		
+		
 		//UserManager<? extends User> usermanager = Shop.INSTANCE.getUserManager();
 		User user = usermanager.getUserByToken(User.class, pageContext.getSession());
 

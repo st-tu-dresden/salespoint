@@ -237,6 +237,11 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		}
 
 		Inventory<?> tempInventory = Shop.INSTANCE.getInventory();
+		
+		if(tempInventory == null) {
+			throw new RuntimeException("Shop.INSTANCE.getInventory() returned null");
+		}
+		
 		if (!(tempInventory instanceof PersistentInventory)) {
 			// TODO which Exception
 			throw new RuntimeException("Sorry, PersistentInventory only :(");
