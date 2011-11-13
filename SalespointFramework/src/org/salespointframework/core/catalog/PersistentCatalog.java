@@ -55,9 +55,9 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 	{
 		Objects.requireNonNull(products, "products");
 		EntityManager em = emf.createEntityManager();
-		for (PersistentProduct productType : products)
+		for (PersistentProduct product : products)
 		{
-			em.persist(productType);
+			em.persist(product);
 		}
 		beginCommit(em);
 	}
@@ -70,10 +70,10 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 		// TODO catch exception
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
 		EntityManager em = emf.createEntityManager();
-		Object productType = em.find(PersistentProduct.class, productIdentifier);
-		if(productType != null)
+		Object product = em.find(PersistentProduct.class, productIdentifier);
+		if(product != null)
 		{
-			em.remove(productType);
+			em.remove(product);
 			beginCommit(em);
 			return true;
 		} else {
@@ -155,14 +155,14 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 
 	/**
 	 * Updates and persists an existing {@link PersistentProduct} to the PersistentCatalog and the Database
-	 * @param productType the {@link PersistentProduct} to be updated
-	 * @throws ArgumentNullException if productType is null
+	 * @param product the {@link PersistentProduct} to be updated
+	 * @throws ArgumentNullException if product is null
 	 */
-	public final void update(PersistentProduct productType)
+	public final void update(PersistentProduct product)
 	{
-		Objects.requireNonNull(productType, "productType");
+		Objects.requireNonNull(product, "product");
 		EntityManager em = emf.createEntityManager();
-		em.merge(productType);
+		em.merge(product);
 		beginCommit(em);
 	}
 

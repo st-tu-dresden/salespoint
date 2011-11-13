@@ -32,7 +32,7 @@ public interface Product
 	/**
 	 * Adds a {@link ProductFeature}
 	 * @param productFeature the {@link ProductFeature} to be added
-	 * @return true if the ProductType did not already contain the {@link ProductFeature}, otherwise false
+	 * @return true if the Product did not already contain the {@link ProductFeature}, otherwise false
 	 * @throws ArgumentNullException if productFeature is null
 	 */
 	boolean addProductFeature(ProductFeature productFeature);
@@ -53,7 +53,7 @@ public interface Product
 	/**
 	 * Adds a category to this Product
 	 * @param category the category to be added
-	 * @return true if this ProductType did not already contain the category, otherwise false
+	 * @return true if this Product did not already contain the category, otherwise false
 	 * @throws ArgumentNullException if category is null
 	 */
 	boolean addCategory(String category);
@@ -61,7 +61,7 @@ public interface Product
 	/**
 	 * Removes a category from this Product
 	 * @param category the name of the category to be removed
-	 * @return if the ProductType contained the category, otherwise false
+	 * @return if the Product contained the category, otherwise false
 	 * @throws ArgumentNullException if category is null
 	 */
 	boolean removeCategory(String category);

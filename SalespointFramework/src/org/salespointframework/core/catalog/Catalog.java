@@ -19,7 +19,7 @@ public interface Catalog<T extends Product>
 	/**
 	 * Adds a new {@link Product} to this <code>Catalog</code>
 	 * @param product the {@link Product} to be added
-	 * @throws ArgumentNullException if productType is null
+	 * @throws ArgumentNullException if product is null
 	 */
 	void add(T product);
 

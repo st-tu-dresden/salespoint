@@ -13,13 +13,10 @@ import javax.persistence.Entity;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.PersistentProduct;
-import org.salespointframework.core.product.ProductInstance;
+import org.salespointframework.core.product.Product;
 import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductIdentifier;
-import org.salespointframework.core.product.Product;
-import org.salespointframework.core.quantity.Metric;
-import org.salespointframework.core.quantity.Quantity;
-import org.salespointframework.core.quantity.rounding.RoundingStrategy;
+import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
@@ -99,13 +96,13 @@ public class PersistentOrderLine implements OrderLine
 	{
 
 		Objects.requireNonNull(productFeatures, "productFeatures");
-		Product productType = Database.INSTANCE.getEntityManagerFactory().createEntityManager().find(PersistentProduct.class, productIdentifier);
-		if (productType == null)
+		Product product = Database.INSTANCE.getEntityManagerFactory().createEntityManager().find(PersistentProduct.class, productIdentifier);
+		if (product == null)
 		{
-			throw new IllegalStateException("ProductType " + productIdentifier + " is unknown/not in catalog");
+			throw new IllegalStateException("Product " + productIdentifier + " is unknown/not in catalog");
 		}
-		this.productIdentifier = productType.getIdentifier();
-		this.productName = productType.getName();
+		this.productIdentifier = product.getIdentifier();
+		this.productName = product.getName();
 		this.productFeatures = Iterables.asSet(productFeatures);
 
 		if (numberOrdered <= 0)
@@ -114,7 +111,7 @@ public class PersistentOrderLine implements OrderLine
 		}
 		this.numberOrdered = numberOrdered;
 		
-		Money price = productType.getPrice();
+		Money price = product.getPrice();
 		for (ProductFeature pf : this.productFeatures)
 		{
 			price = price.add(pf.getPrice());

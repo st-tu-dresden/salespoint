@@ -50,17 +50,17 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 	//TODO comment productFeatureIdentifiers
 	/**
 	 * Creates a new PersistentProduct with a specified {@link ProductFeature}set
-	 * @param productType the {@link Product} of the PersistentProduct
+	 * @param product the {@link Product} of the PersistentProduct
 	 */
-	public PersistentProductInstance(Product productType, ProductFeatureIdentifier... productFeatureIdentifiers)
+	public PersistentProductInstance(Product product, ProductFeatureIdentifier... productFeatureIdentifiers)
 	{
 		Objects.requireNonNull(productFeatureIdentifiers, "productFeatureIdentifiers");
-		this.productIdentifier = Objects.requireNonNull(productType, "productType").getIdentifier();
-		this.name = productType.getName();
-		this.price = productType.getPrice(); // TODO CLONE?
+		this.productIdentifier = Objects.requireNonNull(product, "product").getIdentifier();
+		this.name = product.getName();
+		this.price = product.getPrice(); // TODO CLONE?
 		
 		for(ProductFeatureIdentifier pfi : productFeatureIdentifiers) {
-			ProductFeature productFeature = productType.getProductFeature(pfi);
+			ProductFeature productFeature = product.getProductFeature(pfi);
 			productFeatures.add(productFeature);
 			// TODO preis mit einberechnen :D
 			// klärungsbedarf bei %%%%%

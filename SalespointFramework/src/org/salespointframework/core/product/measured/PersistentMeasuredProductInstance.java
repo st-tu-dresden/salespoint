@@ -33,109 +33,109 @@ public class PersistentMeasuredProductInstance extends PersistentProductInstance
 	/**
 	 * Parameterized constructor with
 	 * 
-	 * @param productType
+	 * @param product
 	 *            The productType of this MeasuredProductInstance
 	 * @param quantity
 	 *            The quantity of this MeasuredProductInstance
 	 */
 	//TODO for later: Quantity to <T extends Quantity>
-	public PersistentMeasuredProductInstance(MeasuredProduct productType, Quantity quantity)
+	public PersistentMeasuredProductInstance(MeasuredProduct product, Quantity quantity)
 	{
-		super(productType);
-		Objects.requireNonNull(productType, "productType");
-		this.unitPrice = productType.getUnitPrice();
+		super(product);
+		Objects.requireNonNull(product, "product");
+		this.unitPrice = product.getUnitPrice();
 		this.quantity = Objects.requireNonNull(quantity, "quantity");
-		productType.reduceQuantityOnHand(this.quantity);
+		product.reduceQuantityOnHand(this.quantity);
 	}
 
 	/**
 	 * Parameterized constructor with
 	 * 
-	 * @param productType
+	 * @param product
 	 *            The productType of this MeasuredProductInstance
 	 * @param amount
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as Integer Value.
 	 */
-	public PersistentMeasuredProductInstance(MeasuredProduct productType, int amount)
+	public PersistentMeasuredProductInstance(MeasuredProduct product, int amount)
 	{
-		super(productType);
-		Objects.requireNonNull(productType, "productType");
-		this.unitPrice = productType.getUnitPrice();
-		this.quantity = new Quantity(amount, productType.getQuantityOnHand().getMetric(), productType.getQuantityOnHand().getRoundingStrategy());
-		productType.reduceQuantityOnHand(quantity);
+		super(product);
+		Objects.requireNonNull(product, "product");
+		this.unitPrice = product.getUnitPrice();
+		this.quantity = new Quantity(amount, product.getQuantityOnHand().getMetric(), product.getQuantityOnHand().getRoundingStrategy());
+		product.reduceQuantityOnHand(quantity);
 	}
 
 	/**
 	 * Parameterized constructor with
 	 * 
-	 * @param productType
+	 * @param product
 	 *            The productType of this MeasuredProductInstance
 	 * @param amount
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as BigDecimal Value.
 	 */
-	public PersistentMeasuredProductInstance(MeasuredProduct productType, BigDecimal amount)
+	public PersistentMeasuredProductInstance(MeasuredProduct product, BigDecimal amount)
 	{
-		super(productType);
-		Objects.requireNonNull(productType, "productType");
-		this.unitPrice = productType.getUnitPrice();
-		this.quantity = new Quantity(amount, productType.getQuantityOnHand().getMetric(), productType.getQuantityOnHand().getRoundingStrategy());
-		productType.reduceQuantityOnHand(quantity);
+		super(product);
+		Objects.requireNonNull(product, "product");
+		this.unitPrice = product.getUnitPrice();
+		this.quantity = new Quantity(amount, product.getQuantityOnHand().getMetric(), product.getQuantityOnHand().getRoundingStrategy());
+		product.reduceQuantityOnHand(quantity);
 	}
 
 	/**
 	 * Parameterized constructor with
 	 * 
-	 * @param productType
+	 * @param product
 	 *            The productType of this MeasuredProductInstance
 	 * @param amount
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as Long Value.
 	 */
-	public PersistentMeasuredProductInstance(MeasuredProduct productType, long amount)
+	public PersistentMeasuredProductInstance(MeasuredProduct product, long amount)
 	{
-		super(productType);
-		Objects.requireNonNull(productType, "productType");
-		this.unitPrice = productType.getUnitPrice();
-		this.quantity = new Quantity(amount, productType.getQuantityOnHand().getMetric(), productType.getQuantityOnHand().getRoundingStrategy());
-		productType.reduceQuantityOnHand(quantity);
+		super(product);
+		Objects.requireNonNull(product, "product");
+		this.unitPrice = product.getUnitPrice();
+		this.quantity = new Quantity(amount, product.getQuantityOnHand().getMetric(), product.getQuantityOnHand().getRoundingStrategy());
+		product.reduceQuantityOnHand(quantity);
 	}
 
 	/**
 	 * Parameterized constructor with
 	 * 
-	 * @param productType
+	 * @param product
 	 *            The productType of this MeasuredProductInstance
 	 * @param amount
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as Float Value.
 	 */
-	public PersistentMeasuredProductInstance(MeasuredProduct productType, float amount)
+	public PersistentMeasuredProductInstance(MeasuredProduct product, float amount)
 	{
-		super(productType);
-		Objects.requireNonNull(productType, "productType");
-		this.unitPrice = productType.getUnitPrice();
-		this.quantity = new Quantity(amount, productType.getQuantityOnHand().getMetric(), productType.getQuantityOnHand().getRoundingStrategy());
-		productType.reduceQuantityOnHand(quantity);
+		super(product);
+		Objects.requireNonNull(product, "product");
+		this.unitPrice = product.getUnitPrice();
+		this.quantity = new Quantity(amount, product.getQuantityOnHand().getMetric(), product.getQuantityOnHand().getRoundingStrategy());
+		product.reduceQuantityOnHand(quantity);
 	}
 
 	/**
 	 * Parameterized constructor with
 	 * 
-	 * @param productType
+	 * @param product
 	 *            The productType of this MeasuredProductInstance
 	 * @param amount
 	 *            The amount of the quantity, which will be used for this
 	 *            MeasuredProductInstance as Double Value.
 	 */
-	public PersistentMeasuredProductInstance(MeasuredProduct productType, double amount)
+	public PersistentMeasuredProductInstance(MeasuredProduct product, double amount)
 	{
-		super(productType);
-		Objects.requireNonNull(productType, "productType");
-		this.unitPrice = productType.getUnitPrice();
-		this.quantity = new Quantity(amount, productType.getQuantityOnHand().getMetric(), productType.getQuantityOnHand().getRoundingStrategy());
-		productType.reduceQuantityOnHand(quantity);
+		super(product);
+		Objects.requireNonNull(product, "product");
+		this.unitPrice = product.getUnitPrice();
+		this.quantity = new Quantity(amount, product.getQuantityOnHand().getMetric(), product.getQuantityOnHand().getRoundingStrategy());
+		product.reduceQuantityOnHand(quantity);
 	}
 
 	@Override
