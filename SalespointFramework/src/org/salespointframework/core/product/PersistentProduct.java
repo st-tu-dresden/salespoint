@@ -45,8 +45,8 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 
 	/**
 	 * Creates a new PersistentProductType
-	 * @param name the name of the PersistentProductType
-	 * @param price the price of the PersistentProductType
+	 * @param name the name of the PersistentProduct
+	 * @param price the price of the PersistentProduct
 	 */
 	public PersistentProduct(String name, Money price)
 	{

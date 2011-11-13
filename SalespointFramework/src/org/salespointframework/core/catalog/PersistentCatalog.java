@@ -38,24 +38,24 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 	}
 
 	@Override
-	public final void add(PersistentProduct productType)
+	public final void add(PersistentProduct product)
 	{
-		Objects.requireNonNull(productType, "productType");
+		Objects.requireNonNull(product, "product");
 		EntityManager em = emf.createEntityManager();
-		em.persist(productType);
+		em.persist(product);
 		beginCommit(em);
 	}
 
 	
 	/**
 	 * Adds multiple {@link PersistentProduct}s to this PersistentCatalog
-	 * @param productTypes an {@link Iterable} of {@link PersistentProduct}s or subtypes to be added
+	 * @param products an {@link Iterable} of {@link PersistentProduct}s or subtypes to be added
 	 */
-	public final void addAll(Iterable<? extends PersistentProduct> productTypes)
+	public final void addAll(Iterable<? extends PersistentProduct> products)
 	{
-		Objects.requireNonNull(productTypes, "productTypes");
+		Objects.requireNonNull(products, "products");
 		EntityManager em = emf.createEntityManager();
-		for (PersistentProduct productType : productTypes)
+		for (PersistentProduct productType : products)
 		{
 			em.persist(productType);
 		}

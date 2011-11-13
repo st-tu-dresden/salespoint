@@ -18,10 +18,10 @@ public interface Catalog<T extends Product>
 {
 	/**
 	 * Adds a new {@link Product} to this <code>Catalog</code>
-	 * @param productType the {@link Product} to be added
+	 * @param product the {@link Product} to be added
 	 * @throws ArgumentNullException if productType is null
 	 */
-	void add(T productType);
+	void add(T product);
 
 	/**
 	 * Removes a {@link Product} from the Catalog
