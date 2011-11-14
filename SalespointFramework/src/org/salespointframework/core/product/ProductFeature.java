@@ -139,8 +139,7 @@ public final class ProductFeature implements Serializable, Comparable<ProductFea
 		}
 		if (other instanceof ProductFeature)
 		{
-			ProductFeature rehto = (ProductFeature) other;
-			return this.featureType.equals(rehto.featureType) && this.value.equals(rehto.value);
+			return this.productFeatureIdentifier.equals(((ProductFeature) other).productFeatureIdentifier);
 		}
 		return false;
 	}
