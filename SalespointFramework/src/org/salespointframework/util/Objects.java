@@ -40,13 +40,12 @@ public final class Objects
 		return object;
 	}
 
-	// TODO doku einfach aus der echten Objectsklasse klauen ^_^
 	/**
-	 * This method calculates one hash code for multiple objects.
+	 * Generates a hash code for a sequence of input values.
+	 * This method is useful for implementing {@code Object.hashCode} on objects containing multiple fields.
 	 * 
-	 * @param values
-	 *            List objects for that one hash code should be calculated.
-	 * @return The hash code of the objects.
+	 * @param values the values to be hashed
+	 * @return a hash value of the sequence of input values
 	 */
 	public static int hash(Object... values)
 	{

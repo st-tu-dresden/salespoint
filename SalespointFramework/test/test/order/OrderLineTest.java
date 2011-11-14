@@ -47,7 +47,7 @@ public class OrderLineTest {
 		catalog.add(keks);
 		
 		user = new PersistentUser(new UserIdentifier(), "");
-		order = new PersistentOrder(user.getIdentifier(), Cash.CASH);	//TODO
+		order = new PersistentOrder(user.getIdentifier(), Cash.CASH);	
 		orderLine = new PersistentOrderLine(keks.getIdentifier());
 	}
 	

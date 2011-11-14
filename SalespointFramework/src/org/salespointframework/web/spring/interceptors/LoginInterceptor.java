@@ -38,10 +38,16 @@ public class LoginInterceptor extends HandlerInterceptorAdapter
 			return;
 		}
 
-		// TODO errorhandling 
-		
 		String identifier = params.get(WebConstants.SP_LOGIN_PARAM_IDENTIFIER.toString())[0];
 		String password = params.get(WebConstants.SP_LOGIN_PARAM_PASSWORD.toString())[0];
+		
+		if(identifier == null) {
+			throw new RuntimeException(WebConstants.SP_LOGIN_PARAM_IDENTIFIER.toString() + " not found");
+		}
+		
+		if(password == null) {
+			throw new RuntimeException(WebConstants.SP_LOGIN_PARAM_PASSWORD.toString() + " not found");
+		}
 
 		UserIdentifier userIdentifier = new UserIdentifier(identifier);
 
@@ -68,6 +74,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter
 			else {
 				log.info("LoginInterceptor: User " + user + " not logged in (Password mismatch)");
 			}
+		} else {
+			log.info("LoginInterceptor: No User for id " + userIdentifier + " found");
 		}
 	}
 }

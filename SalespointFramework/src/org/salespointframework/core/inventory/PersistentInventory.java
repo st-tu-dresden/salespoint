@@ -40,12 +40,13 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		this.entityManager = null;
 	}
 
-	// TODO längerer comment und @throws
 	/**
 	 * Creates an new PersistentInventory. 
 	 * 
 	 * @param entityManager
 	 *            an {@link EntityManager}
+	 * 
+	 * @throws ArgumentNullException if entityManager is null
 	 */
 	public PersistentInventory(EntityManager entityManager) {
 		this.entityManager = Objects.requireNonNull(entityManager, "entityManager");

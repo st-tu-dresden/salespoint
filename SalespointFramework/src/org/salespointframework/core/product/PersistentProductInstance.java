@@ -51,7 +51,7 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 	/**
 	 * Creates a new PersistentProduct with a specified {@link ProductFeature}set
 	 * @param product the {@link Product} of the PersistentProduct
-	 * @param productFeatureIdentifiers 
+	 * @param productFeatureIdentifiers a sequence of {@link ProductFeatureIdentifier}s
 	 */
 	public PersistentProductInstance(Product product, ProductFeatureIdentifier... productFeatureIdentifiers)
 	{
@@ -64,7 +64,6 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 		
 		for(ProductFeatureIdentifier pfi : productFeatureIdentifiers) {
 			ProductFeature productFeature = product.getProductFeature(pfi);
-			// TODO bessere Exception
 			if(productFeature == null) {
 				throw new IllegalArgumentException("No ProductFeature found for Id: "+ pfi);
 			}

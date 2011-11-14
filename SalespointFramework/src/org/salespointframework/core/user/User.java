@@ -2,11 +2,10 @@ package org.salespointframework.core.user;
 
 import org.salespointframework.util.ArgumentNullException;
 
-//TODO gibt ja nur noch eine "implemented by all user classes."
-//TODO mehr comment?
+//TODO comment
 
 /**
- * This interface is the base interface, implemented by all user classes.
+ * User interface.
  * 
  * 
  * @author Christopher Bellmann
@@ -17,7 +16,7 @@ public interface User
 	/**
 	 * Get the unique identifier of this <code>User</code>.
 	 * 
-	 * @return the <code>UserIdentifier</code> of this <code>User</code>
+	 * @return the {@link UserIdentifier} of this <code>User</code>
 	 */
 	public UserIdentifier getIdentifier();
 
