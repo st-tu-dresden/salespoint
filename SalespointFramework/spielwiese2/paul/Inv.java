@@ -1,4 +1,4 @@
-package spielwiese.paul;
+package paul;
 
 import java.util.HashMap;
 import java.util.Map;

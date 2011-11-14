@@ -20,8 +20,8 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.util.ArgumentNullException;
 
+import test.product.KeksInstance;
 import test.product.Keks;
-import test.product.KeksType;
 
 @SuppressWarnings({ "javadoc", "unused" })
 public class InventoryTest {
@@ -31,8 +31,8 @@ public class InventoryTest {
 
 	private final PersistentInventory inventory = new PersistentInventory();
 	private final PersistentCatalog catalog = new PersistentCatalog();
-	private KeksType keksType;
 	private Keks keks;
+	private KeksInstance keksInstance;
 	
 	private final ProductFeature featureRed = ProductFeature.create("Color", "Red");
 	private final ProductFeature featureBlue = ProductFeature.create("Color", "Blue");
@@ -45,12 +45,12 @@ public class InventoryTest {
 
 	@Before
 	public void before() {
-		keksType = new KeksType("Add Superkeks", Money.ZERO);
+		keks = new Keks("Add Superkeks", Money.ZERO);
 
-		keksType.addProductFeature(featureRed);
-		keksType.addProductFeature(featureBlue);
+		keks.addProductFeature(featureRed);
+		keks.addProductFeature(featureBlue);
 
-		keks = new Keks(keksType);
+		keksInstance = new KeksInstance(keks);
 		// catalog.add(keksType);
 	}
 
@@ -66,47 +66,47 @@ public class InventoryTest {
 
 	@Test
 	public void testAdd() {
-		inventory.add(keks);
+		inventory.add(keksInstance);
 	}
 
 	@Test
 	public void testRemove() {
-		inventory.add(keks);
-		inventory.remove(keks.getSerialNumber());
-		assertFalse(inventory.contains(keks.getSerialNumber()));
+		inventory.add(keksInstance);
+		inventory.remove(keksInstance.getSerialNumber());
+		assertFalse(inventory.contains(keksInstance.getSerialNumber()));
 	}
 
 	@Test
 	public void testContains() {
-		inventory.add(keks);
-		assertTrue(inventory.contains(keks.getSerialNumber()));
+		inventory.add(keksInstance);
+		assertTrue(inventory.contains(keksInstance.getSerialNumber()));
 	}
 
 	@Test
 	public void testGet() {
-		inventory.add(keks);
-		assertEquals(keks, inventory.get(Keks.class, keks.getSerialNumber()));
+		inventory.add(keksInstance);
+		assertEquals(keksInstance, inventory.get(KeksInstance.class, keksInstance.getSerialNumber()));
 	}
 
 	@Test
 	public void find() {
 
-		keks = new Keks(keksType, featureRed.getIdentifier());
+		keksInstance = new KeksInstance(keks, featureRed.getIdentifier());
 
-		inventory.add(keks);
+		inventory.add(keksInstance);
 
-		keks = new Keks(keksType, featureBlue.getIdentifier());
-		inventory.add(keks);
+		keksInstance = new KeksInstance(keks, featureBlue.getIdentifier());
+		inventory.add(keksInstance);
 
 		/*
 		 * this is also a test: because Yellow is not in keksType, it should not
 		 * be in Keks. this test is passed.
 		 */
-		keks = new Keks(keksType, featureYellow.getIdentifier());
-		inventory.add(keks);
+		keksInstance = new KeksInstance(keks, featureYellow.getIdentifier());
+		inventory.add(keksInstance);
 
 		System.out.println("Alle Kekse: ");
-		for (Keks k : inventory.find(Keks.class)) {
+		for (KeksInstance k : inventory.find(KeksInstance.class)) {
 			System.out.println(k);
 			for (ProductFeature p : k.getProductFeatures()) {
 				System.out.println("\t" + p);
@@ -123,9 +123,9 @@ public class InventoryTest {
 		featureSet.add(featureRed);
 		//featureSet.add(featureYellow);
 
-		Iterable<Keks> kekse = inventory.find(Keks.class,
-				keks.getProductIdentifier(), featureSet);
-		for (Keks k : kekse) {
+		Iterable<KeksInstance> kekse = inventory.find(KeksInstance.class,
+				keksInstance.getProductIdentifier(), featureSet);
+		for (KeksInstance k : kekse) {
 			System.out.println(k);
 			for (ProductFeature p : k.getProductFeatures()) {
 				System.out.println("\t" + p);

@@ -13,13 +13,13 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.util.ArgumentNullException;
 
-import test.product.KeksType;
+import test.product.Keks;
 
 @SuppressWarnings("javadoc")
-public class ProductCatalogTest {
+public class CatalogTest {
 
 	private final PersistentCatalog catalog = new PersistentCatalog();
-	private KeksType keksType;
+	private Keks keks;
 	
 	@BeforeClass
 	public static void beforeClass() {
@@ -28,15 +28,15 @@ public class ProductCatalogTest {
 	
 	@Before
 	public void before() {
-		keksType = new KeksType("Schoki", new Money(0));
+		keks = new Keks("Schoki", new Money(0));
 	}
 
 	// TODO verschieben
 	@Test
 	public void emFindTest() {
-		catalog.add(keksType);
-		KeksType kT1 = catalog.get(KeksType.class, keksType.getIdentifier());
-		PersistentProduct kT2 = catalog.get(PersistentProduct.class, keksType.getIdentifier());
+		catalog.add(keks);
+		Keks kT1 = catalog.get(Keks.class, keks.getIdentifier());
+		PersistentProduct kT2 = catalog.get(PersistentProduct.class, keks.getIdentifier());
 		assertEquals(kT1,kT2);
 	}
 
@@ -47,26 +47,26 @@ public class ProductCatalogTest {
 
 	@Test()
 	public void addTest() {
-		catalog.add(keksType);
+		catalog.add(keks);
 	}
 	
 	@Test
 	public void testRemove() {
-		catalog.add(keksType);
-		catalog.remove(keksType.getIdentifier());
-		assertFalse(catalog.contains(keksType.getIdentifier()));
+		catalog.add(keks);
+		catalog.remove(keks.getIdentifier());
+		assertFalse(catalog.contains(keks.getIdentifier()));
 	}
 	
 	@Test
 	public void testContains() {
-		catalog.add(keksType);
-		assertTrue(catalog.contains(keksType.getIdentifier()));
+		catalog.add(keks);
+		assertTrue(catalog.contains(keks.getIdentifier()));
 	}
 	
 	@Test
 	public void getTest() {
-		catalog.add(keksType);
-		assertEquals(keksType, catalog.get(KeksType.class, keksType.getIdentifier()));
+		catalog.add(keks);
+		assertEquals(keks, catalog.get(Keks.class, keks.getIdentifier()));
 	}
 
 }

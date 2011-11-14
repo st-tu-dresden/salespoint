@@ -2,25 +2,20 @@ package test.product;
 
 import javax.persistence.Entity;
 
-import org.salespointframework.core.product.PersistentProductInstance;
-import org.salespointframework.core.product.ProductFeatureIdentifier;
+import org.salespointframework.core.money.Money;
+import org.salespointframework.core.product.PersistentProduct;
 
 @SuppressWarnings("javadoc")
 @Entity
-public class Keks extends PersistentProductInstance {
-	
+public class Keks extends PersistentProduct {
+
 	@Deprecated
-	public Keks() {
+	protected Keks() {
 		
 	}
 	
-	public Keks(KeksType keks) {
-		super(keks);
+	public Keks(String name, Money price) {
+		super(name, price);
 	}
-	
-   public Keks(KeksType productType, ProductFeatureIdentifier... features) {
-       super(productType, features);
-   }
 
-	
 }

@@ -22,7 +22,7 @@ import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 
-import test.product.KeksType;
+import test.product.Keks;
 
 @SuppressWarnings({"javadoc", "unchecked"})
 public class OrderLineTest {
@@ -41,14 +41,14 @@ public class OrderLineTest {
 
 	@Before
 	public void before() {
-		PersistentProduct keksType = new KeksType("OrderLine Keks " + keksCounter++, Money.ZERO);
+		PersistentProduct keks = new Keks("OrderLine Keks " + keksCounter++, Money.ZERO);
 		
 		PersistentCatalog catalog = new PersistentCatalog();
-		catalog.add(keksType);
+		catalog.add(keks);
 		
 		user = new PersistentUser(new UserIdentifier(), "");
 		order = new PersistentOrder(user.getIdentifier(), Cash.CASH);	//TODO
-		orderLine = new PersistentOrderLine(keksType.getIdentifier());
+		orderLine = new PersistentOrderLine(keks.getIdentifier());
 	}
 	
 

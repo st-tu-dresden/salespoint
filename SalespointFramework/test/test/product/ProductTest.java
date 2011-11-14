@@ -12,84 +12,84 @@ import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.util.ArgumentNullException;
 
 @SuppressWarnings("javadoc")
-public class ProductTypeTest {
+public class ProductTest {
 
-	private KeksType keksType;
+	private Keks keks;
 	
 	
 	@Before
 	public void before() {
-		keksType = new KeksType("Schoooki", Money.ZERO);
+		keks = new Keks("Schoooki", Money.ZERO);
 	}
 	
 	
 	@Test(expected=ArgumentNullException.class)
 	public void addNullProductFeature() {
-		keksType.addProductFeature(null);
+		keks.addProductFeature(null);
 	}
 	
 	@Test(expected=ArgumentNullException.class)
 	public void removeNullProductFeature() {
-		keksType.removeProductFeature(null);
+		keks.removeProductFeature(null);
 	}
 	
 	@Test
 	public void addProductFeature() {
 		ProductFeature feature = ProductFeature.create("Color", "Blue");
-		assertTrue(keksType.addProductFeature(feature));
+		assertTrue(keks.addProductFeature(feature));
 	}
 	
 	@Test
 	public void addProductFeature2() {
 		ProductFeature feature = ProductFeature.create("Color", "Yellow");
-		keksType.addProductFeature(feature);
-		assertFalse(keksType.addProductFeature(feature));
+		keks.addProductFeature(feature);
+		assertFalse(keks.addProductFeature(feature));
 	}
 
 	@Test
 	public void removeProductFeature() {
 		ProductFeature feature = ProductFeature.create("Color", "Green");
-		keksType.addProductFeature(feature);
-		assertTrue(keksType.removeProductFeature(feature.getIdentifier()));
+		keks.addProductFeature(feature);
+		assertTrue(keks.removeProductFeature(feature.getIdentifier()));
 	}
 	
 	@Test
 	public void removeProductFeature2() {
 		ProductFeature feature = ProductFeature.create("Color", "Red");
-		assertFalse(keksType.removeProductFeature(feature.getIdentifier()));
+		assertFalse(keks.removeProductFeature(feature.getIdentifier()));
 	}
 
 	@Test(expected=ArgumentNullException.class)
 	public void addNullCategory() {
-		keksType.addCategory(null);
+		keks.addCategory(null);
 	}
 	
 	@Test(expected=ArgumentNullException.class)
 	public void removeNullCategory() {
-		keksType.removeCategory(null);
+		keks.removeCategory(null);
 	}
 	
 	@Test
 	public void addCategory() {
-		assertTrue(keksType.addCategory("Sci-Fi"));
+		assertTrue(keks.addCategory("Sci-Fi"));
 	}
 	
 	@Test
 	public void addCategory2() {
-		keksType.addCategory("Fantasy");
-		assertFalse(keksType.addCategory("Fantasy"));
+		keks.addCategory("Fantasy");
+		assertFalse(keks.addCategory("Fantasy"));
 	}
 
 	
 	@Test
 	public void removeCategory() {
-		keksType.addCategory("Sci-Fi");
-		assertTrue(keksType.removeCategory("Sci-Fi"));
+		keks.addCategory("Sci-Fi");
+		assertTrue(keks.removeCategory("Sci-Fi"));
 	}
 	
 	@Test
 	public void removeCategory2() {
-		assertFalse(keksType.removeCategory(Double.toString(new Random().nextDouble())));
+		assertFalse(keks.removeCategory(Double.toString(new Random().nextDouble())));
 	}
 	
 	

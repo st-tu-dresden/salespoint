@@ -1,4 +1,4 @@
-package spielwiese.paul;
+package paul;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.ProductIdentifier;
