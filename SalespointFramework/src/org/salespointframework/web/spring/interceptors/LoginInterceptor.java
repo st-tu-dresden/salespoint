@@ -48,7 +48,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter
 		UserManager<? extends User> usermanager = Shop.INSTANCE.getUserManager();
 		
 		if(usermanager == null) {
-			throw new RuntimeException("Shop.INSTANCE.getUserManager() returned null");
+			throw new NullPointerException("Shop.INSTANCE.getUserManager() returned null");
 		}
 		
 		User user;

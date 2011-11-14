@@ -59,13 +59,13 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		beginCommit(em);
 	}
 
-	// TODO throws
 	/**
 	 * Adds multiple {@link PersistentProductInstance}s to this PersistentInventory
 	 * 
 	 * @param productInstances
 	 *            an {@link Iterable} of {@link PersistentProductInstance}s to be added
-	 *            
+	 * 
+	 * @throws ArgumentNullException if productInstaces is null
 	 */
 	public final void addAll(Iterable<? extends PersistentProductInstance> productInstances) {
 		Objects.requireNonNull(productInstances, "products");
@@ -227,7 +227,6 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		return entityManager != null ? entityManager : emf.createEntityManager();
 	}
 
-	// TODO test
 	@Override
 	public long count(ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(productIdentifier, "productIdentifier");
@@ -245,7 +244,6 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		
 	}
 	
-	// TODO test
 	@Override
 	public long count(ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures) {
 		Objects.requireNonNull(productIdentifier, "productIdentifier");

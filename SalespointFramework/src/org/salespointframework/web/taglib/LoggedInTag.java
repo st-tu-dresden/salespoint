@@ -35,7 +35,7 @@ public class LoggedInTag extends BodyTagSupport
 		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
 		
 		if(usermanager == null) {
-			throw new RuntimeException("Shop.INSTANCE.getUserManager() returned null");
+			throw new NullPointerException("Shop.INSTANCE.getUserManager() returned null");
 		}
 		
 		

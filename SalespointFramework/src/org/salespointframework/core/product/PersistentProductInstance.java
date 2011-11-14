@@ -11,7 +11,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
@@ -52,6 +51,7 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 	/**
 	 * Creates a new PersistentProduct with a specified {@link ProductFeature}set
 	 * @param product the {@link Product} of the PersistentProduct
+	 * @param productFeatureIdentifiers 
 	 */
 	public PersistentProductInstance(Product product, ProductFeatureIdentifier... productFeatureIdentifiers)
 	{
@@ -66,7 +66,7 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 			ProductFeature productFeature = product.getProductFeature(pfi);
 			// TODO bessere Exception
 			if(productFeature == null) {
-				throw new RuntimeException("No ProductFeature found for Id: "+ pfi);
+				throw new IllegalArgumentException("No ProductFeature found for Id: "+ pfi);
 			}
 			productFeatures.add(productFeature);
 			
@@ -132,7 +132,7 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 		return name;
 	}
 	
-	//TODO comment ins interface?
+	//TODO comment & ins interface?
 	public String getName() 
 	{
 		return name;

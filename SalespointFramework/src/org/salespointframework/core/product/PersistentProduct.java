@@ -115,22 +115,11 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 		return productFeatures.add(productFeature);
 	}
 
-	
-	// TODO remove und get DRYen?
-	
 	@Override
 	public final boolean removeProductFeature(ProductFeatureIdentifier productFeatureIdentifier)
 	{
 		Objects.requireNonNull(productFeatureIdentifier, "productFeatureIdentifier");
-		
-		ProductFeature temp = null;
-		for (ProductFeature pf : productFeatures) {
-			if (pf.getIdentifier().equals(productFeatureIdentifier)) {
-				temp = pf;
-				break;
-			}
-		}
-		return productFeatures.remove(temp);
+		return productFeatures.remove(this.getProductFeature(productFeatureIdentifier));
 	}
 	
 	@Override

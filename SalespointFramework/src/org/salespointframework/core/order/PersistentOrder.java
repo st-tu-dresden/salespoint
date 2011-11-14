@@ -239,12 +239,11 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		Inventory<?> tempInventory = Shop.INSTANCE.getInventory();
 		
 		if(tempInventory == null) {
-			throw new RuntimeException("Shop.INSTANCE.getInventory() returned null");
+			throw new NullPointerException("Shop.INSTANCE.getInventory() returned null");
 		}
 		
 		if (!(tempInventory instanceof PersistentInventory)) {
-			// TODO which Exception
-			throw new RuntimeException("Sorry, PersistentInventory only :(");
+			throw new RuntimeException("Sorry, PersistentOrder works only with PersistentInventory :(");
 		}
 
 		EntityManager em = Database.INSTANCE.getEntityManagerFactory().createEntityManager();
@@ -360,11 +359,13 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		if (orderStatus != OrderStatus.OPEN) {
 			return false;
 		}
-		;
 
 		// TODO "Rechnung Nr " deutsch?
 		ProductPaymentEntry ppe = new ProductPaymentEntry(this.orderIdentifier,	this.userIdentifier, this.getTotalPrice(), "Rechnung Nr. " + this.orderIdentifier, this.paymentMethod);
-		PersistentAccountancy pA = (PersistentAccountancy) Shop.INSTANCE.getAccountancy(); // TODO not only Persistent?
+		PersistentAccountancy pA = (PersistentAccountancy) Shop.INSTANCE.getAccountancy();
+		if(pA == null) {
+			throw new NullPointerException("Shop.INSTANCE.getAccountancy() returned null");
+		}
 		pA.add(ppe);
 		orderStatus = OrderStatus.PAYED;
 		return true;

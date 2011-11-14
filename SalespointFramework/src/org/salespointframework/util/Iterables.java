@@ -173,7 +173,6 @@ public final class Iterables
 	}
 
 	
-	// TODO ungetestet, sollte man mal testen
 	/**
 	 * Returns a lazy {@link Iterable} from an Array.
 	 * {@link Iterator}.remove() throws an UnsupportedOperationException.
