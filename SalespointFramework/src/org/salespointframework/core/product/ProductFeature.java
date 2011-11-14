@@ -46,14 +46,15 @@ public final class ProductFeature implements Serializable, Comparable<ProductFea
 		this.featureType = Objects.requireNonNull(featureType, "featureType");
 		this.value = Objects.requireNonNull(value, "value");
 		this.price = Objects.requireNonNull(price, "price");
-		this.percent = Objects.requireNonNull(percent, "percent");
+		this.percent = percent;
 	}
 
 	
 	/**
+	 * Creates a new ProductFeature
 	 * @param featureType the featuretype of this ProductFeature
 	 * @param value the value of this ProductFeature
-	 * @return a new ProductFeature with the price value of 0 //TODO besser schreiben?
+	 * @return a new ProductFeature with the price and money value of 0 //TODO besser schreiben?
 	 * @throws ArgumentNullException if featureType or value are null
 	 */
 	public static ProductFeature create(String featureType, String value)
@@ -62,7 +63,7 @@ public final class ProductFeature implements Serializable, Comparable<ProductFea
 	}
 
 	/**
-	 * 
+	 * Creates a new ProductFeature
 	 * @param featureType the featuretype of this ProductFeature
 	 * @param value the value of this ProductFeature
 	 * @param price the price of this ProductFeature
@@ -74,7 +75,14 @@ public final class ProductFeature implements Serializable, Comparable<ProductFea
 		return new ProductFeature(featureType, value, price, 0);
 	}
 
-	
+	/**
+	 * Creates a new ProductFeature
+	 * @param featureType the featuretype of this ProductFeature
+	 * @param value the value of this ProductFeature
+	 * @param percent a value between 0 and 1
+	 * @return a new ProductFeature
+	 * @throws ArgumentNullException if featureType or value are null
+	 */
 	public static ProductFeature create(String featureType, String value, double percent)
 	{
 		return new ProductFeature(featureType, value, Money.ZERO, percent);
