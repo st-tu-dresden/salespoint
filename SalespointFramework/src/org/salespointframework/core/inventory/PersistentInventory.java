@@ -68,7 +68,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	 * 
 	 * @throws ArgumentNullException if productInstaces is null
 	 */
-	public final void addAll(Iterable<? extends PersistentProductInstance> productInstances) {
+	public void addAll(Iterable<? extends PersistentProductInstance> productInstances) {
 		Objects.requireNonNull(productInstances, "products");
 		EntityManager em = getEntityManager();
 		for (PersistentProductInstance e : productInstances) {
