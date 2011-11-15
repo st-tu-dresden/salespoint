@@ -1,9 +1,9 @@
 package calendar.controller;
 
+import javax.persistence.EntityExistsException;
 import javax.servlet.http.HttpSession;
 
 import org.salespointframework.core.database.Database;
-import org.salespointframework.core.user.DuplicateUserException;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.core.user.UserCapability;
@@ -47,7 +47,7 @@ public class UserController {
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
         PersistentUserManager mgr = new PersistentUserManager();
-        mgr.logOff(session);
+        mgr.logout(session);
         return "login";
     }
     
@@ -58,7 +58,7 @@ public class UserController {
 
         if (user != null) {
             if (user.verifyPassword(password)) {
-                mgr.logOn(user, session);
+                mgr.login(user, session);
                 
                 mav.addObject("user", user);
                 mav.setViewName("redirect:/calendar");
@@ -90,14 +90,14 @@ public class UserController {
             PersistentUser user = new PersistentUser(new UserIdentifier(name), pwOne, new UserCapability("calendar"));
             try {
                 mgr.add(user);
-            } catch (DuplicateUserException ex) {
+            } catch (EntityExistsException ex) {
                 mav.addObject("message", "User already exists, please try a different name!");
                 mav.addObject("user", name);
                 mav.setViewName("register");
                 return mav;
             }
 
-            mgr.logOn(user, session);
+            mgr.login(user, session);
             
             mav.addObject("user", user);
             mav.setViewName("redirect:/calendar");
