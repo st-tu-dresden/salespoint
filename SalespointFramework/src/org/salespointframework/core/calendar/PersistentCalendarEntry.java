@@ -49,8 +49,9 @@ public class PersistentCalendarEntry implements CalendarEntry {
     @ElementCollection(targetClass = EnumSet.class)
     @CollectionTable(joinColumns = @JoinColumn(referencedColumnName = "ENTRY_ID", name = "ENTRY_ID"))
     @AttributeOverride(name = "key.id", column = @Column(name = "USER_ID"))
-    @Column(name = "ENUM")
-    private Map<UserIdentifier, EnumSet<CalendarEntryCapability>> capabilities = new HashMap<UserIdentifier, EnumSet<CalendarEntryCapability>>();
+    
+    //@Column(name = "ENUM")
+    //private Map<UserIdentifier, EnumSet<CalendarEntryCapability>> capabilities = new HashMap<UserIdentifier, EnumSet<CalendarEntryCapability>>();
 
     private int                                                   repeatCount;
 
@@ -168,7 +169,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
         setStartEnd(start.toDate(), end.toDate());
 
         this.calendarEntryIdentifier = new CalendarEntryIdentifier();
-        capabilities.put(owner, EnumSet.allOf(CalendarEntryCapability.class));
+        //capabilities.put(owner, EnumSet.allOf(CalendarEntryCapability.class));
     }
 
     /**
@@ -204,6 +205,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
             throw new IllegalArgumentException("The time between two repetitions can not be less than the duration of a calendar entry!");
     }
 
+    /*
     @Override
     public final void addCapability(UserIdentifier user, CalendarEntryCapability capability) {
         Objects.requireNonNull(user, "user");
@@ -214,6 +216,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
         else
             capabilities.put(user, EnumSet.of(capability));
     }
+    */
 
     /**
      * {@inheritDoc}
@@ -244,6 +247,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
         return calendarEntryIdentifier;
     }
 
+    /*
     @Override
     public final Iterable<CalendarEntryCapability> getCapabilities(UserIdentifier user) {
         Objects.requireNonNull(user, "user");
@@ -252,6 +256,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
        
         return caps == null ? null : Iterables.of(caps);
     }
+    */
 
     /**
      * Returns the number how often this appointment will be repeated, where -1
@@ -378,6 +383,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
         return title;
     }
 
+    /*
     @Override
     public final Iterable<UserIdentifier> getUsersByCapability(CalendarEntryCapability capability) {
         Objects.requireNonNull(capability, "capability");
@@ -390,6 +396,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
 
         return result;
     }
+    */
 
     /**
      * {@inheritDoc}
@@ -404,6 +411,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
         return calendarEntryIdentifier.hashCode();
     }
 
+    /*
     @Override
     public final void removeCapability(UserIdentifier user, CalendarEntryCapability capability) {
         Objects.requireNonNull(user, "user");
@@ -416,6 +424,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
         if (capabilities.get(user).isEmpty())
             capabilities.remove(user);
     }
+    */
 
     /**
      * Sets the number how often this appointment should be repeated. -1 means

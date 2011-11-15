@@ -190,6 +190,7 @@ public class CalendarEntryTest {
 		assertEquals(a.plusHours(3), testEntry1.getEnd());
 	}
 	
+	/*
 	@Test
 	public void testAddCapability1(){
 		
@@ -293,6 +294,7 @@ public class CalendarEntryTest {
     	
     	assertEquals(l1,l2);
 	}
+	*/
 	
 	@Test
 	public void countingTest1() {

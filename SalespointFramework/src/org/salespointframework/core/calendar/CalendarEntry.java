@@ -25,7 +25,7 @@ public interface CalendarEntry {
      *             if <code>userIdentifier</code> or <code>capability</code> or
      *             both are <code>null</code>
      */
-    void addCapability(UserIdentifier userIdentifier, CalendarEntryCapability capability);
+    //void addCapability(UserIdentifier userIdentifier, CalendarEntryCapability capability);
 
     /**
      * Returns the ID of this entry. The identifier can be used e.g. as primary
@@ -47,7 +47,7 @@ public interface CalendarEntry {
      * @throws ArgumentNullException
      *             if <code>userIdentifier</code> is <code>null</code>
      */
-    Iterable<CalendarEntryCapability> getCapabilities(UserIdentifier userIdentifier);
+    //Iterable<CalendarEntryCapability> getCapabilities(UserIdentifier userIdentifier);
 
     /**
      * Returns a description of this entry
@@ -98,7 +98,7 @@ public interface CalendarEntry {
      * @throws ArgumentNullException
      *             if <code>capability</code> is <code>null</code>
      */
-    Iterable<UserIdentifier> getUsersByCapability(CalendarEntryCapability capability);
+    //Iterable<UserIdentifier> getUsersByCapability(CalendarEntryCapability capability);
 
     /**
      * Removes a capability from a user
@@ -113,7 +113,7 @@ public interface CalendarEntry {
      * @throws IllegalArgumentException
      *             if a capability from the owner should be removed.
      */
-    void removeCapability(UserIdentifier user, CalendarEntryCapability capability);
+    //void removeCapability(UserIdentifier user, CalendarEntryCapability capability);
 
     /**
      * Changes the description.
