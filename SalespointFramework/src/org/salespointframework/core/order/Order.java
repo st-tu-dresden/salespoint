@@ -3,6 +3,7 @@ package org.salespointframework.core.order;
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
+import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
@@ -55,6 +56,9 @@ public interface Order<O extends OrderLine>
 	
 	// TODO comment
 	UserIdentifier getUserIdentifier();
+	
+	// TODO comment
+	PaymentMethod getPaymentMethod();
 	
 	/**
 	 * Adds a new {@link ChargeLine} to the order

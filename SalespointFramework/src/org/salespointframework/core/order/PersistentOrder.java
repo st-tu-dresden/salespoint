@@ -443,4 +443,9 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	public OrderIdentifier getIdentifier() {
 		return orderIdentifier;
 	}
+
+	@Override
+	public PaymentMethod getPaymentMethod() {
+		return paymentMethod;
+	}
 }
