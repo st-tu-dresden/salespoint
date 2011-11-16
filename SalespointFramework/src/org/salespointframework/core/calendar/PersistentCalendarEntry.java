@@ -46,10 +46,9 @@ public class PersistentCalendarEntry implements CalendarEntry {
     @AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID"))
     private CalendarEntryIdentifier                               calendarEntryIdentifier;
 
-    @ElementCollection(targetClass = EnumSet.class)
-    @CollectionTable(joinColumns = @JoinColumn(referencedColumnName = "ENTRY_ID", name = "ENTRY_ID"))
-    @AttributeOverride(name = "key.id", column = @Column(name = "USER_ID"))
-    
+    //@ElementCollection(targetClass = EnumSet.class)
+    //@CollectionTable(joinColumns = @JoinColumn(referencedColumnName = "ENTRY_ID", name = "ENTRY_ID"))
+    //@AttributeOverride(name = "key.id", column = @Column(name = "USER_ID"))
     //@Column(name = "ENUM")
     //private Map<UserIdentifier, EnumSet<CalendarEntryCapability>> capabilities = new HashMap<UserIdentifier, EnumSet<CalendarEntryCapability>>();
 
