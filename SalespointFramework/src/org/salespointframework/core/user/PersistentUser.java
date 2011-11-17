@@ -1,8 +1,8 @@
 package org.salespointframework.core.user;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
@@ -27,7 +27,7 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 	private String password;
 
 	@ElementCollection
-	private Set<UserCapability> capabilities = new HashSet<UserCapability>();
+	private Set<UserCapability> capabilities = new TreeSet<UserCapability>();
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
