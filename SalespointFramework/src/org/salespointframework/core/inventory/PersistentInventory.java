@@ -66,7 +66,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	 * @param productInstances
 	 *            an {@link Iterable} of {@link PersistentProductInstance}s to be added
 	 * 
-	 * @throws ArgumentNullException if productInstaces is null
+	 * @throws ArgumentNullException if productInstances is null
 	 */
 	public void addAll(Iterable<? extends PersistentProductInstance> productInstances) {
 		Objects.requireNonNull(productInstances, "productInstances");

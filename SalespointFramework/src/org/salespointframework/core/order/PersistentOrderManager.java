@@ -10,6 +10,7 @@ import javax.persistence.criteria.Root;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.database.Database;
+import org.salespointframework.core.product.PersistentProductInstance;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
@@ -40,6 +41,24 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 		em.persist(order);
 		beginCommit(em);
 	}
+	
+	/**
+	 * Adds multiple {@link PersistentOrder}s to this PersistentOrderManager
+	 * 
+	 * @param orders
+	 *            an {@link Iterable} of {@link PersistentOrders}s to be added
+	 * 
+	 * @throws ArgumentNullException if orders is null
+	 */
+	public void addAll(Iterable<? extends PersistentOrder> orders) {
+		Objects.requireNonNull(orders, "orders");
+		EntityManager em = emf.createEntityManager();
+		for(PersistentOrder order : orders) {
+			em.persist(order);
+		}
+		beginCommit(em);
+	}
+	
 
 	@Override
 	public final <T extends PersistentOrder> T get(Class<T> clazz, OrderIdentifier orderIdentifier)
