@@ -6,6 +6,7 @@ import org.salespointframework.util.ArgumentNullException;
 
 
 // TODO comment
+// TODO comment new addition Class<T>
 /**
  * OrderManager interface
  * 
@@ -31,7 +32,7 @@ public interface OrderManager<O extends Order<OL>, OL extends OrderLine>
 	 * @return the order if the orderIdentifier matches, otherwise null
 	 * @throws ArgumentNullException if orderIdentifier is null
 	 */
-	O get(OrderIdentifier orderIdentifier);
+	<E extends O> E get(Class<E> clazz, OrderIdentifier orderIdentifier);
 	
 	/**
 	 * Checks if this OrderManager contains an order
@@ -50,7 +51,7 @@ public interface OrderManager<O extends Order<OL>, OL extends OrderLine>
 	 * @return an Iterable containing all {@link Order}s with the specified {@link OrderStatus}
 	 * @throws ArgumentNullException if orderStatus is null
 	 */
-	Iterable<O> find(OrderStatus orderStatus);
+	<E extends O> Iterable<E> find(Class<E> clazz, OrderStatus orderStatus);
 	
 	/**
 	 * Returns all {@link Order}s in between the dates
@@ -66,7 +67,7 @@ public interface OrderManager<O extends Order<OL>, OL extends OrderLine>
 	 *         to
 	 * @throws ArgumentNullException if from or to are null         
 	 */
-	Iterable<O> find(DateTime from, DateTime to);
+	<E extends O> Iterable<E> find(Class<E> clazz, DateTime from, DateTime to);
 	
 	/**
 	 * Returns all {@link Order}s from the given {@link UserIdentifier}. If this user
@@ -79,7 +80,7 @@ public interface OrderManager<O extends Order<OL>, OL extends OrderLine>
 	 *         specified user.
 	 * @throws ArgumentNullException if userIdentifier is null
 	 */
-	Iterable<O> find(UserIdentifier userIdentifier);
+	<E extends O> Iterable<E> find(Class<E> clazz, UserIdentifier userIdentifier);
 	
 	/**
 	 * Returns all {@link Order}s from the given {@link UserIdentifier} in between the
@@ -98,5 +99,5 @@ public interface OrderManager<O extends Order<OL>, OL extends OrderLine>
 	 *         specified user in the specified period.
 	 * @throws ArgumentNullException if any argument is null         
 	 */
-	Iterable<O> find(UserIdentifier userIdentifier, DateTime from, DateTime to);
+	<E extends O> Iterable<E> find(Class<E> clazz, UserIdentifier userIdentifier, DateTime from, DateTime to);
 }

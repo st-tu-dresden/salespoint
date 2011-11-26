@@ -54,6 +54,6 @@ public class OrderManagerTest {
 	@Test
 	public void testGet() {
 		orderManager.add(order);
-		assertEquals(order, orderManager.get(order.getIdentifier()));
+		assertEquals(order, orderManager.get(PersistentOrder.class, order.getIdentifier()));
 	}
 }

@@ -21,7 +21,7 @@ import org.salespointframework.util.Objects;
  * @author Paul Henke
  * 
  */
-public final class PersistentOrderManager implements OrderManager<PersistentOrder, PersistentOrderLine>
+public class PersistentOrderManager implements OrderManager<PersistentOrder, PersistentOrderLine>
 {
 	private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 
@@ -33,7 +33,7 @@ public final class PersistentOrderManager implements OrderManager<PersistentOrde
 	}
 	
 	@Override
-	public final void add(PersistentOrder order)
+	public void add(PersistentOrder order)
 	{
 		Objects.requireNonNull(order, "order");
 		EntityManager em = emf.createEntityManager();
@@ -42,11 +42,11 @@ public final class PersistentOrderManager implements OrderManager<PersistentOrde
 	}
 
 	@Override
-	public final PersistentOrder get(OrderIdentifier orderIdentifier)
+	public final <T extends PersistentOrder> T get(Class<T> clazz, OrderIdentifier orderIdentifier)
 	{
 		Objects.requireNonNull(orderIdentifier, "orderIdentifier");
 		EntityManager em = emf.createEntityManager();
-		return em.find(PersistentOrder.class, orderIdentifier);
+		return em.find(clazz, orderIdentifier);
 	}
 
 	@Override
@@ -58,53 +58,53 @@ public final class PersistentOrderManager implements OrderManager<PersistentOrde
 	}
 
 	@Override
-	public final Iterable<PersistentOrder> find(DateTime from, DateTime to)
+	public final <T extends PersistentOrder> Iterable<T> find(Class<T> clazz, DateTime from, DateTime to)
 	{
 		Objects.requireNonNull(from, "from");
 		Objects.requireNonNull(to, "to");
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<PersistentOrder> cq = cb.createQuery(PersistentOrder.class);
-		Root<PersistentOrder> entry = cq.from(PersistentOrder.class);
+		CriteriaQuery<T> cq = cb.createQuery(clazz);
+		Root<T> entry = cq.from(clazz);
 		cq.where(cb.between(entry.get(PersistentOrder_.dateCreated), from.toDate(), to.toDate()));
-		TypedQuery<PersistentOrder> tq = em.createQuery(cq);
+		TypedQuery<T> tq = em.createQuery(cq);
 
 		return Iterables.of(tq.getResultList());
 	}
 
 	@Override
-	public final Iterable<PersistentOrder> find(OrderStatus orderStatus)
+	public final <T extends PersistentOrder> Iterable<T> find(Class<T> clazz, OrderStatus orderStatus)
 	{
 		Objects.requireNonNull(orderStatus, "orderStatus");
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<PersistentOrder> cq = cb.createQuery(PersistentOrder.class);
-		Root<PersistentOrder> entry = cq.from(PersistentOrder.class);
+		CriteriaQuery<T> cq = cb.createQuery(clazz);
+		Root<T> entry = cq.from(clazz);
 		cq.where(cb.equal(entry.get(PersistentOrder_.orderStatus), orderStatus));
-		TypedQuery<PersistentOrder> tq = em.createQuery(cq);
+		TypedQuery<T> tq = em.createQuery(cq);
 
 		return Iterables.of(tq.getResultList());
 	}
 
 	@Override
-	public final Iterable<PersistentOrder> find(UserIdentifier userIdentifier)
+	public final <T extends PersistentOrder> Iterable<T> find(Class<T> clazz, UserIdentifier userIdentifier)
 	{
 		Objects.requireNonNull(userIdentifier, "userIdentifier");
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<PersistentOrder> cq = cb.createQuery(PersistentOrder.class);
-		Root<PersistentOrder> entry = cq.from(PersistentOrder.class);
+		CriteriaQuery<T> cq = cb.createQuery(clazz);
+		Root<T> entry = cq.from(clazz);
 		cq.where(cb.equal(entry.get(PersistentOrder_.userIdentifier), userIdentifier));
-		TypedQuery<PersistentOrder> tq = em.createQuery(cq);
+		TypedQuery<T> tq = em.createQuery(cq);
 
 		return Iterables.of(tq.getResultList());
 	}
 
 	@Override
-	public final Iterable<PersistentOrder> find(UserIdentifier userIdentifier, DateTime from, DateTime to)
+	public final <T extends PersistentOrder> Iterable<T> find(Class<T> clazz, UserIdentifier userIdentifier, DateTime from, DateTime to)
 	{
 		Objects.requireNonNull(userIdentifier, "userIdentifier");
 		Objects.requireNonNull(from, "from");
@@ -112,12 +112,12 @@ public final class PersistentOrderManager implements OrderManager<PersistentOrde
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<PersistentOrder> cq = cb.createQuery(PersistentOrder.class);
-		Root<PersistentOrder> entry = cq.from(PersistentOrder.class);
+		CriteriaQuery<T> cq = cb.createQuery(clazz);
+		Root<T> entry = cq.from(clazz);
 		Predicate p1 = cb.equal(entry.get(PersistentOrder_.userIdentifier), userIdentifier);
 		Predicate p2 = cb.between(entry.get(PersistentOrder_.dateCreated), from.toDate(), to.toDate());
 		cq.where(p1, p2);
-		TypedQuery<PersistentOrder> tq = em.createQuery(cq);
+		TypedQuery<T> tq = em.createQuery(cq);
 
 		return Iterables.of(tq.getResultList());
 	}

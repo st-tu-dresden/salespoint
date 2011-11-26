@@ -93,7 +93,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	}
 	
 	@Override
-	public final boolean addOrderLine(PersistentOrderLine orderLine) {
+	public boolean addOrderLine(PersistentOrderLine orderLine) {
 		Objects.requireNonNull(orderLine, "orderLine");
 		if (orderStatus != OrderStatus.OPEN) {
 			return false;
@@ -102,7 +102,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	}
 
 	@Override
-	public final boolean removeOrderLine(OrderLineIdentifier orderLineIdentifier) {
+	public boolean removeOrderLine(OrderLineIdentifier orderLineIdentifier) {
 		Objects.requireNonNull(orderLineIdentifier, "orderLineIdentifier");
 		if (orderStatus != OrderStatus.OPEN) {
 			return false;
@@ -118,7 +118,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	}
 
 	@Override
-	public final boolean addChargeLine(ChargeLine chargeLine) {
+	public boolean addChargeLine(ChargeLine chargeLine) {
 		Objects.requireNonNull(chargeLine, "chargeLine");
 		if (orderStatus != OrderStatus.OPEN) {
 			return false;
@@ -127,7 +127,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	}
 
 	@Override
-	public final boolean removeChargeLine(ChargeLineIdentifier chargeLineIdentifier) {
+	public boolean removeChargeLine(ChargeLineIdentifier chargeLineIdentifier) {
 		Objects.requireNonNull(chargeLineIdentifier, "chargeLineIdentifier");
 		
 		if (orderStatus != OrderStatus.OPEN) {
@@ -144,12 +144,12 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	}
 
 	@Override
-	public final Iterable<PersistentOrderLine> getOrderLines() {
+	public Iterable<PersistentOrderLine> getOrderLines() {
 		return Iterables.of(orderLines);
 	}
 
 	@Override
-	public final Iterable<ChargeLine> getChargeLines() {
+	public Iterable<ChargeLine> getChargeLines() {
 		return Iterables.of(chargeLines);
 	}
 
@@ -164,7 +164,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	}
 
 	@Override
-	public final boolean cancelOrder() {
+	public boolean cancelOrder() {
 		if (orderStatus == OrderStatus.OPEN) {
 			orderStatus = OrderStatus.CANCELLED;
 			return true;
@@ -174,12 +174,12 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	}
 
 	@Override
-	public final Money getTotalPrice() {
+	public Money getTotalPrice() {
 		return this.getOrderedLinesPrice().add(this.getChargeLinesPrice());
 	}
 
 	@Override
-	public final Money getOrderedLinesPrice() {
+	public Money getOrderedLinesPrice() {
 		Money price = Money.ZERO;
 		for (OrderLine orderLine : orderLines) {
 			price = price.add(orderLine.getPrice());
@@ -188,7 +188,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	}
 
 	@Override
-	public final Money getChargeLinesPrice() {
+	public Money getChargeLinesPrice() {
 		Money price = Money.ZERO;
 		for(ChargeLine chargeLine : chargeLines) {
 			price = price.add(chargeLine.getPrice());
@@ -197,7 +197,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	}
 
 	@Override
-	public boolean equals(Object other) {
+	public final boolean equals(Object other) {
 		if (other == null) {
 			return false;
 		}
@@ -205,8 +205,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 			return true;
 		}
 		if (other instanceof PersistentOrder) {
-			return this.orderIdentifier
-					.equals(((PersistentOrder) other).orderIdentifier);
+			return this.orderIdentifier.equals(((PersistentOrder) other).orderIdentifier);
 		}
 		return false;
 	}
@@ -227,7 +226,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	}
 
 	@Override
-	public final OrderCompletionResult completeOrder() {
+	public OrderCompletionResult completeOrder() {
 		//System.out.println("---COMPLETE ORDER BEGIN");
 		
 		// TODO mehr CompletionStates? oder letzten Param (Exception)
@@ -323,7 +322,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	 * @return true if OrderStatus is PAYED, otherwise false
 	 */
 
-	public final boolean isPayed() {
+	public boolean isPayed() {
 		return orderStatus == OrderStatus.PAYED;
 	}
 
@@ -332,7 +331,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	 * 
 	 * @return true if OrderStatus is CANCELLED, otherwise false
 	 */
-	public final boolean isCanceled() {
+	public boolean isCanceled() {
 		return orderStatus == OrderStatus.CANCELLED;
 	}
 
@@ -341,7 +340,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	 * 
 	 * @return true if OrderStatus is COMPLETED, otherwise false
 	 */
-	public final boolean isCompleted() {
+	public boolean isCompleted() {
 		return orderStatus == OrderStatus.COMPLETED;
 	}
 
@@ -350,7 +349,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	 * 
 	 * @return true if OrderStatus is OPEN, otherwise false
 	 */
-	public final boolean isOpen() {
+	public boolean isOpen() {
 		return orderStatus == OrderStatus.OPEN;
 	}
 
@@ -440,12 +439,12 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	}
 
 	@Override
-	public OrderIdentifier getIdentifier() {
+	public final OrderIdentifier getIdentifier() {
 		return orderIdentifier;
 	}
 
 	@Override
-	public PaymentMethod getPaymentMethod() {
+	public final PaymentMethod getPaymentMethod() {
 		return paymentMethod;
 	}
 }

@@ -175,37 +175,6 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 			}
 		}
 		
-		/*
-		int query_entries = 0;
-		boolean match = true;
-		for (E e : query) {
-			query_entries = 0;
-			for (ProductFeature have : e.getProductFeatures()) {
-				query_entries += 1;
-				match = false;
-
-				for (ProductFeature should : featureSet) {
-					if (have.equals(should)) {
-						// System.out.println("Found match between " + have +
-						// " ("
-						// + query_entries + ")" + " and " + should);
-						match = true;
-						break;
-					}
-				}
-
-				if (!match)
-					break;
-			}
-			
-			 // same length and all entries matched. if lengths differ, all
-			 // entries may match, but they are still not the same
-			
-			if (query_entries == featureSet.size() && match)
-				result.add(e);
-		}
-	*/
-
 		return result;
 	}
 	
