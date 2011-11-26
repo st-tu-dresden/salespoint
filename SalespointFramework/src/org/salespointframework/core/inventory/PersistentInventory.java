@@ -53,10 +53,10 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	}
 
 	@Override
-	public void add(PersistentProductInstance persistentProduct) {
-		Objects.requireNonNull(persistentProduct, "persistentProduct");
+	public void add(PersistentProductInstance productInstance) {
+		Objects.requireNonNull(productInstance, "productInstance");
 		EntityManager em = getEntityManager();
-		em.persist(persistentProduct);
+		em.persist(productInstance);
 		beginCommit(em);
 	}
 
@@ -69,7 +69,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	 * @throws ArgumentNullException if productInstaces is null
 	 */
 	public void addAll(Iterable<? extends PersistentProductInstance> productInstances) {
-		Objects.requireNonNull(productInstances, "products");
+		Objects.requireNonNull(productInstances, "productInstances");
 		EntityManager em = getEntityManager();
 		for (PersistentProductInstance e : productInstances) {
 			em.persist(e);
