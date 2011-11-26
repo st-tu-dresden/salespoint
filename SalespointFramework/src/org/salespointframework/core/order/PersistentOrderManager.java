@@ -10,7 +10,6 @@ import javax.persistence.criteria.Root;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.database.Database;
-import org.salespointframework.core.product.PersistentProductInstance;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
