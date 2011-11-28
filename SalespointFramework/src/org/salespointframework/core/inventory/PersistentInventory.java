@@ -187,7 +187,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	 * @return a new PersistentInventory
 	 * @throws ArgumentNullException if entityManager is null
 	 */
-	public final PersistentInventory newInstance(EntityManager entityManager) {
+	public PersistentInventory newInstance(EntityManager entityManager) {
 		Objects.requireNonNull(entityManager, "entityManager");
 		System.out.println("newInstance: " + entityManager);
 		return new PersistentInventory(entityManager);
