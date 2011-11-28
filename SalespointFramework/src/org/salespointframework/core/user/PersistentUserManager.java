@@ -111,6 +111,9 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		beginCommit(em);
 	}
 
+	
+	// TODO use WeakHashMap http://docs.oracle.com/javase/6/docs/api/java/util/WeakHashMap.html
+	// verhindert dass tote Session für immer und ewig in der Map bleiben, normalerweise egal, außer bei "real world" anwendungen die nicht nur 30min laufen 
 	private static final Map<Object, PersistentUser> userTokenMap = new ConcurrentHashMap<Object, PersistentUser>();
 
 	@Override
