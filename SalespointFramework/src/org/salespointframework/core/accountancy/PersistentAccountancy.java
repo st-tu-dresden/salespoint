@@ -28,7 +28,7 @@ import org.salespointframework.util.Objects;
  * @author Thomas Dedek
  * 
  */
-public final class PersistentAccountancy implements
+public class PersistentAccountancy implements
 		Accountancy<PersistentAccountancyEntry> {
 	/**
 	 * {@link EntityManager} which is used for this Accountancy. The
