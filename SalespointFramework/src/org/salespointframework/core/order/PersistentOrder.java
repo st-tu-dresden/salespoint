@@ -35,6 +35,7 @@ import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
@@ -86,11 +87,28 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	 *            order
 	 * @param paymentMethod
 	 *            The {@link PaymentMethod} connected to this order
+	 * @throws ArgumentNullException if userIdentifier or paymentMethod is null
 	 */
 	public PersistentOrder(UserIdentifier userIdentifier, PaymentMethod paymentMethod) {
 		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier");
 		this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod");
 	}
+	
+	/**
+	 * Creates a new PersistentOrder
+	 * 
+	 * @param userIdentifier
+	 *            The {@link UserIdentifier}/{@link User} connected to this
+	 *            order
+	 * @throws ArgumentNullException if userIdentifier is null
+	 */
+	public PersistentOrder(UserIdentifier userIdentifier) {
+		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier");
+	}
+	
+	
+	
+	
 	
 	@Override
 	public boolean addOrderLine(PersistentOrderLine orderLine) {
@@ -355,7 +373,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 
 	@Override
 	public boolean payOrder() {
-		if (orderStatus != OrderStatus.OPEN) {
+		if (orderStatus != OrderStatus.OPEN || paymentMethod == null) {
 			return false;
 		}
 
@@ -446,5 +464,10 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	@Override
 	public final PaymentMethod getPaymentMethod() {
 		return paymentMethod;
+	}
+	
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
+		if(orderStatus != OrderStatus.OPEN) return;
+		this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod");
 	}
 }
