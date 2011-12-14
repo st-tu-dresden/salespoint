@@ -1,6 +1,7 @@
 package org.salespointframework.core.quantity.rounding;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * This is interface is implemented by classes, which are used to round numbers.
@@ -15,13 +16,13 @@ public interface RoundingStrategy {
 	 * Convenience instance, which can be used for monetary rounding. Rounds
 	 * towards zero with 4 digits after the decimal delimiter.
 	 */
-	public static final RoundingStrategy MONETARY_ROUNDING = new RoundDownStrategy(
-			4);
+	public static final RoundingStrategy MONETARY_ROUNDING = new BasicRoundingStrategy(
+			4, RoundingMode.HALF_UP);
 	/**
 	 * Convenience instance, which can be used for rounding of integral types.
 	 * Rounds towards zero, with 0 digits after the decimal delimiter.
 	 */
-	public static final RoundingStrategy ROUND_ONE = new RoundDownStrategy(0);
+	public static final RoundingStrategy ROUND_ONE = new BasicRoundingStrategy(0, RoundingMode.HALF_DOWN);
 
 	/**
 	 * Rounds the given <code>BigDecimal</code> instance <code>amount</code>
