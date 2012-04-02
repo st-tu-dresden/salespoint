@@ -16,8 +16,8 @@ import org.salespointframework.web.WebConstants;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-// TODO comment
 /**
+ * Use this class with the provided LoginTemplate
  * 
  * @author Lars Kreisz
  * @author Uwe Schmidt

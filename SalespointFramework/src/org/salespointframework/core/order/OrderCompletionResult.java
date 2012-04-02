@@ -2,7 +2,6 @@ package org.salespointframework.core.order;
 
 import org.salespointframework.core.product.ProductInstance;
 
-// TODO comment
 /**
  * An <code>OrderCompletionResult</code> is returned after you call Order.completeOrder()
  *  
@@ -28,7 +27,15 @@ public interface OrderCompletionResult
 	 */
 	boolean rollBack();
 
+	/**
+	 * Creates and returns a Splitorder
+	 * @return a new {@link Order}
+	 */
 	Order<OrderLine> splitOrder();
 	
+	/**
+	 * Returns all removed {@link ProductInstance}s
+	 * @return an {@link Iterable} of {@link ProductInstance}
+	 */
 	Iterable<ProductInstance> getRemovedInstances();
 }

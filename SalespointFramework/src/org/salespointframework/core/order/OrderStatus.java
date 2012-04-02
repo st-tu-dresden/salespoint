@@ -1,8 +1,7 @@
 package org.salespointframework.core.order;
 
-// TODO comment
+
 /**
- * 
  * @author Paul Henke
  *
  */

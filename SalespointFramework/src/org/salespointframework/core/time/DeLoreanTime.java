@@ -5,8 +5,10 @@ import org.joda.time.Duration;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Objects;
 
-// TODO comment
 /**
+ * A full {@link Time} implementation including forward().
+ * Hook-methods are provided for convenience.
+ * Use this implementation for testing.
  * 
  * @author Paul Henke
  *

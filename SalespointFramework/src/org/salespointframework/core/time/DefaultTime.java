@@ -3,8 +3,10 @@ package org.salespointframework.core.time;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
-//TODO comment
+
 /**
+ * A {@link Time} implementation, forward() is a no-op.
+ * Use this implementation for production code.
  * 
  * @author Paul Henke
  * 

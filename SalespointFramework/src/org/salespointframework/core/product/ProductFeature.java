@@ -88,6 +88,10 @@ public final class ProductFeature implements Serializable, Comparable<ProductFea
 		return new ProductFeature(featureType, value, Money.ZERO, percent);
 	}
 
+	/**
+	 * 
+	 * @return the {@link ProductFeatureIdentifier} of this ProductFeature
+	 */
 	public final ProductFeatureIdentifier getIdentifier() {
 		return productFeatureIdentifier;
 	}
@@ -120,7 +124,10 @@ public final class ProductFeature implements Serializable, Comparable<ProductFea
 		return price;
 	}
 
-	// TODO comment
+	/**
+	 * 
+	 * @return the percentage of the price
+	 */
 	public final double getPercent()
 	{
 		return percent;

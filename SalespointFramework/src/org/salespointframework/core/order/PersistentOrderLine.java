@@ -20,9 +20,8 @@ import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
-// TODO comment
 /**
- * 
+ * A persistent implementation of the {@link OrderLine} interface.
  * This class is immutable.
  * 
  * @author Paul Henke

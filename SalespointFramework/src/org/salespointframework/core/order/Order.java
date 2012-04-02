@@ -54,10 +54,16 @@ public interface Order<O extends OrderLine>
 	
 	OrderIdentifier getIdentifier();
 	
-	// TODO comment
+	/**
+	 * 
+	 * @return the {@link UserIdentifier} for this order
+	 */
 	UserIdentifier getUserIdentifier();
 	
-	// TODO comment
+	/**
+	 * 
+	 * @return the {@link PaymentMethod} for this order
+	 */
 	PaymentMethod getPaymentMethod();
 	
 	/**

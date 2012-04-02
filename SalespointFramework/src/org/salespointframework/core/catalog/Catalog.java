@@ -4,8 +4,6 @@ import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.Product;
 import org.salespointframework.util.ArgumentNullException;
 
-// TODO comment
-
 /**
  * Catalog interface
  *
@@ -51,17 +49,17 @@ public interface Catalog<T extends Product>
 	 */
 	<E extends T> E get(Class<E> clazz, ProductIdentifier productIdentifier);
 
-	// TODO comment
+
 	/**
-	 * 
+	 * Returns an Iterable of {@link Product}s of Type <code>clazz</code> 
 	 * @param clazz type of the {@link Product} to be returned; has to implement {@link Product}
 	 * @return an {@link Iterable} containing all {@link Product}s of type clazz
 	 * @throws ArgumentNullException if clazz is null
 	 */
 	<E extends T> Iterable<E> find(Class<E> clazz);
 
-	// TODO comment
 	/**
+	 * Returns an Iterable of {@link Product}s of Type <code>clazz</code> with the name <code>name</name>
 	 * @param clazz type of the {@link Product} to be returned; has to implement {@link Product}
 	 * @param name the name of the {@link Product}
 	 * @return an {@link Iterable} containing all {@link Product}s of type clazz, whose productName matches name
@@ -69,8 +67,8 @@ public interface Catalog<T extends Product>
 	 */
 	<E extends T> Iterable<E> findByName(Class<E> clazz, String name);
 	
-	// TODO comment
 	/**
+	 * Returns an Iterable of {@link Product}s of Type <code>clazz</code> with the category <code>category</name>
 	 * @param clazz type of the {@link Product} to be returned; has to implement {@link Product}
 	 * @param category the category of the {@link Product}
 	 * @return an {@link Iterable} containing all {@link Product}s of type clazz, whose productCategory is category

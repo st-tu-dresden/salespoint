@@ -14,9 +14,9 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
-// TODO comment
+
 /**
- * 
+ * A persistent implementation of the {@link ProductInstance} interface.
  * This class is immutable.
  * @author Paul Henke
  *
@@ -47,7 +47,6 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 	}
 	
 	
-	//TODO comment productFeatureIdentifiers
 	/**
 	 * Creates a new PersistentProduct with a specified {@link ProductFeature}set
 	 * @param product the {@link Product} of the PersistentProduct
@@ -131,7 +130,7 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 		return name;
 	}
 	
-	//TODO comment & ins interface?
+	//TODO ins interface?
 	public String getName() 
 	{
 		return name;

@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.salespointframework.util.ArgumentNullException;
 
-// TODO comment
+
 /**
  * 
  * @author Paul Henke

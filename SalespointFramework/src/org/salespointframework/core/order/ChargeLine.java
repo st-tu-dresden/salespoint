@@ -6,9 +6,8 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Objects;
 
-// TODO comment
 /**
- * 
+ * A chargeline represents extra expenses like shipping.
  * This class is immutable.
  * 
  * @author Thomas Dedek

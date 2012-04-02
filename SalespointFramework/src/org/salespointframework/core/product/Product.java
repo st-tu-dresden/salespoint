@@ -3,9 +3,9 @@ package org.salespointframework.core.product;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.ArgumentNullException;
 
-// TODO comment
+
 /**
- * 
+ * The Product interface
  * @author Paul Henke
  * 
  */
@@ -37,11 +37,21 @@ public interface Product
 	 */
 	boolean addProductFeature(ProductFeature productFeature);
 	
-	// TODO comment
+	/**
+	 * Removes a {@link ProductFeature}
+	 * @param productFeatureIdentifier the {@link ProductFeatureIdentifier} of the {@link ProductFeature}
+	 * @return true if the ProductFeature is removed, false otherwise 
+	 * @throws ArgumentNullException if productFeatureIdentifier is null
+	 */
 	boolean removeProductFeature(ProductFeatureIdentifier productFeatureIdentifier);
 	
 	
-	// TODO comment
+	/**
+	 * Gets the {@link ProductFeature} for a specifig {@link ProductFeatureIdentifier}
+	 * @param productFeatureIdentifier the {@link ProductFeatureIdentifier} of the {@link ProductFeature}
+	 * @return a {@link ProductFeature}
+	 * @throws ArgumentNullException if productFeatureIdentifier is null
+	 */
 	ProductFeature getProductFeature(ProductFeatureIdentifier productFeatureIdentifier);
 
 	/**

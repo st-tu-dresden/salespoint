@@ -52,7 +52,7 @@ public interface Inventory<T extends ProductInstance>
 	<E extends T> E get(Class<E> clazz, SerialNumber serialNumber);
 
 	/**
-	 * 
+	 * Returns all {@link ProductInstance}s of type <code>clazz</code>
 	 * @param clazz type of the productinstance to be returned; has to implement {@link ProductInstance}
 	 * @return an {@link Iterable} containing all {@link ProductInstance}s of type clazz
 	 * @throws ArgumentNullException if clazz is null
@@ -60,7 +60,7 @@ public interface Inventory<T extends ProductInstance>
 	<E extends T> Iterable<E> find(Class<E> clazz);
 
 	/**
-	 * 
+	 * Returns all {@link ProductInstance}s of type <code>clazz</code>, whose {@link ProductIdentifier} matches productIdentifier
 	 * @param clazz type of the productinstance to be returned; has to implement {@link ProductInstance}
 	 * @param productIdentifier the {@link ProductIdentifier} of the {@link ProductInstance}s to be returned
 	 * @return an {@link Iterable} containing all {@link ProductInstance}s of type clazz and the given productIdentifier
@@ -79,8 +79,20 @@ public interface Inventory<T extends ProductInstance>
 	 */
 	<E extends T> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures);
 	
-	// TODO comment
+	/**
+	 * Returns the number of {@link ProductInstance}s in this inventory whose {@link ProductIdentifier} is productIdentifier
+	 * @param productIdentifier a {@link ProductIdentifier}
+	 * @return a long value
+	 * @throws ArgumentNullException if productIdentifier is null
+	 */
 	long count(ProductIdentifier productIdentifier);
-	// TODO comment
+	
+	/**
+	 * Returns the number of {@link ProductInstance}s in this inventory whose {@link ProductIdentifier} is productIdentifier and whose {@link ProductFeature}s is productFeatures
+	 * @param productIdentifier a {@link ProductIdentifier}
+	 * @param productFeatures  {@link ProductFeature}
+	 * @return a long value
+	 * @throws ArgumentNullException if productIdentifier or productFeatures are null
+	 */
 	long count(ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures);
 }

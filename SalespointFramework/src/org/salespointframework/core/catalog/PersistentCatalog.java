@@ -18,8 +18,8 @@ import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Objects;
 
-// TODO comment
 /**
+ * A persistent implementation of the {@link Catalog} interface.
  * 
  * @author Paul Henke
  * 

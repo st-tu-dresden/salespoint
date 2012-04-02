@@ -24,7 +24,6 @@ import org.salespointframework.core.user.UserManager;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Objects;
 
-// TODO Comment
 /**
  * Shop Singleton
  * @author Paul Henke
