@@ -119,7 +119,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
      * @param userIdentifier
      *            {@link UserIdentifier} of the user whose entries should be
      *            found.
-     * @return An {@Iterable} with all found entries.
+     * @return An {link @Iterable} with all found entries.
      */
     public <T extends PersistentCalendarEntry> Iterable<T> find(Class<T> clazz, UserIdentifier userIdentifier) {
         Objects.requireNonNull(userIdentifier, "userIdentifier");
