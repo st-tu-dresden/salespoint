@@ -9,7 +9,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
 import org.salespointframework.util.Iterables;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
+import org.salespointframework.util.Utility;
 
 /**
  * 
@@ -24,10 +25,10 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 	@EmbeddedId
 	private UserIdentifier userIdentifier;
 
-	private String password;
+	private String hashedPassword;
 
 	@ElementCollection
-	private Set<UserCapability> capabilities = new TreeSet<UserCapability>();
+	private Set<Capability> capabilities = new TreeSet<Capability>();
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
@@ -41,14 +42,18 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 	 * Creates an new PersistentUser
 	 * @param userIdentifier the {@link UserIdentifier} of the user
 	 * @param password the password of the user
-	 * @param capabilities an <code>Array</code> of {@link UserCapability}s for the user 
+	 * @param capabilities an <code>Array</code> of {@link Capability}s for the user 
 	 */
-	public PersistentUser(UserIdentifier userIdentifier, String password, UserCapability... capabilities)
+	public PersistentUser(UserIdentifier userIdentifier, String password, Capability... capabilities)
 	{
 		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier");
-		this.password = Objects.requireNonNull(password, "password");
+		
+		Objects.requireNonNull(password, "password");
+		this.hashedPassword = Utility.hashPassword(password);
+		
 		Objects.requireNonNull(capabilities, "capabilities");
 		this.capabilities.addAll(Arrays.asList(capabilities));
+		
 	}
 
 	@Override
@@ -58,28 +63,28 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 	}
 	
 	@Override
-	public boolean addCapability(UserCapability capability)
+	public boolean addCapability(Capability capability)
 	{
 		Objects.requireNonNull(capability, "capability");
 		return capabilities.add(capability);
 	}
 
 	@Override
-	public boolean removeCapability(UserCapability capability)
+	public boolean removeCapability(Capability capability)
 	{
 		Objects.requireNonNull(capability, "capability");
 		return capabilities.remove(capability);
 	}
 
 	@Override
-	public boolean hasCapability(UserCapability capability)
+	public boolean hasCapability(Capability capability)
 	{
 		Objects.requireNonNull(capability, "capability");
 		return capabilities.contains(capability);
 	}
 
 	@Override
-	public Iterable<UserCapability> getCapabilities()
+	public Iterable<Capability> getCapabilities()
 	{
 		return Iterables.of(capabilities);
 	}
@@ -89,18 +94,14 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 	{
 		Objects.requireNonNull(password, "password");
 		
-		if (this.password.equals(password))
-		{
-			return true;
-		}
-		return false;
+		return Utility.verifyPassword(password, hashedPassword);
 	}
 
 	@Override
-	public void changePassword(String newPassword)
+	public void changePassword(String password)
 	{
-		Objects.requireNonNull(newPassword, "newPassword");
-		this.password = newPassword;
+		Objects.requireNonNull(password, "password");
+		this.hashedPassword = Utility.hashPassword(password);
 	}
 
 	@Override
