@@ -15,7 +15,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import java.util.Objects;
 
@@ -33,7 +32,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
 
     @Override
     public void add(PersistentCalendarEntry entry) {
-        Objects.requireNonNull(entry, "entry");
+        Objects.requireNonNull(entry, "entry must not be null");
 
         EntityManager em = emf.createEntityManager();
         em.persist(entry);
@@ -42,14 +41,14 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
 
     @Override
     public boolean contains(CalendarEntryIdentifier calendarEntryIdentifier) {
-        Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier");
+        Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier must not be null");
         EntityManager em = emf.createEntityManager();
         return em.find(PersistentCalendarEntry.class, calendarEntryIdentifier) != null;
     }
 
     @Override
     public <T extends PersistentCalendarEntry> T get(Class<T> clazz, CalendarEntryIdentifier calendarEntryIdentifier) {
-        Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier");
+        Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier must not be null");
 
         EntityManager em = emf.createEntityManager();
         return em.find(clazz, calendarEntryIdentifier);
@@ -71,7 +70,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
      * @return An iterable with all found entries
      */
     public <T extends PersistentCalendarEntry> Iterable<T> find(Class<T> clazz, String title) {
-        Objects.requireNonNull(title, "title");
+        Objects.requireNonNull(title, "title must not be null");
 
         EntityManager em = emf.createEntityManager();
 
@@ -94,11 +93,11 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
      * 
      * @param entry
      *            the <code>PersistentCalendarEntry</code> to be updated
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>entry</code> is <code>null</code>
      */
     public void update(PersistentCalendarEntry entry) {
-        Objects.requireNonNull(entry, "entry");
+        Objects.requireNonNull(entry, "entry must not be null");
 
         EntityManager em = emf.createEntityManager();
         em.merge(entry);
@@ -122,7 +121,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
      * @return An {link @Iterable} with all found entries.
      */
     public <T extends PersistentCalendarEntry> Iterable<T> find(Class<T> clazz, UserIdentifier userIdentifier) {
-        Objects.requireNonNull(userIdentifier, "userIdentifier");
+        Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
 
         EntityManager em = emf.createEntityManager();
 
@@ -160,13 +159,13 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
      * 
      * @return An iterable with all found entries.
      * 
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>start</code> or <code>end</code> or both are <code>null</code>
      * 
      * @see Interval#contains(org.joda.time.ReadableInterval)
      */
     public <T extends PersistentCalendarEntry> Iterable<T> between(Class<T> clazz, DateTime start, DateTime end) {
-        Interval interval = new Interval(Objects.requireNonNull(start, "start"), Objects.requireNonNull(end, "end"));
+        Interval interval = new Interval(Objects.requireNonNull(start, "start must not be null"), Objects.requireNonNull(end, "end must not be null"));
 
         Iterable<T> allEntries = find(clazz);
         List<T> result = new ArrayList<T>();
@@ -206,13 +205,13 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
      * 
      * @return An iterable with all found entries.
      * 
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>start</code> or <code>end</code> or both are <code>null</code>
      * 
      * @see Interval#contains(org.joda.time.ReadableInstant)
      */
     public <T extends PersistentCalendarEntry> Iterable<T> endsBetween(Class<T> clazz, DateTime start, DateTime end) {
-        Interval interval = new Interval(Objects.requireNonNull(start, "start"), Objects.requireNonNull(end, "end"));
+        Interval interval = new Interval(Objects.requireNonNull(start, "start must not be null"), Objects.requireNonNull(end, "end must not be null"));
 
         Iterable<T> allEntries = find(clazz);
         List<T> result = new ArrayList<T>();
@@ -252,13 +251,13 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
      * 
      * @return An iterable with all found entries.
      * 
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>start</code> or <code>end</code> or both are <code>null</code>
      * 
      * @see Interval#contains(org.joda.time.ReadableInstant)
      */
     public <T extends PersistentCalendarEntry> Iterable<T> startsBetween(Class<T> clazz, DateTime start, DateTime end) {
-        Interval interval = new Interval(Objects.requireNonNull(start, "start"), Objects.requireNonNull(end, "end"));
+        Interval interval = new Interval(Objects.requireNonNull(start, "start must not be null"), Objects.requireNonNull(end, "end must not be null"));
 
         Iterable<T> allEntries = find(clazz);
         List<T> result = new ArrayList<T>();
@@ -289,7 +288,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
 
     @Override
     public boolean remove(CalendarEntryIdentifier calendarEntryIdentifier) {
-        Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier");
+        Objects.requireNonNull(calendarEntryIdentifier, "calendarEntryIdentifier must not be null");
         try {
             EntityManager em = emf.createEntityManager();
             Object calendarEntry = em.find(PersistentCalendarEntry.class, calendarEntryIdentifier);

@@ -2,7 +2,6 @@ package org.salespointframework.core.order;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.util.ArgumentNullException;
 
 // TODO comment new addition Class<T>
 /**
@@ -20,7 +19,7 @@ public interface OrderManager<O extends Order<OL>, OL extends OrderLine>
 	/**
 	 * Adds a new {@link Order} to the OrderManager
 	 * @param order the {@link Order} to be added
-	 * @throws ArgumentNullException if order is null
+	 * @throws NullPointerException if order is null
 	 */
 	void add(O order);
 	
@@ -28,7 +27,7 @@ public interface OrderManager<O extends Order<OL>, OL extends OrderLine>
 	 * Returns the order identified by an {@link OrderIdentifier}
 	 * @param orderIdentifier identifier of the {@link Order} to be returned
 	 * @return the order if the orderIdentifier matches, otherwise null
-	 * @throws ArgumentNullException if orderIdentifier is null
+	 * @throws NullPointerException if orderIdentifier is null
 	 */
 	<E extends O> E get(Class<E> clazz, OrderIdentifier orderIdentifier);
 	
@@ -36,7 +35,7 @@ public interface OrderManager<O extends Order<OL>, OL extends OrderLine>
 	 * Checks if this OrderManager contains an order
 	 * @param orderIdentifier the {@link OrderIdentifier} of the {@link Order}
 	 * @return true if the OrderManager contains the order, false otherwise
-	 * @throws ArgumentNullException if orderIdentifier is null
+	 * @throws NullPointerException if orderIdentifier is null
 	 */
 	boolean contains(OrderIdentifier orderIdentifier);
 
@@ -47,7 +46,7 @@ public interface OrderManager<O extends Order<OL>, OL extends OrderLine>
 	 * @param orderStatus
 	 *            Denoting the {@link OrderStatus} on which the {@link Order}s will be requested.
 	 * @return an Iterable containing all {@link Order}s with the specified {@link OrderStatus}
-	 * @throws ArgumentNullException if orderStatus is null
+	 * @throws NullPointerException if orderStatus is null
 	 */
 	<E extends O> Iterable<E> find(Class<E> clazz, OrderStatus orderStatus);
 	
@@ -63,7 +62,7 @@ public interface OrderManager<O extends Order<OL>, OL extends OrderLine>
 	 *            time stamp denoting the end of the requested time period
 	 * @return an Iterable containing all {@link Order}s between from and
 	 *         to
-	 * @throws ArgumentNullException if from or to are null         
+	 * @throws NullPointerException if from or to are null         
 	 */
 	<E extends O> Iterable<E> find(Class<E> clazz, DateTime from, DateTime to);
 	
@@ -76,7 +75,7 @@ public interface OrderManager<O extends Order<OL>, OL extends OrderLine>
 	 *            requested.
 	 * @return an Iterable containing all orders from the
 	 *         specified user.
-	 * @throws ArgumentNullException if userIdentifier is null
+	 * @throws NullPointerException if userIdentifier is null
 	 */
 	<E extends O> Iterable<E> find(Class<E> clazz, UserIdentifier userIdentifier);
 	
@@ -95,7 +94,7 @@ public interface OrderManager<O extends Order<OL>, OL extends OrderLine>
 	 *            time stamp denoting the end of the requested time period
 	 * @return an Iterable containing all orders from the
 	 *         specified user in the specified period.
-	 * @throws ArgumentNullException if any argument is null         
+	 * @throws NullPointerException if any argument is null         
 	 */
 	<E extends O> Iterable<E> find(Class<E> clazz, UserIdentifier userIdentifier, DateTime from, DateTime to);
 }

@@ -2,7 +2,6 @@ package org.salespointframework.core.time;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
-import org.salespointframework.util.ArgumentNullException;
 import java.util.Objects;
 
 /**
@@ -29,7 +28,7 @@ public class DeLoreanTime implements Time
 	@Override
 	public final void forward(Duration duration)
 	{
-		Objects.requireNonNull(duration, "duration");
+		Objects.requireNonNull(duration, "duration must not be null");
 		beforeForward(duration);
 		this.duration = this.duration.plus(duration);
 		afterForward(duration);

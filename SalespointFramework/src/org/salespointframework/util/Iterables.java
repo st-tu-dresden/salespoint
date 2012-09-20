@@ -29,11 +29,11 @@ public final class Iterables
 	 * Converts an {@link Iterable} to a {@link List}
 	 * @param iterable an Iterable 
 	 * @return a List
-	 * @throws ArgumentNullException if iterable is null 
+	 * @throws NullPointerException if iterable is null 
 	 */
 	public static <T> List<T> asList(Iterable<T> iterable)
 	{
-		Objects.requireNonNull(iterable, "iterable");
+		Objects.requireNonNull(iterable, "iterable must not be null");
 
 		List<T> temp = new ArrayList<T>();
 		for (T item : iterable)
@@ -47,11 +47,11 @@ public final class Iterables
 	 * Converts an {@link Iterable} to a {@link Set}
 	 * @param iterable an Iterable
 	 * @return a Set
-	 * @throws ArgumentNullException if iterable is null
+	 * @throws NullPointerException if iterable is null
 	 */
 	public static <T> Set<T> asSet(Iterable<T> iterable)
 	{
-		Objects.requireNonNull(iterable, "iterable");
+		Objects.requireNonNull(iterable, "iterable must not be null");
 
 		Set<T> temp = new HashSet<T>();
 		for (T item : iterable)
@@ -65,12 +65,12 @@ public final class Iterables
 	 * Converts an {@link Iterable} to an Array 
 	 * @param iterable an Iterable
 	 * @return an Array
-	 * @throws ArgumentNullException if iterable is null
+	 * @throws NullPointerException if iterable is null
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T[] asArray(Iterable<T> iterable)
 	{
-		Objects.requireNonNull(iterable, "iterable");
+		Objects.requireNonNull(iterable, "iterable must not be null");
 		return (T[]) asList(iterable).toArray();
 	}
 
@@ -78,11 +78,11 @@ public final class Iterables
 	 * Checks if an {@link Iterable} is empty
 	 * @param iterable an Iterable
 	 * @return true if iterable is empty, otherwise false
-	 * @throws ArgumentNullException if iterable is null
+	 * @throws NullPointerException if iterable is null
 	 */
 	public static <T> boolean isEmpty(Iterable<T> iterable)
 	{
-		Objects.requireNonNull(iterable, "iterable");
+		Objects.requireNonNull(iterable, "iterable must not be null");
 		return !iterable.iterator().hasNext();
 	}
 
@@ -99,11 +99,11 @@ public final class Iterables
 	 * Calculates the length/size of an {@link Iterable}
 	 * @param iterable an Iterable
 	 * @return the number of elements in iterable
-	 * @throws ArgumentNullException if iterable is null
+	 * @throws NullPointerException if iterable is null
 	 */
 	public static <T> int size(Iterable<T> iterable)
 	{
-		Objects.requireNonNull(iterable, "iterable");
+		Objects.requireNonNull(iterable, "iterable must not be null");
 		int size = 0;
 		for (Iterator<T> iterator = iterable.iterator(); iterator.hasNext(); iterator.next())
 		{
@@ -116,11 +116,11 @@ public final class Iterables
 	 * Returns the first element of an {@link Iterable}
 	 * @param iterable 
 	 * @return the first element, if iterable is empty, null is returned 
-	 * @throws ArgumentNullException if iterable is null
+	 * @throws NullPointerException if iterable is null
 	 */
 	public static <T> T first(Iterable<T> iterable)
 	{
-		Objects.requireNonNull(iterable, "iterable");
+		Objects.requireNonNull(iterable, "iterable must not be null");
 		Iterator<T> iterator = iterable.iterator();
 		if (iterator.hasNext())
 		{
@@ -136,12 +136,12 @@ public final class Iterables
 	 * {@link Iterator}.remove() throws an UnsupportedOperationException.
 	 * @param iterable an Iterable
 	 * @return a new Iterable 
-	 * @throws ArgumentNullException if iterable is null
+	 * @throws NullPointerException if iterable is null
 	 * 
 	 */
 	public static <T> Iterable<T> of(Iterable<T> iterable)
 	{
-		Objects.requireNonNull(iterable, "iterable");
+		Objects.requireNonNull(iterable, "iterable must not be null");
 
 		final Iterator<T> iterator = iterable.iterator();
 		return new Iterable<T>()
@@ -179,11 +179,11 @@ public final class Iterables
 	 * {@link Iterator}.remove() throws an UnsupportedOperationException.
 	 * @param array an Array
 	 * @return a new Iterable
-	 * @throws ArgumentNullException if array is null
+	 * @throws NullPointerException if array is null
 	 */
 	public static <T> Iterable<T> of(final T[] array)
 	{
-		Objects.requireNonNull(array, "array");
+		Objects.requireNonNull(array, "array must not be null");
 
 		return new Iterable<T>()
 		{

@@ -71,11 +71,11 @@ public class ProductPaymentEntry extends PersistentAccountancyEntry {
 			PaymentMethod paymentMethod) {
 		super(amount, description);
 		this.orderIdentifier = Objects.requireNonNull(orderIdentifier,
-				"orderIdentifier");
+				"orderIdentifier must not be null");
 		this.userIdentifier = Objects.requireNonNull(userIdentifier,
-				"userIdentifier");
+				"userIdentifier must not be null");
 		this.paymentMethod = Objects.requireNonNull(paymentMethod,
-				"paymentMethod");
+				"paymentMethod must not be null");
 	}
 
 	/**

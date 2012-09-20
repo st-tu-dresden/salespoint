@@ -34,7 +34,7 @@ public enum Database {
 	 */
 	public boolean initializeEntityManagerFactory(String persistenceUnitName)
 	{
-		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName");
+		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName must not be null");
 		entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName);
 		return entityManagerFactory != null;
 	}
@@ -53,8 +53,8 @@ public enum Database {
 	 */
 	public boolean initializeEntityManagerFactory(String persistenceUnitName, @SuppressWarnings("rawtypes") Map properties)
 	{
-		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName");
-		Objects.requireNonNull(properties, "properties");
+		Objects.requireNonNull(persistenceUnitName, "persistenceUnitName must not be null");
+		Objects.requireNonNull(properties, "properties must not be null");
 		entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName, properties);
 		return entityManagerFactory != null;
 	}

@@ -74,8 +74,8 @@ public class PersistentAccountancyEntry implements AccountancyEntry {
 	 *            A user-supplied description for this entry.
 	 */
 	public PersistentAccountancyEntry(Money value, String description) {
-		this.value = Objects.requireNonNull(value, "value");
-		this.description = Objects.requireNonNull(description, "description");
+		this.value = Objects.requireNonNull(value, "value must not be null");
+		this.description = Objects.requireNonNull(description, "description must not be null");
 	}
 
 	@Override

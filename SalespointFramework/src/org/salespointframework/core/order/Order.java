@@ -6,7 +6,6 @@ import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.util.ArgumentNullException;
 
 //TODO if you have really time, check if generics are really needed.
 //OrderLine is an embeddable and has an elementcollection, so that may be an issue. 
@@ -28,7 +27,7 @@ public interface Order<O extends OrderLine>
 	 * An OrderLine can only be added if the {@link OrderStatus} is OPEN 
 	 * @param orderLine the {@link OrderLine} to be added
 	 * @return true if this Order did not already contain this {@link OrderLine}, otherwise false
-	 * @throws ArgumentNullException if orderLine is null
+	 * @throws NullPointerException if orderLine is null
 	 */
 	boolean addOrderLine(O orderLine);
 	
@@ -37,7 +36,7 @@ public interface Order<O extends OrderLine>
 	 * An OrderLine can only be removed if the {@link OrderStatus}s is OPEN
 	 * @param orderLineIdentifier the identifier of the {@link OrderLine} to be removed
 	 * @return true if this order contained the {@link OrderLine}, otherwise false
-	 * @throws ArgumentNullException if orderLineIdentifier is null
+	 * @throws NullPointerException if orderLineIdentifier is null
 	 */
 	boolean removeOrderLine(OrderLineIdentifier orderLineIdentifier);
 	
@@ -71,7 +70,7 @@ public interface Order<O extends OrderLine>
 	 * A ChargeLine can only be added if the {@link OrderStatus} is OPEN
 	 * @param chargeLine the {@link ChargeLine} to be added
 	 * @return true if this Order did not already contain this {@link ChargeLine}, otherwise false
-	 * @throws ArgumentNullException if chargeLine is null
+	 * @throws NullPointerException if chargeLine is null
 	 */
 	boolean addChargeLine(ChargeLine chargeLine);
 	
@@ -80,7 +79,7 @@ public interface Order<O extends OrderLine>
 	 * A ChargeLine can only be removed if the {@link OrderStatus} is OPEN
 	 * @param chargeLineIdentifier the identifier of the {@link ChargeLine} to be removed
 	 * @return true if this order contained the {@link ChargeLine}, otherwise false
-	 * @throws ArgumentNullException if chargeLineIdentifier is null
+	 * @throws NullPointerException if chargeLineIdentifier is null
 	 */
 	boolean removeChargeLine(ChargeLineIdentifier chargeLineIdentifier);
 	

@@ -25,7 +25,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
 import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import java.util.Objects;
 
@@ -95,7 +94,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
      *            Start time and date.
      * @param end
      *            End time and date.
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if one or more arguments are <code>null</code>
      * @throws IllegalArgumentException
      *             if the end is before the start
@@ -118,7 +117,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
      *            End time and date.
      * @param description
      *            The description of this entry.
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if one or more arguments are <code>null</code>
      */
     public PersistentCalendarEntry(UserIdentifier owner, String title, DateTime start, DateTime end, String description) {
@@ -145,7 +144,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
      *            between two starts and so it has to be less than the duration.
      * @param count
      *            Times how often the event is repeated. -1 means infinitely.
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if one ore more arguments are <code>null</code>
      * @throws IllegalArgumentException
      *             if the time between two repetitions should be smaller than
@@ -156,11 +155,11 @@ public class PersistentCalendarEntry implements CalendarEntry {
      */
     public PersistentCalendarEntry(UserIdentifier owner, String title, DateTime start, DateTime end, String description, Period period, int count) {
 
-        detectDateAnomalies(Objects.requireNonNull(start, "start"), Objects.requireNonNull(end, "end"), count, Objects.requireNonNull(period, "period"));
+        detectDateAnomalies(Objects.requireNonNull(start, "start must not be null"), Objects.requireNonNull(end, "end must not be null"), count, Objects.requireNonNull(period, "period must not be null"));
 
-        this.owner = Objects.requireNonNull(owner, "owner");
-        this.title = Objects.requireNonNull(title, "title");
-        this.description = Objects.requireNonNull(description, "description");
+        this.owner = Objects.requireNonNull(owner, "owner must not be null must not be null");
+        this.title = Objects.requireNonNull(title, "title must not be null");
+        this.description = Objects.requireNonNull(description, "description must not be null");
 
         this.repeatCount = count;
         this.period = period;
@@ -475,7 +474,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
      * 
      * @param period
      *            The time span between two repetitions.
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if one ore more arguments are <code>null</code>
      * @throws IllegalArgumentException
      *             if the time between two repetitions should be smaller than

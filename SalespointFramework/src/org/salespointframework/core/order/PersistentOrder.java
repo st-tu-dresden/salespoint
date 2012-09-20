@@ -35,7 +35,6 @@ import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import java.util.Objects;
 
@@ -87,11 +86,11 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	 *            order
 	 * @param paymentMethod
 	 *            The {@link PaymentMethod} connected to this order
-	 * @throws ArgumentNullException if userIdentifier or paymentMethod is null
+	 * @throws NullPointerException if userIdentifier or paymentMethod is null
 	 */
 	public PersistentOrder(UserIdentifier userIdentifier, PaymentMethod paymentMethod) {
-		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier");
-		this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod");
+		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
+		this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod must not be null");
 	}
 	
 	/**
@@ -100,10 +99,10 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	 * @param userIdentifier
 	 *            The {@link UserIdentifier}/{@link User} connected to this
 	 *            order
-	 * @throws ArgumentNullException if userIdentifier is null
+	 * @throws NullPointerException if userIdentifier is null
 	 */
 	public PersistentOrder(UserIdentifier userIdentifier) {
-		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier");
+		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
 	}
 	
 	
@@ -112,7 +111,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	
 	@Override
 	public boolean addOrderLine(PersistentOrderLine orderLine) {
-		Objects.requireNonNull(orderLine, "orderLine");
+		Objects.requireNonNull(orderLine, "orderLine must not be null");
 		if (orderStatus != OrderStatus.OPEN) {
 			return false;
 		}
@@ -121,7 +120,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 
 	@Override
 	public boolean removeOrderLine(OrderLineIdentifier orderLineIdentifier) {
-		Objects.requireNonNull(orderLineIdentifier, "orderLineIdentifier");
+		Objects.requireNonNull(orderLineIdentifier, "orderLineIdentifier must not be null");
 		if (orderStatus != OrderStatus.OPEN) {
 			return false;
 		}
@@ -137,7 +136,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 
 	@Override
 	public boolean addChargeLine(ChargeLine chargeLine) {
-		Objects.requireNonNull(chargeLine, "chargeLine");
+		Objects.requireNonNull(chargeLine, "chargeLine must not be null");
 		if (orderStatus != OrderStatus.OPEN) {
 			return false;
 		}
@@ -146,7 +145,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 
 	@Override
 	public boolean removeChargeLine(ChargeLineIdentifier chargeLineIdentifier) {
-		Objects.requireNonNull(chargeLineIdentifier, "chargeLineIdentifier");
+		Objects.requireNonNull(chargeLineIdentifier, "chargeLineIdentifier must not be null");
 		
 		if (orderStatus != OrderStatus.OPEN) {
 			return false;

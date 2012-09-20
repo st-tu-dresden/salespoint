@@ -28,7 +28,7 @@ public abstract class PaymentMethod implements Serializable {
 	 *            human-readable form. Must be non-null.
 	 */
 	public PaymentMethod(String description) {
-		this.description = Objects.requireNonNull(description, "description");
+		this.description = Objects.requireNonNull(description, "description must not be null");
 	}
 
 	/**

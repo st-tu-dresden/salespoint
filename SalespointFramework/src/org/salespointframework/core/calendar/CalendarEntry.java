@@ -2,7 +2,7 @@ package org.salespointframework.core.calendar;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.util.ArgumentNullException;
+
 
 /**
  * A calendar entry is an appointment that has a start date, end date, and a
@@ -120,7 +120,7 @@ public interface CalendarEntry {
      * 
      * @param description
      *            the new description
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>description</code> is <code>null</code>
      */
     void setDescription(String description);
@@ -132,7 +132,7 @@ public interface CalendarEntry {
      * 
      * @param end
      *            the new end date.
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>end</code> is <code>null</code>
      */
     void setEnd(DateTime end);
@@ -144,7 +144,7 @@ public interface CalendarEntry {
      * 
      * @param start
      *            the new start date.
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>is</code> is <code>null</code>
      */
     void setStart(DateTime start);
@@ -154,7 +154,7 @@ public interface CalendarEntry {
      * 
      * @param title
      *            the new title.
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>title</code> is <code>null</code>
      */
     void setTitle(String title);

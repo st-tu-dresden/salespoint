@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Objects;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -19,6 +20,7 @@ import javax.xml.bind.DatatypeConverter;
 public class Utility {
 
 	public static String hashPassword(String password) {
+		Objects.requireNonNull(password, "password must not be null");
 		SecureRandom sr = new SecureRandom();
 		byte[] salt = new byte[8];
 		sr.nextBytes(salt);
@@ -27,7 +29,9 @@ public class Utility {
 	
 	
 	// SCHEISS CHECKED EXCEPTIONS!!!!!!!!!!11111111elf
-	public static String hashPassword(String password, byte[] salt) {
+	private static String hashPassword(String password, byte[] salt) {
+		Objects.requireNonNull(password, "password must not be null");
+		Objects.requireNonNull(salt, "salt must not be null");
 		
 		byte[] passBytes = null;
 		byte[] digest = null ;
@@ -59,6 +63,9 @@ public class Utility {
 	
 	public static boolean verifyPassword(String password, String hashedPassword) 
 	{
+		Objects.requireNonNull(password, "password must not be null");
+		Objects.requireNonNull(hashedPassword, "hashedPassword must not be null");
+		
 		String saltString = hashedPassword.substring(0, 12);
 		byte[] salt = DatatypeConverter.parseBase64Binary(saltString);
 		String newHashedPassword = hashPassword(password, salt);

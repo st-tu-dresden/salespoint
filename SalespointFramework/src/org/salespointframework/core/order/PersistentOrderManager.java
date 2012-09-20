@@ -11,7 +11,6 @@ import javax.persistence.criteria.Root;
 import org.joda.time.DateTime;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import java.util.Objects;
 
@@ -47,10 +46,10 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 	 * @param orders
 	 *            an {@link Iterable} of {@link PersistentOrders}s to be added
 	 * 
-	 * @throws ArgumentNullException if orders is null
+	 * @throws NullPointerException if orders is null
 	 */
 	public void addAll(Iterable<? extends PersistentOrder> orders) {
-		Objects.requireNonNull(orders, "orders");
+		Objects.requireNonNull(orders, "orders must not be null");
 		EntityManager em = emf.createEntityManager();
 		for(PersistentOrder order : orders) {
 			em.persist(order);
@@ -62,7 +61,7 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 	@Override
 	public final <T extends PersistentOrder> T get(Class<T> clazz, OrderIdentifier orderIdentifier)
 	{
-		Objects.requireNonNull(orderIdentifier, "orderIdentifier");
+		Objects.requireNonNull(orderIdentifier, "orderIdentifier must not be null");
 		EntityManager em = emf.createEntityManager();
 		return em.find(clazz, orderIdentifier);
 	}
@@ -70,7 +69,7 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 	@Override
 	public final boolean contains(OrderIdentifier orderIdentifier)
 	{
-		Objects.requireNonNull(orderIdentifier, "orderIdentifier");
+		Objects.requireNonNull(orderIdentifier, "orderIdentifier must not be null");
 		EntityManager em = emf.createEntityManager();
 		return em.find(PersistentOrder.class, orderIdentifier) != null;
 	}
@@ -78,8 +77,8 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 	@Override
 	public final <T extends PersistentOrder> Iterable<T> find(Class<T> clazz, DateTime from, DateTime to)
 	{
-		Objects.requireNonNull(from, "from");
-		Objects.requireNonNull(to, "to");
+		Objects.requireNonNull(from, "from must not be null");
+		Objects.requireNonNull(to, "to must not be null");
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -94,7 +93,8 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 	@Override
 	public final <T extends PersistentOrder> Iterable<T> find(Class<T> clazz, OrderStatus orderStatus)
 	{
-		Objects.requireNonNull(orderStatus, "orderStatus");
+		Objects.requireNonNull(clazz, "clazz must not be null");
+		Objects.requireNonNull(orderStatus, "orderStatus must not be null");
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -109,7 +109,8 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 	@Override
 	public final <T extends PersistentOrder> Iterable<T> find(Class<T> clazz, UserIdentifier userIdentifier)
 	{
-		Objects.requireNonNull(userIdentifier, "userIdentifier");
+		Objects.requireNonNull(clazz, "clazz must not be null");
+		Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -124,9 +125,9 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 	@Override
 	public final <T extends PersistentOrder> Iterable<T> find(Class<T> clazz, UserIdentifier userIdentifier, DateTime from, DateTime to)
 	{
-		Objects.requireNonNull(userIdentifier, "userIdentifier");
-		Objects.requireNonNull(from, "from");
-		Objects.requireNonNull(to, "to");
+		Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
+		Objects.requireNonNull(from, "from must not be null");
+		Objects.requireNonNull(to, "to must not be null");
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -143,11 +144,11 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 	/**
 	 * Updates and persists an existing {@link PersistentOrder} to the PersistentOrderManager and the Database
 	 * @param order the {@link PersistentOrder} to be updated
-	 * @throws ArgumentNullException if order is null
+	 * @throws NullPointerException if order is null
 	 */
 	public final void update(PersistentOrder order)
 	{
-		Objects.requireNonNull(order, "order");
+		Objects.requireNonNull(order, "order must not be null");
 		EntityManager em = emf.createEntityManager();
 		em.merge(order);
 		beginCommit(em);

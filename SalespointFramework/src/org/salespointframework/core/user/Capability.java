@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
-import org.salespointframework.util.ArgumentNullException;
 import java.util.Objects;
 
 /**
@@ -34,11 +33,11 @@ public final class Capability implements Serializable, Comparable<Capability>
 	 * 
 	 * @param name the name of the capability  
 	 *             
-	 * @throws ArgumentNullException if name is null
+	 * @throws NullPointerException if name is null
 	 */
 	public Capability(String name)
 	{
-		this.name = Objects.requireNonNull(name, "name");
+		this.name = Objects.requireNonNull(name, "name must not be null");
 	}
 
 	/**

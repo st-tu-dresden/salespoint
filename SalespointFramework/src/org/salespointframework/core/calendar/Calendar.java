@@ -1,6 +1,5 @@
 package org.salespointframework.core.calendar;
 
-import org.salespointframework.util.ArgumentNullException;
 
 /**
  * A calendar manages a set of calendar entries.
@@ -19,7 +18,7 @@ public interface Calendar<T extends CalendarEntry> {
 	 * @param entry
 	 *            the entry that is to be added to the calendar.
 	 * 
-	 * @throws ArgumentNullException
+	 * @throws NullPointerException
 	 *             if <code>entry</code> is <code>null</code>
 	 */
 	void add(T entry);
@@ -33,7 +32,7 @@ public interface Calendar<T extends CalendarEntry> {
 	 *            contained in this calendar.
 	 * @return <code>true</code> if there exists an entry with the given
 	 *         identifier in this calendar, <code>false</code> otherwise.
-	 * @throws ArgumentNullException
+	 * @throws NullPointerException
 	 *             if <code>calendarEntryIdentifier</code> is <code>null</code>.
 	 */
 	boolean contains(CalendarEntryIdentifier calendarEntryIdentifier);
@@ -51,7 +50,7 @@ public interface Calendar<T extends CalendarEntry> {
 	 *            Id of the requested entry.
 	 * @return the entry with the given id or <code>null</code> if no entry was
 	 *         found.
-	 * @throws ArgumentNullException
+	 * @throws NullPointerException
 	 *             if <code>calendarEntryIdentifier</code> is <code>null</code>.
 	 */
 	<E extends T> E get(Class<E> clazz,
@@ -77,7 +76,7 @@ public interface Calendar<T extends CalendarEntry> {
 	 *            Id of the entry that is to be removed from the calendar.
 	 * @return <code>true</code> if removal was successful, <code>false</code>
 	 *         otherwise.
-	 * @throws ArgumentNullException
+	 * @throws NullPointerException
 	 *             if <code>calendarEntryIdentifier</code> is <code>null</code>.
 	 */
 	boolean remove(CalendarEntryIdentifier calendarEntryIdentifier);

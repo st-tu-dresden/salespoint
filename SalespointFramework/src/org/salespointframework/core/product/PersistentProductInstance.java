@@ -54,8 +54,8 @@ public class PersistentProductInstance implements ProductInstance, Comparable<Pe
 	 */
 	public PersistentProductInstance(Product product, ProductFeatureIdentifier... productFeatureIdentifiers)
 	{
-		Objects.requireNonNull(productFeatureIdentifiers, "productFeatureIdentifiers");
-		this.productIdentifier = Objects.requireNonNull(product, "product").getIdentifier();
+		Objects.requireNonNull(productFeatureIdentifiers, "productFeatureIdentifiers must not be null");
+		this.productIdentifier = Objects.requireNonNull(product, "product must not be null").getIdentifier();
 		this.name = product.getName();
 		this.price = product.getPrice(); 
 		

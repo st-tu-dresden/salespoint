@@ -55,7 +55,7 @@ public class PersistentAccountancy implements
 
 	@Override
 	public final void add(PersistentAccountancyEntry accountancyEntry) {
-		Objects.requireNonNull(accountancyEntry, "accountancyEntry");
+		Objects.requireNonNull(accountancyEntry, "accountancyEntry must not be null");
 		EntityManager em = emf.createEntityManager();
 		em.persist(accountancyEntry);
 		beginCommit(em);
@@ -65,9 +65,9 @@ public class PersistentAccountancy implements
 	public final <T extends PersistentAccountancyEntry> T get(
 			Class<T> clazz,
 			AccountancyEntryIdentifier accountancyEntryIdentifier) {
-		Objects.requireNonNull(clazz, "clazz");
+		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(accountancyEntryIdentifier,
-				"accountancyEntryIdentifier");
+				"accountancyEntryIdentifier must not be null");
 		EntityManager em = emf.createEntityManager();
 		return em.find(clazz, accountancyEntryIdentifier);
 	}
@@ -75,7 +75,7 @@ public class PersistentAccountancy implements
 	@Override
 	public final <T extends PersistentAccountancyEntry> Iterable<T> find(
 			Class<T> clazz) {
-		Objects.requireNonNull(clazz, "clazz");
+		Objects.requireNonNull(clazz, "clazz must not be null");
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -89,9 +89,9 @@ public class PersistentAccountancy implements
 	@Override
 	public final <T extends PersistentAccountancyEntry> Iterable<T> find(
 			Class<T> clazz, DateTime from, DateTime to) {
-		Objects.requireNonNull(from, "from");
-		Objects.requireNonNull(to, "to");
-		Objects.requireNonNull(clazz, "clazz");
+		Objects.requireNonNull(from, "from must not be null");
+		Objects.requireNonNull(to, "to must not be null");
+		Objects.requireNonNull(clazz, "clazz must not be null");
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -110,10 +110,10 @@ public class PersistentAccountancy implements
 	@Override
 	public final <T extends PersistentAccountancyEntry> Map<Interval, Iterable<T>> find(
 			Class<T> clazz, DateTime from, DateTime to, Period period) {
-		Objects.requireNonNull(clazz, "clazz");
-		Objects.requireNonNull(from, "from");
-		Objects.requireNonNull(to, "to");
-		Objects.requireNonNull(period, "period");
+		Objects.requireNonNull(clazz, "clazz must not be null");
+		Objects.requireNonNull(from, "from must not be null");
+		Objects.requireNonNull(to, "to must not be null");
+		Objects.requireNonNull(period, "period must not be null");
 
 		DateTime nextStep;
 		Map<Interval, Iterable<T>> entries = new HashMap<Interval, Iterable<T>>();
@@ -135,10 +135,10 @@ public class PersistentAccountancy implements
 	@Override
 	public final <T extends PersistentAccountancyEntry> Map<Interval, Money> salesVolume(
 			Class<T> clazz, DateTime from, DateTime to, Period period) {
-		Objects.requireNonNull(clazz, "clazz");
-		Objects.requireNonNull(from, "from");
-		Objects.requireNonNull(to, "to");
-		Objects.requireNonNull(period, "period");
+		Objects.requireNonNull(clazz, "clazz must not be null");
+		Objects.requireNonNull(from, "from must not be null");
+		Objects.requireNonNull(to, "to must not be null");
+		Objects.requireNonNull(period, "period must not be null");
 
 		Money total;
 		Map<Interval, Money> sales = new HashMap<Interval, Money>();
@@ -168,7 +168,7 @@ public class PersistentAccountancy implements
 	 */
 	public final void addAll(
 			Iterable<? extends PersistentAccountancyEntry> accountancyEntries) {
-		Objects.requireNonNull(accountancyEntries, "accountancyEntries");
+		Objects.requireNonNull(accountancyEntries, "accountancyEntries must not be null");
 		EntityManager em = emf.createEntityManager();
 		for (AccountancyEntry e : accountancyEntries) {
 			em.persist(e);

@@ -1,7 +1,5 @@
 package org.salespointframework.core.user;
 
-import org.salespointframework.util.ArgumentNullException;
-
 //TODO comment
 
 /**
@@ -27,7 +25,7 @@ public interface User
 	 *            The password to be checked.
 	 * @return <code>true</code>, if the password matches, <code>false</code>
 	 *         otherwise.
-	 * @throws ArgumentNullException if password is null
+	 * @throws NullPointerException if password is null
 	 */
 	public boolean verifyPassword(String password);
 	
@@ -36,7 +34,7 @@ public interface User
 	 * 
 	 * @param newPassword
 	 *            new password.
-	 * @throws ArgumentNullException if newPassword is null
+	 * @throws NullPointerException if newPassword is null
 	 */
 	public void changePassword(String newPassword);
 
@@ -47,7 +45,7 @@ public interface User
 	 *            <code>capability</code> which the <code>user</code> will
 	 *            receive.
 	 * @return <code>true</code> if successful, <code>false</code> otherwise.
-	 * @throws ArgumentNullException if capability is null
+	 * @throws NullPointerException if capability is null
 	 */
 	boolean addCapability(Capability capability);
 
@@ -58,7 +56,7 @@ public interface User
 	 *            <code>capability</code> which will be removed from
 	 *            <code>user</code>
 	 * @return <code>true</code> if successful, <code>false</code> otherwise
-	 * @throws ArgumentNullException if capability is null
+	 * @throws NullPointerException if capability is null
 	 */
 	boolean removeCapability(Capability capability);
 
@@ -70,7 +68,7 @@ public interface User
 	 *            will be checked for.
 	 * @return <code>true</code> if <code>capability</code> was granted to
 	 *         <code>user</code>
-	 * @throws ArgumentNullException if capability is null
+	 * @throws NullPointerException if capability is null
 	 */
 	boolean hasCapability(Capability capability);
 	

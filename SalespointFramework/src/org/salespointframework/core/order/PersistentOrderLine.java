@@ -94,7 +94,7 @@ public class PersistentOrderLine implements OrderLine
 	public PersistentOrderLine(ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures, int numberOrdered)
 	{
 
-		Objects.requireNonNull(productFeatures, "productFeatures");
+		Objects.requireNonNull(productFeatures, "productFeatures must not be null");
 		Product product = Database.INSTANCE.getEntityManagerFactory().createEntityManager().find(PersistentProduct.class, productIdentifier);
 		if (product == null)
 		{

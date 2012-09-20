@@ -2,7 +2,6 @@ package org.salespointframework.core.time;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
-import org.salespointframework.util.ArgumentNullException;
 
 
 /**
@@ -21,7 +20,7 @@ public interface Time {
 	/**
 	 * 
 	 * @param duration
-	 * @throws ArgumentNullException if duration is null
+	 * @throws NullPointerException if duration is null
 	 */
 	void forward(Duration duration);
 }

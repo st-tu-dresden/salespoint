@@ -57,17 +57,15 @@ public abstract class PaymentCard extends PaymentMethod {
 	public PaymentCard(String cardName, String cardAssociationName,
 			String cardNumber, String nameOnCard, String billingAddress,
 			DateTime validFrom, DateTime expiryDate, String cardVerificationCode) {
-		super(Objects.requireNonNull(cardName, "cardName"));
-		this.cardAssociationName = Objects.requireNonNull(cardAssociationName,
-				"cardAssociationName");
-		this.cardNumber = Objects.requireNonNull(cardNumber, "cardNumber");
-		this.nameOnCard = Objects.requireNonNull(nameOnCard, "nameOnCard");
-		this.billingAddress = Objects.requireNonNull(billingAddress,
-				"billingAddress");
-		this.validFrom = Objects.requireNonNull(validFrom, "validFrom");
-		this.expiryDate = Objects.requireNonNull(expiryDate, "expiryDate");
-		this.cardVerificationCode = Objects.requireNonNull(
-				cardVerificationCode, "cardVerificationCode");
+		super(Objects.requireNonNull(cardName, "cardName  must not be null"));
+		
+		this.cardAssociationName = Objects.requireNonNull(cardAssociationName, "cardAssociationName  must not be null");
+		this.cardNumber = Objects.requireNonNull(cardNumber, "cardNumber  must not be null");
+		this.nameOnCard = Objects.requireNonNull(nameOnCard, "nameOnCard  must not be null");
+		this.billingAddress = Objects.requireNonNull(billingAddress,"billingAddress  must not be null");
+		this.validFrom = Objects.requireNonNull(validFrom, "validFrom  must not be null");
+		this.expiryDate = Objects.requireNonNull(expiryDate, "expiryDate  must not be null");
+		this.cardVerificationCode = Objects.requireNonNull(cardVerificationCode, "cardVerificationCode  must not be null");
 	}
 
 	/**

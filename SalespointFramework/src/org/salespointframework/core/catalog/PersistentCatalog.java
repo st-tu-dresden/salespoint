@@ -14,7 +14,6 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.product.PersistentProduct_;
 import org.salespointframework.core.product.ProductIdentifier;
-import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import java.util.Objects;
 
@@ -40,7 +39,7 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 	@Override
 	public final void add(PersistentProduct product)
 	{
-		Objects.requireNonNull(product, "product");
+		Objects.requireNonNull(product, "product must not be null");
 		EntityManager em = emf.createEntityManager();
 		em.persist(product);
 		beginCommit(em);
@@ -53,7 +52,7 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 	 */
 	public final void addAll(Iterable<? extends PersistentProduct> products)
 	{
-		Objects.requireNonNull(products, "products");
+		Objects.requireNonNull(products, "products must not be null");
 		EntityManager em = emf.createEntityManager();
 		for (PersistentProduct product : products)
 		{
@@ -68,7 +67,7 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 	public final boolean remove(ProductIdentifier productIdentifier)
 	{
 		// TODO catch exception
-		Objects.requireNonNull(productIdentifier, "productIdentifier");
+		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
 		EntityManager em = emf.createEntityManager();
 		Object product = em.find(PersistentProduct.class, productIdentifier);
 		if(product != null)
@@ -84,7 +83,7 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 	@Override
 	public final boolean contains(ProductIdentifier productIdentifier)
 	{
-		Objects.requireNonNull(productIdentifier, "productIdentifier");
+		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
 		EntityManager em = emf.createEntityManager();
 		return em.find(PersistentProduct.class, productIdentifier) != null;
 	}
@@ -92,8 +91,8 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 	@Override
 	public final <T extends PersistentProduct> T get(Class<T> clazz, ProductIdentifier productIdentifier)
 	{
-		Objects.requireNonNull(clazz, "clazz");
-		Objects.requireNonNull(productIdentifier, "productIdentifier");
+		Objects.requireNonNull(clazz, "clazz must not be null");
+		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
 		EntityManager em = emf.createEntityManager();
 		return em.find(clazz, productIdentifier);
 	}
@@ -101,7 +100,7 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 	@Override
 	public final <T extends PersistentProduct> Iterable<T> find(Class<T> clazz)
 	{
-		Objects.requireNonNull(clazz, "clazz");
+		Objects.requireNonNull(clazz, "clazz must not be null");
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -114,8 +113,8 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 	@Override
 	public final <T extends PersistentProduct> Iterable<T> findByName(Class<T> clazz, String name)
 	{
-		Objects.requireNonNull(clazz, "clazz");
-		Objects.requireNonNull(name, "name");
+		Objects.requireNonNull(clazz, "clazz must not be null");
+		Objects.requireNonNull(name, "name must not be null");
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -130,8 +129,8 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 	@Override
 	public final <T extends PersistentProduct> Iterable<T> findByCategory(Class<T> clazz, String category)
 	{
-		Objects.requireNonNull(clazz, "clazz");
-		Objects.requireNonNull(category, "category");
+		Objects.requireNonNull(clazz, "clazz must not be null");
+		Objects.requireNonNull(category, "category must not be null");
 
 		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -156,11 +155,11 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 	/**
 	 * Updates and persists an existing {@link PersistentProduct} to the PersistentCatalog and the Database
 	 * @param product the {@link PersistentProduct} to be updated
-	 * @throws ArgumentNullException if product is null
+	 * @throws NullPointerException if product is null
 	 */
 	public final void update(PersistentProduct product)
 	{
-		java.util.Objects.requireNonNull(product, "product");
+		java.util.Objects.requireNonNull(product, "product must not be null");
 		EntityManager em = emf.createEntityManager();
 		em.merge(product);
 		beginCommit(em);

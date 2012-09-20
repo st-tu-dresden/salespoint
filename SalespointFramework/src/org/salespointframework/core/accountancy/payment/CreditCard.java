@@ -54,19 +54,17 @@ public final class CreditCard extends PaymentCard {
 			DateTime validFrom, DateTime expiryDate,
 			String cardVerificationCode, Money dailyWithdrawalLimit,
 			Money creditLimit) {
-		super(Objects.requireNonNull(cardName, "cardName"), Objects
-				.requireNonNull(cardAssociationName, "cardAssociationName"),
-				Objects.requireNonNull(cardNumber, "cardNumber"), Objects
-						.requireNonNull(nameOnCard, "nameOnCard"), Objects
-						.requireNonNull(billingAddress, "billingAddress"),
-				Objects.requireNonNull(validFrom, "validFrom"), Objects
-						.requireNonNull(expiryDate, "expiryDate"), Objects
-						.requireNonNull(cardVerificationCode,
-								"cardVerficationCode"));
+		super(Objects.requireNonNull(cardName, "cardName must not be null"), 
+				Objects.requireNonNull(cardAssociationName, "cardAssociationName must not be null"),
+				Objects.requireNonNull(cardNumber, "cardNumber must not be null"), 
+				Objects.requireNonNull(nameOnCard, "nameOnCard must not be null"), 
+				Objects.requireNonNull(billingAddress, "billingAddress must not be null"),
+				Objects.requireNonNull(validFrom, "validFrom must not be null"), 
+				Objects.requireNonNull(expiryDate, "expiryDate must not be null"), 
+				Objects.requireNonNull(cardVerificationCode, "cardVerficationCode must not be null"));
 
-		this.dailyWithdrawalLimit = Objects.requireNonNull(
-				dailyWithdrawalLimit, "dailyWithdrawalLimit");
-		this.creditLimit = Objects.requireNonNull(creditLimit, "creditLimit");
+		this.dailyWithdrawalLimit = Objects.requireNonNull(dailyWithdrawalLimit, "dailyWithdrawalLimit must not be null");
+		this.creditLimit = Objects.requireNonNull(creditLimit, "creditLimit must not be null");
 	}
 
 	/**
@@ -98,17 +96,15 @@ public final class CreditCard extends PaymentCard {
 			DateTime expiryDate, String cardVerificationCode,
 			Money dailyWithdrawalLimit, Money creditLimit) {
 		super("A credit card", Objects.requireNonNull(cardAssociationName,
-				"cardAssociationName"), Objects.requireNonNull(cardNumber,
-				"cardNumber"),
-				Objects.requireNonNull(nameOnCard, "nameOnCard"), Objects
-						.requireNonNull(billingAddress, "billingAddress"),
-				Objects.requireNonNull(validFrom, "validFrom"), Objects
-						.requireNonNull(expiryDate, "expiryDate"), Objects
-						.requireNonNull(cardVerificationCode,
-								"cardVerficationCode"));
-		this.dailyWithdrawalLimit = Objects.requireNonNull(
-				dailyWithdrawalLimit, "dailyWithdrawalLimit");
-		this.creditLimit = Objects.requireNonNull(creditLimit, "creditLimit");
+				"cardAssociationName must not be null"), Objects.requireNonNull(cardNumber,
+				"cardNumber must not be null"),
+				Objects.requireNonNull(nameOnCard, "nameOnCard must not be null"), 
+				Objects.requireNonNull(billingAddress, "billingAddress must not be null"),
+				Objects.requireNonNull(validFrom, "validFrom must not be null"),
+				Objects.requireNonNull(expiryDate, "expiryDate must not be null"), 
+				Objects.requireNonNull(cardVerificationCode,"cardVerficationCode must not be null"));
+		this.dailyWithdrawalLimit = Objects.requireNonNull(dailyWithdrawalLimit, "dailyWithdrawalLimit  must not be null");
+		this.creditLimit = Objects.requireNonNull(creditLimit, "creditLimit  must not be null");
 	}
 
 	/**

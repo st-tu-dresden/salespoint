@@ -1,7 +1,5 @@
 package org.salespointframework.core.user;
 
-import org.salespointframework.util.ArgumentNullException;
-
 /**
  * The <code>UserManager</code> is an interface that provides methods to store
  * and manage users that should be able to interact with the shop. The
@@ -25,7 +23,7 @@ public interface UserManager<T extends User> {
      * 
      * @param user
      *            {@link User} to be stored.
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>user</code> is <code>null</code>.
      */
     void add(T user);
@@ -40,7 +38,7 @@ public interface UserManager<T extends User> {
      * 
      * @return <code>true</code> if removal was successful, <code>false</code>
      *         otherwise.
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>userIdentifier</code> is <code>null</code>.
      */
     boolean remove(UserIdentifier userIdentifier);
@@ -51,7 +49,7 @@ public interface UserManager<T extends User> {
      * @param userIdentifier
      *            the {@link UserIdentifier} of the {@link User}
      * @return true if UserManager contains the {@link User}, otherwise false
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             is userIdentifier is null.
      */
     boolean contains(UserIdentifier userIdentifier);
@@ -70,7 +68,7 @@ public interface UserManager<T extends User> {
      * @return <code>true</code> if log on was successful, <code>false</code>
      *         otherwise.
      * 
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>user</code> or <code>token</code> or both are
      *             <code>null</code>.
      */
@@ -83,7 +81,7 @@ public interface UserManager<T extends User> {
      * @param token
      *            token, with which a user was logged on.
      * 
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>token</code> is <code>null</code>.
      */
     void logout(Object token);
@@ -105,7 +103,7 @@ public interface UserManager<T extends User> {
      * @throws ClassCastException
      *             if user associated with <code>token</code> is not of type
      *             <code>clazz</code>.
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>clazz</code> or <code>token</code> or both are
      *             <code>null</code>.
      */
@@ -127,7 +125,7 @@ public interface UserManager<T extends User> {
      *         equal to <code>userIdentifier</code> or <code>null</code> if no
      *         user exists with the given identifier
      * 
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>clazz</code> or <code>userIdentifer</code> or both
      *             are <code>null</code>.
      */
@@ -144,7 +142,7 @@ public interface UserManager<T extends User> {
      * 
      * @return all users of class type <code>clazz</code>
      * 
-     * @throws ArgumentNullException
+     * @throws NullPointerException
      *             if <code>clazz</code> is <code>null</code>.
      */
     <E extends T> Iterable<E> find(Class<E> clazz);

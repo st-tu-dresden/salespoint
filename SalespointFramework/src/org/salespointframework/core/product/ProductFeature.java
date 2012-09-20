@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import org.salespointframework.core.money.Money;
-import org.salespointframework.util.ArgumentNullException;
 import java.util.Objects;
 
 // TODO comment
@@ -43,9 +42,9 @@ public final class ProductFeature implements Serializable, Comparable<ProductFea
 	
 	private ProductFeature(String featureType, String value, Money price, double percent)
 	{
-		this.featureType = Objects.requireNonNull(featureType, "featureType");
-		this.value = Objects.requireNonNull(value, "value");
-		this.price = Objects.requireNonNull(price, "price");
+		this.featureType = Objects.requireNonNull(featureType, "featureType must not be null");
+		this.value = Objects.requireNonNull(value, "value must not be null");
+		this.price = Objects.requireNonNull(price, "price must not be null");
 		this.percent = percent;
 	}
 
@@ -55,7 +54,7 @@ public final class ProductFeature implements Serializable, Comparable<ProductFea
 	 * @param featureType the featuretype of this ProductFeature
 	 * @param value the value of this ProductFeature
 	 * @return a new ProductFeature with the price and money value of 0 //TODO besser schreiben?
-	 * @throws ArgumentNullException if featureType or value are null
+	 * @throws NullPointerException if featureType or value are null
 	 */
 	public static ProductFeature create(String featureType, String value)
 	{
@@ -68,7 +67,7 @@ public final class ProductFeature implements Serializable, Comparable<ProductFea
 	 * @param value the value of this ProductFeature
 	 * @param price the price of this ProductFeature
 	 * @return a new ProductFeature
-	 * @throws ArgumentNullException if featureType, value or price are null
+	 * @throws NullPointerException if featureType, value or price are null
 	 */
 	public static ProductFeature create(String featureType, String value, Money price)
 	{
@@ -81,7 +80,7 @@ public final class ProductFeature implements Serializable, Comparable<ProductFea
 	 * @param value the value of this ProductFeature
 	 * @param percent a value between 0 and 1
 	 * @return a new ProductFeature
-	 * @throws ArgumentNullException if featureType or value are null
+	 * @throws NullPointerException if featureType or value are null
 	 */
 	public static ProductFeature create(String featureType, String value, double percent)
 	{

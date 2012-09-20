@@ -20,7 +20,6 @@ import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.product.SerialNumber;
-import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
 import java.util.Objects;
 
@@ -46,15 +45,15 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	 * @param entityManager
 	 *            an {@link EntityManager}
 	 * 
-	 * @throws ArgumentNullException if entityManager is null
+	 * @throws NullPointerException if entityManager is null
 	 */
 	public PersistentInventory(EntityManager entityManager) {
-		this.entityManager = Objects.requireNonNull(entityManager, "entityManager");
+		this.entityManager = Objects.requireNonNull(entityManager, "entityManager must not be null");
 	}
 
 	@Override
 	public void add(PersistentProductInstance productInstance) {
-		Objects.requireNonNull(productInstance, "productInstance");
+		Objects.requireNonNull(productInstance, "productInstance must not be null");
 		EntityManager em = getEntityManager();
 		em.persist(productInstance);
 		beginCommit(em);
@@ -66,10 +65,10 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	 * @param productInstances
 	 *            an {@link Iterable} of {@link PersistentProductInstance}s to be added
 	 * 
-	 * @throws ArgumentNullException if productInstances is null
+	 * @throws NullPointerException if productInstances is null
 	 */
 	public void addAll(Iterable<? extends PersistentProductInstance> productInstances) {
-		Objects.requireNonNull(productInstances, "productInstances");
+		Objects.requireNonNull(productInstances, "productInstances must not be null");
 		EntityManager em = getEntityManager();
 		for (PersistentProductInstance e : productInstances) {
 			em.persist(e);
@@ -79,7 +78,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 
 	@Override
 	public boolean remove(SerialNumber serialNumber) {
-		Objects.requireNonNull(serialNumber, "serialNumber");
+		Objects.requireNonNull(serialNumber, "serialNumber must not be null");
 		EntityManager em = getEntityManager();
 		System.out.println("Remove: " + em);
 		Object product = em.find(PersistentProductInstance.class, serialNumber);
@@ -94,14 +93,14 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 
 	@Override
 	public boolean contains(SerialNumber serialNumber) {
-		Objects.requireNonNull(serialNumber, "serialNumber");
+		Objects.requireNonNull(serialNumber, "serialNumber must not be null");
 		EntityManager em = getEntityManager();
 		return em.find(PersistentProductInstance.class, serialNumber) != null;
 	}
 
 	@Override
 	public <E extends PersistentProductInstance> E get(Class<E> clazz, SerialNumber serialNumber) {
-		Objects.requireNonNull(serialNumber, "serialNumber");
+		Objects.requireNonNull(serialNumber, "serialNumber must not be null");
 		Objects.requireNonNull(clazz, "clazz");
 		EntityManager em = getEntityManager();
 		return em.find(clazz, serialNumber);
@@ -109,7 +108,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 
 	@Override
 	public <E extends PersistentProductInstance> Iterable<E> find(Class<E> clazz) {
-		Objects.requireNonNull(clazz, "clazz");
+		Objects.requireNonNull(clazz, "clazz must not be null");
 
 		EntityManager em = getEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -122,8 +121,8 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	@Override
 	public <E extends PersistentProductInstance> Iterable<E> find(Class<E> clazz,
 			ProductIdentifier productIdentifier) {
-		Objects.requireNonNull(clazz, "clazz");
-		Objects.requireNonNull(productIdentifier, "productIdentifier");
+		Objects.requireNonNull(clazz, "clazz must not be null");
+		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
 
 		EntityManager em = getEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -141,9 +140,9 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 
 	@Override
 	public <E extends PersistentProductInstance> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures) {
-		Objects.requireNonNull(clazz, "clazz");
-		Objects.requireNonNull(productIdentifier, "productIdentifier");
-		Objects.requireNonNull(productFeatures, "productFeatures");
+		Objects.requireNonNull(clazz, "clazz must not be null");
+		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
+		Objects.requireNonNull(productFeatures, "productFeatures must not be null");
 		return Iterables.of(this.findInternal(clazz, productIdentifier, productFeatures));
 	}
 
@@ -185,10 +184,10 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	 * 
 	 * @param entityManager the {@link EntityManager} to be used for all operations (methods)
 	 * @return a new PersistentInventory
-	 * @throws ArgumentNullException if entityManager is null
+	 * @throws NullPointerException if entityManager is null
 	 */
 	public PersistentInventory newInstance(EntityManager entityManager) {
-		Objects.requireNonNull(entityManager, "entityManager");
+		Objects.requireNonNull(entityManager, "entityManager must not be null");
 		System.out.println("newInstance: " + entityManager);
 		return new PersistentInventory(entityManager);
 	}
@@ -199,7 +198,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 
 	@Override
 	public long count(ProductIdentifier productIdentifier) {
-		Objects.requireNonNull(productIdentifier, "productIdentifier");
+		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
 
 		EntityManager em = getEntityManager();
 
@@ -216,8 +215,8 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	
 	@Override
 	public long count(ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures) {
-		Objects.requireNonNull(productIdentifier, "productIdentifier");
-		Objects.requireNonNull(productFeatures, "productFeatures");
+		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
+		Objects.requireNonNull(productFeatures, "productFeatures must not be null");
 		return findInternal(PersistentProductInstance.class, productIdentifier, productFeatures).size();
 	}
 	

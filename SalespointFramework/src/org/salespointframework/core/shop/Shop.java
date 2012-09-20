@@ -22,7 +22,6 @@ import org.salespointframework.core.time.Time;
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserManager;
-import org.salespointframework.util.ArgumentNullException;
 import java.util.Objects;
 
 /**
@@ -56,11 +55,11 @@ public enum Shop {
 	/**
 	 * Sets the global {@link Accountancy}
 	 * @param accountancy the Accountancy to be set
-	 * @throws ArgumentNullException if accountancy is null
+	 * @throws NullPointerException if accountancy is null
 	 */
 	public void setAccountancy(Accountancy<? extends AccountancyEntry> accountancy)
 	{
-		this.accountancy = Objects.requireNonNull(accountancy, "accountancy");
+		this.accountancy = Objects.requireNonNull(accountancy, "accountancy must not be null");
 	}
 
 	/**
@@ -75,11 +74,11 @@ public enum Shop {
 	/**
 	 * Sets the global {@link OrderManager}
 	 * @param ordermanager the OrderManager to be set
-	 * @throws ArgumentNullException if ordermanager is null
+	 * @throws NullPointerException if ordermanager is null
 	 */
 	public void setOrderManager(OrderManager<? extends Order<? extends OrderLine>, ? extends OrderLine> ordermanager)
 	{
-		this.ordermanager = Objects.requireNonNull(ordermanager, "ordermanager");
+		this.ordermanager = Objects.requireNonNull(ordermanager, "ordermanager must not be null");
 	}
 
 	/**
@@ -94,11 +93,11 @@ public enum Shop {
 	/**
 	 * Sets the global {@link Time}
 	 * @param time the Time to be set
-	 * @throws ArgumentNullException if time is null
+	 * @throws NullPointerException if time is null
 	 */
 	public void setTime(Time time)
 	{
-		this.time = Objects.requireNonNull(time, "time");
+		this.time = Objects.requireNonNull(time, "time must not be null");
 	}
 
 	/**
@@ -113,11 +112,11 @@ public enum Shop {
 	/**
 	 * Sets the global {@link UserManager}
 	 * @param userManager the UserManager to be set
-	 * @throws ArgumentNullException if userManager is null
+	 * @throws NullPointerException if userManager is null
 	 */
 	public void setUserManager(UserManager<? extends User> userManager)
 	{
-		this.usermanager = Objects.requireNonNull(userManager, "userManager");
+		this.usermanager = Objects.requireNonNull(userManager, "userManager must not be null");
 	}
 
 	/**
@@ -132,11 +131,11 @@ public enum Shop {
 	/**
 	 * Sets the global {@link Inventory}
 	 * @param inventory the Inventory to be set
-	 * @throws ArgumentNullException if inventory is null
+	 * @throws NullPointerException if inventory is null
 	 */
 	public void setInventory(Inventory<? extends ProductInstance> inventory)
 	{
-		this.inventory = Objects.requireNonNull(inventory, "inventory");
+		this.inventory = Objects.requireNonNull(inventory, "inventory must not be null");
 	}
 
 	/**
@@ -151,11 +150,11 @@ public enum Shop {
 	/**
 	 * Sets the global {@link Calendar}
 	 * @param calendar the Calendar to be set
-	 * @throws ArgumentNullException if calendar is null
+	 * @throws NullPointerException if calendar is null
 	 */
 	public void setCalendar(Calendar<? extends CalendarEntry> calendar)
 	{
-		this.calendar = Objects.requireNonNull(calendar, "calendar");
+		this.calendar = Objects.requireNonNull(calendar, "calendar must not be null");
 	}
 
 	/**
@@ -170,7 +169,7 @@ public enum Shop {
 	/**
 	 * Sets the global {@link Catalog}
 	 * @param catalog the Catalog to be set
-	 * @throws ArgumentNullException if catalog is null
+	 * @throws NullPointerException if catalog is null
 	 */
 	public void setCatalog(Catalog<? extends Product> catalog)
 	{

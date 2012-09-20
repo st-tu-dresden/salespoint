@@ -49,8 +49,8 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	 */
 	public PersistentProduct(String name, Money price)
 	{
-		this.name = Objects.requireNonNull(name, "name");
-		this.price = Objects.requireNonNull(price, "price");
+		this.name = Objects.requireNonNull(name, "name must not be null");
+		this.price = Objects.requireNonNull(price, "price must not be null");
 	}
 
 	@Override
@@ -110,20 +110,20 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	@Override
 	public final boolean addProductFeature(ProductFeature productFeature)
 	{
-		Objects.requireNonNull(productFeature, "productFeature");
+		Objects.requireNonNull(productFeature, "productFeature must not be null");
 		return productFeatures.add(productFeature);
 	}
 
 	@Override
 	public final boolean removeProductFeature(ProductFeatureIdentifier productFeatureIdentifier)
 	{
-		Objects.requireNonNull(productFeatureIdentifier, "productFeatureIdentifier");
+		Objects.requireNonNull(productFeatureIdentifier, "productFeatureIdentifier must not be null");
 		return productFeatures.remove(this.getProductFeature(productFeatureIdentifier));
 	}
 	
 	@Override
 	public ProductFeature getProductFeature(ProductFeatureIdentifier productFeatureIdentifier) {
-		Objects.requireNonNull(productFeatureIdentifier, "productFeatureIdentifier");
+		Objects.requireNonNull(productFeatureIdentifier, "productFeatureIdentifier must not be null");
 		
 		ProductFeature productFeature = null;
 		for (ProductFeature pf : productFeatures) {
@@ -138,14 +138,14 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	@Override
 	public final boolean addCategory(String category)
 	{
-		Objects.requireNonNull(category, "category");
+		Objects.requireNonNull(category, "category must not be null");
 		return categories.add(category);
 	}
 
 	@Override
 	public final boolean removeCategory(String category)
 	{
-		Objects.requireNonNull(category, "category");
+		Objects.requireNonNull(category, "category must not be null");
 		return categories.remove(category);
 	}
 

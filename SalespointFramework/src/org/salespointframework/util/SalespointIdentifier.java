@@ -66,6 +66,6 @@ public class SalespointIdentifier implements Serializable, Comparable<Salespoint
 	@Override
 	public int compareTo(SalespointIdentifier other)
 	{
-		return this.id.compareTo(other.getIdentifier());
+		return this.id.compareTo(other.id);
 	}
 }

@@ -1,50 +1,21 @@
 package org.salespointframework.core.user;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-
 import org.salespointframework.util.Iterables;
-import java.util.Objects;
 import org.salespointframework.util.Utility;
 
-/**
- * 
- * @author Christopher Bellmann
- * @author Paul Henke
- *
- */
-@Entity
-public class PersistentUser implements User, Comparable<PersistentUser>
-{
+public class TransientUser implements User, Comparable<TransientUser> {
 
-	@EmbeddedId
 	private UserIdentifier userIdentifier;
-
 	private String hashedPassword;
-
-	@ElementCollection
 	private Set<Capability> capabilities = new TreeSet<Capability>();
-
-	/**
-	 * Parameterless constructor required for JPA. Do not use.
-	 */
-	@Deprecated
-	protected PersistentUser()
-	{
-	}
 	
-	/**
-	 * Creates an new PersistentUser
-	 * @param userIdentifier the {@link UserIdentifier} of the user
-	 * @param password the password of the user
-	 * @param capabilities an <code>Array</code> of {@link Capability}s for the user 
-	 */
-	public PersistentUser(UserIdentifier userIdentifier, String password, Capability... capabilities)
+	
+	public TransientUser(UserIdentifier userIdentifier, String password, Capability... capabilities)
 	{
 		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
 		
@@ -54,7 +25,7 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 		Objects.requireNonNull(capabilities, "capabilities must not be null");
 		this.capabilities.addAll(Arrays.asList(capabilities));
 	}
-
+	
 	@Override
 	public UserIdentifier getIdentifier()
 	{
@@ -99,7 +70,7 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 	@Override
 	public void changePassword(String password)
 	{
-		Objects.requireNonNull(password, "password must not be null");
+		Objects.requireNonNull(password, "password");
 		this.hashedPassword = Utility.hashPassword(password);
 	}
 
@@ -116,7 +87,7 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 		}
 		if (other instanceof PersistentUser)
 		{
-			return this.userIdentifier.equals(((PersistentUser)other).userIdentifier);
+			return this.userIdentifier.equals(((TransientUser)other).userIdentifier);
 		}
 		return false;
 		
@@ -135,7 +106,7 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 	}
 
 	@Override
-	public int compareTo(PersistentUser other)
+	public int compareTo(TransientUser other)
 	{
 		return this.userIdentifier.compareTo(other.getIdentifier());
 	}
