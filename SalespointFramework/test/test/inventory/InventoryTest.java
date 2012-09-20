@@ -18,7 +18,7 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.ProductFeature;
-import org.salespointframework.util.ArgumentNullException;
+
 
 import test.product.KeksInstance;
 import test.product.Keks;
@@ -54,12 +54,12 @@ public class InventoryTest {
 		// catalog.add(keksType);
 	}
 
-	@Test(expected = ArgumentNullException.class)
+	@Test(expected = NullPointerException.class)
 	public void testNullCheckConstructor() {
 		PersistentInventory inventory = new PersistentInventory(null);
 	}
 
-	@Test(expected = ArgumentNullException.class)
+	@Test(expected = NullPointerException.class)
 	public void testNullCheckArgument() {
 		inventory.add(null);
 	}

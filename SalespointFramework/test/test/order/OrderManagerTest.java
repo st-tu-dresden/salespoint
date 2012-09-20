@@ -13,7 +13,6 @@ import org.salespointframework.core.order.PersistentOrderManager;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.util.ArgumentNullException;
 
 
 @SuppressWarnings("javadoc")
@@ -35,7 +34,7 @@ public class OrderManagerTest {
 		order = new PersistentOrder(user.getIdentifier(), Cash.CASH);
 	}
 
-	@Test(expected=ArgumentNullException.class)
+	@Test(expected=NullPointerException.class)
 	public void nullAddtest() {
 		orderManager.add(null);
 	}

@@ -11,7 +11,7 @@ import org.salespointframework.core.catalog.PersistentCatalog;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.PersistentProduct;
-import org.salespointframework.util.ArgumentNullException;
+
 
 import test.product.Keks;
 
@@ -40,7 +40,7 @@ public class CatalogTest {
 		assertEquals(kT1,kT2);
 	}
 
-	@Test(expected = ArgumentNullException.class)
+	@Test(expected = NullPointerException.class)
 	public void nullAddTest() {
 		catalog.add(null);
 	}

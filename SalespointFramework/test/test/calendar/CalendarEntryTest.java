@@ -4,19 +4,14 @@ package test.calendar;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.salespointframework.core.calendar.CalendarEntryCapability;
 import org.salespointframework.core.calendar.PersistentCalendarEntry;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.util.ArgumentNullException;
 
 @SuppressWarnings("javadoc")
 public class CalendarEntryTest {
@@ -32,31 +27,31 @@ public class CalendarEntryTest {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
 	}
 	
-	@Test(expected=ArgumentNullException.class)
+	@Test(expected=NullPointerException.class)
 	public void testNotNullOwner() {
 		@SuppressWarnings("unused")
 		PersistentCalendarEntry testEntry = new PersistentCalendarEntry(null, "meeting", new DateTime(), new DateTime());
 	}
 	
-	@Test(expected=ArgumentNullException.class)
+	@Test(expected=NullPointerException.class)
 	public void testNotNullTitle1() {
 		@SuppressWarnings("unused")
 		PersistentCalendarEntry testEntry = new PersistentCalendarEntry(new UserIdentifier("owner"), null, new DateTime(), new DateTime());
 	}
 	
-	@Test(expected=ArgumentNullException.class)
+	@Test(expected=NullPointerException.class)
 	public void testNotNullTitle2() {
 		testEntry1.setTitle(null);
 	}
 	/* Exceptions are bad anyway. */
-	@Test(expected=ArgumentNullException.class)
+	@Test(expected=NullPointerException.class)
 	public void testNotNullStart() {
 		//null == now --> null != now , see javadoc
 		@SuppressWarnings("unused")
 		PersistentCalendarEntry testEntry = new PersistentCalendarEntry(new UserIdentifier("owner"), "meeting", null, new DateTime());
 	}
 	
-	@Test(expected=ArgumentNullException.class)
+	@Test(expected=NullPointerException.class)
 	public void testNotNullEnd() {
 		@SuppressWarnings("unused")
 		//null == now --> null != now , see javadoc

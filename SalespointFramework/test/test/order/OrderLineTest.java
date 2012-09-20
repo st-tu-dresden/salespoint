@@ -20,7 +20,6 @@ import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.util.ArgumentNullException;
 
 import test.product.Keks;
 
@@ -52,12 +51,12 @@ public class OrderLineTest {
 	}
 	
 
-	@Test(expected=ArgumentNullException.class)
+	@Test(expected=NullPointerException.class)
 	public void nullTest() {
 		order.addOrderLine(null);
 	}
 	
-	@Test(expected=ArgumentNullException.class)
+	@Test(expected=NullPointerException.class)
 	public void nullTest2() {
 		order.removeOrderLine(null);
 	}

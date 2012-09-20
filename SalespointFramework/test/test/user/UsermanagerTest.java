@@ -13,7 +13,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.user.PersistentUserManager;
-import org.salespointframework.core.user.UserCapability;
+import org.salespointframework.core.user.Capability;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.Iterables;
 
@@ -25,7 +25,7 @@ public class UsermanagerTest {
 	
 	private static UserIdentifier userIdentifier = new UserIdentifier();
 	private static Employee employee = new Employee(userIdentifier, "lala");
-	private UserCapability capa;
+	private Capability capa;
 	
 	
 	@BeforeClass
@@ -152,15 +152,15 @@ public class UsermanagerTest {
 	
 	@Test
 	public void testCreateCapabilityAndGetName(){
-		capa= new UserCapability("CrazyTestCapability");
+		capa= new Capability("CrazyTestCapability");
 		assertEquals("CrazyTestCapability", capa.getName());
 		
 	}
 	
 	@Test
 	public void testAddCapabilityToEmployee(){
-		capa= new UserCapability("CrazyTestCapabilityAgain");
-		UserCapability capa2= new UserCapability("MustBeInDataBaseAfterTesting");
+		capa= new Capability("CrazyTestCapabilityAgain");
+		Capability capa2= new Capability("MustBeInDataBaseAfterTesting");
 		
 		assertTrue(employee.addCapability(capa));
 		assertTrue(employee.addCapability(capa2));
@@ -173,7 +173,7 @@ public class UsermanagerTest {
 
 	@Test
 	public void testRemoveCapability(){
-		capa= new UserCapability("RemoveTestCapabilityAgain");
+		capa= new Capability("RemoveTestCapabilityAgain");
 		
 		employee.addCapability(capa);
 		
@@ -198,11 +198,11 @@ public class UsermanagerTest {
 		assertEquals(e.getLastname(), e2.getLastname());
 		
 		//e2.setName("Hans");
-		e2.addCapability(new UserCapability("test"));
+		e2.addCapability(new Capability("test"));
 		empManager.update(e2);
 		
 		Employee e3= empManager.get(Employee.class, e.getIdentifier());
-		assertTrue(e3.hasCapability(new UserCapability("test")));
+		assertTrue(e3.hasCapability(new Capability("test")));
 		
 		
 		

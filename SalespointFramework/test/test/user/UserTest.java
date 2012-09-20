@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.util.ArgumentNullException;
 
 
 @SuppressWarnings("javadoc")
@@ -20,13 +19,13 @@ public class UserTest {
 	private Customer customer = new Customer(ui1, passwordCustomer);
 	private Employee employee = new Employee(ui2, passwordEmployee);
 	
-	@Test(expected = ArgumentNullException.class)
+	@Test(expected = NullPointerException.class)
 	public void testNotNullUserId(){
 		@SuppressWarnings("unused")
 		Customer c0= new Customer(null, "IHaveNoUserPassword");
 	}
 
-	@Test(expected = ArgumentNullException.class)
+	@Test(expected = NullPointerException.class)
 	public void testNotNullPassword(){
 		UserIdentifier ui3= new UserIdentifier("notWorkingGuy");
 		@SuppressWarnings("unused")

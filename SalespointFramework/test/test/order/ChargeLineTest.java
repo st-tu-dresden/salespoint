@@ -15,7 +15,7 @@ import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.util.ArgumentNullException;
+
 
 @SuppressWarnings("javadoc")
 public class ChargeLineTest {
@@ -37,12 +37,12 @@ public class ChargeLineTest {
 		chargeLine = new ChargeLine(Money.ZERO, "gaaar nix");
 	}
 	
-	@Test(expected=ArgumentNullException.class)
+	@Test(expected=NullPointerException.class)
 	public void nullTest() {
 		order.addChargeLine(null);
 	}
 	
-	@Test(expected=ArgumentNullException.class)
+	@Test(expected=NullPointerException.class)
 	public void nullTest2() {
 		order.removeChargeLine(null);
 	}

@@ -1,11 +1,9 @@
 package test.rounding;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +15,6 @@ import org.junit.Test;
 import org.salespointframework.core.quantity.rounding.BasicRoundingStrategy;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.AllOf.allOf;
-import static org.hamcrest.core.IsNot.not;
 import static test.rounding.IsZero.zero;
 import static test.rounding.IsEqual.equal;
 import static test.rounding.IsGreaterThan.greaterThan;

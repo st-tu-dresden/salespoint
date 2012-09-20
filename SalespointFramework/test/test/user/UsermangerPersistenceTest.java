@@ -7,8 +7,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.database.Database;
+import org.salespointframework.core.user.Capability;
 import org.salespointframework.core.user.PersistentUserManager;
-import org.salespointframework.core.user.UserCapability;
 import org.salespointframework.core.user.UserIdentifier;
 
 /**
@@ -48,7 +48,7 @@ public class UsermangerPersistenceTest {
 	public void testE3HasCapability() {
 		UserIdentifier ui3 = new UserIdentifier();
 		Employee e3 = new Employee(ui3, "lala");
-		UserCapability capa2 = new UserCapability(
+		Capability capa2 = new Capability(
 				"MustBeInDataBaseAfterTesting");
 
 
@@ -63,7 +63,7 @@ public class UsermangerPersistenceTest {
 	public void testE3HasNOTCapability() {
 		UserIdentifier ui3 = new UserIdentifier();
 		Employee e3 = new Employee(ui3, "lala");
-		UserCapability capa = new UserCapability("CrazyTestCapabilityAgain");
+		Capability capa = new Capability("CrazyTestCapabilityAgain");
 
 		userManager.add(e3);
 

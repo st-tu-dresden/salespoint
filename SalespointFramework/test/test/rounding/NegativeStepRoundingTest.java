@@ -9,14 +9,7 @@ import org.junit.Test;
 import org.salespointframework.core.quantity.rounding.BasicRoundingStrategy;
 
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.AllOf.allOf;
-import static org.hamcrest.core.IsNot.not;
-import static test.rounding.IsZero.zero;
 import static test.rounding.IsEqual.equal;
-import static test.rounding.IsGreaterThan.greaterThan;
-import static test.rounding.IsSmallerThan.smallerThan;
-import static test.rounding.IsGreaterThanOrEqual.greaterThanOrEqual;
-import static test.rounding.IsSmallerThanOrEqual.smallerThanOrEqual;
 
 public class NegativeStepRoundingTest {
 	BigDecimal d;

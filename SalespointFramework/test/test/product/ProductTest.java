@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.ProductFeature;
-import org.salespointframework.util.ArgumentNullException;
 
 @SuppressWarnings("javadoc")
 public class ProductTest {
@@ -23,12 +22,12 @@ public class ProductTest {
 	}
 	
 	
-	@Test(expected=ArgumentNullException.class)
+	@Test(expected=NullPointerException.class)
 	public void addNullProductFeature() {
 		keks.addProductFeature(null);
 	}
 	
-	@Test(expected=ArgumentNullException.class)
+	@Test(expected=NullPointerException.class)
 	public void removeNullProductFeature() {
 		keks.removeProductFeature(null);
 	}
@@ -59,12 +58,12 @@ public class ProductTest {
 		assertFalse(keks.removeProductFeature(feature.getIdentifier()));
 	}
 
-	@Test(expected=ArgumentNullException.class)
+	@Test(expected=NullPointerException.class)
 	public void addNullCategory() {
 		keks.addCategory(null);
 	}
 	
-	@Test(expected=ArgumentNullException.class)
+	@Test(expected=NullPointerException.class)
 	public void removeNullCategory() {
 		keks.removeCategory(null);
 	}

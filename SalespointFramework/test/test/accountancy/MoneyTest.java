@@ -4,11 +4,9 @@ package test.accountancy;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.database.Database;
 
 public class MoneyTest {

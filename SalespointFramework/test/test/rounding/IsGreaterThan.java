@@ -2,7 +2,6 @@ package test.rounding;
 
 import java.math.BigDecimal;
 
-import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
