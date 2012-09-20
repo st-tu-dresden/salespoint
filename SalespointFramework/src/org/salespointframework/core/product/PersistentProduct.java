@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Iterables;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * A persistent implementation of the {@link Product} interface.

@@ -4,7 +4,7 @@ import javax.persistence.Embeddable;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.ArgumentNullException;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * A chargeline represents extra expenses like shipping.

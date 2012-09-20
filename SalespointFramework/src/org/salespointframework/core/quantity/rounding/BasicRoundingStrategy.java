@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * This implementation of a {@link RoundingStrategy} offers to ways to describe

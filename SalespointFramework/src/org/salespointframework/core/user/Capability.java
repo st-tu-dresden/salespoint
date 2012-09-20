@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 
 import org.salespointframework.util.ArgumentNullException;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * A Capability is only identified by a name.
@@ -16,7 +16,7 @@ import org.salespointframework.util.Objects;
  */
 @SuppressWarnings("serial")
 @Embeddable
-public final class UserCapability implements Serializable, Comparable<UserCapability>
+public final class Capability implements Serializable, Comparable<Capability>
 {
 	private final String name;
 
@@ -25,7 +25,7 @@ public final class UserCapability implements Serializable, Comparable<UserCapabi
 	 * Do not use it.
 	 */
 	@Deprecated
-	protected UserCapability() {
+	protected Capability() {
 		name = "";
 	}
 	
@@ -36,7 +36,7 @@ public final class UserCapability implements Serializable, Comparable<UserCapabi
 	 *             
 	 * @throws ArgumentNullException if name is null
 	 */
-	public UserCapability(String name)
+	public Capability(String name)
 	{
 		this.name = Objects.requireNonNull(name, "name");
 	}
@@ -60,9 +60,9 @@ public final class UserCapability implements Serializable, Comparable<UserCapabi
 		{
 			return true;
 		}
-		if (other instanceof UserCapability)
+		if (other instanceof Capability)
 		{
-			return this.name.equals(((UserCapability) other).name);
+			return this.name.equals(((Capability) other).name);
 		}
 		return false;
 	}
@@ -80,7 +80,7 @@ public final class UserCapability implements Serializable, Comparable<UserCapabi
 	}
 
 	@Override
-	public final int compareTo(UserCapability other)
+	public final int compareTo(Capability other)
 	{
 		return this.name.compareTo(other.name);
 	}

@@ -27,7 +27,7 @@ import org.joda.time.Period;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * 

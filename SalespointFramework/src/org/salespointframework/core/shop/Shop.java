@@ -8,6 +8,7 @@ import org.salespointframework.core.calendar.CalendarEntry;
 import org.salespointframework.core.calendar.PersistentCalendar;
 import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.catalog.PersistentCatalog;
+import org.salespointframework.core.catalog.TransientCatalog;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.order.Order;
@@ -22,7 +23,7 @@ import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserManager;
 import org.salespointframework.util.ArgumentNullException;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * Shop Singleton
@@ -180,7 +181,7 @@ public enum Shop {
 	/**
 	 * Initializes the Shop with all <code>Persistent</code> classes.
 	 */
-	public static void initializeShop()
+	public static void initializePersistent()
 	{
 		Shop shop = Shop.INSTANCE;
 
@@ -190,5 +191,23 @@ public enum Shop {
 		shop.setCatalog(new PersistentCatalog());
 		shop.setOrderManager(new PersistentOrderManager());
 		shop.setUserManager(new PersistentUserManager());
-	}
+	} 
+	
+	/**
+	 * Initializes the Shop with all <code>Transient</code> classes.
+	 */
+	public static void initializeTransient()
+	{
+		Shop shop = Shop.INSTANCE;
+		
+		// TODO
+		/*
+		shop.setAccountancy(new TransientAccountancy());
+		shop.setCalendar(new TransientCalendar());
+		shop.setInventory(new TransientInventory());
+		shop.setCatalog(new TransientCatalog());
+		shop.setOrderManager(new TransientOrderManager());
+		shop.setUserManager(new TransientUserManager());
+		*/
+	} 
 }

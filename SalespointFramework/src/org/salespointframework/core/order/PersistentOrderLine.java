@@ -18,7 +18,7 @@ import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.util.Iterables;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * A persistent implementation of the {@link OrderLine} interface.

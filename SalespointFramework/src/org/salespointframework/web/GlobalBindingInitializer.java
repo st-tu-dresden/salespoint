@@ -9,7 +9,7 @@ import org.salespointframework.core.order.OrderLineIdentifier;
 import org.salespointframework.core.product.ProductFeatureIdentifier;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.SerialNumber;
-import org.salespointframework.core.user.UserCapability;
+import org.salespointframework.core.user.Capability;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.web.spring.propertyeditors.AccountancyEntryIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.CalendarEntryIdentifierEditor;
@@ -48,7 +48,7 @@ public class GlobalBindingInitializer implements WebBindingInitializer
 		binder.registerCustomEditor(ProductFeatureIdentifier.class, new ProductFeatureIdentifierEditor());
 		binder.registerCustomEditor(ProductIdentifier.class, new ProductIdentifierEditor());
 		binder.registerCustomEditor(UserIdentifier.class, new UserIdentifierEditor());
-		binder.registerCustomEditor(UserCapability.class, new UserCapabilityEditor());
+		binder.registerCustomEditor(Capability.class, new UserCapabilityEditor());
 		binder.registerCustomEditor(Money.class, new MoneyEditor());
 	}
 }

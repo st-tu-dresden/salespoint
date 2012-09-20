@@ -16,7 +16,7 @@ import org.salespointframework.core.product.PersistentProduct_;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * A persistent implementation of the {@link Catalog} interface.
@@ -160,7 +160,7 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 	 */
 	public final void update(PersistentProduct product)
 	{
-		Objects.requireNonNull(product, "product");
+		java.util.Objects.requireNonNull(product, "product");
 		EntityManager em = emf.createEntityManager();
 		em.merge(product);
 		beginCommit(em);

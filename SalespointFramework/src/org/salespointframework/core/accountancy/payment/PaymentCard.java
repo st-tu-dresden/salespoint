@@ -2,7 +2,7 @@ package org.salespointframework.core.accountancy.payment;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * A <code>PaymentCard</code> is used to charge the cost of goods or services to

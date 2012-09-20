@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.quantity.rounding.RoundingStrategy;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * The <code>Money</code> class represents the Euro currency. A suitable

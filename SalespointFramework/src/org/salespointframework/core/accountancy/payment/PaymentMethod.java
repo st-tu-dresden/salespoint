@@ -2,7 +2,7 @@ package org.salespointframework.core.accountancy.payment;
 
 import java.io.Serializable;
 
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * A <code>PaymentMethod</code> specifies a medium by which a payment has or

@@ -18,7 +18,7 @@ import org.joda.time.Period;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Iterables;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * This class represents an accountancy. An accountancy aggregates of

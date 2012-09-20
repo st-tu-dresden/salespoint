@@ -12,7 +12,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * The <code>PersistentUserManager</code> is an implementation of

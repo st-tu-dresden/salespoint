@@ -2,7 +2,7 @@ package org.salespointframework.web.spring.propertyeditors;
 
 import java.beans.PropertyEditorSupport;
 
-import org.salespointframework.core.user.UserCapability;
+import org.salespointframework.core.user.Capability;
 
 /**
  * 
@@ -14,7 +14,7 @@ public class UserCapabilityEditor extends PropertyEditorSupport
 	@Override
 	public void setAsText(String text)
 	{
-		UserCapability capabiliy = new UserCapability(text);
+		Capability capabiliy = new Capability(text);
 		setValue(capabiliy);
 	}
 }

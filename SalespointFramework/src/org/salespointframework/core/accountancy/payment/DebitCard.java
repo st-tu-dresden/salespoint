@@ -1,9 +1,10 @@
 package org.salespointframework.core.accountancy.payment;
 
+import java.util.Objects;
+
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.payment.PaymentCard;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.util.Objects;
 
 /**
  * A debit card provides the holder with electronic access to his or her bank

@@ -9,7 +9,7 @@ import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderIdentifier;
 import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * A <code>ProductPaymentEntry</code> is used to store information of payments

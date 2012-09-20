@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * Delegates to

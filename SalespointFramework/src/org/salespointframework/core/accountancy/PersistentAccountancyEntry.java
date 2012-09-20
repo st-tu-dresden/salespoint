@@ -12,7 +12,7 @@ import javax.persistence.TemporalType;
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.shop.Shop;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * This class represents an accountancy entry. The

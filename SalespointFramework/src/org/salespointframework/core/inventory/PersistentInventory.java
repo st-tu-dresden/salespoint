@@ -22,7 +22,7 @@ import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.util.ArgumentNullException;
 import org.salespointframework.util.Iterables;
-import org.salespointframework.util.Objects;
+import java.util.Objects;
 
 /**
  * 
