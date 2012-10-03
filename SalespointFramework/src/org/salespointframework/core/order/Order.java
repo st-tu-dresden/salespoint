@@ -2,7 +2,7 @@ package org.salespointframework.core.order;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.Accountancy;
-import org.salespointframework.core.accountancy.ProductPaymentEntry;
+import org.salespointframework.core.accountancy.PersistentProductPaymentEntry;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.user.UserIdentifier;
@@ -131,7 +131,7 @@ public interface Order<O extends OrderLine>
 	
 	/**
 	 * Pays this order, an order needs to be payed before it can be completed.
-	 * An {@link ProductPaymentEntry} is created for the {@link Accountancy}
+	 * An {@link PersistentProductPaymentEntry} is created for the {@link Accountancy}
 	 * @return true if successful, otherwise false
 	 */
 	boolean payOrder();

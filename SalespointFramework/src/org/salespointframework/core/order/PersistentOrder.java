@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.PersistentAccountancy;
-import org.salespointframework.core.accountancy.ProductPaymentEntry;
+import org.salespointframework.core.accountancy.PersistentProductPaymentEntry;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.inventory.Inventory;
@@ -377,7 +377,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		}
 
 		// TODO "Rechnung Nr " deutsch?
-		ProductPaymentEntry ppe = new ProductPaymentEntry(this.orderIdentifier,	this.userIdentifier, this.getTotalPrice(), "Rechnung Nr. " + this.orderIdentifier, this.paymentMethod);
+		PersistentProductPaymentEntry ppe = new PersistentProductPaymentEntry(this.orderIdentifier,	this.userIdentifier, this.getTotalPrice(), "Rechnung Nr. " + this.orderIdentifier, this.paymentMethod);
 		PersistentAccountancy pA = (PersistentAccountancy) Shop.INSTANCE.getAccountancy();
 		if(pA == null) {
 			throw new NullPointerException("Shop.INSTANCE.getAccountancy() returned null");

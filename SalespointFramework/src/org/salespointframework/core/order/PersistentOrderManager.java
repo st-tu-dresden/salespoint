@@ -34,7 +34,7 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 	@Override
 	public void add(PersistentOrder order)
 	{
-		Objects.requireNonNull(order, "order");
+		Objects.requireNonNull(order, "order must be not null");
 		EntityManager em = emf.createEntityManager();
 		em.persist(order);
 		beginCommit(em);
