@@ -18,7 +18,7 @@ import java.util.Objects;
  * This class represents an accountancy entry. The
  * <code>PersistentAccountancyEntry</code> may be used directly, but it is
  * advisable to sub-class it, to define specific entry types for an accountancy,
- * for example a {@link ProductPaymentEntry}.
+ * for example a {@link PersistentProductPaymentEntry}.
  * 
  * @author Hannes Weisbach
  * 

@@ -12,7 +12,7 @@ import org.salespointframework.core.user.UserIdentifier;
 import java.util.Objects;
 
 /**
- * A <code>ProductPaymentEntry</code> is used to store information of payments
+ * A <code>PersistentProductPaymentEntry</code> is used to store information of payments
  * of orders.
  * 
  * @author Hannes Weisbach
@@ -20,7 +20,7 @@ import java.util.Objects;
  */
 @Entity
 // @Customizer(PersistentAccountancyEntryDescriptorCustomizer.class)
-public class ProductPaymentEntry extends PersistentAccountancyEntry {
+public class PersistentProductPaymentEntry extends PersistentAccountancyEntry {
 	/**
 	 * The {@link OrderIdentifier} to which this
 	 * <code>ProductPaymentEntry</code> refers to.
@@ -43,7 +43,7 @@ public class ProductPaymentEntry extends PersistentAccountancyEntry {
 	 * Parameterless constructor required for JPA. Do not use.
 	 */
 	@Deprecated
-	protected ProductPaymentEntry() {
+	protected PersistentProductPaymentEntry() {
 	}
 
 	// TODO ergänzen * @param paymentMethod 
@@ -66,7 +66,7 @@ public class ProductPaymentEntry extends PersistentAccountancyEntry {
 	 * @param paymentMethod 
 	 */
 	
-	public ProductPaymentEntry(OrderIdentifier orderIdentifier,
+	public PersistentProductPaymentEntry(OrderIdentifier orderIdentifier,
 			UserIdentifier userIdentifier, Money amount, String description,
 			PaymentMethod paymentMethod) {
 		super(amount, description);
