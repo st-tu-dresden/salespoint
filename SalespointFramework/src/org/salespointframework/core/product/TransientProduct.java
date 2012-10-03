@@ -1,25 +1,46 @@
 package org.salespointframework.core.product;
 
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.quantity.Metric;
+import org.salespointframework.util.Iterables;
 
 public class TransientProduct implements Product {
 
+	private ProductIdentifier productIdentifier = new ProductIdentifier();
+
+	private String name;
+	private Money price;
+	private Metric metric;
+
+	protected Set<String> categories = new HashSet<String>();
+	
+	
+	public TransientProduct(String name, Money price, Metric metric)
+	{
+		this.name = Objects.requireNonNull(name, "name must not be null");
+		this.price = Objects.requireNonNull(price, "price must not be null");
+		this.metric = Objects.requireNonNull(metric, "metric must not be null");
+	}
+	
+	
 	@Override
 	public ProductIdentifier getIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
+		return productIdentifier;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 	@Override
 	public Money getPrice() {
-		// TODO Auto-generated method stub
-		return null;
+		return price;
 	}
 
 	@Override
@@ -50,20 +71,21 @@ public class TransientProduct implements Product {
 
 	@Override
 	public boolean addCategory(String category) {
-		// TODO Auto-generated method stub
-		return false;
+		return categories.add(category);
 	}
 
 	@Override
 	public boolean removeCategory(String category) {
-		// TODO Auto-generated method stub
-		return false;
+		return categories.remove(category);
 	}
 
 	@Override
 	public Iterable<String> getCategories() {
-		// TODO Auto-generated method stub
-		return null;
+		return Iterables.of(categories);
+	}
+
+	public Metric getMetric() {
+		return metric;
 	}
 
 }
