@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.TransientProduct;
@@ -19,7 +20,7 @@ import org.salespointframework.util.Iterables;
  */
 public class TransientCatalog implements Catalog<TransientProduct>{
 
-	private static final Map<ProductIdentifier, TransientProduct> productMap = new HashMap<>();
+	private static final Map<ProductIdentifier, TransientProduct> productMap = new ConcurrentHashMap<>();
 	
 	@Override
 	public void add(TransientProduct product) {
