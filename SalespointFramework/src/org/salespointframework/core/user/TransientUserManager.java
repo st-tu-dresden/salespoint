@@ -16,7 +16,7 @@ import org.salespointframework.util.Iterables;
  */
 public class TransientUserManager implements UserManager<TransientUser> {
 
-	private static final Map<UserIdentifier, TransientUser> userMap = new HashMap<>();
+	private static final Map<UserIdentifier, TransientUser> userMap = new ConcurrentHashMap<>();
 	private static final Map<Object, TransientUser> userTokenMap = new ConcurrentHashMap<>();
 	
 	@Override
