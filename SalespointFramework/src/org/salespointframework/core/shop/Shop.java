@@ -3,23 +3,28 @@ package org.salespointframework.core.shop;
 import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.accountancy.AccountancyEntry;
 import org.salespointframework.core.accountancy.PersistentAccountancy;
+import org.salespointframework.core.accountancy.TransientAccountancy;
 import org.salespointframework.core.calendar.Calendar;
 import org.salespointframework.core.calendar.CalendarEntry;
 import org.salespointframework.core.calendar.PersistentCalendar;
+import org.salespointframework.core.calendar.TransientCalendar;
 import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.catalog.PersistentCatalog;
 import org.salespointframework.core.catalog.TransientCatalog;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.PersistentInventory;
+import org.salespointframework.core.inventory.TransientInventory;
 import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderLine;
 import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.order.PersistentOrderManager;
+import org.salespointframework.core.order.TransientOrderManager;
 import org.salespointframework.core.product.Product;
 import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.time.DefaultTime;
 import org.salespointframework.core.time.Time;
 import org.salespointframework.core.user.PersistentUserManager;
+import org.salespointframework.core.user.TransientUserManager;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserManager;
 import java.util.Objects;
@@ -176,7 +181,6 @@ public enum Shop {
 		this.catalog = catalog;
 	}
 	
-	// TODO alle aufzählen?
 	/**
 	 * Initializes the Shop with all <code>Persistent</code> classes.
 	 */
@@ -199,14 +203,13 @@ public enum Shop {
 	{
 		Shop shop = Shop.INSTANCE;
 		
-		// TODO
-		/*
 		shop.setAccountancy(new TransientAccountancy());
 		shop.setCalendar(new TransientCalendar());
-		shop.setInventory(new TransientInventory());
+		// TODO
+		//shop.setInventory(new TransientInventory()); 
 		shop.setCatalog(new TransientCatalog());
 		shop.setOrderManager(new TransientOrderManager());
 		shop.setUserManager(new TransientUserManager());
-		*/
+	
 	} 
 }
