@@ -49,7 +49,7 @@ public class PersistentProductPaymentEntry extends PersistentAccountancyEntry {
 	// TODO ergänzen * @param paymentMethod 
 	
 	/**
-	 * A <code>ProductPaymentEntry</code> is constructed for a specific
+	 * A <code>PersistentProductPaymentEntry</code> is constructed for a specific
 	 * {@link OrderIdentifier} attached to it. This Entry saves also the
 	 * {@link UserIdentifier} and the specified amount that was payed.
 	 * 

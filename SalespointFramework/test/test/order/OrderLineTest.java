@@ -23,6 +23,7 @@ import org.salespointframework.core.user.UserIdentifier;
 
 import test.product.Keks;
 
+
 @SuppressWarnings({"javadoc", "unchecked"})
 public class OrderLineTest {
 
@@ -47,7 +48,7 @@ public class OrderLineTest {
 		
 		user = new PersistentUser(new UserIdentifier(), "");
 		order = new PersistentOrder(user.getIdentifier(), Cash.CASH);	
-		orderLine = new PersistentOrderLine(keks.getIdentifier());
+		orderLine = null; // new PersistentOrderLine(keks.getIdentifier());
 	}
 	
 
@@ -83,9 +84,11 @@ public class OrderLineTest {
 		assertFalse(order.removeOrderLine(orderLine.getIdentifier()));
 	}
 	
+	/*
 	@Test(expected=IllegalArgumentException.class)
 	@Ignore
 	public void numberOrderedNegativeTest() {
 		new PersistentOrderLine(new ProductIdentifier(), -1337);
 	}
+	*/
 }

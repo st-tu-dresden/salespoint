@@ -53,6 +53,7 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 		this.amount = roundingStrategy.round(amount);
 		this.metric = metric;
 		this.roundingStrategy = roundingStrategy;
+		
 	}
 
 	/**
@@ -179,6 +180,10 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 			return roundingStrategy.equals(q.roundingStrategy)
 					&& amount.compareTo(q.amount) == 0 && metric.equals(metric);
 		}
+	}
+	
+	public boolean isNegative() {
+		return amount.signum() == -1;
 	}
 
 	@Override

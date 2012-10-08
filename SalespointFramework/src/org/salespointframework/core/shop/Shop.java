@@ -1,5 +1,7 @@
 package org.salespointframework.core.shop;
 
+import java.util.Objects;
+
 import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.accountancy.AccountancyEntry;
 import org.salespointframework.core.accountancy.PersistentAccountancy;
@@ -12,6 +14,7 @@ import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.catalog.PersistentCatalog;
 import org.salespointframework.core.catalog.TransientCatalog;
 import org.salespointframework.core.inventory.Inventory;
+import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.inventory.TransientInventory;
 import org.salespointframework.core.order.Order;
@@ -20,14 +23,12 @@ import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.order.PersistentOrderManager;
 import org.salespointframework.core.order.TransientOrderManager;
 import org.salespointframework.core.product.Product;
-import org.salespointframework.core.product.ProductInstance;
 import org.salespointframework.core.time.DefaultTime;
 import org.salespointframework.core.time.Time;
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.core.user.TransientUserManager;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserManager;
-import java.util.Objects;
 
 /**
  * Shop Singleton
@@ -45,8 +46,9 @@ public enum Shop {
 	private Calendar<? extends CalendarEntry> calendar;
 	private OrderManager<? extends Order<? extends OrderLine>, ? extends OrderLine> ordermanager;
 	private UserManager<? extends User> usermanager;
-	private Inventory<? extends ProductInstance> inventory;
+	private Inventory<? extends InventoryItem> inventory;
 	private Catalog<? extends Product> catalog;
+
 
 	/**
 	 * Gets the global {@link Accountancy}
@@ -125,20 +127,20 @@ public enum Shop {
 	}
 
 	/**
-	 * Gets the global {@link Inventory}
+	 * Gets the global {@link __OldInventory}
 	 * @return an Inventory instance
 	 */
-	public Inventory<? extends ProductInstance> getInventory()
+	public Inventory<? extends InventoryItem> getInventory()
 	{
 		return inventory;
 	}
 
 	/**
-	 * Sets the global {@link Inventory}
+	 * Sets the global {@link __OldInventory}
 	 * @param inventory the Inventory to be set
 	 * @throws NullPointerException if inventory is null
 	 */
-	public void setInventory(Inventory<? extends ProductInstance> inventory)
+	public void setInventory(Inventory<? extends InventoryItem> inventory)
 	{
 		this.inventory = Objects.requireNonNull(inventory, "inventory must not be null");
 	}
@@ -184,7 +186,7 @@ public enum Shop {
 	/**
 	 * Initializes the Shop with all <code>Persistent</code> classes.
 	 */
-	public static void initializePersistent()
+	public void initializePersistent()
 	{
 		Shop shop = Shop.INSTANCE;
 
@@ -199,17 +201,16 @@ public enum Shop {
 	/**
 	 * Initializes the Shop with all <code>Transient</code> classes.
 	 */
-	public static void initializeTransient()
+	public void initializeTransient()
 	{
 		Shop shop = Shop.INSTANCE;
 		
 		shop.setAccountancy(new TransientAccountancy());
 		shop.setCalendar(new TransientCalendar());
-		// TODO
-		//shop.setInventory(new TransientInventory()); 
+		shop.setInventory(new TransientInventory()); 
 		shop.setCatalog(new TransientCatalog());
 		shop.setOrderManager(new TransientOrderManager());
 		shop.setUserManager(new TransientUserManager());
 	
-	} 
+	}
 }

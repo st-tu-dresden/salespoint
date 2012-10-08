@@ -1,27 +1,19 @@
 package test.inventory;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.*;
-
 import org.salespointframework.core.catalog.PersistentCatalog;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.ProductFeature;
 
-
-import test.product.KeksInstance;
 import test.product.Keks;
+import test.product.KeksInstance;
 
 @SuppressWarnings({ "javadoc", "unused" })
 public class InventoryTest {
@@ -34,9 +26,9 @@ public class InventoryTest {
 	private Keks keks;
 	private KeksInstance keksInstance;
 	
-	private final ProductFeature featureRed = ProductFeature.create("Color", "Red");
-	private final ProductFeature featureBlue = ProductFeature.create("Color", "Blue");
-	private final ProductFeature featureYellow = ProductFeature.create("Color", "Yellow");
+	//private final ProductFeature featureRed = ProductFeature.create("Color", "Red");
+//	private final ProductFeature featureBlue = ProductFeature.create("Color", "Blue");
+//	private final ProductFeature featureYellow = ProductFeature.create("Color", "Yellow");
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -47,10 +39,10 @@ public class InventoryTest {
 	public void before() {
 		keks = new Keks("Add Superkeks", Money.ZERO);
 
-		keks.addProductFeature(featureRed);
-		keks.addProductFeature(featureBlue);
+	//	keks.addProductFeature(featureRed);
+	//	keks.addProductFeature(featureBlue);
 
-		keksInstance = new KeksInstance(keks);
+	//	keksInstance = new KeksInstance(keks);
 		// catalog.add(keksType);
 	}
 
@@ -72,22 +64,23 @@ public class InventoryTest {
 	@Test
 	public void testRemove() {
 		inventory.add(keksInstance);
-		inventory.remove(keksInstance.getSerialNumber());
-		assertFalse(inventory.contains(keksInstance.getSerialNumber()));
+		inventory.remove(keksInstance.getIdentifier());
+		assertFalse(inventory.contains(keksInstance.getIdentifier()));
 	}
 
 	@Test
 	public void testContains() {
 		inventory.add(keksInstance);
-		assertTrue(inventory.contains(keksInstance.getSerialNumber()));
+		assertTrue(inventory.contains(keksInstance.getIdentifier()));
 	}
 
 	@Test
 	public void testGet() {
 		inventory.add(keksInstance);
-		assertEquals(keksInstance, inventory.get(KeksInstance.class, keksInstance.getSerialNumber()));
+		assertEquals(keksInstance, inventory.get(KeksInstance.class, keksInstance.getIdentifier()));
 	}
 
+	/*
 	@Test
 	public void find() {
 
@@ -98,10 +91,10 @@ public class InventoryTest {
 		keksInstance = new KeksInstance(keks, featureBlue.getIdentifier());
 		inventory.add(keksInstance);
 
-		/*
-		 * this is also a test: because Yellow is not in keksType, it should not
-		 * be in Keks. this test is passed.
-		 */
+		//
+		// this is also a test: because Yellow is not in keksType, it should not
+		// be in Keks. this test is passed.
+		//
 		keksInstance = new KeksInstance(keks, featureYellow.getIdentifier());
 		inventory.add(keksInstance);
 
@@ -115,11 +108,11 @@ public class InventoryTest {
 		System.out.println("Fliegen hoch!");
 
 		List<ProductFeature> featureSet = new ArrayList<ProductFeature>();
-		/* add automated tests for:
-		 * - one feature
-		 * - multiple features
-		 * - a feature not in productfeatures
-		 */
+		// add automated tests for:
+		 // - one feature
+		 // - multiple features
+		// - a feature not in productfeatures
+		//
 		featureSet.add(featureRed);
 		//featureSet.add(featureYellow);
 
@@ -132,4 +125,6 @@ public class InventoryTest {
 			}
 		}
 	}
+	
+	*/
 }

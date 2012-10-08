@@ -2,11 +2,14 @@ package org.salespointframework.core.order;
 
 
 
+import java.util.Objects;
+
+import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.catalog.TransientCatalog;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.TransientProduct;
+import org.salespointframework.core.quantity.MetricMismatchException;
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.shop.Shop;
 
@@ -25,19 +28,34 @@ public class TransientOrderLine implements OrderLine {
 	
 	public TransientOrderLine(ProductIdentifier productIdentifier, Quantity quantity)
 	{
-		this.productIdentifier = productIdentifier;
-		this.quantity = quantity;
 		
-		TransientCatalog catalog = (TransientCatalog) Shop.INSTANCE.getCatalog();
+		this.productIdentifier = Objects.requireNonNull(productIdentifier, "productIdentifier must be not null");
+		this.quantity = Objects.requireNonNull(quantity, "quantity must be not null");
+
+		Catalog<?> temp = Shop.INSTANCE.getCatalog();
+		
+		if(temp == null) 
+		{
+			throw new RuntimeException("Shop.INSTANCE.getCatalog() returns null");
+		}
+		
+		if(!(temp instanceof TransientCatalog)) 
+		{
+			throw new RuntimeException("Shop.INSTANCE.getCatalog() returns a non TransientCatalog");
+		}
+		
+		TransientCatalog catalog = (TransientCatalog) temp;
 	
 		TransientProduct product = catalog.get(TransientProduct.class, productIdentifier);
 		
-		this.price = (Money) product.getPrice().multiply(quantity); 
-		this.productName = product.getName();
+		if(!product.getMetric().equals(quantity.getMetric())) {
+			throw new MetricMismatchException("product.getMetric is not equal to quantity.getMetric");
+		}
 		
+		this.price = quantity.multiply(product.getPrice());
+		this.productName = product.getName();
 	}
-	
-	
+
 	@Override
 	public OrderLineIdentifier getIdentifier() {
 		return orderLineIdentifier;
@@ -48,18 +66,8 @@ public class TransientOrderLine implements OrderLine {
 		return productIdentifier;
 	}
 
-	@Override
-	public Iterable<ProductFeature> getProductFeatures() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
-	public int getNumberOrdered() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
 	public Quantity getQuantity() {
 		return quantity;
 	}
@@ -68,5 +76,19 @@ public class TransientOrderLine implements OrderLine {
 	public Money getPrice() {
 		return price;
 	}
-
+	
+	@Override
+	public String getProductName() {
+		return productName;
+	}
+	
+	@Override
+	public int hashCode() {
+		return orderLineIdentifier.hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return productName + "(" + productIdentifier.toString() + ")" + " - " + quantity;
+	}
 }

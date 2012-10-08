@@ -65,14 +65,11 @@ public interface UserManager<T extends User> {
      *            {@link User} to be logged on.
      * @param token
      *            token, with which the <code>user</code> will be associated.
-     * @return <code>true</code> if log on was successful, <code>false</code>
-     *         otherwise.
-     * 
      * @throws NullPointerException
      *             if <code>user</code> or <code>token</code> or both are
      *             <code>null</code>.
      */
-    boolean login(T user, Object token);
+    void login(T user, Object token);
 
     /**
      * Logs a user off. The user associated with <code>token</code> on log on is

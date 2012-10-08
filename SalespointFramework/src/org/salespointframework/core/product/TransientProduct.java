@@ -9,7 +9,7 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.util.Iterables;
 
-public class TransientProduct implements Product {
+public class TransientProduct implements Product, Comparable<TransientProduct> {
 
 	private ProductIdentifier productIdentifier = new ProductIdentifier();
 
@@ -44,32 +44,6 @@ public class TransientProduct implements Product {
 	}
 
 	@Override
-	public boolean addProductFeature(ProductFeature productFeature) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeProductFeature(
-			ProductFeatureIdentifier productFeatureIdentifier) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public ProductFeature getProductFeature(
-			ProductFeatureIdentifier productFeatureIdentifier) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Iterable<ProductFeature> getProductFeatures() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean addCategory(String category) {
 		return categories.add(category);
 	}
@@ -84,8 +58,46 @@ public class TransientProduct implements Product {
 		return Iterables.of(categories);
 	}
 
+	@Override
 	public Metric getMetric() {
 		return metric;
+	}
+
+	@Override
+	public boolean equals(Object other)
+	{
+		if (other == null)
+		{
+			return false;
+		}
+		if (other == this)
+		{
+			return true;
+		}
+		if (other instanceof TransientProduct)
+		{
+			return this.productIdentifier.equals(((TransientProduct)other).productIdentifier);
+		}
+		return false;
+	}
+
+	@Override
+	public final int hashCode()
+	{
+		return productIdentifier.hashCode();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return name;
+	}
+
+
+	@Override
+	public int compareTo(TransientProduct other)
+	{
+		return this.name.compareTo(other.name);
 	}
 
 }

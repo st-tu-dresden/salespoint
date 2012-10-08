@@ -15,7 +15,8 @@ public class Keks extends PersistentProduct {
 	}
 	
 	public Keks(String name, Money price) {
-		super(name, price);
+		// TODO Test fixen
+	//	super(name, price);
 	}
 
 }

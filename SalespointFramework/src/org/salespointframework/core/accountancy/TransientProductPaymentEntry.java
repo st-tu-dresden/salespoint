@@ -2,10 +2,6 @@ package org.salespointframework.core.accountancy;
 
 import java.util.Objects;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderIdentifier;

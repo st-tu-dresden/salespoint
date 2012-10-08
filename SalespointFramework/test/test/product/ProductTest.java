@@ -8,7 +8,6 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.ProductFeature;
 
 @SuppressWarnings("javadoc")
 public class ProductTest {
@@ -21,7 +20,7 @@ public class ProductTest {
 		keks = new Keks("Schoooki", Money.ZERO);
 	}
 	
-	
+	/*
 	@Test(expected=NullPointerException.class)
 	public void addNullProductFeature() {
 		keks.addProductFeature(null);
@@ -57,6 +56,7 @@ public class ProductTest {
 		ProductFeature feature = ProductFeature.create("Color", "Red");
 		assertFalse(keks.removeProductFeature(feature.getIdentifier()));
 	}
+	*/
 
 	@Test(expected=NullPointerException.class)
 	public void addNullCategory() {

@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Quantity;
-import org.salespointframework.core.quantity.Unit;
+import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 
 public class QuantityTest {
@@ -19,7 +19,7 @@ public class QuantityTest {
 	
 	@Test
 	public void unitTest() {
-		Unit u = new Unit(4);
+		Units u = Units.of(4);
 		Money m = new Money(15.76);
 		Money r = u.multiply(m);
 		System.out.println("Result of " + u.toString() + " * " + m.toString() + " = " + r.toString());

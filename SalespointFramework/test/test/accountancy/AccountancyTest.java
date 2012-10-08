@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.salespointframework.core.accountancy.PersistentAccountancyEntry;
 import org.salespointframework.core.accountancy.AccountancyEntry;
 import org.salespointframework.core.accountancy.PersistentAccountancy;
-import org.salespointframework.core.accountancy.ProductPaymentEntry;
+import org.salespointframework.core.accountancy.PersistentProductPaymentEntry;
 import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
@@ -34,7 +34,7 @@ public class AccountancyTest {
 		for (int year = 2000; year < 2010; year++) {
 			if((year % 2) == 0) {
 				System.out.println("ProductPaymentEntry");
-				a.add(new ProductPaymentEntry(new OrderIdentifier(),
+				a.add(new PersistentProductPaymentEntry(new OrderIdentifier(),
 					new UserIdentifier(), new Money(1), "Rechnung nr " + year, Cash.CASH));
 			} else {
 				System.out.println("PersistentAccountancyEntry");
@@ -48,7 +48,6 @@ public class AccountancyTest {
 			try {
 				Thread.sleep(1 * 1000);
 			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
@@ -72,7 +71,7 @@ public class AccountancyTest {
 	@Test
 	public void selectType() {
 		System.out.println("AccountancyEntries: ");
-		Iterable<ProductPaymentEntry> i = a.find(ProductPaymentEntry.class,
+		Iterable<PersistentProductPaymentEntry> i = a.find(PersistentProductPaymentEntry.class,
 				from, to);
 		for (AccountancyEntry e : i) {
 			System.out.println(e.toString());

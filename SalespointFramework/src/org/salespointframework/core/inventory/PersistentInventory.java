@@ -1,8 +1,7 @@
 package org.salespointframework.core.inventory;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,28 +13,24 @@ import javax.persistence.criteria.Root;
 
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.order.PersistentOrder;
-import org.salespointframework.core.product.PersistentProductInstance;
-import org.salespointframework.core.product.PersistentProductInstance_;
-import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductIdentifier;
-import org.salespointframework.core.product.ProductInstance;
-import org.salespointframework.core.product.SerialNumber;
 import org.salespointframework.util.Iterables;
-import java.util.Objects;
 
 /**
  * 
  * @author Paul Henke
  * 
  */
-public class PersistentInventory implements Inventory<PersistentProductInstance> {
+public class PersistentInventory implements Inventory<PersistentInventoryItem> 
+{
 	private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 	private final EntityManager entityManager;
 
 	/**
 	 * Creates a new PersistentInventory.
 	 */
-	public PersistentInventory() {
+	public PersistentInventory() 
+	{
 		this.entityManager = null;
 	}
 
@@ -47,67 +42,73 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	 * 
 	 * @throws NullPointerException if entityManager is null
 	 */
-	public PersistentInventory(EntityManager entityManager) {
+	public PersistentInventory(EntityManager entityManager) 
+	{
 		this.entityManager = Objects.requireNonNull(entityManager, "entityManager must not be null");
 	}
 
 	@Override
-	public void add(PersistentProductInstance productInstance) {
-		Objects.requireNonNull(productInstance, "productInstance must not be null");
+	public void add(PersistentInventoryItem inventoryItem) 
+	{
+		Objects.requireNonNull(inventoryItem, "inventoryItem must not be null");
 		EntityManager em = getEntityManager();
-		em.persist(productInstance);
+		em.persist(inventoryItem);
 		beginCommit(em);
 	}
 
 	/**
-	 * Adds multiple {@link PersistentProductInstance}s to this PersistentInventory
+	 * Adds multiple {@link PersistentInventoryItem}s to this PersistentInventory
 	 * 
-	 * @param productInstances
-	 *            an {@link Iterable} of {@link PersistentProductInstance}s to be added
+	 * @param inventoryItems
+	 *            an {@link Iterable} of {@link PersistentInventoryItem}s to be added
 	 * 
 	 * @throws NullPointerException if productInstances is null
 	 */
-	public void addAll(Iterable<? extends PersistentProductInstance> productInstances) {
-		Objects.requireNonNull(productInstances, "productInstances must not be null");
+	public void addAll(Iterable<? extends PersistentInventoryItem> inventoryItems) 
+	{
+		Objects.requireNonNull(inventoryItems, "inventoryItems must not be null");
 		EntityManager em = getEntityManager();
-		for (PersistentProductInstance e : productInstances) {
+		for (PersistentInventoryItem e : inventoryItems) 
+		{
 			em.persist(e);
 		}
 		beginCommit(em);
 	}
 
 	@Override
-	public boolean remove(SerialNumber serialNumber) {
-		Objects.requireNonNull(serialNumber, "serialNumber must not be null");
+	public boolean remove(InventoryItemIdentifier inventoryItemIdentifier) 
+	{
+		Objects.requireNonNull(inventoryItemIdentifier, "inventoryItemIdentifier must not be null");
 		EntityManager em = getEntityManager();
 		System.out.println("Remove: " + em);
-		Object product = em.find(PersistentProductInstance.class, serialNumber);
-		if (product != null) {
+		Object product = em.find(PersistentInventoryItem.class, inventoryItemIdentifier);
+		if (product != null) 
+		{
 			em.remove(product);
 			beginCommit(em);
 			return true;
-		} else {
+		} else 	{
 			return false;
 		}
 	}
 
 	@Override
-	public boolean contains(SerialNumber serialNumber) {
-		Objects.requireNonNull(serialNumber, "serialNumber must not be null");
+	public boolean contains(InventoryItemIdentifier inventoryItemIdentifier) {
+		Objects.requireNonNull(inventoryItemIdentifier, "inventoryItemIdentifier must not be null");
 		EntityManager em = getEntityManager();
-		return em.find(PersistentProductInstance.class, serialNumber) != null;
+		return em.find(PersistentInventoryItem.class, inventoryItemIdentifier) != null;
 	}
 
 	@Override
-	public <E extends PersistentProductInstance> E get(Class<E> clazz, SerialNumber serialNumber) {
-		Objects.requireNonNull(serialNumber, "serialNumber must not be null");
+	public <E extends PersistentInventoryItem> E get(Class<E> clazz, InventoryItemIdentifier inventoryItemIdentifier) {
+		Objects.requireNonNull(inventoryItemIdentifier, "inventoryItemIdentifier must not be null");
 		Objects.requireNonNull(clazz, "clazz");
 		EntityManager em = getEntityManager();
-		return em.find(clazz, serialNumber);
+		return em.find(clazz, inventoryItemIdentifier);
 	}
 
 	@Override
-	public <E extends PersistentProductInstance> Iterable<E> find(Class<E> clazz) {
+	public <E extends PersistentInventoryItem> Iterable<E> find(Class<E> clazz) {
 		Objects.requireNonNull(clazz, "clazz must not be null");
 
 		EntityManager em = getEntityManager();
@@ -119,8 +120,31 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 	}
 
 	@Override
-	public <E extends PersistentProductInstance> Iterable<E> find(Class<E> clazz,
-			ProductIdentifier productIdentifier) {
+	public <E extends PersistentInventoryItem> E get(Class<E> clazz, ProductIdentifier productIdentifier)
+	{
+		Objects.requireNonNull(clazz, "clazz must be not null");
+		Objects.requireNonNull(productIdentifier, "productIdentifier must be not null"); 
+		
+		EntityManager em  = getEntityManager();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<E> cq = cb.createQuery(clazz);
+		Root<E> entry = cq.from(clazz);
+		
+		Predicate p1 = cb.equal(entry.get(PersistentInventoryItem_.productIdentifier), productIdentifier);
+		
+		cq.where(p1);
+
+		TypedQuery<E> tq = em.createQuery(cq);
+		
+		List<E> result = tq.getResultList();
+
+		return result.size() == 0 ? null : result.get(0);
+	}
+
+	
+	/*
+	@Override
+	public <E extends PersistentInventoryItem> Iterable<E> find(Class<E> clazz,	ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
 
@@ -129,7 +153,9 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
 		Root<E> entry = cq.from(clazz);
 
-		Predicate p1 = cb.equal(entry.get(PersistentProductInstance_.productIdentifier), productIdentifier);
+	
+		// error weil null
+		Predicate p1 = null; //cb.equal(entry.get(PersistentInventoryItem_.productIdentifier), productIdentifier);
 
 		cq.where(p1);
 
@@ -137,7 +163,9 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 
 		return Iterables.of(tq.getResultList());
 	}
-
+	*/
+	
+	/*
 	@Override
 	public <E extends PersistentProductInstance> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures) {
 		Objects.requireNonNull(clazz, "clazz must not be null");
@@ -176,6 +204,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		
 		return result;
 	}
+	*/
 	
 	
 	/**
@@ -196,6 +225,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		return entityManager != null ? entityManager : emf.createEntityManager();
 	}
 
+	/*
 	@Override
 	public long count(ProductIdentifier productIdentifier) {
 		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
@@ -219,6 +249,7 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 		Objects.requireNonNull(productFeatures, "productFeatures must not be null");
 		return findInternal(PersistentProductInstance.class, productIdentifier, productFeatures).size();
 	}
+	*/
 	
 	private final void beginCommit(EntityManager entityManager) {
 		if (this.entityManager == null) {
@@ -226,4 +257,6 @@ public class PersistentInventory implements Inventory<PersistentProductInstance>
 			entityManager.getTransaction().commit();
 		} 
 	}
+
+
 }

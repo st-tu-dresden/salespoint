@@ -1,6 +1,5 @@
 package org.salespointframework.core.catalog;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -12,12 +11,6 @@ import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.TransientProduct;
 import org.salespointframework.util.Iterables;
 
-// TODO comment
-/**
- * 
- * @author Paul Henke
- *
- */
 public class TransientCatalog implements Catalog<TransientProduct>{
 
 	private static final Map<ProductIdentifier, TransientProduct> productMap = new ConcurrentHashMap<>();
@@ -55,10 +48,11 @@ public class TransientCatalog implements Catalog<TransientProduct>{
 	{
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		List<E> temp = new LinkedList<E>();
-		for(TransientProduct tp : productMap.values()) {
-			if(tp.getClass().isInstance((clazz)))
+		for(TransientProduct product : productMap.values()) 
+		{
+			if(clazz.isAssignableFrom(product.getClass()))
 			{
-				temp.add(clazz.cast(tp));
+				temp.add(clazz.cast(product));
 			}
 		}
 		return Iterables.of(temp);
@@ -71,9 +65,11 @@ public class TransientCatalog implements Catalog<TransientProduct>{
 		Objects.requireNonNull(name, "name must not be null");
 		
 		List<E> temp = new LinkedList<E>();
-		for(TransientProduct tp : productMap.values()) {
-			if(tp.getClass().isInstance((clazz))) {
-				if(tp.getName().contains(name)) temp.add(clazz.cast(tp));
+		for(TransientProduct product : productMap.values()) 
+		{
+			if(clazz.isAssignableFrom(product.getClass())) 
+			{
+				if(product.getName().contains(name)) temp.add(clazz.cast(product));
 			}
 		}
 		return Iterables.of(temp);
@@ -86,10 +82,15 @@ public class TransientCatalog implements Catalog<TransientProduct>{
 		Objects.requireNonNull(category, "category must not be null");
 		
 		List<E> temp = new LinkedList<E>();
-		for(TransientProduct tp : productMap.values()) {
-			if(tp.getClass().isInstance((clazz))) {
-				Set<String> cats = Iterables.asSet(tp.getCategories());
-				if(cats.contains(category)) temp.add(clazz.cast(tp));
+		for(TransientProduct product : productMap.values()) 
+		{
+			if(clazz.isAssignableFrom(product.getClass())) 
+			{
+				Set<String> cats = Iterables.asSet(product.getCategories());
+				if(cats.contains(category)) 
+				{
+					temp.add(clazz.cast(product));
+				}
 			}
 		}
 		return Iterables.of(temp);

@@ -1,24 +1,22 @@
 package org.salespointframework.core.order;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
-import org.salespointframework.core.database.Database;
+import org.salespointframework.core.catalog.Catalog;
+import org.salespointframework.core.catalog.PersistentCatalog;
+import org.salespointframework.core.catalog.TransientCatalog;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.PersistentProduct;
-import org.salespointframework.core.product.Product;
-import org.salespointframework.core.product.ProductFeature;
 import org.salespointframework.core.product.ProductIdentifier;
-import org.salespointframework.core.product.ProductInstance;
-import org.salespointframework.util.Iterables;
-import java.util.Objects;
+import org.salespointframework.core.quantity.MetricMismatchException;
+import org.salespointframework.core.quantity.Quantity;
+import org.salespointframework.core.shop.Shop;
 
 /**
  * A persistent implementation of the {@link OrderLine} interface.
@@ -38,14 +36,12 @@ public class PersistentOrderLine implements OrderLine
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
 	private ProductIdentifier productIdentifier;
 
-	@ElementCollection
-	private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
-
-	private int numberOrdered;
 
 	private Money price = Money.ZERO;
 
 	private String productName;
+
+	private Quantity quantity;
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
@@ -56,75 +52,35 @@ public class PersistentOrderLine implements OrderLine
 
 	}
 	
-	/**
-	 * 
-	 * @param productIdentifier 
-	 */
-	public PersistentOrderLine(ProductIdentifier productIdentifier)
+	public PersistentOrderLine(ProductIdentifier productIdentifier, Quantity quantity)
 	{
-		this(productIdentifier, Iterables.<ProductFeature>empty(), 1);
-	}
-
-	/**
-	 * 
-	 * @param productIdentifier
-	 * @param numberOrdered
-	 */
-	public PersistentOrderLine(ProductIdentifier productIdentifier, int numberOrdered)
-	{
-		this(productIdentifier, Iterables.<ProductFeature>empty(), numberOrdered);
-	}
-
-	/**
-	 * 
-	 * @param productIdentifier
-	 * @param productFeatures
-	 */
-	public PersistentOrderLine(ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures)
-	{
-		this(productIdentifier, productFeatures, 1);
-	}
-
-	/**
-	 * 
-	 * @param productIdentifier
-	 * @param productFeatures
-	 * @param numberOrdered
-	 */
-	public PersistentOrderLine(ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures, int numberOrdered)
-	{
-
-		Objects.requireNonNull(productFeatures, "productFeatures must not be null");
-		Product product = Database.INSTANCE.getEntityManagerFactory().createEntityManager().find(PersistentProduct.class, productIdentifier);
-		if (product == null)
-		{
-			throw new IllegalStateException("Product " + productIdentifier + " is unknown/not in catalog");
-		}
-		this.productIdentifier = product.getIdentifier();
-		this.productName = product.getName();
-		this.productFeatures = Iterables.asSet(productFeatures);
-
-		if (numberOrdered <= 0)
-		{
-			throw new IllegalArgumentException("numberOrdered must be greater than 0");
-		}
-		this.numberOrdered = numberOrdered;
 		
-		Money price = product.getPrice();
-		for (ProductFeature pf : this.productFeatures)
+		this.productIdentifier = Objects.requireNonNull(productIdentifier, "productIdentifier must be not null");
+		this.quantity = Objects.requireNonNull(quantity, "quantity must be not null");
+
+		Catalog<?> temp = Shop.INSTANCE.getCatalog();
+		
+		if(temp == null) 
 		{
-			price = price.add(pf.getPrice());
+			throw new RuntimeException("Shop.INSTANCE.getCatalog() returns null");
 		}
-		// TODO @Hannes need something like this:
-		// this.price = price.multiply(numberOrdered)
-		// OR
-		// Quantity quantity = new Quantity(numberOrdered, Metric.PIECES, RoundingStrategy.ROUND_ONE);
-		// this.price = price.multiply(quantity);
-		// but have to use this, kind of hacky
-		for(int n = 0; n < numberOrdered; n++) {
-			this.price = this.price.add(price);
+		
+		if(!(temp instanceof PersistentCatalog)) 
+		{
+			throw new RuntimeException("Shop.INSTANCE.getCatalog() returns a non PersistentCatalog");
 		}
+		PersistentCatalog catalog = (PersistentCatalog) temp;
+	
+		PersistentProduct product = catalog.get(PersistentProduct.class, productIdentifier);
+		
+		if(!product.getMetric().equals(quantity.getMetric())) {
+			throw new MetricMismatchException("product.getMetric is not equal to quantity.getMetric");
+		}
+		
+		this.price = quantity.multiply(product.getPrice());
+		this.productName = product.getName();
 	}
+
 
 	@Override
 	public final OrderLineIdentifier getIdentifier()
@@ -144,27 +100,18 @@ public class PersistentOrderLine implements OrderLine
 		return productIdentifier;
 	}
 
-	/**
-	 * Convenience method
-	 * @return the productname of the {@link ProductInstance} in this orderline
-	 */
+	@Override
 	public final String getProductName()
 	{
 		return productName;
 	}
 
 	@Override
-	public final int getNumberOrdered()
+	public final Quantity getQuantity()
 	{
-		return numberOrdered;
+		return quantity;
 	}
 
-	@Override
-	public final Iterable<ProductFeature> getProductFeatures()
-	{
-		return Iterables.of(productFeatures);
-	}
-	
 	@Override
 	public boolean equals(Object other)
 	{
@@ -191,6 +138,6 @@ public class PersistentOrderLine implements OrderLine
 	
 	@Override
 	public String toString() {
-		return productIdentifier.toString() + " x " + numberOrdered;
+		return productName + "(" + productIdentifier.toString() + ")" + " - " + quantity;
 	}
 }

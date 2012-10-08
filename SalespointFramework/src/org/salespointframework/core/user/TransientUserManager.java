@@ -45,16 +45,13 @@ public class TransientUserManager implements UserManager<TransientUser> {
 		return userMap.containsKey(userIdentifier);
 	}
 
-	//TODO return
 	@Override
-	public boolean login(TransientUser user, Object token) 
+	public void login(TransientUser user, Object token) 
 	{
 		Objects.requireNonNull(user, "user must not be null");
 		Objects.requireNonNull(token, "token must not be null");
 
 		userTokenMap.put(token, user);
-
-		return true;
 	}
 
 	@Override
@@ -86,8 +83,12 @@ public class TransientUserManager implements UserManager<TransientUser> {
 	public <E extends TransientUser> Iterable<E> find(Class<E> clazz) 
 	{
 		List<E> temp = new LinkedList<E>();
-		for(TransientUser tp : userMap.values()) {
-			if(tp.getClass().equals(clazz)) temp.add(clazz.cast(tp));
+		for(TransientUser user : userMap.values()) 
+		{
+			if(clazz.isAssignableFrom(user.getClass()))
+			{
+				temp.add(clazz.cast(user));
+			}
 		}
 		return Iterables.of(temp);
 	}

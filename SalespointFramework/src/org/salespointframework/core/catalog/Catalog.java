@@ -36,7 +36,6 @@ public interface Catalog<T extends Product>
 	 */
 	boolean contains(ProductIdentifier productIdentifier);
 
-	//TODO mehrzahl?
 	/**
 	 * Returns the {@link Product} of type <code>clazz</code> and
 	 * all sub-types, identified by <code>productIdentifier</code>.

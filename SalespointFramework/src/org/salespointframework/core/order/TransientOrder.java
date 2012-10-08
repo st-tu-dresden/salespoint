@@ -1,38 +1,23 @@
 package org.salespointframework.core.order;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
-import javax.persistence.EntityManager;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToMany;
-import javax.persistence.RollbackException;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import org.joda.time.DateTime;
-import org.salespointframework.core.accountancy.PersistentAccountancy;
-import org.salespointframework.core.accountancy.PersistentProductPaymentEntry;
+import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.accountancy.TransientAccountancy;
 import org.salespointframework.core.accountancy.TransientProductPaymentEntry;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
-import org.salespointframework.core.database.Database;
 import org.salespointframework.core.inventory.Inventory;
-import org.salespointframework.core.inventory.PersistentInventory;
+import org.salespointframework.core.inventory.TransientInventory;
+import org.salespointframework.core.inventory.TransientInventoryItem;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderCompletionResult.OrderCompletionStatus;
-import org.salespointframework.core.product.PersistentProductInstance;
-import org.salespointframework.core.product.ProductInstance;
+import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
@@ -47,7 +32,7 @@ public class TransientOrder implements Order<TransientOrderLine>, Comparable<Tra
 
 	private UserIdentifier userIdentifier;
 
-	private Date dateCreated = Shop.INSTANCE.getTime().getDateTime().toDate();
+	private DateTime dateCreated = Shop.INSTANCE.getTime().getDateTime();
 
 	private OrderStatus orderStatus = OrderStatus.OPEN;
 
@@ -61,7 +46,7 @@ public class TransientOrder implements Order<TransientOrderLine>, Comparable<Tra
 	}
 	
 	/**
-	 * Creates a new PersistentOrder
+	 * Creates a new TransientOrder
 	 * 
 	 * @param userIdentifier
 	 *            The {@link UserIdentifier}/{@link User} connected to this
@@ -202,14 +187,71 @@ public class TransientOrder implements Order<TransientOrderLine>, Comparable<Tra
 
 	@Override
 	public final DateTime getDateCreated() {
-		return new DateTime(dateCreated);
+		return dateCreated;
 	}
 
-	
-	// TODO
 	@Override
 	public OrderCompletionResult completeOrder() {
-		return null;
+		
+		Inventory<?> temp = Shop.INSTANCE.getInventory();
+		
+		if(temp == null) 
+		{
+			throw new NullPointerException("Shop.INSTANCE.getInventory() returned null");
+		}
+		
+		if (!(temp instanceof TransientInventory)) 
+		{
+			throw new RuntimeException("Sorry, TransientOrder works only with TransientInventory :(");
+		}
+		
+		TransientInventory inventory = (TransientInventory) temp;
+		
+		Map<TransientInventoryItem, Quantity> goodItems = new HashMap<>();
+		Map<TransientInventoryItem, Quantity> badItems = new HashMap<>();
+		
+		for(TransientOrderLine orderline : orderLines) {
+			ProductIdentifier productIdentifier =  orderline.getProductIdentifier();
+			TransientInventoryItem inventoryItem = inventory.get(TransientInventoryItem.class, productIdentifier); 
+			
+			// TODO was machen wenn nicht im Inventar
+			if(inventoryItem == null) { 
+				System.out.println("item null");
+				break;
+			}
+			if(!inventoryItem.getQuantity().subtract(orderline.getQuantity()).isNegative()) {
+				goodItems.put(inventoryItem, orderline.getQuantity());
+			} else {
+				badItems.put(inventoryItem, orderline.getQuantity());
+			}
+		}
+		
+		if(goodItems.size() == orderLines.size()) {
+			System.out.println("size == ");
+			for(TransientInventoryItem inventoryItem : goodItems.keySet()) {
+				Quantity quantity = goodItems.get(inventoryItem);
+				inventoryItem.decreaseQuantity(quantity);
+			}
+			return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL);
+		} else {
+			System.out.println("size != ");
+			return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
+		}
+	}
+	
+	private final class InternalOrderCompletionResult implements OrderCompletionResult 
+	{
+		private final OrderCompletionStatus status;
+		
+		public InternalOrderCompletionResult(OrderCompletionStatus status) {
+			this.status = status;
+		}
+		
+		@Override
+		public OrderCompletionStatus getStatus()
+		{
+			return status;
+		}
 	}
 
 		
@@ -247,54 +289,30 @@ public class TransientOrder implements Order<TransientOrderLine>, Comparable<Tra
 
 	@Override
 	public boolean payOrder() {
-		if (orderStatus != OrderStatus.OPEN || paymentMethod == null) {
+		if (orderStatus != OrderStatus.OPEN || paymentMethod == null) 
+		{
 			return false;
 		}
+		
+		Accountancy<?> temp = Shop.INSTANCE.getAccountancy();
 
-		// TODO "Rechnung Nr " deutsch?
-		// TODO TransientAcc
-		TransientProductPaymentEntry ppe = new TransientProductPaymentEntry(this.orderIdentifier, this.userIdentifier, this.getTotalPrice(), "Rechnung Nr. " + this.orderIdentifier, this.paymentMethod);
-		TransientAccountancy accountancy = (TransientAccountancy) Shop.INSTANCE.getAccountancy();
-		if(accountancy == null) {
+		if(temp == null) 
+		{
 			throw new NullPointerException("Shop.INSTANCE.getAccountancy() returned null");
 		}
+		
+		if(temp instanceof TransientAccountancy) 
+		{
+			throw new RuntimeException("Sorry, TransientOrder works only with TransientAccountancy :(");
+		}
+		
+		TransientAccountancy accountancy = (TransientAccountancy) temp;
+
+		// TODO "Rechnung Nr " deutsch?
+		TransientProductPaymentEntry ppe = new TransientProductPaymentEntry(this.orderIdentifier, this.userIdentifier, this.getTotalPrice(), "Rechnung Nr. " + this.orderIdentifier, this.paymentMethod);
 		accountancy.add(ppe);
 		orderStatus = OrderStatus.PAYED;
 		return true;
-	}
-
-	// TODO
-	private final class InternalOrderCompletionResult implements OrderCompletionResult {
-
-		@Override
-		public OrderCompletionStatus getStatus()
-		{
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public boolean rollBack()
-		{
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public Order<OrderLine> splitOrder()
-		{
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public Iterable<ProductInstance> getRemovedInstances()
-		{
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-	
 	}
 
 	@Override

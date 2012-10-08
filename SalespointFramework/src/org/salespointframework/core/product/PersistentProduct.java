@@ -1,6 +1,7 @@
 package org.salespointframework.core.product;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -10,8 +11,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.util.Iterables;
-import java.util.Objects;
 
 /**
  * A persistent implementation of the {@link Product} interface.
@@ -28,11 +29,13 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	private String name;
 	private Money price;
 
-	@ElementCollection
-	private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
+	//@ElementCollection
+	//private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
 
 	@ElementCollection
 	private Set<String> categories = new HashSet<String>();
+
+	private Metric metric;
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
@@ -42,15 +45,11 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	{
 	}
 
-	/**
-	 * Creates a new PersistentProductType
-	 * @param name the name of the PersistentProduct
-	 * @param price the price of the PersistentProduct
-	 */
-	public PersistentProduct(String name, Money price)
+	public PersistentProduct(String name, Money price, Metric metric)
 	{
 		this.name = Objects.requireNonNull(name, "name must not be null");
 		this.price = Objects.requireNonNull(price, "price must not be null");
+		this.metric = Objects.requireNonNull(metric, "metric must not be null");
 	}
 
 	@Override
@@ -95,11 +94,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 		return price;
 	}
 
-	@Override
-	public final Iterable<ProductFeature> getProductFeatures()
-	{
-		return Iterables.of(productFeatures);
-	}
+
 
 	@Override
 	public final ProductIdentifier getIdentifier()
@@ -107,6 +102,14 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 		return productIdentifier;
 	}
 
+	/*
+	 
+	@Override
+	public final Iterable<ProductFeature> getProductFeatures()
+	{
+		return Iterables.of(productFeatures);
+	}
+	
 	@Override
 	public final boolean addProductFeature(ProductFeature productFeature)
 	{
@@ -134,6 +137,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 		}
 		return productFeature;
 	}
+	*/
 
 	@Override
 	public final boolean addCategory(String category)
@@ -159,6 +163,12 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	public int compareTo(PersistentProduct other)
 	{
 		return this.name.compareTo(other.name);
+	}
+
+	@Override
+	public Metric getMetric()
+	{
+		return metric;
 	}
 
 

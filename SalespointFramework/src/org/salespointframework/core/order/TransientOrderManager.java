@@ -44,7 +44,7 @@ public class TransientOrderManager implements OrderManager<TransientOrder, Trans
 		List<E> temp = new LinkedList<E>();
 		for(TransientOrder order : orderMap.values()) 
 		{
-			if(order.getClass().isInstance(clazz) && orderStatus == order.getOrderStatus())
+			if(clazz.isAssignableFrom(order.getClass()) && orderStatus == order.getOrderStatus())
 			{
 				temp.add(clazz.cast(order));
 			}
@@ -60,8 +60,9 @@ public class TransientOrderManager implements OrderManager<TransientOrder, Trans
 		Objects.requireNonNull(to, "to must not be null");
 		
 		List<E> temp = new LinkedList<E>();
-		for(TransientOrder order : orderMap.values()) {
-			if(order.getClass().isInstance(clazz))
+		for(TransientOrder order : orderMap.values()) 
+		{
+			if(clazz.isAssignableFrom(order.getClass()))
 			{
 				if(order.getDateCreated().isAfter(from) && order.getDateCreated().isBefore(to)) {
 					temp.add(clazz.cast(to));
@@ -78,8 +79,9 @@ public class TransientOrderManager implements OrderManager<TransientOrder, Trans
 		Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
 		
 		List<E> temp = new LinkedList<E>();
-		for(TransientOrder order : orderMap.values()) {
-			if(order.getClass().isInstance(clazz) && userIdentifier == order.getUserIdentifier())
+		for(TransientOrder order : orderMap.values()) 
+		{
+			if(clazz.isAssignableFrom(order.getClass()) && userIdentifier == order.getUserIdentifier())
 			{
 				temp.add(clazz.cast(order));
 			}
@@ -98,9 +100,10 @@ public class TransientOrderManager implements OrderManager<TransientOrder, Trans
 		
 		List<E> temp = new LinkedList<E>();
 		for(TransientOrder order : orderMap.values()) {
-			if(order.getClass().isInstance(clazz) && userIdentifier == order.getUserIdentifier())
+			if(clazz.isAssignableFrom(order.getClass()) && userIdentifier == order.getUserIdentifier())
 			{
-				if(order.getDateCreated().isAfter(from) && order.getDateCreated().isBefore(to)) {
+				if(order.getDateCreated().isAfter(from) && order.getDateCreated().isBefore(to)) 
+				{
 					temp.add(clazz.cast(order));
 				}
 			}

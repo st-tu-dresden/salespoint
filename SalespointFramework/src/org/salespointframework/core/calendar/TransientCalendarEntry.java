@@ -1,27 +1,17 @@
 package org.salespointframework.core.calendar;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
 import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.util.Iterables;
 
 public class TransientCalendarEntry implements CalendarEntry
 {
-	
-	// TODO Persistent angucken, mehr checkano!!!
-	
-	
-	
 	private final CalendarEntryIdentifier calendarEntryIdentifier = new CalendarEntryIdentifier();
 
 	private int repeatCount;
@@ -162,6 +152,25 @@ public class TransientCalendarEntry implements CalendarEntry
     @Override
     public String toString() {
         return title + " (" + getStart() + " - " + getEnd() + ")";
+    }
+    
+    public final Iterable<Interval> getEntryList(Interval interval) {
+        List<Interval> dates = new ArrayList<Interval>();
+
+        int maxCount = this.repeatCount;
+
+        maxCount = maxCount == -1 ? Integer.MAX_VALUE : maxCount;
+
+        Interval nextInterval = this.duration;
+
+        for (int i = 0; i <= maxCount && !interval.isBefore(nextInterval); i++) {
+            if (interval.overlaps(nextInterval)) {
+                dates.add(nextInterval);
+            }
+            nextInterval = new Interval(nextInterval.getStart().plus(this.period), nextInterval.getEnd().plus(this.period));
+        }
+
+        return Iterables.of(dates);
     }
 
 }

@@ -1,5 +1,8 @@
 package org.salespointframework.core.calendar;
 
+import org.joda.time.DateTime;
+import org.salespointframework.core.user.UserIdentifier;
+
 
 /**
  * A calendar manages a set of calendar entries.
@@ -80,4 +83,16 @@ public interface Calendar<T extends CalendarEntry> {
 	 *             if <code>calendarEntryIdentifier</code> is <code>null</code>.
 	 */
 	boolean remove(CalendarEntryIdentifier calendarEntryIdentifier);
+
+	<E extends T> Iterable<E> find(Class<E> clazz, String title);
+
+	<E extends T> Iterable<E> find(Class<E> clazz, UserIdentifier userIdentifier);
+
+	<E extends T> Iterable<E> between(Class<E> clazz, DateTime start, DateTime end);
+
+	<E extends T> Iterable<E> endsBetween(Class<E> clazz, DateTime start, DateTime end);
+
+	<E extends T> Iterable<E> startsBetween(Class<E> clazz, DateTime start, DateTime end);
+
+
 }

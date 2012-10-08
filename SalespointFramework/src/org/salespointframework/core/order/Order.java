@@ -7,11 +7,6 @@ import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.user.UserIdentifier;
 
-//TODO if you have really time, check if generics are really needed.
-//OrderLine is an embeddable and has an elementcollection, so that may be an issue. 
-//^
-// yeah that is an issue, FUUUUUUUUU, possible solution save orderline-elementcollection as blob?
-
 /**
  * Order interface
  * 

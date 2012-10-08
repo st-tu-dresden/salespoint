@@ -1,6 +1,7 @@
 package org.salespointframework.core.product;
 
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.quantity.Metric;
 
 
 /**
@@ -34,7 +35,7 @@ public interface Product
 	 * @return true if the Product did not already contain the {@link ProductFeature}, otherwise false
 	 * @throws NullPointerException if productFeature is null
 	 */
-	boolean addProductFeature(ProductFeature productFeature);
+	//boolean addProductFeature(ProductFeature productFeature);
 	
 	/**
 	 * Removes a {@link ProductFeature}
@@ -42,7 +43,7 @@ public interface Product
 	 * @return true if the ProductFeature is removed, false otherwise 
 	 * @throws NullPointerException if productFeatureIdentifier is null
 	 */
-	boolean removeProductFeature(ProductFeatureIdentifier productFeatureIdentifier);
+	//boolean removeProductFeature(ProductFeatureIdentifier productFeatureIdentifier);
 	
 	
 	/**
@@ -51,13 +52,13 @@ public interface Product
 	 * @return a {@link ProductFeature}
 	 * @throws NullPointerException if productFeatureIdentifier is null
 	 */
-	ProductFeature getProductFeature(ProductFeatureIdentifier productFeatureIdentifier);
+	//ProductFeature getProductFeature(ProductFeatureIdentifier productFeatureIdentifier);
 
 	/**
 	 * 
 	 * @return an Iterable of all {@link ProductFeature}s of this Product
 	 */
-	Iterable<ProductFeature> getProductFeatures();
+	//Iterable<ProductFeature> getProductFeatures();
 
 	/**
 	 * Adds a category to this Product
@@ -80,4 +81,6 @@ public interface Product
 	 * @return an Iterable with all categories of this Product
 	 */
 	Iterable<String> getCategories();
+
+	Metric getMetric();
 }

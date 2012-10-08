@@ -11,19 +11,22 @@ import org.salespointframework.core.quantity.rounding.RoundingStrategy;
  * 
  */
 @SuppressWarnings("serial")
-public class Unit extends Quantity {
+public class Units extends Quantity {
+	
+	public static final Metric METRIC = Metric.PIECES;
+	
 	/**
 	 * Convenience instance of 0 units.
 	 */
-	public static final Unit ZERO = new Unit(0);
+	public static final Units ZERO = new Units(0);
 	/**
 	 * Convenience instance of 1 unit.
 	 */
-	public static final Unit ONE = new Unit(1);
+	public static final Units ONE = new Units(1);
 	/**
 	 * Convenience instance of 10 units.
 	 */
-	public static final Unit TEN = new Unit(10);
+	public static final Units TEN = new Units(10);
 
 	/**
 	 * Creates a new <code>Unit</code> instance, representing
@@ -32,8 +35,11 @@ public class Unit extends Quantity {
 	 * @param amount
 	 *            number of objects, this <code>Unit</code> object represents
 	 */
-	public Unit(long amount) {
-		super(amount, Metric.PIECES, RoundingStrategy.ROUND_ONE);
+	private Units(long amount) {
+		super(amount, METRIC , RoundingStrategy.ROUND_ONE);
 	}
-
+	
+	public static Units of(long amount) {
+		return new Units(amount);
+	}
 }

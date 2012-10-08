@@ -1,5 +1,7 @@
 package org.salespointframework.core.accountancy.payment;
 
+import java.util.Objects;
+
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 
@@ -55,19 +57,18 @@ public final class Cheque extends PaymentMethod {
 	 *            Unique identifier of the bank that issued the cheque. Also
 	 *            known as the bank routing number.
 	 */
-	// TODO null-checks
 	public Cheque(String accountName, String accountNumber,
 			String chequeNumber, String payee, DateTime dateWritten,
 			String bankName, String bankAddress, String bankIdentificationNumber) {
 		super("Cheque");
-		this.accountName = accountName;
-		this.accountNumber = accountNumber;
-		this.chequeNumber = chequeNumber;
-		this.payee = payee;
-		this.dateWritten = dateWritten;
-		this.bankName = bankName;
-		this.bankAddress = bankAddress;
-		this.bankIdentificationNumber = bankIdentificationNumber;
+		this.accountName = Objects.requireNonNull(accountName, "accountName must be not null");
+		this.accountNumber = Objects.requireNonNull(accountNumber, "accountNumber must be not null");
+		this.chequeNumber = Objects.requireNonNull(chequeNumber, "chequeNumber must be not null");
+		this.payee = Objects.requireNonNull(payee, "payee must be not null");
+		this.dateWritten = Objects.requireNonNull(dateWritten, "dateWritten must be not null");
+		this.bankName = Objects.requireNonNull(bankName, "bankName must be not null");
+		this.bankAddress = Objects.requireNonNull(bankAddress, "bankAddress must be not null");
+		this.bankIdentificationNumber = Objects.requireNonNull(bankIdentificationNumber, "bankIdentificationNumber must be not null");
 	}
 
 	/**

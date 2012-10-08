@@ -1,6 +1,7 @@
 package org.salespointframework.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -92,7 +93,7 @@ public final class Iterables
 	 */
 	public static <T> Iterable<T> empty()
 	{
-		return of(new ArrayList<T>(0));
+		return of(Collections.<T>emptyList());
 	}
 
 	/**

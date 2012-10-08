@@ -69,6 +69,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
      *            The title that entries should have.
      * @return An iterable with all found entries
      */
+    @Override
     public <T extends PersistentCalendarEntry> Iterable<T> find(Class<T> clazz, String title) {
         Objects.requireNonNull(title, "title must not be null");
 
@@ -120,6 +121,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
      *            found.
      * @return An {link @Iterable} with all found entries.
      */
+    @Override
     public <T extends PersistentCalendarEntry> Iterable<T> find(Class<T> clazz, UserIdentifier userIdentifier) {
         Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
 
@@ -164,6 +166,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
      * 
      * @see Interval#contains(org.joda.time.ReadableInterval)
      */
+    @Override
     public <T extends PersistentCalendarEntry> Iterable<T> between(Class<T> clazz, DateTime start, DateTime end) {
         Interval interval = new Interval(Objects.requireNonNull(start, "start must not be null"), Objects.requireNonNull(end, "end must not be null"));
 
@@ -210,6 +213,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
      * 
      * @see Interval#contains(org.joda.time.ReadableInstant)
      */
+    @Override
     public <T extends PersistentCalendarEntry> Iterable<T> endsBetween(Class<T> clazz, DateTime start, DateTime end) {
         Interval interval = new Interval(Objects.requireNonNull(start, "start must not be null"), Objects.requireNonNull(end, "end must not be null"));
 
@@ -256,6 +260,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
      * 
      * @see Interval#contains(org.joda.time.ReadableInstant)
      */
+    @Override
     public <T extends PersistentCalendarEntry> Iterable<T> startsBetween(Class<T> clazz, DateTime start, DateTime end) {
         Interval interval = new Interval(Objects.requireNonNull(start, "start must not be null"), Objects.requireNonNull(end, "end must not be null"));
 

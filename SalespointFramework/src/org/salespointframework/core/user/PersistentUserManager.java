@@ -116,18 +116,14 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 	private static final Map<Object, PersistentUser> userTokenMap = new ConcurrentHashMap<>();
 
 	@Override
-	public final boolean login(PersistentUser user, Object token)
+	public final void login(PersistentUser user, Object token)
 	{
 		Objects.requireNonNull(user, "user must not be null");
 		Objects.requireNonNull(token, "token must not be null");
 
 		PersistentUser temp = this.get(PersistentUser.class, user.getIdentifier());
 
-		if (temp == null)
-			return false;
-		
 		userTokenMap.put(token, user);
-		return true;
 	}
 
 	@Override
