@@ -39,7 +39,7 @@ public class Utility {
 		try {
 			passBytes = password.getBytes("UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException("Unsupported (getBytes)");
+			throw new RuntimeException("getBytes(UTF-8) is unsupported");
 		}
 		
 		try {
@@ -51,7 +51,7 @@ public class Utility {
 			digest = m.digest();
 			
 		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException("Unsupported (getInstance)");
+			throw new RuntimeException("MessageDigest.getInstance(\"SHA-256\") is unsupported");
 		}
 		
 		String saltString = DatatypeConverter.printBase64Binary(salt);

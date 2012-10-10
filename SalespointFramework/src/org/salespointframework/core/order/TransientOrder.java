@@ -301,7 +301,7 @@ public class TransientOrder implements Order<TransientOrderLine>, Comparable<Tra
 			throw new NullPointerException("Shop.INSTANCE.getAccountancy() returned null");
 		}
 		
-		if(temp instanceof TransientAccountancy) 
+		if(!(temp instanceof TransientAccountancy)) 
 		{
 			throw new RuntimeException("Sorry, TransientOrder works only with TransientAccountancy :(");
 		}

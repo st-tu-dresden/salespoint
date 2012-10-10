@@ -4,6 +4,10 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import org.salespointframework.core.shop.Shop;
+import org.salespointframework.core.user.PersistentUser;
+import org.salespointframework.core.user.PersistentUserManager;
+import org.salespointframework.core.user.TransientUser;
+import org.salespointframework.core.user.TransientUserManager;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.Capability;
 import org.salespointframework.core.user.UserManager;
@@ -39,13 +43,28 @@ public class HasCapabilityTag extends BodyTagSupport
 	public int doStartTag() throws JspException
 	{
 		@SuppressWarnings("unchecked")
-		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
+		UserManager<?> temp = Shop.INSTANCE.getUserManager();
 		
-		if(usermanager == null) {
+		if(temp == null) {
 			throw new NullPointerException("Shop.INSTANCE.getUserManager() returned null");
 		}
 		
-		User user = usermanager.getUserByToken(User.class, pageContext.getSession());
+		UserManager<User> usermanager = (UserManager<User>) temp;
+		
+		User user = null;
+		
+		if(temp instanceof TransientUserManager) {
+			user = usermanager.getUserByToken(TransientUser.class, pageContext.getSession());
+		}
+		
+		if(temp instanceof PersistentUserManager) {
+			user = usermanager.getUserByToken(PersistentUser.class, pageContext.getSession());
+		}
+		
+		if(!(temp instanceof TransientUserManager && temp instanceof PersistentUserManager)) {
+			user = usermanager.getUserByToken(User.class, pageContext.getSession());
+		}
+		
 		Capability capability = new Capability(capabilityName);
 		
 			

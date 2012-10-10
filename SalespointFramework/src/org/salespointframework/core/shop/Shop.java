@@ -127,7 +127,7 @@ public enum Shop {
 	}
 
 	/**
-	 * Gets the global {@link __OldInventory}
+	 * Gets the global {@link Inventory}
 	 * @return an Inventory instance
 	 */
 	public Inventory<? extends InventoryItem> getInventory()
@@ -136,7 +136,7 @@ public enum Shop {
 	}
 
 	/**
-	 * Sets the global {@link __OldInventory}
+	 * Sets the global {@link Inventory}
 	 * @param inventory the Inventory to be set
 	 * @throws NullPointerException if inventory is null
 	 */

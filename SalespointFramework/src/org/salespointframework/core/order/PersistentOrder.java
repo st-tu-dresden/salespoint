@@ -453,7 +453,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 			throw new NullPointerException("Shop.INSTANCE.getAccountancy() returned null");
 		}
 		
-		if(temp instanceof PersistentAccountancy) 
+		if(!(temp instanceof PersistentAccountancy)) 
 		{
 			throw new RuntimeException("Sorry, PersistentOrder works only with PersistentAccountancy :(");
 		}

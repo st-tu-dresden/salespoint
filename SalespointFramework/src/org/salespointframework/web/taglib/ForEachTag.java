@@ -10,6 +10,8 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 // via http://stackoverflow.com/questions/6212622/how-can-i-work-with-iterables-in-my-jsp-pages
 
 
+// TODO noch nötig?, spring hat auch einen
+
 /**
  * 
  * @author Paul Henke
