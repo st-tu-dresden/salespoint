@@ -9,7 +9,8 @@
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/mvc
-		http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd"
+	>
 
 	<!-- JPA, name of persistent unit, has to be before context:component-scan -->
 	<!-- <bean class="org.salespointframework.web.PersistenceUnitInitializer" p:persistenceUnitName="Foobar" /> -->
