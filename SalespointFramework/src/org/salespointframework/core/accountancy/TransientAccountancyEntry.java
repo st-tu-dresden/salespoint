@@ -1,6 +1,5 @@
 package org.salespointframework.core.accountancy;
 
-import java.util.Date;
 import java.util.Objects;
 
 import org.joda.time.DateTime;
@@ -9,11 +8,11 @@ import org.salespointframework.core.shop.Shop;
 
 public class TransientAccountancyEntry implements AccountancyEntry
 {
-	private AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();
+	private final AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();
 
 	private Money value = Money.ZERO;
 
-	private Date date = Shop.INSTANCE.getTime().getDateTime().toDate();
+	private final DateTime date = Shop.INSTANCE.getTime().getDateTime();
 
 	private String description = "";
 
@@ -44,8 +43,8 @@ public class TransientAccountancyEntry implements AccountancyEntry
 	}
 
 	@Override
-	public DateTime getDate() {
-		return new DateTime(date);
+	public final DateTime getDate() {
+		return date;
 	}
 
 	/**
@@ -54,22 +53,22 @@ public class TransientAccountancyEntry implements AccountancyEntry
 	 * The Money object is always non-<code>null</code>.
 	 */
 	@Override
-	public Money getValue() {
+	public final Money getValue() {
 		return value;
 	}
 
 	@Override
-	public String getDescription() {
+	public final String getDescription() {
 		return description;
 	}
 
 	@Override
-	public AccountancyEntryIdentifier getIdentifier() {
+	public final AccountancyEntryIdentifier getIdentifier() {
 		return accountancyEntryIdentifier;
 	}
 	
 	@Override
-	public boolean equals(Object other)
+	public final boolean equals(Object other)
 	{
 		if (other == null)
 		{

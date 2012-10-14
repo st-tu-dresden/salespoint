@@ -56,37 +56,37 @@ public class TransientCalendarEntry implements CalendarEntry
     }
 
 	@Override
-	public CalendarEntryIdentifier getIdentifier()
+	public final CalendarEntryIdentifier getIdentifier()
 	{
 		return calendarEntryIdentifier;
 	}
 
 	@Override
-	public String getDescription()
+	public final String getDescription()
 	{
 		return description;
 	}
 
 	@Override
-	public DateTime getEnd()
+	public final DateTime getEnd()
 	{
 		return end;
 	}
 
 	@Override
-	public UserIdentifier getOwner()
+	public final UserIdentifier getOwner()
 	{
 		return owner;
 	}
 
 	@Override
-	public DateTime getStart()
+	public final DateTime getStart()
 	{
 		return start;
 	}
 
 	@Override
-	public String getTitle()
+	public final String getTitle()
 	{
 		return title;
 	}
@@ -130,7 +130,7 @@ public class TransientCalendarEntry implements CalendarEntry
     }
 
     @Override
-    public boolean equals(Object other) {
+    public final boolean equals(Object other) {
         if (other == null)
             return false;
         if (other == this)

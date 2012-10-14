@@ -79,7 +79,7 @@ public class PersistentAccountancyEntry implements AccountancyEntry {
 	}
 
 	@Override
-	public DateTime getDate() {
+	public final DateTime getDate() {
 		return new DateTime(date);
 	}
 
@@ -89,22 +89,22 @@ public class PersistentAccountancyEntry implements AccountancyEntry {
 	 * The Money object is always non-<code>null</code>.
 	 */
 	@Override
-	public Money getValue() {
+	public final Money getValue() {
 		return value;
 	}
 
 	@Override
-	public String getDescription() {
+	public final String getDescription() {
 		return description;
 	}
 
 	@Override
-	public AccountancyEntryIdentifier getIdentifier() {
+	public final AccountancyEntryIdentifier getIdentifier() {
 		return accountancyEntryIdentifier;
 	}
 	
 	@Override
-	public boolean equals(Object other)
+	public final boolean equals(Object other)
 	{
 		if (other == null)
 		{

@@ -19,13 +19,6 @@ public class PersistentInventoryItem implements InventoryItem
 	@EmbeddedId
 	private InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
-
-	//@Embedded
-	//@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
-	//private ProductIdentifier productIdentifier;
-	
-	
-	
 	//@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, /* CascadeType.REMOVE,*/ CascadeType.REFRESH, CascadeType.DETACH})
 	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, /* CascadeType.REMOVE,*/ CascadeType.REFRESH, CascadeType.DETACH})
 	private PersistentProduct product;
@@ -33,28 +26,17 @@ public class PersistentInventoryItem implements InventoryItem
 	private Quantity quantity;
 
 	@Deprecated
-	public PersistentInventoryItem() 
-	{
-		
-	}
+	protected PersistentInventoryItem() { }
 	
 	public PersistentInventoryItem(PersistentProduct product, Quantity quantity)
 	{
 		this.product = Objects.requireNonNull(product, "product must be not null");
 		this.quantity = Objects.requireNonNull(quantity, "quantity must be not null");
 		
-		//i really hate hacks
-		
-		
 		if(!product.getMetric().equals(quantity.getMetric())) 
 		{
-			throw new MetricMismatchException("product.getMetric is not equal to quantity.getMetric");
+			throw new MetricMismatchException("product.getMetric() is not equal to this.quantity.getMetric()");
 		}
-	}
-	
-	@Deprecated
-	public void setProduct(PersistentProduct product) {
-		this.product = product;
 	}
 	
 	@Override

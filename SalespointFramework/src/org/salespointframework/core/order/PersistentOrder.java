@@ -77,8 +77,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	 * Parameterless constructor required for JPA. Do not use.
 	 */
 	@Deprecated
-	public PersistentOrder() {
-	}
+	protected PersistentOrder() {}
 
 	/**
 	 * Creates a new PersistentOrder
@@ -573,6 +572,6 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 	
 	public void setPaymentMethod(PaymentMethod paymentMethod) {
 		if(orderStatus != OrderStatus.OPEN) return;
-		this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod");
+		this.paymentMethod = Objects.requireNonNull(paymentMethod,"paymentMethod must not be null");
 	}
 }

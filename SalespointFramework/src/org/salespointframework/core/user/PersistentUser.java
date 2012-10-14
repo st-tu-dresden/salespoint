@@ -56,7 +56,7 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 	}
 
 	@Override
-	public UserIdentifier getIdentifier()
+	public final UserIdentifier getIdentifier()
 	{
 		return userIdentifier;
 	}
@@ -104,7 +104,7 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 	}
 
 	@Override
-	public boolean equals(Object other)
+	public final boolean equals(Object other)
 	{
 		if (other == null)
 		{

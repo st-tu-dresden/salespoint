@@ -41,9 +41,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	 * Parameterless constructor required for JPA. Do not use.
 	 */
 	@Deprecated
-	protected PersistentProduct()
-	{
-	}
+	protected PersistentProduct() { }
 
 	public PersistentProduct(String name, Money price, Metric metric)
 	{
@@ -53,7 +51,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	}
 
 	@Override
-	public boolean equals(Object other)
+	public final boolean equals(Object other)
 	{
 		if (other == null)
 		{
@@ -89,7 +87,7 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	}
 
 	@Override
-	public Money getPrice()
+	public final Money getPrice()
 	{
 		return price;
 	}
@@ -129,10 +127,8 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	}
 
 	@Override
-	public Metric getMetric()
+	public final Metric getMetric()
 	{
 		return metric;
 	}
-
-
 }

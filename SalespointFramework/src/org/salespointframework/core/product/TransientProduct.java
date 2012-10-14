@@ -11,11 +11,11 @@ import org.salespointframework.util.Iterables;
 
 public class TransientProduct implements Product, Comparable<TransientProduct> {
 
-	private ProductIdentifier productIdentifier = new ProductIdentifier();
+	private final ProductIdentifier productIdentifier = new ProductIdentifier();
 
-	private String name;
-	private Money price;
-	private Metric metric;
+	private final String name;
+	private final Money price;
+	private final Metric metric;
 
 	protected Set<String> categories = new HashSet<String>();
 	
@@ -29,17 +29,17 @@ public class TransientProduct implements Product, Comparable<TransientProduct> {
 	
 	
 	@Override
-	public ProductIdentifier getIdentifier() {
+	public final ProductIdentifier getIdentifier() {
 		return productIdentifier;
 	}
 
 	@Override
-	public String getName() {
+	public final String getName() {
 		return name;
 	}
 
 	@Override
-	public Money getPrice() {
+	public final Money getPrice() {
 		return price;
 	}
 

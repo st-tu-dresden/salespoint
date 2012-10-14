@@ -9,27 +9,26 @@ import org.salespointframework.core.quantity.Quantity;
 
 public class TransientInventoryItem implements InventoryItem
 {
+	private final InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
-	private InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
-
-	private Product product;
+	private final Product product;
 
 	private Quantity quantity;
 
 	@Override
-	public InventoryItemIdentifier getIdentifier()
+	public final InventoryItemIdentifier getIdentifier()
 	{
 		return inventoryItemIdentifier;
 	}
 
 	@Override
-	public Product getProduct()
+	public final Product getProduct()
 	{
 		return product;
 	}
 
 	@Override
-	public Quantity getQuantity()
+	public final Quantity getQuantity()
 	{
 		return quantity;
 	}
@@ -41,7 +40,7 @@ public class TransientInventoryItem implements InventoryItem
 		
 		if(!product.getMetric().equals(quantity.getMetric())) 
 		{
-			throw new MetricMismatchException("product.getMetric is not equal to quantity.getMetric");
+			throw new MetricMismatchException("product.getMetric() is not equal to this.quantity.getMetric()");
 		}
 	}
 

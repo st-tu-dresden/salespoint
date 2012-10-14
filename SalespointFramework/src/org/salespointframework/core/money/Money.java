@@ -25,6 +25,12 @@ public final class Money extends Quantity {
 	 * Convenience instance, having a value of 0.
 	 */
 	public static final Money ZERO = new Money(0);
+	
+	/**
+	 * Convenience instance, having a value of 1.
+	 */
+	public static final Money ONE = new Money(1);
+	
 	/**
 	 * Convenience instance, having a very high value. Also an easteregg.
 	 */

@@ -76,7 +76,7 @@ public class TransientOrderLineTest
 		}
 		System.out.println("-----");
 		
-		TransientOrderLine orderline = new TransientOrderLine(keks.getIdentifier(), Units.of(5));
+		TransientOrderLine orderline = new TransientOrderLine(keks, Units.of(5));
 		
 		order.addOrderLine(orderline);
 		
@@ -89,7 +89,7 @@ public class TransientOrderLineTest
 	@Test
 	public void completeOrderTest2() {
 		
-		TransientOrderLine orderline = new TransientOrderLine(keks.getIdentifier(), Units.of(15));
+		TransientOrderLine orderline = new TransientOrderLine(keks, Units.of(15));
 		
 		order.addOrderLine(orderline);
 		

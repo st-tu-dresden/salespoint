@@ -81,14 +81,14 @@ public class PersistentProductPaymentEntry extends PersistentAccountancyEntry {
 	/**
 	 * @return the {@link UserIdentifier}, to which this payment refers to
 	 */
-	public UserIdentifier getUserIdentifier() {
+	public final UserIdentifier getUserIdentifier() {
 		return userIdentifier;
 	}
 
 	/**
 	 * @return the {@link OrderIdentifier}, to which this payment refers to
 	 */
-	public OrderIdentifier getOrderIdentifier() {
+	public final OrderIdentifier getOrderIdentifier() {
 		return orderIdentifier;
 	}
 
@@ -97,7 +97,7 @@ public class PersistentProductPaymentEntry extends PersistentAccountancyEntry {
 	 * @return the {@link PaymentMethod} chosen for the order belonging to
 	 *         this <code>ProductPaymentEntry</code>
 	 */
-	public PaymentMethod getPaymentMethod() {
+	public final PaymentMethod getPaymentMethod() {
 		return paymentMethod;
 	}
 }

@@ -71,8 +71,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
      * reasons.
      */
     @Deprecated
-    public PersistentCalendarEntry() {
-    }
+    protected PersistentCalendarEntry() {  }
 
     /**
      * Creates a new calendar entry that can be persisted in a

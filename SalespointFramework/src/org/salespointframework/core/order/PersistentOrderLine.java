@@ -37,7 +37,7 @@ public class PersistentOrderLine implements OrderLine
 	private ProductIdentifier productIdentifier;
 
 
-	private Money price = Money.ZERO;
+	private Money price = Money.ONE;
 
 	private String productName;
 
@@ -47,34 +47,15 @@ public class PersistentOrderLine implements OrderLine
 	 * Parameterless constructor required for JPA. Do not use.
 	 */
 	@Deprecated
-	protected PersistentOrderLine()
-	{
-
-	}
+	protected PersistentOrderLine() { }
 	
-	public PersistentOrderLine(ProductIdentifier productIdentifier, Quantity quantity)
+	public PersistentOrderLine(PersistentProduct product, Quantity quantity)
 	{
-		
-		this.productIdentifier = Objects.requireNonNull(productIdentifier, "productIdentifier must be not null");
+		this.productIdentifier = Objects.requireNonNull(product, "product must be not null").getIdentifier();
 		this.quantity = Objects.requireNonNull(quantity, "quantity must be not null");
-
-		Catalog<?> temp = Shop.INSTANCE.getCatalog();
-		
-		if(temp == null) 
-		{
-			throw new RuntimeException("Shop.INSTANCE.getCatalog() returns null");
-		}
-		
-		if(!(temp instanceof PersistentCatalog)) 
-		{
-			throw new RuntimeException("Shop.INSTANCE.getCatalog() returns a non PersistentCatalog");
-		}
-		PersistentCatalog catalog = (PersistentCatalog) temp;
-	
-		PersistentProduct product = catalog.get(PersistentProduct.class, productIdentifier);
 		
 		if(!product.getMetric().equals(quantity.getMetric())) {
-			throw new MetricMismatchException("product.getMetric is not equal to quantity.getMetric");
+			throw new MetricMismatchException("product.getMetric() is not equal to this.quantity.getMetric()");
 		}
 		
 		this.price = quantity.multiply(product.getPrice());
@@ -113,7 +94,7 @@ public class PersistentOrderLine implements OrderLine
 	}
 
 	@Override
-	public boolean equals(Object other)
+	public final boolean equals(Object other)
 	{
 		if (other == null)
 		{
@@ -132,7 +113,7 @@ public class PersistentOrderLine implements OrderLine
 
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return orderLineIdentifier.hashCode();
 	}
 	

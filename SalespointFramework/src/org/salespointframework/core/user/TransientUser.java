@@ -10,9 +10,9 @@ import org.salespointframework.util.Utility;
 
 public class TransientUser implements User, Comparable<TransientUser> {
 
-	private UserIdentifier userIdentifier;
+	private final UserIdentifier userIdentifier;
 	private String hashedPassword;
-	private Set<Capability> capabilities = new TreeSet<Capability>();
+	private final Set<Capability> capabilities = new TreeSet<>();
 	
 	
 	public TransientUser(UserIdentifier userIdentifier, String password, Capability... capabilities)
@@ -27,7 +27,7 @@ public class TransientUser implements User, Comparable<TransientUser> {
 	}
 	
 	@Override
-	public UserIdentifier getIdentifier()
+	public final UserIdentifier getIdentifier()
 	{
 		return userIdentifier;
 	}
@@ -75,7 +75,7 @@ public class TransientUser implements User, Comparable<TransientUser> {
 	}
 
 	@Override
-	public boolean equals(Object other)
+	public final boolean equals(Object other)
 	{
 		if (other == null)
 		{

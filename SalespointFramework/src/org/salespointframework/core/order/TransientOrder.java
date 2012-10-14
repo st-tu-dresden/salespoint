@@ -26,19 +26,19 @@ import org.salespointframework.util.Iterables;
 public class TransientOrder implements Order<TransientOrderLine>, Comparable<TransientOrder> {
 
 	
-	private OrderIdentifier orderIdentifier = new OrderIdentifier();
+	private final OrderIdentifier orderIdentifier = new OrderIdentifier();
 
 	private PaymentMethod paymentMethod;
 
-	private UserIdentifier userIdentifier;
+	private final UserIdentifier userIdentifier;
 
-	private DateTime dateCreated = Shop.INSTANCE.getTime().getDateTime();
+	private final DateTime dateCreated = Shop.INSTANCE.getTime().getDateTime();
 
 	private OrderStatus orderStatus = OrderStatus.OPEN;
 
-	private Set<TransientOrderLine> orderLines = new HashSet<>();
+	private final Set<TransientOrderLine> orderLines = new HashSet<>();
 
-	private Set<ChargeLine> chargeLines = new HashSet<>();
+	private final Set<ChargeLine> chargeLines = new HashSet<>();
 	
 	public TransientOrder(UserIdentifier userIdentifier, PaymentMethod paymentMethod) {
 		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
@@ -333,6 +333,6 @@ public class TransientOrder implements Order<TransientOrderLine>, Comparable<Tra
 	
 	public void setPaymentMethod(PaymentMethod paymentMethod) {
 		if(orderStatus != OrderStatus.OPEN) return;
-		this.paymentMethod = Objects.requireNonNull(paymentMethod, "paymentMethod");
+		this.paymentMethod = Objects.requireNonNull(paymentMethod,"paymentMethod must not be null");
 	}
 }

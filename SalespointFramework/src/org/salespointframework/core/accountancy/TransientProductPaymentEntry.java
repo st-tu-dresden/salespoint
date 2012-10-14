@@ -13,15 +13,15 @@ public class TransientProductPaymentEntry extends TransientAccountancyEntry
 	 * The {@link OrderIdentifier} to which this
 	 * <code>TransientProductPaymentEntry</code> refers to.
 	 */
-	private OrderIdentifier orderIdentifier;
+	private final OrderIdentifier orderIdentifier;
 
 	/**
 	 * The {@link UserIdentifier} to which this
 	 * <code>TransientProductPaymentEntry</code> refers to.
 	 */
-	private UserIdentifier userIdentifier;
+	private final UserIdentifier userIdentifier;
 
-	private PaymentMethod paymentMethod;
+	private final PaymentMethod paymentMethod;
 
 
 	// TODO ergänzen * @param paymentMethod 
@@ -59,14 +59,14 @@ public class TransientProductPaymentEntry extends TransientAccountancyEntry
 	/**
 	 * @return the {@link UserIdentifier}, to which this payment refers to
 	 */
-	public UserIdentifier getUserIdentifier() {
+	public final UserIdentifier getUserIdentifier() {
 		return userIdentifier;
 	}
 
 	/**
 	 * @return the {@link OrderIdentifier}, to which this payment refers to
 	 */
-	public OrderIdentifier getOrderIdentifier() {
+	public final OrderIdentifier getOrderIdentifier() {
 		return orderIdentifier;
 	}
 
@@ -75,7 +75,7 @@ public class TransientProductPaymentEntry extends TransientAccountancyEntry
 	 * @return the {@link PaymentMethod} chosen for the order belonging to
 	 *         this <code>ProductPaymentEntry</code>
 	 */
-	public PaymentMethod getPaymentMethod() {
+	public final PaymentMethod getPaymentMethod() {
 		return paymentMethod;
 	}
 }
