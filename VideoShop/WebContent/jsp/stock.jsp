@@ -32,10 +32,10 @@
 					</tr>
 				</thead>
 				<tbody>
-					<sp:forEach var="disc" items="${discs}">
+					<sp:forEach var="item" items="${stock}">
 						<tr>
-							<td>${disc.name}</td>
-						<td>${inventory.count(disc.identifier)}</td>
+							<td>${item.product.name}</td>
+							<td>${item.quantity}</td>
 						</tr>
 					</sp:forEach>
 				</tbody>

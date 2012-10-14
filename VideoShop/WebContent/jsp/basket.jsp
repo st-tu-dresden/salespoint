@@ -37,7 +37,7 @@
 							<sp:forEach var="orderline" items="${order.orderLines}">
 								<tr>
 									<td>${orderline.productName}</td>
-									<td>${orderline.numberOrdered}</td>
+									<td>${orderline.quantity}</td>
 									<td>${orderline.price}</td>
 								</tr>
 							</sp:forEach>

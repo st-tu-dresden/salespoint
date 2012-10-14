@@ -7,6 +7,8 @@ import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderLine;
 import org.salespointframework.core.order.PersistentOrderManager;
 import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.quantity.Quantity;
+import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.util.Iterables;
 import org.springframework.stereotype.Controller;
@@ -42,8 +44,10 @@ public class BasketController {
 		}
 
 		Disc disc = videoCatalog.get(Disc.class, pid);
+		
+		Quantity q = Units.of(number);
 
-		PersistentOrderLine orderLine = new PersistentOrderLine(disc.getIdentifier(), number);
+		PersistentOrderLine orderLine = new PersistentOrderLine(disc.getIdentifier(), q);
 
 		order.addOrderLine(orderLine);
 		

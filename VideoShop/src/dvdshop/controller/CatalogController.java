@@ -2,8 +2,12 @@ package dvdshop.controller;
 
 import java.util.Locale;
 
+import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.inventory.PersistentInventory;
+import org.salespointframework.core.inventory.PersistentInventoryItem;
 import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.quantity.Quantity;
+import org.salespointframework.core.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -49,7 +53,11 @@ public class CatalogController {
 	public ModelAndView detail(ModelAndView mav, @PathVariable("pid") ProductIdentifier pid) {
 		Disc disc = videoCatalog.getDisc(pid);
 		mav.addObject("disc", disc);
-		mav.addObject("count", inventory.count(disc.getIdentifier()));
+		
+		InventoryItem item = inventory.getByProductIdentifier(PersistentInventoryItem.class, pid);
+		Quantity quantity = item == null ? Units.ZERO : item.getQuantity();
+		
+		mav.addObject("quantity", quantity);
 		
 		mav.setViewName("detail");
 		return mav;
@@ -69,7 +77,11 @@ public class CatalogController {
 		videoCatalog.update(disc);
 		
 		mav.addObject("disc", disc);
-		mav.addObject("count", inventory.count(disc.getIdentifier()));
+		
+		InventoryItem item = inventory.getByProductIdentifier(PersistentInventoryItem.class, pid);
+		Quantity quantity = item == null ? Units.ZERO : item.getQuantity();
+		
+		mav.addObject("quantity", quantity);
 		
 		mav.setViewName("detail");
 		return mav;

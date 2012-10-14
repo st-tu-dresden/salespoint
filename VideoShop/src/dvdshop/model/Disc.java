@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.PersistentProduct;
+import org.salespointframework.core.quantity.Units;
 import org.salespointframework.util.Iterables;
 
 @Entity
@@ -22,7 +23,7 @@ public class Disc extends PersistentProduct {
 	public Disc() {}
 	
 	public Disc(String name, String image, Money price, String genre) {
-		super(name, price);
+		super(name, price, Units.METRIC);
 		this.image = image;
 		this.genre = genre;
 	}

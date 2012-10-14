@@ -1,12 +1,13 @@
 package dvdshop;
 
 import org.salespointframework.core.inventory.PersistentInventory;
+import org.salespointframework.core.inventory.PersistentInventoryItem;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.PersistentProductInstance;
+import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.shop.Shop;
+import org.salespointframework.core.user.Capability;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.PersistentUserManager;
-import org.salespointframework.core.user.UserCapability;
 import org.salespointframework.core.user.UserIdentifier;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ import dvdshop.model.VideoCatalog;
 public class Main {
 
 	public Main() {	
-		Shop.initializeShop();
+		Shop.INSTANCE.initializePersistent();
 		initData();
 	}
 
@@ -31,7 +32,7 @@ public class Main {
 		if(userManager.contains(bossUI)) return;
 		
 		PersistentUser boss = new PersistentUser(bossUI, "123");
-		boss.addCapability(new UserCapability("boss"));
+		boss.addCapability(new Capability("boss"));
 		
 		Customer customer1 = new Customer(new UserIdentifier("hans"), "wurst", "");
 		Customer customer2 = new Customer(new UserIdentifier("dexter"), "morgan", "Miami-Dade County");
@@ -68,9 +69,8 @@ public class Main {
 		PersistentInventory inventory = new PersistentInventory();
 		
 		for(Disc disc : videoCatalog.find(Disc.class)) {
-			for(int n = 0; n < 15; n++) {
-				inventory.add(new PersistentProductInstance(disc));
-			}
+			PersistentInventoryItem inventoryItem = new PersistentInventoryItem(disc, Units.TEN);
+			inventory.add(inventoryItem);
 		}
 	}
 }

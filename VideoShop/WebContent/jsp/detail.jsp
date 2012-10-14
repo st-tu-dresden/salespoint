@@ -31,7 +31,8 @@
 				<h2>${disc.name}</h2>
 				<spring:message code="catalog.price" />: ${disc.price }<br />
 				<spring:message code="detail.genre" />: ${disc.genre }<br />  
-				<spring:message code="detail.numberInStock" />: ${count}<br />
+				<spring:message code="detail.numberInStock" />: ${quantity}<br />
+				
 				
 				<sp:loggedIn>
 					<form method="post" action="<c:url value="/addDisc" />">
@@ -41,6 +42,7 @@
 						<input	type="submit" value="<spring:message code="detail.addToBasket" />" />
 					</form>
 				</sp:loggedIn>
+			
 			</div>
 
 	
