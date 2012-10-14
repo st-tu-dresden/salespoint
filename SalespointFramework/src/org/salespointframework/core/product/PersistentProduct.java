@@ -5,10 +5,10 @@ import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Column;
 
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Metric;
@@ -101,43 +101,6 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	{
 		return productIdentifier;
 	}
-
-	/*
-	 
-	@Override
-	public final Iterable<ProductFeature> getProductFeatures()
-	{
-		return Iterables.of(productFeatures);
-	}
-	
-	@Override
-	public final boolean addProductFeature(ProductFeature productFeature)
-	{
-		Objects.requireNonNull(productFeature, "productFeature must not be null");
-		return productFeatures.add(productFeature);
-	}
-
-	@Override
-	public final boolean removeProductFeature(ProductFeatureIdentifier productFeatureIdentifier)
-	{
-		Objects.requireNonNull(productFeatureIdentifier, "productFeatureIdentifier must not be null");
-		return productFeatures.remove(this.getProductFeature(productFeatureIdentifier));
-	}
-	
-	@Override
-	public ProductFeature getProductFeature(ProductFeatureIdentifier productFeatureIdentifier) {
-		Objects.requireNonNull(productFeatureIdentifier, "productFeatureIdentifier must not be null");
-		
-		ProductFeature productFeature = null;
-		for (ProductFeature pf : productFeatures) {
-			if (pf.getIdentifier().equals(productFeatureIdentifier)) {
-				productFeature = pf;
-				break;
-			}
-		}
-		return productFeature;
-	}
-	*/
 
 	@Override
 	public final boolean addCategory(String category)

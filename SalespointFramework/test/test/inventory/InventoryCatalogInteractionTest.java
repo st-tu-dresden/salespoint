@@ -3,6 +3,7 @@ package test.inventory;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
+import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -17,7 +18,7 @@ import org.salespointframework.core.quantity.Units;
 import test.product.Keks;
 
 @SuppressWarnings({ "javadoc", "unused" })
-public class InventoryTest {
+public class InventoryCatalogInteractionTest {
 
 	//private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 
@@ -32,45 +33,55 @@ public class InventoryTest {
 		Database.INSTANCE.initializeEntityManagerFactory("SalespointFramework");
 	}
 
+	private static int counter = 0;
+	
 	@Before
 	public void before() {
-		keks = new Keks("Add Superkeks", Money.ZERO);
+		keks = new Keks("Superkeks " + (counter++), Money.ZERO);
 		
 		item = new PersistentInventoryItem(keks, Units.TEN);
 
 	}
-
-	@Test(expected = NullPointerException.class)
-	public void testNullCheckConstructor() {
-		PersistentInventory inventory = new PersistentInventory(null);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testNullCheckArgument() {
-		inventory.add(null);
-	}
-
+	
 	@Test
-	public void testAdd() {
+	public void addInCatalogThenInInventoryThrowsNot() {
+		catalog.add(keks);
 		inventory.add(item);
 	}
 
 	@Test
-	public void testRemove() {
+	public void addInInventoryAddsProductInCatalog() {
+		inventory.add(item);
+		assertTrue(catalog.contains(keks.getIdentifier()));
+	}
+
+	@Test
+	public void removeInInventoryDoesNotRemoveInCatalog() {
 		inventory.add(item);
 		inventory.remove(item.getIdentifier());
-		assertFalse(inventory.contains(item.getIdentifier()));
+		assertTrue(catalog.contains(keks.getIdentifier()));
 	}
-
+	
 	@Test
-	public void testContains() {
+	public void removeInCatalogShouldNotRemoveInInventory() {
+		catalog.add(keks);
 		inventory.add(item);
+		catalog.remove(keks.getIdentifier());
 		assertTrue(inventory.contains(item.getIdentifier()));
 	}
-
+	
 	@Test
-	public void testGet() {
+	public void removeInCatalogShouldNotRemoveInInventory2() {
 		inventory.add(item);
-		assertEquals(item, inventory.get(PersistentInventoryItem.class, item.getIdentifier()));
+		catalog.remove(keks.getIdentifier());
+		assertTrue(inventory.contains(item.getIdentifier()));
+	}
+	
+	@Test
+	public void removeInCatalogShouldReallyRemoveInCatalog() {
+		catalog.add(keks);
+		inventory.add(item);
+		catalog.remove(keks.getIdentifier());
+		assertFalse(catalog.contains(keks.getIdentifier()));
 	}
 }

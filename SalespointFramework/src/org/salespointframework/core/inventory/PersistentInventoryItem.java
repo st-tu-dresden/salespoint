@@ -2,16 +2,16 @@ package org.salespointframework.core.inventory;
 
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
-import org.salespointframework.core.catalog.PersistentCatalog;
 import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.product.Product;
-import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.quantity.MetricMismatchException;
 import org.salespointframework.core.quantity.Quantity;
-import org.salespointframework.core.shop.Shop;
 
 @Entity
 public class PersistentInventoryItem implements InventoryItem
@@ -19,8 +19,17 @@ public class PersistentInventoryItem implements InventoryItem
 	@EmbeddedId
 	private InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
-	//private PersistentProduct product;
-	private ProductIdentifier productIdentifier;
+
+	//@Embedded
+	//@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
+	//private ProductIdentifier productIdentifier;
+	
+	
+	
+	//@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, /* CascadeType.REMOVE,*/ CascadeType.REFRESH, CascadeType.DETACH})
+	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, /* CascadeType.REMOVE,*/ CascadeType.REFRESH, CascadeType.DETACH})
+	private PersistentProduct product;
+	
 	private Quantity quantity;
 
 	@Deprecated
@@ -31,13 +40,21 @@ public class PersistentInventoryItem implements InventoryItem
 	
 	public PersistentInventoryItem(PersistentProduct product, Quantity quantity)
 	{
-		this.productIdentifier = Objects.requireNonNull(product, "product must be not null").getIdentifier();
+		this.product = Objects.requireNonNull(product, "product must be not null");
 		this.quantity = Objects.requireNonNull(quantity, "quantity must be not null");
+		
+		//i really hate hacks
+		
 		
 		if(!product.getMetric().equals(quantity.getMetric())) 
 		{
 			throw new MetricMismatchException("product.getMetric is not equal to quantity.getMetric");
 		}
+	}
+	
+	@Deprecated
+	public void setProduct(PersistentProduct product) {
+		this.product = product;
 	}
 	
 	@Override
@@ -55,8 +72,7 @@ public class PersistentInventoryItem implements InventoryItem
 	@Override
 	public final Product getProduct()
 	{
-		PersistentCatalog catalog = (PersistentCatalog) Shop.INSTANCE.getCatalog();
-		return catalog.get(PersistentProduct.class, productIdentifier);
+		return product;
 	}
 
 	@Override

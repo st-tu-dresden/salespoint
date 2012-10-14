@@ -269,7 +269,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		
 		for(PersistentOrderLine orderline : orderLines) {
 			ProductIdentifier productIdentifier =  orderline.getProductIdentifier();
-			PersistentInventoryItem inventoryItem = inventory.get(PersistentInventoryItem.class, productIdentifier); 
+			PersistentInventoryItem inventoryItem = inventory.getByProductIdentifier(PersistentInventoryItem.class, productIdentifier); 
 			
 			// TODO was machen wenn nicht im Inventar
 			if(inventoryItem == null) { 
@@ -285,6 +285,7 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 		
 		boolean failed = false;
 		
+		em.getTransaction().begin();
 		if(goodItems.size() == orderLines.size()) {
 			System.out.println("size == ");
 			for(PersistentInventoryItem inventoryItem : goodItems.keySet()) 
@@ -297,14 +298,23 @@ public class PersistentOrder implements Order<PersistentOrderLine>, Comparable<P
 					break;
 				}
 			}
+			
+			// TODO DRY IT
 			if(failed) 
 			{
 				em.getTransaction().rollback();
 				return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
 			}
+			try {
 			em.getTransaction().commit();
+			this.orderStatus = OrderStatus.COMPLETED;
 			return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL);
+			} catch (Exception ex) {
+				em.getTransaction().rollback();
+				return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
+			}
 		} else {
+			em.getTransaction().rollback();
 			System.out.println("size != ");
 			return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
 		}

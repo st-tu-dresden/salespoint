@@ -10,7 +10,7 @@ public interface Inventory<T extends InventoryItem>
 	boolean contains(InventoryItemIdentifier inventoryItemIdentifier);
 	
 	<E extends T> E get(Class<E> clazz, InventoryItemIdentifier inventoryItemIdentifier);
-	<E extends T> E get(Class<E> clazz, ProductIdentifier productIdentifier);
+	<E extends T> E getByProductIdentifier(Class<E> clazz, ProductIdentifier productIdentifier);
 
 	<E extends T> Iterable<E> find(Class<E> clazz);
 	

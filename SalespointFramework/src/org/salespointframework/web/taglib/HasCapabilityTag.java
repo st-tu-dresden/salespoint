@@ -39,30 +39,32 @@ public class HasCapabilityTag extends BodyTagSupport
 	}
 
 
+	
+	@SuppressWarnings("unchecked")
 	@Override
 	public int doStartTag() throws JspException
 	{
-		@SuppressWarnings("unchecked")
-		UserManager<?> temp = Shop.INSTANCE.getUserManager();
+		UserManager<?> usermanager = Shop.INSTANCE.getUserManager();
 		
-		if(temp == null) {
+		if(usermanager == null) {
 			throw new NullPointerException("Shop.INSTANCE.getUserManager() returned null");
 		}
 		
-		UserManager<User> usermanager = (UserManager<User>) temp;
-		
 		User user = null;
 		
-		if(temp instanceof TransientUserManager) {
-			user = usermanager.getUserByToken(TransientUser.class, pageContext.getSession());
+		if(usermanager instanceof TransientUserManager) {
+			user = ((TransientUserManager)usermanager).getUserByToken(TransientUser.class, pageContext.getSession());
+			//System.out.println("has cap transient");
 		}
 		
-		if(temp instanceof PersistentUserManager) {
-			user = usermanager.getUserByToken(PersistentUser.class, pageContext.getSession());
+		if(usermanager instanceof PersistentUserManager) {
+			user = ((PersistentUserManager)usermanager).getUserByToken(PersistentUser.class, pageContext.getSession());
+		//	System.out.println("has cap persistent");
 		}
 		
-		if(!(temp instanceof TransientUserManager && temp instanceof PersistentUserManager)) {
-			user = usermanager.getUserByToken(User.class, pageContext.getSession());
+		if(!(usermanager instanceof TransientUserManager || usermanager instanceof PersistentUserManager)) {
+			user = ((UserManager<User>)usermanager).getUserByToken(User.class, pageContext.getSession());
+		//	System.out.println("has cap unknown um");
 		}
 		
 		Capability capability = new Capability(capabilityName);

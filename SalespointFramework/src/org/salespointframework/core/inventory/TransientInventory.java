@@ -70,7 +70,7 @@ public class TransientInventory implements Inventory<TransientInventoryItem>
 	}
 
 	@Override
-	public <E extends TransientInventoryItem> E get(Class<E> clazz, ProductIdentifier productIdentifier)
+	public <E extends TransientInventoryItem> E getByProductIdentifier(Class<E> clazz, ProductIdentifier productIdentifier)
 	{
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
@@ -88,7 +88,7 @@ public class TransientInventory implements Inventory<TransientInventoryItem>
 	
 	// TODO
 	public Quantity getQuantity(ProductIdentifier productIdentifier) {
-		TransientInventoryItem item = this.get(TransientInventoryItem.class, productIdentifier);
+		TransientInventoryItem item = this.getByProductIdentifier(TransientInventoryItem.class, productIdentifier);
 		if(item == null) {
 			return Units.ONE;
 		} else {

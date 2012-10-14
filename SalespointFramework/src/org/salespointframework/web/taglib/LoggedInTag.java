@@ -4,6 +4,10 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import org.salespointframework.core.shop.Shop;
+import org.salespointframework.core.user.PersistentUser;
+import org.salespointframework.core.user.PersistentUserManager;
+import org.salespointframework.core.user.TransientUser;
+import org.salespointframework.core.user.TransientUserManager;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserManager;
 
@@ -31,16 +35,28 @@ public class LoggedInTag extends BodyTagSupport
 	public int doStartTag() throws JspException
 	{
 
-		@SuppressWarnings("unchecked")
-		UserManager<User> usermanager = (UserManager<User>) Shop.INSTANCE.getUserManager();
+		UserManager<?> usermanager = Shop.INSTANCE.getUserManager();
 		
 		if(usermanager == null) {
 			throw new NullPointerException("Shop.INSTANCE.getUserManager() returned null");
 		}
 		
+		User user = null;
 		
-		//UserManager<? extends User> usermanager = Shop.INSTANCE.getUserManager();
-		User user = usermanager.getUserByToken(User.class, pageContext.getSession());
+		if(usermanager instanceof TransientUserManager) {
+			user = ((TransientUserManager)usermanager).getUserByToken(TransientUser.class, pageContext.getSession());
+			//System.out.println("has cap transient");
+		}
+		
+		if(usermanager instanceof PersistentUserManager) {
+			user = ((PersistentUserManager)usermanager).getUserByToken(PersistentUser.class, pageContext.getSession());
+		//	System.out.println("has cap persistent");
+		}
+		
+		if(!(usermanager instanceof TransientUserManager || usermanager instanceof PersistentUserManager)) {
+			user = ((UserManager<User>)usermanager).getUserByToken(User.class, pageContext.getSession());
+		//	System.out.println("has cap unknown um");
+		}
 
 		if (test)
 		{

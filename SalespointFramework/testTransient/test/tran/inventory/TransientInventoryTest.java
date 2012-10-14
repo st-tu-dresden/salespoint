@@ -63,7 +63,7 @@ public class TransientInventoryTest
 	
 	public void getWithProductIdentifier() {
 		inventory.add(keksItem);
-		InventoryItem item = inventory.get(TransientInventoryItem.class, keks.getIdentifier());
+		InventoryItem item = inventory.getByProductIdentifier(TransientInventoryItem.class, keks.getIdentifier());
 		assertEquals(keksItem, item);
 	}
 }

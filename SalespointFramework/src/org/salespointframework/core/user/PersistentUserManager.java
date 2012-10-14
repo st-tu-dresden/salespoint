@@ -41,7 +41,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		Objects.requireNonNull(userIdentifier, "userIdentifer must not be null");
 
 		// If user is logged on, log him off.
-		for (Map.Entry<Object, PersistentUser> entry : userTokenMap.entrySet()) {
+		for (Map.Entry<Object, User> entry : userTokenMap.entrySet()) {
 			if (entry.getValue().getIdentifier().equals(userIdentifier)) {
 				Object token = entry.getKey();
 				this.logout(token);
@@ -113,7 +113,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 	
 	// TODO use WeakHashMap http://docs.oracle.com/javase/6/docs/api/java/util/WeakHashMap.html
 	// verhindert dass tote Session für immer und ewig in der Map bleiben, normalerweise egal, außer bei "real world" anwendungen die nicht nur 30min laufen 
-	private static final Map<Object, PersistentUser> userTokenMap = new ConcurrentHashMap<>();
+	private static final Map<Object, User> userTokenMap = new ConcurrentHashMap<>();
 
 	@Override
 	public final void login(PersistentUser user, Object token)
@@ -140,20 +140,24 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(token, "token must not be null");
 
-		PersistentUser user = userTokenMap.get(token);
+		User user = userTokenMap.get(token);
 		if(user == null)
+		{
 			return null;
+		}
 		
-		EntityManager em = emf.createEntityManager();
+		// FIXME user cache bug
+		//EntityManager em = emf.createEntityManager();
 		
-		return em.find(clazz, user.getIdentifier());
+		//return em.find(clazz, user.getIdentifier());
 		
-		/*
+		
 		if (clazz.isInstance(user))
 			return clazz.cast(user);
 		
 		throw new ClassCastException();
-		*/
+		
+		
 	}
 
 	private void beginCommit(EntityManager entityManager)

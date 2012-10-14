@@ -212,7 +212,7 @@ public class TransientOrder implements Order<TransientOrderLine>, Comparable<Tra
 		
 		for(TransientOrderLine orderline : orderLines) {
 			ProductIdentifier productIdentifier =  orderline.getProductIdentifier();
-			TransientInventoryItem inventoryItem = inventory.get(TransientInventoryItem.class, productIdentifier); 
+			TransientInventoryItem inventoryItem = inventory.getByProductIdentifier(TransientInventoryItem.class, productIdentifier); 
 			
 			// TODO was machen wenn nicht im Inventar
 			if(inventoryItem == null) { 
@@ -225,13 +225,14 @@ public class TransientOrder implements Order<TransientOrderLine>, Comparable<Tra
 				badItems.put(inventoryItem, orderline.getQuantity());
 			}
 		}
-		
+		// TODO mehr ACID oder egal!?
 		if(goodItems.size() == orderLines.size()) {
 			System.out.println("size == ");
 			for(TransientInventoryItem inventoryItem : goodItems.keySet()) {
 				Quantity quantity = goodItems.get(inventoryItem);
 				inventoryItem.decreaseQuantity(quantity);
 			}
+			this.orderStatus = OrderStatus.COMPLETED;
 			return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL);
 		} else {
 			System.out.println("size != ");

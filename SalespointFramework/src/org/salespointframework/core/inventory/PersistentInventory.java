@@ -13,6 +13,7 @@ import javax.persistence.criteria.Root;
 
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.order.PersistentOrder;
+import org.salespointframework.core.product.PersistentProduct_;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.util.Iterables;
 
@@ -52,7 +53,7 @@ public class PersistentInventory implements Inventory<PersistentInventoryItem>
 	{
 		Objects.requireNonNull(inventoryItem, "inventoryItem must not be null");
 		EntityManager em = getEntityManager();
-		em.persist(inventoryItem);
+		em.merge(inventoryItem);
 		beginCommit(em);
 	}
 
@@ -70,7 +71,7 @@ public class PersistentInventory implements Inventory<PersistentInventoryItem>
 		EntityManager em = getEntityManager();
 		for (PersistentInventoryItem e : inventoryItems) 
 		{
-			em.persist(e);
+			em.merge(e);
 		}
 		beginCommit(em);
 	}
@@ -120,17 +121,35 @@ public class PersistentInventory implements Inventory<PersistentInventoryItem>
 	}
 
 	@Override
-	public <E extends PersistentInventoryItem> E get(Class<E> clazz, ProductIdentifier productIdentifier)
+	public <E extends PersistentInventoryItem> E getByProductIdentifier(Class<E> clazz, ProductIdentifier productIdentifier)
 	{
 		Objects.requireNonNull(clazz, "clazz must be not null");
 		Objects.requireNonNull(productIdentifier, "productIdentifier must be not null"); 
+		
+		/*
+		for(E item : this.find(clazz)) 
+		{
+			if(item.getProduct().getIdentifier().equals(productIdentifier)) 
+			{
+				return item;
+			}
+		}
+		
+		return null;
+		*/
+		
+		
+		
+		// FIXME ?
+		
 		
 		EntityManager em  = getEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
 		Root<E> entry = cq.from(clazz);
 		
-		Predicate p1 = cb.equal(entry.get(PersistentInventoryItem_.productIdentifier), productIdentifier);
+	
+		Predicate p1 = cb.equal(entry.get(PersistentInventoryItem_.product).get(PersistentProduct_.productIdentifier), productIdentifier);
 		
 		cq.where(p1);
 
@@ -139,6 +158,7 @@ public class PersistentInventory implements Inventory<PersistentInventoryItem>
 		List<E> result = tq.getResultList();
 
 		return result.size() == 0 ? null : result.get(0);
+		
 	}
 
 	
@@ -217,7 +237,6 @@ public class PersistentInventory implements Inventory<PersistentInventoryItem>
 	 */
 	public PersistentInventory newInstance(EntityManager entityManager) {
 		Objects.requireNonNull(entityManager, "entityManager must not be null");
-		System.out.println("newInstance: " + entityManager);
 		return new PersistentInventory(entityManager);
 	}
 
@@ -225,31 +244,6 @@ public class PersistentInventory implements Inventory<PersistentInventoryItem>
 		return entityManager != null ? entityManager : emf.createEntityManager();
 	}
 
-	/*
-	@Override
-	public long count(ProductIdentifier productIdentifier) {
-		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
-
-		EntityManager em = getEntityManager();
-
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-		Root<PersistentProductInstance> entry = cq.from(PersistentProductInstance.class);
-
-		cq.where(cb.equal(entry.get(PersistentProductInstance_.productIdentifier), productIdentifier));
-		cq.select(cb.count(entry));
-
-		return em.createQuery(cq).getSingleResult();
-		
-	}
-	
-	@Override
-	public long count(ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures) {
-		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
-		Objects.requireNonNull(productFeatures, "productFeatures must not be null");
-		return findInternal(PersistentProductInstance.class, productIdentifier, productFeatures).size();
-	}
-	*/
 	
 	private final void beginCommit(EntityManager entityManager) {
 		if (this.entityManager == null) {
