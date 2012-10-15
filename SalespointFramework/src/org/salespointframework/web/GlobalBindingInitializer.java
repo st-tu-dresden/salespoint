@@ -7,6 +7,7 @@ import org.salespointframework.core.order.ChargeLineIdentifier;
 import org.salespointframework.core.order.OrderIdentifier;
 import org.salespointframework.core.order.OrderLineIdentifier;
 import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.user.Capability;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.web.spring.propertyeditors.AccountancyEntryIdentifierEditor;
@@ -45,10 +46,10 @@ public class GlobalBindingInitializer implements WebBindingInitializer
 		binder.registerCustomEditor(OrderIdentifier.class, new OrderIdentifierEditor());
 		binder.registerCustomEditor(OrderLineIdentifier.class, new OrderLineIdentifierEditor());
 		binder.registerCustomEditor(SerialNumber.class, new InventoryItemIdentifierEditor());
-		binder.registerCustomEditor(UnitsEditor.class, new UnitsEditor());
 		binder.registerCustomEditor(ProductIdentifier.class, new ProductIdentifierEditor());
 		binder.registerCustomEditor(UserIdentifier.class, new UserIdentifierEditor());
 		binder.registerCustomEditor(Capability.class, new UserCapabilityEditor());
 		binder.registerCustomEditor(Money.class, new MoneyEditor());
+		binder.registerCustomEditor(Units.class, new UnitsEditor());
 	}
 }
