@@ -20,7 +20,7 @@ public class Disc extends PersistentProduct {
 	private List<Comment> comments = new LinkedList<Comment>();
 	
 	@Deprecated
-	public Disc() {}
+	protected Disc() {}
 	
 	public Disc(String name, String image, Money price, String genre) {
 		super(name, price, Units.METRIC);

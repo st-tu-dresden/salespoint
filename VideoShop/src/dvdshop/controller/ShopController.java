@@ -10,6 +10,4 @@ public class ShopController {
 	public String index() {
 		return "index";
 	}
-	
-	
 }

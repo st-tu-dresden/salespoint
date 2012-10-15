@@ -30,7 +30,6 @@ public class BasketController {
 	
 	@RequestMapping("/addDisc")
 	public ModelAndView addDisc(HttpSession session, ModelAndView mav, @RequestParam("pid") ProductIdentifier pid, @RequestParam("number") int number) {
-
 		Customer customer = userManager.getUserByToken(Customer.class, session);
 		
 		if(number <= 0 || number > 5) number = 1;
@@ -45,9 +44,10 @@ public class BasketController {
 
 		Disc disc = videoCatalog.get(Disc.class, pid);
 		
-		Quantity q = Units.of(number);
+		Quantity quantity = Units.of(number);
 
-		PersistentOrderLine orderLine = new PersistentOrderLine(disc.getIdentifier(), q);
+		PersistentOrderLine orderLine = new PersistentOrderLine(disc, quantity);
+
 
 		order.addOrderLine(orderLine);
 		
