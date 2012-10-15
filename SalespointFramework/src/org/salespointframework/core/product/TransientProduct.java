@@ -9,6 +9,11 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.util.Iterables;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class TransientProduct implements Product, Comparable<TransientProduct> {
 
 	private final ProductIdentifier productIdentifier = new ProductIdentifier();

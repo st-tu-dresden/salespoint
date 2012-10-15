@@ -23,9 +23,13 @@ import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.Iterables;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class TransientOrder implements Order<TransientOrderLine>, Comparable<TransientOrder> {
 
-	
 	private final OrderIdentifier orderIdentifier = new OrderIdentifier();
 
 	private PaymentMethod paymentMethod;

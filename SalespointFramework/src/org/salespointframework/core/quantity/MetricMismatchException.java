@@ -1,5 +1,10 @@
 package org.salespointframework.core.quantity;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class MetricMismatchException extends RuntimeException
 {
 	public MetricMismatchException() {

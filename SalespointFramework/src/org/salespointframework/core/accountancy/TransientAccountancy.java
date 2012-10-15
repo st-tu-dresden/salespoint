@@ -14,6 +14,11 @@ import org.joda.time.Period;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Iterables;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class TransientAccountancy implements Accountancy<TransientAccountancyEntry>
 {
 	private static final Map<AccountancyEntryIdentifier, TransientAccountancyEntry> entryMap = new ConcurrentHashMap<>();

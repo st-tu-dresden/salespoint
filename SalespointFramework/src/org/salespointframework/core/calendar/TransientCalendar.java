@@ -13,7 +13,11 @@ import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.Iterables;
 
 
-
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class TransientCalendar implements Calendar<TransientCalendarEntry>
 {
 	private static final Map<CalendarEntryIdentifier, TransientCalendarEntry> entryMap = new ConcurrentHashMap<>();

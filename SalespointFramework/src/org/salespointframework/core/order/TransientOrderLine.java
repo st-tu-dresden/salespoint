@@ -8,7 +8,11 @@ import org.salespointframework.core.product.TransientProduct;
 import org.salespointframework.core.quantity.MetricMismatchException;
 import org.salespointframework.core.quantity.Quantity;
 
-
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class TransientOrderLine implements OrderLine {
 	
 	private final OrderLineIdentifier orderLineIdentifier = new OrderLineIdentifier();

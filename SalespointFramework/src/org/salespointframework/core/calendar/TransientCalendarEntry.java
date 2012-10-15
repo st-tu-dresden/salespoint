@@ -10,6 +10,11 @@ import org.joda.time.Period;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.Iterables;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class TransientCalendarEntry implements CalendarEntry
 {
 	private final CalendarEntryIdentifier calendarEntryIdentifier = new CalendarEntryIdentifier();

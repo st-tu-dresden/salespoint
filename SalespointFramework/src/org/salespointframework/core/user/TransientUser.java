@@ -8,6 +8,11 @@ import java.util.TreeSet;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.Utility;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class TransientUser implements User, Comparable<TransientUser> {
 
 	private final UserIdentifier userIdentifier;

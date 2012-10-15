@@ -10,6 +10,11 @@ import org.joda.time.DateTime;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.Iterables;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class TransientOrderManager implements OrderManager<TransientOrder, TransientOrderLine> 
 {
 	private static final Map<OrderIdentifier, TransientOrder> orderMap = new ConcurrentHashMap<>();

@@ -31,6 +31,7 @@ public class LoggedInTag extends BodyTagSupport
 		this.test = test;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public int doStartTag() throws JspException
 	{

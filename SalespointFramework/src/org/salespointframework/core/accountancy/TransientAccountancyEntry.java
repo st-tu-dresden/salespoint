@@ -6,6 +6,11 @@ import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.shop.Shop;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class TransientAccountancyEntry implements AccountancyEntry
 {
 	private final AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();

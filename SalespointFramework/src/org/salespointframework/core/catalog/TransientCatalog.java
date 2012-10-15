@@ -11,6 +11,11 @@ import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.product.TransientProduct;
 import org.salespointframework.util.Iterables;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class TransientCatalog implements Catalog<TransientProduct>{
 
 	private static final Map<ProductIdentifier, TransientProduct> productMap = new ConcurrentHashMap<>();

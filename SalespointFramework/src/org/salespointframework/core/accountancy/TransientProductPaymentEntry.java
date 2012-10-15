@@ -7,6 +7,11 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderIdentifier;
 import org.salespointframework.core.user.UserIdentifier;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class TransientProductPaymentEntry extends TransientAccountancyEntry
 {
 	/**

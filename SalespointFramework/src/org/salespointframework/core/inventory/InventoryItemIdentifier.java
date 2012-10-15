@@ -4,6 +4,11 @@ import javax.persistence.Embeddable;
 
 import org.salespointframework.util.SalespointIdentifier;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 @SuppressWarnings("serial")
 @Embeddable
 public class InventoryItemIdentifier extends SalespointIdentifier

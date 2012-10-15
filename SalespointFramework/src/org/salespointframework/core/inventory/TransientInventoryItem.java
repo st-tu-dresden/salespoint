@@ -7,6 +7,11 @@ import org.salespointframework.core.product.TransientProduct;
 import org.salespointframework.core.quantity.MetricMismatchException;
 import org.salespointframework.core.quantity.Quantity;
 
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class TransientInventoryItem implements InventoryItem
 {
 	private final InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();

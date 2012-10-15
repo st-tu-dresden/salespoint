@@ -12,7 +12,11 @@ import org.salespointframework.core.quantity.Units;
 import org.salespointframework.util.Iterables;
 
 
-
+/**
+ * 
+ * @author Paul Henke
+ * 
+ */
 public class TransientInventory implements Inventory<TransientInventoryItem>
 {
 	private static final Map<InventoryItemIdentifier, TransientInventoryItem> itemMap = new HashMap<>(); 
