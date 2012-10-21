@@ -5,10 +5,9 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <div class="salespointlogin">
-	<form action="" method="post">
+	<form action="login" method="post">
 		<fieldset>
 			<legend><spring:message code="org.salespointframework.form.login.title" /></legend>
-			<input type="text" name="SP_LOGIN_PARAM" hidden="true" />
 			<label for="SP_LOGIN_PARAM_IDENTIFIER"><spring:message code="org.salespointframework.form.login.user" /></label><br />
 			<input id="SP_LOGIN_PARAM_IDENTIFIER" type="text" name="SP_LOGIN_PARAM_IDENTIFIER" />
 			<br />
