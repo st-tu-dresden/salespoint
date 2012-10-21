@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -23,6 +25,7 @@ public class PersistentUser implements User, Comparable<PersistentUser>
 {
 
 	@EmbeddedId
+	@AttributeOverride(name = "id", column = @Column(name = "USER_ID"))
 	private UserIdentifier userIdentifier;
 
 	private String hashedPassword;

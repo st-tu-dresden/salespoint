@@ -35,7 +35,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
 
     @EmbeddedId
     @AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID"))
-    private CalendarEntryIdentifier                               calendarEntryIdentifier;
+    private CalendarEntryIdentifier calendarEntryIdentifier = new CalendarEntryIdentifier();
 
     //@ElementCollection(targetClass = EnumSet.class)
     //@CollectionTable(joinColumns = @JoinColumn(referencedColumnName = "ENTRY_ID", name = "ENTRY_ID"))
@@ -157,7 +157,6 @@ public class PersistentCalendarEntry implements CalendarEntry {
 
         setStartEnd(start.toDate(), end.toDate());
 
-        this.calendarEntryIdentifier = new CalendarEntryIdentifier();
         //capabilities.put(owner, EnumSet.allOf(CalendarEntryCapability.class));
     }
 

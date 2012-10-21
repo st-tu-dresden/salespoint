@@ -2,7 +2,9 @@ package org.salespointframework.core.inventory;
 
 import java.util.Objects;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -16,6 +18,7 @@ import org.salespointframework.core.quantity.Quantity;
 public class PersistentInventoryItem implements InventoryItem
 {
 	@EmbeddedId
+	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID"))
 	private InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
 	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, /* CascadeType.REMOVE,*/ CascadeType.REFRESH, CascadeType.DETACH})
