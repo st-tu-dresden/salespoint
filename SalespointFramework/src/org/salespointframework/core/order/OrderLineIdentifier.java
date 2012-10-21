@@ -38,4 +38,14 @@ public final class OrderLineIdentifier extends SalespointIdentifier
 	{
 		super(orderLineIdentifier);
 	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object other) { 
+		return super.equals(other);
+	}
 }

@@ -36,4 +36,14 @@ public final class AccountancyEntryIdentifier extends SalespointIdentifier {
 	public AccountancyEntryIdentifier(String identifier) {
 		super(identifier);
 	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object other) { 
+		return super.equals(other);
+	}
 }

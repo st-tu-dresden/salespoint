@@ -34,4 +34,14 @@ public final class UserIdentifier extends SalespointIdentifier {
     public UserIdentifier(String userIdentifier) {
         super(userIdentifier);
     }
+    
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object other) { 
+		return super.equals(other);
+	}
 }

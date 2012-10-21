@@ -121,7 +121,8 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		Objects.requireNonNull(user, "user must not be null");
 		Objects.requireNonNull(token, "token must not be null");
 
-		PersistentUser temp = this.get(PersistentUser.class, user.getIdentifier());
+		// TODO cache bug >_<
+		//PersistentUser temp = this.get(PersistentUser.class, user.getIdentifier());
 
 		userTokenMap.put(token, user);
 	}

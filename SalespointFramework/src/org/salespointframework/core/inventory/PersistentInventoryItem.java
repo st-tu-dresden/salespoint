@@ -5,7 +5,6 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.salespointframework.core.product.PersistentProduct;
@@ -19,8 +18,8 @@ public class PersistentInventoryItem implements InventoryItem
 	@EmbeddedId
 	private InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
-	//@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, /* CascadeType.REMOVE,*/ CascadeType.REFRESH, CascadeType.DETACH})
-	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, /* CascadeType.REMOVE,*/ CascadeType.REFRESH, CascadeType.DETACH})
+	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, /* CascadeType.REMOVE,*/ CascadeType.REFRESH, CascadeType.DETACH})
+	//@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, /* CascadeType.REMOVE,*/ CascadeType.REFRESH, CascadeType.DETACH})
 	private PersistentProduct product;
 	
 	private Quantity quantity;

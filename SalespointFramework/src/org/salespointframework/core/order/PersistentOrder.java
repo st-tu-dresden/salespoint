@@ -25,7 +25,6 @@ import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.accountancy.PersistentAccountancy;
 import org.salespointframework.core.accountancy.PersistentProductPaymentEntry;
-import org.salespointframework.core.accountancy.TransientAccountancy;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.inventory.Inventory;

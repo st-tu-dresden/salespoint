@@ -40,4 +40,14 @@ public final class CalendarEntryIdentifier extends SalespointIdentifier {
 	public CalendarEntryIdentifier(String calendarEntryIdentifier) {
 		super(calendarEntryIdentifier);
 	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object other) { 
+		return super.equals(other);
+	}
 }

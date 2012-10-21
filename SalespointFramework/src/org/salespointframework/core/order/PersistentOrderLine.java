@@ -8,15 +8,11 @@ import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
-import org.salespointframework.core.catalog.Catalog;
-import org.salespointframework.core.catalog.PersistentCatalog;
-import org.salespointframework.core.catalog.TransientCatalog;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.quantity.MetricMismatchException;
 import org.salespointframework.core.quantity.Quantity;
-import org.salespointframework.core.shop.Shop;
 
 /**
  * A persistent implementation of the {@link OrderLine} interface.

@@ -38,4 +38,14 @@ public final class ProductIdentifier extends SalespointIdentifier
 	{
 		super(productIdentifier);
 	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object other) { 
+		return super.equals(other);
+	}
 }
