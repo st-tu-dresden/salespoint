@@ -54,6 +54,15 @@ public class InventoryCatalogInteractionTest {
 		inventory.add(item);
 		assertTrue(catalog.contains(keks.getIdentifier()));
 	}
+	
+	@Test
+	public void removeInInventoryThenRemoveInCatalog() {
+		catalog.add(keks);
+		inventory.add(item);
+		inventory.remove(item.getIdentifier());
+		catalog.remove(keks.getIdentifier());
+	}
+
 
 	@Test
 	public void removeInInventoryDoesNotRemoveInCatalog() {
