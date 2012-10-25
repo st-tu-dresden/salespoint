@@ -6,7 +6,10 @@ import java.util.Set;
 
 
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.product.discount.Discount;
+import org.salespointframework.core.product.discount.NoDiscount;
 import org.salespointframework.core.quantity.Metric;
+import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Iterables;
 
 /**
@@ -24,12 +27,20 @@ public class TransientProduct implements Product, Comparable<TransientProduct> {
 
 	protected Set<String> categories = new HashSet<String>();
 	
+	private Discount discount = new NoDiscount();
+	
 	
 	public TransientProduct(String name, Money price, Metric metric)
+	{
+		this(name, price, metric, new NoDiscount());
+	}
+	
+	public TransientProduct(String name, Money price, Metric metric, Discount discount)
 	{
 		this.name = Objects.requireNonNull(name, "name must not be null");
 		this.price = Objects.requireNonNull(price, "price must not be null");
 		this.metric = Objects.requireNonNull(metric, "metric must not be null");
+		this.discount = Objects.requireNonNull(discount, "discount must not be null");
 	}
 	
 	
@@ -46,6 +57,11 @@ public class TransientProduct implements Product, Comparable<TransientProduct> {
 	@Override
 	public final Money getPrice() {
 		return price;
+	}
+	
+	public final Money getDiscountPrice() {
+		double factor = discount.getFactor();
+		return this.price.multiply(new Money(factor));	//hacky
 	}
 
 	@Override
