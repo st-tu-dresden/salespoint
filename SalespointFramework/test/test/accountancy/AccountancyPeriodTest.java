@@ -17,6 +17,7 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderIdentifier;
 import org.salespointframework.core.user.UserIdentifier;
 
+@SuppressWarnings("javadoc")
 public class AccountancyPeriodTest {
 	private PersistentAccountancy a;
 

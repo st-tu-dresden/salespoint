@@ -32,26 +32,31 @@ public class TestEntity implements Serializable {
 	@Deprecated
 	protected TestEntity() {}
 	
+	@SuppressWarnings("javadoc")
 	public TestEntity(Identifier ident) {
 		super();
 		System.out.println("Generated " + ident.toString());
 		this.ident = ident;
 	}
 
+	@SuppressWarnings("javadoc")
 	public TestEntity(SpecialIdentifier ident) {
 		super();
 		System.out.println("Generated " + ident.toString());
 		this.sp_ident = ident;
 	}
 	
+	@SuppressWarnings("javadoc")
 	public Identifier getIdentifier() {
 		return ident;
 	}
 	
+	@SuppressWarnings("javadoc")
 	public SpecialIdentifier getSpecialIdentifier() {
 		return sp_ident;
 	}
 	
+	@SuppressWarnings("javadoc")
 	public long getId() {
 		return id;
 	}

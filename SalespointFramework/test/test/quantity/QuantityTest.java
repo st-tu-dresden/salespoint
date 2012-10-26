@@ -7,6 +7,7 @@ import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 
+@SuppressWarnings("javadoc")
 public class QuantityTest {
 
 	@Test

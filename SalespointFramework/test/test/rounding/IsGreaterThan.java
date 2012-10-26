@@ -7,6 +7,7 @@ import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.junit.internal.matchers.TypeSafeMatcher;
 
+@SuppressWarnings("javadoc")
 public class IsGreaterThan extends TypeSafeMatcher<BigDecimal> {
 	private BigDecimal right;
 	

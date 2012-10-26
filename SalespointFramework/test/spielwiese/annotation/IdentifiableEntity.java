@@ -16,11 +16,13 @@ public class IdentifiableEntity implements Serializable {
 	@EmbeddedId
 	private Identifier id;
 
+	@SuppressWarnings("javadoc")
 	public IdentifiableEntity() {
 		super();
 		//id = new Identifier();
 	}
 	
+	@SuppressWarnings("javadoc")
 	public Identifier getIdentifier() {
 		return id;
 	}

@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.database.Database;
 
+@SuppressWarnings("javadoc")
 public class EntityTest {
 
 	@BeforeClass

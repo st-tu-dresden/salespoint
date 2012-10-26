@@ -11,6 +11,7 @@ import org.salespointframework.core.quantity.rounding.BasicRoundingStrategy;
 import static org.hamcrest.core.Is.is;
 import static test.rounding.IsEqual.equal;
 
+@SuppressWarnings("javadoc")
 public class ZeroStepRoundingTest {
 	BigDecimal d;
 

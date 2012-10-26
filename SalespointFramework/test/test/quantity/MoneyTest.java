@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.salespointframework.core.money.Money;
 
+@SuppressWarnings("javadoc")
 public class MoneyTest
 {
 	@Test

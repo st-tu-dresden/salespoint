@@ -13,6 +13,7 @@ import java.util.Set;
 import org.junit.Test;
 import org.salespointframework.util.Iterables;
 
+@SuppressWarnings("javadoc")
 public class IterablesTest {
 	
 	// i fucking hate java generics and boxing

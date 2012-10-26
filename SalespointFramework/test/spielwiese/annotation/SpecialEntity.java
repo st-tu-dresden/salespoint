@@ -13,11 +13,13 @@ public class SpecialEntity implements Serializable {
 	@EmbeddedId
 	private SpecialIdentifier id;
 
+	@SuppressWarnings("javadoc")
 	public SpecialEntity() {
 		super();
 		id = new SpecialIdentifier();
 	}
 	
+	@SuppressWarnings("javadoc")
 	public SpecialIdentifier getIdentifier() {
 		return id;
 	}

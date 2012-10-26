@@ -8,7 +8,7 @@ import org.eclipse.persistence.internal.sessions.AbstractSession;
 import org.eclipse.persistence.sequencing.Sequence;
 import org.eclipse.persistence.sessions.Session;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({ "serial", "javadoc" })
 public class Generator extends Sequence implements SessionCustomizer {
 
 	public Generator() {

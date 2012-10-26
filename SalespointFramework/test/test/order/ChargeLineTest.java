@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.ChargeLine;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.user.PersistentUser;
@@ -21,8 +20,7 @@ import org.salespointframework.core.user.UserIdentifier;
 public class ChargeLineTest {
 
 	private User user;
-	@SuppressWarnings("rawtypes")
-	private Order order;
+	private PersistentOrder order;
 	private ChargeLine chargeLine;
 	 
 	@BeforeClass

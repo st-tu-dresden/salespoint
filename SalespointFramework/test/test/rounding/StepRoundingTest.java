@@ -37,6 +37,7 @@ import static test.rounding.IsSmallerThanOrEqual.smallerThanOrEqual;
  * @author hannesweisbach
  * 
  */
+@SuppressWarnings("javadoc")
 public class StepRoundingTest {
 	static List<RoundingMode> modes = Arrays.asList(RoundingMode.UP,
 			RoundingMode.DOWN, RoundingMode.FLOOR, RoundingMode.CEILING);
@@ -46,6 +47,7 @@ public class StepRoundingTest {
 	static Map<RoundingMode, Map<BigDecimal, Map<BigDecimal, BigDecimal>>> tests = new HashMap<RoundingMode, Map<BigDecimal, Map<BigDecimal, BigDecimal>>>();
 	BigDecimal d;
 
+	
 	@BeforeClass
 	static public void setup() {
 		Map<BigDecimal, Map<BigDecimal, BigDecimal>> test;

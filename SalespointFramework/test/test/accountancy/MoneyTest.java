@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.database.Database;
 
+@SuppressWarnings("javadoc")
 public class MoneyTest {
 	private EntityManagerFactory emf = Database.INSTANCE
 	.getEntityManagerFactory();

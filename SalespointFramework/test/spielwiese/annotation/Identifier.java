@@ -22,6 +22,7 @@ public class Identifier implements Serializable {
 	
 	private String id_;
 
+	@SuppressWarnings("javadoc")
 	public Identifier() {
 		id_ = UUID.randomUUID().toString();
 	}

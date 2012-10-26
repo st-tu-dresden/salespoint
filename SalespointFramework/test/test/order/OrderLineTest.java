@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.catalog.PersistentCatalog;
@@ -14,9 +13,7 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderLine;
 import org.salespointframework.core.order.PersistentOrder;
-import org.salespointframework.core.order.PersistentOrderLine;
 import org.salespointframework.core.product.PersistentProduct;
-import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;

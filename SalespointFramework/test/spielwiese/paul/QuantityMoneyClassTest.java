@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.salespointframework.core.database.Database;
 
 
+@SuppressWarnings("javadoc")
 public class QuantityMoneyClassTest {
 
 	@BeforeClass
@@ -18,6 +19,7 @@ public class QuantityMoneyClassTest {
 	@Test
 	public void newInstance() {
 		QuantityMoneyClass qmc = new QuantityMoneyClass();
+		System.out.println(qmc.getId());
 	}
 	
 	@Test
