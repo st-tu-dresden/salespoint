@@ -4,6 +4,7 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.TransientProduct;
 import org.salespointframework.core.quantity.Metric;
 
+@SuppressWarnings("javadoc")
 public class TransientKeks extends TransientProduct
 {
 

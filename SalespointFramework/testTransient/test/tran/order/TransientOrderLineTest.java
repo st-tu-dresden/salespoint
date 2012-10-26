@@ -1,6 +1,6 @@
 package test.tran.order;
 
-import java.util.List;
+import static junit.framework.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -10,22 +10,18 @@ import org.salespointframework.core.inventory.TransientInventory;
 import org.salespointframework.core.inventory.TransientInventoryItem;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderCompletionResult;
+import org.salespointframework.core.order.OrderCompletionResult.OrderCompletionStatus;
 import org.salespointframework.core.order.TransientOrder;
 import org.salespointframework.core.order.TransientOrderLine;
 import org.salespointframework.core.order.TransientOrderManager;
-import org.salespointframework.core.order.OrderCompletionResult.OrderCompletionStatus;
 import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.util.Iterables;
 
 import test.tran.inventory.TransientKeksItem;
 import test.tran.product.TransientKeks;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-
+@SuppressWarnings("javadoc")
 public class TransientOrderLineTest
 {
 	TransientKeks keks = new TransientKeks("Schoki", new Money(0), Units.ZERO.getMetric());

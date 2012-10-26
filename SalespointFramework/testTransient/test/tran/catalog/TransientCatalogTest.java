@@ -5,16 +5,15 @@ import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.catalog.TransientCatalog;
-import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.product.TransientProduct;
 import org.salespointframework.core.quantity.Units;
 
 import test.tran.product.TransientKeks;
 
+@SuppressWarnings("javadoc")
 public class TransientCatalogTest
 {
 	private final TransientCatalog catalog = new TransientCatalog();

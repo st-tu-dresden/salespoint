@@ -1,20 +1,20 @@
 package test.tran.inventory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.salespointframework.core.catalog.TransientCatalog;
 import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.inventory.InventoryItemIdentifier;
 import org.salespointframework.core.inventory.TransientInventory;
 import org.salespointframework.core.inventory.TransientInventoryItem;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.order.TransientOrderManager;
 import org.salespointframework.core.quantity.Units;
 
 import test.tran.product.TransientKeks;
 
+@SuppressWarnings("javadoc")
 public class TransientInventoryTest
 {
 	TransientInventory inventory = new TransientInventory();
