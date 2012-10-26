@@ -112,6 +112,11 @@ public class Metric implements Serializable {
 			return symbol.equals(m.symbol) && name.equals(m.name);
 		}
 	}
+	
+	@Override
+	public int hashCode() {
+		return this.symbol.hashCode() ^ this.name.hashCode();
+	}
 
 	/**
 	 * Returns a hash code for this <code>Metric</code> object. The result is

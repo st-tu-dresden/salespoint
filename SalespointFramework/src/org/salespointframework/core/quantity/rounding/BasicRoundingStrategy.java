@@ -130,6 +130,11 @@ public class BasicRoundingStrategy implements RoundingStrategy, Serializable {
 					&& this.roundingMode.equals(s.roundingMode);
 		}
 	}
+	
+	@Override 
+	public int hashCode() {
+		return this.roundingStep.hashCode() ^ this.roundingMode.hashCode();
+	}
 
 	/**
 	 * Returns a hash code for this <code>RoundingStrategy</code> object. The

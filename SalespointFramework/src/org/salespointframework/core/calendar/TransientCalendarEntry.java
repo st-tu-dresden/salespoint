@@ -121,8 +121,12 @@ public class TransientCalendarEntry implements CalendarEntry
 	public void setTitle(String title)
 	{
 		this.title = Objects.requireNonNull(title, "title must not be null");
-
 	}
+	
+    @Override
+    public final int hashCode() {
+        return calendarEntryIdentifier.hashCode();
+    }
 	
     private final void detectDateAnomalies(DateTime start, DateTime end, int repeatCount, Period period) {
         Interval duration = new Interval(start, end);
