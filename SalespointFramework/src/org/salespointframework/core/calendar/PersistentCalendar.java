@@ -54,21 +54,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
         return em.find(clazz, calendarEntryIdentifier);
     }
 
-    /**
-     * Returns all entries that have the given title.
-     * 
-     * @param <T>
-     *            common super type of all entries returned
-     * 
-     * @param clazz
-     *            Class object corresponding to the type of the entries to be
-     *            returned, has to be <code>PersistentCalendarEntry</code> or a
-     *            sub-class of it.
-     * 
-     * @param title
-     *            The title that entries should have.
-     * @return An iterable with all found entries
-     */
+
     @Override
     public <T extends PersistentCalendarEntry> Iterable<T> find(Class<T> clazz, String title) {
         Objects.requireNonNull(title, "title must not be null");
@@ -105,22 +91,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
         beginCommit(em);
     }
 
-    /**
-     * Returns all entries for that the given user is the owner.
-     * 
-     * @param <T>
-     *            common super type of all entries returned
-     * 
-     * @param clazz
-     *            Class object corresponding to the type of the entries to be
-     *            returned, has to be <code>PersistentCalendarEntry</code> or a
-     *            sub-class of it.
-     * 
-     * @param userIdentifier
-     *            {@link UserIdentifier} of the user whose entries should be
-     *            found.
-     * @return An {link @Iterable} with all found entries.
-     */
+
     @Override
     public <T extends PersistentCalendarEntry> Iterable<T> find(Class<T> clazz, UserIdentifier userIdentifier) {
         Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
@@ -139,33 +110,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
         return Iterables.of(tq.getResultList());
     }
 
-    /**
-     * Returns all entries that start and end between the given start and end date.
-     * 
-     * @param <T>
-     *            common super type of all entries returned
-     * 
-     * @param clazz
-     *            Class object corresponding to the type of the entries to be
-     *            returned, has to be <code>PersistentCalendarEntry</code> or a
-     *            sub-class of it.
-     * 
-     * @param start
-     *            The start of the interval in which returned entries should
-     *            have their start and end date.
-     * 
-     * @param end
-     *            The end of the interval in which returned entries should have
-     *            their start and end date. The end is exclusive.
-     * 
-     * 
-     * @return An iterable with all found entries.
-     * 
-     * @throws NullPointerException
-     *             if <code>start</code> or <code>end</code> or both are <code>null</code>
-     * 
-     * @see Interval#contains(org.joda.time.ReadableInterval)
-     */
+
     @Override
     public <T extends PersistentCalendarEntry> Iterable<T> between(Class<T> clazz, DateTime start, DateTime end) {
         Interval interval = new Interval(Objects.requireNonNull(start, "start must not be null"), Objects.requireNonNull(end, "end must not be null"));
@@ -186,33 +131,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
         return result;
     }
 
-    /**
-     * Returns all entries that end between the given start and end date.
-     * 
-     * @param <T>
-     *            common super type of all entries returned
-     * 
-     * @param clazz
-     *            Class object corresponding to the type of the entries to be
-     *            returned, has to be <code>PersistentCalendarEntry</code> or a
-     *            sub-class of it.
-     * 
-     * @param start
-     *            The start of the interval in which returned entries should
-     *            have their end date.
-     * 
-     * @param end
-     *            The end of the interval in which returned entries should have
-     *            their end date. The end is exclusive.
-     * 
-     * 
-     * @return An iterable with all found entries.
-     * 
-     * @throws NullPointerException
-     *             if <code>start</code> or <code>end</code> or both are <code>null</code>
-     * 
-     * @see Interval#contains(org.joda.time.ReadableInstant)
-     */
+
     @Override
     public <T extends PersistentCalendarEntry> Iterable<T> endsBetween(Class<T> clazz, DateTime start, DateTime end) {
         Interval interval = new Interval(Objects.requireNonNull(start, "start must not be null"), Objects.requireNonNull(end, "end must not be null"));
@@ -233,33 +152,7 @@ public class PersistentCalendar implements Calendar<PersistentCalendarEntry> {
         return result;
     }
 
-    /**
-     * Returns all entries that start between the given start and end date.
-     * 
-     * @param <T>
-     *            common super type of all entries returned
-     * 
-     * @param clazz
-     *            Class object corresponding to the type of the entries to be
-     *            returned, has to be <code>PersistentCalendarEntry</code> or a
-     *            sub-class of it.
-     * 
-     * @param start
-     *            The start of the interval in which returned entries should
-     *            have their start date.
-     * 
-     * @param end
-     *            The end of the interval in which returned entries should have
-     *            their start date. The end is exclusive.
-     * 
-     * 
-     * @return An iterable with all found entries.
-     * 
-     * @throws NullPointerException
-     *             if <code>start</code> or <code>end</code> or both are <code>null</code>
-     * 
-     * @see Interval#contains(org.joda.time.ReadableInstant)
-     */
+
     @Override
     public <T extends PersistentCalendarEntry> Iterable<T> startsBetween(Class<T> clazz, DateTime start, DateTime end) {
         Interval interval = new Interval(Objects.requireNonNull(start, "start must not be null"), Objects.requireNonNull(end, "end must not be null"));

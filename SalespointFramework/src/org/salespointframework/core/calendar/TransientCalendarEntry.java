@@ -35,14 +35,75 @@ public class TransientCalendarEntry implements CalendarEntry
 
 	private String title;
 	
+    /**
+     * Creates a new calendar entry that can be added in {@link TransientCalendar}.
+     * 
+     * @param owner
+     *            The id of the user, who created this entry.
+     * @param title
+     *            The title of this entry.
+     * @param start
+     *            Start time and date.
+     * @param end
+     *            End time and date.
+     * @throws NullPointerException
+     *             if one or more arguments are <code>null</code>
+     * @throws IllegalArgumentException
+     *             if the end is before the start
+     */
     public TransientCalendarEntry(UserIdentifier owner, String title, DateTime start, DateTime end) {
         this(owner, title, start, end, "", Period.ZERO, 0);
     }
     
+    /**
+     * Creates a new calendar entry that can be added in {@link TransientCalendar}.
+     * 
+     * @param owner
+     *            The id of the user, who created this entry.
+     * @param title
+     *            The title of this entry.
+     * @param start
+     *            Start time and date.
+     * @param end
+     *            End time and date.
+     * @param description
+     *            The description of this entry.
+     * @throws NullPointerException
+     *             if one or more arguments are <code>null</code>
+     */
     public TransientCalendarEntry(UserIdentifier owner, String title, DateTime start, DateTime end, String description) {
         this(owner, title, start, end, description, Period.ZERO, 0);
     }
     
+    /**
+     * Creates a new cyclic calendar entry that will be repeated after a period.
+     * There are parameters that define how often it will be repeated and how
+     * much time between two repetitions will be.
+     * 
+     * @param owner
+     *            The id of the user, who created this entry.
+     * @param title
+     *            The title of this entry.
+     * @param start
+     *            Start time and date.
+     * @param end
+     *            End time and date.
+     * @param description
+     *            The description of this entry.
+     * @param period
+     *            The period of one repetition of this entry. This is the time
+     *            between two starts and so it has to be less than the duration.
+     * @param count
+     *            Times how often the event is repeated. -1 means infinitely.
+     * @throws NullPointerException
+     *             if one ore more arguments are <code>null</code>
+     * @throws IllegalArgumentException
+     *             if the time between two repetitions should be smaller than
+     *             the duration of the entry.
+     * 
+     * @see Interval
+     * @see Period
+     */
     public TransientCalendarEntry(UserIdentifier owner, String title, DateTime start, DateTime end, String description, Period period, int count) {
 
         detectDateAnomalies(Objects.requireNonNull(start, "start must not be null"), Objects.requireNonNull(end, "end must not be null"), count, Objects.requireNonNull(period, "period must not be null"));
@@ -163,6 +224,7 @@ public class TransientCalendarEntry implements CalendarEntry
         return title + " (" + getStart() + " - " + getEnd() + ")";
     }
     
+    @Override
     public final Iterable<Interval> getEntryList(Interval interval) {
         List<Interval> dates = new ArrayList<Interval>();
 
@@ -177,6 +239,28 @@ public class TransientCalendarEntry implements CalendarEntry
                 dates.add(nextInterval);
             }
             nextInterval = new Interval(nextInterval.getStart().plus(this.period), nextInterval.getEnd().plus(this.period));
+        }
+
+        return Iterables.of(dates);
+    }
+
+    @Override
+    public final Iterable<Interval> getEntryList(int maxEntries) {
+        List<Interval> dates = new ArrayList<Interval>();
+        Interval last;
+
+        if (repeatCount != -1)
+            maxEntries = (maxEntries < repeatCount) ? maxEntries : repeatCount;
+
+        if (maxEntries == 0)
+            return dates;
+
+        dates.add(duration);
+        last = duration;
+        // >1, because duration itself is the first entry
+        for (; maxEntries > 1; maxEntries--) {
+            last = new Interval(last.getStart().plus(period), last.getEnd().plus(period));
+            dates.add(last);
         }
 
         return Iterables.of(dates);

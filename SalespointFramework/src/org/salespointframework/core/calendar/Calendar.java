@@ -1,8 +1,11 @@
 package org.salespointframework.core.calendar;
 
 import org.joda.time.DateTime;
+import org.joda.time.Interval;
 import org.salespointframework.core.user.UserIdentifier;
 
+
+// TODO fix javadoc
 
 /**
  * A calendar manages a set of calendar entries.
@@ -84,14 +87,126 @@ public interface Calendar<T extends CalendarEntry> {
 	 */
 	boolean remove(CalendarEntryIdentifier calendarEntryIdentifier);
 
+    /**
+     * Returns all entries that have the given title.
+     * 
+     * @param <E>
+     *            common super type of all entries returned
+     * 
+     * @param clazz
+     *            Class object corresponding to the type of the entries to be
+     *            returned, has to be <code>PersistentCalendarEntry</code> or a
+     *            sub-class of it.
+     * 
+     * @param title
+     *            The title that entries should have.
+     * @return An Iterable with all found entries
+     */
 	<E extends T> Iterable<E> find(Class<E> clazz, String title);
 
+    /**
+     * Returns all entries for that the given user is the owner.
+     * 
+     * @param <T>
+     *            common super type of all entries returned
+     * 
+     * @param clazz
+     *            Class object corresponding to the type of the entries to be
+     *            returned, has to be <code>PersistentCalendarEntry</code> or a
+     *            sub-class of it.
+     * 
+     * @param userIdentifier
+     *            {@link UserIdentifier} of the user whose entries should be
+     *            found.
+     * @return An {link @Iterable} with all found entries.
+     */
 	<E extends T> Iterable<E> find(Class<E> clazz, UserIdentifier userIdentifier);
 
+    /**
+     * Returns all entries that start and end between the given start and end date.
+     * 
+     * @param <T>
+     *            common super type of all entries returned
+     * 
+     * @param clazz
+     *            Class object corresponding to the type of the entries to be
+     *            returned, has to be <code>PersistentCalendarEntry</code> or a
+     *            sub-class of it.
+     * 
+     * @param start
+     *            The start of the interval in which returned entries should
+     *            have their start and end date.
+     * 
+     * @param end
+     *            The end of the interval in which returned entries should have
+     *            their start and end date. The end is exclusive.
+     * 
+     * 
+     * @return An Iterable with all found entries.
+     * 
+     * @throws NullPointerException
+     *             if <code>start</code> or <code>end</code> or both are <code>null</code>
+     * 
+     * @see Interval#contains(org.joda.time.ReadableInterval)
+     */
 	<E extends T> Iterable<E> between(Class<E> clazz, DateTime start, DateTime end);
 
+    /**
+     * Returns all entries that end between the given start and end date.
+     * 
+     * @param <T>
+     *            common super type of all entries returned
+     * 
+     * @param clazz
+     *            Class object corresponding to the type of the entries to be
+     *            returned, has to be <code>PersistentCalendarEntry</code> or a
+     *            sub-class of it.
+     * 
+     * @param start
+     *            The start of the interval in which returned entries should
+     *            have their end date.
+     * 
+     * @param end
+     *            The end of the interval in which returned entries should have
+     *            their end date. The end is exclusive.
+     * 
+     * 
+     * @return An iterable with all found entries.
+     * 
+     * @throws NullPointerException
+     *             if <code>start</code> or <code>end</code> or both are <code>null</code>
+     * 
+     * @see Interval#contains(org.joda.time.ReadableInstant)
+     */
 	<E extends T> Iterable<E> endsBetween(Class<E> clazz, DateTime start, DateTime end);
 
+    /**
+     * Returns all entries that start between the given start and end date.
+     * 
+     * @param <T>
+     *            common super type of all entries returned
+     * 
+     * @param clazz
+     *            Class object corresponding to the type of the entries to be
+     *            returned, has to be <code>PersistentCalendarEntry</code> or a
+     *            sub-class of it.
+     * 
+     * @param start
+     *            The start of the interval in which returned entries should
+     *            have their start date.
+     * 
+     * @param end
+     *            The end of the interval in which returned entries should have
+     *            their start date. The end is exclusive.
+     * 
+     * 
+     * @return An iterable with all found entries.
+     * 
+     * @throws NullPointerException
+     *             if <code>start</code> or <code>end</code> or both are <code>null</code>
+     * 
+     * @see Interval#contains(org.joda.time.ReadableInstant)
+     */
 	<E extends T> Iterable<E> startsBetween(Class<E> clazz, DateTime start, DateTime end);
 
 

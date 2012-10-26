@@ -269,25 +269,8 @@ public class PersistentCalendarEntry implements CalendarEntry {
         return duration.getEnd();
     }
 
-    /**
-     * Returns an {@link Iterable} which contains all time intervals of this
-     * event and its repetitions. <code>maxEntries</code> is required to limit
-     * the output for infinitely often repeated events. If
-     * <code>maxEntries</code> is greater than <code>repeatCount</code>, only
-     * <code>repeatCount</code> items will be returned. Possible values for
-     * maxEntries are
-     * <ul>
-     * <li>&lt; 0 - output will be an empty iterable.</li>
-     * <li>=&nbsp;0 - output will contain only the original event.</li>
-     * <li>&gt; 0 - output will contain a maximum of <code>maxEntries</code>
-     * repetitions, inclusive the original event.</li>
-     * </ul>
-     * 
-     * @param maxEntries
-     *            limits the output to a specified amount of repetitions.
-     * @return An iterable that contains the original event and all repetitions,
-     *         limited to <code>maxEntires</code>.
-     */
+
+    @Override
     public final Iterable<Interval> getEntryList(int maxEntries) {
         List<Interval> dates = new ArrayList<Interval>();
         Interval last;
@@ -309,20 +292,7 @@ public class PersistentCalendarEntry implements CalendarEntry {
         return Iterables.of(dates);
     }
 
-    /**
-     * Returns an {@link Iterable} which contains all time intervals of this
-     * event and its repetitions that overlaps with the given {@link Interval}.
-     * For a definition of <coder>overlaps()</code>, see
-     * {@link Interval#overlaps(org.joda.time.ReadableInterval)}. If the given
-     * interval is completely before the first occurence of this event, the
-     * result will be empty. The result also can contain a maximum of
-     * {@link Integer#MAX_VALUE} entries.
-     * 
-     * @param interval
-     *            all returned intervals should overlap with this given
-     *            interval.
-     * @return An iterable that contains all found intervals.
-     */
+
     public final Iterable<Interval> getEntryList(Interval interval) {
         List<Interval> dates = new ArrayList<Interval>();
 
