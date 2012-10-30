@@ -12,6 +12,7 @@ import org.salespointframework.core.product.TransientProduct;
 import org.salespointframework.util.Iterables;
 
 /**
+ * A transient implementation of the {@link Catalog} interface.
  * 
  * @author Paul Henke
  * 

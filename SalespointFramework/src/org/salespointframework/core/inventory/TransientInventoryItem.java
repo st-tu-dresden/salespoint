@@ -38,6 +38,11 @@ public class TransientInventoryItem implements InventoryItem
 		return quantity;
 	}
 
+	/**
+	 * Creates a new TransientInventoryItem
+	 * @param product the {@link TransientProduct} for this InventoryItem
+	 * @param quantity the initial {@link Quantity} for this InventoryItem
+	 */
 	public TransientInventoryItem(TransientProduct product, Quantity quantity)
 	{
 		this.product = Objects.requireNonNull(product, "product must be not null");

@@ -14,8 +14,10 @@ import org.salespointframework.util.Iterables;
 
 
 /**
+ * Transient implementation of the {@link Calendar} interface.
  * 
  * @author Paul Henke
+ * @author Stanley Förster
  * 
  */
 public class TransientCalendar implements Calendar<TransientCalendarEntry>

@@ -8,7 +8,6 @@ import java.util.Objects;
 
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.quantity.Quantity;
-import org.salespointframework.core.quantity.Units;
 import org.salespointframework.util.Iterables;
 
 
@@ -89,14 +88,4 @@ public class TransientInventory implements Inventory<TransientInventoryItem>
 		
 		return null;
 	};
-	
-	// TODO
-	public Quantity getQuantity(ProductIdentifier productIdentifier) {
-		TransientInventoryItem item = this.getByProductIdentifier(TransientInventoryItem.class, productIdentifier);
-		if(item == null) {
-			return Units.ONE;
-		} else {
-			return item.getQuantity();
-		}
-	}
 }

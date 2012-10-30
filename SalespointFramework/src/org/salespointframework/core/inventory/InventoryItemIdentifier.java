@@ -5,6 +5,12 @@ import javax.persistence.Embeddable;
 import org.salespointframework.util.SalespointIdentifier;
 
 /**
+ * <code>InventoryItemIdentifier</code> serves as an identifier type for {@link InventoryItem}
+ * objects. The main reason for its existence is type safety for identifier
+ * across the Salespoint Framework. <br>
+ * <code>InventoryItemIdentifier</code> instances serve as primary key attribute in
+ * {@link PersistentInventoryItem}, but can also be used as a key for non-persistent,
+ * <code>Map</code>-based implementations.
  * 
  * @author Paul Henke
  * 
@@ -24,7 +30,7 @@ public class InventoryItemIdentifier extends SalespointIdentifier
 	/**
 	 * Only needed for property editor, shouldn't be used otherwise.
 	 * 
-	 * @param serialNumber
+	 * @param inventoryItemIdentifier
 	 *            The string representation of the identifier.
 	 */
 	@Deprecated

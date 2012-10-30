@@ -7,7 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.salespointframework.core.product.PersistentProduct;
@@ -15,6 +14,11 @@ import org.salespointframework.core.product.Product;
 import org.salespointframework.core.quantity.MetricMismatchException;
 import org.salespointframework.core.quantity.Quantity;
 
+/**
+ * 
+ * @author Paul Henke
+ *
+ */
 @Entity
 public class PersistentInventoryItem implements InventoryItem
 {
@@ -23,8 +27,6 @@ public class PersistentInventoryItem implements InventoryItem
 	private InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
 	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, /* CascadeType.REMOVE,*/ CascadeType.REFRESH, CascadeType.DETACH})
-	//@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, /* CascadeType.REMOVE,*/ CascadeType.REFRESH, CascadeType.DETACH})
-	//@OneToOne(cascade={CascadeType.ALL})
 	private PersistentProduct product;
 	
 	private Quantity quantity;
@@ -32,6 +34,11 @@ public class PersistentInventoryItem implements InventoryItem
 	@Deprecated
 	protected PersistentInventoryItem() { }
 	
+	/**
+	 * Creates a new PersistentInventoryItem
+	 * @param product the {@link PersistentProduct} for this InventoryItem
+	 * @param quantity the initial {@link Quantity} for this InventoryItem
+	 */
 	public PersistentInventoryItem(PersistentProduct product, Quantity quantity)
 	{
 		this.product = Objects.requireNonNull(product, "product must be not null");
@@ -44,7 +51,7 @@ public class PersistentInventoryItem implements InventoryItem
 	}
 	
 	@Override
-	public final InventoryItemIdentifier getIdentifier()
+	public final InventoryItemIdentifier getIdentifier() 
 	{
 		return inventoryItemIdentifier;
 	}

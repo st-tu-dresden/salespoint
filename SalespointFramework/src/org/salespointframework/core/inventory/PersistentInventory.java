@@ -13,7 +13,6 @@ import javax.persistence.criteria.Root;
 
 import org.salespointframework.core.database.Database;
 import org.salespointframework.core.order.PersistentOrder;
-import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.product.PersistentProduct_;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.util.Iterables;
@@ -245,6 +244,15 @@ public class PersistentInventory implements Inventory<PersistentInventoryItem>
 		return entityManager != null ? entityManager : emf.createEntityManager();
 	}
 
+    /**
+     * Updates and persists an existing {@link PersistentInventoryItem} to the
+     * {@link PersistentInventory} and the Database
+     * 
+     * @param item
+     *            the <code>PersistentInventoryItem</code> to be updated
+     * @throws NullPointerException
+     *             if <code>item</code> is <code>null</code>
+     */
 	public final void update(PersistentInventoryItem item)
 	{
 		java.util.Objects.requireNonNull(item, "item must not be null");

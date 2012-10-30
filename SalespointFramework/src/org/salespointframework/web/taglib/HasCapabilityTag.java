@@ -12,6 +12,10 @@ import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.Capability;
 import org.salespointframework.core.user.UserManager;
 
+// TODO
+// mehrere Capabilities OR verknüpfen usw
+
+
 /**
  * 
  * @author Lars Kreisz

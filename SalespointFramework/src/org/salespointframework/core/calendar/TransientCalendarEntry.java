@@ -12,7 +12,13 @@ import org.salespointframework.util.Iterables;
 
 /**
  * 
+ * This is a representation of a calendar entry which provides basic
+ * functionality. <code>TransientCalendarEntry</code> is intended to be used in
+ * conjunction with <code>TransientCalendar</code> to save entries to a
+ * database, using JPA.
+ * 
  * @author Paul Henke
+ * @author Stanley Förster
  * 
  */
 public class TransientCalendarEntry implements CalendarEntry
