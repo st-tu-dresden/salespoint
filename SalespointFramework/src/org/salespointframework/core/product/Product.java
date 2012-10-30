@@ -6,6 +6,7 @@ import org.salespointframework.core.quantity.Metric;
 
 /**
  * The Product interface
+ * 
  * @author Paul Henke
  * 
  */
@@ -28,37 +29,20 @@ public interface Product
 	 * @return the price of the Product
 	 */
 	Money getPrice();
-
-	/**
-	 * Adds a {@link ProductFeature}
-	 * @param productFeature the {@link ProductFeature} to be added
-	 * @return true if the Product did not already contain the {@link ProductFeature}, otherwise false
-	 * @throws NullPointerException if productFeature is null
-	 */
-	//boolean addProductFeature(ProductFeature productFeature);
 	
 	/**
-	 * Removes a {@link ProductFeature}
-	 * @param productFeatureIdentifier the {@link ProductFeatureIdentifier} of the {@link ProductFeature}
-	 * @return true if the ProductFeature is removed, false otherwise 
-	 * @throws NullPointerException if productFeatureIdentifier is null
+	 * Sets the name of the Product
+	 * @param name the new name 
+	 * @throws NullPointerException if name is null
 	 */
-	//boolean removeProductFeature(ProductFeatureIdentifier productFeatureIdentifier);
-	
+	void setName(String name);
 	
 	/**
-	 * Gets the {@link ProductFeature} for a specifig {@link ProductFeatureIdentifier}
-	 * @param productFeatureIdentifier the {@link ProductFeatureIdentifier} of the {@link ProductFeature}
-	 * @return a {@link ProductFeature}
-	 * @throws NullPointerException if productFeatureIdentifier is null
+	 * Sets the price of the Product
+	 * @param price the new price
+	 * * @throws NullPointerException if price is null
 	 */
-	//ProductFeature getProductFeature(ProductFeatureIdentifier productFeatureIdentifier);
-
-	/**
-	 * 
-	 * @return an Iterable of all {@link ProductFeature}s of this Product
-	 */
-	//Iterable<ProductFeature> getProductFeatures();
+	void setPrice(Money price);
 
 	/**
 	 * Adds a category to this Product
@@ -82,5 +66,9 @@ public interface Product
 	 */
 	Iterable<String> getCategories();
 
+	/**
+	 * 
+	 * @return the {@link Metric} of the Product
+	 */
 	Metric getMetric();
 }

@@ -29,8 +29,6 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	private String name;
 	private Money price;
 
-	//@ElementCollection
-	//private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
 
 	@ElementCollection
 	private Set<String> categories = new HashSet<String>();
@@ -43,6 +41,13 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	@Deprecated
 	protected PersistentProduct() { }
 
+	/**
+	 * Creates a new PersistentProduct
+	 * 
+	 * @param name the name of the PersistentProduct
+	 * @param price the price of the PersistentProduct
+	 * @param metric the {@link Metric} of the PersistentProduct
+	 */
 	public PersistentProduct(String name, Money price, Metric metric)
 	{
 		this.name = Objects.requireNonNull(name, "name must not be null");
@@ -81,13 +86,13 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	}
 
 	@Override
-	public final String getName()
+	public String getName()
 	{
 		return name;
 	}
 
 	@Override
-	public final Money getPrice()
+	public Money getPrice()
 	{
 		return price;
 	}
@@ -130,5 +135,16 @@ public class PersistentProduct implements Product, Comparable<PersistentProduct>
 	public final Metric getMetric()
 	{
 		return metric;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = Objects.requireNonNull(name, "name must not be null");
+		
+	}
+
+	@Override
+	public void setPrice(Money price) {
+		this.price = Objects.requireNonNull(price, "price must not be null");
 	}
 }

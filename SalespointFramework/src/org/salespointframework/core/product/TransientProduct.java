@@ -4,12 +4,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.discount.Discount;
-import org.salespointframework.core.product.discount.NoDiscount;
 import org.salespointframework.core.quantity.Metric;
-import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Iterables;
 
 /**
@@ -21,26 +17,24 @@ public class TransientProduct implements Product, Comparable<TransientProduct> {
 
 	private final ProductIdentifier productIdentifier = new ProductIdentifier();
 
-	private final String name;
-	private final Money price;
+	private String name;
+	private Money price;
 	private final Metric metric;
 
 	protected Set<String> categories = new HashSet<String>();
 	
-	private Discount discount = new NoDiscount();
-	
-	
+	/**
+	 * Creates a new TransientProduct
+	 * 
+	 * @param name the name of the TransientProduct
+	 * @param price the price of the TransientProduct
+	 * @param metric the {@link Metric} of the TransientProduct
+	 */
 	public TransientProduct(String name, Money price, Metric metric)
-	{
-		this(name, price, metric, new NoDiscount());
-	}
-	
-	public TransientProduct(String name, Money price, Metric metric, Discount discount)
 	{
 		this.name = Objects.requireNonNull(name, "name must not be null");
 		this.price = Objects.requireNonNull(price, "price must not be null");
 		this.metric = Objects.requireNonNull(metric, "metric must not be null");
-		this.discount = Objects.requireNonNull(discount, "discount must not be null");
 	}
 	
 	
@@ -50,19 +44,15 @@ public class TransientProduct implements Product, Comparable<TransientProduct> {
 	}
 
 	@Override
-	public final String getName() {
+	public String getName() {
 		return name;
 	}
 
 	@Override
-	public final Money getPrice() {
+	public Money getPrice() {
 		return price;
 	}
 	
-	public final Money getDiscountPrice() {
-		double factor = discount.getFactor();
-		return this.price.multiply(new Money(factor));	//hacky
-	}
 
 	@Override
 	public boolean addCategory(String category) {
@@ -82,6 +72,17 @@ public class TransientProduct implements Product, Comparable<TransientProduct> {
 	@Override
 	public Metric getMetric() {
 		return metric;
+	}
+	
+	@Override
+	public void setName(String name) {
+		this.name = Objects.requireNonNull(name, "name must not be null");
+		
+	}
+
+	@Override
+	public void setPrice(Money price) {
+		this.price = Objects.requireNonNull(price, "price must not be null");
 	}
 
 	@Override
