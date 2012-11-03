@@ -1,16 +1,16 @@
-package dvdshop.model;
+package videoshop.model;
 
 import javax.persistence.Entity;
 
 import org.salespointframework.core.money.Money;
 
 @Entity
-public class Dvd extends Disc {
+public class BluRay extends Disc {
 	
 	@Deprecated
-	protected Dvd() {}
+	public BluRay() {}
 	
-	public Dvd(String name, String image, Money price, String genre) {
+	public BluRay(String name, String image, Money price, String genre) {
 		super(name, image, price, genre);
 	}
 }

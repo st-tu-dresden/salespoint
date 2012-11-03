@@ -1,4 +1,4 @@
-package dvdshop.controller;
+package videoshop.controller;
 
 import java.util.Locale;
 
@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import dvdshop.model.Comment;
-import dvdshop.model.Disc;
-import dvdshop.model.VideoCatalog;
+import videoshop.model.Comment;
+import videoshop.model.Disc;
+import videoshop.model.VideoCatalog;
+
 
 
 @Controller

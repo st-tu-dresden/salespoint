@@ -1,4 +1,4 @@
-package dvdshop.controller;
+package videoshop.controller;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import dvdshop.model.Customer;
+import videoshop.model.Customer;
+
 
 @Controller
 public class CustomerController {

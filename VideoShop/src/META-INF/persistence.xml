@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 	<persistence-unit name="Videoshop" transaction-type="RESOURCE_LOCAL">
-		<jar-file>../lib/salespoint5.jar</jar-file>
-		<class>dvdshop.model.Dvd</class>
-		<class>dvdshop.model.Disc</class>
-		<class>dvdshop.model.Customer</class>
-		<class>dvdshop.model.Comment</class>
-		<class>dvdshop.model.BluRay</class>
+		<jar-file>../lib/salespoint5.1-r885.jar</jar-file>
+		<class>videoshop.model.Dvd</class>
+		<class>videoshop.model.BluRay</class>
+		<class>videoshop.model.Comment</class>
+		<class>videoshop.model.Customer</class>
+		<class>videoshop.model.Disc</class>
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:sqlite:C:\Users\Paul\MySQLiteDB"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:derby:C:\Users\Paul\MyDB;create=true"/>
 			<property name="javax.persistence.jdbc.user" value=""/>
-			<property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
+			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
-			<property name="javax.persistence.jdbc.password" value=""/>
 		</properties>
 	</persistence-unit>
 </persistence>

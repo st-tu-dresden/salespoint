@@ -37,5 +37,5 @@
 
 
 	<!-- scan this package for annotated controllers -->
-	<context:component-scan base-package="dvdshop" />
+	<context:component-scan base-package="videoshop" />
 </beans>

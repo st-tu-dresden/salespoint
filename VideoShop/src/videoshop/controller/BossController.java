@@ -1,4 +1,4 @@
-package dvdshop.controller;
+package videoshop.controller;
 
 import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.inventory.PersistentInventoryItem;
@@ -9,7 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import dvdshop.model.VideoCatalog;
+import videoshop.model.VideoCatalog;
+
 
 @Controller
 public class BossController {

@@ -1,4 +1,4 @@
-package dvdshop;
+package videoshop;
 
 import org.salespointframework.core.inventory.PersistentInventory;
 import org.salespointframework.core.inventory.PersistentInventoryItem;
@@ -11,11 +11,12 @@ import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.core.user.UserIdentifier;
 import org.springframework.stereotype.Component;
 
-import dvdshop.model.BluRay;
-import dvdshop.model.Customer;
-import dvdshop.model.Disc;
-import dvdshop.model.Dvd;
-import dvdshop.model.VideoCatalog;
+import videoshop.model.BluRay;
+import videoshop.model.Customer;
+import videoshop.model.Disc;
+import videoshop.model.Dvd;
+import videoshop.model.VideoCatalog;
+
 
 @Component
 public class Main {

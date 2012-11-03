@@ -1,4 +1,4 @@
-package dvdshop.model;
+package videoshop.model;
 
 import org.salespointframework.core.catalog.PersistentCatalog;
 import org.salespointframework.core.product.ProductIdentifier;

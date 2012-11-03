@@ -1,4 +1,4 @@
-package dvdshop.controller;
+package videoshop.controller;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import dvdshop.model.Customer;
-import dvdshop.model.Disc;
-import dvdshop.model.Dvd;
-import dvdshop.model.VideoCatalog;
+import videoshop.model.Customer;
+import videoshop.model.Disc;
+import videoshop.model.Dvd;
+import videoshop.model.VideoCatalog;
+
 
 @Controller
 public class BasketController {

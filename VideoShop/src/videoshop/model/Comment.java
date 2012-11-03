@@ -1,4 +1,4 @@
-package dvdshop.model;
+package videoshop.model;
 
 import java.util.Date;
 
