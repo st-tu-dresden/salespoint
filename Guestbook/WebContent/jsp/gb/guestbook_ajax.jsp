@@ -79,7 +79,7 @@
 			}
 			
 			function addEntry() {
-				$.getJSON("addEntry", { name:$('#name').val(), text:$('#text').val()} , function(e) {
+				$.post("addEntry", { name:$('#name').val(), text:$('#text').val()} , function(e) {
 					$("#text").val("");
 					
 					var entry = $("#entryTemplate").tmpl(e);
@@ -87,16 +87,16 @@
 					entry.hide();
 					entry.appendTo(".entries");
 					entry.slideDown(500);
-				});
+				},"json");
 				return false; 
 			}
 		
 			function removeEntry(id) {
-				$.getJSON("removeEntry", { id: id }, function(success) {
+				$.post("removeEntry", { id: id }, function(success) {
 					if(success) {
 						$('#entry'+id).slideUp(500, function() { $(this).remove(); });
 					}
-				});
+				}, "json");
 			}
 			
 			function getIdbyBtn(btn) {

@@ -27,7 +27,7 @@ public class AjaxGuestbookController {
 		return mav;
 	}
 
-	@RequestMapping(value="/addEntry", method=RequestMethod.GET)
+	@RequestMapping(value="/addEntry", method=RequestMethod.POST)
 	public @ResponseBody GuestbookEntry addEntry(
 			  @RequestParam("name") String name,
 	          @RequestParam("text") String text) 
@@ -36,7 +36,7 @@ public class AjaxGuestbookController {
 	}
 
 	
-	@RequestMapping(value="/removeEntry", method=RequestMethod.GET)
+	@RequestMapping(value="/removeEntry", method=RequestMethod.POST)
 	public @ResponseBody boolean removeEntry(@RequestParam("id") int id) {
 		return guestbook.removeEntry(id);
 	}
