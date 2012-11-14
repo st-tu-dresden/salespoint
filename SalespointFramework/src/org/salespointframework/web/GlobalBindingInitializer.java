@@ -2,6 +2,7 @@ package org.salespointframework.web;
 
 import org.salespointframework.core.accountancy.AccountancyEntryIdentifier;
 import org.salespointframework.core.calendar.CalendarEntryIdentifier;
+import org.salespointframework.core.inventory.InventoryItemIdentifier;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.ChargeLineIdentifier;
 import org.salespointframework.core.order.OrderIdentifier;
@@ -25,7 +26,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.support.WebBindingInitializer;
 import org.springframework.web.context.request.WebRequest;
 
-import sun.security.x509.SerialNumber;
 
 // http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/validation.html
 // http://www.shaunabram.com/data-binding-in-spring-mvc/
@@ -45,7 +45,7 @@ public class GlobalBindingInitializer implements WebBindingInitializer
 		binder.registerCustomEditor(CalendarEntryIdentifier.class, new CalendarEntryIdentifierEditor());
 		binder.registerCustomEditor(OrderIdentifier.class, new OrderIdentifierEditor());
 		binder.registerCustomEditor(OrderLineIdentifier.class, new OrderLineIdentifierEditor());
-		binder.registerCustomEditor(SerialNumber.class, new InventoryItemIdentifierEditor());
+		binder.registerCustomEditor(InventoryItemIdentifier.class, new InventoryItemIdentifierEditor());
 		binder.registerCustomEditor(ProductIdentifier.class, new ProductIdentifierEditor());
 		binder.registerCustomEditor(UserIdentifier.class, new UserIdentifierEditor());
 		binder.registerCustomEditor(Capability.class, new UserCapabilityEditor());
