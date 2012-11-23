@@ -12,13 +12,19 @@ import javax.xml.bind.DatatypeConverter;
 //http://docs.oracle.com/javase/1.5.0/docs/guide/security/CryptoSpec.html#AppA
 
 /**
- * Utility class
+ * Utility class for hashing and verifying passwords. 
  * 
  * @author Paul Henke
  *
  */
 public class Passwords {
 
+	/**
+	 * Salts and hashes the password.
+	 * SHA-256 is used to generate a hash. 
+	 * @param password a plaintext string
+	 * @return the hashed password
+	 */
 	public static String hash(String password) {
 		Objects.requireNonNull(password, "password must not be null");
 		SecureRandom sr = new SecureRandom();
@@ -61,6 +67,12 @@ public class Passwords {
 		
 	}
 	
+	/**
+	 * Verifies if a given password matches the hashed password.
+	 * @param password 
+	 * @param hashedPassword
+	 * @return true if password matches hashedPassword, false otherwise
+	 */
 	public static boolean verify(String password, String hashedPassword) 
 	{
 		Objects.requireNonNull(password, "password must not be null");
