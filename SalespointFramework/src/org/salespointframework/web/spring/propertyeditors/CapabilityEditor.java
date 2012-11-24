@@ -9,7 +9,7 @@ import org.salespointframework.core.user.Capability;
  * @author Paul Henke
  *
  */
-public class UserCapabilityEditor extends PropertyEditorSupport
+public class CapabilityEditor extends PropertyEditorSupport
 {
 	@Override
 	public void setAsText(String text)

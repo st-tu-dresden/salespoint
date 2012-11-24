@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.salespointframework.util.Iterables;
-import org.salespointframework.util.Utility;
+import org.salespointframework.util.Passwords;
 
 /**
  * 
@@ -25,7 +25,7 @@ public class TransientUser implements User, Comparable<TransientUser> {
 		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
 		
 		Objects.requireNonNull(password, "password must not be null");
-		this.hashedPassword = Utility.hashPassword(password);
+		this.hashedPassword = Passwords.hash(password);
 		
 		Objects.requireNonNull(capabilities, "capabilities must not be null");
 		this.capabilities.addAll(Arrays.asList(capabilities));
@@ -69,14 +69,14 @@ public class TransientUser implements User, Comparable<TransientUser> {
 	{
 		Objects.requireNonNull(password, "password must not be null");
 		
-		return Utility.verifyPassword(password, this.hashedPassword);
+		return Passwords.verify(password, this.hashedPassword);
 	}
 
 	@Override
 	public void changePassword(String password)
 	{
 		Objects.requireNonNull(password, "password");
-		this.hashedPassword = Utility.hashPassword(password);
+		this.hashedPassword = Passwords.hash(password);
 	}
 
 	@Override

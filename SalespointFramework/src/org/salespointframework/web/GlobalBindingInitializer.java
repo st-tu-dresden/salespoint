@@ -20,7 +20,7 @@ import org.salespointframework.web.spring.propertyeditors.OrderIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.OrderLineIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.ProductIdentifierEditor;
 import org.salespointframework.web.spring.propertyeditors.UnitsEditor;
-import org.salespointframework.web.spring.propertyeditors.UserCapabilityEditor;
+import org.salespointframework.web.spring.propertyeditors.CapabilityEditor;
 import org.salespointframework.web.spring.propertyeditors.UserIdentifierEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.support.WebBindingInitializer;
@@ -48,7 +48,7 @@ public class GlobalBindingInitializer implements WebBindingInitializer
 		binder.registerCustomEditor(InventoryItemIdentifier.class, new InventoryItemIdentifierEditor());
 		binder.registerCustomEditor(ProductIdentifier.class, new ProductIdentifierEditor());
 		binder.registerCustomEditor(UserIdentifier.class, new UserIdentifierEditor());
-		binder.registerCustomEditor(Capability.class, new UserCapabilityEditor());
+		binder.registerCustomEditor(Capability.class, new CapabilityEditor());
 		binder.registerCustomEditor(Money.class, new MoneyEditor());
 		binder.registerCustomEditor(Units.class, new UnitsEditor());
 	}

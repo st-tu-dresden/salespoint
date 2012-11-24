@@ -66,7 +66,6 @@ public class PersistentCatalog implements Catalog<PersistentProduct>
 	@Override
 	public final boolean remove(ProductIdentifier productIdentifier)
 	{
-		// TODO catch exception
 		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
 		EntityManager em = emf.createEntityManager();
 		Object product = em.find(PersistentProduct.class, productIdentifier);
