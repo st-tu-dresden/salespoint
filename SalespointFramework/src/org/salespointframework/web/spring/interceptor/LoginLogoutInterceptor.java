@@ -21,6 +21,7 @@ import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.core.user.UserManager;
 
+import org.salespointframework.web.WebLoginLogoutManager;
 import org.salespointframework.web.annotation.Login;
 import org.salespointframework.web.annotation.Logout;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+@Deprecated
 public class LoginLogoutInterceptor extends HandlerInterceptorAdapter {
 	private Logger log = Logger.getLogger(this.getClass().getName());
 
@@ -60,11 +62,16 @@ public class LoginLogoutInterceptor extends HandlerInterceptorAdapter {
 	
 	private boolean handleLogout(Logout login, HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod) 
 	{
+		/*
 		UserManager<?> usermanager = Shop.INSTANCE.getUserManager();
 		if(usermanager == null) {
 			throw new NullPointerException("Shop.INSTANCE.getUserManager() returned null");
 		}
 		usermanager.logout(request.getSession());
+		*/
+		
+		WebLoginLogoutManager.INSTANCE.logout(request.getSession());
+		
 		return true;
 	}
 

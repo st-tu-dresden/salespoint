@@ -3,13 +3,7 @@ package org.salespointframework.web.taglib;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-import org.salespointframework.core.shop.Shop;
-import org.salespointframework.core.user.PersistentUser;
-import org.salespointframework.core.user.PersistentUserManager;
-import org.salespointframework.core.user.TransientUser;
-import org.salespointframework.core.user.TransientUserManager;
-import org.salespointframework.core.user.User;
-import org.salespointframework.core.user.UserManager;
+import org.salespointframework.web.WebLoginLogoutManager;
 
 /**
  * 
@@ -35,7 +29,7 @@ public class LoggedInTag extends BodyTagSupport
 	@Override
 	public int doStartTag() throws JspException
 	{
-
+		/*
 		UserManager<?> usermanager = Shop.INSTANCE.getUserManager();
 		
 		if(usermanager == null) {
@@ -58,7 +52,18 @@ public class LoggedInTag extends BodyTagSupport
 			user = ((UserManager<User>)usermanager).getUserByToken(User.class, pageContext.getSession());
 		//	System.out.println("has cap unknown um");
 		}
+		
+		*/
+		
+		boolean loggedIn = WebLoginLogoutManager.INSTANCE.loggedIn(pageContext.getSession());
 
+		if(test) {
+			return loggedIn ? EVAL_BODY_INCLUDE : SKIP_BODY;
+		} else {
+			return loggedIn ? SKIP_BODY : EVAL_BODY_INCLUDE;
+		}
+		
+		/*
 		if (test)
 		{
 			return user == null ? SKIP_BODY : EVAL_BODY_INCLUDE;
@@ -66,6 +71,7 @@ public class LoggedInTag extends BodyTagSupport
 		{
 			return user == null ? EVAL_BODY_INCLUDE : SKIP_BODY;
 		}
+		*/
 	}
 
 }

@@ -6,7 +6,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.salespointframework.util.Iterables;
+import org.salespointframework.web.WebLoginLogoutManager;
 
 /**
  * 
@@ -16,7 +19,7 @@ import org.salespointframework.util.Iterables;
 public class TransientUserManager implements UserManager<TransientUser> {
 
 	private static final Map<UserIdentifier, TransientUser> userMap = new ConcurrentHashMap<>();
-	private static final Map<Object, TransientUser> userTokenMap = new ConcurrentHashMap<>();
+	//private static final Map<Object, TransientUser> userTokenMap = new ConcurrentHashMap<>();
 	
 	@Override
 	public void add(TransientUser user) 
@@ -28,6 +31,7 @@ public class TransientUserManager implements UserManager<TransientUser> {
 	public boolean remove(UserIdentifier userIdentifier) 
 	{
 		// If user is logged on, log him off.
+		/*
 		for (Map.Entry<Object, TransientUser> entry : userTokenMap.entrySet()) {
 			if (entry.getValue().getIdentifier().equals(userIdentifier)) {
 				Object token = entry.getKey();
@@ -35,6 +39,7 @@ public class TransientUserManager implements UserManager<TransientUser> {
 				break;
 			}
 		}
+		*/
 		return userMap.remove(userIdentifier) != null;
 	}
 
@@ -49,15 +54,21 @@ public class TransientUserManager implements UserManager<TransientUser> {
 	{
 		Objects.requireNonNull(user, "user must not be null");
 		Objects.requireNonNull(token, "token must not be null");
+		
+		// TODO
+		WebLoginLogoutManager.INSTANCE.login(user, (HttpSession) token);
 
-		userTokenMap.put(token, user);
+		//userTokenMap.put(token, user);
 	}
 
 	@Override
 	public void logout(Object token) 
 	{
 		Objects.requireNonNull(token, "token must not be null");
-		userTokenMap.remove(token);
+		
+		WebLoginLogoutManager.INSTANCE.logout((HttpSession) token);
+		
+		//userTokenMap.remove(token);
 	}
 
 	@Override
@@ -66,7 +77,7 @@ public class TransientUserManager implements UserManager<TransientUser> {
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(token, "token must not be null");
 
-		TransientUser user = userTokenMap.get(token);
+		User user = WebLoginLogoutManager.INSTANCE.getUser((HttpSession) token);
 		if(user == null)
 			return null;
 		return clazz.cast(user);
@@ -91,5 +102,4 @@ public class TransientUserManager implements UserManager<TransientUser> {
 		}
 		return Iterables.of(temp);
 	}
-
 }

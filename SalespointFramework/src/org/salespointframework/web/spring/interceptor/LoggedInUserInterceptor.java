@@ -11,6 +11,7 @@ import org.salespointframework.core.user.TransientUser;
 import org.salespointframework.core.user.TransientUserManager;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserManager;
+import org.salespointframework.web.WebLoginLogoutManager;
 import org.salespointframework.web.annotation.LoggedInUser;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,13 +33,7 @@ public class LoggedInUserInterceptor extends HandlerInterceptorAdapter {
 			
 			HttpSession session = request.getSession();
 
-			UserManager<?> usermanager = Shop.INSTANCE.getUserManager();
-
-			if (usermanager == null) {
-				throw new NullPointerException("Shop.INSTANCE.getUserManager() returned null");
-			}
-
-			User user = usermanager.getUserByToken(session);
+			User user = WebLoginLogoutManager.INSTANCE.getUser(session);
 			
 			modelAndView.addObject(name, clazz.cast(user));
 		}

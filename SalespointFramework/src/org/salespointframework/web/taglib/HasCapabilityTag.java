@@ -11,6 +11,7 @@ import org.salespointframework.core.user.TransientUserManager;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.Capability;
 import org.salespointframework.core.user.UserManager;
+import org.salespointframework.web.WebLoginLogoutManager;
 
 // TODO
 // mehrere Capabilities OR verknüpfen usw
@@ -48,6 +49,7 @@ public class HasCapabilityTag extends BodyTagSupport
 	@Override
 	public int doStartTag() throws JspException
 	{
+		/*
 		UserManager<?> usermanager = Shop.INSTANCE.getUserManager();
 		
 		if(usermanager == null) {
@@ -70,9 +72,11 @@ public class HasCapabilityTag extends BodyTagSupport
 			user = ((UserManager<User>)usermanager).getUserByToken(User.class, pageContext.getSession());
 		//	System.out.println("has cap unknown um");
 		}
+		*/
 		
 		Capability capability = new Capability(capabilityName);
 		
+		User user = WebLoginLogoutManager.INSTANCE.getUser(pageContext.getSession());
 			
 		if (user != null)
 		{

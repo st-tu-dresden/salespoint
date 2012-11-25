@@ -8,9 +8,12 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.servlet.http.HttpSession;
 
 import org.salespointframework.core.database.Database;
 import org.salespointframework.util.Iterables;
+import org.salespointframework.web.WebLoginLogoutManager;
+
 import java.util.Objects;
 
 /**
@@ -40,7 +43,9 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 	{
 		Objects.requireNonNull(userIdentifier, "userIdentifer must not be null");
 
+		// TODO remove
 		// If user is logged on, log him off.
+		/*
 		for (Map.Entry<Object, User> entry : userTokenMap.entrySet()) {
 			if (entry.getValue().getIdentifier().equals(userIdentifier)) {
 				Object token = entry.getKey();
@@ -48,6 +53,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 				break;
 			}
 		}
+		*/
 
 		EntityManager em = emf.createEntityManager();
 		Object user = em.find(PersistentUser.class, userIdentifier);
@@ -113,39 +119,52 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 	
 	// TODO use WeakHashMap http://docs.oracle.com/javase/6/docs/api/java/util/WeakHashMap.html
 	// verhindert dass tote Session für immer und ewig in der Map bleiben, normalerweise egal, außer bei "real world" anwendungen die nicht nur 30min laufen 
-	private static final Map<Object, User> userTokenMap = new ConcurrentHashMap<>();
+	//private static final Map<Object, User> userTokenMap = new ConcurrentHashMap<>();
 
+	
+	// TODO Methode ganz entfernen
 	@Override
 	public final void login(PersistentUser user, Object token)
 	{
 		Objects.requireNonNull(user, "user must not be null");
 		Objects.requireNonNull(token, "token must not be null");
 
+		
+		WebLoginLogoutManager.INSTANCE.login(user, (HttpSession) token);
+		
 		// TODO cache bug >_<
 		//PersistentUser temp = this.get(PersistentUser.class, user.getIdentifier());
 
-		userTokenMap.put(token, user);
+		//userTokenMap.put(token, user);
 	}
 
+	// TODO Methode ganz entfernen
 	@Override
 	public final void logout(Object token)
 	{
 		Objects.requireNonNull(token, "token must not be null");
+		
+		WebLoginLogoutManager.INSTANCE.logout((HttpSession) token);
 
-		userTokenMap.remove(token);
+		//userTokenMap.remove(token);
 	}
 
+	// TODO Methode ganz entfernen
 	@Override
 	public final <T extends PersistentUser> T getUserByToken(Class<T> clazz, Object token)
 	{
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(token, "token must not be null");
 
-		User user = userTokenMap.get(token);
+		
+		//User user = userTokenMap.get(token);
+		User user = WebLoginLogoutManager.INSTANCE.getUser((HttpSession)token);				
+		
 		if(user == null)
 		{
 			return null;
 		}
+		
 		
 		// FIXME user cache bug
 		//EntityManager em = emf.createEntityManager();

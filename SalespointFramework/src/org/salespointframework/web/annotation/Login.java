@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 public @interface Login {
 	String userIdentifier();
 	String password();
-	String success();
-	String failure();
+	String redirect();
+	String errorMessage();
 }
 
