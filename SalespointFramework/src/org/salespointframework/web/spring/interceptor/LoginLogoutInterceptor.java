@@ -1,8 +1,9 @@
-package org.salespointframework.web.interceptor;
+package org.salespointframework.web.spring.interceptor;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -22,12 +23,20 @@ import org.salespointframework.core.user.UserManager;
 
 import org.salespointframework.web.annotation.Login;
 import org.salespointframework.web.annotation.Logout;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 public class LoginLogoutInterceptor extends HandlerInterceptorAdapter {
 	private Logger log = Logger.getLogger(this.getClass().getName());
 
+	@Autowired
+	private MessageSource messageSource;
+	
+	@Autowired
+	private Locale locale;
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
@@ -51,22 +60,30 @@ public class LoginLogoutInterceptor extends HandlerInterceptorAdapter {
 	
 	private boolean handleLogout(Logout login, HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod) 
 	{
-		Shop.INSTANCE.getUserManager().logout(request.getSession());
+		UserManager<?> usermanager = Shop.INSTANCE.getUserManager();
+		if(usermanager == null) {
+			throw new NullPointerException("Shop.INSTANCE.getUserManager() returned null");
+		}
+		usermanager.logout(request.getSession());
 		return true;
 	}
 
-	private boolean handleLogin(Login login, HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod) {
+	@SuppressWarnings("unchecked")
+	private boolean handleLogin(Login login, HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod) throws IOException {
+		
 		
 		final UserIdentifier userIdentifier = new UserIdentifier(login.userIdentifier());
 		final String password = login.password();
-		final String success = login.success();
-		final String failure = login.failure();
+		final String redirect = login.redirect();
+		final String errorMessage = login.errorMessage();
 		
 		User user = null;
 
-		// TODO nullcheck
-		UserManager<?> usermanager = Shop.INSTANCE.getUserManager();
+		final UserManager<?> usermanager = Shop.INSTANCE.getUserManager();
 		
+		if(usermanager == null) {
+			throw new NullPointerException("Shop.INSTANCE.getUserManager() returned null");
+		}
 	
 		
 		if (usermanager instanceof TransientUserManager) {
@@ -81,15 +98,15 @@ public class LoginLogoutInterceptor extends HandlerInterceptorAdapter {
 			user = ((UserManager<User>) usermanager).get(User.class, userIdentifier );
 		}
 		
+		boolean hasError = false;
+		
 		if(user == null) {
-			//TODO failure
+			hasError = true;
 		} else {
 			if(user.verifyPassword(password)) {
 				HttpSession session = request.getSession();
 				if (usermanager instanceof TransientUserManager) {
 					((TransientUserManager) usermanager).login((TransientUser)user, session);
-					//response.sendRedirect(arg0)
-					return true;
 				}
 
 				if (usermanager instanceof PersistentUserManager) {
@@ -99,9 +116,21 @@ public class LoginLogoutInterceptor extends HandlerInterceptorAdapter {
 				if (!(usermanager instanceof TransientUserManager || usermanager instanceof PersistentUserManager)) {
 					((UserManager<User>)usermanager).login(user, session);
 				}
+				
+				response.sendRedirect(redirect);
+				return true;				
+				
+			} else {
+				hasError = true;
 			}
 		}
 		
-		return false;
+		if(hasError) {
+			String msg = messageSource.getMessage(errorMessage, null, errorMessage , locale);
+		//	request.get
+			
+		}
+		
+		return true;
 	}
 }

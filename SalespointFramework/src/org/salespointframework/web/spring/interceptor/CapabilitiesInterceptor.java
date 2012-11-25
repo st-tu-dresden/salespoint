@@ -1,4 +1,4 @@
-package org.salespointframework.web.interceptor;
+package org.salespointframework.web.spring.interceptor;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -18,6 +18,7 @@ import org.salespointframework.core.user.TransientUser;
 import org.salespointframework.core.user.TransientUserManager;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserManager;
+import org.salespointframework.web.WebLoginLogoutManager;
 import org.salespointframework.web.annotation.Capabilities;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -33,11 +34,12 @@ public class CapabilitiesInterceptor extends HandlerInterceptorAdapter {
 
 		if (handler instanceof HandlerMethod) {
 
-			HandlerMethod handlerMethod = (HandlerMethod) handler;
-			Capabilities capabilitiesOnMethod = handlerMethod.getMethodAnnotation(Capabilities.class);
-			Capabilities capabilitiesOnClass = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(),Capabilities.class);
+			final HandlerMethod handlerMethod = (HandlerMethod) handler;
+			final Capabilities capabilitiesOnMethod = handlerMethod.getMethodAnnotation(Capabilities.class);
+			final Capabilities capabilitiesOnClass = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(),Capabilities.class);
+			//final String redirect = !capabilitiesOnMethod.redirect().equals("") ? capabilitiesOnMethod.redirect() : capabilitiesOnClass.redirect();
 
-			Set<String> capSet = new HashSet<String>();
+			final Set<String> capSet = new HashSet<String>();
 			if (capabilitiesOnMethod != null) {
 				capSet.addAll(Arrays.asList(capabilitiesOnMethod.value()));
 			}
@@ -48,28 +50,20 @@ public class CapabilitiesInterceptor extends HandlerInterceptorAdapter {
 			if (capSet.size() == 0) {
 				return true;
 			}
+			
+			User user = WebLoginLogoutManager.INSTANCE.getUser(request.getSession());
 
-			UserManager<?> usermanager = Shop.INSTANCE.getUserManager();
+			/*
+			final UserManager<?> usermanager = Shop.INSTANCE.getUserManager();
 
 			if (usermanager == null) {
-				throw new NullPointerException(
-						"Shop.INSTANCE.getUserManager() returned null");
+				throw new NullPointerException("Shop.INSTANCE.getUserManager() returned null");
 			}
 
-			User user = null;
-			HttpSession session = request.getSession();
-
-			if (usermanager instanceof TransientUserManager) {
-				user = ((TransientUserManager) usermanager).getUserByToken(TransientUser.class, session);
-			}
-
-			if (usermanager instanceof PersistentUserManager) {
-				user = ((PersistentUserManager) usermanager).getUserByToken(PersistentUser.class, session);
-			}
-
-			if (!(usermanager instanceof TransientUserManager || usermanager instanceof PersistentUserManager)) {
-				user = ((UserManager<User>) usermanager).getUserByToken(User.class, session);
-			}
+			final HttpSession session = request.getSession();
+			
+			final User user = usermanager.getUserByToken(session);
+			*/
 
 			boolean hasCapability = false;
 
@@ -85,14 +79,14 @@ public class CapabilitiesInterceptor extends HandlerInterceptorAdapter {
 
 			if (!hasCapability) {
 				if(capabilitiesOnMethod != null) {
-					if(!capabilitiesOnMethod.viewName().equals("")) {
-						response.sendRedirect(capabilitiesOnMethod.viewName());
+					if(!capabilitiesOnMethod.redirect().equals("")) {
+						response.sendRedirect(capabilitiesOnMethod.redirect());
 						return true;
 					}
 				}
 				if(capabilitiesOnClass != null) {
-					if(!capabilitiesOnClass.viewName().equals("")) {
-						response.sendRedirect(capabilitiesOnClass.viewName());
+					if(!capabilitiesOnClass.redirect().equals("")) {
+						response.sendRedirect(capabilitiesOnClass.redirect());
 						return true;
 					}
 				}
