@@ -17,6 +17,11 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+/**
+ * 
+ * @author Paul Henke
+ *
+ */
 public class LoggedInUserInterceptor extends HandlerInterceptorAdapter {
 
 	@Override

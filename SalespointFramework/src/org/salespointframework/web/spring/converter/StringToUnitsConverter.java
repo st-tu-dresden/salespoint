@@ -1,28 +1,26 @@
-package org.salespointframework.web.spring.propertyeditors;
-
-import java.beans.PropertyEditorSupport;
+package org.salespointframework.web.spring.converter;
 
 import org.salespointframework.core.quantity.Units;
+import org.springframework.core.convert.converter.Converter;
 
 /**
  * 
  * @author Paul Henke
- * 
+ *
  */
-@Deprecated
-public class UnitsEditor extends PropertyEditorSupport
-{
+public class StringToUnitsConverter implements Converter<String, Units> {
+
 	@Override
-	public void setAsText(String text)
-	{
+	public Units convert(String text) {
 		// JAva fails hard ... again
 		try {
 			long l = Long.parseLong(text);
 			Units units = Units.of(l);
-			setValue(units);
+			return units;
 			
 		} catch (NumberFormatException e) {
-			setValue(null);
+			throw e;
 		}
 	}
+
 }

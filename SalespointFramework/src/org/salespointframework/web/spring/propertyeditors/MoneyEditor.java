@@ -10,6 +10,7 @@ import org.salespointframework.core.money.Money;
  * @author Paul Henke
  *
  */
+@Deprecated
 public class MoneyEditor extends PropertyEditorSupport
 {
 	@Override

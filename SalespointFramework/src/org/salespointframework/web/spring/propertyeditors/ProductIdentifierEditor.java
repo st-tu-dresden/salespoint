@@ -9,6 +9,7 @@ import org.salespointframework.core.product.ProductIdentifier;
  * @author Paul Henke
  * 
  */
+@Deprecated
 public class ProductIdentifierEditor extends PropertyEditorSupport
 {
 	@Override

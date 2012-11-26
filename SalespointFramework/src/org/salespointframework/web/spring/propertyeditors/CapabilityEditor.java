@@ -9,6 +9,7 @@ import org.salespointframework.core.user.Capability;
  * @author Paul Henke
  *
  */
+@Deprecated
 public class CapabilityEditor extends PropertyEditorSupport
 {
 	@Override

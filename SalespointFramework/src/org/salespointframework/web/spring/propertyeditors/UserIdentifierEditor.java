@@ -9,6 +9,7 @@ import org.salespointframework.core.user.UserIdentifier;
  * @author Paul Henke
  * 
  */
+@Deprecated
 public class UserIdentifierEditor extends PropertyEditorSupport
 {
 	@Override

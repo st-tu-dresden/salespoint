@@ -9,6 +9,7 @@ import org.salespointframework.core.accountancy.AccountancyEntryIdentifier;
  * @author Paul Henke
  * 
  */
+@Deprecated
 public class AccountancyEntryIdentifierEditor extends PropertyEditorSupport
 {
 	@Override

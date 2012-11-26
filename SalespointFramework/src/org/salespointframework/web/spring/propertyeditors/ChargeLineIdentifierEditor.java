@@ -9,6 +9,7 @@ import org.salespointframework.core.order.ChargeLineIdentifier;
  * @author Paul Henke
  * 
  */
+@Deprecated
 public class ChargeLineIdentifierEditor extends PropertyEditorSupport
 {
 	@Override

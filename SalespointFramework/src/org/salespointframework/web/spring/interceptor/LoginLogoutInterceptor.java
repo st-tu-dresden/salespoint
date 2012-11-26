@@ -29,7 +29,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-@Deprecated
+/**
+ * 
+ * @author Paul Henke
+ *
+ */
 public class LoginLogoutInterceptor extends HandlerInterceptorAdapter {
 	private Logger log = Logger.getLogger(this.getClass().getName());
 

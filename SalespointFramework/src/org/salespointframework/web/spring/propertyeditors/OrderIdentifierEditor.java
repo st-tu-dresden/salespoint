@@ -9,6 +9,7 @@ import org.salespointframework.core.order.OrderIdentifier;
  * @author Paul Henke
  * 
  */
+@Deprecated
 public class OrderIdentifierEditor extends PropertyEditorSupport
 {
 	@Override

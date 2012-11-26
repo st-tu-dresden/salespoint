@@ -24,6 +24,11 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+/**
+ * 
+ * @author Paul Henke
+ *
+ */
 public class CapabilitiesInterceptor extends HandlerInterceptorAdapter {
 
 	private Logger log = Logger.getLogger(this.getClass().getName());

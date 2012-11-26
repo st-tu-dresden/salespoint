@@ -9,6 +9,7 @@ import org.salespointframework.core.calendar.CalendarEntryIdentifier;
  * @author Paul Henke
  * 
  */
+@Deprecated
 public class CalendarEntryIdentifierEditor extends PropertyEditorSupport
 {
 	@Override

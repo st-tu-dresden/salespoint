@@ -9,6 +9,7 @@ import org.salespointframework.core.inventory.InventoryItemIdentifier;
  * @author Paul Henke
  * 
  */
+@Deprecated
 public class InventoryItemIdentifierEditor extends PropertyEditorSupport
 {
 	@Override

@@ -1,7 +1,11 @@
 package org.salespointframework.core.user;
 
-
-// TODO Naming
+/**
+ * 
+ * @author Paul Henke
+ *
+ */
+//TODO Naming
 public interface LoginLogoutManager<T> {
 	
 	// TODO welche login Methode?

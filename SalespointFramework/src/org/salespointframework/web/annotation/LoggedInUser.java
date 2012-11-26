@@ -7,6 +7,11 @@ import java.lang.annotation.Target;
 
 import org.salespointframework.core.user.User;
 
+/**
+ * 
+ * @author Paul Henke
+ *
+ */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LoggedInUser {

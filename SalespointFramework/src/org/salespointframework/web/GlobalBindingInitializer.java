@@ -35,6 +35,7 @@ import org.springframework.web.context.request.WebRequest;
  * @author Paul Henke
  * 
  */
+@Deprecated
 public class GlobalBindingInitializer implements WebBindingInitializer
 {
 	@Override
