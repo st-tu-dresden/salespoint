@@ -25,53 +25,16 @@ public class LoggedInTag extends BodyTagSupport
 		this.test = test;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public int doStartTag() throws JspException
 	{
-		/*
-		UserManager<?> usermanager = Shop.INSTANCE.getUserManager();
-		
-		if(usermanager == null) {
-			throw new NullPointerException("Shop.INSTANCE.getUserManager() returned null");
-		}
-		
-		User user = null;
-		
-		if(usermanager instanceof TransientUserManager) {
-			user = ((TransientUserManager)usermanager).getUserByToken(TransientUser.class, pageContext.getSession());
-			//System.out.println("has cap transient");
-		}
-		
-		if(usermanager instanceof PersistentUserManager) {
-			user = ((PersistentUserManager)usermanager).getUserByToken(PersistentUser.class, pageContext.getSession());
-		//	System.out.println("has cap persistent");
-		}
-		
-		if(!(usermanager instanceof TransientUserManager || usermanager instanceof PersistentUserManager)) {
-			user = ((UserManager<User>)usermanager).getUserByToken(User.class, pageContext.getSession());
-		//	System.out.println("has cap unknown um");
-		}
-		
-		*/
-		
-		boolean loggedIn = WebLoginLogoutManager.INSTANCE.loggedIn(pageContext.getSession());
+		final boolean loggedIn = WebLoginLogoutManager.INSTANCE.loggedIn(pageContext.getSession());
 
 		if(test) {
 			return loggedIn ? EVAL_BODY_INCLUDE : SKIP_BODY;
 		} else {
 			return loggedIn ? SKIP_BODY : EVAL_BODY_INCLUDE;
 		}
-		
-		/*
-		if (test)
-		{
-			return user == null ? SKIP_BODY : EVAL_BODY_INCLUDE;
-		} else
-		{
-			return user == null ? EVAL_BODY_INCLUDE : SKIP_BODY;
-		}
-		*/
 	}
 
 }

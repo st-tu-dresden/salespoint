@@ -94,7 +94,7 @@ public class StringToIdentifierConverterFactory implements ConverterFactory<Stri
 	private class StringToUserIdentifier implements Converter<String, UserIdentifier > {
 		@Override
 		public UserIdentifier  convert(String identifier) {
-			return new UserIdentifier (identifier);
+			return new UserIdentifier(identifier);
 		}
 	}
 }

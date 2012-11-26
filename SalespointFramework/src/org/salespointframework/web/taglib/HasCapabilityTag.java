@@ -43,44 +43,24 @@ public class HasCapabilityTag extends BodyTagSupport
 		this.test = test;
 	}
 
-
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public int doStartTag() throws JspException
 	{
-		/*
-		UserManager<?> usermanager = Shop.INSTANCE.getUserManager();
-		
-		if(usermanager == null) {
-			throw new NullPointerException("Shop.INSTANCE.getUserManager() returned null");
-		}
-		
-		User user = null;
-		
-		if(usermanager instanceof TransientUserManager) {
-			user = ((TransientUserManager)usermanager).getUserByToken(TransientUser.class, pageContext.getSession());
-			//System.out.println("has cap transient");
-		}
-		
-		if(usermanager instanceof PersistentUserManager) {
-			user = ((PersistentUserManager)usermanager).getUserByToken(PersistentUser.class, pageContext.getSession());
-		//	System.out.println("has cap persistent");
-		}
-		
-		if(!(usermanager instanceof TransientUserManager || usermanager instanceof PersistentUserManager)) {
-			user = ((UserManager<User>)usermanager).getUserByToken(User.class, pageContext.getSession());
-		//	System.out.println("has cap unknown um");
-		}
-		*/
-		
-		Capability capability = new Capability(capabilityName);
-		
+		String[] capList = capabilityName.split(";");
+
 		User user = WebLoginLogoutManager.INSTANCE.getUser(pageContext.getSession());
 			
 		if (user != null)
 		{
-			boolean hasCapability = user.hasCapability(capability);
+			boolean hasCapability = false;
+			
+			for(String capString : capList) {
+				if(user.hasCapability(new Capability(capString))) {
+					hasCapability = true;
+					break;
+				}
+			}
 			
 			if(hasCapability && test) {
 				return EVAL_BODY_INCLUDE;

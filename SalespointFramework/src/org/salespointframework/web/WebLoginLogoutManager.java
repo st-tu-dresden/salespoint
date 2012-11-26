@@ -44,8 +44,7 @@ public enum WebLoginLogoutManager implements LoginLogoutManager<HttpSession> {
 	@Override
 	public void logout(HttpSession session) {
 		Objects.requireNonNull(session, "session must not be null");
-		session.removeAttribute(attributeName);
-		session.invalidate(); // TODO nötig?
+		session.invalidate();
 		
 	}
 

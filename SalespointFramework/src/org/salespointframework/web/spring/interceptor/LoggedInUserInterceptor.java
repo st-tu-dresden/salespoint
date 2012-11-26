@@ -4,13 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.salespointframework.core.shop.Shop;
-import org.salespointframework.core.user.PersistentUser;
-import org.salespointframework.core.user.PersistentUserManager;
-import org.salespointframework.core.user.TransientUser;
-import org.salespointframework.core.user.TransientUserManager;
 import org.salespointframework.core.user.User;
-import org.salespointframework.core.user.UserManager;
 import org.salespointframework.web.WebLoginLogoutManager;
 import org.salespointframework.web.annotation.LoggedInUser;
 import org.springframework.web.method.HandlerMethod;
@@ -29,16 +23,16 @@ public class LoggedInUserInterceptor extends HandlerInterceptorAdapter {
 
 		if (handler instanceof HandlerMethod) {
 			
-			HandlerMethod handlerMethod = (HandlerMethod) handler;
+			final HandlerMethod handlerMethod = (HandlerMethod) handler;
 			
-			LoggedInUser loggedInUser = handlerMethod.getMethodAnnotation(LoggedInUser.class);
+			final LoggedInUser loggedInUser = handlerMethod.getMethodAnnotation(LoggedInUser.class);
 			
 			final Class<? extends User> clazz = loggedInUser.value();
 			final String name = loggedInUser.name();
 			
-			HttpSession session = request.getSession();
+			final HttpSession session = request.getSession();
 
-			User user = WebLoginLogoutManager.INSTANCE.getUser(session);
+			final User user = WebLoginLogoutManager.INSTANCE.getUser(session);
 			
 			modelAndView.addObject(name, clazz.cast(user));
 		}
