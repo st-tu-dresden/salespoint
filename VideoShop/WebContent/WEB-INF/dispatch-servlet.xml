@@ -18,20 +18,45 @@
 	<!-- messages for i18n -->
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" p:basename="messages" />
 
+<!--  
+	 <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<bean class="org.salespointframework.web.CapabilitiesInterceptor" />
+			</list>
+		</property>
+	</bean>
+ -->
+
 	<!-- standard viewresolver -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/jsp/" p:suffix=".jsp" />
 
-	<!-- it's a kind of magic -->
+	<!-- it's a kind of magic  -->
 	<mvc:annotation-driven />
-
+ 
+	<mvc:interceptors>
+		<bean class="org.salespointframework.web.spring.interceptor.CapabilitiesInterceptor" />
+	</mvc:interceptors>
+	
 	<!-- for static resources like images and css files --> 
 	<mvc:resources mapping="/res/**" location="/resources/" />
 
-	<!-- for Salespoint5 PropertyEditors  -->
-
+	<!-- for Salespoint5 PropertyEditors 
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="webBindingInitializer">
 			<bean class="org.salespointframework.web.GlobalBindingInitializer" />
+		</property>
+	</bean>
+	 -->
+	
+	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean"> 
+	    <property name="converters">
+    	    <list>
+				<bean class="org.salespointframework.web.spring.converter.StringToIdentifierConverterFactory" />
+				<bean class="org.salespointframework.web.spring.converter.StringToUnitsConverter" />
+				<bean class="org.salespointframework.web.spring.converter.StringToMoneyConverter" />
+				<bean class="org.salespointframework.web.spring.converter.StringToCapabilityConverter" />
+			</list>
 		</property>
 	</bean>
 

@@ -32,6 +32,25 @@
 				<jsp:include page="templates/login.jsp" />
 				<p><a href="<c:url value="/register" />"><spring:message code="register.new" /></a></p>
 			</sp:loggedIn>
+			
+			<form action="money" method="post">
+				<label>money</label>
+				<input name="xyz" value="10" />
+				<button type="submit">go</button>
+			</form>
+			
+			<form action="capability" method="post">
+				<label>cap</label>
+				<input name="xyz" value="10" />
+				<button type="submit">go</button>
+			</form>
+			
+			<form action="units" method="post">
+				<label>units</label>
+				<input name="xyz" value="10" />
+				<button type="submit">go</button>
+			</form>
+			
 		</div>
 	</div>
 </body>
