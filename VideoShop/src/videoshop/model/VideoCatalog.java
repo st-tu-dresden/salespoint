@@ -3,17 +3,31 @@ package videoshop.model;
 import org.salespointframework.core.catalog.PersistentCatalog;
 import org.salespointframework.core.product.ProductIdentifier;
 
-public class VideoCatalog extends PersistentCatalog {
+public class VideoCatalog {
+	
+	private PersistentCatalog catalog = new PersistentCatalog();
+	
+	public void add(Disc disc) {
+		catalog.add(disc);
+	}
 	
 	public Disc getDisc(ProductIdentifier productIdentifier) {
-		return super.get(Disc.class, productIdentifier);
+		return catalog.get(Disc.class, productIdentifier);
+	}
+	
+	public Iterable<Disc> findAll() {
+		return catalog.find(Disc.class);
 	}
 	
 	public Iterable<Dvd> findDvds() {
-		return super.find(Dvd.class);
+		return catalog.find(Dvd.class);
 	}
 	
 	public Iterable<BluRay> findBluRays() {
-		return super.find(BluRay.class);
+		return catalog.find(BluRay.class);
+	}
+	
+	public void update(Disc disc) {
+		catalog.update(disc);
 	}
 }

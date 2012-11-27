@@ -35,10 +35,17 @@ public class Main {
 		PersistentUser boss = new PersistentUser(bossUI, "123");
 		boss.addCapability(new Capability("boss"));
 		
+		Capability customerCapability = new Capability("customer");
+		
 		Customer customer1 = new Customer(new UserIdentifier("hans"), "wurst", "");
 		Customer customer2 = new Customer(new UserIdentifier("dexter"), "morgan", "Miami-Dade County");
 		Customer customer3 = new Customer(new UserIdentifier("earl"), "hickey", "Camden County - Motel");
 		Customer customer4 = new Customer(new UserIdentifier("mclovin"), "fogell", "Los Angeles");
+		
+		customer1.addCapability(customerCapability);
+		customer2.addCapability(customerCapability);
+		customer3.addCapability(customerCapability);
+		customer4.addCapability(customerCapability);
 		
 		userManager.add(boss);
 		userManager.add(customer1);
@@ -69,7 +76,7 @@ public class Main {
 		
 		PersistentInventory inventory = new PersistentInventory();
 		
-		for(Disc disc : videoCatalog.find(Disc.class)) {
+		for(Disc disc : videoCatalog.findAll()) {
 			PersistentInventoryItem inventoryItem = new PersistentInventoryItem(disc, Units.TEN);
 			inventory.add(inventoryItem);
 		}

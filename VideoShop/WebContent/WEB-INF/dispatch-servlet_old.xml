@@ -18,36 +18,23 @@
 	<!-- messages for i18n -->
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" p:basename="messages" />
 
-<!--  
-	 <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-		<property name="interceptors">
-			<list>
-				<bean class="org.salespointframework.web.CapabilitiesInterceptor" />
-			</list>
-		</property>
-	</bean>
- -->
-
 	<!-- standard viewresolver -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/jsp/" p:suffix=".jsp" />
 
 	<!-- it's a kind of magic  -->
-	<mvc:annotation-driven />
- 
-	<mvc:interceptors>
-		<bean class="org.salespointframework.web.spring.interceptor.CapabilitiesInterceptor" />
-	</mvc:interceptors>
+	<mvc:annotation-driven>
+		<mvc:argument-resolvers>
+			<bean class="org.salespointframework.web.spring.LoggedInUserArgumentResolver" />
+		</mvc:argument-resolvers>
+	</mvc:annotation-driven>
 	
 	<!-- for static resources like images and css files --> 
 	<mvc:resources mapping="/res/**" location="/resources/" />
-
-	<!-- for Salespoint5 PropertyEditors 
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-		<property name="webBindingInitializer">
-			<bean class="org.salespointframework.web.GlobalBindingInitializer" />
-		</property>
-	</bean>
-	 -->
+ 
+	<mvc:interceptors>
+		<bean class="org.salespointframework.web.spring.interceptor.CapabilitiesInterceptor" />
+		<bean class="org.salespointframework.web.spring.interceptor.LoggedInUserInterceptor" />
+	</mvc:interceptors>
 	
 	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean"> 
 	    <property name="converters">
@@ -59,7 +46,6 @@
 			</list>
 		</property>
 	</bean>
-
 
 	<!-- scan this package for annotated controllers -->
 	<context:component-scan base-package="videoshop" />

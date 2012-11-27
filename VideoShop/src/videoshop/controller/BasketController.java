@@ -11,10 +11,13 @@ import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.util.Iterables;
+import org.salespointframework.web.annotation.Capabilities;
+import org.salespointframework.web.annotation.LoggedInUser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import videoshop.model.Customer;
 import videoshop.model.Disc;
@@ -23,15 +26,20 @@ import videoshop.model.VideoCatalog;
 
 
 @Controller
+@Capabilities("customer")
 public class BasketController {
 	
-	private final PersistentUserManager userManager = new PersistentUserManager();
-	private final PersistentOrderManager orderManager = new PersistentOrderManager();
-	private final VideoCatalog videoCatalog = new VideoCatalog();
+	@Autowired
+	private PersistentUserManager userManager;
+	@Autowired
+	private PersistentOrderManager orderManager;
+	@Autowired
+	private VideoCatalog videoCatalog;
 	
 	@RequestMapping("/addDisc")
-	public ModelAndView addDisc(HttpSession session, ModelAndView mav, @RequestParam("pid") ProductIdentifier pid, @RequestParam("number") int number) {
-		Customer customer = userManager.getUserByToken(Customer.class, session);
+	public String addDisc(@LoggedInUser Customer customer, HttpSession session, ModelMap modelMap, @RequestParam("pid") ProductIdentifier pid, @RequestParam("number") int number) 
+	{
+		//Customer customer = (Customer)WebLoginLogoutManager.INSTANCE.getUser(session);
 		
 		if(number <= 0 || number > 5) number = 1;
 		
@@ -43,44 +51,42 @@ public class BasketController {
 			session.setAttribute("order", order);
 		}
 
-		Disc disc = videoCatalog.get(Disc.class, pid);
+		Disc disc = videoCatalog.getDisc(pid);
 		
 		Quantity quantity = Units.of(number);
 
 		PersistentOrderLine orderLine = new PersistentOrderLine(disc, quantity);
-
 
 		order.addOrderLine(orderLine);
 		
 		orderManager.update(order);
 		
 		if(disc instanceof Dvd) {
-			mav.setViewName("redirect:dvdCatalog");
+			return "redirect:dvdCatalog";
 		} else {
-			mav.setViewName("redirect:blurayCatalog");
+			return "redirect:blurayCatalog";
 		}
-		return mav;
 	}
 
 	@RequestMapping("/shoppingBasket")
-	public ModelAndView basket(HttpSession session, ModelAndView mav) {
+	public String basket(HttpSession session, ModelMap modelMap) 
+	{
 		boolean isEmpty = true;
 		PersistentOrder order = (PersistentOrder) session.getAttribute("order");
 
 		if (order != null) {
-			mav.addObject("order", order);
+			modelMap.addAttribute("order", order);
 			isEmpty = Iterables.isEmpty(order.getOrderLines());
 		}
 
-		mav.addObject("isEmpty", isEmpty);
+		modelMap.addAttribute("isEmpty", isEmpty);
 		
-		mav.setViewName("basket");
-		return mav;
+		return "basket";
 	}
 
 	@RequestMapping("/buy")
-	public String buy(HttpSession session) {
-
+	public String buy(HttpSession session) 
+	{
 		PersistentOrder order = (PersistentOrder) session.getAttribute("order");
 
 		if (order != null) {

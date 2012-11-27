@@ -22,6 +22,7 @@
 		</header>
 		
 		<div class="content">
+			<p>Hallo ${user.identifier}</p>
 			<p><spring:message code="home.welcome" /></p>
 			
 			<sp:loggedIn>

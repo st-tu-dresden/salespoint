@@ -17,6 +17,8 @@
 	<sp:hasCapability capabilityName="boss" test="false">
 		<a href="<c:url value="/dvdCatalog" />"><spring:message code="nav.dvdCatalog" /></a> | 
 		<a href="<c:url value="/blurayCatalog" />"><spring:message code="nav.bluerayCatalog" /></a> | 
-		<a href="<c:url value="/shoppingBasket" />"><spring:message code="nav.shoppingBasket" /></a>
+		<sp:hasCapability capabilityName="customer">
+			<a href="<c:url value="/shoppingBasket" />"><spring:message code="nav.shoppingBasket" /></a>
+		</sp:hasCapability>
 	</sp:hasCapability>
 </nav>

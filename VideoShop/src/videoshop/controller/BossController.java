@@ -5,33 +5,39 @@ import org.salespointframework.core.inventory.PersistentInventoryItem;
 import org.salespointframework.core.order.OrderStatus;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderManager;
+import org.salespointframework.web.annotation.Capabilities;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import videoshop.model.VideoCatalog;
 
 
 @Controller
+@Capabilities("boss")
 public class BossController {
 	
-	private final PersistentOrderManager orderManager = new PersistentOrderManager();
-	private final PersistentInventory inventory = new PersistentInventory();
-	private final VideoCatalog catalog = new VideoCatalog();
+	@Autowired
+	private PersistentOrderManager orderManager;
+	@Autowired
+	private PersistentInventory inventory;
+	@Autowired
+	private VideoCatalog catalog;
 	
 	@RequestMapping("/orders")
-	public ModelAndView orders(ModelAndView mav) {
-		Iterable<PersistentOrder> ordersCompleted = orderManager.find(PersistentOrder.class, OrderStatus.COMPLETED);
-		mav.addObject("ordersCompleted", ordersCompleted);
-		mav.setViewName("orders");
-		return mav;
+	public String orders(ModelMap modelMap) 
+	{
+		Iterable<PersistentOrder> completedOrders = orderManager.find(PersistentOrder.class, OrderStatus.COMPLETED);
+		modelMap.addAttribute("ordersCompleted", completedOrders);
+		return "orders";
 	}
-	
+
 	@RequestMapping("/stock")
-	public ModelAndView stock(ModelAndView mav) {
+	public String stock(ModelMap modelMap) 
+	{
 		Iterable<PersistentInventoryItem> stock = inventory.find(PersistentInventoryItem.class);
-		mav.addObject("stock", stock);
-		mav.setViewName("stock");
-		return mav;
+		modelMap.addAttribute("stock", stock);
+		return "stock";
 	}
 }
