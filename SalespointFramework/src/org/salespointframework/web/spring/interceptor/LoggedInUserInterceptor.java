@@ -26,15 +26,17 @@ public class LoggedInUserInterceptor extends HandlerInterceptorAdapter {
 			final HandlerMethod handlerMethod = (HandlerMethod) handler;
 			
 			final LoggedInUser loggedInUser = handlerMethod.getMethodAnnotation(LoggedInUser.class);
-			
-			final Class<? extends User> clazz = loggedInUser.value();
-			final String name = loggedInUser.name();
-			
-			final HttpSession session = request.getSession();
 
-			final User user = WebLoginLogoutManager.INSTANCE.getUser(session);
-			
-			modelAndView.addObject(name, clazz.cast(user));
+			if(loggedInUser != null) {
+				final Class<? extends User> clazz = loggedInUser.value();
+				final String name = loggedInUser.name();
+				
+				final HttpSession session = request.getSession();
+	
+				final User user = WebLoginLogoutManager.INSTANCE.getUser(session);
+				
+				modelAndView.addObject(name, clazz.cast(user));
+			}
 		}
 	}
 }
