@@ -182,8 +182,30 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 		}
 	}
 	
+	/**
+	 * Check if this quantity is negative
+	 * @return true if the quantity is negative 
+	 */
 	public boolean isNegative() {
 		return amount.signum() == -1;
+	}
+	
+	/**
+	 * Compares Quantities
+	 * @param other Quantity to which this Quantity is to be compared.
+	 * @return true if this quantity is less than the other quantity
+	 */
+	public boolean lessThan(Quantity other) { 
+		return this.compareTo(other) < 0;
+	}
+	
+	/**
+	 * Compares Quantities
+	 * @param other Quantity to which this Quantity is to be compared.
+	 * @return true if this quantity is greater than the other quantity
+	 */
+	public boolean greaterThan(Quantity other) { 
+		return this.compareTo(other) > 0;
 	}
 
 	@Override
