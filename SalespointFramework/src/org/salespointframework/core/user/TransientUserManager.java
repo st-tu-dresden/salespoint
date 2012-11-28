@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.http.HttpSession;
 
 import org.salespointframework.util.Iterables;
-import org.salespointframework.web.WebLoginLogoutManager;
+import org.salespointframework.web.WebAuthenticationManager;
 
 /**
  * 
@@ -56,7 +56,7 @@ public class TransientUserManager implements UserManager<TransientUser> {
 		Objects.requireNonNull(token, "token must not be null");
 		
 		// TODO
-		WebLoginLogoutManager.INSTANCE.login(user, (HttpSession) token);
+		WebAuthenticationManager.INSTANCE.login(user, (HttpSession) token);
 
 		//userTokenMap.put(token, user);
 	}
@@ -66,7 +66,7 @@ public class TransientUserManager implements UserManager<TransientUser> {
 	{
 		Objects.requireNonNull(token, "token must not be null");
 		
-		WebLoginLogoutManager.INSTANCE.logout((HttpSession) token);
+		WebAuthenticationManager.INSTANCE.logout((HttpSession) token);
 		
 		//userTokenMap.remove(token);
 	}
@@ -77,7 +77,7 @@ public class TransientUserManager implements UserManager<TransientUser> {
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(token, "token must not be null");
 
-		User user = WebLoginLogoutManager.INSTANCE.getUser((HttpSession) token);
+		User user = WebAuthenticationManager.INSTANCE.getUser((HttpSession) token);
 		if(user == null)
 			return null;
 		return clazz.cast(user);

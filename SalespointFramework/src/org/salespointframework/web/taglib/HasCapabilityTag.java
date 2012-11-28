@@ -11,7 +11,7 @@ import org.salespointframework.core.user.TransientUserManager;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.Capability;
 import org.salespointframework.core.user.UserManager;
-import org.salespointframework.web.WebLoginLogoutManager;
+import org.salespointframework.web.WebAuthenticationManager;
 
 // TODO
 // mehrere Capabilities OR verknüpfen usw
@@ -49,7 +49,7 @@ public class HasCapabilityTag extends BodyTagSupport
 	{
 		String[] capList = capabilityName.split(";");
 
-		User user = WebLoginLogoutManager.INSTANCE.getUser(pageContext.getSession());
+		User user = WebAuthenticationManager.INSTANCE.getUser(pageContext.getSession());
 			
 		if (user != null)
 		{

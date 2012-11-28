@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.salespointframework.core.user.User;
-import org.salespointframework.web.WebLoginLogoutManager;
+import org.salespointframework.web.WebAuthenticationManager;
 import org.salespointframework.web.annotation.LoggedInUser;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -23,7 +23,7 @@ public class LoggedInUserArgumentResolver implements HandlerMethodArgumentResolv
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		final HttpSession session = webRequest.getNativeRequest(HttpServletRequest.class).getSession();
 		final Class<?> clazz = parameter.getParameterType();
-		final User user = WebLoginLogoutManager.INSTANCE.getUser(session);
+		final User user = WebAuthenticationManager.INSTANCE.getUser(session);
 		return clazz.cast(user);
 	}
 

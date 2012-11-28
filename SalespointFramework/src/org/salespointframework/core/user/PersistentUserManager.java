@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.salespointframework.core.database.Database;
 import org.salespointframework.util.Iterables;
-import org.salespointframework.web.WebLoginLogoutManager;
+import org.salespointframework.web.WebAuthenticationManager;
 
 import java.util.Objects;
 
@@ -130,7 +130,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 		Objects.requireNonNull(token, "token must not be null");
 
 		
-		WebLoginLogoutManager.INSTANCE.login(user, (HttpSession) token);
+		WebAuthenticationManager.INSTANCE.login(user, (HttpSession) token);
 		
 		// TODO cache bug >_<
 		//PersistentUser temp = this.get(PersistentUser.class, user.getIdentifier());
@@ -144,7 +144,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 	{
 		Objects.requireNonNull(token, "token must not be null");
 		
-		WebLoginLogoutManager.INSTANCE.logout((HttpSession) token);
+		WebAuthenticationManager.INSTANCE.logout((HttpSession) token);
 
 		//userTokenMap.remove(token);
 	}
@@ -158,7 +158,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 
 		
 		//User user = userTokenMap.get(token);
-		User user = WebLoginLogoutManager.INSTANCE.getUser((HttpSession)token);				
+		User user = WebAuthenticationManager.INSTANCE.getUser((HttpSession)token);				
 		
 		if(user == null)
 		{

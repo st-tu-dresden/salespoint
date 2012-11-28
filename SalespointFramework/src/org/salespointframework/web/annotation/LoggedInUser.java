@@ -12,7 +12,7 @@ import org.salespointframework.core.user.User;
  * @author Paul Henke
  *
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.TYPE, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LoggedInUser {
 	Class<? extends User> value() default User.class;

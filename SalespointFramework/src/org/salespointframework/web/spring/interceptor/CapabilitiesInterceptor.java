@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.salespointframework.core.user.Capability;
 import org.salespointframework.core.user.User;
-import org.salespointframework.web.WebLoginLogoutManager;
+import org.salespointframework.web.WebAuthenticationManager;
 import org.salespointframework.web.annotation.Capabilities;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -35,7 +35,7 @@ public class CapabilitiesInterceptor extends HandlerInterceptorAdapter {
 				return true;
 			}
 
-			final User user = WebLoginLogoutManager.INSTANCE.getUser(request.getSession());
+			final User user = WebAuthenticationManager.INSTANCE.getUser(request.getSession());
 
 			if(user != null) {
 				if (capabilitiesOnClass != null) {

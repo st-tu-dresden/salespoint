@@ -3,7 +3,7 @@ package org.salespointframework.web.taglib;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-import org.salespointframework.web.WebLoginLogoutManager;
+import org.salespointframework.web.WebAuthenticationManager;
 
 /**
  * 
@@ -28,7 +28,7 @@ public class LoggedInTag extends BodyTagSupport
 	@Override
 	public int doStartTag() throws JspException
 	{
-		final boolean loggedIn = WebLoginLogoutManager.INSTANCE.loggedIn(pageContext.getSession());
+		final boolean loggedIn = WebAuthenticationManager.INSTANCE.loggedIn(pageContext.getSession());
 
 		if(test) {
 			return loggedIn ? EVAL_BODY_INCLUDE : SKIP_BODY;
