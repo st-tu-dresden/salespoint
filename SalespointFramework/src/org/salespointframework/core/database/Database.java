@@ -67,6 +67,7 @@ public enum Database {
 	 */
 	public EntityManagerFactory getEntityManagerFactory()
 	{
+		// TODO ändern auf Database.Instance usw
 		if(entityManagerFactory == null) {
 			throw new RuntimeException("Please initialize persistence unit first. For exampe by adding \"PersistenceUnitInitializer\" as bean in dispatch-servlet.xml");
 		}
