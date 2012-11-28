@@ -50,6 +50,7 @@ public class TransientUserManager implements UserManager<TransientUser> {
 	}
 
 	@Override
+	@Deprecated
 	public void login(TransientUser user, Object token) 
 	{
 		Objects.requireNonNull(user, "user must not be null");
@@ -62,6 +63,7 @@ public class TransientUserManager implements UserManager<TransientUser> {
 	}
 
 	@Override
+	@Deprecated
 	public void logout(Object token) 
 	{
 		Objects.requireNonNull(token, "token must not be null");
@@ -72,6 +74,7 @@ public class TransientUserManager implements UserManager<TransientUser> {
 	}
 
 	@Override
+	@Deprecated
 	public <E extends TransientUser> E getUserByToken(Class<E> clazz, Object token) 
 	{
 		Objects.requireNonNull(clazz, "clazz must not be null");

@@ -20,6 +20,12 @@ public class TransientUser implements User, Comparable<TransientUser> {
 	private final Set<Capability> capabilities = new TreeSet<>();
 	
 	
+	/**
+	 * Creates an new TransientUser
+	 * @param userIdentifier the {@link UserIdentifier} of the user
+	 * @param password the password of the user
+	 * @param capabilities an <code>Array</code> of {@link Capability}s for the user 
+	 */
 	public TransientUser(UserIdentifier userIdentifier, String password, Capability... capabilities)
 	{
 		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");

@@ -68,7 +68,9 @@ public interface UserManager<T extends User> {
      * @throws NullPointerException
      *             if <code>user</code> or <code>token</code> or both are
      *             <code>null</code>.
+     * @deprecated Please use WebAuthenticationManager.INSTANCE.login
      */
+    @Deprecated
     void login(T user, Object token);
 
     /**
@@ -80,7 +82,10 @@ public interface UserManager<T extends User> {
      * 
      * @throws NullPointerException
      *             if <code>token</code> is <code>null</code>.
+     *             
+     * @deprecated Please use WebAuthenticationManager.INSTANCE.logout
      */
+    @Deprecated
     void logout(Object token);
 
     /**
@@ -103,7 +108,11 @@ public interface UserManager<T extends User> {
      * @throws NullPointerException
      *             if <code>clazz</code> or <code>token</code> or both are
      *             <code>null</code>.
+     *             
+     * @deprecated Please use WebAuthenticationManager.INSTANCE.getUser()            
+     *             
      */
+    @Deprecated
     <E extends T> E getUserByToken(Class<E> clazz, Object token);
 
     /**

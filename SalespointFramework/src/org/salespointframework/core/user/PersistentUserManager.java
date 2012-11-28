@@ -1,7 +1,6 @@
 package org.salespointframework.core.user;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Objects;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -13,8 +12,6 @@ import javax.servlet.http.HttpSession;
 import org.salespointframework.core.database.Database;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.web.WebAuthenticationManager;
-
-import java.util.Objects;
 
 /**
  * The <code>PersistentUserManager</code> is an implementation of
@@ -124,6 +121,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 	
 	// TODO Methode ganz entfernen
 	@Override
+	@Deprecated
 	public final void login(PersistentUser user, Object token)
 	{
 		Objects.requireNonNull(user, "user must not be null");
@@ -140,6 +138,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 
 	// TODO Methode ganz entfernen
 	@Override
+	@Deprecated
 	public final void logout(Object token)
 	{
 		Objects.requireNonNull(token, "token must not be null");
@@ -151,6 +150,7 @@ public class PersistentUserManager implements UserManager<PersistentUser>
 
 	// TODO Methode ganz entfernen
 	@Override
+	@Deprecated
 	public final <T extends PersistentUser> T getUserByToken(Class<T> clazz, Object token)
 	{
 		Objects.requireNonNull(clazz, "clazz must not be null");

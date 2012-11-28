@@ -8,6 +8,7 @@ import org.salespointframework.core.database.Database;
  * @author Paul Henke
  *
  */
+ @Deprecated
 public class PersistenceUnitInitializer {
 
 	public PersistenceUnitInitializer() {
