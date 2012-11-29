@@ -34,19 +34,20 @@ public enum WebAuthenticationManager implements AuthenticationManager<HttpSessio
 	
 	/**
 	 * Associate a {@link User} with a session.
-	 * {@Code user.verifyPassword()} is called.
+	 * {@code user.verifyPassword()} is called.
 	 * @param user the User to be logged in
 	 * @param password the password of the user
 	 * @param session the session to associate with the user
-	 * @return true if the user could be logged in with the given password, false otherwise 
-	 * @throws NullPointerException if user, password or session is null
+	 * @return true if the user could be logged in with the given password, false if user is null or password is wrong 
+	 * @throws NullPointerException if password or session is null
 	 */
 	@Override
 	public boolean login(User user, String password, HttpSession session) 
 	{
-		Objects.requireNonNull(user, "user must not be null");
 		Objects.requireNonNull(password, "password must not be null");
 		Objects.requireNonNull(session, "session must not be null");
+
+		if(user == null) return false;
 		
 		if(user.verifyPassword(password)) {
 			session.setAttribute(attributeName, user);
