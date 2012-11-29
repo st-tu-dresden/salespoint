@@ -23,10 +23,10 @@ public class CapabilitiesInterceptor extends HandlerInterceptorAdapter {
 	//private Logger log = Logger.getLogger(this.getClass().getName());
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
-
-		if (handler instanceof HandlerMethod) {
-
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException 
+	{
+		if (handler instanceof HandlerMethod) 
+		{
 			final HandlerMethod handlerMethod = (HandlerMethod) handler;
 			final Capabilities capabilitiesOnMethod = handlerMethod.getMethodAnnotation(Capabilities.class);
 			final Capabilities capabilitiesOnClass = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(),Capabilities.class);

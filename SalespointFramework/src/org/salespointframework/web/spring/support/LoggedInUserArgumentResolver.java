@@ -19,12 +19,14 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  */
 public class LoggedInUserArgumentResolver implements HandlerMethodArgumentResolver {
 
+	// TODO comments entfernen
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		final HttpSession session = webRequest.getNativeRequest(HttpServletRequest.class).getSession();
-		final Class<?> clazz = parameter.getParameterType();
+		//final Class<?> clazz = parameter.getParameterType();
 		final User user = WebAuthenticationManager.INSTANCE.getUser(session);
-		return clazz.cast(user);
+		//return clazz.cast(user);
+		return user;
 	}
 
 	@Override

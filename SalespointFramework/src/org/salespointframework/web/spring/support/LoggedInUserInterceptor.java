@@ -19,20 +19,17 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class LoggedInUserInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
-	public void postHandle(HttpServletRequest request,HttpServletResponse response, Object handler,	ModelAndView modelAndView) {
-
-		if (handler instanceof HandlerMethod) {
-			
+	public void postHandle(HttpServletRequest request,HttpServletResponse response, Object handler,	ModelAndView modelAndView) 
+	{
+		if (handler instanceof HandlerMethod) 
+		{
 			final HandlerMethod handlerMethod = (HandlerMethod) handler;
-			
 			final LoggedInUser loggedInUser = handlerMethod.getMethodAnnotation(LoggedInUser.class);
 
-			if(loggedInUser != null) {
-				///final Class<? extends User> clazz = loggedInUser.value();
+			if(loggedInUser != null) 
+			{
 				final String name = loggedInUser.value();
-				
 				final HttpSession session = request.getSession();
-	
 				final User user = WebAuthenticationManager.INSTANCE.getUser(session);
 				
 				modelAndView.addObject(name, user);

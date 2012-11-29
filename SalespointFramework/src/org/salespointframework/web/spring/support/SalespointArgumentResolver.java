@@ -39,11 +39,11 @@ public class SalespointArgumentResolver implements HandlerMethodArgumentResolver
 
 	@SuppressWarnings("unchecked")
 	private String getValue(NativeWebRequest webRequest, String name) {
-		String value = (String)webRequest.getParameter(name);
+		final String value = (String)webRequest.getParameter(name);
 		if(value != null) {
 			return value;
 		}
-		Map<String, String> uriTemplateVars = (Map<String, String>) webRequest.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
+		final Map<String, String> uriTemplateVars = (Map<String, String>) webRequest.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
 		return (uriTemplateVars != null) ? uriTemplateVars.get(name) : null;
 	}
 	
@@ -52,14 +52,14 @@ public class SalespointArgumentResolver implements HandlerMethodArgumentResolver
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		
-		String name = parameter.getParameterAnnotation(org.salespointframework.web.annotation.Get.class).value();
+		final String name = parameter.getParameterAnnotation(org.salespointframework.web.annotation.Get.class).value();
 		
-		String value = this.getValue(webRequest, name);
+		final String value = this.getValue(webRequest, name);
 		
 		if(value == null) return null;
 		
 		@SuppressWarnings("rawtypes")
-		Class clazz = parameter.getParameterType();
+		final Class clazz = parameter.getParameterType();
 
 		if(User.class.isAssignableFrom(clazz)) {
 			return ((UserManager<User>) Shop.INSTANCE.getUserManager()).get(clazz, new UserIdentifier(value));
@@ -84,15 +84,14 @@ public class SalespointArgumentResolver implements HandlerMethodArgumentResolver
 		if(Order.class.isAssignableFrom(clazz)) {
 			return ((OrderManager<Order<OrderLine>, OrderLine>) Shop.INSTANCE.getOrderManager()).get(clazz, new OrderIdentifier(value));
 		}
-
-		
+	
 		return null;
 	}
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		@SuppressWarnings("rawtypes")
-		Class clazz = parameter.getParameterType();
+		final Class clazz = parameter.getParameterType();
 		return parameter.hasParameterAnnotation(org.salespointframework.web.annotation.Get.class) && 
 			   (User.class.isAssignableFrom(clazz) || AccountancyEntry.class.isAssignableFrom(clazz) || CalendarEntry.class.isAssignableFrom(clazz) ||
 			   Product.class.isAssignableFrom(clazz) || InventoryItem.class.isAssignableFrom(clazz) || Order.class.isAssignableFrom(clazz));
