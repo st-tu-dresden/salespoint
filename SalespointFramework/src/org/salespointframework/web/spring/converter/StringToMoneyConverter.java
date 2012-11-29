@@ -10,6 +10,7 @@ import org.springframework.core.convert.converter.Converter;
  * @author Paul Henke
  *
  */
+@Deprecated
 public class StringToMoneyConverter implements Converter<String, Money> {
 
 	@Override

@@ -8,6 +8,7 @@ import org.springframework.core.convert.converter.Converter;
  * @author Paul Henke
  *
  */
+@Deprecated
 public class StringToUnitsConverter implements Converter<String, Units> {
 
 	@Override

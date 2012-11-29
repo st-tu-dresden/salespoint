@@ -30,6 +30,11 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.HandlerMapping;
 
+/**
+ * 
+ * @author Paul Henke
+ *
+ */
 public class SalespointArgumentResolver implements HandlerMethodArgumentResolver {
 
 	@SuppressWarnings("unchecked")
@@ -43,7 +48,7 @@ public class SalespointArgumentResolver implements HandlerMethodArgumentResolver
 	}
 	
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		
@@ -53,6 +58,7 @@ public class SalespointArgumentResolver implements HandlerMethodArgumentResolver
 		
 		if(value == null) return null;
 		
+		@SuppressWarnings("rawtypes")
 		Class clazz = parameter.getParameterType();
 
 		if(User.class.isAssignableFrom(clazz)) {
@@ -85,6 +91,7 @@ public class SalespointArgumentResolver implements HandlerMethodArgumentResolver
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
+		@SuppressWarnings("rawtypes")
 		Class clazz = parameter.getParameterType();
 		return parameter.hasParameterAnnotation(org.salespointframework.web.annotation.Get.class) && 
 			   (User.class.isAssignableFrom(clazz) || AccountancyEntry.class.isAssignableFrom(clazz) || CalendarEntry.class.isAssignableFrom(clazz) ||
