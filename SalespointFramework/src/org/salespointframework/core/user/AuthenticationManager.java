@@ -18,12 +18,12 @@ public interface AuthenticationManager<T> {
 	
 	/**
 	 * Associate a {@link User} with a token.
-	 * Calls {@Code User.verifyPassword()} on the user object.
+	 * Calls {@code User.verifyPassword()} on the user object.
 	 * @param user the User to be logged in
 	 * @param password the password of the user
 	 * @param token the token to associate with the user
-	 * @return true if the user could be logged in with the given password, false otherwise 
-	 * @throws NullPointerException if user, password or token is null
+	 * @return true if the user could be logged in with the given password, false if user is null or password is wrong 
+	 * @throws NullPointerException if password or token is null
 	 */
 	boolean login(User user, String password, T token);
 	

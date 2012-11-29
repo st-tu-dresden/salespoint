@@ -13,7 +13,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 
 /**
- * 
+ * Converts a String to any subclass of {@link SalespointIdentifier}
  * @author Paul Henke
  *
  */

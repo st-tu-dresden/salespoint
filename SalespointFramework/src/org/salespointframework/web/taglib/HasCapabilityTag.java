@@ -47,7 +47,7 @@ public class HasCapabilityTag extends BodyTagSupport
 	@Override
 	public int doStartTag() throws JspException
 	{
-		String[] capList = capabilityName.split(";");
+		String[] capList = capabilityName.split(",");
 
 		User user = WebAuthenticationManager.INSTANCE.getUser(pageContext.getSession());
 			

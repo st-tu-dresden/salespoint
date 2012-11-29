@@ -4,7 +4,7 @@ import org.salespointframework.core.user.Capability;
 import org.springframework.core.convert.converter.Converter;
 
 /**
- * 
+ * Converts a {@link String} to a {@link Capability}
  * @author Paul Henke
  *
  */

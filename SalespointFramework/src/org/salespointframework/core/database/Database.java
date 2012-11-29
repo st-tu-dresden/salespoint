@@ -9,9 +9,7 @@ import javax.persistence.Persistence;
 import java.util.Objects;
 
 /**
- * Delegates to
- * http://download.oracle.com/javaee/6/api/javax/persistence/Persistence
- * .html#createEntityManagerFactory(java.lang.String)
+ * Delegates to http://download.oracle.com/javaee/6/api/javax/persistence/Persistence.html#createEntityManagerFactory(java.lang.String)
  * 
  * @author Paul Henke
  * 

@@ -14,11 +14,8 @@ public class StringToMoneyConverter implements Converter<String, Money> {
 
 	@Override
 	public Money convert(String text) {
-		return Money.OVER9000;
-		/*
 		BigDecimal bd = new BigDecimal(text);
 		Money money = new Money(bd);
 		return money;
-		*/
 	}
 }

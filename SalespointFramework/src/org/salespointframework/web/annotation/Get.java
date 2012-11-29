@@ -5,15 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.salespointframework.core.user.User;
-
-/**
- * 
- * @author Paul Henke
- *
- */
-@Target({ElementType.TYPE, ElementType.METHOD, ElementType.PARAMETER})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LoggedInUser {
-	String value() default "user";
+public @interface Get {
+	String value();
 }

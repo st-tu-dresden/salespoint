@@ -15,6 +15,7 @@ import org.salespointframework.core.database.Database;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.product.PersistentProduct_;
 import org.salespointframework.core.product.ProductIdentifier;
+import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.util.Iterables;
 
 /**
@@ -63,7 +64,7 @@ public class PersistentInventory implements Inventory<PersistentInventoryItem>
 	 * @param inventoryItems
 	 *            an {@link Iterable} of {@link PersistentInventoryItem}s to be added
 	 * 
-	 * @throws NullPointerException if productInstances is null
+	 * @throws NullPointerException if inventoryItems is null
 	 */
 	public void addAll(Iterable<? extends PersistentInventoryItem> inventoryItems) 
 	{
@@ -229,7 +230,7 @@ public class PersistentInventory implements Inventory<PersistentInventoryItem>
 	
 	/**
 	 * Creates an new instance of the PersistentInventory The
-	 * {@link PersistentOrder} uses this method for transactional removal of {@link ProductInstance}s
+	 * {@link PersistentOrder} uses this method for transactional reduction of {@link Quantity} in {@link PersistentInventoryItem}s
 	 * 
 	 * @param entityManager the {@link EntityManager} to be used for all operations (methods)
 	 * @return a new PersistentInventory

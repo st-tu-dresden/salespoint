@@ -44,7 +44,7 @@ public class PersistentOrderManager implements OrderManager<PersistentOrder, Per
 	 * Adds multiple {@link PersistentOrder}s to this PersistentOrderManager
 	 * 
 	 * @param orders
-	 *            an {@link Iterable} of {@link PersistentOrders}s to be added
+	 *            an {@link Iterable} of {@link PersistentOrder}s to be added
 	 * 
 	 * @throws NullPointerException if orders is null
 	 */
