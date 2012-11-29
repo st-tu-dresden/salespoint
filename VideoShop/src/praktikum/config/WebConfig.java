@@ -19,26 +19,27 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @EnableWebMvc
 @Configuration
-@Import(Sp5Manager.class)
+@Import(Manager.class)
 @ComponentScan(basePackages = "videoshop" ) /* All your basepackages are belong to us, seriously, put your basepackage here */
 public class WebConfig extends WebMvcConfigurerAdapter  {
 	
 	// standard viewresolver 
     @Bean
     public ViewResolver getViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/jsp/");
-        resolver.setSuffix(".jsp");
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setPrefix("/jsp/");
+        viewResolver.setSuffix(".jsp");
  
-        return resolver;
+        return viewResolver;
      }
     
     // messages for i18n
+    // do not change the name of this method
     @Bean
-    public MessageSource getMessageSource() {
-    	ResourceBundleMessageSource src = new ResourceBundleMessageSource();
-    	src.setBasename("messages");
-    	return src;
+    public MessageSource messageSource() {
+    	ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+    	messageSource.setBasename("messages");
+    	return messageSource;
     }
     
     // for static resources like images and css files
@@ -47,7 +48,7 @@ public class WebConfig extends WebMvcConfigurerAdapter  {
         registry.addResourceHandler("/res/**").addResourceLocations("/resources/");
     }
     
-    // Salespoint5 goodies
+    // Salespoint5 goodies start
     public WebConfig() {
     	// The name of your persistence-unit, look it up in persistence.xml
     	org.salespointframework.core.database.Database.INSTANCE.initializeEntityManagerFactory("Videoshop");
@@ -56,20 +57,20 @@ public class WebConfig extends WebMvcConfigurerAdapter  {
     
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-    	argumentResolvers.add(new org.salespointframework.web.spring.LoggedInUserArgumentResolver());
+    	argumentResolvers.add(new org.salespointframework.web.spring.support.LoggedInUserArgumentResolver());
+    	argumentResolvers.add(new org.salespointframework.web.spring.support.SalespointArgumentResolver());
     }
     
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-    	registry.addInterceptor(new org.salespointframework.web.spring.interceptor.LoggedInUserInterceptor());
-    	registry.addInterceptor(new org.salespointframework.web.spring.interceptor.CapabilitiesInterceptor());
+    	registry.addInterceptor(new org.salespointframework.web.spring.support.LoggedInUserInterceptor());
+    	registry.addInterceptor(new org.salespointframework.web.spring.support.CapabilitiesInterceptor());
     }
     
     @Override
     public void addFormatters(FormatterRegistry registry) {
     	registry.addConverterFactory(new org.salespointframework.web.spring.converter.StringToIdentifierConverterFactory());
     	registry.addConverter(new org.salespointframework.web.spring.converter.StringToCapabilityConverter());
-    	registry.addConverter(new org.salespointframework.web.spring.converter.StringToMoneyConverter());
-    	registry.addConverter(new org.salespointframework.web.spring.converter.StringToUnitsConverter());
     }
+    // Salespoint5 goodies end
 }

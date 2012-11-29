@@ -21,27 +21,26 @@
 	<!-- standard viewresolver -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/jsp/" p:suffix=".jsp" />
 
+	<!-- for static resources like images and css files --> 
+	<mvc:resources mapping="/res/**" location="/resources/" />
+	
 	<!-- it's a kind of magic  -->
 	<mvc:annotation-driven>
 		<mvc:argument-resolvers>
-			<bean class="org.salespointframework.web.spring.LoggedInUserArgumentResolver" />
+			<bean class="org.salespointframework.web.spring.support.LoggedInUserArgumentResolver" />
+			<bean class="org.salespointframework.web.spring.support.SalespointArgumentResolver" />
 		</mvc:argument-resolvers>
 	</mvc:annotation-driven>
 	
-	<!-- for static resources like images and css files --> 
-	<mvc:resources mapping="/res/**" location="/resources/" />
- 
 	<mvc:interceptors>
-		<bean class="org.salespointframework.web.spring.interceptor.CapabilitiesInterceptor" />
-		<bean class="org.salespointframework.web.spring.interceptor.LoggedInUserInterceptor" />
+		<bean class="org.salespointframework.web.spring.support.CapabilitiesInterceptor" />
+		<bean class="org.salespointframework.web.spring.support.LoggedInUserInterceptor" />
 	</mvc:interceptors>
 	
 	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean"> 
 	    <property name="converters">
     	    <list>
 				<bean class="org.salespointframework.web.spring.converter.StringToIdentifierConverterFactory" />
-				<bean class="org.salespointframework.web.spring.converter.StringToUnitsConverter" />
-				<bean class="org.salespointframework.web.spring.converter.StringToMoneyConverter" />
 				<bean class="org.salespointframework.web.spring.converter.StringToCapabilityConverter" />
 			</list>
 		</property>

@@ -8,6 +8,7 @@ import org.salespointframework.core.inventory.PersistentInventoryItem;
 import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.quantity.Units;
+import org.salespointframework.web.annotation.Get;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -49,12 +50,11 @@ public class CatalogController {
 	}
 	
 	@RequestMapping("/detail/{pid}")
-	public String detail(ModelMap modelMap, @PathVariable("pid") ProductIdentifier pid) 
+	public String detail(@Get("pid") Disc disc, ModelMap modelMap) 
 	{
-		Disc disc = videoCatalog.getDisc(pid);
 		modelMap.addAttribute("disc", disc);
 		
-		InventoryItem item = inventory.getByProductIdentifier(PersistentInventoryItem.class, pid);
+		InventoryItem item = inventory.getByProductIdentifier(PersistentInventoryItem.class, disc.getIdentifier());
 		Quantity quantity = item == null ? Units.ZERO : item.getQuantity();
 		modelMap.addAttribute("quantity", quantity);
 		
@@ -62,11 +62,10 @@ public class CatalogController {
 	}
 
 	@RequestMapping("/comment")
-	public String comment(@RequestParam("pid") ProductIdentifier pid, @RequestParam("comment") String comment, @RequestParam("rating") int rating ) 
+	public String comment(@Get("pid") Disc disc, @RequestParam("comment") String comment, @RequestParam("rating") int rating ) 
 	{
-		Disc disc = videoCatalog.getDisc(pid);
 		disc.addComment(new Comment(comment, rating));
 		videoCatalog.update(disc);
-		return "redirect:detail";
+		return "redirect:detail/"+disc.getIdentifier();
 	}
 }

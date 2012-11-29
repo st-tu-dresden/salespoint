@@ -6,12 +6,12 @@ import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderLine;
 import org.salespointframework.core.order.PersistentOrderManager;
-import org.salespointframework.core.product.ProductIdentifier;
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.web.annotation.Capabilities;
+import org.salespointframework.web.annotation.Get;
 import org.salespointframework.web.annotation.LoggedInUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,10 +37,8 @@ public class BasketController {
 	private VideoCatalog videoCatalog;
 	
 	@RequestMapping("/addDisc")
-	public String addDisc(@LoggedInUser Customer customer, HttpSession session, ModelMap modelMap, @RequestParam("pid") ProductIdentifier pid, @RequestParam("number") int number) 
+	public String addDisc(@Get("pid") Disc disc, @RequestParam("number") int number,@LoggedInUser Customer customer, HttpSession session, ModelMap modelMap) 
 	{
-		//Customer customer = (Customer)WebLoginLogoutManager.INSTANCE.getUser(session);
-		
 		if(number <= 0 || number > 5) number = 1;
 		
 		PersistentOrder order = (PersistentOrder) session.getAttribute("order");
@@ -50,8 +48,6 @@ public class BasketController {
 			orderManager.add(order);
 			session.setAttribute("order", order);
 		}
-
-		Disc disc = videoCatalog.getDisc(pid);
 		
 		Quantity quantity = Units.of(number);
 

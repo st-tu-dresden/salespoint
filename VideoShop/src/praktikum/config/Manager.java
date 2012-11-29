@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import videoshop.model.VideoCatalog;
 
 @Configuration
-public class Sp5Manager {
+public class Manager {
 
     @Bean
     public VideoCatalog getVideoCatalog() {

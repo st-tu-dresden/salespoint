@@ -11,8 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import videoshop.model.VideoCatalog;
-
 
 @Controller
 @Capabilities("boss")
@@ -22,8 +20,6 @@ public class BossController {
 	private PersistentOrderManager orderManager;
 	@Autowired
 	private PersistentInventory inventory;
-	@Autowired
-	private VideoCatalog catalog;
 	
 	@RequestMapping("/orders")
 	public String orders(ModelMap modelMap) 
