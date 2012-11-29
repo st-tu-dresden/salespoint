@@ -42,7 +42,8 @@ public class BasketController {
 		if(number <= 0 || number > 5) number = 1;
 		
 		PersistentOrder order = (PersistentOrder) session.getAttribute("order");
-
+		
+		
 		if (order == null) {
 			order = new PersistentOrder(customer.getIdentifier(), Cash.CASH);
 			orderManager.add(order);
