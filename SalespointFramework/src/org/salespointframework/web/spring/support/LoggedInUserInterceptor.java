@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.salespointframework.core.user.User;
 import org.salespointframework.web.WebAuthenticationManager;
 import org.salespointframework.web.annotation.LoggedInUser;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -24,7 +25,10 @@ public class LoggedInUserInterceptor extends HandlerInterceptorAdapter {
 		if (handler instanceof HandlerMethod) 
 		{
 			final HandlerMethod handlerMethod = (HandlerMethod) handler;
-			final LoggedInUser loggedInUser = handlerMethod.getMethodAnnotation(LoggedInUser.class);
+			LoggedInUser loggedInUser = handlerMethod.getMethodAnnotation(LoggedInUser.class);
+			if(loggedInUser == null) {
+				loggedInUser = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(),LoggedInUser.class);
+			}
 
 			if(loggedInUser != null) 
 			{
