@@ -5,14 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class WelcomeController {
-	@RequestMapping("/")
+	@RequestMapping({"/", "index"})
     public String index() {
 		return "welcome";
     }
-	
-	@RequestMapping("/index")
-	public String index2() {
-		return "welcome";
-	}
-	
 }

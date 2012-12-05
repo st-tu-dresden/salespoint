@@ -4,15 +4,15 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<div class="salespointlogin">
+<div class="salespoint">
 	<form action="login" method="post">
 		<fieldset>
 			<legend><spring:message code="org.salespointframework.form.login.title" /></legend>
-			<label for="SP_LOGIN_PARAM_IDENTIFIER"><spring:message code="org.salespointframework.form.login.user" /></label><br />
-			<input id="SP_LOGIN_PARAM_IDENTIFIER" type="text" name="SP_LOGIN_PARAM_IDENTIFIER" />
+			<label for="name"><spring:message code="org.salespointframework.form.login.user" /></label><br />
+			<input id="name" type="text" name="identifier" />
 			<br />
-			<label for="SP_LOGIN_PARAM_PASSWORD"><spring:message code="org.salespointframework.form.login.password" /></label><br />
-			<input id="SP_LOGIN_PARAM_PASSWORD" type="text" name="SP_LOGIN_PARAM_PASSWORD" />
+			<label for="password"><spring:message code="org.salespointframework.form.login.password" /></label><br />
+			<input id="password" type="text" name="password" />
 			<br />
 			<button type="submit"><spring:message code="org.salespointframework.form.login.button" /></button>
 		</fieldset>

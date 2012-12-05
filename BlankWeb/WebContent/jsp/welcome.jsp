@@ -9,7 +9,7 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" type="text/css" 	href="<c:url value="/res/css/style.css" />" />
+	<link rel="stylesheet" type="text/css" 	href="<c:url value="/resources/css/style.css" />" />
 	<meta name="author" content="Team Salespoint" /> 
 	<meta name="description" content="super special awesome stuff" /> 
 	<meta name="generator" content="Microsoft FrontPage 6.0" /> 
@@ -23,7 +23,6 @@
 			<h2>General</h2>
 		</header>
 		<ul>
-			<li><a href="http://st.inf.tu-dresden.de/content/index.php?node=teaching&leaf=1&subject=195">Softwarepraktikum</a></li>
 			<li><a href="http://www.st.inf.tu-dresden.de/SalesPoint/v5.0/wiki">Salespoint 5 Wiki</a></li>
 			<li><a href="http://st.inf.tu-dresden.de/SalesPoint/forum/viewforum.php?f=135">Salespoint 5 Forum</a></li>
 		</ul>
