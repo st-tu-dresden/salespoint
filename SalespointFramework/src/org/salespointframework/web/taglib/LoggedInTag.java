@@ -6,10 +6,13 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 import org.salespointframework.web.WebAuthenticationManager;
 
 /**
+ * This tag checks if the current user of the webpage is authenticated (logged in)  
  * 
  * @author Lars Kreisz
  * @author Uwe Schmidt
  * @author Paul Henke
+ * 
+ * @see WebAuthenticationManager
  */
 @SuppressWarnings("serial")
 public class LoggedInTag extends BodyTagSupport

@@ -3,25 +3,19 @@ package org.salespointframework.web.taglib;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-import org.salespointframework.core.shop.Shop;
-import org.salespointframework.core.user.PersistentUser;
-import org.salespointframework.core.user.PersistentUserManager;
-import org.salespointframework.core.user.TransientUser;
-import org.salespointframework.core.user.TransientUserManager;
-import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.Capability;
-import org.salespointframework.core.user.UserManager;
+import org.salespointframework.core.user.User;
 import org.salespointframework.web.WebAuthenticationManager;
 
-// TODO
-// mehrere Capabilities OR verknüpfen usw
-
-
 /**
+ * This tag checks if currently authenticated (logged in) {@link User} has any given {@link Capability}.  
  * 
  * @author Lars Kreisz
  * @author Uwe Schmidt
  * @author Paul Henke
+ * 
+ * @see WebAuthenticationManager
+ * 
  */
 @SuppressWarnings("serial")
 public class HasCapabilityTag extends BodyTagSupport
@@ -43,7 +37,6 @@ public class HasCapabilityTag extends BodyTagSupport
 		this.test = test;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public int doStartTag() throws JspException
 	{
