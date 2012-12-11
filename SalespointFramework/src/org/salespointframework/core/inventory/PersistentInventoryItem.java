@@ -46,7 +46,7 @@ public class PersistentInventoryItem implements InventoryItem
 		
 		if(!product.getMetric().equals(quantity.getMetric())) 
 		{
-			throw new MetricMismatchException("product.getMetric() is not equal to this.quantity.getMetric()");
+			throw new MetricMismatchException("product.getMetric() is not equal to this.quantity.getMetric()", product.getMetric(), this.quantity.getMetric());
 		}
 	}
 	
