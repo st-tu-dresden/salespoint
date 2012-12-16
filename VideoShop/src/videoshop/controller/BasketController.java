@@ -3,6 +3,8 @@ package videoshop.controller;
 import javax.servlet.http.HttpSession;
 
 import org.salespointframework.core.accountancy.payment.Cash;
+import org.salespointframework.core.money.Money;
+import org.salespointframework.core.order.ChargeLine;
 import org.salespointframework.core.order.PersistentOrder;
 import org.salespointframework.core.order.PersistentOrderLine;
 import org.salespointframework.core.order.PersistentOrderManager;
@@ -46,6 +48,11 @@ public class BasketController {
 		
 		if (order == null) {
 			order = new PersistentOrder(customer.getIdentifier(), Cash.CASH);
+			// TODO remove
+			order.addChargeLine(new ChargeLine(Money.ONE, "1"));
+			order.addChargeLine(new ChargeLine(Money.OVER9000, "2"));
+			order.addChargeLine(new ChargeLine(Money.ZERO, "3"));
+			// TODO
 			orderManager.add(order);
 			session.setAttribute("order", order);
 		}
@@ -86,6 +93,12 @@ public class BasketController {
 	{
 		PersistentOrder order = (PersistentOrder) session.getAttribute("order");
 
+		// TODO remove
+		ChargeLine cl = order.getChargeLines().iterator().next();
+		order.removeChargeLine(cl.getIdentifier());
+		orderManager.update(order);
+		// TODO
+		
 		if (order != null) {
 			session.setAttribute("order", null);
 			order.payOrder();

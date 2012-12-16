@@ -4,28 +4,26 @@ import javax.servlet.http.HttpSession;
 
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.PersistentUserManager;
-import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.web.WebAuthenticationManager;
 import org.salespointframework.web.annotation.Get;
 import org.salespointframework.web.annotation.LoggedInUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import videoshop.model.Customer;
 
 @Controller
+@LoggedInUser
 public class ShopController {
 
 	@Autowired
 	private PersistentUserManager userManager;
 	
-	@LoggedInUser
+	
 	@RequestMapping({"/", "/index"})
 	public String index() {
 		return "index";
