@@ -9,9 +9,9 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<script type="text/javascript" src="../res/js/jquery-1.4.3.min.js"> </script>
-		<script type="text/javascript" src="../res/js/jquery.tmpl.min.js"> </script>
-		<link rel="stylesheet" type="text/css" href="<c:url value="/res/css/style.css" />" />
+		<script type="text/javascript" src="../resources/js/jquery-1.4.3.min.js"> </script>
+		<script type="text/javascript" src="../resources/js/jquery.tmpl.min.js"> </script>
+		<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/style.css" />" />
 		<title><spring:message code="guestbook.ajax.title" /></title>
 	</head>
 	
