@@ -1,6 +1,7 @@
 package org.salespointframework.core.money;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Quantity;
@@ -115,6 +116,6 @@ public final class Money extends Quantity {
 	 */
 	@Override
 	public String toString() {
-		return amount.setScale(2) + " " + getMetric().getSymbol();
+		return amount.setScale(2, RoundingMode.HALF_UP) + " " + getMetric().getSymbol();
 	}
 }

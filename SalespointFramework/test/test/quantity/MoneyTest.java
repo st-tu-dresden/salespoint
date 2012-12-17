@@ -25,4 +25,12 @@ public class MoneyTest
 		
 		assertEquals(m, Money.ZERO);
 	}
+	
+	@Test
+	public void scaleTest() {
+		Money m = new Money(1.99);
+		m = m.multiply(new Money(1.5));
+		
+		System.out.println(m);
+	}
 }
