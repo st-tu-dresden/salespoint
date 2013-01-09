@@ -37,7 +37,7 @@ public interface InventoryItem
 	 * @param quantity 
 	 * @throws MetricMismatchException if this.product.getQuantity().getMetric() != quantity.getMetric()
 	 */
-	void increaseQuantiy(Quantity quantity);
+	void increaseQuantity(Quantity quantity);
 
 	/**
 	 * Decreases the quantity of this InventoryItem

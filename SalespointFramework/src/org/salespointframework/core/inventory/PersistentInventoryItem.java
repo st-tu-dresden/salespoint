@@ -81,7 +81,7 @@ public class PersistentInventoryItem implements InventoryItem
 	}
 
 	@Override
-	public void increaseQuantiy(Quantity quantity)
+	public void increaseQuantity(Quantity quantity)
 	{
 		Objects.requireNonNull(quantity, "quantity must not be null");
 		if(!this.getProduct().getMetric().equals(quantity.getMetric())) 

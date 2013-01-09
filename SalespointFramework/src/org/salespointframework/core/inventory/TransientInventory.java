@@ -28,7 +28,7 @@ public class TransientInventory implements Inventory<TransientInventoryItem>
 		if(this.contains(inventoryItem.getIdentifier())) {
 			Quantity quantity = inventoryItem.getQuantity();
 			inventoryItem = itemMap.get(inventoryItem.getIdentifier());
-			inventoryItem.increaseQuantiy(quantity);
+			inventoryItem.increaseQuantity(quantity);
 		}
 		itemMap.put(inventoryItem.getIdentifier(), inventoryItem);
 	}
