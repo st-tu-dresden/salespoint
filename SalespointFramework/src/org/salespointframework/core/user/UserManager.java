@@ -54,66 +54,7 @@ public interface UserManager<T extends User> {
      */
     boolean contains(UserIdentifier userIdentifier);
 
-    /**
-     * Logs the user on. When a user is logged on, an association is made
-     * between the user, and a supplied token. Only users who have been added to
-     * this <code>UserManager</code> before can be logged on. If the given user
-     * does not exist in this <code>UserManager</code> <code>false</code> will
-     * be returned.
-     * 
-     * @param user
-     *            {@link User} to be logged on.
-     * @param token
-     *            token, with which the <code>user</code> will be associated.
-     * @throws NullPointerException
-     *             if <code>user</code> or <code>token</code> or both are
-     *             <code>null</code>.
-     * @deprecated Please use WebAuthenticationManager.INSTANCE.login
-     */
-    @Deprecated
-    void login(T user, Object token);
 
-    /**
-     * Logs a user off. The user associated with <code>token</code> on log on is
-     * logged off.
-     * 
-     * @param token
-     *            token, with which a user was logged on.
-     * 
-     * @throws NullPointerException
-     *             if <code>token</code> is <code>null</code>.
-     *             
-     * @deprecated Please use WebAuthenticationManager.INSTANCE.logout
-     */
-    @Deprecated
-    void logout(Object token);
-
-    /**
-     * Gets a logged-on user by its token.
-     * 
-     * @param <E>
-     *            common super type of the user returned
-     * @param clazz
-     *            Class object corresponding to the type of the user to be
-     *            returned, has to be a sub-class of <code>T</code>
-     * 
-     * @param token
-     *            token, which was associated with the user, on log on.
-     * @return the user which is associated with <code>token</code> and of class
-     *         type <code>clazz</code> or <code>null</code> if no user is
-     *         associated with the <code>token</code>
-     * @throws ClassCastException
-     *             if user associated with <code>token</code> is not of type
-     *             <code>clazz</code>.
-     * @throws NullPointerException
-     *             if <code>clazz</code> or <code>token</code> or both are
-     *             <code>null</code>.
-     *             
-     * @deprecated Please use WebAuthenticationManager.INSTANCE.getUser()            
-     *             
-     */
-    @Deprecated
-    <E extends T> E getUserByToken(Class<E> clazz, Object token);
 
     /**
      * Gets a user by its unique identifier.

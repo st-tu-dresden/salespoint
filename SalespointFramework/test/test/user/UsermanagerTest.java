@@ -207,18 +207,4 @@ public class UsermanagerTest {
 		
 		
 	}
-	
-	@Test
-	public void testTokenGetter() {
-	    Employee e = new Employee(new UserIdentifier(), "test");
-	    PersistentUserManager mgr = new PersistentUserManager();
-	    
-	    mgr.add(e);
-	    mgr.login(e, "SESSION");
-	    
-	    assertEquals(e, mgr.getUserByToken(Employee.class, "SESSION"));
-	}
-	
-	
-	
 }

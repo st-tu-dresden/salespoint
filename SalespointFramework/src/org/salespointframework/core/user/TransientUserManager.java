@@ -50,43 +50,6 @@ public class TransientUserManager implements UserManager<TransientUser> {
 	}
 
 	@Override
-	@Deprecated
-	public void login(TransientUser user, Object token) 
-	{
-		Objects.requireNonNull(user, "user must not be null");
-		Objects.requireNonNull(token, "token must not be null");
-		
-		// TODO
-		WebAuthenticationManager.INSTANCE.login(user, (HttpSession) token);
-
-		//userTokenMap.put(token, user);
-	}
-
-	@Override
-	@Deprecated
-	public void logout(Object token) 
-	{
-		Objects.requireNonNull(token, "token must not be null");
-		
-		WebAuthenticationManager.INSTANCE.logout((HttpSession) token);
-		
-		//userTokenMap.remove(token);
-	}
-
-	@Override
-	@Deprecated
-	public <E extends TransientUser> E getUserByToken(Class<E> clazz, Object token) 
-	{
-		Objects.requireNonNull(clazz, "clazz must not be null");
-		Objects.requireNonNull(token, "token must not be null");
-
-		User user = WebAuthenticationManager.INSTANCE.getUser((HttpSession) token);
-		if(user == null)
-			return null;
-		return clazz.cast(user);
-	}
-
-	@Override
 	public <E extends TransientUser> E get(Class<E> clazz, UserIdentifier userIdentifier) 
 	{
 		return clazz.cast(userMap.get(userIdentifier));
