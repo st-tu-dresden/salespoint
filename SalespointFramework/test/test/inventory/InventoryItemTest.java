@@ -27,7 +27,7 @@ public class InventoryItemTest {
 	
 	@Test
 	public void foobar() {
-		item.increaseQuantiy(Units.TEN);
+		item.increaseQuantity(Units.TEN);
 		assertEquals(item.getQuantity(), Units.TEN.add(Units.TEN));
 	}
 	
