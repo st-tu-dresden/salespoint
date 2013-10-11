@@ -1,0 +1,113 @@
+package org.salespointframework.core.inventory;
+
+import java.util.Objects;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.OneToOne;
+
+import org.salespointframework.core.catalog.Product;
+import org.salespointframework.core.quantity.MetricMismatchException;
+import org.salespointframework.core.quantity.Quantity;
+
+/**
+ * 
+ * @author Paul Henke
+ *
+ */
+@Entity
+public class InventoryItem 
+{
+	@EmbeddedId
+	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID"))
+	private InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
+
+	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, /* CascadeType.REMOVE,*/ CascadeType.REFRESH, CascadeType.DETACH})
+	private Product product;
+	
+	@Lob
+	private Quantity quantity;
+
+	@Deprecated
+	protected InventoryItem() { }
+	
+	/**
+	 * Creates a new InventoryItem
+	 * @param product the {@link Product} for this InventoryItem
+	 * @param quantity the initial {@link Quantity} for this InventoryItem
+	 */
+	public InventoryItem(Product product, Quantity quantity)
+	{
+		this.product = Objects.requireNonNull(product, "product must be not null");
+		this.quantity = Objects.requireNonNull(quantity, "quantity must be not null");
+		
+		if(!product.getMetric().equals(quantity.getMetric())) 
+		{
+			throw new MetricMismatchException("product.getMetric() is not equal to this.quantity.getMetric()", product.getMetric(), this.quantity.getMetric());
+		}
+	}
+	
+	public final InventoryItemIdentifier getIdentifier() 
+	{
+		return inventoryItemIdentifier;
+	}
+
+	public final Quantity getQuantity()
+	{
+		return quantity;
+	}
+
+	public final Product getProduct()
+	{
+		return product;
+	}
+
+	public void decreaseQuantity(Quantity quantity)
+	{
+		Objects.requireNonNull(quantity, "quantity must not be null");
+		if(!this.getProduct().getMetric().equals(quantity.getMetric())) 
+		{
+			throw new MetricMismatchException("this.product.getMetric is not equal to quantity.getMetric");
+		}
+		
+		this.quantity = this.quantity.subtract(quantity); // TODO negative check? -> Exception?
+	}
+
+	public void increaseQuantity(Quantity quantity)
+	{
+		Objects.requireNonNull(quantity, "quantity must not be null");
+		if(!this.getProduct().getMetric().equals(quantity.getMetric())) 
+		{
+			throw new MetricMismatchException("this.product.getMetric is not equal to quantity.getMetric");
+		}
+		this.quantity = this.quantity.add(quantity);
+	}
+	
+	@Override
+	public final int hashCode() 
+	{
+		return inventoryItemIdentifier.hashCode();
+	}
+	
+	@Override
+	public final boolean equals(Object other)
+	{
+		if (other == null)
+		{
+			return false;
+		}
+		if (other == this)
+		{
+			return true;
+		}
+		if (other instanceof InventoryItem)
+		{
+			return this.inventoryItemIdentifier.equals(((InventoryItem)other).inventoryItemIdentifier);
+		}
+		return false;
+	}
+}
