@@ -3,8 +3,8 @@ package videoshop.controller;
 import javax.servlet.http.HttpSession;
 
 import org.salespointframework.core.user.PersistentUser;
-import org.salespointframework.core.user.PersistentUserManager;
 import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.core.user.UserManager;
 import org.salespointframework.web.WebAuthenticationManager;
 import org.salespointframework.web.annotation.Get;
 import org.salespointframework.web.annotation.LoggedInUser;
@@ -18,10 +18,14 @@ import videoshop.model.Customer;
 
 @Controller
 @LoggedInUser
-public class ShopController {
+class ShopController {
 
+	private final UserManager<PersistentUser> userManager;
+	
 	@Autowired
-	private PersistentUserManager userManager;
+	public ShopController(UserManager<PersistentUser> userManager) {
+		this.userManager = userManager;
+	}
 	
 	
 	@RequestMapping({"/", "/index"})

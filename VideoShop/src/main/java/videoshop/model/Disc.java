@@ -6,13 +6,14 @@ import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
+import org.salespointframework.core.catalog.Product;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.product.PersistentProduct;
 import org.salespointframework.core.quantity.Units;
 import org.salespointframework.util.Iterables;
 
 @Entity
-public class Disc extends PersistentProduct {
+public class Disc extends Product {
+	
 	private String genre;
 	private String image;
 	
