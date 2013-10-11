@@ -3,9 +3,10 @@ package org.salespointframework.core.accountancy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -15,10 +16,10 @@ import javax.persistence.criteria.Root;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
-import org.salespointframework.core.database.Database;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.util.Iterables;
-import java.util.Objects;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class represents an accountancy. An accountancy aggregates of
@@ -26,23 +27,14 @@ import java.util.Objects;
  * 
  * @author Hannes Weisbach
  * @author Thomas Dedek
- * 
+ * @author Oliver Gierke
  */
-public class PersistentAccountancy implements
-		Accountancy<PersistentAccountancyEntry> {
-	/**
-	 * {@link EntityManager} which is used for this Accountancy. The
-	 * <code>Database.INSTANCE</code> has to be initialized first.
-	 */
-	private final EntityManagerFactory emf = Database.INSTANCE
-			.getEntityManagerFactory();
-
-	/**
-	 * Creates a new <code>PersistentAccountancy</code> instance.
-	 */
-	public PersistentAccountancy() {
-
-	}
+@Service
+@Transactional
+class PersistentAccountancy implements Accountancy {
+	
+	@PersistenceContext
+	private EntityManager em;
 
 	/**
 	 * {@inheritDoc}
@@ -54,51 +46,48 @@ public class PersistentAccountancy implements
 	 */
 
 	@Override
-	public final void add(PersistentAccountancyEntry accountancyEntry) {
+	public final void add(AccountancyEntry accountancyEntry) {
 		Objects.requireNonNull(accountancyEntry, "accountancyEntry must not be null");
-		EntityManager em = emf.createEntityManager();
 		em.persist(accountancyEntry);
-		beginCommit(em);
 	}
 
 	@Override
-	public final <T extends PersistentAccountancyEntry> T get(
+	public final <T extends AccountancyEntry> T get(
 			Class<T> clazz,
 			AccountancyEntryIdentifier accountancyEntryIdentifier) {
+		
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(accountancyEntryIdentifier,
 				"accountancyEntryIdentifier must not be null");
-		EntityManager em = emf.createEntityManager();
 		return em.find(clazz, accountancyEntryIdentifier);
 	}
 
 	@Override
-	public final <T extends PersistentAccountancyEntry> Iterable<T> find(
+	public final <T extends AccountancyEntry> Iterable<T> find(
 			Class<T> clazz) {
 		Objects.requireNonNull(clazz, "clazz must not be null");
 
-		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> q = cb.createQuery(clazz);
-
+		q.select(q.from(clazz));
+		
 		TypedQuery<T> tq = em.createQuery(q);
 
 		return Iterables.of(tq.getResultList());
 	}
 
 	@Override
-	public final <T extends PersistentAccountancyEntry> Iterable<T> find(
+	public final <T extends AccountancyEntry> Iterable<T> find(
 			Class<T> clazz, DateTime from, DateTime to) {
 		Objects.requireNonNull(from, "from must not be null");
 		Objects.requireNonNull(to, "to must not be null");
 		Objects.requireNonNull(clazz, "clazz must not be null");
 
-		EntityManager em = emf.createEntityManager();
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> q = cb.createQuery(clazz);
 		Root<T> entry = q.from(clazz);
 
-		Predicate p1 = cb.between(entry.get(PersistentAccountancyEntry_.date),
+		Predicate p1 = cb.between(entry.get(AccountancyEntry_.date),
 				from.toDate(), to.toDate());
 
 		q.where(p1);
@@ -108,7 +97,7 @@ public class PersistentAccountancy implements
 	}
 
 	@Override
-	public final <T extends PersistentAccountancyEntry> Map<Interval, Iterable<T>> find(
+	public final <T extends AccountancyEntry> Map<Interval, Iterable<T>> find(
 			Class<T> clazz, DateTime from, DateTime to, Period period) {
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(from, "from must not be null");
@@ -133,7 +122,7 @@ public class PersistentAccountancy implements
 	}
 
 	@Override
-	public final <T extends PersistentAccountancyEntry> Map<Interval, Money> salesVolume(
+	public final <T extends AccountancyEntry> Map<Interval, Money> salesVolume(
 			Class<T> clazz, DateTime from, DateTime to, Period period) {
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(from, "from must not be null");
@@ -167,18 +156,10 @@ public class PersistentAccountancy implements
 	 *            which should be added to the <code>Accountancy</code>
 	 */
 	public final void addAll(
-			Iterable<? extends PersistentAccountancyEntry> accountancyEntries) {
+			Iterable<? extends AccountancyEntry> accountancyEntries) {
 		Objects.requireNonNull(accountancyEntries, "accountancyEntries must not be null");
-		EntityManager em = emf.createEntityManager();
 		for (AccountancyEntry e : accountancyEntries) {
 			em.persist(e);
 		}
-		beginCommit(em);
-
-	}
-
-	private final void beginCommit(EntityManager entityManager) {
-		entityManager.getTransaction().begin();
-		entityManager.getTransaction().commit();
 	}
 }

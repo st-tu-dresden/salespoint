@@ -20,14 +20,14 @@ import org.salespointframework.core.money.Money;
  *            implement {@link AccountancyEntry}.
  * 
  */
-public interface Accountancy<T extends AccountancyEntry> {
+public interface Accountancy {
 	/**
 	 * Adds a new {@link AccountancyEntry} to this <code>Accountancy</code>	 * .
 	 * 
 	 * @param accountancyEntry
 	 *            entry to be added to the accountancy
 	 */
-	void add(T accountancyEntry);
+	void add(AccountancyEntry accountancyEntry);
 
 	/**
 	 * Returns all {@link AccountancyEntry}s of the specified type
@@ -46,7 +46,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * 
 	 * @return an {@link Iterable} containing all entries of type clazz
 	 */
-	<E extends T> Iterable<E> find(Class<E> clazz);
+	<E extends AccountancyEntry> Iterable<E> find(Class<E> clazz);
 
 	/**
 	 * Returns the {@link AccountancyEntry} of type <code>clazz</code> and
@@ -65,7 +65,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 *         <code>clazz</code> which has the identifier
 	 *         {@link AccountancyEntryIdentifier}
 	 */
-	<E extends T> T get(Class<E> clazz,
+	<E extends AccountancyEntry> E get(Class<E> clazz,
 			AccountancyEntryIdentifier accountancyEntryIdentifier);
 
 	/**
@@ -88,7 +88,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 *            {@link AccountancyEntry}
 	 * @return an {@link Iterable} containing all entries between from and to of type E
 	 */
-	<E extends T> Iterable<E> find(Class<E> clazz, DateTime from, DateTime to);
+	<E extends AccountancyEntry> Iterable<E> find(Class<E> clazz, DateTime from, DateTime to);
 
 	
 	// TODO comment fortsetzen? -> " If no entries for an interval exist"
@@ -127,7 +127,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 *         <code>Iterable</code> containing all entries within the key-
 	 *         <code>Interval</code>
 	 */
-	<E extends T> Map<Interval, Iterable<E>> find(Class<E> clazz,
+	<E extends AccountancyEntry> Map<Interval, Iterable<E>> find(Class<E> clazz,
 			DateTime from, DateTime to, Period period);
 
 	/**
@@ -168,6 +168,6 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 *         <code>Money</code> object, equal to the sum of the amount fields
 	 *         of all entries within the key-<code>Interval</code>
 	 */
-	<E extends T> Map<Interval, Money> salesVolume(Class<E> clazz,
+	<E extends AccountancyEntry> Map<Interval, Money> salesVolume(Class<E> clazz,
 			DateTime from, DateTime to, Period period);
 }

@@ -98,6 +98,7 @@ public interface OrderManager
 	 */
 	<E extends Order> Iterable<E> find(Class<E> clazz, UserIdentifier userIdentifier, DateTime from, DateTime to);
 	
+	
 	/**
 	 * Tries to complete this order, the {@link OrderStatus} has to be PAYED 
 	 * @param order TODO
@@ -105,5 +106,7 @@ public interface OrderManager
 	 */
 	OrderCompletionResult completeOrder(Order order);
 
-	public abstract void update(Order order);
+	void update(Order order);
+	
+	boolean pay(Order order);
 }

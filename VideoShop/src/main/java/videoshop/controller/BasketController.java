@@ -24,13 +24,12 @@ import videoshop.model.Customer;
 import videoshop.model.Disc;
 import videoshop.model.Dvd;
 
-
 @Controller
 @Capabilities("customer")
 class BasketController {
-	
+
 	private final OrderManager orderManager;
-	
+
 	/**
 	 * @param orderManager
 	 */
@@ -41,13 +40,13 @@ class BasketController {
 
 	@RequestMapping("/addDisc")
 	public String addDisc(@PathVariable("pid") Disc disc, @RequestParam("number") int number,
-			@LoggedInUser Customer customer, HttpSession session, ModelMap modelMap) 
-	{
-		if(number <= 0 || number > 5) number = 1;
-		
+			@LoggedInUser Customer customer, HttpSession session, ModelMap modelMap) {
+		if (number <= 0 || number > 5) {
+			number = 1;
+		}
+
 		Order order = (Order) session.getAttribute("order");
-		
-		
+
 		if (order == null) {
 			order = new Order(customer.getIdentifier(), Cash.CASH);
 			// TODO remove
@@ -58,16 +57,16 @@ class BasketController {
 			orderManager.add(order);
 			session.setAttribute("order", order);
 		}
-		
+
 		Quantity quantity = Units.of(number);
 
 		OrderLine orderLine = new OrderLine(disc, quantity);
 
 		order.addOrderLine(orderLine);
-		
+
 		orderManager.update(order);
-		
-		if(disc instanceof Dvd) {
+
+		if (disc instanceof Dvd) {
 			return "redirect:dvdCatalog";
 		} else {
 			return "redirect:blurayCatalog";
@@ -75,8 +74,7 @@ class BasketController {
 	}
 
 	@RequestMapping("/shoppingBasket")
-	public String basket(HttpSession session, ModelMap modelMap) 
-	{
+	public String basket(HttpSession session, ModelMap modelMap) {
 		boolean isEmpty = true;
 		Order order = (Order) session.getAttribute("order");
 
@@ -86,13 +84,12 @@ class BasketController {
 		}
 
 		modelMap.addAttribute("isEmpty", isEmpty);
-		
+
 		return "basket";
 	}
 
 	@RequestMapping("/buy")
-	public String buy(HttpSession session) 
-	{
+	public String buy(HttpSession session) {
 		Order order = (Order) session.getAttribute("order");
 
 		// TODO remove
@@ -100,10 +97,10 @@ class BasketController {
 		order.removeChargeLine(cl.getIdentifier());
 		orderManager.update(order);
 		// TODO
-		
+
 		if (order != null) {
 			session.setAttribute("order", null);
-			order.payOrder();
+			orderManager.pay(order);
 			orderManager.completeOrder(order);
 		}
 		return "index";

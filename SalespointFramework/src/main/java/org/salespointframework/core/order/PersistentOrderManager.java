@@ -13,6 +13,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.catalog.ProductIdentifier;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.InventoryItem;
@@ -21,7 +22,7 @@ import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.util.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,13 +35,14 @@ import org.springframework.transaction.support.TransactionTemplate;
  * @author Paul Henke
  * 
  */
-@Component
+@Service
 @Transactional
 class PersistentOrderManager implements OrderManager
 {
 
 	private final Inventory inventory;
 	private final TransactionTemplate txTemplate;
+	private final Accountancy accountancy;
 
 	@PersistenceContext
 	private EntityManager em;
@@ -49,8 +51,10 @@ class PersistentOrderManager implements OrderManager
 	 * creates a new PersistentOrderManager
 	 */
 	@Autowired
-	public PersistentOrderManager(Inventory inventory, PlatformTransactionManager txManager) {
+	public PersistentOrderManager(Inventory inventory, Accountancy accountancy, PlatformTransactionManager txManager) {
+		
 		this.inventory = Objects.requireNonNull(inventory, "Inventory must not be null!");
+		this.accountancy = Objects.requireNonNull(accountancy, "Accountancy must not be null!");
 		this.txTemplate = new TransactionTemplate(txManager);
 	}
 	
@@ -235,6 +239,20 @@ class PersistentOrderManager implements OrderManager
 						OrderCompletionStatus.SUCCESSFUL);
 			}
 		});
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.order.OrderManager#pay(org.salespointframework.core.order.Order)
+	 */
+	public boolean pay(Order order) {
+		
+		if (order.isPaymentExpected()) {
+			return false;
+		}
+
+		accountancy.add(order.markPaid());
+		return true;
 	}
 	
 	private final class InternalOrderCompletionResult implements OrderCompletionResult {

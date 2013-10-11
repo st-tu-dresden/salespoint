@@ -15,8 +15,9 @@ import org.salespointframework.core.user.UserIdentifier;
  *            {@link org.salespointframework.core.calendar.CalendarEntry})
  * 
  * @author Stanley Förster
+ * @author Oliver Gierke
  */
-public interface Calendar<T extends CalendarEntry> {
+public interface Calendar {
 
 	/**
 	 * Adds the given entry to the calendar.
@@ -27,7 +28,7 @@ public interface Calendar<T extends CalendarEntry> {
 	 * @throws NullPointerException
 	 *             if <code>entry</code> is <code>null</code>
 	 */
-	void add(T entry);
+	void add(CalendarEntry entry);
 
 	/**
 	 * Checks, whether there exists an {@link CalendarEntry} that has the given
@@ -59,7 +60,7 @@ public interface Calendar<T extends CalendarEntry> {
 	 * @throws NullPointerException
 	 *             if <code>calendarEntryIdentifier</code> is <code>null</code>.
 	 */
-	<E extends T> E get(Class<E> clazz,
+	<E extends CalendarEntry> E get(Class<E> clazz,
 			CalendarEntryIdentifier calendarEntryIdentifier);
 
 	/**
@@ -73,7 +74,7 @@ public interface Calendar<T extends CalendarEntry> {
 	 * 
 	 * @return Iterable<T> of all found entries.
 	 */
-	<E extends T> Iterable<E> find(Class<E> clazz);
+	<E extends CalendarEntry> Iterable<E> find(Class<E> clazz);
 
 	/**
 	 * Deletes the entry with the given id from the calendar.
@@ -102,7 +103,7 @@ public interface Calendar<T extends CalendarEntry> {
      *            The title that entries should have.
      * @return An Iterable with all found entries
      */
-	<E extends T> Iterable<E> find(Class<E> clazz, String title);
+	<E extends CalendarEntry> Iterable<E> find(Class<E> clazz, String title);
 
     /**
      * Returns all entries for that the given user is the owner.
@@ -120,7 +121,7 @@ public interface Calendar<T extends CalendarEntry> {
      *            found.
      * @return An {link @Iterable} with all found entries.
      */
-	<E extends T> Iterable<E> find(Class<E> clazz, UserIdentifier userIdentifier);
+	<E extends CalendarEntry> Iterable<E> find(Class<E> clazz, UserIdentifier userIdentifier);
 
     /**
      * Returns all entries that start and end between the given start and end date.
@@ -149,7 +150,7 @@ public interface Calendar<T extends CalendarEntry> {
      * 
      * @see Interval#contains(org.joda.time.ReadableInterval)
      */
-	<E extends T> Iterable<E> between(Class<E> clazz, DateTime start, DateTime end);
+	<E extends CalendarEntry> Iterable<E> between(Class<E> clazz, DateTime start, DateTime end);
 
     /**
      * Returns all entries that end between the given start and end date.
@@ -178,7 +179,7 @@ public interface Calendar<T extends CalendarEntry> {
      * 
      * @see Interval#contains(org.joda.time.ReadableInstant)
      */
-	<E extends T> Iterable<E> endsBetween(Class<E> clazz, DateTime start, DateTime end);
+	<E extends CalendarEntry> Iterable<E> endsBetween(Class<E> clazz, DateTime start, DateTime end);
 
     /**
      * Returns all entries that start between the given start and end date.
@@ -207,7 +208,7 @@ public interface Calendar<T extends CalendarEntry> {
      * 
      * @see Interval#contains(org.joda.time.ReadableInstant)
      */
-	<E extends T> Iterable<E> startsBetween(Class<E> clazz, DateTime start, DateTime end);
+	<E extends CalendarEntry> Iterable<E> startsBetween(Class<E> clazz, DateTime start, DateTime end);
 
 
 }

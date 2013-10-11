@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
@@ -14,14 +15,14 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
-import org.salespointframework.core.accountancy.Accountancy;
-import org.salespointframework.core.accountancy.PersistentAccountancy;
-import org.salespointframework.core.accountancy.PersistentProductPaymentEntry;
+import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.shop.Shop;
@@ -36,6 +37,7 @@ import org.salespointframework.util.Iterables;
  * 
  */
 @Entity
+@Table(name = "orders")
 public class Order implements	Comparable<Order> {
 	// TODO: Here, we also need to rename the column, or OWNER_ID will be the
 	// PK. Maybe we should rename the field in SalespointIdentifier, to avoid
@@ -60,6 +62,7 @@ public class Order implements	Comparable<Order> {
 	private Set<OrderLine> orderLines = new HashSet<OrderLine>();
 
 	@ElementCollection
+	@CollectionTable(joinColumns = @JoinColumn(name = "order_id"))
 	private Set<ChargeLine> chargeLines = new HashSet<ChargeLine>();
 
 	/**
@@ -354,34 +357,7 @@ public class Order implements	Comparable<Order> {
 		return orderStatus == OrderStatus.OPEN;
 	}
 
-	public boolean payOrder() {
-		if (orderStatus != OrderStatus.OPEN || paymentMethod == null) {
-			return false;
-		}
-
-		Accountancy<?> temp = Shop.INSTANCE.getAccountancy();
-
-		if (temp == null) {
-			throw new NullPointerException(
-					"Shop.INSTANCE.getAccountancy() returned null");
-		}
-
-		if (!(temp instanceof PersistentAccountancy)) {
-			throw new RuntimeException(
-					"Sorry, Order works only with PersistentAccountancy :(");
-		}
-
-		PersistentAccountancy accountancy = (PersistentAccountancy) temp;
-
-		// TODO "Rechnung Nr " deutsch?
-		PersistentProductPaymentEntry ppe = new PersistentProductPaymentEntry(
-				this.orderIdentifier, this.userIdentifier,
-				this.getTotalPrice(), "Rechnung Nr. " + this.orderIdentifier,
-				this.paymentMethod);
-		accountancy.add(ppe);
-		orderStatus = OrderStatus.PAYED;
-		return true;
-	}
+	
 
 	/*
 	 * private final class InternalOrderCompletionResult implements
@@ -446,5 +422,20 @@ public class Order implements	Comparable<Order> {
 	
 	int getNumberOfLineItems() {
 		return this.orderLines.size();
+	}
+	
+	boolean isPaymentExpected() {
+		return orderStatus == OrderStatus.OPEN && paymentMethod != null;
+	}
+	
+	ProductPaymentEntry markPaid() {
+	
+			ProductPaymentEntry ppe = new ProductPaymentEntry(
+					this.orderIdentifier, this.userIdentifier,
+					this.getTotalPrice(), "Rechnung Nr. " + this.orderIdentifier,
+					this.paymentMethod);
+			orderStatus = OrderStatus.PAYED;
+			
+			return ppe;
 	}
 }

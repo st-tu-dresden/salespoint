@@ -15,6 +15,7 @@ import org.salespointframework.core.catalog.ProductIdentifier;
 import org.salespointframework.core.catalog.Product_;
 import org.salespointframework.util.Iterables;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -22,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Paul Henke
  * 
  */
-@Component
+@Service
 @Transactional
 class PersistentInventory implements Inventory 
 {

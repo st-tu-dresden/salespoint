@@ -16,15 +16,15 @@
 package org.salespointframework;
 
 import org.junit.runner.RunWith;
+import org.springframework.boot.context.initializer.ConfigFileApplicationContextInitializer;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- *
  * @author Oliver Gierke
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = Salespoint.class)
+@ContextConfiguration(classes = Salespoint.class, initializers = ConfigFileApplicationContextInitializer.class)
 public abstract class AbstractIntegrationTests {
 
 }

@@ -2,14 +2,6 @@ package org.salespointframework.core.shop;
 
 import java.util.Objects;
 
-import org.salespointframework.core.accountancy.Accountancy;
-import org.salespointframework.core.accountancy.AccountancyEntry;
-import org.salespointframework.core.accountancy.PersistentAccountancy;
-import org.salespointframework.core.accountancy.TransientAccountancy;
-import org.salespointframework.core.calendar.Calendar;
-import org.salespointframework.core.calendar.CalendarEntry;
-import org.salespointframework.core.calendar.PersistentCalendar;
-import org.salespointframework.core.calendar.TransientCalendar;
 import org.salespointframework.core.time.DefaultTime;
 import org.salespointframework.core.time.Time;
 import org.salespointframework.core.user.TransientUserManager;
@@ -29,29 +21,7 @@ public enum Shop {
 	INSTANCE;
 
 	private Time time = new DefaultTime();
-	private Accountancy<? extends AccountancyEntry> accountancy;
-	private Calendar<? extends CalendarEntry> calendar;
 	private UserManager<? extends User> usermanager;
-
-
-	/**
-	 * Gets the global {@link Accountancy}
-	 * @return an Accountancy instance
-	 */
-	public Accountancy<? extends AccountancyEntry> getAccountancy()
-	{
-		return accountancy;
-	}
-
-	/**
-	 * Sets the global {@link Accountancy}
-	 * @param accountancy the Accountancy to be set
-	 * @throws NullPointerException if accountancy is null
-	 */
-	public void setAccountancy(Accountancy<? extends AccountancyEntry> accountancy)
-	{
-		this.accountancy = Objects.requireNonNull(accountancy, "accountancy must not be null");
-	}
 
 	/**
 	 * Gets the global {@link Time}
@@ -91,36 +61,6 @@ public enum Shop {
 		this.usermanager = Objects.requireNonNull(userManager, "userManager must not be null");
 	}
 
-
-	/**
-	 * Gets the global {@link Calendar}
-	 * @return a Calendar instance
-	 */
-	public Calendar<? extends CalendarEntry> getCalendar()
-	{
-		return calendar;
-	}
-
-	/**
-	 * Sets the global {@link Calendar}
-	 * @param calendar the Calendar to be set
-	 * @throws NullPointerException if calendar is null
-	 */
-	public void setCalendar(Calendar<? extends CalendarEntry> calendar)
-	{
-		this.calendar = Objects.requireNonNull(calendar, "calendar must not be null");
-	}
-	
-	/**
-	 * Initializes the Shop with all <code>Persistent</code> classes.
-	 */
-	public void initializePersistent()
-	{
-		Shop shop = Shop.INSTANCE;
-
-		shop.setAccountancy(new PersistentAccountancy());
-		shop.setCalendar(new PersistentCalendar());
-	} 
 	
 	/**
 	 * Initializes the Shop with all <code>Transient</code> classes.
@@ -129,8 +69,6 @@ public enum Shop {
 	{
 		Shop shop = Shop.INSTANCE;
 		
-		shop.setAccountancy(new TransientAccountancy());
-		shop.setCalendar(new TransientCalendar());
 		shop.setUserManager(new TransientUserManager());
 	}
 }

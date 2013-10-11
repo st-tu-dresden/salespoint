@@ -19,28 +19,27 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.salespointframework.core.calendar.Calendar;
 import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration test to bootstrap the application configuration.
  *
  * @author Oliver Gierke
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = Salespoint.class)
-public class SalespointApplicationConfigurationTests {
+@Transactional
+public class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
 	
 	@Autowired Inventory inventory;
 	@Autowired OrderManager orderManager;
 	@Autowired Catalog catalog;
+	@Autowired Calendar calendar;
 	
 	@Autowired UserManager<PersistentUser> userManager;
 
@@ -50,6 +49,7 @@ public class SalespointApplicationConfigurationTests {
 		assertThat(inventory, is(notNullValue()));
 		assertThat(orderManager, is(notNullValue()));
 		assertThat(catalog, is(notNullValue()));
+		assertThat(calendar, is(notNullValue()));
 		
 		assertThat(orderManager, is(notNullValue()));
 	}

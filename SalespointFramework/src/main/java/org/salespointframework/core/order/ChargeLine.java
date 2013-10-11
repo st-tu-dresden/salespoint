@@ -1,6 +1,7 @@
 package org.salespointframework.core.order;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Lob;
 
 import org.salespointframework.core.money.Money;
 import java.util.Objects;
@@ -18,6 +19,7 @@ public final class ChargeLine
 {
 	private final ChargeLineIdentifier chargeLineIdentifier = new ChargeLineIdentifier();
 
+	@Lob
 	private final Money amount;
 	private final String description;
 

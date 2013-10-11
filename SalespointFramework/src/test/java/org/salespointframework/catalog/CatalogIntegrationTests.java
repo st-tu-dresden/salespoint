@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.catalog.Catalog;
@@ -36,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CatalogIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired Catalog catalog;
+	private Keks keks;
 	
 	@Test
 	public void findsProductsByCategory() {
@@ -49,5 +51,47 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 		
 		assertThat(result, is(Matchers.<Product> iterableWithSize(1)));
 		assertThat(result, hasItem(product));
+	}
+	
+	@Before
+	public void before() {
+		keks = new Keks("Schoki", new Money(0));
+	}
+
+	@Test
+	public void emFindTest() {
+		catalog.add(keks);
+		Keks kT1 = catalog.get(Keks.class, keks.getIdentifier());
+		Product kT2 = catalog.get(Product.class, keks.getIdentifier());
+		assertEquals(kT1,kT2);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void nullAddTest() {
+		catalog.add(null);
+	}
+
+	@Test()
+	public void addTest() {
+		catalog.add(keks);
+	}
+	
+	@Test
+	public void testRemove() {
+		catalog.add(keks);
+		catalog.remove(keks.getIdentifier());
+		assertFalse(catalog.contains(keks.getIdentifier()));
+	}
+	
+	@Test
+	public void testContains() {
+		catalog.add(keks);
+		assertTrue(catalog.contains(keks.getIdentifier()));
+	}
+	
+	@Test
+	public void getTest() {
+		catalog.add(keks);
+		assertEquals(keks, catalog.get(Keks.class, keks.getIdentifier()));
 	}
 }

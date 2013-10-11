@@ -12,7 +12,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.salespointframework.util.Iterables;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Paul Henke
  * 
  */
-@Component
+@Service
 @Transactional
 class PersistentCatalog implements Catalog
 {
