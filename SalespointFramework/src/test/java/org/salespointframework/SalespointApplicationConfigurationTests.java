@@ -21,6 +21,8 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.salespointframework.core.calendar.Calendar;
 import org.salespointframework.core.catalog.Catalog;
+import org.salespointframework.core.catalog.Product;
+import org.salespointframework.core.catalog.ProductRepository;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.user.PersistentUser;
@@ -40,6 +42,7 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 	@Autowired OrderManager orderManager;
 	@Autowired Catalog catalog;
 	@Autowired Calendar calendar;
+	@Autowired ProductRepository<Product> repository;
 	
 	@Autowired UserManager<PersistentUser> userManager;
 
@@ -50,7 +53,8 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 		assertThat(orderManager, is(notNullValue()));
 		assertThat(catalog, is(notNullValue()));
 		assertThat(calendar, is(notNullValue()));
+		assertThat(userManager, is(notNullValue()));
 		
-		assertThat(orderManager, is(notNullValue()));
+		assertThat(repository, is(notNullValue()));
 	}
 }
