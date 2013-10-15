@@ -24,13 +24,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component
 @Transactional
-class PersistentUserManager implements UserManager<PersistentUser>
+class PersistentUserManager implements UserManager<User>
 {
 	@PersistenceContext
 	private  EntityManager em;
 
 	@Override
-	public void add(PersistentUser user)
+	public void add(User user)
 	{
 		Objects.requireNonNull(user, "user must not be null");
 		em.persist(user);
@@ -53,7 +53,7 @@ class PersistentUserManager implements UserManager<PersistentUser>
 		}
 		*/
 
-		Object user = em.find(PersistentUser.class, userIdentifier);
+		Object user = em.find(User.class, userIdentifier);
 		if (user != null) {
 			em.remove(user);
 			return true;
@@ -67,11 +67,11 @@ class PersistentUserManager implements UserManager<PersistentUser>
 	{
 		Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
 
-		return em.find(PersistentUser.class, userIdentifier) != null;
+		return em.find(User.class, userIdentifier) != null;
 	}
 
 	@Override
-	public <T extends PersistentUser> Iterable<T> find(Class<T> clazz)
+	public <T extends User> Iterable<T> find(Class<T> clazz)
 	{
 		Objects.requireNonNull(clazz, "clazz must not be null");
 
@@ -83,7 +83,7 @@ class PersistentUserManager implements UserManager<PersistentUser>
 	}
 
 	@Override
-	public <T extends PersistentUser> T get(Class<T> clazz, UserIdentifier userIdentifier)
+	public <T extends User> T get(Class<T> clazz, UserIdentifier userIdentifier)
 	{
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
@@ -92,7 +92,7 @@ class PersistentUserManager implements UserManager<PersistentUser>
 	}
 
     /**
-     * Updates and persists an existing {@link PersistentUser} to the
+     * Updates and persists an existing {@link User} to the
      * {@link PersistentUserManager} and the Database
      * 
      * @param user
@@ -100,7 +100,7 @@ class PersistentUserManager implements UserManager<PersistentUser>
      * @throws NullPointerException
      *             if <code>user</code> is <code>null</code>
      */
-	public void update(PersistentUser user)
+	public void update(User user)
 	{
 		Objects.requireNonNull(user, "user must not be null");
 

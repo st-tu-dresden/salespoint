@@ -1,43 +1,75 @@
 package org.salespointframework.core.user;
 
-//TODO comment
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+
+import org.salespointframework.util.Iterables;
+
+import java.util.Objects;
+
+import org.salespointframework.util.Passwords;
 
 /**
- * User interface.
- * 
  * 
  * @author Christopher Bellmann
- * 
+ * @author Paul Henke
+ *
  */
-public interface User
+@Entity
+public class User implements Comparable<User>
 {
+
+	@EmbeddedId
+	@AttributeOverride(name = "id", column = @Column(name = "USER_ID"))
+	private UserIdentifier userIdentifier;
+
+	private String hashedPassword;
+
+	@ElementCollection
+	private Set<Capability> capabilities = new TreeSet<Capability>();
+
+	/**
+	 * Parameterless constructor required for JPA. Do not use.
+	 */
+	@Deprecated
+	protected User()
+	{
+	}
+	
+	/**
+	 * Creates an new PersistentUser
+	 * @param userIdentifier the {@link UserIdentifier} of the user
+	 * @param password the password of the user
+	 * @param capabilities an <code>Array</code> of {@link Capability}s for the user 
+	 */
+	public User(UserIdentifier userIdentifier, String password, Capability... capabilities)
+	{
+		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
+		
+		Objects.requireNonNull(password, "password must not be null");
+		this.hashedPassword = Passwords.hash(password);
+		
+		Objects.requireNonNull(capabilities, "capabilities must not be null");
+		this.capabilities.addAll(Arrays.asList(capabilities));
+	}
+
 	/**
 	 * Get the unique identifier of this <code>User</code>.
 	 * 
 	 * @return the {@link UserIdentifier} of this <code>User</code>
 	 */
-	public UserIdentifier getIdentifier();
-
-	/**
-	 * Checks a given password against the user's password.
-	 * 
-	 * @param password
-	 *            The password to be checked.
-	 * @return <code>true</code>, if the password matches, <code>false</code>
-	 *         otherwise.
-	 * @throws NullPointerException if password is null
-	 */
-	public boolean verifyPassword(String password);
+	public final UserIdentifier getIdentifier()
+	{
+		return userIdentifier;
+	}
 	
-	/**
-	 * Changes the password of the <code>User</code> to <code>newPassword</code>
-	 * 
-	 * @param newPassword
-	 *            new password.
-	 * @throws NullPointerException if newPassword is null
-	 */
-	public void changePassword(String newPassword);
-
 	/**
 	 * Adds a {@link Capability} to a <code>User</code>
 	 * 
@@ -47,7 +79,11 @@ public interface User
 	 * @return <code>true</code> if successful, <code>false</code> otherwise.
 	 * @throws NullPointerException if capability is null
 	 */
-	boolean addCapability(Capability capability);
+	public boolean addCapability(Capability capability)
+	{
+		Objects.requireNonNull(capability, "capability must not be null");
+		return capabilities.add(capability);
+	}
 
 	/**
 	 * Removes a {@link Capability} from a <code>User</code>.
@@ -58,7 +94,11 @@ public interface User
 	 * @return <code>true</code> if successful, <code>false</code> otherwise
 	 * @throws NullPointerException if capability is null
 	 */
-	boolean removeCapability(Capability capability);
+	public boolean removeCapability(Capability capability)
+	{
+		Objects.requireNonNull(capability, "capability must not be null");
+		return capabilities.remove(capability);
+	}
 
 	/**
 	 * Checks if a <code>User</code> has a specific {@link Capability}
@@ -70,11 +110,84 @@ public interface User
 	 *         <code>user</code>
 	 * @throws NullPointerException if capability is null
 	 */
-	boolean hasCapability(Capability capability);
-	
+	public boolean hasCapability(Capability capability)
+	{
+		Objects.requireNonNull(capability, "capability must not be null");
+		return capabilities.contains(capability);
+	}
+
 	/**
 	 * 
 	 * @return An <code>Iterable/code> with all {@link Capability}s of the user 
 	 */
-	Iterable<Capability> getCapabilities();
+	public Iterable<Capability> getCapabilities()
+	{
+		return Iterables.of(capabilities);
+	}
+
+	/**
+	 * Checks a given password against the user's password.
+	 * 
+	 * @param password
+	 *            The password to be checked.
+	 * @return <code>true</code>, if the password matches, <code>false</code>
+	 *         otherwise.
+	 * @throws NullPointerException if password is null
+	 */
+	public boolean verifyPassword(String password)
+	{
+		Objects.requireNonNull(password, "password must not be null");
+		
+		return Passwords.verify(password, this.hashedPassword);
+	}
+
+	/**
+	 * Changes the password of the <code>User</code> to <code>newPassword</code>
+	 * 
+	 * @param newPassword
+	 *            new password.
+	 * @throws NullPointerException if newPassword is null
+	 */
+	public void changePassword(String password)
+	{
+		Objects.requireNonNull(password, "password must not be null");
+		this.hashedPassword = Passwords.hash(password);
+	}
+
+	@Override
+	public final boolean equals(Object other)
+	{
+		if (other == null)
+		{
+			return false;
+		}
+		if (other == this)
+		{
+			return true;
+		}
+		if (other instanceof User)
+		{
+			return this.userIdentifier.equals(((User)other).userIdentifier);
+		}
+		return false;
+		
+	}
+
+	@Override
+	public final int hashCode()
+	{
+		return userIdentifier.hashCode();
+	}
+
+	@Override
+	public String toString()
+	{
+		return userIdentifier.toString();
+	}
+
+	@Override
+	public int compareTo(User other)
+	{
+		return this.userIdentifier.compareTo(other.getIdentifier());
+	}
 }

@@ -9,7 +9,7 @@ import org.salespointframework.core.SalespointIdentifier;
  * objects. The main reason for its existence is type safety for identifier
  * across the Salespoint Framework. <br>
  * <code>UserIdentifier</code> instances serve as primary key attribute in
- * {@link PersistentUser}, but can also be used as a key for non-persistent,
+ * {@link User}, but can also be used as a key for non-persistent,
  * <code>Map</code>-based implementations.
  * 
  * @author Hannes Weisbach
