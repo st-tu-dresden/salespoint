@@ -11,7 +11,6 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.core.user.Capability;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.core.user.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
