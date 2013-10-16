@@ -2,7 +2,7 @@ package videoshop.controller;
 
 import javax.servlet.http.HttpSession;
 
-import org.salespointframework.core.user.PersistentUser;
+import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.core.user.UserManager;
 import org.salespointframework.web.WebAuthenticationManager;
@@ -20,10 +20,10 @@ import videoshop.model.Customer;
 @LoggedInUser
 class ShopController {
 
-	private final UserManager<PersistentUser> userManager;
+	private final UserManager userManager;
 
 	@Autowired
-	public ShopController(UserManager<PersistentUser> userManager) {
+	public ShopController(UserManager userManager) {
 		this.userManager = userManager;
 	}
 
@@ -45,7 +45,7 @@ class ShopController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@PathVariable("identifier") PersistentUser user, @RequestParam("password") String password,
+	public String login(@PathVariable("identifier") User user, @RequestParam("password") String password,
 			HttpSession session) {
 		WebAuthenticationManager.INSTANCE.login(user, password, session);
 		return "redirect:/";

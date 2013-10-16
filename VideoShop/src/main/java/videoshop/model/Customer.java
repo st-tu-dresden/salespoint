@@ -3,12 +3,12 @@ package videoshop.model;
 import javax.persistence.Entity;
 
 import org.salespointframework.core.user.Capability;
-import org.salespointframework.core.user.PersistentUser;
+import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 
 
 @Entity
-public class Customer extends PersistentUser {
+public class Customer extends User {
 
 	@SuppressWarnings("unused")
 	private String adress;

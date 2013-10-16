@@ -5,7 +5,7 @@ import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.user.Capability;
-import org.salespointframework.core.user.PersistentUser;
+import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.core.user.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class DataInitializer {
 
 
 	@Autowired
-	public DataInitializer(Inventory inventory, VideoCatalog videoCatalog, UserManager<PersistentUser> userManager) {
+	public DataInitializer(Inventory inventory, VideoCatalog videoCatalog, UserManager userManager) {
 
 		initializeUsers(userManager);
 
@@ -55,7 +55,7 @@ public class DataInitializer {
 	 * @param userManager 
 	 * 
 	 */
-	private void initializeUsers(UserManager<PersistentUser> userManager) {
+	private void initializeUsers(UserManager userManager) {
 		
 		UserIdentifier bossUI = new UserIdentifier("boss");
 
@@ -63,7 +63,7 @@ public class DataInitializer {
 			return;
 		}
 
-		PersistentUser boss = new PersistentUser(bossUI, "123");
+		User boss = new User(bossUI, "123");
 		boss.addCapability(new Capability("boss"));
 
 		Customer customer1 = new Customer(new UserIdentifier("hans"), "wurst", "");
