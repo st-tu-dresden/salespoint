@@ -80,23 +80,34 @@ public class AccountancyEntry {
 		this.description = Objects.requireNonNull(description, "description must not be null");
 	}
 
+	/**
+	 * @return the {@link DateTime} when this entry was posted.
+	 */
 	public final DateTime getDate() {
 		return new DateTime(date);
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * <p>
 	 * The Money object is always non-<code>null</code>.
+	 * @return the monetary value for this entry.
 	 */
 	public final Money getValue() {
 		return value;
 	}
 
+	/**
+	 * 
+	 * @return description, detailing the entry.
+	 */
 	public final String getDescription() {
 		return description;
 	}
 
+	/**
+	 * @return {@link AccountancyEntryIdentifier} to uniquely identify this
+	 *         entry.
+	 * 
+	 */
 	public final AccountancyEntryIdentifier getIdentifier() {
 		return accountancyEntryIdentifier;
 	}

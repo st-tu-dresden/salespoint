@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  * This is an implementation of the interface {@link Calendar} that provides basic functionality like add/remove
  * calendar entries. Using this implementation, it is possible to persist all information to a database.
  * 
- * @author Stanley FÃ¶rster
+ * @author Stanley Föerster
  * @author Oliver Gierke
  */
 @Service

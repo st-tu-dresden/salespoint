@@ -27,7 +27,7 @@ import java.util.Objects;
  * conjunction with <code>PersistentCalendar</code> to save entries to a
  * database, using JPA.
  * 
- * @author Stanley Förster
+ * @author Stanley Foerster
  * 
  */
 @Entity
@@ -36,12 +36,6 @@ public class CalendarEntry {
     @EmbeddedId
     @AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID"))
     private CalendarEntryIdentifier calendarEntryIdentifier = new CalendarEntryIdentifier();
-
-    //@ElementCollection(targetClass = EnumSet.class)
-    //@CollectionTable(joinColumns = @JoinColumn(referencedColumnName = "ENTRY_ID", name = "ENTRY_ID"))
-    //@AttributeOverride(name = "key.id", column = @Column(name = "USER_ID"))
-    //@Column(name = "ENUM")
-    //private Map<UserIdentifier, EnumSet<CalendarEntryCapability>> capabilities = new HashMap<UserIdentifier, EnumSet<CalendarEntryCapability>>();
 
     private int                                                   repeatCount;
 
@@ -156,8 +150,6 @@ public class CalendarEntry {
         this.period = period;
 
         setStartEnd(start.toDate(), end.toDate());
-
-        //capabilities.put(owner, EnumSet.allOf(CalendarEntryCapability.class));
     }
 
     /**
@@ -193,19 +185,6 @@ public class CalendarEntry {
             throw new IllegalArgumentException("The time between two repetitions can not be less than the duration of a calendar entry!");
     }
 
-    /*
-    @Override
-    public final void addCapability(UserIdentifier user, CalendarEntryCapability capability) {
-        Objects.requireNonNull(user, "user");
-        Objects.requireNonNull(capabilities, "capability");
-
-        if (capabilities.containsKey(user))
-            capabilities.get(user).add(capability);
-        else
-            capabilities.put(user, EnumSet.of(capability));
-    }
-    */
-
     /**
      * {@inheritDoc}
      * <p>
@@ -224,26 +203,12 @@ public class CalendarEntry {
     }
 
     /**
-     * {@inheritDoc}
-     * <p>
-     * The ID is the entry's primary key, generated automatically when the entry
-     * has been created.
+     * @return The {@link CalendarEntryIdentifier} of this entry.
      * </p>
      */
     public final CalendarEntryIdentifier getIdentifier() {
         return calendarEntryIdentifier;
     }
-
-    /*
-    @Override
-    public final Iterable<CalendarEntryCapability> getCapabilities(UserIdentifier user) {
-        Objects.requireNonNull(user, "user");
-
-        EnumSet<CalendarEntryCapability> caps = capabilities.get(user);
-       
-        return caps == null ? null : Iterables.of(caps);
-    }
-    */
 
     /**
      * Returns the number how often this appointment will be repeated, where -1
@@ -255,18 +220,46 @@ public class CalendarEntry {
         return repeatCount;
     }
 
+    /**
+     * Returns a description of this entry
+     * 
+     * @return description of this entry.
+     */
     public final String getDescription() {
         return description;
     }
 
     /**
+     * Returns the time <code>this</code> appointments is over.
+     * 
+     * @return end <code>DateTime</code>.
+     * 
+     * @see DateTime
      * @see Interval#getEnd()
      */
     public final DateTime getEnd() {
         return duration.getEnd();
     }
 
-
+    /**
+     * Returns an {@link Iterable} which contains all time intervals of this
+     * event and its repetitions. <code>maxEntries</code> is required to limit
+     * the output for infinitely often repeated events. If
+     * <code>maxEntries</code> is greater than <code>repeatCount</code>, only
+     * <code>repeatCount</code> items will be returned. Possible values for
+     * maxEntries are
+     * <ul>
+     * <li>&lt; 0 - output will be an empty iterable.</li>
+     * <li>=&nbsp;0 - output will contain only the original event.</li>
+     * <li>&gt; 0 - output will contain a maximum of <code>maxEntries</code>
+     * repetitions, inclusive the original event.</li>
+     * </ul>
+     * 
+     * @param maxEntries
+     *            limits the output to a specified amount of repetitions.
+     * @return An iterable that contains the original event and all repetitions,
+     *         limited to <code>maxEntires</code>.
+     */
     public final Iterable<Interval> getEntryList(int maxEntries) {
         List<Interval> dates = new ArrayList<Interval>();
         Interval last;
@@ -289,6 +282,20 @@ public class CalendarEntry {
     }
 
 
+    /**
+     * Returns an {@link Iterable} which contains all time intervals of this
+     * event and its repetitions that overlaps with the given {@link Interval}.
+     * For a definition of <coder>overlaps()</code>, see
+     * {@link Interval#overlaps(org.joda.time.ReadableInterval)}. If the given
+     * interval is completely before the first occurence of this event, the
+     * result will be empty. The result also can contain a maximum of
+     * {@link Integer#MAX_VALUE} entries.
+     * 
+     * @param interval
+     *            all returned intervals should overlap with this given
+     *            interval.
+     * @return An iterable that contains all found intervals.
+     */
     public final Iterable<Interval> getEntryList(Interval interval) {
         List<Interval> dates = new ArrayList<Interval>();
 
@@ -308,6 +315,11 @@ public class CalendarEntry {
         return Iterables.of(dates);
     }
 
+    /**
+     * Returns the identification of the user who owns this entry.
+     * 
+     * @return owner ID of the user who owns this entry.
+     */
     public final UserIdentifier getOwner() {
         return owner;
     }
@@ -324,33 +336,27 @@ public class CalendarEntry {
     }
 
     /**
+     * Returns the time <code>this</code> appointment begins.
+     * 
+     * @return start <code>DateTime</code>.
+     * 
+     * @see DateTime
      * @see Interval#getStart()
      */
     public final DateTime getStart() {
         return duration.getStart();
     }
 
+    /**
+     * Returns the title of <code>this</code> entry.
+     * 
+     * @return title of this entry.
+     */
     public final String getTitle() {
         return title;
     }
 
-    /*
-    @Override
-    public final Iterable<UserIdentifier> getUsersByCapability(CalendarEntryCapability capability) {
-        Objects.requireNonNull(capability, "capability");
-
-        List<UserIdentifier> result = new ArrayList<UserIdentifier>();
-        for (Entry<UserIdentifier, EnumSet<CalendarEntryCapability>> e : capabilities.entrySet()) {
-            if (e.getValue().contains(capability))
-                result.add(e.getKey());
-        }
-
-        return result;
-    }
-    */
-
     /**
-     * {@inheritDoc}
      * <p>
      * The hash of this object is the hash of its primary key.
      * </p>
@@ -361,21 +367,6 @@ public class CalendarEntry {
     public final int hashCode() {
         return calendarEntryIdentifier.hashCode();
     }
-
-    /*
-    @Override
-    public final void removeCapability(UserIdentifier user, CalendarEntryCapability capability) {
-        Objects.requireNonNull(user, "user");
-        Objects.requireNonNull(capability, "capability");
-        if (user.equals(owner))
-            throw new IllegalArgumentException("Capabilities cannot be removed from the owner of the calendar entry");
-
-        capabilities.get(user).remove(capability);
-
-        if (capabilities.get(user).isEmpty())
-            capabilities.remove(user);
-    }
-    */
 
     /**
      * Sets the number how often this appointment should be repeated. -1 means
@@ -395,14 +386,29 @@ public class CalendarEntry {
         this.repeatCount = count;
     }
 
+    /**
+     * Changes the description.
+     * 
+     * @param description
+     *            the new description
+     * @throws NullPointerException
+     *             if <code>description</code> is <code>null</code>
+     */
     public final void setDescription(String description) {
         this.description = Objects.requireNonNull(description, "description");
     }
 
     /**
+     * Sets a new end date. If it is before the current start date, the start
+     * will be set back, too. The length of the appointment will be the same as
+     * before.
+     * 
+     * @param end
+     *            the new end date.
+     * @throws NullPointerException
+     *             if <code>end</code> is <code>null</code>
      * @throws IllegalArgumentException
      *             if the end is before the start
-     * 
      * @see Interval
      */
     public final void setEnd(DateTime end) {
@@ -438,6 +444,14 @@ public class CalendarEntry {
     }
 
     /**
+     * Sets a new start date. If it is after the current end date, the end will
+     * be set forward, too. The length of the appointment will be the same as
+     * before.
+     * 
+     * @param start
+     *            the new start date.
+     * @throws NullPointerException
+     *             if <code>is</code> is <code>null</code>
      * @throws IllegalArgumentException
      *             if the start is after the end
      * 
@@ -456,6 +470,14 @@ public class CalendarEntry {
         setStartEnd(start.toDate(), end.toDate());
     }
 
+    /**
+     * Changes the title.
+     * 
+     * @param title
+     *            the new title.
+     * @throws NullPointerException
+     *             if <code>title</code> is <code>null</code>
+     */
     public final void setTitle(String title) {
         this.title = Objects.requireNonNull(title, "title");
     }
