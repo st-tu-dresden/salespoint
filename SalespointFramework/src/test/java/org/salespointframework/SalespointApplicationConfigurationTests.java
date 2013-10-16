@@ -25,7 +25,6 @@ import org.salespointframework.core.catalog.Product;
 import org.salespointframework.core.catalog.ProductRepository;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.order.OrderManager;
-import org.salespointframework.core.user.PersistentUser;
 import org.salespointframework.core.user.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +43,7 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 	@Autowired Calendar calendar;
 	@Autowired ProductRepository<Product> repository;
 	
-	@Autowired UserManager<PersistentUser> userManager;
+	@Autowired UserManager userManager;
 
 	@Test
 	public void createsApplicationComponents() {

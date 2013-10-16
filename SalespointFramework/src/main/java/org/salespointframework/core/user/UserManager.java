@@ -15,7 +15,7 @@ package org.salespointframework.core.user;
  *            implement {@link User}
  * 
  */
-public interface UserManager<T extends User> {
+public interface UserManager {
 
     /**
      * Adds a {@link User} to the <code>UserManager</code> if the user not
@@ -26,7 +26,7 @@ public interface UserManager<T extends User> {
      * @throws NullPointerException
      *             if <code>user</code> is <code>null</code>.
      */
-    void add(T user);
+    void add(User user);
 
     /**
      * Removes the user with the given identifier from this
@@ -59,7 +59,7 @@ public interface UserManager<T extends User> {
     /**
      * Gets a user by its unique identifier.
      * 
-     * @param <E>
+     * @param <T>
      *            common super type of the user returned
      * @param clazz
      *            Class object corresponding to the type of the user to be
@@ -76,12 +76,12 @@ public interface UserManager<T extends User> {
      *             if <code>clazz</code> or <code>userIdentifer</code> or both
      *             are <code>null</code>.
      */
-    <E extends T> E get(Class<E> clazz, UserIdentifier userIdentifier);
+    <T extends User> T get(Class<T> clazz, UserIdentifier userIdentifier);
 
     /**
      * Gets all users of class type <code>clazz</code>.
      * 
-     * @param <E>
+     * @param <T>
      *            common super type of the users returned
      * @param clazz
      *            Class object corresponding to the type of the users to be
@@ -92,6 +92,6 @@ public interface UserManager<T extends User> {
      * @throws NullPointerException
      *             if <code>clazz</code> is <code>null</code>.
      */
-    <E extends T> Iterable<E> find(Class<E> clazz);
+    <T extends User> Iterable<T> find(Class<T> clazz);
 
 }

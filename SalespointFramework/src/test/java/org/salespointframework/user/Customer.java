@@ -1,13 +1,13 @@
-package test.user;
+package org.salespointframework.user;
 
 import javax.persistence.Entity;
 
-import org.salespointframework.core.user.PersistentUser;
+import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 
 @SuppressWarnings("javadoc")
 @Entity
-public class Customer extends PersistentUser {
+public class Customer extends User {
 	
 	
 	@Deprecated

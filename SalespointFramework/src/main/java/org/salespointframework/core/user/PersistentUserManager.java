@@ -7,6 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.salespointframework.util.Iterables;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component
 @Transactional
-class PersistentUserManager implements UserManager<User>
+class PersistentUserManager implements UserManager
 {
 	@PersistenceContext
 	private  EntityManager em;
@@ -75,9 +76,15 @@ class PersistentUserManager implements UserManager<User>
 	{
 		Objects.requireNonNull(clazz, "clazz must not be null");
 
+		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(clazz);
+		
+		Root<T> root = cq.from(clazz);
+		cq.select(root);
+		
 		TypedQuery<T> tq = em.createQuery(cq);
+		
 
 		return Iterables.of(tq.getResultList());
 	}
