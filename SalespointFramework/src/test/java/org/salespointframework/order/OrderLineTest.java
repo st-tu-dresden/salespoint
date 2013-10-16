@@ -13,6 +13,7 @@ import org.salespointframework.core.catalog.Product;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderLine;
+import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class OrderLineTest extends AbstractIntegrationTests {
 
 		user = new User(new UserIdentifier(), "");
 		order = new Order(user.getIdentifier(), Cash.CASH);
-		orderLine = null; // new PersistentOrderLine(keks.getIdentifier());
+		orderLine = new OrderLine(keks, Units.TEN);
 	}
 
 	@Test(expected = NullPointerException.class)
