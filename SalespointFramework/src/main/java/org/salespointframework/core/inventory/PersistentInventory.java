@@ -14,7 +14,6 @@ import javax.persistence.criteria.Root;
 import org.salespointframework.core.catalog.ProductIdentifier;
 import org.salespointframework.core.catalog.Product_;
 import org.salespointframework.util.Iterables;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class PersistentInventory implements Inventory 
 {
-	// private final EntityManagerFactory emf = Database.INSTANCE.getEntityManagerFactory();
 	@PersistenceContext
 	private EntityManager entityManager;
 
@@ -112,8 +110,6 @@ class PersistentInventory implements Inventory
 		return null;
 		*/
 		
-		
-		
 		// FIXME ?
 		
 		
@@ -134,70 +130,6 @@ class PersistentInventory implements Inventory
 		
 	}
 
-	
-	/*
-	@Override
-	public <E extends InventoryItem> Iterable<E> find(Class<E> clazz,	ProductIdentifier productIdentifier) {
-		Objects.requireNonNull(clazz, "clazz must not be null");
-		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
-
-		EntityManager em = getEntityManager();
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<E> cq = cb.createQuery(clazz);
-		Root<E> entry = cq.from(clazz);
-
-	
-		// error weil null
-		Predicate p1 = null; //cb.equal(entry.get(PersistentInventoryItem_.productIdentifier), productIdentifier);
-
-		cq.where(p1);
-
-		TypedQuery<E> tq = em.createQuery(cq);
-
-		return Iterables.of(tq.getResultList());
-	}
-	*/
-	
-	/*
-	@Override
-	public <E extends PersistentProductInstance> Iterable<E> find(Class<E> clazz, ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures) {
-		Objects.requireNonNull(clazz, "clazz must not be null");
-		Objects.requireNonNull(productIdentifier, "productIdentifier must not be null");
-		Objects.requireNonNull(productFeatures, "productFeatures must not be null");
-		return Iterables.of(this.findInternal(clazz, productIdentifier, productFeatures));
-	}
-
-	private <E extends PersistentProductInstance> List<E> findInternal(Class<E> clazz, ProductIdentifier productIdentifier, Iterable<ProductFeature> productFeatures) {
-		Set<ProductFeature> featureSet = Iterables.asSet(productFeatures);
-
-		EntityManager em = getEntityManager();
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<E> cq = cb.createQuery(clazz);
-		Root<E> entry = cq.from(clazz);
-
-		Predicate p1 = cb.equal(entry.get(PersistentProductInstance_.productIdentifier), productIdentifier);
-		// Predicate p2 = cb.equal(entry.<Set<ProductFeature>> get("productFeatures"), featureSet);
-
-		cq.where(p1);
-
-		TypedQuery<E> tq = em.createQuery(cq);
-		List<E> query = tq.getResultList();
-		List<E> result = new LinkedList<E>();
-		
-		if(featureSet.size() == 0) {
-			for(E e : query) {
-				if(Iterables.isEmpty(e.getProductFeatures())) result.add(e);
-			}
-		} else {
-			for(E e : query) {
-				Set<ProductFeature> entryFeatureSet = Iterables.asSet(e.getProductFeatures());
-				if(featureSet.equals(entryFeatureSet)) result.add(e);
-			}
-		}
-		
-		return result;
-	}
-	*/
 
     /**
      * Updates and persists an existing {@link InventoryItem} to the

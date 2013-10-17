@@ -3,16 +3,12 @@ package org.salespointframework.core.order;
 import org.joda.time.DateTime;
 import org.salespointframework.core.user.UserIdentifier;
 
-// TODO comment new addition Class<T>
 /**
  * OrderManager interface
  * 
  * @author Thomas Dedek
  * @author Paul Henke
  * 
- *
- * @param <O> generic order paramter 
- * @param <OL> generic orderline parameter
  */
 public interface OrderManager
 {

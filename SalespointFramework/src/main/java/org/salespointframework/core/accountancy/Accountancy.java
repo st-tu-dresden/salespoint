@@ -15,10 +15,6 @@ import org.salespointframework.core.money.Money;
  * entries and financial statistics.
  * 
  * @author Hannes Weisbach
- * @param <T>
- *            Base type of the entries managed by the accountancy; has to
- *            implement {@link AccountancyEntry}.
- * 
  */
 public interface Accountancy {
 	/**
