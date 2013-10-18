@@ -29,7 +29,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Configuration
 @EnableAutoConfiguration
-@Import({ Salespoint.class, VideoShop.WebConfiguration.class, VideoShop.CustomWebSecurityConfigurerAdapter.class })
+@Import({ Salespoint.class, VideoShop.WebConfiguration.class,
+		VideoShop.CustomWebSecurityConfigurerAdapter.class })
 @ComponentScan
 public class VideoShop {
 
@@ -43,19 +44,22 @@ public class VideoShop {
 	}
 
 	/**
-	 * Custom web configuration for Spring MVC. 
-	 *
+	 * Custom web configuration for Spring MVC.
+	 * 
 	 * @author Oliver Gierke
 	 */
 	@Configuration
 	static class WebConfiguration extends WebMvcConfigurerAdapter {
 
 		// Web application configuration
-		@Autowired JpaEntityConverter entityConverter;
+		@Autowired
+		JpaEntityConverter entityConverter;
 
 		@Override
-		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-			argumentResolvers.add(new org.salespointframework.web.spring.support.LoggedInUserArgumentResolver());
+		public void addArgumentResolvers(
+				List<HandlerMethodArgumentResolver> argumentResolvers) {
+			argumentResolvers
+					.add(new org.salespointframework.web.spring.support.LoggedInUserArgumentResolver());
 		}
 
 		@Override
@@ -72,46 +76,43 @@ public class VideoShop {
 
 		@Override
 		public void addResourceHandlers(ResourceHandlerRegistry registry) {
-			registry.addResourceHandler("/res/**").addResourceLocations("/resources/");
+			registry.addResourceHandler("/res/**").addResourceLocations(
+					"/resources/");
 		}
 	}
 
 	@EnableWebSecurity
 	@Configuration
-	static class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
-	  @Override
-	  protected void registerAuthentication(AuthenticationManagerBuilder auth) {
-		  
-		  auth.authenticationProvider(new SalespointDaoAuthenticationProvider());
-		  
-		  return;
-	    auth
-	      .inMemoryAuthentication()
-	        .withUser("user")  // #1
-	          .password("password")
-	          .roles("USER")
-	          .and()
-	        .withUser("admin") // #2
-	          .password("password")
-	          .roles("ADMIN","USER");
-	  }
+	static class CustomWebSecurityConfigurerAdapter extends
+			WebSecurityConfigurerAdapter {
+		@Override
+		protected void registerAuthentication(AuthenticationManagerBuilder auth) {
 
-	  @Override
-	  public void configure(WebSecurity web) throws Exception {
-	    //web	      .ignoring()	         .antMatchers("/resources/**"); // #3
-	  }
+			auth.authenticationProvider(new SalespointDaoAuthenticationProvider());
 
-	  //@Override
-	  protected void configure_(HttpSecurity http) throws Exception {
-	    http
-	      .authorizeUrls()
-	        .antMatchers("/signup","/about").permitAll() // #4
-	        .antMatchers("/admin/**").hasRole("ADMIN") // #6
-	        .anyRequest().authenticated() // 7
-	        .and()
-	    .formLogin()  // #8
-	        .loginUrl("/login") // #9
-	        .permitAll(); // #5
-	  }
+			return;
+			/*
+			auth.inMemoryAuthentication().withUser("user") // #1
+					.password("password").roles("USER").and().withUser("admin") // #2
+					.password("password").roles("ADMIN", "USER");
+					*/
+		}
+
+		//@Override
+		public void configure_(WebSecurity web) throws Exception {
+			web.ignoring().antMatchers("/resources/**"); // #3
+		}
+
+		//@Override
+		protected void configure_(HttpSecurity http) throws Exception {
+			/*
+			http.authorizeUrls().antMatchers("/signup", "/about").permitAll() // #4
+					.antMatchers("/admin/**").hasRole("ADMIN") // #6
+					.anyRequest().authenticated() // 7
+					.and().formLogin() // #8
+					.loginUrl("/login") // #9
+					.permitAll(); // #5
+				*/
+		}
 	}
 }

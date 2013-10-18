@@ -64,7 +64,7 @@ public class DataInitializer {
 		}
 
 		User boss = new User(bossUI, "123");
-		boss.addCapability(new Capability("boss"));
+		boss.addCapability(new Capability("ROLE_BOSS"));
 
 		Customer customer1 = new Customer(new UserIdentifier("hans"), "wurst", "");
 		Customer customer2 = new Customer(new UserIdentifier("dexter"), "morgan", "Miami-Dade County");
