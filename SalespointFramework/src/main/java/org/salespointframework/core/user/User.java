@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.SalespointPasswordEncoder;
@@ -31,7 +32,7 @@ public class User implements Comparable<User>
 
 	private String encodetPassword;
 
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	private Set<Capability> capabilities = new TreeSet<Capability>();
 
 	/**

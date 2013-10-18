@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.salespointframework.core.user.User;
-import org.salespointframework.web.WebAuthenticationManager;
 import org.salespointframework.web.annotation.LoggedInUser;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -17,6 +16,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  * @author Paul Henke
  *
  */
+@Deprecated
 public class LoggedInUserInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
@@ -34,7 +34,7 @@ public class LoggedInUserInterceptor extends HandlerInterceptorAdapter {
 			{
 				final String name = loggedInUser.value();
 				final HttpSession session = request.getSession();
-				final User user = WebAuthenticationManager.INSTANCE.getUser(session);
+				final User user = null; //WebAuthenticationManager.INSTANCE.getUser(session);
 				
 				modelAndView.addObject(name, user);
 			}

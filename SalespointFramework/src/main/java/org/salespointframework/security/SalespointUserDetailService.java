@@ -1,4 +1,4 @@
-package org.salespointframework.web;
+package org.salespointframework.security;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -8,7 +8,6 @@ import org.salespointframework.core.user.Capability;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.core.user.UserManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +17,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 //http://docs.spring.io/spring-security/site/docs/3.2.x/reference/html/technical-overview.html
 public class SalespointUserDetailService implements UserDetailsService {
 
-	@Autowired
 	private UserManager userManager;
+	
+	public SalespointUserDetailService(UserManager userManager) {
+		this.userManager = userManager;
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String name)
@@ -45,10 +47,12 @@ public class SalespointUserDetailService implements UserDetailsService {
 		public SalespointUserDetails(User user) {
 			this.username = user.getIdentifier().toString();
 			this.password = user.getPassword();
+			
 			for (Capability capability : user.getCapabilities()) {
 				authorities
 						.add(new SimpleGrantedAuthority(capability.getName()));
 			}
+			
 		}
 
 		@Override
