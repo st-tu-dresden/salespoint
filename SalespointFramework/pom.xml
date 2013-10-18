@@ -17,9 +17,7 @@
 	<properties>
 		<hibernate-entitymanager.version>4.2.6.Final</hibernate-entitymanager.version>
 		<spring>4.0.0.M3</spring>
-		<!-- 
-		<thymeleaf.version>2.0.19.</thymeleaf.version>
-		 -->
+		<!-- <thymeleaf.version>2.0.19.</thymeleaf.version> -->
 	</properties>
 
 
@@ -78,6 +76,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+		</dependency>
+
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
@@ -87,12 +91,12 @@
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf-spring3</artifactId>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>

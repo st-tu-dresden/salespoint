@@ -170,7 +170,6 @@ public class User implements Comparable<User>
 			return this.userIdentifier.equals(((User)other).userIdentifier);
 		}
 		return false;
-		
 	}
 
 	@Override
@@ -189,5 +188,9 @@ public class User implements Comparable<User>
 	public int compareTo(User other)
 	{
 		return this.userIdentifier.compareTo(other.getIdentifier());
+	}
+
+	public String getPassword() {
+		return hashedPassword;
 	}
 }
