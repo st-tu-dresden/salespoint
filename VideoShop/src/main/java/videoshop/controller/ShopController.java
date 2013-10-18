@@ -5,7 +5,6 @@ import javax.servlet.http.HttpSession;
 import org.salespointframework.core.user.User;
 import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.core.user.UserManager;
-import org.salespointframework.web.WebAuthenticationManager;
 import org.salespointframework.web.annotation.LoggedInUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,7 +38,7 @@ class ShopController {
 
 		Customer customer = new Customer(userIdentifier, password, street + "\n" + city);
 		userManager.add(customer);
-		WebAuthenticationManager.INSTANCE.login(customer, password, session);
+		///WebAuthenticationManager.INSTANCE.login(customer, password, session);
 
 		return "redirect:/";
 	}
@@ -47,13 +46,13 @@ class ShopController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@PathVariable("identifier") User user, @RequestParam("password") String password,
 			HttpSession session) {
-		WebAuthenticationManager.INSTANCE.login(user, password, session);
+		//WebAuthenticationManager.INSTANCE.login(user, password, session);
 		return "redirect:/";
 	}
 
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
-		WebAuthenticationManager.INSTANCE.logout(session);
+		//WebAuthenticationManager.INSTANCE.logout(session);
 		return "redirect:/";
 	}
 

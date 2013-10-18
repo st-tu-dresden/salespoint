@@ -3,7 +3,9 @@ package videoshop;
 import java.util.List;
 
 import org.salespointframework.Salespoint;
-import org.salespointframework.web.SalespointDaoAuthenticationProvider;
+import org.salespointframework.core.user.UserManager;
+import org.salespointframework.security.SalespointUserDetailService;
+import org.salespointframework.util.SalespointPasswordEncoder;
 import org.salespointframework.web.spring.converter.JpaEntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -12,6 +14,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -34,6 +38,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan
 public class VideoShop {
 
+
+	
 	/**
 	 * runs the application.
 	 * 
@@ -85,10 +91,19 @@ public class VideoShop {
 	@Configuration
 	static class CustomWebSecurityConfigurerAdapter extends
 			WebSecurityConfigurerAdapter {
+		
+		@Autowired
+		UserManager userManager;
+		
 		@Override
 		protected void registerAuthentication(AuthenticationManagerBuilder auth) {
+			
+			DaoAuthenticationProvider prov = new DaoAuthenticationProvider();
+			
+			prov.setPasswordEncoder(new SalespointPasswordEncoder());
+			prov.setUserDetailsService(new SalespointUserDetailService(userManager));
 
-			auth.authenticationProvider(new SalespointDaoAuthenticationProvider());
+			auth.authenticationProvider(prov);
 
 			return;
 			/*
@@ -111,7 +126,9 @@ public class VideoShop {
 
 					.and().formLogin() // #8
 					.loginProcessingUrl("/login") // #9
-					.permitAll(); // #5
+					.permitAll()
+					.and().logout().logoutUrl("/logout");
+					; // #5
 
 		}
 	}
