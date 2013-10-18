@@ -27,6 +27,8 @@ public class SalespointUserDetailService implements UserDetailsService {
 		UserIdentifier userIdentifier = new UserIdentifier(name);
 		User user = userManager.get(User.class, userIdentifier);
 
+		if(user == null) throw new UsernameNotFoundException("User: " + name + "not found");
+		
 		return new SalespointUserDetails(user);
 	}
 

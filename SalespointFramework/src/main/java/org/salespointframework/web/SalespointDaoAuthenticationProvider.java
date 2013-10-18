@@ -1,5 +1,6 @@
 package org.salespointframework.web;
 
+import org.salespointframework.util.SalespointPasswordEncoder;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;

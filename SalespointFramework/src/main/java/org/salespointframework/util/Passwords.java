@@ -17,6 +17,7 @@ import javax.xml.bind.DatatypeConverter;
  * @author Paul Henke
  *
  */
+@Deprecated
 public class Passwords {
 
 	/**

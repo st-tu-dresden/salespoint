@@ -11,10 +11,9 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
 import org.salespointframework.util.Iterables;
+import org.salespointframework.util.SalespointPasswordEncoder;
 
 import java.util.Objects;
-
-import org.salespointframework.util.Passwords;
 
 /**
  * 
@@ -30,7 +29,7 @@ public class User implements Comparable<User>
 	@AttributeOverride(name = "id", column = @Column(name = "USER_ID"))
 	private UserIdentifier userIdentifier;
 
-	private String hashedPassword;
+	private String encodetPassword;
 
 	@ElementCollection
 	private Set<Capability> capabilities = new TreeSet<Capability>();
@@ -54,7 +53,7 @@ public class User implements Comparable<User>
 		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
 		
 		Objects.requireNonNull(password, "password must not be null");
-		this.hashedPassword = Passwords.hash(password);
+		this.encodetPassword = new SalespointPasswordEncoder().encode(password);
 		
 		Objects.requireNonNull(capabilities, "capabilities must not be null");
 		this.capabilities.addAll(Arrays.asList(capabilities));
@@ -138,7 +137,7 @@ public class User implements Comparable<User>
 	{
 		Objects.requireNonNull(password, "password must not be null");
 		
-		return Passwords.verify(password, this.hashedPassword);
+		return new SalespointPasswordEncoder().matches(password, this.encodetPassword);
 	}
 
 	/**
@@ -151,7 +150,7 @@ public class User implements Comparable<User>
 	public void changePassword(String password)
 	{
 		Objects.requireNonNull(password, "password must not be null");
-		this.hashedPassword = Passwords.hash(password);
+		this.encodetPassword = new SalespointPasswordEncoder().encode(password);
 	}
 
 	@Override
@@ -191,6 +190,6 @@ public class User implements Comparable<User>
 	}
 
 	public String getPassword() {
-		return hashedPassword;
+		return encodetPassword;
 	}
 }
