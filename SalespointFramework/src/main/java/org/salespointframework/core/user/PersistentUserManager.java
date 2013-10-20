@@ -9,8 +9,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.util.Iterables;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Hannes Weissbach
  * @author Oliver Gierke
  */
-@Component
+@Service
 @Transactional
 class PersistentUserManager implements UserManager
 {
@@ -38,7 +39,7 @@ class PersistentUserManager implements UserManager
 	}
 
 	@Override
-	public boolean remove(UserIdentifier userIdentifier)
+	public boolean remove(UserAccountIdentifier userIdentifier)
 	{
 		Objects.requireNonNull(userIdentifier, "userIdentifer must not be null");
 
@@ -64,7 +65,7 @@ class PersistentUserManager implements UserManager
 	}
 
 	@Override
-	public boolean contains(UserIdentifier userIdentifier)
+	public boolean contains(UserAccountIdentifier userIdentifier)
 	{
 		Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
 
@@ -90,7 +91,7 @@ class PersistentUserManager implements UserManager
 	}
 
 	@Override
-	public <T extends User> T get(Class<T> clazz, UserIdentifier userIdentifier)
+	public <T extends User> T get(Class<T> clazz, UserAccountIdentifier userIdentifier)
 	{
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");

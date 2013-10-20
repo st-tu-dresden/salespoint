@@ -2,8 +2,8 @@ package org.salespointframework.web.spring.support;
 
 
 import org.salespointframework.core.user.User;
-import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.core.user.UserManager;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.web.annotation.LoggedInUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -28,7 +28,7 @@ public class LoggedInUserArgumentResolver implements HandlerMethodArgumentResolv
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		
 		String name = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserIdentifier userIdentifier = new UserIdentifier(name);
+		UserAccountIdentifier userIdentifier = new UserAccountIdentifier(name);
 		
 		return userManager.get(User.class, userIdentifier);
 	

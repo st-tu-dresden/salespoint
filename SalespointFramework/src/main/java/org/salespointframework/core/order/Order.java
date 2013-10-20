@@ -25,9 +25,8 @@ import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.shop.Shop;
 import org.salespointframework.core.user.User;
-import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.util.Iterables;
 
 /**
@@ -38,7 +37,7 @@ import org.salespointframework.util.Iterables;
  */
 @Entity
 @Table(name = "orders")
-public class Order implements	Comparable<Order> {
+public class Order implements Comparable<Order> {
 	// TODO: Here, we also need to rename the column, or OWNER_ID will be the
 	// PK. Maybe we should rename the field in SalespointIdentifier, to avoid
 	// name clashes with "ID"?
@@ -50,10 +49,11 @@ public class Order implements	Comparable<Order> {
 
 	@Embedded
 	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))
-	private UserIdentifier userIdentifier;
+	private UserAccountIdentifier userIdentifier;
 
+	// FIXME
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreated = Shop.INSTANCE.getTime().getDateTime().toDate();
+	private Date dateCreated = null; //Shop.INSTANCE.getTime().getDateTime().toDate();
 
 	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus = OrderStatus.OPEN;
@@ -76,14 +76,14 @@ public class Order implements	Comparable<Order> {
 	 * Creates a new Order
 	 * 
 	 * @param userIdentifier
-	 *            The {@link UserIdentifier}/{@link User} connected to this
+	 *            The {@link UserAccountIdentifier}/{@link User} connected to this
 	 *            order
 	 * @param paymentMethod
 	 *            The {@link PaymentMethod} connected to this order
 	 * @throws NullPointerException
 	 *             if userIdentifier or paymentMethod is null
 	 */
-	public Order(UserIdentifier userIdentifier,
+	public Order(UserAccountIdentifier userIdentifier,
 			PaymentMethod paymentMethod) {
 		this.userIdentifier = Objects.requireNonNull(userIdentifier,
 				"userIdentifier must not be null");
@@ -95,12 +95,12 @@ public class Order implements	Comparable<Order> {
 	 * Creates a new Order
 	 * 
 	 * @param userIdentifier
-	 *            The {@link UserIdentifier}/{@link User} connected to this
+	 *            The {@link UserAccountIdentifier}/{@link User} connected to this
 	 *            order
 	 * @throws NullPointerException
 	 *             if userIdentifier is null
 	 */
-	public Order(UserIdentifier userIdentifier) {
+	public Order(UserAccountIdentifier userIdentifier) {
 		this.userIdentifier = Objects.requireNonNull(userIdentifier,
 				"userIdentifier must not be null");
 	}
@@ -166,7 +166,7 @@ public class Order implements	Comparable<Order> {
 		return orderStatus;
 	}
 
-	public final UserIdentifier getUserIdentifier() {
+	public final UserAccountIdentifier getUserIdentifier() {
 		return userIdentifier;
 	}
 

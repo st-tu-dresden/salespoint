@@ -3,6 +3,7 @@ package org.salespointframework.core.calendar;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -16,8 +17,9 @@ import javax.persistence.Transient;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
-import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.util.Iterables;
+
 import java.util.Objects;
 
 /**
@@ -54,7 +56,7 @@ public class CalendarEntry {
 
     @Embedded
     @AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))
-    private UserIdentifier                                        owner;
+    private UserAccountIdentifier                                        owner;
 
     private Period                                                period;
 
@@ -84,7 +86,7 @@ public class CalendarEntry {
      * @throws IllegalArgumentException
      *             if the end is before the start
      */
-    public CalendarEntry(UserIdentifier owner, String title, DateTime start, DateTime end) {
+    public CalendarEntry(UserAccountIdentifier owner, String title, DateTime start, DateTime end) {
         this(owner, title, start, end, "", Period.ZERO, 0);
     }
 
@@ -105,7 +107,7 @@ public class CalendarEntry {
      * @throws NullPointerException
      *             if one or more arguments are <code>null</code>
      */
-    public CalendarEntry(UserIdentifier owner, String title, DateTime start, DateTime end, String description) {
+    public CalendarEntry(UserAccountIdentifier owner, String title, DateTime start, DateTime end, String description) {
         this(owner, title, start, end, description, Period.ZERO, 0);
     }
 
@@ -138,7 +140,7 @@ public class CalendarEntry {
      * @see Interval
      * @see Period
      */
-    public CalendarEntry(UserIdentifier owner, String title, DateTime start, DateTime end, String description, Period period, int count) {
+    public CalendarEntry(UserAccountIdentifier owner, String title, DateTime start, DateTime end, String description, Period period, int count) {
 
         detectDateAnomalies(Objects.requireNonNull(start, "start must not be null"), Objects.requireNonNull(end, "end must not be null"), count, Objects.requireNonNull(period, "period must not be null"));
 
@@ -320,7 +322,7 @@ public class CalendarEntry {
      * 
      * @return owner ID of the user who owns this entry.
      */
-    public final UserIdentifier getOwner() {
+    public final UserAccountIdentifier getOwner() {
         return owner;
     }
 

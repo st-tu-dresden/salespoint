@@ -1,5 +1,7 @@
 package org.salespointframework.core.user;
 
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
+
 /**
  * The <code>UserManager</code> is an interface that provides methods to store
  * and manage users that should be able to interact with the shop. The
@@ -41,18 +43,18 @@ public interface UserManager {
      * @throws NullPointerException
      *             if <code>userIdentifier</code> is <code>null</code>.
      */
-    boolean remove(UserIdentifier userIdentifier);
+    boolean remove(UserAccountIdentifier userIdentifier);
 
     /**
      * Checks if the UserManager contains a {@link User}
      * 
      * @param userIdentifier
-     *            the {@link UserIdentifier} of the {@link User}
+     *            the {@link UserAccountIdentifier} of the {@link User}
      * @return true if UserManager contains the {@link User}, otherwise false
      * @throws NullPointerException
      *             is userIdentifier is null.
      */
-    boolean contains(UserIdentifier userIdentifier);
+    boolean contains(UserAccountIdentifier userIdentifier);
 
 
 
@@ -76,7 +78,7 @@ public interface UserManager {
      *             if <code>clazz</code> or <code>userIdentifer</code> or both
      *             are <code>null</code>.
      */
-    <T extends User> T get(Class<T> clazz, UserIdentifier userIdentifier);
+    <T extends User> T get(Class<T> clazz, UserAccountIdentifier userIdentifier);
 
     /**
      * Gets all users of class type <code>clazz</code>.

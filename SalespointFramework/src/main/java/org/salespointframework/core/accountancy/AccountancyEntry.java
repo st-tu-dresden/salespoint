@@ -12,7 +12,6 @@ import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.shop.Shop;
 import java.util.Objects;
 
 /**
@@ -42,8 +41,9 @@ public class AccountancyEntry {
 	@Lob
 	private Money value = Money.ZERO;
 
+	// FIXME
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date date = Shop.INSTANCE.getTime().getDateTime().toDate();
+	private Date date = null; //Shop.INSTANCE.getTime().getDateTime().toDate();
 
 	private String description = "";
 

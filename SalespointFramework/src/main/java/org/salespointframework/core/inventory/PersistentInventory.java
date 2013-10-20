@@ -87,6 +87,8 @@ class PersistentInventory implements Inventory
 
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
+		Root<E> root = cq.from(clazz);
+		cq.select(root);
 		TypedQuery<E> tq = entityManager.createQuery(cq);
 
 		return Iterables.of(tq.getResultList());

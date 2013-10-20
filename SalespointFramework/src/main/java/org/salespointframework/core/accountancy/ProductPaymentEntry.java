@@ -9,7 +9,8 @@ import javax.persistence.Lob;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderIdentifier;
-import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
+
 import java.util.Objects;
 
 /**
@@ -32,12 +33,12 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	private OrderIdentifier orderIdentifier;
 
 	/**
-	 * The {@link UserIdentifier} to which this
+	 * The {@link UserAccountIdentifier} to which this
 	 * <code>ProductPaymentEntry</code> refers to.
 	 */
 	@Embedded
 	@AttributeOverride(name = "id", column = @Column(name = "USER_ID", nullable = true))
-	private UserIdentifier userIdentifier;
+	private UserAccountIdentifier userIdentifier;
 
 	@Lob
 	private PaymentMethod paymentMethod;
@@ -54,13 +55,13 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	/**
 	 * A <code>ProductPaymentEntry</code> is constructed for a specific
 	 * {@link OrderIdentifier} attached to it. This Entry saves also the
-	 * {@link UserIdentifier} and the specified amount that was payed.
+	 * {@link UserAccountIdentifier} and the specified amount that was payed.
 	 * 
 	 * @param orderIdentifier
 	 *            the {@link OrderIdentifier} to which this
 	 *            <code>ProductPaymentEntry</code> will refer to.
 	 * @param userIdentifier
-	 *            the {@link UserIdentifier} to which this
+	 *            the {@link UserAccountIdentifier} to which this
 	 *            <code>ProductPaymentEntry</code> will refer to.
 	 * @param amount
 	 *            the {@link Money} that was payed.
@@ -70,7 +71,7 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	 */
 	
 	public ProductPaymentEntry(OrderIdentifier orderIdentifier,
-			UserIdentifier userIdentifier, Money amount, String description,
+			UserAccountIdentifier userIdentifier, Money amount, String description,
 			PaymentMethod paymentMethod) {
 		super(amount, description);
 		this.orderIdentifier = Objects.requireNonNull(orderIdentifier,
@@ -82,9 +83,9 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	}
 
 	/**
-	 * @return the {@link UserIdentifier}, to which this payment refers to
+	 * @return the {@link UserAccountIdentifier}, to which this payment refers to
 	 */
-	public final UserIdentifier getUserIdentifier() {
+	public final UserAccountIdentifier getUserIdentifier() {
 		return userIdentifier;
 	}
 

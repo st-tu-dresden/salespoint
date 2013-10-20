@@ -1,37 +1,37 @@
-package org.salespointframework.core.user;
+package org.salespointframework.core.useraccount;
 
 import javax.persistence.Embeddable;
 
 import org.salespointframework.core.SalespointIdentifier;
 
 /**
- * <code>UserIdentifier</code> serves as an identifier type for {@link User}
+ * <code>UserAccountIdentifier</code> serves as an identifier type for {@link UserAccount}
  * objects. The main reason for its existence is type safety for identifier
  * across the Salespoint Framework. <br>
  * <code>UserIdentifier</code> instances serve as primary key attribute in
- * {@link User}, but can also be used as a key for non-persistent,
+ * {@link UserAccount}, but can also be used as a key for non-persistent,
  * <code>Map</code>-based implementations.
  * 
  * @author Hannes Weisbach
  */
 @SuppressWarnings("serial")
 @Embeddable
-public final class UserIdentifier extends SalespointIdentifier {
+public final class UserAccountIdentifier extends SalespointIdentifier {
     /**
-     * Creates a new unique identifier for {@link User}s.
+     * Creates a new unique identifier for {@link UserAccount}s.
      */
-    public UserIdentifier() {
+    public UserAccountIdentifier() {
         super();
     }
 
     /**
-     * Creates a new identifier for {@link User}s. This self defined identifier
+     * Creates a new identifier for {@link UserAccount}s. This self defined identifier
      * is not guaranteed to be unique. But you can provide a human readable
      * value.
      * 
      * @param userIdentifier The value of this identifier. Will not be checked to be unique.
      */
-    public UserIdentifier(String userIdentifier) {
+    public UserAccountIdentifier(String userIdentifier) {
         super(userIdentifier);
     }
     

@@ -11,6 +11,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 
+import org.salespointframework.core.useraccount.Role;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.util.Iterables;
 import org.salespointframework.util.SalespointPasswordEncoder;
 
@@ -28,12 +30,12 @@ public class User implements Comparable<User>
 
 	@EmbeddedId
 	@AttributeOverride(name = "id", column = @Column(name = "USER_ID"))
-	private UserIdentifier userIdentifier;
+	private UserAccountIdentifier userIdentifier;
 
 	private String encodetPassword;
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	private Set<Capability> capabilities = new TreeSet<Capability>();
+	private Set<Role> capabilities = new TreeSet<Role>();
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
@@ -45,11 +47,11 @@ public class User implements Comparable<User>
 	
 	/**
 	 * Creates an new PersistentUser
-	 * @param userIdentifier the {@link UserIdentifier} of the user
+	 * @param userIdentifier the {@link UserAccountIdentifier} of the user
 	 * @param password the password of the user
-	 * @param capabilities an <code>Array</code> of {@link Capability}s for the user 
+	 * @param capabilities an <code>Array</code> of {@link Role}s for the user 
 	 */
-	public User(UserIdentifier userIdentifier, String password, Capability... capabilities)
+	public User(UserAccountIdentifier userIdentifier, String password, Role... capabilities)
 	{
 		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
 		
@@ -63,15 +65,15 @@ public class User implements Comparable<User>
 	/**
 	 * Get the unique identifier of this <code>User</code>.
 	 * 
-	 * @return the {@link UserIdentifier} of this <code>User</code>
+	 * @return the {@link UserAccountIdentifier} of this <code>User</code>
 	 */
-	public final UserIdentifier getIdentifier()
+	public final UserAccountIdentifier getIdentifier()
 	{
 		return userIdentifier;
 	}
 	
 	/**
-	 * Adds a {@link Capability} to a <code>User</code>
+	 * Adds a {@link Role} to a <code>User</code>
 	 * 
 	 * @param capability
 	 *            <code>capability</code> which the <code>user</code> will
@@ -79,14 +81,14 @@ public class User implements Comparable<User>
 	 * @return <code>true</code> if successful, <code>false</code> otherwise.
 	 * @throws NullPointerException if capability is null
 	 */
-	public boolean addCapability(Capability capability)
+	public boolean addCapability(Role capability)
 	{
 		Objects.requireNonNull(capability, "capability must not be null");
 		return capabilities.add(capability);
 	}
 
 	/**
-	 * Removes a {@link Capability} from a <code>User</code>.
+	 * Removes a {@link Role} from a <code>User</code>.
 	 * 
 	 * @param capability
 	 *            <code>capability</code> which will be removed from
@@ -94,23 +96,23 @@ public class User implements Comparable<User>
 	 * @return <code>true</code> if successful, <code>false</code> otherwise
 	 * @throws NullPointerException if capability is null
 	 */
-	public boolean removeCapability(Capability capability)
+	public boolean removeCapability(Role capability)
 	{
 		Objects.requireNonNull(capability, "capability must not be null");
 		return capabilities.remove(capability);
 	}
 
 	/**
-	 * Checks if a <code>User</code> has a specific {@link Capability}
+	 * Checks if a <code>User</code> has a specific {@link Role}
 	 * 
 	 * @param capability
-	 *            {@link Capability} for which the <code>user</code>
+	 *            {@link Role} for which the <code>user</code>
 	 *            will be checked for.
 	 * @return <code>true</code> if <code>capability</code> was granted to
 	 *         <code>user</code>
 	 * @throws NullPointerException if capability is null
 	 */
-	public boolean hasCapability(Capability capability)
+	public boolean hasCapability(Role capability)
 	{
 		Objects.requireNonNull(capability, "capability must not be null");
 		return capabilities.contains(capability);
@@ -118,9 +120,9 @@ public class User implements Comparable<User>
 
 	/**
 	 * 
-	 * @return An <code>Iterable/code> with all {@link Capability}s of the user 
+	 * @return An <code>Iterable/code> with all {@link Role}s of the user 
 	 */
-	public Iterable<Capability> getCapabilities()
+	public Iterable<Role> getCapabilities()
 	{
 		return Iterables.of(capabilities);
 	}

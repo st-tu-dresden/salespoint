@@ -14,7 +14,7 @@ import javax.persistence.criteria.Root;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
-import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.util.Iterables;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,7 +80,7 @@ class PersistentCalendar implements Calendar {
 	}
 
 	@Override
-	public <T extends CalendarEntry> Iterable<T> find(Class<T> clazz, UserIdentifier userIdentifier) {
+	public <T extends CalendarEntry> Iterable<T> find(Class<T> clazz, UserAccountIdentifier userIdentifier) {
 		Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
 
 		CriteriaBuilder cb = em.getCriteriaBuilder();

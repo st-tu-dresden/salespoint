@@ -19,7 +19,7 @@ import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.order.OrderCompletionResult.OrderCompletionStatus;
 import org.salespointframework.core.quantity.Quantity;
-import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.util.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -126,7 +126,7 @@ class PersistentOrderManager implements OrderManager
 	}
 
 	@Override
-	public final <T extends Order> Iterable<T> find(Class<T> clazz, UserIdentifier userIdentifier)
+	public final <T extends Order> Iterable<T> find(Class<T> clazz, UserAccountIdentifier userIdentifier)
 	{
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
@@ -141,7 +141,7 @@ class PersistentOrderManager implements OrderManager
 	}
 
 	@Override
-	public final <T extends Order> Iterable<T> find(Class<T> clazz, UserIdentifier userIdentifier, DateTime from, DateTime to)
+	public final <T extends Order> Iterable<T> find(Class<T> clazz, UserAccountIdentifier userIdentifier, DateTime from, DateTime to)
 	{
 		Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
 		Objects.requireNonNull(from, "from must not be null");

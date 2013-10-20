@@ -2,7 +2,7 @@ package org.salespointframework.core.calendar;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
-import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
 
 
 // TODO fix javadoc
@@ -117,11 +117,11 @@ public interface Calendar {
      *            sub-class of it.
      * 
      * @param userIdentifier
-     *            {@link UserIdentifier} of the user whose entries should be
+     *            {@link UserAccountIdentifier} of the user whose entries should be
      *            found.
      * @return An {link @Iterable} with all found entries.
      */
-	<E extends CalendarEntry> Iterable<E> find(Class<E> clazz, UserIdentifier userIdentifier);
+	<E extends CalendarEntry> Iterable<E> find(Class<E> clazz, UserAccountIdentifier userIdentifier);
 
     /**
      * Returns all entries that start and end between the given start and end date.
