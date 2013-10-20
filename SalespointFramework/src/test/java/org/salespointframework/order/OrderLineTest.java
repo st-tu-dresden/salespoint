@@ -15,7 +15,7 @@ import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderLine;
 import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.user.User;
-import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings({ "javadoc" })
@@ -35,7 +35,7 @@ public class OrderLineTest extends AbstractIntegrationTests {
 
 		catalog.add(keks);
 
-		user = new User(new UserIdentifier(), "");
+		user = new User(new UserAccountIdentifier(), "");
 		order = new Order(user.getIdentifier(), Cash.CASH);
 		orderLine = new OrderLine(keks, Units.TEN);
 	}

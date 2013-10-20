@@ -11,12 +11,13 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.core.user.UserManager;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 
+// FIXME
 @SuppressWarnings("javadoc")
 @Transactional
 public class UsermanagerIntegrationTests extends AbstractIntegrationTests {
@@ -24,12 +25,12 @@ public class UsermanagerIntegrationTests extends AbstractIntegrationTests {
 	@Autowired
 	private UserManager userManager;
 	
-	private UserIdentifier userIdentifier;
+	private UserAccountIdentifier userIdentifier;
 	private Customer customer;
 	
 	@Before
 	public void before() {
-		userIdentifier = new UserIdentifier();
+		userIdentifier = new UserAccountIdentifier();
 		customer = new Customer(userIdentifier, "password");
 	}
 	

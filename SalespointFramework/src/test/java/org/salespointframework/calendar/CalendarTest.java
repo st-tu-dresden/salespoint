@@ -9,13 +9,12 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
-
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.calendar.Calendar;
 import org.salespointframework.core.calendar.CalendarEntry;
 import org.salespointframework.core.user.User;
-import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 
 // FIXME
@@ -34,12 +33,12 @@ public class CalendarTest { // extends AbstractIntegrationTests {
 	//@Before
 	public void before() {
 
-		user = new User(new UserIdentifier("user"), "test");
+		user = new User(new UserAccountIdentifier("user"), "test");
 		entry = new CalendarEntry(user.getIdentifier(), "entry", basicDateTime,
 				basicDateTime.plusMinutes(30));
 		calendar.add(entry);
 
-		notUser = new User(new UserIdentifier("notUser"), "test");
+		notUser = new User(new UserAccountIdentifier("notUser"), "test");
 		notEntry = new CalendarEntry(notUser.getIdentifier(), "notEntry",
 				basicDateTime, basicDateTime.plusMinutes(30));
 		calendar.add(notEntry);
@@ -47,7 +46,7 @@ public class CalendarTest { // extends AbstractIntegrationTests {
 
 //	@Test
 	public void deleteEntry() {
-		CalendarEntry deleteEntry = new CalendarEntry(new UserIdentifier(),
+		CalendarEntry deleteEntry = new CalendarEntry(new UserAccountIdentifier(),
 				"deleteEntry", basicDateTime, basicDateTime.plusMinutes(10));
 		calendar.add(deleteEntry);
 
@@ -79,9 +78,9 @@ public class CalendarTest { // extends AbstractIntegrationTests {
 
 //	@Test
 	public void filterEntries() {
-		CalendarEntry has = new CalendarEntry(new UserIdentifier(), "early",
+		CalendarEntry has = new CalendarEntry(new UserAccountIdentifier(), "early",
 				new DateTime().minusHours(1), new DateTime().plusHours(1));
-		CalendarEntry hasnot = new CalendarEntry(new UserIdentifier(), "late",
+		CalendarEntry hasnot = new CalendarEntry(new UserAccountIdentifier(), "late",
 				new DateTime().plusHours(1), new DateTime().plusHours(2));
 		calendar.add(has);
 		calendar.add(hasnot);

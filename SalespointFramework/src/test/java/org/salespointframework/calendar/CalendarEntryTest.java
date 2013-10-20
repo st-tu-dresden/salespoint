@@ -6,22 +6,20 @@ import static org.hamcrest.CoreMatchers.*;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
-
 import org.junit.Test;
 import org.salespointframework.core.calendar.CalendarEntry;
-
-import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
 
 @SuppressWarnings("javadoc")
 public class CalendarEntryTest {
 
 	private DateTime a = new DateTime("2011-08-01T14:01:32.180+02:00");
 
-	private CalendarEntry testEntry1 = new CalendarEntry(new UserIdentifier(
+	private CalendarEntry testEntry1 = new CalendarEntry(new UserAccountIdentifier(
 			"owner"), "meeting", a, a.plusHours(5));
-	private CalendarEntry testEntry2 = new CalendarEntry(new UserIdentifier(
+	private CalendarEntry testEntry2 = new CalendarEntry(new UserAccountIdentifier(
 			"owner"), "meeting", a, a.plusHours(5));
-	private CalendarEntry testEntry3 = new CalendarEntry(new UserIdentifier(
+	private CalendarEntry testEntry3 = new CalendarEntry(new UserAccountIdentifier(
 			"owner"), "meeting", a.plusHours(2), a.plusHours(5));
 
 	@Test(expected = NullPointerException.class)
@@ -35,7 +33,7 @@ public class CalendarEntryTest {
 	public void testNotNullTitle1() {
 		@SuppressWarnings("unused")
 		CalendarEntry testEntry = new CalendarEntry(
-				new UserIdentifier("owner"), null, new DateTime(),
+				new UserAccountIdentifier("owner"), null, new DateTime(),
 				new DateTime());
 	}
 
@@ -50,7 +48,7 @@ public class CalendarEntryTest {
 		// null == now --> null != now , see javadoc
 		@SuppressWarnings("unused")
 		CalendarEntry testEntry = new CalendarEntry(
-				new UserIdentifier("owner"), "meeting", null, new DateTime());
+				new UserAccountIdentifier("owner"), "meeting", null, new DateTime());
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -58,14 +56,14 @@ public class CalendarEntryTest {
 		@SuppressWarnings("unused")
 		// null == now --> null != now , see javadoc
 		CalendarEntry testEntry = new CalendarEntry(
-				new UserIdentifier("owner"), "meeting", new DateTime(), null);
+				new UserAccountIdentifier("owner"), "meeting", new DateTime(), null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testEndBeforeStart1() {
 		@SuppressWarnings("unused")
 		CalendarEntry testEntry = new CalendarEntry(
-				new UserIdentifier("owner"), "meeting", a.plusDays(3), a);
+				new UserAccountIdentifier("owner"), "meeting", a.plusDays(3), a);
 	}
 
 	@Test
@@ -121,7 +119,7 @@ public class CalendarEntryTest {
 	@Test
 	public void testGetOwner1() {
 
-		assertEquals(new UserIdentifier("owner"), testEntry1.getOwner());
+		assertEquals(new UserAccountIdentifier("owner"), testEntry1.getOwner());
 	}
 
 	/*
@@ -279,7 +277,7 @@ public class CalendarEntryTest {
 
 	@Test
 	public void countingTest1() {
-		CalendarEntry e = new CalendarEntry(new UserIdentifier(), "test",
+		CalendarEntry e = new CalendarEntry(new UserAccountIdentifier(), "test",
 				new DateTime(), new DateTime().plusHours(1), "desc",
 				Period.days(2), -1);
 
@@ -296,7 +294,7 @@ public class CalendarEntryTest {
 	public void countingTest2() {
 		DateTime now = new DateTime();
 
-		CalendarEntry e = new CalendarEntry(new UserIdentifier(), "test", now,
+		CalendarEntry e = new CalendarEntry(new UserAccountIdentifier(), "test", now,
 				now.plusHours(1), "desc", Period.hours(2), -1);
 
 		int count = 0;

@@ -4,15 +4,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
-
 import org.junit.Test;
 import org.salespointframework.core.accountancy.payment.Cash;
-
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.ChargeLine;
 import org.salespointframework.core.order.Order;
 import org.salespointframework.core.user.User;
-import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
 
 @SuppressWarnings("javadoc")
 public class ChargeLineTest {
@@ -23,7 +21,7 @@ public class ChargeLineTest {
 
 	@Before
 	public void before() {
-		user = new User(new UserIdentifier(), "");
+		user = new User(new UserAccountIdentifier(), "");
 		order = new Order(user.getIdentifier(), Cash.CASH);
 		chargeLine = new ChargeLine(Money.ZERO, "gaaar nix");
 	}
