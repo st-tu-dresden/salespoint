@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../resources/css/login.css" />
+		<title th:text="#{orders.title}">Bestellungen</title>
+	</head>
+<body>
+	<div class="all">
+		<header>
+			<h1 th:text="#{orders.title}">Bestellungen</h1>
+		</header>
+		<nav th:include="navigation :: navigation" ></nav>
+		
+		<div class="content">
+			<table>
+				<caption th:text="#{orders.completed}"></caption>
+				<thead>
+					<tr>
+						<th th:text="#{orders.date}">Datum</th>
+						<th th:text="#{orders.customer}">Kunde</th>
+						<th th:text="#{orders.payed}">Bezahlt</th>
+					</tr>
+				</thead>
+				<tbody>
+						<tr th:each="order : ${ordersCompleted} ">
+							<td th:text="${order.dateCreated}" ></td>
+							<td th:text="${order.userIdentifier}"></td>
+							<td th:text="${order.totalPrice}"></td>
+						</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

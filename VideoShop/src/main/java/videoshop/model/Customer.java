@@ -1,23 +1,38 @@
 package videoshop.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
-import org.salespointframework.core.user.Capability;
-import org.salespointframework.core.user.User;
-import org.salespointframework.core.user.UserIdentifier;
+import org.salespointframework.core.useraccount.UserAccount;
+
 
 
 @Entity
-public class Customer extends User {
+public class Customer {
 
-	@SuppressWarnings("unused")
-	private String adress;
+	@Id
+	private String id;
+	
+	private String address;
+	
+	@OneToOne
+	private UserAccount userAccount;
 	
 	@Deprecated
 	protected Customer() {}
 	
-	public Customer(UserIdentifier useridentifier, String password, String adress) {
-		super(useridentifier, password, new Capability("customer"));
-		this.adress = adress;
+	public Customer(UserAccount userAccount, String address) {
+		this.userAccount = userAccount;
+		this.address = address;
 	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 }

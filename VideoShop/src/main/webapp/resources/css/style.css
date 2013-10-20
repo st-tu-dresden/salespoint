@@ -12,6 +12,48 @@ body {
 	background: #f0f0f0; 
 }
 
+/* Nav */
+
+nav {
+	width:1000px;
+	float:right;
+	color: white;
+	background: #B9D3F3; 
+}
+
+nav ul {
+	overflow:auto;
+	margin: 1em;
+	list-style:none;
+}
+
+nav ul li {
+	margin-right: 1em;
+	float:left;
+	font-variant: small-caps;
+}
+
+nav ul li a{
+	font: 0.8em sans-serif;
+	font-size: 20px;
+	text-decoration: none;
+}
+
+nav ul li.loginlogout {
+	 float:right; 
+}
+
+
+
+
+
+/*
+a {
+	
+	
+	color: #2e7cdc;
+}
+*/
 
 /* überschriften */
 
@@ -45,11 +87,6 @@ p {
 	text-align:center;
 }
 
-a {
-	font: 0.8em sans-serif;
-	text-decoration: none;
-	color: #2e7cdc;
-}
 
 
 a:hover {
@@ -61,7 +98,7 @@ a:hover {
 
 
 div.all {
-	width: 1024px;
+	width: 1000px;
 	margin: 0 auto;
 }
 
@@ -72,33 +109,23 @@ p.about {
 }
 
 
-/*navigation*/
+
 
 header {
 	width:100%;
-	height: 100px;
-	background-color: #2e7cdc;
-	border-bottom: 1px solid #a4a4a4;
+	height: 200px;
 	background-image: url(../img/cds.jpg);
-	background-position: right;
 	background-repeat: no-repeat;
 	font-size: 20px;
+	margin-top: 1em;
 }
 
 header a {
-	font-size: 20px;
-	color: white;
-}
-
-
-header nav {
-	float:right;
-	margin-top: 22px;
-	margin-right: 0px;
-	background-color: #333333;
-	opacity: 0.9;
 	
 }
+
+
+
 
 /*content*/
 

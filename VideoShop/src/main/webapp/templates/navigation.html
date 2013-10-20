@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <nav th:fragment="navigation">
+   
+                
+    
+    			<ul>
+				<li><a th:href="@{/register}" href="register.html">Anmeldung</a></li>
+				<li><a th:href="@{/orders}" href="orders.html">Bestellungen</a></li>
+				<li><a th:href="@{/stock}" href="stock.html">Lager</a></li>
+				<li><a th:href="@{/dvdCatalog}" href="catalog.html">Dvd Catalog</a></li>
+				<li><a th:href="@{/blurayCatalog}" href="catalog.html">Blu-ray Catalog</a></li>
+				<li><a th:href="@{/basket}" href="basket.html">Warenkorb</a></li>
+				
+				<li th:unless="${#authentication}" class="loginlogout"><a href="login">Login</a></li>
+				<li th:if="${#authentication}" class="loginlogout"><a href="logout">Logout</a></li>
+				
+			</ul>
+    </nav>
+  </body>
+</html>

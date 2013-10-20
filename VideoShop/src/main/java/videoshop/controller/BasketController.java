@@ -11,7 +11,6 @@ import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.quantity.Units;
 import org.salespointframework.util.Iterables;
-import org.salespointframework.web.annotation.Capabilities;
 import org.salespointframework.web.annotation.LoggedInUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +24,7 @@ import videoshop.model.Disc;
 import videoshop.model.Dvd;
 
 @Controller
-@Capabilities("customer")
+
 class BasketController {
 
 	private final OrderManager orderManager;
@@ -48,7 +47,7 @@ class BasketController {
 		Order order = (Order) session.getAttribute("order");
 
 		if (order == null) {
-			order = new Order(customer.getIdentifier(), Cash.CASH);
+			//order = new Order(customer.getIdentifier(), Cash.CASH);
 			// TODO remove
 			order.addChargeLine(new ChargeLine(Money.ONE, "1"));
 			order.addChargeLine(new ChargeLine(Money.OVER9000, "2"));

@@ -3,8 +3,8 @@ package videoshop.controller;
 import javax.servlet.http.HttpSession;
 
 import org.salespointframework.core.user.User;
-import org.salespointframework.core.user.UserIdentifier;
 import org.salespointframework.core.user.UserManager;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.web.annotation.LoggedInUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,12 +32,12 @@ class ShopController {
 	}
 
 	@RequestMapping("/registerNew")
-	public String registerNew(HttpSession session, @RequestParam("name") UserIdentifier userIdentifier,
+	public String registerNew(HttpSession session, @RequestParam("name") UserAccountIdentifier userIdentifier,
 			@RequestParam("password") String password, @RequestParam("street") String street,
 			@RequestParam("city") String city) {
 
-		Customer customer = new Customer(userIdentifier, password, street + "\n" + city);
-		userManager.add(customer);
+		//Customer customer = new Customer(userIdentifier, password, street + "\n" + city);
+		//userManager.add(customer);
 		///WebAuthenticationManager.INSTANCE.login(customer, password, session);
 
 		return "redirect:/";

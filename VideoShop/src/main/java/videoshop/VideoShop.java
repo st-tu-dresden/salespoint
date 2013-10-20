@@ -3,8 +3,9 @@ package videoshop;
 import java.util.List;
 
 import org.salespointframework.Salespoint;
-import org.salespointframework.core.user.UserManager;
-import org.salespointframework.security.SalespointUserDetailService;
+import org.salespointframework.core.useraccount.UserAccountDetailService;
+import org.salespointframework.core.useraccount.UserAccount;
+import org.salespointframework.core.useraccount.UserAccountManager;
 import org.salespointframework.util.SalespointPasswordEncoder;
 import org.salespointframework.web.spring.converter.JpaEntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,7 +34,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableAutoConfiguration
 @Import({ Salespoint.class, VideoShop.WebConfiguration.class,
-		VideoShop.CustomWebSecurityConfigurerAdapter.class })
+		VideoShop.WebSecurityConfiguration.class })
 @ComponentScan
 public class VideoShop {
 
@@ -71,7 +71,6 @@ public class VideoShop {
 		@Override
 		public void addInterceptors(InterceptorRegistry registry) {
 			registry.addInterceptor(new org.salespointframework.web.spring.support.LoggedInUserInterceptor());
-			registry.addInterceptor(new org.salespointframework.web.spring.support.CapabilitiesInterceptor());
 		}
 
 		@Override
@@ -89,21 +88,21 @@ public class VideoShop {
 
 	@EnableWebSecurity
 	@Configuration
-	static class CustomWebSecurityConfigurerAdapter extends
+	static class WebSecurityConfiguration extends
 			WebSecurityConfigurerAdapter {
 		
 		@Autowired
-		UserManager userManager;
+		UserAccountManager userAccountManager;
 		
 		@Override
-		protected void registerAuthentication(AuthenticationManagerBuilder auth) {
+		protected void registerAuthentication(AuthenticationManagerBuilder builder) {
 			
-			DaoAuthenticationProvider prov = new DaoAuthenticationProvider();
+			DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 			
-			prov.setPasswordEncoder(new SalespointPasswordEncoder());
-			prov.setUserDetailsService(new SalespointUserDetailService(userManager));
+			provider.setPasswordEncoder(new SalespointPasswordEncoder());
+			provider.setUserDetailsService(new UserAccountDetailService(userAccountManager));
 
-			auth.authenticationProvider(prov);
+			builder.authenticationProvider(provider);
 
 			return;
 			/*
@@ -113,14 +112,14 @@ public class VideoShop {
 			 */
 		}
 
-		// @Override
-		public void configure_(WebSecurity web) throws Exception {
+		@Override
+		public void configure(WebSecurity web) throws Exception {
 			web.ignoring().antMatchers("/resources/**"); // #3
 		}
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.authorizeRequests().antMatchers("/", "/about").permitAll() // #4
+			http.authorizeRequests().antMatchers("/**").permitAll() // #4
 					.antMatchers("/admin/**").hasRole("ADMIN") // #6
 					.anyRequest().authenticated() // 7
 

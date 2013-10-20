@@ -7,7 +7,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
-import org.salespointframework.core.shop.Shop;
 
 @Embeddable
 public class Comment {
@@ -23,7 +22,8 @@ public class Comment {
 	public Comment(String text, int rating) {
 		this.text = text;
 		this.rating = rating;
-		this.date = Shop.INSTANCE.getTime().getDateTime().toDate();
+		// FIXME
+		this.date = null; //Shop.INSTANCE.getTime().getDateTime().toDate();
 	}
 	
 	public String getText() {

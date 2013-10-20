@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../resources/css/login.css" />
+	<title th:text="#{register.title}">Registrierung</title>
+</head>
+<body>
+	<div class="all">
+		<header>
+			<h1 th:text="#{register.title}">Registrierung</h1>
+		</header>
+		<nav th:include="navigation :: navigation" ></nav>
+		
+		<div class="content">
+			<div class="salespoint">
+				<form method="post" action="registerNew">
+					<fieldset>
+						<legend th:text="#{register.title}">Benutzerkonto</legend>
+						<label th:text="#{register.name}" for="name">Name</label><br />
+						<input id="name" type="text" name="name" />
+						<br />
+						<label th:text="#{register.password}" for="password">Passwort</label><br />
+						<input id="password" type="text" name="password" />
+						<br/>
+						<br/>
+						<label th:text="#{register.street}" for="address">Straße</label><br />
+						<input id="address" type="text" name="street" />
+						<br/>
+						<label th:text="#{register.city}" for="city">Stadt</label><br />
+						<input id="city" type="text" name="city" /><br/>
+						<button th:text="#{register.submit}" type="submit">Registrieren</button>
+					</fieldset> 
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

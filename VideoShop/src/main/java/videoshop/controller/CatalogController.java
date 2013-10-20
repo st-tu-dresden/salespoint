@@ -29,7 +29,7 @@ class CatalogController {
 	
 	private final VideoCatalog videoCatalog;
 	private final Inventory inventory;
-	private final MessageSourceAccessor messageSource;
+	private final MessageSourceAccessor messageSourceAccessor;
 	
 	/**
 	 * @param videoCatalog
@@ -41,14 +41,14 @@ class CatalogController {
 		
 		this.videoCatalog = videoCatalog;
 		this.inventory = inventory;
-		this.messageSource = new MessageSourceAccessor(messageSource);
+		this.messageSourceAccessor = new MessageSourceAccessor(messageSource);
 	}
 
 	@RequestMapping("/dvdCatalog")
 	public String dvdCatalog(ModelMap modelMap) 
 	{
 		modelMap.addAttribute("catalog", videoCatalog.findDvds());
-		String title = messageSource.getMessage("catalog.dvd.title");
+		String title = messageSourceAccessor.getMessage("catalog.dvd.title");
 		modelMap.addAttribute("title", title);
 		return "catalog";
 	}
@@ -57,7 +57,7 @@ class CatalogController {
 	public String blurayCatalog(ModelMap modelMap, Locale locale) 
 	{
 		modelMap.addAttribute("catalog", videoCatalog.findBluRays());
-		String title = messageSource.getMessage("catalog.bluray.title");
+		String title = messageSourceAccessor.getMessage("catalog.bluray.title");
 		modelMap.addAttribute("title", title);
 		return "catalog";
 	}

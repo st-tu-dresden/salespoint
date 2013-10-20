@@ -5,7 +5,7 @@ import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.order.OrderStatus;
-import org.salespointframework.web.annotation.Capabilities;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-@Capabilities("boss")
 class BossController {
 	
 	private final OrderManager orderManager;

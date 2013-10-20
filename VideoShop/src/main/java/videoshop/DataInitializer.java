@@ -4,15 +4,15 @@ import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Units;
-import org.salespointframework.core.user.Capability;
 import org.salespointframework.core.user.User;
-import org.salespointframework.core.user.UserIdentifier;
-import org.salespointframework.core.user.UserManager;
+import org.salespointframework.core.useraccount.Role;
+import org.salespointframework.core.useraccount.UserAccount;
+import org.salespointframework.core.useraccount.UserAccountIdentifier;
+import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import videoshop.model.BluRay;
-import videoshop.model.Customer;
 import videoshop.model.Disc;
 import videoshop.model.Dvd;
 import videoshop.model.VideoCatalog;
@@ -22,9 +22,9 @@ public class DataInitializer {
 
 
 	@Autowired
-	public DataInitializer(Inventory inventory, VideoCatalog videoCatalog, UserManager userManager) {
+	public DataInitializer(Inventory inventory, VideoCatalog videoCatalog, UserAccountManager userAccountManager) {
 
-		initializeUsers(userManager);
+		initializeUsers(userAccountManager);
 
 		videoCatalog.add(new Dvd("Last Action Hero", "lac", new Money(9.99), "�ktschn/Comedy"));
 		videoCatalog.add(new Dvd("Back to the Future", "bttf", new Money(9.99), "Sci-Fi"));
@@ -52,29 +52,32 @@ public class DataInitializer {
 	}
 
 	/**
-	 * @param userManager 
+	 * @param userAccountManager 
 	 * 
 	 */
-	private void initializeUsers(UserManager userManager) {
+	private void initializeUsers(UserAccountManager userAccountManager) {
 		
-		UserIdentifier bossUI = new UserIdentifier("boss");
+		UserAccountIdentifier bossUI = new UserAccountIdentifier("boss");
 
-		if (userManager.contains(bossUI)) {
+		if (userAccountManager.contains(bossUI)) {
 			return;
 		}
+	
+		UserAccount bossAccount = userAccountManager.create(bossUI, "pass", new Role("ROLE_BOSS"));
+		userAccountManager.save(bossAccount);
+		
 
-		User boss = new User(bossUI, "123");
-		boss.addCapability(new Capability("ROLE_BOSS"));
-
-		Customer customer1 = new Customer(new UserIdentifier("hans"), "wurst", "");
-		Customer customer2 = new Customer(new UserIdentifier("dexter"), "morgan", "Miami-Dade County");
-		Customer customer3 = new Customer(new UserIdentifier("earl"), "hickey", "Camden County - Motel");
-		Customer customer4 = new Customer(new UserIdentifier("mclovin"), "fogell", "Los Angeles");
+		/*
+		Customer customer1 = new Customer(new UserAccountIdentifier("hans"), "wurst", "");
+		Customer customer2 = new Customer(new UserAccountIdentifier("dexter"), "morgan", "Miami-Dade County");
+		Customer customer3 = new Customer(new UserAccountIdentifier("earl"), "hickey", "Camden County - Motel");
+		Customer customer4 = new Customer(new UserAccountIdentifier("mclovin"), "fogell", "Los Angeles");
 
 		userManager.add(boss);
 		userManager.add(customer1);
 		userManager.add(customer2);
 		userManager.add(customer3);
 		userManager.add(customer4);
+		*/
 	}
 }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../resources/css/login.css" />
+	<title>Last Action Hero</title>
+</head>
+
+<body>
+	<div class="all">
+		<header>
+			<h1>Last Action Hero</h1>
+		</header>
+		<nav>
+			<ul>
+				<li><a href="register.html">Anmeldung</a></li>
+				<li><a href="orders.html">Bestellungen</a></li>
+				<li><a href="stock.html">Lager</a></li>
+				<li><a href="catalog.html">Dvd Catalog</a></li>
+				<li><a href="catalog.html">Blu-ray Catalog</a></li>
+				<li><a href="basket.html">Warenkorb</a></li>
+			</ul>
+		</nav>
+		
+		<div class="content">
+			<div class="detailImg">
+				<img src="../resources/img/cover/lac.jpg" alt="" />
+			</div>
+			<div class="detailDescription">
+				<h2>Last Action Hero</h2>
+				Preis: 9.99€ <br />
+				Genre: Äktschn <br />
+				Vorrat: 10 Stück <br />
+				
+				<form method="post" action="/addDisc" >
+					<input type="hidden" name="pid" value="0" /> 
+					<label for="number">Anzahl</label>
+					<input id="number" type="number" name="number" min="1" max="5" step="1" value="1" /><br />
+					<input	type="submit" value="Zum Warenkorb hinzufügen" />
+				</form>
+			</div>
+
+	
+			<div class="detailComments">
+				Was andere Kunden über diesen Film sagen
+				<br />
+				<article class="comment">Erster !!!1111elf</article>
+				<article class="comment">Deine Mutter </article>
+			</div>
+			
+			<br />
+			
+			<div class="salespoint">
+				<form method="post" action="/comment"">
+					<fieldset>
+						<legend>Kommentar hinzufügen</legend>
+						<input type="hidden" name="pid" value="0" />
+						<textarea name="comment" cols="40" rows="5"></textarea><br>
+						<label for="rating">Bewertung</label>
+						<input id="rating" type="text" name="rating" value="5" /> 
+						<input type="submit" value="Senden" />
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
