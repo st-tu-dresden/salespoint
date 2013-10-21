@@ -14,7 +14,7 @@ import javax.persistence.FetchType;
 
 
 
-import org.salespointframework.core.user.User;
+
 import org.salespointframework.util.Iterables;
 
 
