@@ -12,7 +12,7 @@
 				<li><a th:href="@{/stock}" href="stock.html">Lager</a></li>
 				<li><a th:href="@{/dvdCatalog}" href="catalog.html">Dvd Catalog</a></li>
 				<li><a th:href="@{/blurayCatalog}" href="catalog.html">Blu-ray Catalog</a></li>
-				<li><a th:href="@{/basket}" href="basket.html">Warenkorb</a></li>
+				<li><a th:href="@{/shoppingBasket}" href="basket.html">Warenkorb</a></li>
 				
 				<li th:unless="${#authentication}" class="loginlogout"><a href="login">Login</a></li>
 				<li th:if="${#authentication}" class="loginlogout"><a href="logout">Logout</a></li>
