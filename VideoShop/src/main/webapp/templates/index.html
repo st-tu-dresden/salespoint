@@ -31,10 +31,16 @@
 			<p th:text="#{home.welcome}">Willkommen zu unserem Videoshop.</p>
 			
 			<div th:switch="${#authorization.expression('isAuthenticated()')}">
-  <span th:case="${true}">Logged (TRUE) - 3</span>
-  <span th:case="${false}">Not Logged (FALSE) - 3</span>
-  <span th:case="*">Ops....!! (WHAT???) - 3</span>
-</div>
+			  <span th:case="${true}">Logged (TRUE) - 3</span>
+			  <span th:case="${false}">Not Logged (FALSE) - 3</span>
+			  <span th:case="*">Ops....!! (WHAT???) - 3</span>
+			</div>
+			
+			<div th:switch="${#authentication.authenticated}">
+			  <span th:case="${true}">Logged (TRUE) - 3</span>
+			  <span th:case="${false}">Not Logged (FALSE) - 3</span>
+			  <span th:case="*">Ops....!! (WHAT???) - 3</span>
+			</div>
 		
 		</div>
 	</div>

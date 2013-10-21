@@ -14,14 +14,14 @@
 				<li><a th:href="@{/blurayCatalog}" href="catalog.html">Blu-ray Catalog</a></li>
 				<li><a th:href="@{/shoppingBasket}" href="basket.html">Warenkorb</a></li>
 
-				
+				  <!--  
 				<li th:if="${!#authentication.authenticated}" class="loginlogout"><a href="login">Login</a></li>
 				<li th:if="${#authentication.authenticated}" class="loginlogout"><a href="logout">Logout</a></li>
-			 
-				  <!--  
+			  -->
+				
 				<li th:if="${!#authorization.expression('isAuthenticated()')}" class="loginlogout"><a href="login">Login</a></li>
 				<li th:if="${#authorization.expression('isAuthenticated()')}" class="loginlogout"><a href="logout">Logout</a></li>
-				 -->
+				
 				
 			</ul>
     </nav>
