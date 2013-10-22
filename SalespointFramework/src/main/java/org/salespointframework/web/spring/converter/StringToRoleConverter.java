@@ -8,7 +8,7 @@ import org.springframework.core.convert.converter.Converter;
  * @author Paul Henke
  *
  */
-public class StringToCapabilityConverter implements Converter<String, Role> {
+public class StringToRoleConverter implements Converter<String, Role> {
 
 	@Override
 	public Role convert(String text) {

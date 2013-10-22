@@ -15,6 +15,8 @@ import javax.persistence.FetchType;
 
 
 
+
+
 import org.salespointframework.util.Iterables;
 
 
@@ -41,20 +43,13 @@ public class UserAccount {
     private boolean isEnabled;
 
     protected UserAccount() {
-        
+    	
     }
-
-
-    /**
-     * Creates a new {@link User} from the given attributes (non null ones).
-     *
-     * @param  username  an username
-     * @param  emailAddress  the users email address
-     */
-    public UserAccount(UserAccountIdentifier userIdentifier, String password, Role... roles) {
+    
+    UserAccount(UserAccountIdentifier userAccountIdentifier, String password, Role... roles) {
     	this.isEnabled = true;
     	
-		this.userIdentifier = Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
+		this.userIdentifier = Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		
 		Objects.requireNonNull(password, "password must not be null");
 		this.password = new Password(password);
@@ -66,7 +61,7 @@ public class UserAccount {
 	/**
 	 * Get the unique identifier of this <code>User</code>.
 	 * 
-	 * @return the {@link UserAccountIdentifier} of this <code>User</code>
+	 * @return the {@link UserAccountIdentifier} of this <code>UserAccount</code>
 	 */
 	public final UserAccountIdentifier getIdentifier()
 	{
