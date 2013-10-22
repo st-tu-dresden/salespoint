@@ -29,7 +29,7 @@ public class DataInitializer {
 
 		initializeUsers(userAccountManager,customerRepository);
 
-		videoCatalog.add(new Dvd("Last Action Hero", "lac", new Money(9.99), "Äktschn/Comedy"));
+		videoCatalog.add(new Dvd("Last Action Hero", "lac", new Money(9.99), "��ktschn/Comedy"));
 		videoCatalog.add(new Dvd("Back to the Future", "bttf", new Money(9.99), "Sci-Fi"));
 		videoCatalog.add(new Dvd("Fido", "fido", new Money(9.99), "Comedy/Drama/Horror"));
 		videoCatalog.add(new Dvd("Super Fuzz", "sf", new Money(19.99), "Action/Sci-Fi/Comedy"));
@@ -68,11 +68,11 @@ public class DataInitializer {
 		UserAccount ua1 = userAccountManager.create(new UserAccountIdentifier("hans"), "123", new Role("ROLE_CUSTOMER"));
 		userAccountManager.save(ua1);
 		UserAccount ua2 = userAccountManager.create(new UserAccountIdentifier("dextermorgan"), "123", new Role("ROLE_CUSTOMER"));
-		userAccountManager.save(ua1);
+		userAccountManager.save(ua2);
 		UserAccount ua3 = userAccountManager.create(new UserAccountIdentifier("earlhickey"), "123", new Role("ROLE_CUSTOMER"));
-		userAccountManager.save(ua1);
+		userAccountManager.save(ua3);
 		UserAccount ua4 = userAccountManager.create(new UserAccountIdentifier("mclovinfogell"), "123", new Role("ROLE_CUSTOMER"));
-		userAccountManager.save(ua1);
+		userAccountManager.save(ua4);
 		
 		Customer c1 = new Customer(ua1, "wurst");
 		Customer c2 = new Customer(ua2, "Miami-Dade County");
