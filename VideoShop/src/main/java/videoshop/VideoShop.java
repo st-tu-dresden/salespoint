@@ -30,6 +30,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * Central application class for VideoShop.
  * 
  * @author Oliver Gierke
+ * @author Paul Henke
  */
 @Configuration
 @EnableAutoConfiguration
@@ -38,8 +39,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan
 public class VideoShop {
 
-
-	
 	/**
 	 * runs the application.
 	 * 
@@ -60,19 +59,22 @@ public class VideoShop {
 		// Web application configuration
 		@Autowired
 		private JpaEntityConverter entityConverter;
-		
+
 		@Autowired
 		private UserAccountManager userAccountManager;
 
 		@Override
 		public void addArgumentResolvers(
 				List<HandlerMethodArgumentResolver> argumentResolvers) {
-			argumentResolvers.add(new org.salespointframework.web.spring.support.LoggedInUserArgumentResolver(userAccountManager));
+			argumentResolvers
+					.add(new org.salespointframework.web.spring.support.LoggedInUserArgumentResolver(
+							userAccountManager));
 		}
 
 		@Override
 		public void addInterceptors(InterceptorRegistry registry) {
-			//registry.addInterceptor(new org.salespointframework.web.spring.support.LoggedInUserInterceptor());
+			// registry.addInterceptor(new
+			// org.salespointframework.web.spring.support.LoggedInUserInterceptor());
 		}
 
 		@Override
@@ -83,25 +85,26 @@ public class VideoShop {
 
 		@Override
 		public void addResourceHandlers(ResourceHandlerRegistry registry) {
-			//registry.addResourceHandler("/res/**").addResourceLocations("/resources/");
+			// registry.addResourceHandler("/res/**").addResourceLocations("/resources/");
 		}
 	}
 
 	@EnableWebSecurity
 	@Configuration
-	static class WebSecurityConfiguration extends
-			WebSecurityConfigurerAdapter {
-		
+	static class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
 		@Autowired
 		private UserAccountManager userAccountManager;
-		
+
 		@Override
-		protected void registerAuthentication(AuthenticationManagerBuilder builder) {
-			
+		protected void registerAuthentication(
+				AuthenticationManagerBuilder builder) {
+
 			DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-			
+
 			provider.setPasswordEncoder(new SalespointPasswordEncoder());
-			provider.setUserDetailsService(new UserAccountDetailService(userAccountManager));
+			provider.setUserDetailsService(new UserAccountDetailService(
+					userAccountManager));
 
 			builder.authenticationProvider(provider);
 
@@ -120,18 +123,15 @@ public class VideoShop {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			
-			http.csrf().disable();
-			
-			http.authorizeRequests().antMatchers("/**").permitAll() // #4
-					.antMatchers("/admin/**").hasRole("ADMIN") // #6
-					.anyRequest().authenticated() // 7
 
-					.and().formLogin() // #8
-					.loginProcessingUrl("/login") // #9
-					.permitAll()
-					.and().logout().logoutUrl("/logout");
-					; // #5
+			http.csrf().disable();
+
+			http.authorizeRequests().antMatchers("/**").permitAll().and()
+					.formLogin().loginProcessingUrl("/login").and().logout()
+					.logoutUrl("/logout").logoutSuccessUrl("/");
+
+			// WTF
+			// http://docs.spring.io/spring-security/site/docs/3.2.x/apidocs/org/springframework/security/config/annotation/web/builders/HttpSecurity.html#logout()
 
 		}
 	}

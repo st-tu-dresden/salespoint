@@ -1,6 +1,5 @@
 package videoshop.controller;
 
-import java.util.Locale;
 
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.InventoryItem;
@@ -55,7 +54,7 @@ class CatalogController {
 	}
 
 	@RequestMapping("/blurayCatalog")
-	public String blurayCatalog(ModelMap modelMap, Locale locale) 
+	public String blurayCatalog(ModelMap modelMap) 
 	{
 		modelMap.addAttribute("catalog", videoCatalog.findBluRays());
 		String title = messageSourceAccessor.getMessage("catalog.bluray.title");

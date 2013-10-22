@@ -29,7 +29,7 @@ public class DataInitializer {
 
 		initializeUsers(userAccountManager,customerRepository);
 
-		videoCatalog.add(new Dvd("Last Action Hero", "lac", new Money(9.99), "�ktschn/Comedy"));
+		videoCatalog.add(new Dvd("Last Action Hero", "lac", new Money(9.99), "Äktschn/Comedy"));
 		videoCatalog.add(new Dvd("Back to the Future", "bttf", new Money(9.99), "Sci-Fi"));
 		videoCatalog.add(new Dvd("Fido", "fido", new Money(9.99), "Comedy/Drama/Horror"));
 		videoCatalog.add(new Dvd("Super Fuzz", "sf", new Money(19.99), "Action/Sci-Fi/Comedy"));
@@ -62,7 +62,7 @@ public class DataInitializer {
 			return;
 		}
 	
-		UserAccount bossAccount = userAccountManager.create(bossUI, "pass", new Role("ROLE_BOSS"));
+		UserAccount bossAccount = userAccountManager.create(bossUI, "123", new Role("ROLE_BOSS"));
 		userAccountManager.save(bossAccount);
 		
 		UserAccount ua1 = userAccountManager.create(new UserAccountIdentifier("hans"), "123", new Role("ROLE_CUSTOMER"));

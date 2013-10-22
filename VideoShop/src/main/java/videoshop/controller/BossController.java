@@ -1,7 +1,5 @@
 package videoshop.controller;
 
-import java.util.List;
-
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.order.Order;

@@ -26,9 +26,6 @@ class BasketController {
 
 	private final OrderManager orderManager;
 
-	/**
-	 * @param orderManager
-	 */
 	@Autowired
 	public BasketController(OrderManager orderManager) {
 		this.orderManager = orderManager;
@@ -83,6 +80,7 @@ class BasketController {
 
 		orderManager.pay(order);
 		orderManager.completeOrder(order);
+		orderManager.add(order);
 
 		session.removeAttribute("basket");
 

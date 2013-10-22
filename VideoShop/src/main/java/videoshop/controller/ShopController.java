@@ -54,4 +54,5 @@ class ShopController {
 	public String register() {
 		return "register";
 	}
+
 }
