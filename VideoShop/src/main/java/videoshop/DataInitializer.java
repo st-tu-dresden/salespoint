@@ -39,6 +39,7 @@ public class DataInitializer {
 		videoCatalog.add(new Dvd("Hot Shots! Part Deux", "hspd", Money.OVER9000, "Action/Comedy/War"));
 		videoCatalog.add(new Dvd("Avatar: The Last Airbender", "tla", new Money(19.99), "Animation/Action/Adventure"));
 
+		videoCatalog.add(new BluRay("Secretary", "secretary", new Money(6.99), "Political Drama"));
 		videoCatalog.add(new BluRay("The Godfather", "tg", new Money(19.99), "Crime/Drama"));
 		videoCatalog.add(new BluRay("No Retreat, No Surrender", "nrns", new Money(29.99), "Martial Arts"));
 		videoCatalog.add(new BluRay("The Princess Bride", "tpb", new Money(39.99), "Adventure/Comedy/Family"));
