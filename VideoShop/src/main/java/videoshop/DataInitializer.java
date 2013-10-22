@@ -79,7 +79,7 @@ public class DataInitializer {
 		Customer c3 = new Customer(ua3, "Camden County - Motel");
 		Customer c4 = new Customer(ua4 , "Los Angeles");
 		
-		//customerRepository.save(Arrays.asList(c1,c2,c3,c4));
+		customerRepository.save(Arrays.asList(c1,c2,c3,c4));
 		
 
 	}

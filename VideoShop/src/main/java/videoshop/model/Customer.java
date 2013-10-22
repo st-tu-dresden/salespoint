@@ -1,5 +1,7 @@
 package videoshop.model;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,7 +17,6 @@ import org.salespointframework.core.useraccount.UserAccount;
 public class Customer {
 
 	@Id
-	@GeneratedValue
 	private String id;
 	
 	private String address;
@@ -29,6 +30,7 @@ public class Customer {
 	public Customer(UserAccount userAccount, String address) {
 		this.userAccount = userAccount;
 		this.address = address;
+		this.id = UUID.randomUUID().toString();
 	}
 
 	public String getAddress() {
