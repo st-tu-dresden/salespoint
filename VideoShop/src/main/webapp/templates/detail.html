@@ -1,52 +1,43 @@
 <!DOCTYPE html>
 
-<html>
-<head>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="../resources/css/login.css" />
-	<title>Last Action Hero</title>
-</head>
-
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../resources/css/login.css" />
+		<title th:text="${disc.name}">Last Action Hero</title>
+	</head>
 <body>
 	<div class="all">
 		<header>
-			<h1>Last Action Hero</h1>
+			<h1 th:text="${disc.name}">Last Action Hero</h1>
 		</header>
-		<nav>
-			<ul>
-				<li><a href="register.html">Anmeldung</a></li>
-				<li><a href="orders.html">Bestellungen</a></li>
-				<li><a href="stock.html">Lager</a></li>
-				<li><a href="catalog.html">Dvd Catalog</a></li>
-				<li><a href="catalog.html">Blu-ray Catalog</a></li>
-				<li><a href="basket.html">Warenkorb</a></li>
-			</ul>
-		</nav>
+		<nav th:include="navigation :: navigation" ></nav>
+		
 		
 		<div class="content">
 			<div class="detailImg">
-				<img src="../resources/img/cover/lac.jpg" alt="" />
+				<img th:src="@{'/resources/img/cover/' + ${disc.image} + '.jpg'}" src="../resources/img/cover/lac.jpg" alt="" />
 			</div>
+		
 			<div class="detailDescription">
-				<h2>Last Action Hero</h2>
-				Preis: 9.99€ <br />
-				Genre: Äktschn <br />
-				Vorrat: 10 Stück <br />
+				<h2 th:text="${disc.name}">Last Action Hero</h2>
+				<p>Preis:</p><p th:text="${disc.price}">9.99€</p><br />
+				<p>Genre:</p><p th:text="${disc.genre}">Äktschn</p><br />
+				<p>Vorrat:</p><p th:text="${quantity}">10 Stück</p><br /> 
 				
 				<form method="post" action="/addDisc" >
-					<input type="hidden" name="pid" value="0" /> 
+					<input type="hidden" name="pid" value="0" th:value="${disc.identifier}" /> 
 					<label for="number">Anzahl</label>
 					<input id="number" type="number" name="number" min="1" max="5" step="1" value="1" /><br />
 					<input	type="submit" value="Zum Warenkorb hinzufügen" />
 				</form>
 			</div>
 
-	
-			<div class="detailComments">
-				Was andere Kunden über diesen Film sagen
-				<br />
-				<article class="comment">Erster !!!1111elf</article>
+			<p>Was andere Kunden über diesen Film sagen</p>	<br />
+			
+			<div class="detailComments" th:remove="all-but-first" >
+				<article class="comment" th:each="comment : ${disc.comments}" th:text="${comment}">Erster !!!1111elf</article>
 				<article class="comment">Deine Mutter </article>
 			</div>
 			
@@ -56,7 +47,7 @@
 				<form method="post" action="/comment">
 					<fieldset>
 						<legend>Kommentar hinzufügen</legend>
-						<input type="hidden" name="pid" value="0" />
+						<input type="hidden" name="pid" value="0" th:value="${disc.identifier}" />
 						<textarea name="comment" cols="40" rows="5"></textarea><br />
 						<label for="rating">Bewertung</label>
 						<input id="rating" type="text" name="rating" value="5" /> 

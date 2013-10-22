@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.salespointframework.Salespoint;
 import org.salespointframework.core.useraccount.UserAccountDetailService;
-import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.salespointframework.util.SalespointPasswordEncoder;
 import org.salespointframework.web.spring.converter.JpaEntityConverter;
+import org.salespointframework.web.spring.converter.StringToRoleConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -59,30 +59,31 @@ public class VideoShop {
 
 		// Web application configuration
 		@Autowired
-		JpaEntityConverter entityConverter;
+		private JpaEntityConverter entityConverter;
+		
+		@Autowired
+		private UserAccountManager userAccountManager;
 
 		@Override
 		public void addArgumentResolvers(
 				List<HandlerMethodArgumentResolver> argumentResolvers) {
-			argumentResolvers
-					.add(new org.salespointframework.web.spring.support.LoggedInUserArgumentResolver());
+			argumentResolvers.add(new org.salespointframework.web.spring.support.LoggedInUserArgumentResolver(userAccountManager));
 		}
 
 		@Override
 		public void addInterceptors(InterceptorRegistry registry) {
-			registry.addInterceptor(new org.salespointframework.web.spring.support.LoggedInUserInterceptor());
+			//registry.addInterceptor(new org.salespointframework.web.spring.support.LoggedInUserInterceptor());
 		}
 
 		@Override
 		public void addFormatters(FormatterRegistry registry) {
 			registry.addConverter(entityConverter);
-			registry.addConverter(new org.salespointframework.web.spring.converter.StringToCapabilityConverter());
+			registry.addConverter(new StringToRoleConverter());
 		}
 
 		@Override
 		public void addResourceHandlers(ResourceHandlerRegistry registry) {
-			registry.addResourceHandler("/res/**").addResourceLocations(
-					"/resources/");
+			//registry.addResourceHandler("/res/**").addResourceLocations("/resources/");
 		}
 	}
 
@@ -92,7 +93,7 @@ public class VideoShop {
 			WebSecurityConfigurerAdapter {
 		
 		@Autowired
-		UserAccountManager userAccountManager;
+		private UserAccountManager userAccountManager;
 		
 		@Override
 		protected void registerAuthentication(AuthenticationManagerBuilder builder) {
@@ -119,6 +120,9 @@ public class VideoShop {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
+			
+			http.csrf().disable();
+			
 			http.authorizeRequests().antMatchers("/**").permitAll() // #4
 					.antMatchers("/admin/**").hasRole("ADMIN") // #6
 					.anyRequest().authenticated() // 7

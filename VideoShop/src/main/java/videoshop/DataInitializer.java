@@ -1,10 +1,11 @@
 package videoshop;
 
+import java.util.Arrays;
+
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Units;
-import org.salespointframework.core.user.User;
 import org.salespointframework.core.useraccount.Role;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import videoshop.model.BluRay;
+import videoshop.model.Customer;
+import videoshop.model.CustomerRepository;
 import videoshop.model.Disc;
 import videoshop.model.Dvd;
 import videoshop.model.VideoCatalog;
@@ -22,9 +25,9 @@ public class DataInitializer {
 
 
 	@Autowired
-	public DataInitializer(Inventory inventory, VideoCatalog videoCatalog, UserAccountManager userAccountManager) {
+	public DataInitializer(Inventory inventory, VideoCatalog videoCatalog, UserAccountManager userAccountManager, CustomerRepository customerRepository) {
 
-		initializeUsers(userAccountManager);
+		initializeUsers(userAccountManager,customerRepository);
 
 		videoCatalog.add(new Dvd("Last Action Hero", "lac", new Money(9.99), "�ktschn/Comedy"));
 		videoCatalog.add(new Dvd("Back to the Future", "bttf", new Money(9.99), "Sci-Fi"));
@@ -51,11 +54,7 @@ public class DataInitializer {
 		}
 	}
 
-	/**
-	 * @param userAccountManager 
-	 * 
-	 */
-	private void initializeUsers(UserAccountManager userAccountManager) {
+	private void initializeUsers(UserAccountManager userAccountManager, CustomerRepository customerRepository) {
 		
 		UserAccountIdentifier bossUI = new UserAccountIdentifier("boss");
 
@@ -66,18 +65,22 @@ public class DataInitializer {
 		UserAccount bossAccount = userAccountManager.create(bossUI, "pass", new Role("ROLE_BOSS"));
 		userAccountManager.save(bossAccount);
 		
+		UserAccount ua1 = userAccountManager.create(new UserAccountIdentifier("hans"), "123", new Role("ROLE_CUSTOMER"));
+		userAccountManager.save(ua1);
+		UserAccount ua2 = userAccountManager.create(new UserAccountIdentifier("dextermorgan"), "123", new Role("ROLE_CUSTOMER"));
+		userAccountManager.save(ua1);
+		UserAccount ua3 = userAccountManager.create(new UserAccountIdentifier("earlhickey"), "123", new Role("ROLE_CUSTOMER"));
+		userAccountManager.save(ua1);
+		UserAccount ua4 = userAccountManager.create(new UserAccountIdentifier("mclovinfogell"), "123", new Role("ROLE_CUSTOMER"));
+		userAccountManager.save(ua1);
+		
+		Customer c1 = new Customer(ua1, "wurst");
+		Customer c2 = new Customer(ua2, "Miami-Dade County");
+		Customer c3 = new Customer(ua3, "Camden County - Motel");
+		Customer c4 = new Customer(ua4 , "Los Angeles");
+		
+		//customerRepository.save(Arrays.asList(c1,c2,c3,c4));
+		
 
-		/*
-		Customer customer1 = new Customer(new UserAccountIdentifier("hans"), "wurst", "");
-		Customer customer2 = new Customer(new UserAccountIdentifier("dexter"), "morgan", "Miami-Dade County");
-		Customer customer3 = new Customer(new UserAccountIdentifier("earl"), "hickey", "Camden County - Motel");
-		Customer customer4 = new Customer(new UserAccountIdentifier("mclovin"), "fogell", "Los Angeles");
-
-		userManager.add(boss);
-		userManager.add(customer1);
-		userManager.add(customer2);
-		userManager.add(customer3);
-		userManager.add(customer4);
-		*/
 	}
 }

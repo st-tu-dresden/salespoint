@@ -1,17 +1,21 @@
 package videoshop.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.salespointframework.core.useraccount.UserAccount;
 
 
 
 @Entity
+@Table(name="WHATTHEFUCK")
 public class Customer {
 
 	@Id
+	@GeneratedValue
 	private String id;
 	
 	private String address;
@@ -33,6 +37,10 @@ public class Customer {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	
+	public UserAccount getUserAccount() {
+		return userAccount;
 	}
 
 }

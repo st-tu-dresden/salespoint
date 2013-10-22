@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import videoshop.model.Comment;
@@ -74,11 +75,11 @@ class CatalogController {
 		return "detail";
 	}
 
-	@RequestMapping("/comment")
-	public String comment(@PathVariable("pid") Disc disc, @RequestParam("comment") String comment, @RequestParam("rating") int rating ) 
+	@RequestMapping(value="/comment", method=RequestMethod.POST)
+	public String comment(@RequestParam("pid") Disc disc, @RequestParam("comment") String comment, @RequestParam("rating") int rating ) 
 	{
 		disc.addComment(new Comment(comment, rating));
 		videoCatalog.update(disc);
-		return "redirect:detail/"+disc.getIdentifier();
+		return "redirect:detail/" + disc.getIdentifier();
 	}
 }

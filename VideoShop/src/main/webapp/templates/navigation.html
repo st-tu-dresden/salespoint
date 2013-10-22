@@ -7,18 +7,17 @@
                 
     
     			<ul>
-				<li><a th:href="@{/register}" href="register.html">Anmeldung</a></li>
-				<li><a th:href="@{/orders}" href="orders.html">Bestellungen</a></li>
-				<li><a th:href="@{/stock}" href="stock.html">Lager</a></li>
+				<li><a th:href="@{/register}" href="register.html">Registrierung</a></li>
+				
+				<li th:if="${#authorization.expression('hasRole(''ROLE_BOSS'')')}"><a th:href="@{/orders}" href="orders.html">Bestellungen</a></li>
+				<li th:if="${#authorization.expression('hasRole(''ROLE_BOSS'')')}"><a th:href="@{/stock}" href="stock.html">Lager</a></li>
+				<li th:if="${#authorization.expression('hasRole(''ROLE_BOSS'')')}"><a th:href="@{/customers}" href="customers.html">Kundenliste</a></li>
+				
 				<li><a th:href="@{/dvdCatalog}" href="catalog.html">Dvd Catalog</a></li>
 				<li><a th:href="@{/blurayCatalog}" href="catalog.html">Blu-ray Catalog</a></li>
 				<li><a th:href="@{/shoppingBasket}" href="basket.html">Warenkorb</a></li>
 
-				  <!--  
-				<li th:if="${!#authentication.authenticated}" class="loginlogout"><a href="login">Login</a></li>
-				<li th:if="${#authentication.authenticated}" class="loginlogout"><a href="logout">Logout</a></li>
-			  -->
-				
+			
 				<li th:if="${!#authorization.expression('isAuthenticated()')}" class="loginlogout"><a href="login">Login</a></li>
 				<li th:if="${#authorization.expression('isAuthenticated()')}" class="loginlogout"><a href="logout">Logout</a></li>
 				

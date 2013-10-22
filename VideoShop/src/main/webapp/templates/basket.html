@@ -15,7 +15,7 @@
 		<nav th:include="navigation :: navigation"></nav>
 
 		<div class="content">
-			<div th:unless="${isEmpty}">
+			<div th:unless="${basket.empty}">
 				<table>
 					<caption th:text="#{shoppingBasket.title}">Warenkorb</caption>
 					<thead>
@@ -27,7 +27,7 @@
 					</thead>
 					<tbody th:remove="all-but-first">
 
-						<tr th:each="orderline : ${order.orderLines} ">
+						<tr th:each="orderline : ${basket.orderLines} ">
 							<td th:text="${orderline.productName}">Last Action Hero</td>
 							<td th:text="${orderline.quantity}">10</td>
 							<td th:text="${orderline.price}">10 Euro</td>
@@ -50,7 +50,7 @@
 
 					</tbody>
 				</table>
-				<p th:text="#{shoppingBasket.sum(${order.totalPrice})}">Summe: 100 Euro</p>
+				<p th:text="#{shoppingBasket.sum(${basket.price})}">Summe: 100 Euro</p>
 				<div style="margin: auto;">
 					<form method="post" action="buy">
 						<button th:text="#{shoppingBasket.buy}" type="submit"></button>
@@ -58,7 +58,7 @@
 				</div>
 			</div>
 
-			<p th:if="${isEmpty}" th:text="#{shoppingBasket.empty}">Leer</p>
+			<p th:if="${basket.empty}" th:text="#{shoppingBasket.empty}">Leer</p>
 		</div>
 	</div>
 </body>

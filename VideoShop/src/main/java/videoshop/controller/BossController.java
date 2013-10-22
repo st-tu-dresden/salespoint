@@ -1,15 +1,19 @@
 package videoshop.controller;
 
+import java.util.List;
+
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.order.OrderStatus;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import videoshop.model.Customer;
+import videoshop.model.CustomerRepository;
 
 
 @Controller
@@ -17,15 +21,25 @@ class BossController {
 	
 	private final OrderManager orderManager;
 	private final Inventory inventory;
+	private final CustomerRepository customerRepository;
 	
 	/**
 	 * @param orderManager
 	 * @param inventory
 	 */
 	@Autowired
-	public BossController(OrderManager orderManager, Inventory inventory) {
+	public BossController(OrderManager orderManager, Inventory inventory,CustomerRepository customerRepository) {
 		this.orderManager = orderManager;
 		this.inventory = inventory;
+		this.customerRepository = customerRepository;
+	}
+	
+	@RequestMapping("/customers")
+	public String customers(ModelMap modelMap) 
+	{
+		Iterable<Customer> customerList = customerRepository.findAll();
+		modelMap.addAttribute("customerList", customerList);
+		return "customers";
 	}
 
 	@RequestMapping("/orders")
