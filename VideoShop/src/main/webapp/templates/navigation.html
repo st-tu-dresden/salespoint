@@ -19,7 +19,15 @@
 
 			
 				<li th:if="${!#authorization.expression('isAuthenticated()')}" class="loginlogout"><a href="login">Login</a></li>
+				<!-- 
 				<li th:if="${#authorization.expression('isAuthenticated()')}" class="loginlogout"><a href="logout">Logout</a></li>
+				 -->
+				
+				<li th:if="${#authorization.expression('isAuthenticated()')}" class="loginlogout">
+					<form action="/logout" method="post">
+						<Button type="submit">Logout</Button>
+					</form>
+				</li>
 				
 				
 			</ul>
