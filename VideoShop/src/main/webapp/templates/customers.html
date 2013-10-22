@@ -5,22 +5,22 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="../resources/css/login.css" />
-	<title th:text="#{stock.title}">Kundenliste</title>
+	<title th:text="#{customers.title}">Kundenliste</title>
 </head>
 <body>
 	<div class="all">
 		<header>
-			<h1 th:text="#{stock.title}">Kundenliste</h1>
+			<h1 th:text="#{customers.title}">Kundenliste</h1>
 		</header>
 		<nav th:include="navigation :: navigation" ></nav>
 		
 		<div class="content">
 			<table>
-				<caption th:text="#{stock.title}">Kundenliste</caption>
+				<caption th:text="#{customers.title}">Kundenliste</caption>
 				<thead>
 					<tr>
-						<th th:text="#{shoppingBasket.movieTitle}">Name</th>
-						<th th:text="#{shoppingBasket.count}">Anschrift</th>
+						<th th:text="#{customers.name}">Name</th>
+						<th th:text="#{customers.address}">Anschrift</th>
 					</tr>
 				</thead>
 				<tbody th:remove="all-but-first">
