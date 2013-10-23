@@ -1,6 +1,7 @@
 package org.salespointframework.core.useraccount;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -11,6 +12,8 @@ import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+
+
 
 
 
@@ -31,17 +34,22 @@ import org.salespointframework.util.Iterables;
 public class UserAccount {
 
 	@EmbeddedId
-	@AttributeOverride(name = "id", column = @Column(name = "USER_ID"))
-	private UserAccountIdentifier userIdentifier;
+	@AttributeOverride(name = "id", column = @Column(name = "USERACCOUNT_ID"))
+	private UserAccountIdentifier userAccountIdentifier;
 
     @Column(nullable = false)
     private Password password;
+
+	private String firstname;
+    private String lastname;
+	private String email;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Set<Role> roles = new TreeSet<Role>();
 	
     private boolean isEnabled;
 
+    @Deprecated
     protected UserAccount() {
     	
     }
@@ -49,13 +57,30 @@ public class UserAccount {
     UserAccount(UserAccountIdentifier userAccountIdentifier, String password, Role... roles) {
     	this.isEnabled = true;
     	
-		this.userIdentifier = Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
+		this.userAccountIdentifier = Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		
 		Objects.requireNonNull(password, "password must not be null");
 		this.password = new Password(password);
 		
 		Objects.requireNonNull(roles, "roles must not be null");
 		this.roles.addAll(Arrays.asList(roles));
+    }
+    
+    UserAccount(UserAccountIdentifier userAccountIdentifier, String password, String firstname, String lastname, String email, Collection<Role> roles) {
+    	this.isEnabled = true;
+    	
+		this.userAccountIdentifier = Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
+		
+		Objects.requireNonNull(password, "password must not be null");
+		this.password = new Password(password);
+		
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		
+		
+		Objects.requireNonNull(roles, "roles must not be null");
+		this.roles.addAll(roles);
     }
 
 	/**
@@ -65,7 +90,7 @@ public class UserAccount {
 	 */
 	public final UserAccountIdentifier getIdentifier()
 	{
-		return userIdentifier;
+		return userAccountIdentifier;
 	}
 	
 	/**
@@ -129,9 +154,9 @@ public class UserAccount {
     }
 
 
-    void setPassword(Password password) {
+    void setPassword(String password) {
 
-        this.password = password;
+        this.password = new Password(password);
     }
 
     public boolean isEnabled() {
@@ -143,4 +168,28 @@ public class UserAccount {
 
         this.isEnabled = isEnabled;
     }
+    
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }
