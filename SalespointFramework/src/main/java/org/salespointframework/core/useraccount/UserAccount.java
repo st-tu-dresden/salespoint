@@ -154,10 +154,10 @@ public class UserAccount {
     }
 
 
-    void setPassword(String password) {
-
-        this.password = new Password(password);
+    void setPassword(Password password) {
+        this.password = password;
     }
+    
 
     public boolean isEnabled() {
 
