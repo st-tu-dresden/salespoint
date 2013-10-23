@@ -3,8 +3,8 @@ package videoshop.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 import org.salespointframework.core.catalog.Product;
 import org.salespointframework.core.money.Money;
@@ -17,7 +17,7 @@ public class Disc extends Product {
 	private String genre;
 	private String image;
 	
-	@ElementCollection
+	@OneToMany
 	private List<Comment> comments = new LinkedList<Comment>();
 	
 	@Deprecated

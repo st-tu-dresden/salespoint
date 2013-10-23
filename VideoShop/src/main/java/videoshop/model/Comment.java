@@ -2,15 +2,23 @@ package videoshop.model;
 
 import java.util.Date;
 
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 
-@Embeddable
+@Entity
+@Table(name="COMMENTS")
 public class Comment {
 
+	@Id
+	@GeneratedValue
+	private long id;
+	
 	private String text;
 	private int rating;
 	
