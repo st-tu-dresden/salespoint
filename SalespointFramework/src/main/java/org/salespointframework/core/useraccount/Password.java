@@ -1,18 +1,16 @@
 package org.salespointframework.core.useraccount;
 
-import java.beans.Transient;
 import java.util.Objects;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
 @Embeddable
 public class Password {
 
     private String password;
 
-    // FIXME
-    // The annotation @Transient is disallowed for this location ????
-    //@Transient
+    @Transient
     private boolean encrypted = true;
 
     /**
