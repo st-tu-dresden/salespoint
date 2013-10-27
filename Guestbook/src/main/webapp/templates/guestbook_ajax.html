@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="../resources/js/jquery-1.4.3.min.js">
+		
+	</script>
+	<script type="text/javascript" src="../resources/js/jquery.tmpl.min.js">
+		
+	</script>
+	<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+	<title th:text="#{guestbook.ajax.title}">Gästebuch Ajax</title>
+</head>
+
+<body>
+	<h1 th:text="#{guestbook.ajax.title}">Gästebuch Ajax</h1>
+	<div class="entries">
+		<div class="entry" id="entry${e.id}"
+			th:each="entry : ${guestbookEntries}">
+			<input type="submit" class="delBtn" th:value="#{guestbook.ajax.delete}" value="x" />
+			<h2 th:text="${entry.name}">Name</h2>
+			<p class="entrytext" th:text="${entry.text}">Posting</p>
+			<p class="date" th:text="${entry.date}">Datum</p>
+		</div>
+	</div>
+
+	<div class="login">
+		<form id="form" action="">
+			<fieldset>
+				<legend th:text="#{guestbook.form.title}"></legend>
+				<label for="name" th:text="#{guestbook.form.name}">Name</label><br />
+				<input name="name" id="name" type="text" /><br /> <label
+					for="text" th:text="#{guestbook.form.text}">Text</label><br />
+				<textarea name="text" id="text"></textarea>
+				<br /> <input type="submit" class="btn"
+					th:value="#{guestbook.form.submit}" />
+			</fieldset>
+		</form>
+	</div>
+
+	<p class="center">
+		<a href="/" th:text="#{guestbook.back}">Zurück</a>
+	</p>
+
+	<!--  http://api.jquery.com/category/plugins/templates/ -->
+	<script id="entryTemplate" type="text/x-jquery-tmpl">
+			<div class="entry" id="entry{{= id}}">
+				<button class="delBtn">x</button>
+				<h2>{{= name}}</h2>
+				<p class="entrytext">{{= text}}</p>
+				<p class="date"> {{= formatDate(date) }}
+				</p>
+			</div>
+		</script>
+
+	<!--  http://www.evotech.net/blog/2007/05/including-javascript-in-xhtml/ -->
+	<script type="text/javascript">
+		//<![CDATA[
+
+		$('#form .btn').click(addEntry);
+
+		//$('.delBtn').click(function() { //.live bindet auch dynamisch hinzugefügte Elemente
+		$('.delBtn').live("click", function() {
+			var id = getIdbyBtn(this);
+			removeEntry(id);
+		});
+
+		// eine Date Format Lib wäre 1000x besser
+		function formatDate(date) {
+			//var d = new Date(date);	// will nicht ganz, macht aber in diesem Fall nichts
+			var d = new Date();
+			var fd = d.getDate() + "." + (d.getMonth() + 1) + "."
+					+ d.getFullYear();
+			var ft = d.getHours() + ":" + d.getMinutes();
+			return fd + ", " + ft;
+		}
+
+		function addEntry() {
+			$.post("addEntry", {
+				name : $('#name').val(),
+				text : $('#text').val()
+			}, function(e) {
+				$("#text").val("");
+
+				var entry = $("#entryTemplate").tmpl(e);
+
+				entry.hide();
+				entry.appendTo(".entries");
+				entry.slideDown(500);
+			}, "json");
+			return false;
+		}
+
+		function removeEntry(id) {
+			$.post("removeEntry", {
+				id : id
+			}, function(success) {
+				if (success) {
+					$('#entry' + id).slideUp(500, function() {
+						$(this).remove();
+					});
+				}
+			}, "json");
+		}
+
+		function getIdbyBtn(btn) {
+			var div = btn.parentNode;
+			var attr_id = div.getAttribute('id');
+			var id = (/entry(\d+)/).exec(attr_id)[1];
+			return parseInt(id);
+		}
+		//]]>
+	</script>
+</body>
+</html>
