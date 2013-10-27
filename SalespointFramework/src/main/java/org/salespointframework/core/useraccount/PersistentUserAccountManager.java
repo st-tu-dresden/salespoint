@@ -2,7 +2,12 @@ package org.salespointframework.core.useraccount;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
+import org.salespointframework.util.Iterables;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -78,7 +83,15 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	@Override
 	public Iterable<UserAccount> findAll() {
-		return null;
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		
+		CriteriaQuery<UserAccount> cq = cb.createQuery(UserAccount.class);
+		Root<UserAccount> from = cq.from(UserAccount.class);
+		cq.select(from);
+		
+		TypedQuery<UserAccount> tq = entityManager.createQuery(cq);
+		
+		return Iterables.of(tq.getResultList());
 	}
 
 }

@@ -138,16 +138,4 @@ class PersistentCatalog implements Catalog
 
 		return Iterables.of(tq.getResultList());
 	}
-
-	/**
-	 * Updates and persists an existing {@link Product} to the PersistentCatalog and the Database
-	 * @param product the {@link Product} to be updated
-	 * @throws NullPointerException if product is null
-	 */
-	@Override
-	public final void update(Product product)
-	{
-		java.util.Objects.requireNonNull(product, "product must not be null");
-		em.merge(product);
-	}
 }

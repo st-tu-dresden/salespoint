@@ -14,18 +14,23 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderLine;
 import org.salespointframework.core.quantity.Units;
-import org.salespointframework.core.user.User;
+import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
+import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings({ "javadoc" })
 public class OrderLineTest extends AbstractIntegrationTests {
 
+	
+	@Autowired
+	private UserAccountManager userAccountManager;
+	
 	@Autowired
 	private Catalog catalog;
 
 	private static int keksCounter = 0;
-	private User user;
+	private UserAccount user;
 	private Order order;
 	private OrderLine orderLine;
 
@@ -35,7 +40,7 @@ public class OrderLineTest extends AbstractIntegrationTests {
 
 		catalog.add(keks);
 
-		user = new User(new UserAccountIdentifier(), "");
+		user = userAccountManager.create(new UserAccountIdentifier(), "");
 		order = new Order(user.getIdentifier(), Cash.CASH);
 		orderLine = new OrderLine(keks, Units.TEN);
 	}

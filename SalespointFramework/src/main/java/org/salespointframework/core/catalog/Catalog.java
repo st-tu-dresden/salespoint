@@ -71,5 +71,4 @@ public interface Catalog
 	 */
 	<E extends Product> Iterable<E> findByCategory(Class<E> clazz, String category);
 
-	public abstract void update(Product product);
 }

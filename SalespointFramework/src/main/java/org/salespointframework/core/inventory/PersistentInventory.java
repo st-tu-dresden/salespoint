@@ -100,20 +100,6 @@ class PersistentInventory implements Inventory
 		Objects.requireNonNull(clazz, "clazz must be not null");
 		Objects.requireNonNull(productIdentifier, "productIdentifier must be not null"); 
 		
-		/*
-		for(E item : this.find(clazz)) 
-		{
-			if(item.getProduct().getIdentifier().equals(productIdentifier)) 
-			{
-				return item;
-			}
-		}
-		
-		return null;
-		*/
-		
-		// FIXME ?
-		
 		
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<E> cq = cb.createQuery(clazz);
@@ -130,21 +116,5 @@ class PersistentInventory implements Inventory
 
 		return result.size() == 0 ? null : result.get(0);
 		
-	}
-
-
-    /**
-     * Updates and persists an existing {@link InventoryItem} to the
-     * {@link PersistentInventory} and the Database
-     * 
-     * @param item
-     *            the <code>InventoryItem</code> to be updated
-     * @throws NullPointerException
-     *             if <code>item</code> is <code>null</code>
-     */
-	public final void update(InventoryItem item)
-	{
-		java.util.Objects.requireNonNull(item, "item must not be null");
-		entityManager.merge(item);
 	}
 }

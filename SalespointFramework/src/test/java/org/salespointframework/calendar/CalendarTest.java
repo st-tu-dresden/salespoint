@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.calendar.Calendar;
 import org.salespointframework.core.calendar.CalendarEntry;
-import org.salespointframework.core.user.User;
+import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,8 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CalendarTest { // extends AbstractIntegrationTests {
 	private static final DateTime basicDateTime = new DateTime();
 
-	private User user;
-	private User notUser;
+	private UserAccount user;
+	private UserAccount notUserAccount;
 	@Autowired
 	private Calendar calendar;
 	private CalendarEntry entry;
@@ -33,13 +33,13 @@ public class CalendarTest { // extends AbstractIntegrationTests {
 	//@Before
 	public void before() {
 
-		user = new User(new UserAccountIdentifier("user"), "test");
+		user = null; //new UserAccount(new UserAccountIdentifier("user"), "test");
 		entry = new CalendarEntry(user.getIdentifier(), "entry", basicDateTime,
 				basicDateTime.plusMinutes(30));
 		calendar.add(entry);
 
-		notUser = new User(new UserAccountIdentifier("notUser"), "test");
-		notEntry = new CalendarEntry(notUser.getIdentifier(), "notEntry",
+		notUserAccount = null; //new UserAccount(new UserAccountIdentifier("notUserAccount"), "test");
+		notEntry = new CalendarEntry(notUserAccount.getIdentifier(), "notEntry",
 				basicDateTime, basicDateTime.plusMinutes(30));
 		calendar.add(notEntry);
 	}

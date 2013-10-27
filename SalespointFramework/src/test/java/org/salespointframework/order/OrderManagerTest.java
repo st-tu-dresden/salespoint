@@ -9,21 +9,26 @@ import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderManager;
-import org.salespointframework.core.user.User;
+import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
+import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings("javadoc")
 public class OrderManagerTest extends AbstractIntegrationTests {
 
+	
+	@Autowired
+	private UserAccountManager userAccountManager;
+	
 	@Autowired
 	private OrderManager orderManager;
-	private User user;
+	private UserAccount user;
 	private Order order;
 
 	@Before
 	public void before() {
-		user = new User(new UserAccountIdentifier(), "");
+		user = userAccountManager.create(new UserAccountIdentifier(), "");
 		order = new Order(user.getIdentifier(), Cash.CASH);
 	}
 

@@ -25,7 +25,6 @@ import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.user.User;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.util.Iterables;
 

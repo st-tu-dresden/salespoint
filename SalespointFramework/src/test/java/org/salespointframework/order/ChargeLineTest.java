@@ -5,23 +5,29 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.ChargeLine;
 import org.salespointframework.core.order.Order;
-import org.salespointframework.core.user.User;
+import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
+import org.salespointframework.core.useraccount.UserAccountManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings("javadoc")
-public class ChargeLineTest {
+public class ChargeLineTest  extends AbstractIntegrationTests {
 
-	private User user;
+	@Autowired
+	private UserAccountManager userAccountManager;
+	
+	private UserAccount user;
 	private Order order;
 	private ChargeLine chargeLine;
 
 	@Before
 	public void before() {
-		user = new User(new UserAccountIdentifier(), "");
+		user = userAccountManager.create(new UserAccountIdentifier(), "");
 		order = new Order(user.getIdentifier(), Cash.CASH);
 		chargeLine = new ChargeLine(Money.ZERO, "gaaar nix");
 	}

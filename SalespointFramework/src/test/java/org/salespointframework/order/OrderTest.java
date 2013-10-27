@@ -5,23 +5,30 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 
+import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderStatus;
-import org.salespointframework.core.user.User;
+import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
+import org.salespointframework.core.useraccount.UserAccountManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings("javadoc")
-public class OrderTest {
+public class OrderTest extends AbstractIntegrationTests {
 
-	private User user;
+	
+	@Autowired
+	private UserAccountManager userAccountManager;
+	
+	private UserAccount user;
 	@SuppressWarnings("rawtypes")
 	private Order order;
 
 
 	@Before
 	public void before() {
-		user = new User(new UserAccountIdentifier(), "");
+		user = userAccountManager.create(new UserAccountIdentifier(), "");
 		order = new Order(user.getIdentifier(), Cash.CASH);
 	}
 
