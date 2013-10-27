@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.order.OrderManager;
+import org.salespointframework.core.time.TimeService;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,7 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 	@Autowired Inventory inventory;
 	@Autowired OrderManager orderManager;
 	@Autowired Catalog catalog;
+	@Autowired TimeService timeService;
 	//@Autowired Calendar calendar;
 	//@Autowired ProductRepository<Product> repository;
 	
@@ -50,6 +52,7 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 		assertThat(catalog, is(notNullValue()));
 		//assertThat(calendar, is(notNullValue()));
 		assertThat(userAccountManager, is(notNullValue()));
+		assertThat(timeService, is(notNullValue()));
 		
 		//assertThat(repository, is(notNullValue()));
 	}
