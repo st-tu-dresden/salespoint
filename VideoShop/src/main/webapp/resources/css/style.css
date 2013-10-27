@@ -88,6 +88,46 @@ p {
 }
 
 
+div.salespoint {
+	padding:1em;
+	width: 35em;
+	margin:auto;
+}
+
+div.salespoint fieldset {
+	border: 2px solid grey; 
+	padding:1em;
+	margin:2em; 
+}
+
+label { 
+    display:block;
+    width:420px;
+    overflow:auto;
+    font-family:sans-serif;
+    font-size:20px;
+    color:#444;
+    text-shadow:0 0 2px #ddd;
+}
+
+input {
+    border:2px solid #B9D3F3;
+    border-radius:7px;
+    font-size:20px;
+    padding:5px;
+}
+
+input:focus { 
+    outline: none;
+    border-color: #9ecaed;
+    box-shadow: 0 0 10px #9ecaed;
+}
+
+.fieldError { 
+    outline:none;
+    border-color:red;
+    box-shadow:0 0 10px red;
+}
 
 a:hover {
 	/* font: 0.8em sans-serif; */
@@ -119,11 +159,6 @@ header {
 	font-size: 20px;
 	margin-top: 1em;
 }
-
-header a {
-	
-}
-
 
 
 

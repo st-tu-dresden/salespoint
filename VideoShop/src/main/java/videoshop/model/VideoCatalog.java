@@ -37,8 +37,4 @@ public class VideoCatalog {
 	public Iterable<BluRay> findBluRays() {
 		return catalog.find(BluRay.class);
 	}
-
-	public void update(Disc disc) {
-		catalog.update(disc);
-	}
 }

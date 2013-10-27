@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ import videoshop.model.VideoCatalog;
  * @author Oliver Gierke
  */
 @Controller
-class CatalogController {
+public class CatalogController {
 	
 	private final VideoCatalog videoCatalog;
 	private final Inventory inventory;
@@ -37,7 +38,7 @@ class CatalogController {
 	 * @param messageSource
 	 */
 	@Autowired
-	private CatalogController(VideoCatalog videoCatalog, Inventory inventory, MessageSource messageSource) {
+	public CatalogController(VideoCatalog videoCatalog, Inventory inventory, MessageSource messageSource) {
 		
 		this.videoCatalog = videoCatalog;
 		this.inventory = inventory;
@@ -78,7 +79,6 @@ class CatalogController {
 	public String comment(@RequestParam("pid") Disc disc, @RequestParam("comment") String comment, @RequestParam("rating") int rating ) 
 	{
 		disc.addComment(new Comment(comment, rating));
-		videoCatalog.update(disc);
 		return "redirect:detail/" + disc.getIdentifier();
 	}
 }

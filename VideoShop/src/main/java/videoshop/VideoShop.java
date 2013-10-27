@@ -22,8 +22,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
@@ -64,28 +62,15 @@ public class VideoShop {
 		private UserAccountManager userAccountManager;
 
 		@Override
-		public void addArgumentResolvers(
-				List<HandlerMethodArgumentResolver> argumentResolvers) {
-			argumentResolvers
-					.add(new org.salespointframework.web.spring.support.LoggedInUserArgumentResolver(
-							userAccountManager));
-		}
-
-		@Override
-		public void addInterceptors(InterceptorRegistry registry) {
-			// registry.addInterceptor(new
-			// org.salespointframework.web.spring.support.LoggedInUserInterceptor());
+		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+			
+			argumentResolvers.add(new org.salespointframework.web.spring.support.LoggedInUserArgumentResolver(userAccountManager));
 		}
 
 		@Override
 		public void addFormatters(FormatterRegistry registry) {
 			registry.addConverter(entityConverter);
 			registry.addConverter(new StringToRoleConverter());
-		}
-
-		@Override
-		public void addResourceHandlers(ResourceHandlerRegistry registry) {
-			// registry.addResourceHandler("/res/**").addResourceLocations("/resources/");
 		}
 	}
 
@@ -97,23 +82,17 @@ public class VideoShop {
 		private UserAccountManager userAccountManager;
 
 		@Override
-		protected void registerAuthentication(
-				AuthenticationManagerBuilder builder) {
+		protected void registerAuthentication(AuthenticationManagerBuilder builder) {
 
 			DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
 			provider.setPasswordEncoder(new SalespointPasswordEncoder());
-			provider.setUserDetailsService(new UserAccountDetailService(
-					userAccountManager));
+			provider.setUserDetailsService(new UserAccountDetailService(userAccountManager));
 
 			builder.authenticationProvider(provider);
 
 			return;
-			/*
-			 * auth.inMemoryAuthentication().withUser("user") // #1
-			 * .password("password").roles("USER").and().withUser("admin") // #2
-			 * .password("password").roles("ADMIN", "USER");
-			 */
+
 		}
 
 		@Override
@@ -126,12 +105,12 @@ public class VideoShop {
 
 			http.csrf().disable();
 
-			http.authorizeRequests().antMatchers("/**").permitAll().and()
-					.formLogin().loginProcessingUrl("/login").and().logout()
-					.logoutUrl("/logout").logoutSuccessUrl("/");
-
-			// WTF
-			// http://docs.spring.io/spring-security/site/docs/3.2.x/apidocs/org/springframework/security/config/annotation/web/builders/HttpSecurity.html#logout()
+			http
+			.authorizeRequests().antMatchers("/**").permitAll()
+			.and()
+			.formLogin().loginProcessingUrl("/login")
+			.and()
+			.logout().logoutUrl("/logout").logoutSuccessUrl("/");
 
 		}
 	}
