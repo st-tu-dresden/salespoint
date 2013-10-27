@@ -17,8 +17,6 @@ public class GuestbookController {
 	@Autowired
 	Guestbook guestbook;
 	
-	String lastName = "";
-	
 	@RequestMapping("/")
 	public String guestBook(ModelMap mav) {
 		return "/gb/guestbook";
@@ -28,7 +26,6 @@ public class GuestbookController {
 	public String addEntry(@RequestParam("name") String name, @RequestParam("text") String text)
 	{
 		guestbook.addEntry(name, text);
-		lastName = name;
 		
 		return "redirect:/guestbook/";
 	}
@@ -43,6 +40,5 @@ public class GuestbookController {
 	@ModelAttribute
 	private void addStuff(ModelMap modelMap) {
 		modelMap.addAttribute("guestbookEntries", guestbook.getEntries());
-		modelMap.addAttribute("lastName", lastName);
 	}
 }

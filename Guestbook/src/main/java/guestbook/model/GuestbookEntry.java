@@ -3,19 +3,17 @@ package guestbook.model;
 import java.util.Date;
 
 public class GuestbookEntry implements Comparable<GuestbookEntry> {
-	private static int globalId = 0;
 	
 	private final String name, text;
 	private final Date date;
 	private final int id;
 
-	public GuestbookEntry(String name, String text) {
+	GuestbookEntry(String name, String text, Date date, int id) {
 		this.name = name;
 		this.text = text;
-		this.date = new Date();
-		this.id = globalId;
-		
-		globalId++; // not safe (threading), who cares
+		this.date = date;
+		this.id = id;
+
 	}
 
 	public String getName() {
@@ -33,7 +31,7 @@ public class GuestbookEntry implements Comparable<GuestbookEntry> {
 	public String getText() {
 		return text;
 	}
-
+	
 	@Override
 	public int compareTo(GuestbookEntry other) {
 		return Integer.valueOf(this.id).compareTo(other.getId());

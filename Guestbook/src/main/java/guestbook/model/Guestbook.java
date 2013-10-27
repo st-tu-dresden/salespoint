@@ -18,7 +18,7 @@ public class Guestbook {
 	}
 	
 	public GuestbookEntry addEntry(String name, String text) {
-		GuestbookEntry entry = new GuestbookEntry(name, text);
+		GuestbookEntry entry = new GuestbookEntry(name, text, new Date(), entries.size());
 		entries.put(entry.getId(), entry);
 		return entry;
 	}
