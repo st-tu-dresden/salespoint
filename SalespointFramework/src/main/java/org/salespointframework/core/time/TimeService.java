@@ -8,10 +8,10 @@ package org.salespointframework.core.time;
  */
 public interface TimeService {
 
-/**
- * 
- * @return a {@link Time} implementation, it's {@link DefaultTime} by default.
- */
+	/**
+	 * 
+	 * @return a {@link Time} implementation, it's {@link DefaultTime} by default.
+	 */
 	Time getTime();
 	
 	/**

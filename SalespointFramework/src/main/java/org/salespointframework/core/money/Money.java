@@ -22,6 +22,15 @@ import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 
 @SuppressWarnings("serial")
 public final class Money extends Quantity {
+	
+	
+	/**
+	 * Convenience instance, used for the euro currency. The name is "Euro", the
+	 * symbol is "€" and the definition is empty.
+	 */
+	public static final Metric EURO = new Metric("Euro", "€", "");
+	
+	
 	/**
 	 * Convenience instance, having a value of 0.
 	 */
@@ -84,7 +93,7 @@ public final class Money extends Quantity {
 	 *            the amount of money represented by <code>this</code>
 	 */
 	public Money(BigDecimal amount) {
-		this(Objects.requireNonNull(amount, "amount"), Metric.EURO);
+		this(Objects.requireNonNull(amount, "amount"), Money.EURO);
 	}
 
 	/**

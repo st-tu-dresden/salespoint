@@ -34,8 +34,7 @@ public class AccountancyPeriodTest { // extends AbstractIntegrationTests {
 		ProductPaymentEntry p;
 		System.out.println("Creating AccountancyEntries: ");
 		for (int i = 0; i < 20; i++) {
-			p = new ProductPaymentEntry(new OrderIdentifier(), new UserAccountIdentifier(), new Money(1), "Rechnung nr. 3",
-					Cash.CASH);
+			p = null; //new ProductPaymentEntry(new OrderIdentifier(), new UserAccountIdentifier(), new Money(1), "Rechnung nr. 3",					Cash.CASH);
 			System.out.println("Adding p " + p + " with time " + p.getDate());
 			a.add(p);
 

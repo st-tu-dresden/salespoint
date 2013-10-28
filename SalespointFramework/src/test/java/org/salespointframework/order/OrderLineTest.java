@@ -41,7 +41,7 @@ public class OrderLineTest extends AbstractIntegrationTests {
 		catalog.add(keks);
 
 		user = userAccountManager.create(new UserAccountIdentifier(), "");
-		order = new Order(user.getIdentifier(), Cash.CASH);
+		order = new Order(user, Cash.CASH);
 		orderLine = new OrderLine(keks, Units.TEN);
 	}
 

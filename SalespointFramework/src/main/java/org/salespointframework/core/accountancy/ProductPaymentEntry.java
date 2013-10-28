@@ -5,10 +5,12 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderIdentifier;
+import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
 
 import java.util.Objects;
@@ -36,9 +38,9 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	 * The {@link UserAccountIdentifier} to which this
 	 * <code>ProductPaymentEntry</code> refers to.
 	 */
-	@Embedded
+	@OneToOne
 	@AttributeOverride(name = "id", column = @Column(name = "USER_ID", nullable = true))
-	private UserAccountIdentifier userIdentifier;
+	private UserAccount userAccount;
 
 	@Lob
 	private PaymentMethod paymentMethod;
@@ -71,13 +73,13 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	 */
 	
 	public ProductPaymentEntry(OrderIdentifier orderIdentifier,
-			UserAccountIdentifier userIdentifier, Money amount, String description,
+			UserAccount userAccount, Money amount, String description,
 			PaymentMethod paymentMethod) {
 		super(amount, description);
 		this.orderIdentifier = Objects.requireNonNull(orderIdentifier,
 				"orderIdentifier must not be null");
-		this.userIdentifier = Objects.requireNonNull(userIdentifier,
-				"userIdentifier must not be null");
+		this.userAccount = Objects.requireNonNull(userAccount,
+				"userAccount must not be null");
 		this.paymentMethod = Objects.requireNonNull(paymentMethod,
 				"paymentMethod must not be null");
 	}
@@ -85,8 +87,8 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	/**
 	 * @return the {@link UserAccountIdentifier}, to which this payment refers to
 	 */
-	public final UserAccountIdentifier getUserIdentifier() {
-		return userIdentifier;
+	public final UserAccount getUserAccount() {
+		return userAccount;
 	}
 
 	/**

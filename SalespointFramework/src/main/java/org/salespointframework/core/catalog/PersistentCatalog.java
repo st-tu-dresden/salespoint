@@ -138,4 +138,12 @@ class PersistentCatalog implements Catalog
 
 		return Iterables.of(tq.getResultList());
 	}
+	
+
+	@Override
+	public final void update(Product product)
+	{
+		java.util.Objects.requireNonNull(product, "product must not be null");
+		em.merge(product);
+	}
 }

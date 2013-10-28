@@ -38,11 +38,13 @@ public class UserAccountDetailService implements UserDetailsService {
 
 		private final String username;
 		private final String password;
+		private final boolean isEnabled;
 		private final List<GrantedAuthority> authorities = new LinkedList<>();
 
 		public UserAccountDetails(UserAccount userAccount) {
 			this.username = userAccount.getIdentifier().toString();
 			this.password = userAccount.getPassword().toString();
+			this.isEnabled = userAccount.isEnabled();
 
 			for (Role role : userAccount.getRoles()) {
 				authorities.add(new SimpleGrantedAuthority(role.getName()));
@@ -82,7 +84,7 @@ public class UserAccountDetailService implements UserDetailsService {
 
 		@Override
 		public boolean isEnabled() {
-			return true;
+			return isEnabled;
 		}
 
 		@Override

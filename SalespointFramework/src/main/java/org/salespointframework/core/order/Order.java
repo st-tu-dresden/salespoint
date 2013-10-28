@@ -10,13 +10,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
+
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,6 +26,7 @@ import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.util.Iterables;
 
@@ -35,7 +37,7 @@ import org.salespointframework.util.Iterables;
  * 
  */
 @Entity
-@Table(name = "orders")
+@Table(name = "ORDERS")
 public class Order implements Comparable<Order> {
 	// TODO: Here, we also need to rename the column, or OWNER_ID will be the
 	// PK. Maybe we should rename the field in SalespointIdentifier, to avoid
@@ -46,13 +48,12 @@ public class Order implements Comparable<Order> {
 
 	private PaymentMethod paymentMethod;
 
-	@Embedded
+	@OneToOne
 	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))
-	private UserAccountIdentifier userIdentifier;
+	private UserAccount userAccount;
 
-	// FIXME
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreated = null; //Shop.INSTANCE.getTime().getDateTime().toDate();
+	private Date dateCreated = null;
 
 	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus = OrderStatus.OPEN;
@@ -60,8 +61,8 @@ public class Order implements Comparable<Order> {
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<OrderLine> orderLines = new HashSet<OrderLine>();
 
-	@ElementCollection
-	@CollectionTable(joinColumns = @JoinColumn(name = "order_id"))
+	@OneToMany(cascade = CascadeType.ALL)
+	//@CollectionTable(joinColumns = @JoinColumn(name = "order_id"))
 	private Set<ChargeLine> chargeLines = new HashSet<ChargeLine>();
 
 	/**
@@ -82,10 +83,10 @@ public class Order implements Comparable<Order> {
 	 * @throws NullPointerException
 	 *             if userIdentifier or paymentMethod is null
 	 */
-	public Order(UserAccountIdentifier userIdentifier,
+	public Order(UserAccount userAccount,
 			PaymentMethod paymentMethod) {
-		this.userIdentifier = Objects.requireNonNull(userIdentifier,
-				"userIdentifier must not be null");
+		this.userAccount = Objects.requireNonNull(userAccount,
+				"userAccount must not be null");
 		this.paymentMethod = Objects.requireNonNull(paymentMethod,
 				"paymentMethod must not be null");
 	}
@@ -99,9 +100,9 @@ public class Order implements Comparable<Order> {
 	 * @throws NullPointerException
 	 *             if userIdentifier is null
 	 */
-	public Order(UserAccountIdentifier userIdentifier) {
-		this.userIdentifier = Objects.requireNonNull(userIdentifier,
-				"userIdentifier must not be null");
+	public Order(UserAccount userAccount) {
+		this.userAccount = Objects.requireNonNull(userAccount,
+				"userAccount must not be null");
 	}
 
 	public boolean addOrderLine(OrderLine orderLine) {
@@ -165,8 +166,8 @@ public class Order implements Comparable<Order> {
 		return orderStatus;
 	}
 
-	public final UserAccountIdentifier getUserIdentifier() {
-		return userIdentifier;
+	public final UserAccount getUserAccount() {
+		return userAccount;
 	}
 
 	public boolean cancelOrder() {
@@ -220,7 +221,7 @@ public class Order implements Comparable<Order> {
 
 	@Override
 	public String toString() {
-		return "User: " + userIdentifier.toString() + " | Order"
+		return "User: " + userAccount.toString() + " | Order"
 				+ orderIdentifier.toString();
 	}
 
@@ -430,11 +431,15 @@ public class Order implements Comparable<Order> {
 	ProductPaymentEntry markPaid() {
 	
 			ProductPaymentEntry ppe = new ProductPaymentEntry(
-					this.orderIdentifier, this.userIdentifier,
+					this.orderIdentifier, this.userAccount,
 					this.getTotalPrice(), "Rechnung Nr. " + this.orderIdentifier,
 					this.paymentMethod);
 			orderStatus = OrderStatus.PAYED;
 			
 			return ppe;
+	}
+
+	void setDateCreated(DateTime dateTime) {
+		this.dateCreated = dateTime.toDate();
 	}
 }

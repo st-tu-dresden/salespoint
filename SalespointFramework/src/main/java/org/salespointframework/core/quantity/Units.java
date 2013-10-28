@@ -13,7 +13,12 @@ import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 @SuppressWarnings("serial")
 public class Units extends Quantity {
 	
-	public static final Metric METRIC = Metric.PIECES;
+	/**
+	 * Convenience instance, which can be used for countable objects. The name
+	 * is "Units", the symbol is "units" and the definition is empty.
+	 */
+	public static final Metric METRIC = new Metric("Units", "units", "");
+
 	
 	/**
 	 * Convenience instance of 0 units.

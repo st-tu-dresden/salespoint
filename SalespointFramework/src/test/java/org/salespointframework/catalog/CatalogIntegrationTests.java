@@ -26,6 +26,7 @@ import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.catalog.Product;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Metric;
+import org.salespointframework.core.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +43,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	@Test
 	public void findsProductsByCategory() {
 		
-		Product product = new Product("MacBook", new Money(2700.0), Metric.UNITS);
+		Product product = new Product("MacBook", new Money(2700.0), Units.METRIC);
 		product.addCategory("Apple");
 		
 		catalog.add(product);

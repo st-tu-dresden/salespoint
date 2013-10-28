@@ -71,4 +71,11 @@ public interface Catalog
 	 */
 	<E extends Product> Iterable<E> findByCategory(Class<E> clazz, String category);
 
+	/**
+	 * Updates and persists an existing {@link Product} to the PersistentCatalog and the Database
+	 * @param product the {@link Product} to be updated
+	 * @throws NullPointerException if product is null
+	 */
+	void update(Product product);
+
 }

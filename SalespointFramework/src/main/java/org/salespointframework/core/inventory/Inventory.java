@@ -61,4 +61,16 @@ public interface Inventory
 	 * @throws NullPointerException if clazz or productIdentifier are null
 	 */
 	<E extends InventoryItem> E getByProductIdentifier(Class<E> clazz, ProductIdentifier productIdentifier);
+
+	
+    /**
+     * Updates and persists an existing {@link InventoryItem} to the
+     * {@link PersistentInventory} and the Database
+     * 
+     * @param inventoryItem
+     *            the <code>InventoryItem</code> to be updated
+     * @throws NullPointerException
+     *             if <code>item</code> is <code>null</code>
+     */
+	void update(InventoryItem inventoryItem);
 }

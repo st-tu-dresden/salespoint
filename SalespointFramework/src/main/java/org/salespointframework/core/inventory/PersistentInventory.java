@@ -117,4 +117,13 @@ class PersistentInventory implements Inventory
 		return result.size() == 0 ? null : result.get(0);
 		
 	}
+	
+	@Override
+	public final void update(InventoryItem inventoryItem)
+	{
+		Objects.requireNonNull(inventoryItem, "inventoryItem must not be null");
+		entityManager.merge(inventoryItem);
+	}
+	
+	
 }

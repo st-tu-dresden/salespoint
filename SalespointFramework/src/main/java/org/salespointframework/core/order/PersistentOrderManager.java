@@ -19,6 +19,8 @@ import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.order.OrderCompletionResult.OrderCompletionStatus;
 import org.salespointframework.core.quantity.Quantity;
+import org.salespointframework.core.time.TimeService;
+import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.util.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,18 +45,20 @@ class PersistentOrderManager implements OrderManager
 	private final Inventory inventory;
 	private final TransactionTemplate txTemplate;
 	private final Accountancy accountancy;
+	private final TimeService timeService;
 
 	@PersistenceContext
-	private EntityManager em;
+	private EntityManager entityManager;
 	
 	/**
 	 * creates a new PersistentOrderManager
 	 */
 	@Autowired
-	public PersistentOrderManager(Inventory inventory, Accountancy accountancy, PlatformTransactionManager txManager) {
+	public PersistentOrderManager(Inventory inventory, Accountancy accountancy, TimeService timeService, PlatformTransactionManager txManager) {
 		
-		this.inventory = Objects.requireNonNull(inventory, "Inventory must not be null!");
-		this.accountancy = Objects.requireNonNull(accountancy, "Accountancy must not be null!");
+		this.inventory = Objects.requireNonNull(inventory, "inventory must not be null!");
+		this.accountancy = Objects.requireNonNull(accountancy, "accountancy must not be null!");
+		this.timeService = Objects.requireNonNull(timeService, "timeService must not be null!");
 		this.txTemplate = new TransactionTemplate(txManager);
 	}
 	
@@ -62,7 +66,10 @@ class PersistentOrderManager implements OrderManager
 	public void add(Order order)
 	{
 		Objects.requireNonNull(order, "order must be not null");
-		em.persist(order);
+		if(order.getDateCreated() == null) {
+			order.setDateCreated(timeService.getTime().getDateTime());
+		}
+		entityManager.persist(order);
 	}
 	
 	/**
@@ -76,7 +83,7 @@ class PersistentOrderManager implements OrderManager
 	public void addAll(Iterable<? extends Order> orders) {
 		Objects.requireNonNull(orders, "orders must not be null");
 		for(Order order : orders) {
-			em.persist(order);
+			entityManager.persist(order);
 		}
 	}
 	
@@ -85,14 +92,14 @@ class PersistentOrderManager implements OrderManager
 	public final <T extends Order> T get(Class<T> clazz, OrderIdentifier orderIdentifier)
 	{
 		Objects.requireNonNull(orderIdentifier, "orderIdentifier must not be null");
-		return em.find(clazz, orderIdentifier);
+		return entityManager.find(clazz, orderIdentifier);
 	}
 
 	@Override
 	public final boolean contains(OrderIdentifier orderIdentifier)
 	{
 		Objects.requireNonNull(orderIdentifier, "orderIdentifier must not be null");
-		return em.find(Order.class, orderIdentifier) != null;
+		return entityManager.find(Order.class, orderIdentifier) != null;
 	}
 
 	@Override
@@ -101,11 +108,11 @@ class PersistentOrderManager implements OrderManager
 		Objects.requireNonNull(from, "from must not be null");
 		Objects.requireNonNull(to, "to must not be null");
 
-		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(clazz);
 		Root<T> entry = cq.from(clazz);
 		cq.where(cb.between(entry.get(Order_.dateCreated), from.toDate(), to.toDate()));
-		TypedQuery<T> tq = em.createQuery(cq);
+		TypedQuery<T> tq = entityManager.createQuery(cq);
 
 		return Iterables.of(tq.getResultList());
 	}
@@ -116,58 +123,54 @@ class PersistentOrderManager implements OrderManager
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(orderStatus, "orderStatus must not be null");
 
-		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(clazz);
 		Root<T> entry = cq.from(clazz);
 		cq.where(cb.equal(entry.get(Order_.orderStatus), orderStatus));
-		TypedQuery<T> tq = em.createQuery(cq);
+		TypedQuery<T> tq = entityManager.createQuery(cq);
 
 		return Iterables.of(tq.getResultList());
 	}
 
 	@Override
-	public final <T extends Order> Iterable<T> find(Class<T> clazz, UserAccountIdentifier userIdentifier)
+	public final <T extends Order> Iterable<T> find(Class<T> clazz, UserAccount userAccount)
 	{
 		Objects.requireNonNull(clazz, "clazz must not be null");
-		Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
+		Objects.requireNonNull(userAccount, "userAccount must not be null");
 
-		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(clazz);
 		Root<T> entry = cq.from(clazz);
-		cq.where(cb.equal(entry.get(Order_.userIdentifier), userIdentifier));
-		TypedQuery<T> tq = em.createQuery(cq);
+		cq.where(cb.equal(entry.get(Order_.userAccount), userAccount));
+		TypedQuery<T> tq = entityManager.createQuery(cq);
 
 		return Iterables.of(tq.getResultList());
 	}
 
 	@Override
-	public final <T extends Order> Iterable<T> find(Class<T> clazz, UserAccountIdentifier userIdentifier, DateTime from, DateTime to)
+	public final <T extends Order> Iterable<T> find(Class<T> clazz, UserAccount userAccount, DateTime from, DateTime to)
 	{
-		Objects.requireNonNull(userIdentifier, "userIdentifier must not be null");
+		Objects.requireNonNull(userAccount, "userAccount must not be null");
 		Objects.requireNonNull(from, "from must not be null");
 		Objects.requireNonNull(to, "to must not be null");
 
-		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(clazz);
 		Root<T> entry = cq.from(clazz);
-		Predicate p1 = cb.equal(entry.get(Order_.userIdentifier), userIdentifier);
+		Predicate p1 = cb.equal(entry.get(Order_.userAccount), userAccount);
 		Predicate p2 = cb.between(entry.get(Order_.dateCreated), from.toDate(), to.toDate());
 		cq.where(p1, p2);
-		TypedQuery<T> tq = em.createQuery(cq);
+		TypedQuery<T> tq = entityManager.createQuery(cq);
 
 		return Iterables.of(tq.getResultList());
 	}
 
-	/**
-	 * Updates and persists an existing {@link Order} to the PersistentOrderManager and the Database
-	 * @param order the {@link Order} to be updated
-	 * @throws NullPointerException if order is null
-	 */
+
 	@Override
 	public final void update(Order order)
 	{
 		Objects.requireNonNull(order, "order must not be null");
-		em.merge(order);
+		entityManager.merge(order);
 	}
 	
 
@@ -245,7 +248,7 @@ class PersistentOrderManager implements OrderManager
 	 * (non-Javadoc)
 	 * @see org.salespointframework.core.order.OrderManager#pay(org.salespointframework.core.order.Order)
 	 */
-	public boolean pay(Order order) {
+	public boolean payOrder(Order order) {
 		
 		if (order.isPaymentExpected()) {
 			return false;

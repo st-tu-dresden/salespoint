@@ -12,7 +12,9 @@ import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderIdentifier;
+import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
+import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountancyTest extends AbstractIntegrationTests {
 
 	@Autowired Accountancy a;
+	@Autowired UserAccountManager userAccountManager;
 
 	private DateTime from;
 	private DateTime to;
@@ -34,7 +37,9 @@ public class AccountancyTest extends AbstractIntegrationTests {
 
 			if ((year % 2) == 0) {
 				System.out.println("ProductPaymentEntry");
-				a.add(new ProductPaymentEntry(new OrderIdentifier(), new UserAccountIdentifier(), new Money(1), "Rechnung nr " + year,
+				UserAccount user = userAccountManager.create(new UserAccountIdentifier(),"");
+				userAccountManager.save(user);
+				a.add(new ProductPaymentEntry(new OrderIdentifier(), user, new Money(1), "Rechnung nr " + year,
 						Cash.CASH));
 			} else {
 				System.out.println("PersistentAccountancyEntry");

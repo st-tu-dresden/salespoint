@@ -22,7 +22,6 @@ class TimeServiceImpl implements TimeService {
 	@Override
 	public void setTime(Time time) {
 		this.time = Objects.requireNonNull(time, "time must not be null");
-
 	}
 
 }

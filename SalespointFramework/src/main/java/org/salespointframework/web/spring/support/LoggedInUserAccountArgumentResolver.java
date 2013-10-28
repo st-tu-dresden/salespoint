@@ -3,7 +3,7 @@ package org.salespointframework.web.spring.support;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.core.useraccount.UserAccountManager;
-import org.salespointframework.web.annotation.LoggedInUser;
+import org.salespointframework.web.annotation.LoggedIn;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -16,11 +16,11 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @author Paul Henke
  *
  */
-public class LoggedInUserArgumentResolver implements HandlerMethodArgumentResolver {
+public class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolver {
 
 	private UserAccountManager userAccountManager;
 	
-	public LoggedInUserArgumentResolver(UserAccountManager userAccountManager) {
+	public LoggedInUserAccountArgumentResolver(UserAccountManager userAccountManager) {
 		this.userAccountManager = userAccountManager;
 	}
 
@@ -36,7 +36,7 @@ public class LoggedInUserArgumentResolver implements HandlerMethodArgumentResolv
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
-		return parameter.hasParameterAnnotation(LoggedInUser.class) && UserAccount.class.isAssignableFrom(parameter.getParameterType());
+		return parameter.hasParameterAnnotation(LoggedIn.class) && UserAccount.class.isAssignableFrom(parameter.getParameterType());
 	}
 
 }

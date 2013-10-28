@@ -35,21 +35,23 @@ class PersistentUserAccountManager implements UserAccountManager {
 		return entityManager.find(UserAccount.class, userAccountIdentifier);
 	}
 
+	// TODO DRY
 	@Override
 	public void save(final UserAccount userAccount) {
 		UserAccount userAccount2 = this.get(userAccount.getIdentifier());
 		if (userAccount2 == null) {
 			if (!userAccount.getPassword().isEncrypted()) {
-				Password password = new Password(
-						passwordEncoder.encode(userAccount.getPassword()
-								.toString()), true);
+				Password password = new Password(passwordEncoder.encode(userAccount.getPassword().toString()), true);
 				userAccount.setPassword(password);
 			}
 			entityManager.persist(userAccount);
 		} else {
-			// TODO Merge??
+			if (!userAccount2.getPassword().isEncrypted()) {
+				Password password = new Password(passwordEncoder.encode(userAccount2.getPassword().toString()), true);
+				userAccount2.setPassword(password);
+			}
+			entityManager.merge(userAccount2);
 		}
-
 	}
 
 	@Override
@@ -92,6 +94,33 @@ class PersistentUserAccountManager implements UserAccountManager {
 		TypedQuery<UserAccount> tq = entityManager.createQuery(cq);
 		
 		return Iterables.of(tq.getResultList());
+	}
+
+	@Override
+	public Iterable<UserAccount> findEnabled() {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<UserAccount> cq = cb.createQuery(UserAccount.class);
+		Root<UserAccount> entry = cq.from(UserAccount.class);
+		cq.where(cb.isTrue(entry.get(UserAccount_.isEnabled)));
+		TypedQuery<UserAccount> tq = entityManager.createQuery(cq);
+		
+		return Iterables.of(tq.getResultList());
+	}
+
+	@Override
+	public Iterable<UserAccount> findDisabled() {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<UserAccount> cq = cb.createQuery(UserAccount.class);
+		Root<UserAccount> entry = cq.from(UserAccount.class);
+		cq.where(cb.isFalse(entry.get(UserAccount_.isEnabled)));
+		TypedQuery<UserAccount> tq = entityManager.createQuery(cq);
+		
+		return Iterables.of(tq.getResultList());
+	}
+
+	@Override
+	public PasswordEncoder getPasswordEncoder() {
+		return passwordEncoder;
 	}
 
 }

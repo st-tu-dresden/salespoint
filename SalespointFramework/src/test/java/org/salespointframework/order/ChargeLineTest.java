@@ -28,7 +28,7 @@ public class ChargeLineTest  extends AbstractIntegrationTests {
 	@Before
 	public void before() {
 		user = userAccountManager.create(new UserAccountIdentifier(), "");
-		order = new Order(user.getIdentifier(), Cash.CASH);
+		order = new Order(user, Cash.CASH);
 		chargeLine = new ChargeLine(Money.ZERO, "gaaar nix");
 	}
 

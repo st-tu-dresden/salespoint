@@ -1,6 +1,7 @@
 package org.salespointframework.core.order;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
 
 /**
@@ -66,14 +67,14 @@ public interface OrderManager
 	 * Returns all {@link Order}s from the given {@link UserAccountIdentifier}. If this user
 	 * has no orders, an empty Iterable is returned.
 	 * 
-	 * @param userIdentifier
-	 *            Denoting the {@link UserAccountIdentifier} on which the orders will be
+	 * @param userAccount
+	 *            Denoting the {@link UserAccount} on which the orders will be
 	 *            requested.
 	 * @return an Iterable containing all orders from the
 	 *         specified user.
-	 * @throws NullPointerException if userIdentifier is null
+	 * @throws NullPointerException if clazz oder userAccount are null
 	 */
-	<E extends Order> Iterable<E> find(Class<E> clazz, UserAccountIdentifier userIdentifier);
+	<E extends Order> Iterable<E> find(Class<E> clazz, UserAccount userAccount);
 	
 	/**
 	 * Returns all {@link Order}s from the given {@link UserAccountIdentifier} in between the
@@ -81,7 +82,7 @@ public interface OrderManager
 	 * this user has no orders in this period, an empty Iterable is
 	 * returned.
 	 * 
-	 * @param userIdentifier
+	 * @param userAccount
 	 *            Denoting the {@link UserAccountIdentifier} on which the orders will be
 	 *            requested.
 	 * @param from
@@ -92,17 +93,22 @@ public interface OrderManager
 	 *         specified user in the specified period.
 	 * @throws NullPointerException if any argument is null         
 	 */
-	<E extends Order> Iterable<E> find(Class<E> clazz, UserAccountIdentifier userIdentifier, DateTime from, DateTime to);
+	<E extends Order> Iterable<E> find(Class<E> clazz, UserAccount userAccount, DateTime from, DateTime to);
 	
 	
 	/**
 	 * Tries to complete this order, the {@link OrderStatus} has to be PAYED 
-	 * @param order TODO
+	 * @param order the order to complete
 	 * @return an {@link OrderCompletionResult}
 	 */
 	OrderCompletionResult completeOrder(Order order);
 
+	/**
+	 * Updates and persists an existing {@link Order} to the PersistentOrderManager and the Database
+	 * @param order the {@link Order} to be updated
+	 * @throws NullPointerException if order is null
+	 */
 	void update(Order order);
 	
-	boolean pay(Order order);
+	boolean payOrder(Order order);
 }

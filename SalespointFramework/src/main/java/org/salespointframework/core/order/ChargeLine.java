@@ -1,9 +1,13 @@
 package org.salespointframework.core.order;
 
-import javax.persistence.Embeddable;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 import javax.persistence.Lob;
 
 import org.salespointframework.core.money.Money;
+
 import java.util.Objects;
 
 /**
@@ -14,10 +18,13 @@ import java.util.Objects;
  * @author Paul Henke
  * 
  */
-@Embeddable
+@Entity
 public final class ChargeLine
 {
-	private final ChargeLineIdentifier chargeLineIdentifier = new ChargeLineIdentifier();
+	
+	@EmbeddedId
+	@AttributeOverride(name = "id", column = @Column(name = "CHARGELINE_ID"))
+	private ChargeLineIdentifier chargeLineIdentifier = new ChargeLineIdentifier();
 
 	@Lob
 	private final Money amount;

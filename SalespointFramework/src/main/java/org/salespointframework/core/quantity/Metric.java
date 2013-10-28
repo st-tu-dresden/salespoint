@@ -11,22 +11,6 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 public class Metric implements Serializable {
-	/**
-	 * Convenience instance. This <code>Metric</code> objects is used for
-	 * countable objects. The name is "Pieces", the symbol is "pcs" and the
-	 * definition is empty.
-	 */
-	public static final Metric PIECES = new Metric("Pieces", "pcs", "");
-	/**
-	 * Convenience instance, which can be used for countable objects. The name
-	 * is "Units", the symbol is "pcs" and the definition is empty.
-	 */
-	public static final Metric UNITS = new Metric("Units", "pcs", "");
-	/**
-	 * Convenience instance, used for the euro currency. The name is "Euro", the
-	 * symbol is "€" and the definition is empty.
-	 */
-	public static final Metric EURO = new Metric("Euro", "€", "");
 
 	private String name;
 	private String symbol;

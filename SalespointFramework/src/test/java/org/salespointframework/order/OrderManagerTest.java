@@ -29,7 +29,8 @@ public class OrderManagerTest extends AbstractIntegrationTests {
 	@Before
 	public void before() {
 		user = userAccountManager.create(new UserAccountIdentifier(), "");
-		order = new Order(user.getIdentifier(), Cash.CASH);
+		userAccountManager.save(user);
+		order = new Order(user, Cash.CASH);
 	}
 
 	@Test(expected = NullPointerException.class)
