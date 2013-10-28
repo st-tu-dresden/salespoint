@@ -24,10 +24,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+// (｡◕‿◕｡)
+// Die ganze Klasse ist komplett aus dem blankweb Projekt übernommen.
 
 @Configuration
 @EnableAutoConfiguration
-@Import({ Salespoint.class, VideoShop.WebConfiguration.class, VideoShop.WebSecurityConfiguration.class })
+@Import({Salespoint.class, VideoShop.WebConfiguration.class, VideoShop.WebSecurityConfiguration.class })
 @ComponentScan
 public class VideoShop {
 

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import videoshop.model.Customer;
 import videoshop.model.CustomerRepository;
 
+// (｡◕‿◕｡)
+// Straight forward?
 
 @Controller
 class BossController {
@@ -21,12 +23,8 @@ class BossController {
 	private final Inventory inventory;
 	private final CustomerRepository customerRepository;
 	
-	/**
-	 * @param orderManager
-	 * @param inventory
-	 */
 	@Autowired
-	public BossController(OrderManager orderManager, Inventory inventory,CustomerRepository customerRepository) {
+	public BossController(OrderManager orderManager, Inventory inventory, CustomerRepository customerRepository) {
 		this.orderManager = orderManager;
 		this.inventory = inventory;
 		this.customerRepository = customerRepository;

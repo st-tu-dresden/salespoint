@@ -11,15 +11,25 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Units;
 import org.salespointframework.util.Iterables;
 
+//(｡◕‿◕｡)
+// Die Basisklasse für Dvd sowie Blueray, erbt von Product um in den Catalog gesteckt zu werden
+// Ein Primärschlüssel ist nicht notwendig, da dieser schon in Product definiert ist, alle anderen JPA-Anforderungen müssen aber erfüllt werden
 @Entity
 public class Disc extends Product {
 	
+	// (｡◕‿◕｡)
+	// primitve Typen oder Strings müssen nicht extra für JPA annotiert werden
 	private String genre;
 	private String image;
 	
+	// (｡◕‿◕｡)
+	// Jede Disc besitzt mehrere Kommentare, eine "1 zu n"-Beziehung -> @OneToMany
 	@OneToMany
 	private List<Comment> comments = new LinkedList<Comment>();
-	
+
+	// (｡◕‿◕｡)
+	// Ein paremterloser public oder protected Konstruktor ist zwingend notwendig für JPA,
+	// damit dieser nicht genutzt wird, markieren wir in mit @Deprecated
 	@Deprecated
 	protected Disc() {}
 	
@@ -37,6 +47,11 @@ public class Disc extends Product {
 		comments.add(comment);
 	}
 	
+	// (｡◕‿◕｡)
+	// Es ist immer sinnvoll sich zu überlegen wie speziell der Rückgabetyp sein sollte
+	// Da sowies nur über die Kommentare iteriert wird, ist ein Iterable<T> das sinnvollste.
+	// Weil wir keine Liste zurück geben, verhindern wir auch, dass jemand die comments-Liste einfach durch clear() leert.
+	// Deswegen geben auch so viele Salespoint Klassen nur Iterable<T> zurück ;)
 	public Iterable<Comment> getComments() {
 		return Iterables.of(comments);
 	}

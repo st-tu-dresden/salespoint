@@ -14,6 +14,7 @@ import org.salespointframework.core.useraccount.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,27 +32,31 @@ class BasketController {
 		this.orderManager = orderManager;
 	}
 
+	// (｡◕‿◕｡)
+	// Wie zu sehen ist, funktioniert @RequestParam auch mit eigenen Klassen, in dem Fall Disc
+	// Es funktioniert mit allen Salespoint Entity Klassen beziehungsweise Ableitungen davon, Disc erbt von Product
 	@RequestMapping(value = "/addDisc", method = RequestMethod.POST)
 	public String addDisc(@RequestParam("pid") Disc disc,
-			@RequestParam("number") int number, HttpSession session,
-			ModelMap modelMap) {
+			@RequestParam("number") int number, 
+			HttpSession session, ModelMap modelMap) {
+		
+		// (｡◕‿◕｡)
+		// Das Inputfeld im View ist eigentlich begrenz, allerdings sollte man immer Clientseitig validieren
 		if (number <= 0 || number > 5) {
 			number = 1;
 		}
+	
+		Basket basket = this.getBasket(session);
 
-		Basket basket = (Basket) session.getAttribute("basket");
-
-		if (basket == null) {
-			basket = new Basket();
-			session.setAttribute("basket", basket);
-		}
-
+		// (｡◕‿◕｡)
+		// Eine OrderLine besteht aus einem Produkt und einer Quantity, diese kann auch direkt in eine Order eingefügt werden
+		
 		Quantity quantity = Units.of(number);
-
 		OrderLine orderLine = new OrderLine(disc, quantity);
-
 		basket.addOrderLine(orderLine);
 
+		// (｡◕‿◕｡)
+		// Je nachdem ob disc eine Dvd oder eine Bluray ist, leiten wir auf die richtige Seite weiter
 		if (disc instanceof Dvd) {
 			return "redirect:dvdCatalog";
 		} else {
@@ -60,21 +65,20 @@ class BasketController {
 	}
 
 	@RequestMapping("/shoppingBasket")
-	public String basket(HttpSession session, ModelMap modelMap) {
-		Basket basket = (Basket) session.getAttribute("basket");
-
-		if (basket == null) {
-			basket = new Basket();
-		}
-		modelMap.addAttribute("basket", basket);
-
+	public String basket() {
 		return "basket";
 	}
 
+	// (｡◕‿◕｡)
+	// Über @LoggedIn können wir uns den gerade eingeloggten UserAccount geben lassen
 	@RequestMapping("/buy")
 	public String buy(HttpSession session, @LoggedIn UserAccount userAccount) {
 
-		Basket basket = (Basket) session.getAttribute("basket");
+		Basket basket = this.getBasket(session);
+		
+		// (｡◕‿◕｡)
+		// Mit commit wird der Warenkorb in die Order überführt, diese wird dann bezahlt und abgeschlossen.
+		// Orders können nur abgeschlossen werden, wenn diese vorher bezahlt wurden.
 		Order order = new Order(userAccount, Cash.CASH);
 		basket.commit(order);
 
@@ -82,8 +86,22 @@ class BasketController {
 		orderManager.completeOrder(order);
 		orderManager.add(order);
 
-		session.removeAttribute("basket");
+		basket.clear();
 
 		return "index";
+	}
+	
+	// (｡◕‿◕｡)
+	// Warenkorb (Basket) aus der Session holen, existiert keiner so legen wir einen an und packen den in die Session
+	// Außerdem wird der Basket bei jedem Aufruf des Controllers durch das @ModelAttribute in die ModelMap abgelegt 
+	@ModelAttribute("basket")
+	private Basket getBasket(HttpSession session)  {
+		Basket basket = (Basket) session.getAttribute("basket");
+		if(basket == null) {
+			basket = new Basket(); 
+			session.setAttribute("basket", basket);
+		}
+		return basket;
+	
 	}
 }

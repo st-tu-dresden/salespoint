@@ -5,6 +5,14 @@ import org.salespointframework.core.catalog.ProductIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+// (｡◕‿◕｡)
+// Der Salespoint Katalog ist sehr allgemein gehalten, er nimmt Products und gibt Products zurück
+// Zusätzlich hat er einige Methoden, welche hier unnötig sind, deswegen ist es sinnvoll einen spezielleren Katalog zu schreiben,
+// welcher auf den vorhanden Salespoint-Catalog delegiert und die immer gleichen Paramter übergibt.
+// Merke: Nirgends wird Product erwähnt, es gehen nur Discs rein und Dvds oder Blurays raus
+
+// @Component sorgt dafür, dass wir unseren VideoCatalog später auch per @Autowired bekommen können
+
 @Component
 public class VideoCatalog {
 
@@ -33,5 +41,9 @@ public class VideoCatalog {
 
 	public Iterable<BluRay> findBluRays() {
 		return catalog.find(BluRay.class);
+	}
+
+	public void update(Disc disc) {
+		catalog.update(disc);
 	}
 }

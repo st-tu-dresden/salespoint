@@ -20,6 +20,10 @@ import videoshop.model.Disc;
 import videoshop.model.Dvd;
 import videoshop.model.VideoCatalog;
 
+// (｡◕‿◕｡)
+// Zum testen bzw. während der Entwicklung sind schon vorhandene Dummy Daten sinnvoll, 
+// diese werden hier erzeugt und hinzugefügt 
+
 @Component
 public class DataInitializer {
 
@@ -48,6 +52,10 @@ public class DataInitializer {
 		videoCatalog.add(new BluRay("Oldboy", "old", new Money(24.99), "Action/Drama/Thriller"));
 		videoCatalog.add(new BluRay("Bill & Ted's Excellent Adventure", "bt", new Money(29.99), "Adventure/Comedy/Family"));
 
+		// (｡◕‿◕｡)
+		// Über alle eben hinzugefügten Discs iterieren und jeweils ein InventoryItem mit der Quantity 10 setzen
+		// Das heißt: Von jeder Disc sind 10 Stück im Inventar.
+		
 		for (Disc disc : videoCatalog.findAll()) {
 			InventoryItem inventoryItem = new InventoryItem(disc, Units.TEN);
 			inventory.add(inventoryItem);
@@ -56,12 +64,12 @@ public class DataInitializer {
 
 	private void initializeUsers(UserAccountManager userAccountManager, CustomerRepository customerRepository) {
 		
+		// (｡◕‿◕｡)
+		// UserAccounts bestehen aus einem Identifier und eine Password, diese werden auch für ein Login gebraucht
+		// Zusätzlich kann ein UserAccount noch Rollen bekommen, diese können in den Controllern und im View dazu genutzt werden
+		// um bestimmte Bereiche nicht zugänglich zu machen, das "ROLE_"-Prefix ist eine Konvention welche für Spring Security nötig ist.
+		
 		UserAccountIdentifier bossUI = new UserAccountIdentifier("boss");
-
-		if (userAccountManager.contains(bossUI)) {
-			return;
-		}
-	
 		UserAccount bossAccount = userAccountManager.create(bossUI, "123", new Role("ROLE_BOSS"));
 		userAccountManager.save(bossAccount);
 		
@@ -81,6 +89,8 @@ public class DataInitializer {
 		Customer c3 = new Customer(ua3, "Camden County - Motel");
 		Customer c4 = new Customer(ua4 , "Los Angeles");
 		
+		// (｡◕‿◕｡)
+		// Zu faul um save 4x am Stück aufzurufen :)
 		customerRepository.save(Arrays.asList(c1,c2,c3,c4));
 		
 

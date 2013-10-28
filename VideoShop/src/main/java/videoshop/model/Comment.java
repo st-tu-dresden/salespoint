@@ -11,10 +11,17 @@ import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 
+// (｡◕‿◕｡)
+// Eigene Entity Klasse um Kommentare für Discs zu speichern
+// Alle JPA Anforderungen erfüllt :)
+// Mit der Table-Annotation kann man u.a. den Name der Tabelle angeben, ansonsten wird der Klassennamen genommen
+
 @Entity
 @Table(name="COMMENTS")
 public class Comment {
 
+	// (｡◕‿◕｡)
+	// Falls man die Id nicht selber setzen will, kann die mit @GeneratedValue vom JPA-Provider generiert und gesetzt werden
 	@Id
 	@GeneratedValue
 	private long id;
@@ -22,15 +29,19 @@ public class Comment {
 	private String text;
 	private int rating;
 	
-	//@Temporal(value = TemporalType.TIMESTAMP)
-	//private Date date;
+	// (｡◕‿◕｡)
+	// 1. Es gibt eine extra Annotation für Dates
+	// 2. JPA kann nicht mit Joda DateTimes umgehen, deswegen in einem normalen Date halten, aber immer als DateTime rausgeben (siehe getter)
+	@Temporal(value = TemporalType.TIMESTAMP)
+	private Date date;
 	
 	@Deprecated
 	protected Comment() { }
 	
-	public Comment(String text, int rating) {
+	public Comment(String text, int rating, DateTime dateTime) {
 		this.text = text;
 		this.rating = rating;
+		this.date = dateTime.toDate();
 	}
 	
 	public String getText() {
@@ -42,9 +53,11 @@ public class Comment {
 		return text;
 	}
 
-	//public DateTime getDate() {
-	//	return new DateTime(date);
-	//}
+	// (｡◕‿◕｡)
+	// java.util.Date ist Schrott, deswegwen in ein DateTime wrappen und das rausgeben
+	public DateTime getDate() {
+		return new DateTime(date);
+	}
 
 	public int getRating() {
 		return rating;

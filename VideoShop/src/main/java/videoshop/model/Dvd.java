@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 
 import org.salespointframework.core.money.Money;
 
+// (｡◕‿◕｡)
+// siehe Disc
+
 @Entity
 public class Dvd extends Disc {
 	
