@@ -4,6 +4,10 @@ import java.util.*;
 
 import org.springframework.stereotype.Component;
 
+// ‎(｡◕‿◕｡)
+// @Component Klassen instanziiert Spring selber, 
+// durch @Autowired kann man sich diese Instanz geben lassen (siehe GuestbookController) 
+
 @Component
 public class Guestbook {
 	

@@ -2,7 +2,10 @@ package guestbook.model;
 
 import java.util.Date;
 
-public class GuestbookEntry implements Comparable<GuestbookEntry> {
+// ‎(｡◕‿◕｡)
+// Nothing to see here.
+
+public class GuestbookEntry {
 	
 	private final String name, text;
 	private final Date date;
@@ -13,7 +16,6 @@ public class GuestbookEntry implements Comparable<GuestbookEntry> {
 		this.text = text;
 		this.date = date;
 		this.id = id;
-
 	}
 
 	public String getName() {
@@ -30,10 +32,5 @@ public class GuestbookEntry implements Comparable<GuestbookEntry> {
 
 	public String getText() {
 		return text;
-	}
-	
-	@Override
-	public int compareTo(GuestbookEntry other) {
-		return Integer.valueOf(this.id).compareTo(other.getId());
 	}
 }

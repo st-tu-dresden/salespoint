@@ -11,14 +11,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-// http://blog.springsource.com/2010/01/25/ajax-simplifications-in-spring-3-0/
+// ‎(｡◕‿◕｡)
+// Bitte Welcome- und danach GuestbookController anschauen, danach wiederkommen. ;)
+// Das hier sieht dem normalen GuestbookController schon sehr ähnlich, 
+// allerdings etwas modifiziert um über Javascript mit der Anwendung zu kommunizieren.
+// Das Beispiel ist mit Hilfe von http://blog.springsource.com/2010/01/25/ajax-simplifications-in-spring-3-0/ entstanden.
 
 @Controller
 @RequestMapping("/ajaxbook")
 public class AjaxGuestbookController {
 
+	private final Guestbook guestbook;
+	
 	@Autowired
-	Guestbook guestbook;
+	public AjaxGuestbookController(Guestbook guestbook) {
+		this.guestbook = guestbook;
+	}
 
 	@RequestMapping("/")
 	public String guestBook() {
@@ -26,16 +34,14 @@ public class AjaxGuestbookController {
 	}
 
 	@RequestMapping(value = "/addEntry", method = RequestMethod.POST)
-	public @ResponseBody
-	GuestbookEntry addEntry(
+	public @ResponseBody GuestbookEntry addEntry(
 			@RequestParam("name") String name,
 			@RequestParam("text") String text) {
 		return guestbook.addEntry(name, text);
 	}
 
 	@RequestMapping(value = "/removeEntry", method = RequestMethod.POST)
-	public @ResponseBody
-	boolean removeEntry(@RequestParam("id") int id) {
+	public @ResponseBody boolean removeEntry(@RequestParam("id") int id) {
 		return guestbook.removeEntry(id);
 	}
 
