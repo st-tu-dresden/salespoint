@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 // ‎(｡◕‿◕｡)
-// Bitte Welcome- und danach GuestbookController anschauen, danach wiederkommen. ;)
+// Bitte Welcome- und danach GuestbookController anschauen, danach erst wiederkommen. ;)
 // Das hier sieht dem normalen GuestbookController schon sehr ähnlich, 
 // allerdings etwas modifiziert um über Javascript mit der Anwendung zu kommunizieren.
 // Das Beispiel ist mit Hilfe von http://blog.springsource.com/2010/01/25/ajax-simplifications-in-spring-3-0/ entstanden.
