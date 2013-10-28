@@ -2,8 +2,18 @@ package guestbook.model;
 
 import java.util.Date;
 
-// ‎(｡◕‿◕｡)
-// Nothing to see here.
+//All work and no play makes ‎(｡◕‿◕｡) a dull boy
+//All work and no play makes ‎(｡◕‿◕｡) a dull boy
+//All work and no play makes ‎(｡◕‿◕｡) a dull boy
+//All work and no play makes ‎(｡◕‿◕｡) a dull boy
+//All work and no play makes ‎(｡◕‿◕｡) a dull boy
+//All work and no play makes ‎(｡◕‿◕｡) a dull boy
+//All work and no play makes ‎(｡◕‿◕｡) a dull boy
+//All work and no play makes ‎(｡◕‿◕｡) a dull boy
+//All work and no play makes ‎(｡◕‿◕｡) a dull boy
+//All work and no play makes ‎(｡◕‿◕｡) a dull boy
+//All work and no play makes ‎(｡◕‿◕｡) a dull boy
+//All work and no play makes ‎(｡◕‿◕｡) a dull boy
 
 public class GuestbookEntry {
 	
