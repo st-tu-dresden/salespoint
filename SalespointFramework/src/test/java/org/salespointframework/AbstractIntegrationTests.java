@@ -16,7 +16,6 @@
 package org.salespointframework;
 
 import org.junit.runner.RunWith;
-import org.salespointframework.core.Salespoint;
 import org.springframework.boot.context.initializer.ConfigFileApplicationContextInitializer;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
