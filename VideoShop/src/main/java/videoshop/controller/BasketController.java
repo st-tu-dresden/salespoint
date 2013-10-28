@@ -2,6 +2,7 @@ package videoshop.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.salespointframework.annotation.LoggedIn;
 import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.order.Basket;
 import org.salespointframework.core.order.Order;
@@ -10,7 +11,6 @@ import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.useraccount.UserAccount;
-import org.salespointframework.web.annotation.LoggedInUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -72,13 +72,13 @@ class BasketController {
 	}
 
 	@RequestMapping("/buy")
-	public String buy(HttpSession session, @LoggedInUser UserAccount userAccount) {
+	public String buy(HttpSession session, @LoggedIn UserAccount userAccount) {
 
 		Basket basket = (Basket) session.getAttribute("basket");
-		Order order = new Order(userAccount.getIdentifier(), Cash.CASH);
+		Order order = new Order(userAccount, Cash.CASH);
 		basket.commit(order);
 
-		orderManager.pay(order);
+		orderManager.payOrder(order);
 		orderManager.completeOrder(order);
 		orderManager.add(order);
 

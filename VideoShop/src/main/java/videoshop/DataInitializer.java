@@ -29,12 +29,11 @@ public class DataInitializer {
 
 		initializeUsers(userAccountManager,customerRepository);
 
-		videoCatalog.add(new Dvd("Last Action Hero", "lac", new Money(9.99), "��ktschn/Comedy"));
+		videoCatalog.add(new Dvd("Last Action Hero", "lac", new Money(9.99), "Äktschn/Comedy"));
 		videoCatalog.add(new Dvd("Back to the Future", "bttf", new Money(9.99), "Sci-Fi"));
 		videoCatalog.add(new Dvd("Fido", "fido", new Money(9.99), "Comedy/Drama/Horror"));
 		videoCatalog.add(new Dvd("Super Fuzz", "sf", new Money(19.99), "Action/Sci-Fi/Comedy"));
-		videoCatalog.add(new Dvd("Armour of God II: Operation Condor", "aog2oc", new Money(14.99),
-				"Action/Adventure/Comedy"));
+		videoCatalog.add(new Dvd("Armour of God II: Operation Condor", "aog2oc", new Money(14.99), "Action/Adventure/Comedy"));
 		videoCatalog.add(new Dvd("Persepolis", "pers", new Money(14.99), "Animation/Biography/Drama"));
 		videoCatalog.add(new Dvd("Hot Shots! Part Deux", "hspd", Money.OVER9000, "Action/Comedy/War"));
 		videoCatalog.add(new Dvd("Avatar: The Last Airbender", "tla", new Money(19.99), "Animation/Action/Adventure"));
@@ -66,13 +65,15 @@ public class DataInitializer {
 		UserAccount bossAccount = userAccountManager.create(bossUI, "123", new Role("ROLE_BOSS"));
 		userAccountManager.save(bossAccount);
 		
-		UserAccount ua1 = userAccountManager.create(new UserAccountIdentifier("hans"), "123", new Role("ROLE_CUSTOMER"));
+		final Role customerRole = new Role("ROLE_CUSTOMER");
+		
+		UserAccount ua1 = userAccountManager.create(new UserAccountIdentifier("hans"), "123", customerRole);
 		userAccountManager.save(ua1);
-		UserAccount ua2 = userAccountManager.create(new UserAccountIdentifier("dextermorgan"), "123", new Role("ROLE_CUSTOMER"));
+		UserAccount ua2 = userAccountManager.create(new UserAccountIdentifier("dextermorgan"), "123", customerRole);
 		userAccountManager.save(ua2);
-		UserAccount ua3 = userAccountManager.create(new UserAccountIdentifier("earlhickey"), "123", new Role("ROLE_CUSTOMER"));
+		UserAccount ua3 = userAccountManager.create(new UserAccountIdentifier("earlhickey"), "123", customerRole);
 		userAccountManager.save(ua3);
-		UserAccount ua4 = userAccountManager.create(new UserAccountIdentifier("mclovinfogell"), "123", new Role("ROLE_CUSTOMER"));
+		UserAccount ua4 = userAccountManager.create(new UserAccountIdentifier("mclovinfogell"), "123", customerRole);
 		userAccountManager.save(ua4);
 		
 		Customer c1 = new Customer(ua1, "wurst");

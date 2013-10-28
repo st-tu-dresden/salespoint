@@ -2,11 +2,11 @@ package videoshop.controller;
 
 import javax.validation.Valid;
 
+import org.salespointframework.annotation.LoggedIn;
 import org.salespointframework.core.useraccount.Role;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.core.useraccount.UserAccountManager;
-import org.salespointframework.web.annotation.LoggedInUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,7 +20,7 @@ import videoshop.model.CustomerRepository;
 import videoshop.model.validation.RegistrationForm;
 
 @Controller
-@LoggedInUser
+@LoggedIn
 class ShopController {
 
 	private final UserAccountManager userAccountManager;

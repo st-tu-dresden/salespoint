@@ -10,9 +10,6 @@ public class VideoCatalog {
 
 	private final Catalog catalog;
 
-	/**
-	 * @param catalog
-	 */
 	@Autowired
 	public VideoCatalog(Catalog catalog) {
 		this.catalog = catalog;

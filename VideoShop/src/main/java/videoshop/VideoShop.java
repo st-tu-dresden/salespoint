@@ -5,9 +5,9 @@ import java.util.List;
 import org.salespointframework.Salespoint;
 import org.salespointframework.core.useraccount.UserAccountDetailService;
 import org.salespointframework.core.useraccount.UserAccountManager;
-import org.salespointframework.util.SalespointPasswordEncoder;
-import org.salespointframework.web.spring.converter.JpaEntityConverter;
-import org.salespointframework.web.spring.converter.StringToRoleConverter;
+import org.salespointframework.spring.converter.JpaEntityConverter;
+import org.salespointframework.spring.converter.StringToRoleConverter;
+import org.salespointframework.spring.support.LoggedInUserAccountArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -24,37 +24,22 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-/**
- * Central application class for VideoShop.
- * 
- * @author Oliver Gierke
- * @author Paul Henke
- */
+
 @Configuration
 @EnableAutoConfiguration
-@Import({ Salespoint.class, VideoShop.WebConfiguration.class,
-		VideoShop.WebSecurityConfiguration.class })
+@Import({ Salespoint.class, VideoShop.WebConfiguration.class, VideoShop.WebSecurityConfiguration.class })
 @ComponentScan
 public class VideoShop {
 
-	/**
-	 * runs the application.
-	 * 
-	 * @param args
-	 */
+
 	public static void main(String[] args) {
 		SpringApplication.run(VideoShop.class, args);
 	}
 
-	/**
-	 * Custom web configuration for Spring MVC.
-	 * 
-	 * @author Oliver Gierke
-	 */
+
 	@Configuration
 	static class WebConfiguration extends WebMvcConfigurerAdapter {
 
-		// Web application configuration
 		@Autowired
 		private JpaEntityConverter entityConverter;
 
@@ -64,7 +49,7 @@ public class VideoShop {
 		@Override
 		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
 			
-			argumentResolvers.add(new org.salespointframework.web.spring.support.LoggedInUserArgumentResolver(userAccountManager));
+			argumentResolvers.add(new LoggedInUserAccountArgumentResolver(userAccountManager));
 		}
 
 		@Override
@@ -82,14 +67,14 @@ public class VideoShop {
 		private UserAccountManager userAccountManager;
 
 		@Override
-		protected void registerAuthentication(AuthenticationManagerBuilder builder) {
+		protected void registerAuthentication(AuthenticationManagerBuilder amBuilder) {
 
 			DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
-			provider.setPasswordEncoder(new SalespointPasswordEncoder());
+			provider.setPasswordEncoder(userAccountManager.getPasswordEncoder());
 			provider.setUserDetailsService(new UserAccountDetailService(userAccountManager));
 
-			builder.authenticationProvider(provider);
+			amBuilder.authenticationProvider(provider);
 
 			return;
 
@@ -97,7 +82,7 @@ public class VideoShop {
 
 		@Override
 		public void configure(WebSecurity web) throws Exception {
-			web.ignoring().antMatchers("/resources/**"); // #3
+			web.ignoring().antMatchers("/resources/**"); 
 		}
 
 		@Override
