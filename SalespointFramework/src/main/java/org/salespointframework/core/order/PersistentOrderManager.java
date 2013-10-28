@@ -21,7 +21,6 @@ import org.salespointframework.core.order.OrderCompletionResult.OrderCompletionS
 import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.time.TimeService;
 import org.salespointframework.core.useraccount.UserAccount;
-import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.util.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -177,6 +176,8 @@ class PersistentOrderManager implements OrderManager
 	@Override
 	public OrderCompletionResult completeOrder(final Order order) {
 
+		Objects.requireNonNull(order, "order must not be null");
+		
 		final Map<InventoryItem, Quantity> goodItems = new HashMap<>();
 		final Map<InventoryItem, Quantity> badItems = new HashMap<>();
 
@@ -249,7 +250,7 @@ class PersistentOrderManager implements OrderManager
 	 * @see org.salespointframework.core.order.OrderManager#pay(org.salespointframework.core.order.Order)
 	 */
 	public boolean payOrder(Order order) {
-		
+		Objects.requireNonNull(order, "order must not be null");
 		if (order.isPaymentExpected()) {
 			return false;
 		}

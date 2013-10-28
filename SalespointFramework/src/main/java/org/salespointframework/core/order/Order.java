@@ -7,15 +7,13 @@ import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
+
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -39,9 +37,7 @@ import org.salespointframework.util.Iterables;
 @Entity
 @Table(name = "ORDERS")
 public class Order implements Comparable<Order> {
-	// TODO: Here, we also need to rename the column, or OWNER_ID will be the
-	// PK. Maybe we should rename the field in SalespointIdentifier, to avoid
-	// name clashes with "ID"?
+
 	@EmbeddedId
 	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID"))
 	private OrderIdentifier orderIdentifier = new OrderIdentifier();
@@ -75,13 +71,13 @@ public class Order implements Comparable<Order> {
 	/**
 	 * Creates a new Order
 	 * 
-	 * @param userIdentifier
-	 *            The {@link UserAccountIdentifier}/{@link User} connected to this
+	 * @param userAccount
+	 *            The {@link UserAccountIdentifier}/{@link UserAccount} connected to this
 	 *            order
 	 * @param paymentMethod
 	 *            The {@link PaymentMethod} connected to this order
 	 * @throws NullPointerException
-	 *             if userIdentifier or paymentMethod is null
+	 *             if userAccount or paymentMethod are null
 	 */
 	public Order(UserAccount userAccount,
 			PaymentMethod paymentMethod) {
@@ -94,11 +90,11 @@ public class Order implements Comparable<Order> {
 	/**
 	 * Creates a new Order
 	 * 
-	 * @param userIdentifier
-	 *            The {@link UserAccountIdentifier}/{@link User} connected to this
+	 * @param userAccount
+	 *            The {@link UserAccountIdentifier}/{@link UserAccount} connected to this
 	 *            order
 	 * @throws NullPointerException
-	 *             if userIdentifier is null
+	 *             if userAccount is null
 	 */
 	public Order(UserAccount userAccount) {
 		this.userAccount = Objects.requireNonNull(userAccount,

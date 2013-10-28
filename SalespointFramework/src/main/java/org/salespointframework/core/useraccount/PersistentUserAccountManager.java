@@ -1,5 +1,7 @@
 package org.salespointframework.core.useraccount;
 
+import java.util.Objects;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -23,21 +25,24 @@ class PersistentUserAccountManager implements UserAccountManager {
 	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Override
-	public UserAccount create(UserAccountIdentifier userAccountIdentifier,
-			String password, Role... roles) {
-		UserAccount userAccount = new UserAccount(userAccountIdentifier,
-				password, roles);
+	public UserAccount create(UserAccountIdentifier userAccountIdentifier, String password, Role... roles) {
+		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
+		Objects.requireNonNull(password, "password must not be null");
+		Objects.requireNonNull(roles, "roles must not be null");
+		UserAccount userAccount = new UserAccount(userAccountIdentifier, password, roles);
 		return userAccount;
 	}
 
 	@Override
 	public UserAccount get(UserAccountIdentifier userAccountIdentifier) {
+		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		return entityManager.find(UserAccount.class, userAccountIdentifier);
 	}
 
 	// TODO DRY
 	@Override
 	public void save(final UserAccount userAccount) {
+		Objects.requireNonNull(userAccount, "userAccount must not be null");
 		UserAccount userAccount2 = this.get(userAccount.getIdentifier());
 		if (userAccount2 == null) {
 			if (!userAccount.getPassword().isEncrypted()) {
@@ -56,6 +61,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	@Override
 	public void enable(UserAccountIdentifier userAccountIdentifier) {
+		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		UserAccount userAccount = this.get(userAccountIdentifier);
 		if (userAccount != null) {
 			userAccount.setEnabled(true);
@@ -65,6 +71,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	@Override
 	public void disable(UserAccountIdentifier userAccountIdentifier) {
+		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		UserAccount userAccount = this.get(userAccountIdentifier);
 		if (userAccount != null) {
 			userAccount.setEnabled(false);
@@ -74,12 +81,15 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	@Override
 	public void changePassword(UserAccount userAccount, String password) {
+		Objects.requireNonNull(userAccount, "userAccount must not be null");
+		Objects.requireNonNull(password, "password must not be null");
 		userAccount = this.get(userAccount.getIdentifier());
 		userAccount.setPassword(new Password(password));
 	}
 
 	@Override
 	public boolean contains(UserAccountIdentifier userAccountIdentifier) {
+		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		return entityManager.find(UserAccount.class, userAccountIdentifier) != null;
 	}
 
