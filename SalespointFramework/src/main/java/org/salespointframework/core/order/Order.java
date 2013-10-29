@@ -8,17 +8,17 @@ import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
@@ -42,6 +42,7 @@ public class Order implements Comparable<Order> {
 	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID"))
 	private OrderIdentifier orderIdentifier = new OrderIdentifier();
 
+	@Lob
 	private PaymentMethod paymentMethod;
 
 	@OneToOne

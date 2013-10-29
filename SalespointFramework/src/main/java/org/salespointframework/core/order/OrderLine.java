@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 
 import org.salespointframework.core.catalog.Product;
 import org.salespointframework.core.catalog.ProductIdentifier;
@@ -33,10 +34,12 @@ public class OrderLine
 	private ProductIdentifier productIdentifier;
 
 
+	@Lob
 	private Money price = Money.ONE;
 
 	private String productName;
 
+	@Lob
 	private Quantity quantity;
 
 	/**
