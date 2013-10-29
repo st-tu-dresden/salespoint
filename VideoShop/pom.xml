@@ -62,16 +62,12 @@
 		</dependency>
 
 
-		<!-- <dependency> <groupId>org.springmodules</groupId> <artifactId>spring-modules-validation</artifactId> 
-			<version>0.8a</version> </dependency> -->
-
-
-
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>salespoint-framework</artifactId>
-			<version>5.3.0-SNAPSHOT</version>
+			<version>5.3.0</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -120,6 +116,12 @@
 			<id>spring-milestones</id>
 			<url>http://repo.springsource.org/libs-milestone</url>
 		</repository>
+
+		<repository>
+			<id>salespointframework</id>
+			<url>http://www.st.inf.tu-dresden.de/SalesPoint/v5.0/repository</url>
+		</repository>
+
 	</repositories>
 
 	<pluginRepositories>

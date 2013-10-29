@@ -12,7 +12,8 @@ import org.salespointframework.core.quantity.Units;
 import org.salespointframework.util.Iterables;
 
 //(｡◕‿◕｡)
-// Die Basisklasse für Dvd sowie Blueray, erbt von Product um in den Catalog gesteckt zu werden
+// Da der Shop DVD sowie BluRay verkaufen soll ist es sinnvoll eine gemeinsame Basisklasse zu erstellen.
+// Diese erbt von Product um die Catalog-Klasse aus Salespoint nutzen zu können.
 // Ein Primärschlüssel ist nicht notwendig, da dieser schon in Product definiert ist, alle anderen JPA-Anforderungen müssen aber erfüllt werden
 @Entity
 public class Disc extends Product {
@@ -23,7 +24,7 @@ public class Disc extends Product {
 	private String image;
 	
 	// (｡◕‿◕｡)
-	// Jede Disc besitzt mehrere Kommentare, eine "1 zu n"-Beziehung -> @OneToMany
+	// Jede Disc besitzt mehrere Kommentare, eine "1 zu n"-Beziehung -> @OneToMany für JPA
 	@OneToMany
 	private List<Comment> comments = new LinkedList<Comment>();
 

@@ -49,10 +49,10 @@
 
 					</tbody>
 				</table>
-				<p th:text="#{shoppingBasket.sum} + ': ' + ${basket.price}">Summe: 100 Euro</p>
-				<div style="margin: auto;" sec:authorize="hasRole('ROLE_CUSTOMER')">
+				<p th:text="#{shoppingBasket.total} + ': ' + ${basket.price}">Summe: 100 Euro</p>
+				<div class="salespoint" sec:authorize="hasRole('ROLE_CUSTOMER')">
 					<form method="post" action="buy">
-						<button th:text="#{shoppingBasket.buy}" type="submit"></button>
+						<input type="submit" th:value="#{shoppingBasket.buy}" value="Kaufen" />
 					</form>
 				</div>
 			</div>
