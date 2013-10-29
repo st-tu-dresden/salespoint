@@ -9,7 +9,7 @@ import org.salespointframework.util.Iterables;
 
 public class Basket {
 	
-	private List<OrderLine> orderLines = new LinkedList<>();
+	private final List<OrderLine> orderLines = new LinkedList<>();
 	
 	public boolean addOrderLine(OrderLine orderLine) {
 		Objects.requireNonNull(orderLine, "orderLine must not be null");
@@ -28,6 +28,11 @@ public class Basket {
 		}
 		return orderLines.remove(temp);
 	}
+	
+	public void clear() {
+		orderLines.clear();
+	}
+	
 	
 	public Iterable<OrderLine> getOrderLines() {
 		return Iterables.of(orderLines);
