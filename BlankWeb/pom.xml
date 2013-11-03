@@ -12,9 +12,7 @@
 		<version>0.5.0.M5</version>
 	</parent>
 
-
 	<dependencies>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -45,15 +43,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>1.1.0.Final</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>5.0.1.Final</version>
 		</dependency>
 
 		<dependency>
@@ -62,13 +53,11 @@
 			<version>6.0.37</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>salespoint-framework</artifactId>
 			<version>5.3.0</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -86,7 +75,6 @@
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf-spring3</artifactId>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
