@@ -11,6 +11,13 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>0.5.0.M5</version>
 	</parent>
+	
+	<properties>
+		<spring.version>4.0.0.RC1</spring.version>
+		<hibernate-validator.version>5.0.1.Final</hibernate-validator.version>
+		<thymeleaf.version>2.1.0.RELEASE</thymeleaf.version>
+		<thymeleaf-extras-springsecurity3.version>2.1.0.RELEASE</thymeleaf-extras-springsecurity3.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -105,11 +112,12 @@
 			<id>spring-milestones</id>
 			<url>http://repo.springsource.org/libs-milestone</url>
 		</repository>
-		
+
 		<repository>
 			<id>salespointframework</id>
 			<url>http://www.st.inf.tu-dresden.de/SalesPoint/v5.0/repository</url>
 		</repository>
+
 	</repositories>
 
 	<pluginRepositories>
