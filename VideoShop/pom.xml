@@ -15,6 +15,7 @@
 	<properties>
 		<spring.version>4.0.0.RC1</spring.version>
 		<hibernate-validator.version>5.0.1.Final</hibernate-validator.version>
+		<thymeleaf.version>2.1.0.RELEASE</thymeleaf.version>
 	</properties>
 
 	<dependencies>
