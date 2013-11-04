@@ -16,11 +16,9 @@
 
 	<properties>
 		<hibernate-entitymanager.version>4.2.6.Final</hibernate-entitymanager.version>
-		<spring>4.0.0.M3</spring>
+		<spring.version>4.0.0.RC1</spring.version>
 		<!-- <thymeleaf.version>2.0.19.</thymeleaf.version> -->
 	</properties>
-
-
 
 	<dependencies>
 

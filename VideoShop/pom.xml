@@ -11,6 +11,11 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>0.5.0.M5</version>
 	</parent>
+	
+	<properties>
+		<spring.version>4.0.0.RC1</spring.version>
+		<hibernate-validator.version>5.0.1.Final</hibernate-validator.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
