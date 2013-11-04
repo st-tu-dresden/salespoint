@@ -11,12 +11,15 @@ import org.salespointframework.spring.support.LoggedInUserAccountArgumentResolve
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,18 +27,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-
 @Configuration
 @EnableAutoConfiguration
 @Import({Salespoint.class, BlankWeb.WebConfiguration.class, BlankWeb.WebSecurityConfiguration.class })
 @ComponentScan
 public class BlankWeb {
 
-
 	public static void main(String[] args) {
 		SpringApplication.run(BlankWeb.class, args);
 	}
-
 
 	@Configuration
 	static class WebConfiguration extends WebMvcConfigurerAdapter {
@@ -48,7 +48,6 @@ public class BlankWeb {
 
 		@Override
 		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-			
 			argumentResolvers.add(new LoggedInUserAccountArgumentResolver(userAccountManager));
 		}
 
@@ -59,8 +58,9 @@ public class BlankWeb {
 		}
 	}
 
-	@EnableWebSecurity
 	@Configuration
+	@EnableWebSecurity
+	@EnableGlobalMethodSecurity(prePostEnabled = true)
 	static class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		@Autowired
@@ -68,16 +68,16 @@ public class BlankWeb {
 
 		@Override
 		protected void registerAuthentication(AuthenticationManagerBuilder amBuilder) {
-
 			DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-
 			provider.setPasswordEncoder(userAccountManager.getPasswordEncoder());
 			provider.setUserDetailsService(new UserAccountDetailService(userAccountManager));
-
 			amBuilder.authenticationProvider(provider);
-
-			return;
-
+		}
+		
+		@Bean
+		@Override
+		public AuthenticationManager authenticationManagerBean() throws Exception {
+		  return super.authenticationManagerBean();
 		}
 
 		@Override
