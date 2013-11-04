@@ -3,6 +3,7 @@ package videoshop.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -25,7 +26,8 @@ public class Disc extends Product {
 	
 	// (｡◕‿◕｡)
 	// Jede Disc besitzt mehrere Kommentare, eine "1 zu n"-Beziehung -> @OneToMany für JPA
-	@OneToMany
+	// cascade gibt an, was mit den Kindelementen (Comment) passieren soll wenn das Parentelement (Disc) mit der Datenbank "interagiert"
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<Comment> comments = new LinkedList<Comment>();
 
 	// (｡◕‿◕｡)
