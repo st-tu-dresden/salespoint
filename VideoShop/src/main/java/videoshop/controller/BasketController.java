@@ -12,6 +12,7 @@ import org.salespointframework.core.quantity.Quantity;
 import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,7 +23,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import videoshop.model.Disc;
 import videoshop.model.Dvd;
 
+// (｡◕‿◕｡)
+// Alle Aktionen/Methoden im Controller sollen nur durch einen eingeloggten Kunden ausgeführt werden können,
+// von daher "schützen" wir den ganzen Controller mit @PreAuthorize. 
+// Dadurch wird auch verhindet, dass Angreifer durch URL Guessing auf die Adminseite oder ähnliches zugreifen können.
+// @PreAuthorize kann auch nur auf einzelnen Controllermethoden angewendet werden.
+// Via hasAnyRole() kann man auch kommasepariert mehrere Rollen angeben.
+// Lektüre http://docs.spring.io/spring-security/site/docs/current/reference/el-access.html
 @Controller
+@PreAuthorize("hasRole('ROLE_CUSTOMER')")
 class BasketController {
 
 	private final OrderManager orderManager;

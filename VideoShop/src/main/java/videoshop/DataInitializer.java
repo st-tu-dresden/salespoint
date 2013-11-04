@@ -22,7 +22,7 @@ import videoshop.model.VideoCatalog;
 
 // (｡◕‿◕｡)
 // Zum testen bzw. während der Entwicklung sind schon vorhandene Dummy Daten sinnvoll, 
-// diese werden hier erzeugt und hinzugefügt 
+// diese werden hier erzeugt und hinzugefügt.
 
 @Component
 public class DataInitializer {
