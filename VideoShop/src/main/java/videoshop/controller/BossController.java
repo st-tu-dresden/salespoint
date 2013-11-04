@@ -6,6 +6,7 @@ import org.salespointframework.core.order.Order;
 import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.order.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import videoshop.model.CustomerRepository;
 // Straight forward?
 
 @Controller
+@PreAuthorize("hasRole('ROLE_BOSS')")
 class BossController {
 	
 	private final OrderManager orderManager;

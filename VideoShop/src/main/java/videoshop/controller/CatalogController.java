@@ -1,6 +1,5 @@
 package videoshop.controller;
 
-
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.quantity.Quantity;
