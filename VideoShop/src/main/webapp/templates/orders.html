@@ -26,7 +26,7 @@
 				<tbody>
 						<tr th:each="order : ${ordersCompleted} ">
 							<td th:text="${order.dateCreated}" ></td>
-							<td th:text="${order.userIdentifier}"></td>
+							<td th:text="${order.userAccount.identifier}"></td>
 							<td th:text="${order.totalPrice}"></td>
 						</tr>
 				</tbody>
