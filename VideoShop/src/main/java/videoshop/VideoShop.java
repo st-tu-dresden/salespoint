@@ -24,6 +24,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -32,12 +33,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 @EnableAutoConfiguration
-@Import({Salespoint.class, VideoShop.WebConfiguration.class, VideoShop.WebSecurityConfiguration.class })
+@Import({ Salespoint.class, VideoShop.WebConfiguration.class,
+		VideoShop.WebSecurityConfiguration.class })
 @ComponentScan
 public class VideoShop {
 
 	public static void main(String[] args) {
 		SpringApplication.run(VideoShop.class, args);
+	}
+
+	@Bean
+	public CharacterEncodingFilter characterEncodingFilter() {
+		final CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+		characterEncodingFilter.setEncoding("UTF-8");
+		characterEncodingFilter.setForceEncoding(true);
+		return characterEncodingFilter;
 	}
 
 	@Configuration
@@ -50,8 +60,10 @@ public class VideoShop {
 		private UserAccountManager userAccountManager;
 
 		@Override
-		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-			argumentResolvers.add(new LoggedInUserAccountArgumentResolver(userAccountManager));
+		public void addArgumentResolvers(
+				List<HandlerMethodArgumentResolver> argumentResolvers) {
+			argumentResolvers.add(new LoggedInUserAccountArgumentResolver(
+					userAccountManager));
 		}
 
 		@Override
@@ -70,22 +82,25 @@ public class VideoShop {
 		private UserAccountManager userAccountManager;
 
 		@Override
-		protected void registerAuthentication(AuthenticationManagerBuilder amBuilder) {
+		protected void registerAuthentication(
+				AuthenticationManagerBuilder amBuilder) {
 			DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 			provider.setPasswordEncoder(userAccountManager.getPasswordEncoder());
-			provider.setUserDetailsService(new UserAccountDetailService(userAccountManager));
+			provider.setUserDetailsService(new UserAccountDetailService(
+					userAccountManager));
 			amBuilder.authenticationProvider(provider);
 		}
-		
+
 		@Bean
 		@Override
-		public AuthenticationManager authenticationManagerBean() throws Exception {
-		  return super.authenticationManagerBean();
+		public AuthenticationManager authenticationManagerBean()
+				throws Exception {
+			return super.authenticationManagerBean();
 		}
 
 		@Override
 		public void configure(WebSecurity web) throws Exception {
-			web.ignoring().antMatchers("/resources/**"); 
+			web.ignoring().antMatchers("/resources/**");
 		}
 
 		@Override
@@ -93,12 +108,9 @@ public class VideoShop {
 
 			http.csrf().disable();
 
-			http
-			.authorizeRequests().antMatchers("/**").permitAll()
-			.and()
-			.formLogin().loginProcessingUrl("/login")
-			.and()
-			.logout().logoutUrl("/logout").logoutSuccessUrl("/");
+			http.authorizeRequests().antMatchers("/**").permitAll().and()
+					.formLogin().loginProcessingUrl("/login").and().logout()
+					.logoutUrl("/logout").logoutSuccessUrl("/");
 
 		}
 	}
