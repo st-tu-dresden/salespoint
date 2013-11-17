@@ -3,7 +3,6 @@ package blankweb;
 import java.util.List;
 
 import org.salespointframework.Salespoint;
-import org.salespointframework.core.useraccount.UserAccountDetailService;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.salespointframework.spring.converter.JpaEntityConverter;
 import org.salespointframework.spring.converter.StringToRoleConverter;
@@ -17,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,16 +27,19 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import blankweb.BlankWeb.WebConfiguration;
+import blankweb.BlankWeb.WebSecurityConfiguration;
+
 @Configuration
 @EnableAutoConfiguration
-@Import({Salespoint.class, BlankWeb.WebConfiguration.class, BlankWeb.WebSecurityConfiguration.class })
+@Import({ Salespoint.class, WebConfiguration.class, WebSecurityConfiguration.class })
 @ComponentScan
 public class BlankWeb {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BlankWeb.class, args);
 	}
-	
+
 	@Bean
 	public CharacterEncodingFilter characterEncodingFilter() {
 		final CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
@@ -49,11 +51,8 @@ public class BlankWeb {
 	@Configuration
 	static class WebConfiguration extends WebMvcConfigurerAdapter {
 
-		@Autowired
-		private JpaEntityConverter entityConverter;
-
-		@Autowired
-		private UserAccountManager userAccountManager;
+		@Autowired private JpaEntityConverter entityConverter;
+		@Autowired private UserAccountManager userAccountManager;
 
 		@Override
 		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
@@ -72,26 +71,22 @@ public class BlankWeb {
 	@EnableGlobalMethodSecurity(prePostEnabled = true)
 	static class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-		@Autowired
-		private UserAccountManager userAccountManager;
+		@Autowired AuthenticationProvider authenticationProvider;
 
 		@Override
 		protected void registerAuthentication(AuthenticationManagerBuilder amBuilder) {
-			DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-			provider.setPasswordEncoder(userAccountManager.getPasswordEncoder());
-			provider.setUserDetailsService(new UserAccountDetailService(userAccountManager));
-			amBuilder.authenticationProvider(provider);
+			amBuilder.authenticationProvider(authenticationProvider);
 		}
-		
+
 		@Bean
 		@Override
 		public AuthenticationManager authenticationManagerBean() throws Exception {
-		  return super.authenticationManagerBean();
+			return super.authenticationManagerBean();
 		}
 
 		@Override
 		public void configure(WebSecurity web) throws Exception {
-			web.ignoring().antMatchers("/resources/**"); 
+			web.ignoring().antMatchers("/resources/**");
 		}
 
 		@Override
@@ -99,12 +94,8 @@ public class BlankWeb {
 
 			http.csrf().disable();
 
-			http
-			.authorizeRequests().antMatchers("/**").permitAll()
-			.and()
-			.formLogin().loginProcessingUrl("/login")
-			.and()
-			.logout().logoutUrl("/logout").logoutSuccessUrl("/");
+			http.authorizeRequests().antMatchers("/**").permitAll().and().formLogin().loginProcessingUrl("/login").and()
+					.logout().logoutUrl("/logout").logoutSuccessUrl("/");
 
 		}
 	}
