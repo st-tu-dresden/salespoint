@@ -1,4 +1,4 @@
-package org.salespointframework.accountancy;
+	package org.salespointframework.accountancy;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -6,16 +6,9 @@ import java.util.Map.Entry;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
-import org.junit.Before;
-import org.junit.Test;
-import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
-import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.order.OrderIdentifier;
-import org.salespointframework.core.useraccount.UserAccountIdentifier;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 // FIXME
@@ -31,17 +24,19 @@ public class AccountancyPeriodTest { // extends AbstractIntegrationTests {
 	//@Before
 	public void testSetup() throws Exception {
 
-		ProductPaymentEntry p;
+		// ProductPaymentEntry p;
 		System.out.println("Creating AccountancyEntries: ");
 		for (int i = 0; i < 20; i++) {
-			p = null; //new ProductPaymentEntry(new OrderIdentifier(), new UserAccountIdentifier(), new Money(1), "Rechnung nr. 3",					Cash.CASH);
-			System.out.println("Adding p " + p + " with time " + p.getDate());
-			a.add(p);
+			
+			// p = null; //new ProductPaymentEntry(new OrderIdentifier(), new UserAccountIdentifier(), new Money(1),
+			// "Rechnung nr. 3", Cash.CASH);
+			// System.out.println("Adding p " + p + " with time " + p.getDate());
+			// a.add(p);
 
-			if (i == 5)
-				from = p.getDate();
-			if (i == 15)
-				to = p.getDate();
+			// if (i == 5)
+			// from = p.getDate();
+			// if (i == 15)
+			// to = p.getDate();
 
 			Thread.sleep(5);
 		}

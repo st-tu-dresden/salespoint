@@ -2,63 +2,89 @@ package org.salespointframework.core.useraccount;
 
 import java.util.Objects;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
-import org.salespointframework.util.Iterables;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implementation of {@link UserAccountManager} using a {@link UserAccountRepository} to persist {@link UserAccount}
+ * instances. It also manages password encryption using the configured {@link PasswordEncoder}.
+ * 
+ * @author Paul Henke
+ * @author Oliver Gierke
+ */
 @Service
-@Transactional
+@Transactional(readOnly = true)
 class PersistentUserAccountManager implements UserAccountManager {
 
-	@PersistenceContext
-	private EntityManager entityManager;
+	private final UserAccountRepository repository;
+	private final PasswordEncoder passwordEncoder;
 
-	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	/**
+	 * Creates a new {@link PersistentUserAccountManager} using the given {@link UserAccountRepository} and
+	 * {@link PasswordEncoder}.
+	 * 
+	 * @param repository must not be {@literal null}.
+	 * @param passwordEncoder must not be {@literal null}.
+	 */
+	@Autowired
+	public PersistentUserAccountManager(UserAccountRepository repository, PasswordEncoder passwordEncoder) {
 
+		Objects.requireNonNull(repository, "UserAccountRepository must not be null!");
+		Objects.requireNonNull(passwordEncoder, "PasswordEncoder must not be null!");
+
+		this.repository = repository;
+		this.passwordEncoder = passwordEncoder;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.useraccount.UserAccountManager#create(org.salespointframework.core.useraccount.UserAccountIdentifier, java.lang.String, org.salespointframework.core.useraccount.Role[])
+	 */
 	@Override
 	public UserAccount create(UserAccountIdentifier userAccountIdentifier, String password, Role... roles) {
+
 		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		Objects.requireNonNull(password, "password must not be null");
 		Objects.requireNonNull(roles, "roles must not be null");
+
 		UserAccount userAccount = new UserAccount(userAccountIdentifier, password, roles);
 		return userAccount;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.useraccount.UserAccountManager#get(org.salespointframework.core.useraccount.UserAccountIdentifier)
+	 */
 	@Override
 	public UserAccount get(UserAccountIdentifier userAccountIdentifier) {
+
 		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
-		return entityManager.find(UserAccount.class, userAccountIdentifier);
+		return repository.findOne(userAccountIdentifier);
 	}
 
-	// TODO DRY
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.useraccount.UserAccountManager#save(org.salespointframework.core.useraccount.UserAccount)
+	 */
 	@Override
-	public void save(final UserAccount userAccount) {
+	@Transactional
+	public UserAccount save(UserAccount userAccount) {
+
 		Objects.requireNonNull(userAccount, "userAccount must not be null");
-		UserAccount userAccount2 = this.get(userAccount.getIdentifier());
-		if (userAccount2 == null) {
-			if (!userAccount.getPassword().isEncrypted()) {
-				Password password = new Password(passwordEncoder.encode(userAccount.getPassword().toString()), true);
-				userAccount.setPassword(password);
-			}
-			entityManager.persist(userAccount);
-		} else {
-			if (!userAccount2.getPassword().isEncrypted()) {
-				Password password = new Password(passwordEncoder.encode(userAccount2.getPassword().toString()), true);
-				userAccount2.setPassword(password);
-			}
-			entityManager.merge(userAccount2);
-		}
+
+		Password password = userAccount.getPassword();
+		Password passwordToSet = password.isEncrypted() ? password : new Password(passwordEncoder.encode(password
+				.toString()), true);
+		userAccount.setPassword(passwordToSet);
+		return repository.save(userAccount);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.useraccount.UserAccountManager#enable(org.salespointframework.core.useraccount.UserAccountIdentifier)
+	 */
 	@Override
 	public void enable(UserAccountIdentifier userAccountIdentifier) {
 		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
@@ -66,71 +92,74 @@ class PersistentUserAccountManager implements UserAccountManager {
 		if (userAccount != null) {
 			userAccount.setEnabled(true);
 		}
-
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.useraccount.UserAccountManager#disable(org.salespointframework.core.useraccount.UserAccountIdentifier)
+	 */
 	@Override
 	public void disable(UserAccountIdentifier userAccountIdentifier) {
+		
 		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		UserAccount userAccount = this.get(userAccountIdentifier);
+		
 		if (userAccount != null) {
 			userAccount.setEnabled(false);
 		}
 
+		save(userAccount);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.useraccount.UserAccountManager#changePassword(org.salespointframework.core.useraccount.UserAccount, java.lang.String)
+	 */
 	@Override
+	@Transactional
 	public void changePassword(UserAccount userAccount, String password) {
+
 		Objects.requireNonNull(userAccount, "userAccount must not be null");
 		Objects.requireNonNull(password, "password must not be null");
-		userAccount = this.get(userAccount.getIdentifier());
+
 		userAccount.setPassword(new Password(password));
+		save(userAccount);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.useraccount.UserAccountManager#contains(org.salespointframework.core.useraccount.UserAccountIdentifier)
+	 */
 	@Override
 	public boolean contains(UserAccountIdentifier userAccountIdentifier) {
 		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
-		return entityManager.find(UserAccount.class, userAccountIdentifier) != null;
+		return repository.exists(userAccountIdentifier);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.useraccount.UserAccountManager#findAll()
+	 */
 	@Override
 	public Iterable<UserAccount> findAll() {
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		
-		CriteriaQuery<UserAccount> cq = cb.createQuery(UserAccount.class);
-		Root<UserAccount> from = cq.from(UserAccount.class);
-		cq.select(from);
-		
-		TypedQuery<UserAccount> tq = entityManager.createQuery(cq);
-		
-		return Iterables.of(tq.getResultList());
+		return repository.findAll();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.useraccount.UserAccountManager#findEnabled()
+	 */
 	@Override
 	public Iterable<UserAccount> findEnabled() {
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<UserAccount> cq = cb.createQuery(UserAccount.class);
-		Root<UserAccount> entry = cq.from(UserAccount.class);
-		cq.where(cb.isTrue(entry.get(UserAccount_.isEnabled)));
-		TypedQuery<UserAccount> tq = entityManager.createQuery(cq);
-		
-		return Iterables.of(tq.getResultList());
+		return repository.findByEnabledTrue();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.useraccount.UserAccountManager#findDisabled()
+	 */
 	@Override
 	public Iterable<UserAccount> findDisabled() {
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<UserAccount> cq = cb.createQuery(UserAccount.class);
-		Root<UserAccount> entry = cq.from(UserAccount.class);
-		cq.where(cb.isFalse(entry.get(UserAccount_.isEnabled)));
-		TypedQuery<UserAccount> tq = entityManager.createQuery(cq);
-		
-		return Iterables.of(tq.getResultList());
+		return repository.findByEnabledFalse();
 	}
-
-	@Override
-	public PasswordEncoder getPasswordEncoder() {
-		return passwordEncoder;
-	}
-
 }

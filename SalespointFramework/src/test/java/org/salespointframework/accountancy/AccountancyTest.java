@@ -38,7 +38,7 @@ public class AccountancyTest extends AbstractIntegrationTests {
 			if ((year % 2) == 0) {
 				System.out.println("ProductPaymentEntry");
 				UserAccount user = userAccountManager.create(new UserAccountIdentifier(),"");
-				userAccountManager.save(user);
+				user = userAccountManager.save(user);
 				a.add(new ProductPaymentEntry(new OrderIdentifier(), user, new Money(1), "Rechnung nr " + year,
 						Cash.CASH));
 			} else {

@@ -1,29 +1,31 @@
 package org.salespointframework.core.useraccount;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * Central service to manager {@link UserAccount} instances.
+ *
+ * @author Paul Henke
+ * @author Oliver Gierke
+ */
 public interface UserAccountManager {
 	
-	public UserAccount create(UserAccountIdentifier userAccountIdentifier, String password, Role... roles);
+	UserAccount create(UserAccountIdentifier userAccountIdentifier, String password, Role... roles);
 	
-	public UserAccount get(UserAccountIdentifier userAccountIdentifier);
+	UserAccount get(UserAccountIdentifier userAccountIdentifier);
 	
-	public void save(UserAccount userAccount);
+	UserAccount save(UserAccount userAccount);
 	
-	public void enable(UserAccountIdentifier userAccountIdentifier);
+	void enable(UserAccountIdentifier userAccountIdentifier);
 	
-	public void disable(UserAccountIdentifier userAccountIdentifier);
+	void disable(UserAccountIdentifier userAccountIdentifier);
 	
-	public void changePassword(UserAccount userAccount, String password);
+	void changePassword(UserAccount userAccount, String password);
 	
-	public boolean contains(UserAccountIdentifier userAccountIdentifier);
+	boolean contains(UserAccountIdentifier userAccountIdentifier);
 	
-	public Iterable<UserAccount> findAll();
+	Iterable<UserAccount> findAll();
 	
-	public Iterable<UserAccount> findEnabled();
+	Iterable<UserAccount> findEnabled();
 	
-	public Iterable<UserAccount> findDisabled();
-	
-	public PasswordEncoder getPasswordEncoder();
-
+	Iterable<UserAccount> findDisabled();
 }

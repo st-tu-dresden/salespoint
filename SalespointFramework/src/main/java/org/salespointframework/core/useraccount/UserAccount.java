@@ -13,25 +13,19 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 
-
-
-
-
-
-
-
+import org.salespointframework.core.AbstactEntity;
 import org.salespointframework.util.Iterables;
 
 
 /**
  * Domain class for a user.
  *
- * @author  Oliver Gierke
+ * @author Oliver Gierke
  * @author Paul Henke
  */
 @Entity
 //@NamedQuery(name = "UserAccount.findByUsername", query = "from UserAccount u where u.username = ?")
-public class UserAccount {
+public class UserAccount extends AbstactEntity<UserAccountIdentifier> {
 
 	@EmbeddedId
 	@AttributeOverride(name = "id", column = @Column(name = "USERACCOUNT_ID"))
@@ -47,7 +41,7 @@ public class UserAccount {
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Set<Role> roles = new TreeSet<Role>();
 	
-    private boolean isEnabled;
+    private boolean enabled;
 
     @Deprecated
     protected UserAccount() {
@@ -55,7 +49,7 @@ public class UserAccount {
     }
     
     UserAccount(UserAccountIdentifier userAccountIdentifier, String password, Role... roles) {
-    	this.isEnabled = true;
+    	this.enabled = true;
     	
 		this.userAccountIdentifier = Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		
@@ -67,7 +61,7 @@ public class UserAccount {
     }
     
     UserAccount(UserAccountIdentifier userAccountIdentifier, String password, String firstname, String lastname, String email, Collection<Role> roles) {
-    	this.isEnabled = true;
+    	this.enabled = true;
     	
 		this.userAccountIdentifier = Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		
@@ -161,12 +155,12 @@ public class UserAccount {
 
     public boolean isEnabled() {
 
-        return isEnabled;
+        return enabled;
     }
 
     void setEnabled(boolean isEnabled) {
 
-        this.isEnabled = isEnabled;
+        this.enabled = isEnabled;
     }
     
 	public String getFirstname() {

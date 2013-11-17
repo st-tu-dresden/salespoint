@@ -16,8 +16,12 @@
 package org.salespointframework;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * Application configuration for Salespoint.
@@ -29,4 +33,17 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan
 public class Salespoint {
 
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
+		
+		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+		authenticationProvider.setUserDetailsService(userDetailsService);
+		authenticationProvider.setPasswordEncoder(passwordEncoder());
+		return authenticationProvider;
+	}
 }
