@@ -16,9 +16,17 @@
 package org.salespointframework.core.useraccount;
 
 /**
- *
+ * Application component for authentication related use cases.
+ * 
  * @author Oliver Gierke
  */
 public interface AuthenticationManager {
 
+	/**
+	 * Returns the {@link UserAccount} of the currently logged in user or {@literal null} if no-one is currently logged
+	 * in.
+	 * 
+	 * @return
+	 */
+	UserAccount getCurrentUser();
 }

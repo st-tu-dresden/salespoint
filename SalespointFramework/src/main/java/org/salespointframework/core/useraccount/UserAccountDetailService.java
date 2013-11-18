@@ -54,7 +54,7 @@ public class UserAccountDetailService implements UserDetailsService {
 	}
 
 	@SuppressWarnings("serial")
-	private static class UserAccountDetails implements UserDetails {
+	static class UserAccountDetails implements UserDetails {
 
 		private final String username;
 		private final String password;

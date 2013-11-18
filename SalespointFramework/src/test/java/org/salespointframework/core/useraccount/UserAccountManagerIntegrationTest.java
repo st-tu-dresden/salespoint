@@ -49,10 +49,14 @@ public class UserAccountManagerIntegrationTest extends AbstractIntegrationTests 
 	@Test
 	public void testDisable() {
 		
-		userAccountManager.save(userAccount);
-		userAccountManager.disable(userAccount.getIdentifier());
+		UserAccountIdentifier id = userAccount.getIdentifier();
 		
-		assertThat(userAccountManager.get(userAccount.getIdentifier()).isEnabled(), is(false));
+		userAccount = userAccountManager.save(userAccount);
+		userAccountManager.disable(id);
+		
+		UserAccount result = userAccountManager.get(id);
+		assertThat(result, is(notNullValue()));
+		assertThat(result.isEnabled(), is(false));
 	}
 	
 	@Test

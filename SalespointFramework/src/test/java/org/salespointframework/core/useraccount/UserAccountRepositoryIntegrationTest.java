@@ -75,7 +75,7 @@ public class UserAccountRepositoryIntegrationTest extends AbstractIntegrationTes
 		assertThat(result, hasItem(secondUser));
 	}
 	
-	private static UserAccount createAccount() {
+	static UserAccount createAccount() {
 		UserAccountIdentifier identifier = new UserAccountIdentifier(UUID.randomUUID().toString());
 		return new UserAccount(identifier, "password", new Role("USER"));
 	}

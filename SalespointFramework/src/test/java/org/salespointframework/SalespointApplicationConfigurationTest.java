@@ -15,46 +15,51 @@
  */
 package org.salespointframework;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+
+import java.util.List;
 
 import org.junit.Test;
 import org.salespointframework.core.catalog.Catalog;
-import org.salespointframework.core.catalog.Product;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.time.TimeService;
+import org.salespointframework.core.useraccount.AuthenticationManager;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 /**
  * Integration test to bootstrap the application configuration.
- *
+ * 
  * @author Oliver Gierke
  */
 @Transactional
 public class SalespointApplicationConfigurationTest extends AbstractIntegrationTests {
-	
+
 	@Autowired Inventory inventory;
 	@Autowired OrderManager orderManager;
 	@Autowired Catalog catalog;
 	@Autowired TimeService timeService;
-	//@Autowired Calendar calendar;
-//	@Autowired ProductRepository<Product> repository;
-	
 	@Autowired UserAccountManager userAccountManager;
+	@Autowired AuthenticationManager authenticationManager;
+	@Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
+
+	// @Autowired ProductRepository<Product> repository;
 
 	@Test
 	public void createsApplicationComponents() {
-		
+
 		assertThat(inventory, is(notNullValue()));
 		assertThat(orderManager, is(notNullValue()));
 		assertThat(catalog, is(notNullValue()));
-		//assertThat(calendar, is(notNullValue()));
 		assertThat(userAccountManager, is(notNullValue()));
 		assertThat(timeService, is(notNullValue()));
+		assertThat(authenticationManager, is(notNullValue()));
+		assertThat(argumentResolvers, hasSize(1));
 		
-		//assertThat(repository, is(notNullValue()));
+		// assertThat(repository, is(notNullValue()));
 	}
 }
