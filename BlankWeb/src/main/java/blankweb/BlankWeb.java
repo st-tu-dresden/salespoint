@@ -6,7 +6,6 @@ import org.salespointframework.Salespoint;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.salespointframework.spring.converter.JpaEntityConverter;
 import org.salespointframework.spring.converter.StringToRoleConverter;
-import org.salespointframework.spring.support.LoggedInUserAccountArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -51,12 +50,13 @@ public class BlankWeb {
 	@Configuration
 	static class WebConfiguration extends WebMvcConfigurerAdapter {
 
-		@Autowired private JpaEntityConverter entityConverter;
-		@Autowired private UserAccountManager userAccountManager;
+		@Autowired JpaEntityConverter entityConverter;
+		@Autowired UserAccountManager userAccountManager;
+		@Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
 
 		@Override
 		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-			argumentResolvers.add(new LoggedInUserAccountArgumentResolver(userAccountManager));
+			argumentResolvers.addAll(this.argumentResolvers);
 		}
 
 		@Override
