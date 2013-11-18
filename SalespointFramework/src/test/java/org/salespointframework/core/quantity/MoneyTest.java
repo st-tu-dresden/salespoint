@@ -1,4 +1,4 @@
-package org.salespointframework.quantity;
+package org.salespointframework.core.quantity;
 
 import static org.junit.Assert.*;
 

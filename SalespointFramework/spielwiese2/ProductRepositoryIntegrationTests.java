@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.catalog;
+package org.salespointframework.core.catalog;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;

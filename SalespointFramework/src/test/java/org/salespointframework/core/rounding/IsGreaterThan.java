@@ -1,4 +1,4 @@
-package org.salespointframework.rounding;
+package org.salespointframework.core.rounding;
 
 import java.math.BigDecimal;
 
@@ -9,25 +9,26 @@ import org.hamcrest.TypeSafeMatcher;
 
 
 @SuppressWarnings("javadoc")
-public class IsEqual extends TypeSafeMatcher<BigDecimal> {
+public class IsGreaterThan extends TypeSafeMatcher<BigDecimal> {
 	private BigDecimal right;
 	
-	public  IsEqual(BigDecimal right) {
+	public  IsGreaterThan(BigDecimal right) {
 		this.right = right;
 	}
 	@Override
 	public void describeTo(Description description) {
-		description.appendText("equal to " + right);
+		description.appendText("not greater than");
 	}
 
 	@Override
 	public boolean matchesSafely(BigDecimal number) {
-		return number.compareTo(right) == 0;
+		return number.compareTo(right) > 0;
 	}
 	
 	@Factory
-	public static <T> Matcher<BigDecimal> equal(BigDecimal right) {
-		return new IsEqual(right);
+	public static <T> Matcher<BigDecimal> greaterThan(BigDecimal right) {
+		return new IsGreaterThan(right);
 	}
+
 
 }

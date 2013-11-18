@@ -1,4 +1,4 @@
-package org.salespointframework.rounding;
+package org.salespointframework.core.rounding;
 
 import static org.junit.Assert.*;
 
@@ -15,12 +15,12 @@ import org.junit.Test;
 import org.salespointframework.core.quantity.rounding.BasicRoundingStrategy;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.AllOf.allOf;
-import static org.salespointframework.rounding.IsZero.zero;
-import static org.salespointframework.rounding.IsEqual.equal;
-import static org.salespointframework.rounding.IsGreaterThan.greaterThan;
-import static org.salespointframework.rounding.IsSmallerThan.smallerThan;
-import static org.salespointframework.rounding.IsGreaterThanOrEqual.greaterThanOrEqual;
-import static org.salespointframework.rounding.IsSmallerThanOrEqual.smallerThanOrEqual;
+import static org.salespointframework.core.rounding.IsEqual.*;
+import static org.salespointframework.core.rounding.IsGreaterThan.*;
+import static org.salespointframework.core.rounding.IsGreaterThanOrEqual.*;
+import static org.salespointframework.core.rounding.IsSmallerThan.*;
+import static org.salespointframework.core.rounding.IsSmallerThanOrEqual.*;
+import static org.salespointframework.core.rounding.IsZero.*;
 
 /**
  * step rounding tests tested is each rounding direction with a value smaller

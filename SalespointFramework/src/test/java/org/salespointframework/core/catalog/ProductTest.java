@@ -1,4 +1,4 @@
-package org.salespointframework.catalog;
+package org.salespointframework.core.catalog;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

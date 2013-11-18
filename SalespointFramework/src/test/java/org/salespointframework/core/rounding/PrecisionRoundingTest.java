@@ -1,4 +1,4 @@
-package org.salespointframework.rounding;
+package org.salespointframework.core.rounding;
 
 import static org.junit.Assert.assertEquals;
 

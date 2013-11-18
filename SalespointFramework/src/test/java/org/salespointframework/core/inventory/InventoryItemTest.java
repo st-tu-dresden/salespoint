@@ -1,10 +1,10 @@
-package org.salespointframework.inventory;
+package org.salespointframework.core.inventory;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.salespointframework.catalog.Keks;
+import org.salespointframework.core.catalog.Keks;
 import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Units;

@@ -1,4 +1,4 @@
-package org.salespointframework.accountancy;
+package org.salespointframework.core.accountancy;
 
 import static org.junit.Assert.*;
 

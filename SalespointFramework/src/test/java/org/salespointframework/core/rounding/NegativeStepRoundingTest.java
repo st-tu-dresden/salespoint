@@ -1,4 +1,4 @@
-package org.salespointframework.rounding;
+package org.salespointframework.core.rounding;
 
 import static org.junit.Assert.*;
 
@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.salespointframework.core.quantity.rounding.BasicRoundingStrategy;
 
 import static org.hamcrest.core.Is.is;
-import static org.salespointframework.rounding.IsEqual.equal;
+import static org.salespointframework.core.rounding.IsEqual.*;
 
 @SuppressWarnings("javadoc")
 public class NegativeStepRoundingTest {

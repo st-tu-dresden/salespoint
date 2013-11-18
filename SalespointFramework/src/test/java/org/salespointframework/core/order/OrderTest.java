@@ -1,58 +1,52 @@
-package org.salespointframework.order;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+package org.salespointframework.core.order;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import static junit.framework.Assert.assertEquals;
+
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.order.Order;
-import org.salespointframework.core.order.OrderManager;
+import org.salespointframework.core.order.OrderStatus;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings("javadoc")
-public class OrderManagerTest extends AbstractIntegrationTests {
+public class OrderTest extends AbstractIntegrationTests {
 
 	
 	@Autowired
 	private UserAccountManager userAccountManager;
 	
-	@Autowired
-	private OrderManager orderManager;
 	private UserAccount user;
 	private Order order;
+
 
 	@Before
 	public void before() {
 		user = userAccountManager.create(new UserAccountIdentifier(), "");
-		userAccountManager.save(user);
 		order = new Order(user, Cash.CASH);
 	}
 
-	@Test(expected = NullPointerException.class)
-	public void nullAddtest() {
-		orderManager.add(null);
+	@Test
+	public void orderStatusOpentest() {
+		assertEquals(OrderStatus.OPEN, order.getOrderStatus());
 	}
 
 	@Test
-	public void addTest() {
-		orderManager.add(order);
+	public void cancelOrderTest() {
+		order.cancelOrder();
+		assertEquals(OrderStatus.CANCELLED, order.getOrderStatus());
 	}
 
-	@Test
-	public void testContains() {
-		orderManager.add(order);
-		assertTrue(orderManager.contains(order.getIdentifier()));
-	}
+	// FIXME
+	/*
+	 * @Test public void payOrderTest() { order.payOrder(); }
+	 * 
+	 * @Test public void completeOrderTest() { order.completeOrder(); }
+	 */
 
-	@Test
-	public void testGet() {
-		orderManager.add(order);
-		assertEquals(order,
-				orderManager.get(Order.class, order.getIdentifier()));
-	}
 }

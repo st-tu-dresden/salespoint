@@ -1,4 +1,4 @@
-	package org.salespointframework.accountancy;
+	package org.salespointframework.core.accountancy;
 
 import java.util.Map;
 import java.util.Map.Entry;

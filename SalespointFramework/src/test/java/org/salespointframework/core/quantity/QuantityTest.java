@@ -1,4 +1,4 @@
-package org.salespointframework.quantity;
+package org.salespointframework.core.quantity;
 
 import org.junit.Test;
 import org.salespointframework.core.money.Money;

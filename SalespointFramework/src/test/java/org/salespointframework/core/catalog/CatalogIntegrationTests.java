@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.catalog;
+package org.salespointframework.core.catalog;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -25,6 +25,7 @@ import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.catalog.Product;
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Oliver Gierke
  */
 @Transactional
-public class CatalogIntegrationTest extends AbstractIntegrationTests {
+public class CatalogIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired Catalog catalog;
 	private Keks keks;
