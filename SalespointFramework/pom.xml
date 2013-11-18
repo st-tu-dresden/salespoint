@@ -4,14 +4,14 @@
 
 	<groupId>de.tudresden.inf.st</groupId>
 	<artifactId>salespoint-framework</artifactId>
-	<version>5.3.0</version>
+	<version>5.3.1-SNAPSHOT</version>
 
 	<name>Salespoint</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>0.5.0.M5</version>
+		<version>0.5.0.M6</version>
 	</parent>
 
 	<properties>
