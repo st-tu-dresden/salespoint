@@ -13,7 +13,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 
-import org.salespointframework.core.AbstactEntity;
+import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.util.Iterables;
 
 
@@ -25,7 +25,7 @@ import org.salespointframework.util.Iterables;
  */
 @Entity
 //@NamedQuery(name = "UserAccount.findByUsername", query = "from UserAccount u where u.username = ?")
-public class UserAccount extends AbstactEntity<UserAccountIdentifier> {
+public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 
 	@EmbeddedId
 	@AttributeOverride(name = "id", column = @Column(name = "USERACCOUNT_ID"))

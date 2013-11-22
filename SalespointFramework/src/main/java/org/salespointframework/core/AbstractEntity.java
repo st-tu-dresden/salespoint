@@ -22,7 +22,7 @@ import org.springframework.util.ObjectUtils;
  *
  * @author Oliver Gierke
  */
-public abstract class AbstactEntity<ID extends SalespointIdentifier> {
+public abstract class AbstractEntity<ID extends SalespointIdentifier> {
 
 	/**
 	 * Returns the {@link SalespointIdentifier}.
@@ -46,7 +46,7 @@ public abstract class AbstactEntity<ID extends SalespointIdentifier> {
 			return false;
 		}
 		
-		AbstactEntity<?> that = (AbstactEntity<?>) obj;
+		AbstractEntity<?> that = (AbstractEntity<?>) obj;
 		
 		return ObjectUtils.nullSafeEquals(this.getIdentifier(), that.getIdentifier());
 	}
