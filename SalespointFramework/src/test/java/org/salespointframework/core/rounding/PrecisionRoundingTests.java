@@ -26,7 +26,7 @@ import org.salespointframework.core.quantity.rounding.BasicRoundingStrategy;
  * 
  */
 @SuppressWarnings("javadoc")
-public class PrecisionRoundingTest {
+public class PrecisionRoundingTests {
 	BigDecimal d;
 
 	@Test

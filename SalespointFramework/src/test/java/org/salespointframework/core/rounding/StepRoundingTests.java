@@ -38,7 +38,7 @@ import static org.salespointframework.core.rounding.IsZero.*;
  * 
  */
 @SuppressWarnings("javadoc")
-public class StepRoundingTest {
+public class StepRoundingTests {
 	static List<RoundingMode> modes = Arrays.asList(RoundingMode.UP,
 			RoundingMode.DOWN, RoundingMode.FLOOR, RoundingMode.CEILING);
 	static List<BigDecimal> steps = Arrays.asList(BigDecimal.valueOf(50),

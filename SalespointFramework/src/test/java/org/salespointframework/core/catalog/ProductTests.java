@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.salespointframework.core.money.Money;
 
 @SuppressWarnings("javadoc")
-public class ProductTest {
+public class ProductTests {
 
 	private Keks keks;
 

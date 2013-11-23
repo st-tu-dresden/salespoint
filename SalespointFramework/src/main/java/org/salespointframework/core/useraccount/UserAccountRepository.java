@@ -22,7 +22,7 @@ import org.springframework.data.repository.CrudRepository;
  * 
  * @author Oliver Gierke
  */
-public interface UserAccountRepository extends CrudRepository<UserAccount, UserAccountIdentifier> {
+interface UserAccountRepository extends CrudRepository<UserAccount, UserAccountIdentifier> {
 
 	/**
 	 * Returns all enabled {@link UserAccount}s.

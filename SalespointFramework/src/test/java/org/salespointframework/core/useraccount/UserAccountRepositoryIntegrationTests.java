@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Oliver Gierke
  */
 @Transactional
-public class UserAccountRepositoryIntegrationTest extends AbstractIntegrationTests {
+public class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountRepository repository;
 	UserAccount firstUser, secondUser;

@@ -28,7 +28,6 @@ import org.salespointframework.core.time.TimeService;
 import org.salespointframework.core.useraccount.AuthenticationManager;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 /**
@@ -36,8 +35,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
  * 
  * @author Oliver Gierke
  */
-@Transactional
-public class SalespointApplicationConfigurationTest extends AbstractIntegrationTests {
+public class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
 
 	@Autowired Inventory inventory;
 	@Autowired OrderManager orderManager;
@@ -46,8 +44,6 @@ public class SalespointApplicationConfigurationTest extends AbstractIntegrationT
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired AuthenticationManager authenticationManager;
 	@Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
-
-	// @Autowired ProductRepository<Product> repository;
 
 	@Test
 	public void createsApplicationComponents() {
@@ -59,7 +55,5 @@ public class SalespointApplicationConfigurationTest extends AbstractIntegrationT
 		assertThat(timeService, is(notNullValue()));
 		assertThat(authenticationManager, is(notNullValue()));
 		assertThat(argumentResolvers, hasSize(1));
-		
-		// assertThat(repository, is(notNullValue()));
 	}
 }

@@ -15,64 +15,43 @@
  */
 package org.salespointframework.spring.converter;
 
+import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.metamodel.EntityType;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.salespointframework.core.SalespointIdentifier;
+import org.springframework.beans.BeanUtils;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 /**
- * {@link Converter} that can convert {@link String}s into JPA managed domain types. We expect the identifier types to
- * have a constructor that takes a {@link String} as arguments.
- * 
+ *
  * @author Oliver Gierke
  */
 @Component
-class JpaEntityConverter implements ConditionalGenericConverter {
+class SalespointIdentifierConverter implements ConditionalGenericConverter {
+	
+	private static final TypeDescriptor STRING_DESCRIPTOR = TypeDescriptor.valueOf(String.class);
+	private static final TypeDescriptor IDENTIFIER_DESCRIPTOR = TypeDescriptor.valueOf(SalespointIdentifier.class);
 
-	private final SalespointIdentifierConverter identifierConverter;
-	@PersistenceContext private EntityManager em;
-
-	/**
-	 * Creates a new {@link JpaEntityConverter} using the given {@link SalespointIdentifierConverter}.
-	 * 
-	 * @param identifierConverter must not be {@literal null}.
-	 */
-	@Autowired
-	public JpaEntityConverter(SalespointIdentifierConverter identifierConverter) {
-		
-		Assert.notNull(identifierConverter, "Identifier converter must not be null!");
-		this.identifierConverter = identifierConverter;
-	}
-
-	/*
+	/* 
 	 * (non-Javadoc)
 	 * @see org.springframework.core.convert.converter.GenericConverter#getConvertibleTypes()
 	 */
 	@Override
 	public Set<ConvertiblePair> getConvertibleTypes() {
-		return Collections.singleton(new ConvertiblePair(String.class, Object.class));
+		return Collections.singleton(new ConvertiblePair(String.class, SalespointIdentifier.class));
 	}
-
-	/* (non-Javadoc)
+	
+	/* 
+	 * (non-Javadoc)
 	 * @see org.springframework.core.convert.converter.ConditionalConverter#matches(org.springframework.core.convert.TypeDescriptor, org.springframework.core.convert.TypeDescriptor)
 	 */
 	@Override
 	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
-
-		try {
-			return em.getMetamodel().entity(targetType.getType()) != null;
-		} catch (IllegalArgumentException e) {
-			return false;
-		}
+		return sourceType.isAssignableTo(STRING_DESCRIPTOR) && targetType.isAssignableTo(IDENTIFIER_DESCRIPTOR);
 	}
 
 	/* 
@@ -81,11 +60,16 @@ class JpaEntityConverter implements ConditionalGenericConverter {
 	 */
 	@Override
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
-
-		EntityType<?> entityType = em.getMetamodel().entity(targetType.getType());
-		Class<?> idType = entityType.getIdType().getJavaType();
-		Object id = identifierConverter.convert(source, sourceType, TypeDescriptor.valueOf(idType));
+	
+		Class<?> targetClass = targetType.getType();
 		
-		return em.find(targetType.getType(), id);
+		try {
+			
+			Constructor<?> constructor = targetClass.getConstructor(String.class);
+			return BeanUtils.instantiateClass(constructor, source);
+
+		} catch (NoSuchMethodException | SecurityException e) {
+			throw new ConversionFailedException(TypeDescriptor.forObject(source), TypeDescriptor.valueOf(targetClass), source, e);
+		}
 	}
 }

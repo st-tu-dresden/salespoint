@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 // FIXME
 @SuppressWarnings("javadoc")
 @Transactional
-public class AccountancyPeriodTest { // extends AbstractIntegrationTests {
+public class AccountancyPeriodTests { // extends AbstractIntegrationTests {
 	//@Autowired 
 	Accountancy a;
 

@@ -10,7 +10,7 @@ import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Units;
 
 @SuppressWarnings({ "javadoc"})
-public class InventoryItemTest {
+public class InventoryItemTests {
 
 	private static int counter = 0;
 

@@ -22,7 +22,7 @@ import org.springframework.util.Assert;
  * @see http://docs.spring.io/spring-security/site/docs/3.2.x/reference/html/technical-overview.html
  */
 @Service
-public class UserAccountDetailService implements UserDetailsService {
+class UserAccountDetailService implements UserDetailsService {
 
 	private final UserAccountRepository repository;
 

@@ -7,80 +7,69 @@ import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.accountancy.payment.Cash;
-import org.salespointframework.core.catalog.Catalog;
-import org.salespointframework.core.catalog.Keks;
-import org.salespointframework.core.catalog.Product;
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.order.ChargeLine;
 import org.salespointframework.core.order.Order;
-import org.salespointframework.core.order.OrderLine;
-import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@SuppressWarnings({ "javadoc" })
-public class OrderLineTest extends AbstractIntegrationTests {
+@SuppressWarnings("javadoc")
+public class ChargeLineTests  extends AbstractIntegrationTests {
 
-	
 	@Autowired
 	private UserAccountManager userAccountManager;
 	
-	@Autowired
-	private Catalog catalog;
-
-	private static int keksCounter = 0;
 	private UserAccount user;
 	private Order order;
-	private OrderLine orderLine;
+	private ChargeLine chargeLine;
 
 	@Before
 	public void before() {
-		Product keks = new Keks("OrderLine Keks " + keksCounter++, Money.ZERO);
-
-		catalog.add(keks);
-
 		user = userAccountManager.create(new UserAccountIdentifier(), "");
 		order = new Order(user, Cash.CASH);
-		orderLine = new OrderLine(keks, Units.TEN);
+		chargeLine = new ChargeLine(Money.ZERO, "gaaar nix");
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void nullTest() {
-		order.addOrderLine(null);
+		order.addChargeLine(null);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void nullTest2() {
-		order.removeOrderLine(null);
+		order.removeChargeLine(null);
 	}
 
 	@Test
 	public void addTest() {
-		assertTrue(order.addOrderLine(orderLine));
+		assertTrue(order.addChargeLine(chargeLine));
 	}
 
 	@Test
 	public void addTest2() {
-		order.addOrderLine(orderLine);
-		assertFalse(order.addOrderLine(orderLine));
+		order.addChargeLine(chargeLine);
+		assertFalse(order.addChargeLine(chargeLine));
 	}
 
 	@Test
 	public void removeTest() {
-		order.addOrderLine(orderLine);
-		assertTrue(order.removeOrderLine(orderLine.getIdentifier()));
+		order.addChargeLine(chargeLine);
+		assertTrue(order.removeChargeLine(chargeLine.getIdentifier()));
 	}
 
 	@Test
 	public void removeTest2() {
-		assertFalse(order.removeOrderLine(orderLine.getIdentifier()));
+		assertFalse(order.removeChargeLine(chargeLine.getIdentifier()));
 	}
 
-	/*
-	 * @Test(expected=IllegalArgumentException.class)
-	 * 
-	 * @Ignore public void numberOrderedNegativeTest() { new
-	 * PersistentOrderLine(new ProductIdentifier(), -1337); }
-	 */
+	@Test
+	public void foo() {
+		order.addChargeLine(chargeLine);
+		Iterable<ChargeLine> iter = order.getChargeLines();
+		for (ChargeLine c : iter) {
+			System.out.println(c.getIdentifier());
+		}
+	}
 }

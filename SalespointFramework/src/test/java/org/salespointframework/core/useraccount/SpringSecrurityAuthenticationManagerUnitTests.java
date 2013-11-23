@@ -18,7 +18,7 @@ package org.salespointframework.core.useraccount;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import static org.salespointframework.core.useraccount.UserAccountRepositoryIntegrationTest.*;
+import static org.salespointframework.core.useraccount.UserAccountRepositoryIntegrationTests.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -37,7 +37,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * @author Oliver Gierke
  */
 @RunWith(MockitoJUnitRunner.class)
-public class SpringSecrurityAuthenticationManagerUnitTest {
+public class SpringSecrurityAuthenticationManagerUnitTests {
 
 	SpringSecurityAuthenticationManager authenticationManager;
 	@Mock UserAccountRepository repository;

@@ -16,7 +16,7 @@ import org.salespointframework.core.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings({ "javadoc", "unused" })
-public class InventoryTest extends AbstractIntegrationTests {
+public class InventoryTests extends AbstractIntegrationTests {
 
 	@Autowired
 	private Inventory inventory;

@@ -1,22 +1,18 @@
 package org.salespointframework.core.inventory;
 
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.*;
+import static junit.framework.Assert.*;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.catalog.Keks;
-import org.salespointframework.core.inventory.Inventory;
-import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@SuppressWarnings({ "javadoc", "unused" })
-public class InventoryCatalogInteractionTest extends AbstractIntegrationTests {
+@SuppressWarnings({ "javadoc" })
+public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 
 	@Autowired
 	private Inventory inventory;

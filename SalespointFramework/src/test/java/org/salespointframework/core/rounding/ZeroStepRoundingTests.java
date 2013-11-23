@@ -12,7 +12,7 @@ import static org.hamcrest.core.Is.is;
 import static org.salespointframework.core.rounding.IsEqual.*;
 
 @SuppressWarnings("javadoc")
-public class ZeroStepRoundingTest {
+public class ZeroStepRoundingTests {
 	BigDecimal d;
 
 	/* smaller values */

@@ -6,9 +6,6 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.core.accountancy.Accountancy;
-import org.salespointframework.core.accountancy.AccountancyEntry;
-import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderIdentifier;
@@ -16,11 +13,9 @@ import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("javadoc")
-@Transactional
-public class AccountancyTest extends AbstractIntegrationTests {
+public class AccountancyTests extends AbstractIntegrationTests {
 
 	@Autowired Accountancy a;
 	@Autowired UserAccountManager userAccountManager;

@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.salespointframework.util.Iterables;
 
 @SuppressWarnings("javadoc")
-public class IterablesTest {
+public class IterablesTests {
 	
 	// i fucking hate java generics and boxing
 	private static List<Integer> list =  Collections.unmodifiableList(Arrays.asList(1,2,3,4,5,6,7,8,9));

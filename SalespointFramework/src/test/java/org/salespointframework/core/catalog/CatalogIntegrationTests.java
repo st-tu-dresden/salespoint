@@ -22,19 +22,15 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.core.catalog.Catalog;
-import org.salespointframework.core.catalog.Product;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.core.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Integration tests for {@link Catalog}.
  *
  * @author Oliver Gierke
  */
-@Transactional
 public class CatalogIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired Catalog catalog;

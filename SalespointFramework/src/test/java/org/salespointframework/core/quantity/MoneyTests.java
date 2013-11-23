@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.salespointframework.core.money.Money;
 
 @SuppressWarnings("javadoc")
-public class MoneyTest
+public class MoneyTests
 {
 	@Test
 	public void multiplyByZero() {

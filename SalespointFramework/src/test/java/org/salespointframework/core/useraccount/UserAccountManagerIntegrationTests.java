@@ -18,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Oliver Gierke
  */
 @SuppressWarnings("javadoc")
-@Transactional
-public class UserAccountManagerIntegrationTest extends AbstractIntegrationTests {
+public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
 	
