@@ -8,17 +8,17 @@ import org.joda.time.Period;
 import org.salespointframework.core.money.Money;
 
 /**
- * The <code>Accountancy</code> interface is implemented by classes offering a
- * basic accounting service. Generally, an <code>Accountancy</code> aggregates
+ * The {@code Accountancy} interface is implemented by classes offering a
+ * basic accounting service. Generally, an {@code Accountancy} aggregates
  * objects of the type {@link AccountancyEntry} and subclasses thereof.
- * Additionally, an <code>Accountancy</code> offers methods for querying of
+ * Additionally, an {@code Accountancy} offers methods for querying of
  * entries and financial statistics.
  * 
  * @author Hannes Weisbach
  */
 public interface Accountancy {
 	/**
-	 * Adds a new {@link AccountancyEntry} to this <code>Accountancy</code>	 * .
+	 * Adds a new {@link AccountancyEntry} to this {@code Accountancy}.
 	 * 
 	 * @param accountancyEntry
 	 *            entry to be added to the accountancy
