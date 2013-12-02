@@ -2,6 +2,8 @@ package videoshop;
 
 import java.util.Arrays;
 
+import javax.sql.DataSource;
+
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.money.Money;
@@ -27,17 +29,27 @@ import videoshop.model.VideoCatalog;
 @Component
 public class DataInitializer {
 
-
 	@Autowired
-	public DataInitializer(Inventory inventory, VideoCatalog videoCatalog, UserAccountManager userAccountManager, CustomerRepository customerRepository) {
+	public DataInitializer(Inventory inventory, VideoCatalog videoCatalog, UserAccountManager userAccountManager,
+			CustomerRepository customerRepository, DataSource dataSource) {
 
-		initializeUsers(userAccountManager,customerRepository);
+		initializeUsers(userAccountManager, customerRepository);
+		initializeCatalog(videoCatalog, inventory);
+
+	}
+
+	private void initializeCatalog(VideoCatalog videoCatalog, Inventory inventory) {
+
+		if (videoCatalog.findAll().iterator().hasNext()) {
+			return;
+		}
 
 		videoCatalog.add(new Dvd("Last Action Hero", "lac", new Money(9.99), "Äktschn/Comedy"));
 		videoCatalog.add(new Dvd("Back to the Future", "bttf", new Money(9.99), "Sci-Fi"));
 		videoCatalog.add(new Dvd("Fido", "fido", new Money(9.99), "Comedy/Drama/Horror"));
 		videoCatalog.add(new Dvd("Super Fuzz", "sf", new Money(19.99), "Action/Sci-Fi/Comedy"));
-		videoCatalog.add(new Dvd("Armour of God II: Operation Condor", "aog2oc", new Money(14.99), "Action/Adventure/Comedy"));
+		videoCatalog.add(new Dvd("Armour of God II: Operation Condor", "aog2oc", new Money(14.99),
+				"Action/Adventure/Comedy"));
 		videoCatalog.add(new Dvd("Persepolis", "pers", new Money(14.99), "Animation/Biography/Drama"));
 		videoCatalog.add(new Dvd("Hot Shots! Part Deux", "hspd", Money.OVER9000, "Action/Comedy/War"));
 		videoCatalog.add(new Dvd("Avatar: The Last Airbender", "tla", new Money(19.99), "Animation/Action/Adventure"));
@@ -55,7 +67,7 @@ public class DataInitializer {
 		// (｡◕‿◕｡)
 		// Über alle eben hinzugefügten Discs iterieren und jeweils ein InventoryItem mit der Quantity 10 setzen
 		// Das heißt: Von jeder Disc sind 10 Stück im Inventar.
-		
+
 		for (Disc disc : videoCatalog.findAll()) {
 			InventoryItem inventoryItem = new InventoryItem(disc, Units.TEN);
 			inventory.add(inventoryItem);
@@ -63,18 +75,26 @@ public class DataInitializer {
 	}
 
 	private void initializeUsers(UserAccountManager userAccountManager, CustomerRepository customerRepository) {
-		
+
 		// (｡◕‿◕｡)
 		// UserAccounts bestehen aus einem Identifier und eine Password, diese werden auch für ein Login gebraucht
-		// Zusätzlich kann ein UserAccount noch Rollen bekommen, diese können in den Controllern und im View dazu genutzt werden
-		// um bestimmte Bereiche nicht zugänglich zu machen, das "ROLE_"-Prefix ist eine Konvention welche für Spring Security nötig ist.
-		
+		// Zusätzlich kann ein UserAccount noch Rollen bekommen, diese können in den Controllern und im View dazu genutzt
+		// werden
+		// um bestimmte Bereiche nicht zugänglich zu machen, das "ROLE_"-Prefix ist eine Konvention welche für Spring
+		// Security nötig ist.
+
 		UserAccountIdentifier bossUI = new UserAccountIdentifier("boss");
+
+		// Skip creation if database was already populated
+		if (userAccountManager.get(bossUI) != null) {
+			return;
+		}
+
 		UserAccount bossAccount = userAccountManager.create(bossUI, "123", new Role("ROLE_BOSS"));
 		userAccountManager.save(bossAccount);
-		
+
 		final Role customerRole = new Role("ROLE_CUSTOMER");
-		
+
 		UserAccount ua1 = userAccountManager.create(new UserAccountIdentifier("hans"), "123", customerRole);
 		userAccountManager.save(ua1);
 		UserAccount ua2 = userAccountManager.create(new UserAccountIdentifier("dextermorgan"), "123", customerRole);
@@ -83,16 +103,14 @@ public class DataInitializer {
 		userAccountManager.save(ua3);
 		UserAccount ua4 = userAccountManager.create(new UserAccountIdentifier("mclovinfogell"), "123", customerRole);
 		userAccountManager.save(ua4);
-		
+
 		Customer c1 = new Customer(ua1, "wurst");
 		Customer c2 = new Customer(ua2, "Miami-Dade County");
 		Customer c3 = new Customer(ua3, "Camden County - Motel");
-		Customer c4 = new Customer(ua4 , "Los Angeles");
-		
+		Customer c4 = new Customer(ua4, "Los Angeles");
+
 		// (｡◕‿◕｡)
 		// Zu faul um save 4x am Stück aufzurufen :)
-		customerRepository.save(Arrays.asList(c1,c2,c3,c4));
-		
-
+		customerRepository.save(Arrays.asList(c1, c2, c3, c4));
 	}
 }
