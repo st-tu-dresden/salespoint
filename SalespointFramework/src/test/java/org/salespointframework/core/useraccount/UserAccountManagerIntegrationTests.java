@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 /**
@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
+	@Autowired PasswordEncoder passwordEncoder;
 	
 	UserAccountIdentifier userAccountIdentifier;
 	UserAccount userAccount;
@@ -92,5 +93,18 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 		
 		UserAccount result = userAccountManager.save(account);
 		assertThat(result.getPassword(), is(encryptedPassword));
+	}
+	
+	@Test
+	public void changesPasswordCorrectly() {
+		
+		UserAccountIdentifier UI = new UserAccountIdentifier("Bob");
+    UserAccount acc = userAccountManager.create(UI, "123", new Role("ROLE_CHEF"));
+    userAccountManager.save(acc);
+    
+    userAccountManager.changePassword(acc, "asd");
+    
+    assertThat(acc.getPassword().isEncrypted(), is(true));
+    assertThat(passwordEncoder.matches("asd", acc.getPassword().toString()), is(true));
 	}
 }

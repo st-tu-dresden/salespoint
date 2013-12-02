@@ -29,4 +29,13 @@ public interface AuthenticationManager {
 	 * @return
 	 */
 	UserAccount getCurrentUser();
+	
+	/**
+	 * Returns whether the given candidate {@link Password} matches the given existing one.
+	 * 
+	 * @param candidate can be {@literal null}.
+	 * @param existing must not be {@literal null}.
+	 * @return
+	 */
+	boolean matches(Password candidate, Password existing);
 }

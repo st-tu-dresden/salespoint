@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.salespointframework.core.catalog.ProductIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -35,11 +36,12 @@ import org.springframework.web.filter.CharacterEncodingFilter;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = { Salespoint.class, SalespointWebConfiguration.class })
+@ContextConfiguration(classes = SalespointWebConfiguration.class)
 public class SalespointWebApplicationConfigurationTests {
 
 	@Autowired ConversionService conversionService;
 	@Autowired CharacterEncodingFilter encodingFilter;
+	@Autowired PasswordEncoder passwordEncoder;
 
 	@Test
 	public void conversionServicePrepared() {
@@ -49,5 +51,10 @@ public class SalespointWebApplicationConfigurationTests {
 	@Test
 	public void encodingFilterRegistered() {
 		assertThat(encodingFilter, is(notNullValue()));
+	}
+	
+	@Test
+	public void passwordEncoderRegistered() {
+		assertThat(passwordEncoder, is(notNullValue()));
 	}
 }

@@ -55,10 +55,8 @@ public class Password {
         return encrypted;
     }
 
-
     @Override
-    public String toString() {
-
+    public String toString() {    	
         return password;
     }
 

@@ -18,6 +18,7 @@ package org.salespointframework.core.useraccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -31,6 +32,7 @@ import org.springframework.util.Assert;
 class SpringSecurityAuthenticationManager implements AuthenticationManager {
 
 	private final UserAccountRepository repository;
+	private final PasswordEncoder passwordEncoder;
 
 	/**
 	 * Creates a new {@link SpringSecurityAuthenticationManager} using the given {@link UserAccountRepository}.
@@ -38,10 +40,11 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager {
 	 * @param repository must not be {@literal null}.
 	 */
 	@Autowired
-	public SpringSecurityAuthenticationManager(UserAccountRepository repository) {
+	public SpringSecurityAuthenticationManager(UserAccountRepository repository, PasswordEncoder passwordEncoder) {
 
 		Assert.notNull(repository, "UserAccountRepository must not be null!");
 		this.repository = repository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	/* 
@@ -59,5 +62,21 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager {
 
 		UserAccountIdentifier userAccountIdentifier = new UserAccountIdentifier(authentication.getName());
 		return repository.findOne(userAccountIdentifier);
+	}
+	
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.useraccount.AuthenticationManager#matches(org.salespointframework.core.useraccount.Password, org.salespointframework.core.useraccount.Password)
+	 */
+	@Override
+	public boolean matches(Password candidate, Password existing) {
+		
+		Assert.notNull(existing);
+		
+		if (candidate == null) {
+			return false;
+		}
+		
+		return passwordEncoder.matches(candidate.toString(), existing.toString());
 	}
 }

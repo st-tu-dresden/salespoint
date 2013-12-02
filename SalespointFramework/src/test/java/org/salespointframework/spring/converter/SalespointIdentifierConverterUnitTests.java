@@ -23,7 +23,7 @@ import org.salespointframework.core.catalog.ProductIdentifier;
 import org.springframework.core.convert.TypeDescriptor;
 
 /**
- * Unit tests for {@link SalespointIdentifierConverter}.
+ * Units tests for {@link SalespointIdentifierConverter}.
  *
  * @author Oliver Gierke
  */
