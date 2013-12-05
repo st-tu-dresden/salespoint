@@ -4,7 +4,7 @@
 
 	<groupId>de.tudresden.inf.st</groupId>
 	<artifactId>salespoint-framework</artifactId>
-	<version>5.3.1-SNAPSHOT</version>
+	<version>5.3.1</version>
 
 	<name>Salespoint</name>
 
@@ -15,6 +15,8 @@
 	</parent>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<hibernate-entitymanager.version>4.2.6.Final</hibernate-entitymanager.version>
 		<spring.version>4.0.0.RC1</spring.version>
 		<!-- <thymeleaf.version>2.0.19.</thymeleaf.version> -->
