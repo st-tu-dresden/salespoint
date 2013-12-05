@@ -3,7 +3,7 @@ package org.salespointframework.core.accountancy.payment;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 
 /**
- * The <code>Cash</code> <code>PaymentMethod</code> is used to designate all
+ * The <code>Cash</code> {@link PaymentMethod} is used to designate all
  * payments made in cash.
  * 
  * @author Hannes Weisbach

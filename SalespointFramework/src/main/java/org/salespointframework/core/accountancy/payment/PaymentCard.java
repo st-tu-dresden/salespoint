@@ -8,10 +8,10 @@ import java.util.Objects;
  * A <code>PaymentCard</code> is used to charge the cost of goods or services to
  * an account, belonging to the party identified on the card. A
  * <code>PaymentCard</code> which has a line of credit is a
- * <code>CreditCard</code>. A <code>DebitCard</code> is a
- * <code>PaymentCard</code> where the associated account is debited immediately.
- * An example for a <code>DebitCard</code> is an EC-card or MaestroCard. Other
- * forms of <code>PaymentCard</code>s such as prepaid cards or charge cards are
+ * {@link CreditCard}. A {@link DebitCard} is a
+ * {@link PaymentCard} where the associated account is debited immediately.
+ * An example for a {@link DebitCard} is an EC-card or MaestroCard. Other
+ * forms of {@link PaymentCard}s such as prepaid cards or charge cards are
  * not implemented at the moment.
  * 
  * @author Hannes Weisbach
@@ -105,7 +105,7 @@ public abstract class PaymentCard extends PaymentMethod {
 	/**
 	 * The date from which on the card is valid.
 	 * 
-	 * @return <code>DateTime</code> representing the date from which the card
+	 * @return {@link DateTime} representing the date from which the card
 	 *         is valid.
 	 */
 	public DateTime getValidFrom() {
@@ -115,7 +115,7 @@ public abstract class PaymentCard extends PaymentMethod {
 	/**
 	 * The date on which the card expires.
 	 * 
-	 * @return <code>DateTime</code> representing the date on which the card
+	 * @return {@link DateTime} representing the date on which the card
 	 *         expires.
 	 */
 	public DateTime getExpiryDate() {

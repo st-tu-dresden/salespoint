@@ -11,12 +11,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.money.Money;
+
 import java.util.Objects;
 
 /**
- * This class represents an accountancy entry. The
- * <code>PersistentAccountancyEntry</code> may be used directly, but it is
+ * This class represents an accountancy entry. It is
  * advisable to sub-class it, to define specific entry types for an accountancy,
  * for example a {@link ProductPaymentEntry}.
  * 
@@ -25,7 +26,7 @@ import java.util.Objects;
  */
 @Entity
 //@Customizer(PersistentAccountancyEntryDescriptorCustomizer.class)
-public class AccountancyEntry {
+public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier> {
 
 	// TODO: if the column is not renamed, it does not work. instead,
 	// ProductPaymentEntry's USER_ID column becomes PK. This fucks everything
@@ -41,9 +42,8 @@ public class AccountancyEntry {
 	@Lob
 	private Money value = Money.ZERO;
 
-	// FIXME
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date date = null; //Shop.INSTANCE.getTime().getDateTime().toDate();
+	private Date date = null;
 
 	private String description = "";
 
@@ -86,9 +86,13 @@ public class AccountancyEntry {
 	public final DateTime getDate() {
 		return new DateTime(date);
 	}
+	
+	void setDate(DateTime dateTime) {
+		this.date = dateTime.toDate();
+	}
 
 	/**
-	 * The Money object is always non-<code>null</code>.
+	 * The Money object is always non-{@literal null}.
 	 * @return the monetary value for this entry.
 	 */
 	public final Money getValue() {
@@ -108,33 +112,11 @@ public class AccountancyEntry {
 	 *         entry.
 	 * 
 	 */
+	@Override
 	public final AccountancyEntryIdentifier getIdentifier() {
 		return accountancyEntryIdentifier;
 	}
 	
-	@Override
-	public final boolean equals(Object other)
-	{
-		if (other == null)
-		{
-			return false;
-		}
-		if (other == this)
-		{
-			return true;
-		}
-		if (other instanceof AccountancyEntry)
-		{
-			return this.accountancyEntryIdentifier.equals(((AccountancyEntry)other).accountancyEntryIdentifier);
-		}
-		return false;
-	}
-
-	@Override
-	public final int hashCode()
-	{
-		return accountancyEntryIdentifier.hashCode();
-	}
 
 	@Override
 	public String toString() {

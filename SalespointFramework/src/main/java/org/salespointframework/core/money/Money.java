@@ -90,28 +90,28 @@ public final class Money extends Quantity {
 	 * .
 	 * 
 	 * @param amount
-	 *            the amount of money represented by <code>this</code>
+	 *            the amount of money represented by {@code this}
 	 */
 	public Money(BigDecimal amount) {
 		this(Objects.requireNonNull(amount, "amount"), Money.EURO);
 	}
 
 	/**
-	 * Constructs a new <code>Money</code> object from a <code>long</code> value
+	 * Constructs a new <code>Money</code> object from a {@code long} value
 	 * 
 	 * @param amount
-	 *            the amount of money represented by <code>this</code>
+	 *            the amount of money represented by {@code this}
 	 */
 	public Money(long amount) {
 		this(BigDecimal.valueOf(amount));
 	}
 
 	/**
-	 * Constructs a new <code>Money</code> object from a <code>double</code>
+	 * Constructs a new <code>Money</code> object from a {@code double}
 	 * value
 	 * 
 	 * @param amount
-	 *            the amount of money represented by <code>this</code>¸
+	 *            the amount of money represented by {@code this}¸
 	 */
 	public Money(double amount) {
 		this(BigDecimal.valueOf(amount));
@@ -119,9 +119,9 @@ public final class Money extends Quantity {
 
 	/**
 	 * String representation of the monetary value represented by
-	 * <code>this</code>. The numerical value is truncated after two digits
+	 * {@code this}. The numerical value is truncated after two digits
 	 * after the decimal separator and followed by a whitespace and the symbol
-	 * stored in <code>metric</code>.
+	 * stored in {@code metric}.
 	 */
 	@Override
 	public String toString() {

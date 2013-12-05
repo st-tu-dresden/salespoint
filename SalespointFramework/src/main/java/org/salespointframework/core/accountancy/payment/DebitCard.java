@@ -41,7 +41,7 @@ public final class DebitCard extends PaymentCard {
 	 * @param cardVerificationCode
 	 *            verification code printed on the card or a PIN
 	 * @param dailyWithdrawalLimit
-	 *            <code>Money</code> representing the line of credit extended by
+	 *            {@link Money} representing the line of credit extended by
 	 *            the issuing association to the card owner
 	 */
 	public DebitCard(String cardName, String cardAssociationName,
@@ -77,7 +77,7 @@ public final class DebitCard extends PaymentCard {
 	 * @param cardVerificationCode
 	 *            verification code printed on the card or a PIN
 	 * @param dailyWithdrawalLimit
-	 *            <code>Money</code> representing the line of credit extended by
+	 *            {@link Money} representing the line of credit extended by
 	 *            the issuing association to the card owner
 	 */
 	public DebitCard(String cardAssociationName, String cardNumber,
@@ -98,7 +98,7 @@ public final class DebitCard extends PaymentCard {
 	/**
 	 * Amount of money, the card holder can dispose of within a day.
 	 * 
-	 * @return <code>Money</code> object representing the daily withdrawal
+	 * @return {@link Money} object representing the daily withdrawal
 	 *         limit.
 	 */
 	public Money getDailyWithdrawalLimit() {

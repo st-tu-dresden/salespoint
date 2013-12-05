@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 
 /**
  * This is interface is implemented by classes, which are used to round numbers.
- * Specifically, <code>Quantity</code> uses classes implementing
+ * Specifically, {@link Quantity} uses classes implementing
  * <code>RoundingStrategy</code> to facilitate arithmetic operations.
  * 
  * @author Hannes Weisbach
@@ -25,13 +25,13 @@ public interface RoundingStrategy {
 	public static final RoundingStrategy ROUND_ONE = new BasicRoundingStrategy(0, RoundingMode.HALF_DOWN);
 
 	/**
-	 * Rounds the given <code>BigDecimal</code> instance <code>amount</code>
-	 * with a specific strategy. Because <code>BigDecimal</code> is immutable, a
+	 * Rounds the given {@link BigDecimal} instance {@code amount}
+	 * with a specific strategy. Because {@link BigDecimal} is immutable, a
 	 * new instance with a rounded value is returned.
 	 * 
 	 * @param amount
-	 *            The <code>BigDecimal</code> instance which should be rounded.
-	 * @return A new <code>BigDecimal</code> instance which has a rounded value.
+	 *            The {@link BigDecimal} instance which should be rounded.
+	 * @return A new {@link BigDecimal} instance which has a rounded value.
 	 */
 	public BigDecimal round(BigDecimal amount);
 }

@@ -6,8 +6,6 @@ import org.salespointframework.core.catalog.ProductIdentifier;
  * An Inventory, aggregates {@link InventoryItem}s
  * 
  * @author Paul Henke
- * @param <T> Base type of the InventoryItems managed by the Inventory; has to
- *            implement {@link InventoryItem}
  * 
  */
 public interface Inventory
@@ -21,7 +19,7 @@ public interface Inventory
 	/**
 	 * Removes the InventoryItem with the given identifier from this Inventory
 	 * @param inventoryItemIdentifier The identifier of the InventoryItem
-	 * @return <code>true</code> if removal was successful, <code>false</code>
+	 * @return {@literal true} if removal was successful, {@literal false}
      *         otherwise.
      * @throws NullPointerException if inventoryItemIdentifier is null
      * 
@@ -49,7 +47,7 @@ public interface Inventory
 	 * @param clazz common supertype of the InventoryItem returned
 	 * @param inventoryItemIdentifier
 	 * @return the InventoryItem of type {@code clazz} with the given identifier
-	 * @throws NullPointerException if clazz or inventoryItemIdentifier are null
+	 * @throws NullPointerException if {@code clazz} or {@code inventoryItemIdentifier} are null
 	 */
 	<E extends InventoryItem> E get(Class<E> clazz, InventoryItemIdentifier inventoryItemIdentifier);
 	
@@ -70,7 +68,7 @@ public interface Inventory
      * @param inventoryItem
      *            the <code>InventoryItem</code> to be updated
      * @throws NullPointerException
-     *             if <code>item</code> is <code>null</code>
+     *             if {@code inventoryItem} is {@literal null}
      */
 	void update(InventoryItem inventoryItem);
 }

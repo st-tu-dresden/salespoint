@@ -7,7 +7,7 @@ import org.salespointframework.core.SalespointIdentifier;
 /**
  * <code>ProductIdentifier</code> serves as an identifier type for
  * {@link Product} objects. The main reason for its existence is
- * type safety for identifier across the Salespoint Framework. <br>
+ * type safety for identifier across the Salespoint Framework. <br />
  * <code>ProductIdentifier</code> instances serve as primary key
  * attribute in {@link Product}, but can also be used as
  * a key for non-persistent, <code>Map</code>-based implementations.

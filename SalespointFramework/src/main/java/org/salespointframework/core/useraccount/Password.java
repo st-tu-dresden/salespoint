@@ -34,7 +34,7 @@ public class Password {
 
 
     /**
-     * Creates a new password. The password can be provided in encrypted form, marked by the <code>encrypted</code> parameter.
+     * Creates a new password. The password can be provided in encrypted form, marked by the {@code encrypted} parameter.
      *
      * @param password the password string
      * @param encrypted whether the password is already encrypted

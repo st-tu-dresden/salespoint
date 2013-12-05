@@ -7,7 +7,7 @@ import org.salespointframework.core.SalespointIdentifier;
 /**
  * <code>UserAccountIdentifier</code> serves as an identifier type for {@link UserAccount}
  * objects. The main reason for its existence is type safety for identifier
- * across the Salespoint Framework. <br>
+ * across the Salespoint Framework. <br />
  * <code>UserIdentifier</code> instances serve as primary key attribute in
  * {@link UserAccount}, but can also be used as a key for non-persistent,
  * <code>Map</code>-based implementations.

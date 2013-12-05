@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
 import org.salespointframework.core.money.Money;
+import org.salespointframework.core.time.TimeService;
 import org.salespointframework.util.Iterables;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,9 +37,15 @@ class PersistentAccountancy implements Accountancy {
 	@PersistenceContext
 	private EntityManager em;
 
+	private final TimeService timeService;
+	
+	public PersistentAccountancy(TimeService timeService) {
+		this.timeService = timeService;
+	}
+	
+	
 	/**
 	 * {@inheritDoc}
-	 * <p>
 	 * The new entry is persisted transparently into the underlying database.
 	 * Once an {@link PersistentAccountancyEntry} has been written to the database,
 	 * it cannot be modified later on or added a second time. Doing so will
@@ -48,6 +55,9 @@ class PersistentAccountancy implements Accountancy {
 	@Override
 	public final void add(AccountancyEntry accountancyEntry) {
 		Objects.requireNonNull(accountancyEntry, "accountancyEntry must not be null");
+		if(accountancyEntry.getDate() == null) {
+			accountancyEntry.setDate(timeService.getTime().getDateTime());
+		}
 		em.persist(accountancyEntry);
 	}
 
@@ -146,14 +156,14 @@ class PersistentAccountancy implements Accountancy {
 
 	/**
 	 * Adds multiple {@link AccountancyEntry}>s to this
-	 * <code>Accountancy</code> and persists them to underlying database. Once
-	 * an <code>AccountancyEntry</code> has been added to the persistence layer,
+	 * {@link Accountancy} and persists them to underlying database. Once
+	 * an {@link AccountancyEntry} has been added to the persistence layer,
 	 * it cannot be modified or added again. Doing so would result in a runtime
 	 * exception.
 	 * 
 	 * @param accountancyEntries
-	 *            an {@link Iterable} of all <code>AccountancyEntry</code>s
-	 *            which should be added to the <code>Accountancy</code>
+	 *            an {@link Iterable} of all {@link AccountancyEntry}s
+	 *            which should be added to the {@link Accountancy}
 	 */
 	public final void addAll(
 			Iterable<? extends AccountancyEntry> accountancyEntries) {

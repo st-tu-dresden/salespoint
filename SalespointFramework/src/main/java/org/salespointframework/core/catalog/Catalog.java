@@ -34,8 +34,8 @@ public interface Catalog
 	boolean contains(ProductIdentifier productIdentifier);
 
 	/**
-	 * Returns the {@link Product} of type <code>clazz</code> and
-	 * all sub-types, identified by <code>productIdentifier</code>.
+	 * Returns the {@link Product} of type {@code clazz} and
+	 * all sub-types, identified by {@code productIdentifier}.
 	 * 
 	 * @param clazz type of the {@link Product} to be returned; has to implement {@link Product}
 	 * @param productIdentifier	the {@link ProductIdentifier} of the {@link Product} to be returned
@@ -46,7 +46,7 @@ public interface Catalog
 
 
 	/**
-	 * Returns an Iterable of {@link Product}s of type <code>clazz</code> 
+	 * Returns an Iterable of {@link Product}s of type {@code clazz} 
 	 * @param clazz type of the {@link Product} to be returned; has to implement {@link Product}
 	 * @return an {@link Iterable} containing all {@link Product}s of type clazz
 	 * @throws NullPointerException if clazz is null
@@ -54,7 +54,7 @@ public interface Catalog
 	<E extends Product> Iterable<E> find(Class<E> clazz);
 
 	/**
-	 * Returns an Iterable of {@link Product}s of Type <code>clazz</code> with the name <code>name</name>
+	 * Returns an Iterable of {@link Product}s of Type {@code clazz} with the name {@code name}
 	 * @param clazz type of the {@link Product} to be returned; has to implement {@link Product}
 	 * @param name the name of the {@link Product}
 	 * @return an {@link Iterable} containing all {@link Product}s of type clazz, whose productName matches name
@@ -63,7 +63,7 @@ public interface Catalog
 	<E extends Product> Iterable<E> findByName(Class<E> clazz, String name);
 	
 	/**
-	 * Returns an Iterable of {@link Product}s of Type <code>clazz</code> with the category <code>category</name>
+	 * Returns an Iterable of {@link Product}s of Type {@code clazz} with the category {@code category}
 	 * @param clazz type of the {@link Product} to be returned; has to implement {@link Product}
 	 * @param category the category of the {@link Product}
 	 * @return an {@link Iterable} containing all {@link Product}s of type clazz, whose productCategory is category

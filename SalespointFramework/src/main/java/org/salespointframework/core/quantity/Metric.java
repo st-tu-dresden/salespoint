@@ -74,14 +74,14 @@ public class Metric implements Serializable {
 	}
 
 	/**
-	 * Compares this <code>Metric</code> to <code>obj</code>.
+	 * Compares this <code>Metric</code> to {@code obj}.
 	 * 
-	 * Returns <code>false</code> if <code>obj</code> is not an instance of
+	 * Returns {@literal false} if {@code obj} is not an instance of
 	 * <code>Metric</code>. Otherwise, two <code>Metric</code>s are equal, if
 	 * their symbols and names are equal.
 	 * 
 	 * @param obj
-	 *            the Object to which <code>this</code> is compared.
+	 *            the Object to which {@code this} is compared.
 	 */
 	@Override
 	public boolean equals(Object obj) {

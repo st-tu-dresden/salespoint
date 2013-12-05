@@ -91,9 +91,9 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 	 * Adds a {@link Role} to a <code>User</code>
 	 * 
 	 * @param role
-	 *            <code>role</code> which the <code>user</code> will
+	 *            {@code role} which the {@code user} will
 	 *            receive.
-	 * @return <code>true</code> if successful, <code>false</code> otherwise.
+	 * @return {@literal true} if successful, {@literal false} otherwise.
 	 * @throws NullPointerException if role is null
 	 */
 	public boolean addRole(Role role)
@@ -106,9 +106,9 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 	 * Removes a {@link Role} from a <code>User</code>.
 	 * 
 	 * @param role
-	 *            <code>role</code> which will be removed from
-	 *            <code>user</code>
-	 * @return <code>true</code> if successful, <code>false</code> otherwise
+	 *            {@code role} which will be removed from
+	 *            {@code user}
+	 * @return {@literal true} if successful, {@literal false} otherwise
 	 * @throws NullPointerException if role is null
 	 */
 	public boolean removeRole(Role role)
@@ -121,10 +121,10 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 	 * Checks if a <code>User</code> has a specific {@link Role}
 	 * 
 	 * @param role
-	 *            {@link Role} for which the <code>user</code>
+	 *            {@link Role} for which the {@code user}
 	 *            will be checked for.
-	 * @return <code>true</code> if <code>role</code> was granted to
-	 *         <code>user</code>
+	 * @return {@literal true} if {@code role} was granted to
+	 *         {@code user}
 	 * @throws NullPointerException if role is null
 	 */
 	public boolean hasRole(Role role)

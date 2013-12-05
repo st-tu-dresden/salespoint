@@ -47,7 +47,7 @@ public final class Cheque extends PaymentMethod {
 	 * @param payee
 	 *            Name of the party which receives the cheque.
 	 * @param dateWritten
-	 *            <code>DateTime</code> object representing the date on which
+	 *            {@link DateTime} object representing the date on which
 	 *            the cheque was written,
 	 * @param bankName
 	 *            Name of the bank that issued the cheque,

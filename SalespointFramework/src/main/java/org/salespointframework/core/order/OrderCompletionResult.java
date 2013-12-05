@@ -2,7 +2,7 @@ package org.salespointframework.core.order;
 
 
 /**
- * An <code>OrderCompletionResult</code> is returned after you call Order.completeOrder()
+ * An {@code OrderCompletionResult} is returned after you call {@link OrderManager#completeOrder(Order)}
  *  
  * @author Paul Henke
  * 
@@ -25,7 +25,7 @@ public interface OrderCompletionResult
 	
 	/**
 	 * Call if you don't want a split order 
-	 * @return	<code>true</code> if rollback was successful, otherwise <code>false</code>
+	 * @return	{@literal true} if rollback was successful, otherwise {@literal false}
 	 * 	
 	 */
 	// 

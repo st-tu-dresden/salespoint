@@ -10,14 +10,14 @@ import org.salespointframework.core.quantity.rounding.RoundingStrategy;
  * specified using a <code>Metric</code>. A <code>RoundingStrategy</code>
  * accommodates amounts that do not fit the value set of a given metric (Think
  * of money: 0.0001€ has no meaning in the real world). The
- * <code>roundingStrategy</code> is applied to <code>amount</code> in the class
- * constructor. This way, every instance has a valid <code>amount</code>.
+ * {@code roundingStrategy} is applied to {@code amount} in the class
+ * constructor. This way, every instance has a valid {@code amount}.
  * 
  * To allow arithmetic operations on <code>Quantity</code> objects and instances
  * of subclasses of <code>Quantity</code> to return the correct type (and thus
  * avoiding casts), <code>Quantity</code> instances are immutable and all
  * subclasses of <code>Quantity</code> have to be immutable or implement a
- * suitable <code>clone()</code>-method.
+ * suitable {@code clone()}-method.
  * 
  * @author Hannes Weisbach
  * 
@@ -37,15 +37,15 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	private RoundingStrategy roundingStrategy;
 
 	/**
-	 * Parameterized class constructor. <code>amount</code> is immediately
-	 * rounded using the supplied <code>roundingStrategy</code>.
+	 * Parameterized class constructor. {@code amount} is immediately
+	 * rounded using the supplied {@code roundingStrategy}.
 	 * 
 	 * @param amount
-	 *            <code>amount</code> represented by this <code>Quantity</code>
+	 *            {@code amount} represented by this <code>Quantity</code>
 	 * @param metric
-	 *            <code>metric</code> used for this <code>Quantity</code>
+	 *            {@code metric} used for this <code>Quantity</code>
 	 * @param roundingStrategy
-	 *            <code>roundingStrategy</code> to be used with this
+	 *            {@code roundingStrategy} to be used with this
 	 *            <code>Quantity</code>
 	 */
 	public Quantity(BigDecimal amount, Metric metric,
@@ -57,18 +57,18 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	}
 
 	/**
-	 * Translates an <code>int</code> to a <code>Quantity</code>.
+	 * Translates an {@code int} to a <code>Quantity</code>.
 	 * 
 	 * The Integer is rounded according to the supplied
 	 * <code>RoudingStrategy</code>.
 	 * 
 	 * @param amount
-	 *            <code>int</code> value to be converted to
+	 *            {@code int} value to be converted to
 	 *            <code>Quantity</code>
 	 * @param metric
-	 *            <code>metric</code> to be used with this <code>Quantity</code>
+	 *            {@code metric} to be used with this <code>Quantity</code>
 	 * @param roundingStrategy
-	 *            <code>roudingStrategy</code> to be used with this
+	 *            {@code roudingStrategy} to be used with this
 	 *            <code>Quantity</code>
 	 */
 	public Quantity(int amount, Metric metric, RoundingStrategy roundingStrategy) {
@@ -78,15 +78,15 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	}
 
 	/**
-	 * Translates a <code>long</code> to a <code>Quantity</code>.
+	 * Translates a {@code long} to a <code>Quantity</code>.
 	 * 
 	 * @param amount
-	 *            <code>long</code> value to be converted to a
+	 *            {@code long} value to be converted to a
 	 *            <code>Quantity</code>
 	 * @param metric
-	 *            <code>metric</code> to be used with this <code>Quantity</code>
+	 *            {@code metric} to be used with this <code>Quantity</code>
 	 * @param roundingStrategy
-	 *            <code>roundingStrategy</code> to be used with this
+	 *            {@code roundingStrategy} to be used with this
 	 *            <code>Quantity</code>
 	 */
 	public Quantity(long amount, Metric metric,
@@ -97,15 +97,15 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	}
 
 	/**
-	 * Translates a <code>float</code> to a <code>Quantity</code>.
+	 * Translates a {@code float} to a <code>Quantity</code>.
 	 * 
 	 * @param amount
-	 *            <code>float</code> value to be converted to a
+	 *            {@code float} value to be converted to a
 	 *            <code>Quantity</code>
 	 * @param metric
-	 *            <code>metric</code> to be used with this <code>Quantity</code>
+	 *            {@code metric} to be used with this <code>Quantity</code>
 	 * @param roundingStrategy
-	 *            <code>roundingStrategy</code> to be used with this
+	 *            {@code roundingStrategy} to be used with this
 	 *            <code>Quantity</code>
 	 */
 	public Quantity(float amount, Metric metric,
@@ -116,15 +116,15 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	}
 
 	/**
-	 * Translates a <code>double</code> to a <code>Quantity</code>.
+	 * Translates a {@code double} to a <code>Quantity</code>.
 	 * 
 	 * @param amount
-	 *            <code>double</code> value to be converted to a
+	 *            {@code double} value to be converted to a
 	 *            <code>Quantity</code>
 	 * @param metric
-	 *            <code>metric</code> to be used with this <code>Quantity</code>
+	 *            {@code metric} to be used with this <code>Quantity</code>
 	 * @param roundingStrategy
-	 *            <code>roundingStrategy</code> to be used with this
+	 *            {@code roundingStrategy} to be used with this
 	 *            <code>Quantity</code>
 	 */
 	public Quantity(double amount, Metric metric,
@@ -135,7 +135,7 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns the <code>metric</code> associated with this
+	 * Returns the {@code metric} associated with this
 	 * <code>Quantity</code>.
 	 * 
 	 * @return <code>Metric</code> of this <code>Quantity</code>.
@@ -154,9 +154,9 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns the <code>amount</code> of this as <code>float</code>.
+	 * Returns the {@code amount} of this as {@code float}.
 	 * 
-	 * @return the <code>amount</code> of this as <code>float</code>.
+	 * @return the {@code amount} of this as {@code float}.
 	 */
 	public BigDecimal getAmount() {
 		return amount;
@@ -231,9 +231,9 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	}
 
 	/**
-	 * Sums two quantities up. The <code>amount</code> of this and quantity are
+	 * Sums two quantities up. The {@code amount} of this and quantity are
 	 * added, and a new <code>Quantity</code>-instance is returned, representing
-	 * the sum. The metric and rounding strategy of <code>quantity</code> are
+	 * the sum. The metric and rounding strategy of {@code quantity} are
 	 * used for the new instance. No check is performed, whether the metrics of
 	 * both quantities are compatible, i.e. it is possible to combine, say kg
 	 * and s.
@@ -248,7 +248,7 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	 * @param quantity
 	 *            <code>Quantity</code> to be added to this.
 	 * @return a new <code>Quantity</code> object representing the sum of this
-	 *         and <code>quantity</code>.
+	 *         and {@code quantity}.
 	 */
 	public <T extends Quantity> T add(T quantity) {
 		@SuppressWarnings("unchecked")
@@ -263,10 +263,10 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	// }
 
 	/**
-	 * Subtracts a quantity from this. The <code>amount</code> of this is
+	 * Subtracts a quantity from this. The {@code amount} of this is
 	 * subtracted by that of quantity, and a new <code>Quantity</code>-instance
 	 * is returned, representing the difference. The metric and rounding
-	 * strategy of <code>quantity</code> are used for the new instance. No check
+	 * strategy of {@code quantity} are used for the new instance. No check
 	 * is performed, whether the metrics of both quantities are compatible, i.e.
 	 * it is possible to combine, say kg and s.
 	 * <p>
@@ -280,7 +280,7 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	 * @param quantity
 	 *            <code>Quantity</code> to be subtracted from this.
 	 * @return a new <code>Quantity</code> object representing the difference of
-	 *         this and <code>quantity</code>.
+	 *         this and {@code quantity}.
 	 */
 	public <T extends Quantity> T subtract(T quantity) {
 		@SuppressWarnings("unchecked")
@@ -296,7 +296,7 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	// }
 
 	/**
-	 * Multiplies two quantities. The <code>amount</code> of this and quantity
+	 * Multiplies two quantities. The {@code amount} of this and quantity
 	 * are multiplied, and a new <code>Quantity</code>-instance is returned,
 	 * representing the product. The metric and rounding Strategy of this are
 	 * used for the new instance. No check is performed, whether the metrics of
@@ -312,7 +312,7 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	 * @param quantity
 	 *            <code>Quantity</code> to be multiplied with this.
 	 * @return a new <code>Quantity</code> object representing the product of
-	 *         this and <code>quantity</code>.
+	 *         this and {@code quantity}.
 	 */
 	public <T extends Quantity> T multiply(T quantity) {
 		@SuppressWarnings("unchecked")
@@ -328,8 +328,8 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	// }
 
 	/**
-	 * Divides this by another quantity. The <code>amount</code> of this the
-	 * dividend, <code>quantity</code> the divisor, and a new
+	 * Divides this by another quantity. The {@code amount} of this the
+	 * dividend, {@code quantity} the divisor, and a new
 	 * <code>Quantity</code>-instance is returned as quotient. The metric and
 	 * rounding Strategy of this are used for the new instance. No check is
 	 * performed, whether the metrics of both quantities are compatible, i.e. it

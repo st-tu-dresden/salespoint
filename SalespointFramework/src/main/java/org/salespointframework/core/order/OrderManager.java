@@ -39,7 +39,7 @@ public interface OrderManager
 
 	/**
 	 * Returns all {@link Order}s having the {@link OrderStatus}
-	 * <code>status</code>. If no orders
+	 * {@code status}. If no orders
 	 * with the specified status exist, an empty Iterable is returned.
 	 * @param orderStatus
 	 *            Denoting the {@link OrderStatus} on which the {@link Order}s will be requested.
@@ -50,7 +50,7 @@ public interface OrderManager
 	
 	/**
 	 * Returns all {@link Order}s in between the dates
-	 * <code>from</code> and <code>to</code>, including from and to. So every
+	 * {@code from} and {@code to}, including from and to. So every
 	 * entry with an time stamp <= to and >= from is returned. If no orders
 	 * within the specified time span exist, an empty Iterable is returned.
 	 * 
@@ -79,7 +79,7 @@ public interface OrderManager
 	
 	/**
 	 * Returns all {@link Order}s from the given {@link UserAccountIdentifier} in between the
-	 * dates <code>from</code> and <code>to</code>, including from and to. If
+	 * dates {@code from} and {@code to}, including from and to. If
 	 * this user has no orders in this period, an empty Iterable is
 	 * returned.
 	 * 

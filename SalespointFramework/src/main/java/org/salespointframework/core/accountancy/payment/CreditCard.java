@@ -43,10 +43,10 @@ public final class CreditCard extends PaymentCard {
 	 * @param cardVerificationCode
 	 *            verification code printed on the card or a PIN
 	 * @param dailyWithdrawalLimit
-	 *            maximum amount of <code>Money</code> which can be withdrawn on
+	 *            maximum amount of {@link Money} which can be withdrawn on
 	 *            a day
 	 * @param creditLimit
-	 *            <code>Money</code> representing the line of credit extended by
+	 *            {@link Money} representing the line of credit extended by
 	 *            the issuing association to the card owner
 	 */
 	public CreditCard(String cardName, String cardAssociationName,
@@ -85,10 +85,10 @@ public final class CreditCard extends PaymentCard {
 	 * @param cardVerificationCode
 	 *            verification code printed on the card or a PIN
 	 * @param dailyWithdrawalLimit
-	 *            maximum amount of <code>Money</code> which can be withdrawn on
+	 *            maximum amount of {@link Money} which can be withdrawn on
 	 *            a day
 	 * @param creditLimit
-	 *            <code>Money</code> representing the line of credit extended by
+	 *            {@link Money} representing the line of credit extended by
 	 *            the issuing association to the card owner
 	 */
 	public CreditCard(String cardAssociationName, String cardNumber,
@@ -110,7 +110,7 @@ public final class CreditCard extends PaymentCard {
 	/**
 	 * The maximum amount of money, the card holder can dispose of within a day.
 	 * 
-	 * @return <code>Money</code> object representing the the daily withdrawal
+	 * @return {@link Money} object representing the the daily withdrawal
 	 *         limit
 	 */
 	public Money getDailyWithdrawalLimit() {
@@ -120,7 +120,7 @@ public final class CreditCard extends PaymentCard {
 	/**
 	 * Line of credit extended by the issuing association to the card holder.
 	 * 
-	 * @return <code>Money</code> object representing the credit limit.
+	 * @return {@link Money} object representing the credit limit.
 	 */
 	public Money getCreditLimit() {
 		return creditLimit;

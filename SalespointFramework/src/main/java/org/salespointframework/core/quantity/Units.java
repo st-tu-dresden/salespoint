@@ -35,7 +35,7 @@ public class Units extends Quantity {
 
 	/**
 	 * Creates a new <code>Unit</code> instance, representing
-	 * <code>amount</code> units of something.
+	 * {@code amount} units of something.
 	 * 
 	 * @param amount
 	 *            number of objects, this <code>Unit</code> object represents
