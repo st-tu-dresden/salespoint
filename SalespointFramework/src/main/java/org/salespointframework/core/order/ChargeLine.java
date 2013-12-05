@@ -6,6 +6,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 
+import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.money.Money;
 
 import java.util.Objects;
@@ -19,7 +20,7 @@ import java.util.Objects;
  * 
  */
 @Entity
-public final class ChargeLine
+public class ChargeLine extends AbstractEntity<ChargeLineIdentifier> 
 {
 	
 	@EmbeddedId
