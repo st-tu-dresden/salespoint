@@ -101,7 +101,7 @@ public class Order extends AbstractEntity<OrderIdentifier> implements Comparable
 	}
 
 	/**
-	 * Adds an {@link Orderline} to the order, the {@link OrderStatus} must be OPEN 
+	 * Adds an {@link OrderLine} to the order, the {@link OrderStatus} must be OPEN 
 	 * @param orderLine the Orderline to be added
 	 * @return true if the orderline was added, else false
 	 * @throws NullPointerException if orderLine is null

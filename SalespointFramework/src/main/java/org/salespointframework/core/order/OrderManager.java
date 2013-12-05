@@ -112,7 +112,7 @@ public interface OrderManager
 	void update(Order order);
 	
 	/**
-	 * Pays the {@link Order}, {@link Orderstatus} must be OPEN and {@link PaymentMethod} must be set
+	 * Pays the {@link Order}, {@link OrderStatus} must be OPEN and {@link PaymentMethod} must be set
 	 * @param order the order to be payed
 	 * @return true if the order could be payed
 	 * @throws NullPointerException if order is null

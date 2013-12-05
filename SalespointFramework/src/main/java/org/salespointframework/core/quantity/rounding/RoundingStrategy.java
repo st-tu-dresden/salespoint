@@ -3,6 +3,8 @@ package org.salespointframework.core.quantity.rounding;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import org.salespointframework.core.quantity.Quantity;
+
 /**
  * This is interface is implemented by classes, which are used to round numbers.
  * Specifically, {@link Quantity} uses classes implementing
