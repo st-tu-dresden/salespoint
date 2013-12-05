@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import org.salespointframework.core.useraccount.Role;
 import org.salespointframework.core.useraccount.UserAccount;
-import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,8 +47,7 @@ class ShopController {
 		
 		// (｡◕‿◕｡)
 		// Falles alles in Ordnung ist legen wir einen UserAccount und einen passenden Customer an und speichern beides.
-		UserAccountIdentifier userAccountIdentifier = new UserAccountIdentifier(registrationForm.getName());
-		UserAccount userAccount = userAccountManager.create(userAccountIdentifier, registrationForm.getPassword(), new Role("ROLE_CUSTOMER"));
+		UserAccount userAccount = userAccountManager.create(registrationForm.getName(), registrationForm.getPassword(), new Role("ROLE_CUSTOMER"));
 		userAccountManager.save(userAccount);
 		
 		Customer customer = new Customer(userAccount, registrationForm.getAddress());
