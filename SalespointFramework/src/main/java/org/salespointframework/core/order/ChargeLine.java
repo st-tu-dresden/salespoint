@@ -81,30 +81,6 @@ public class ChargeLine extends AbstractEntity<ChargeLineIdentifier>
 	}
 
 	@Override
-	public boolean equals(Object other)
-	{
-		if (other == null)
-		{
-			return false;
-		}
-		if (other == this)
-		{
-			return true;
-		}
-		if (other instanceof ChargeLine)
-		{
-			return this.chargeLineIdentifier.equals(((ChargeLine)other).chargeLineIdentifier);
-		}
-		return false;
-	}
-
-	@Override
-	public final int hashCode()
-	{
-		return this.chargeLineIdentifier.hashCode();
-	}
-
-	@Override
 	public String toString()
 	{
 		return "Amount: " + amount.toString() + "| Description:" + description;

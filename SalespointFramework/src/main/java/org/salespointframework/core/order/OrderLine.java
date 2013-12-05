@@ -9,21 +9,23 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 
+import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.catalog.Product;
 import org.salespointframework.core.catalog.ProductIdentifier;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.MetricMismatchException;
 import org.salespointframework.core.quantity.Quantity;
 
+
+// TODO comments
 /**
- * A persistent implementation of the {@link OrderLine} interface.
  * This class is immutable.
  * 
  * @author Paul Henke
  *
  */
 @Entity
-public class OrderLine
+public class OrderLine extends AbstractEntity<OrderLineIdentifier>
 {
 	@EmbeddedId
 	@AttributeOverride(name = "id", column = @Column(name = "ORDERLINE_ID"))
@@ -87,30 +89,6 @@ public class OrderLine
 		return quantity;
 	}
 
-	@Override
-	public final boolean equals(Object other)
-	{
-		if (other == null)
-		{
-			return false;
-		}
-		if (other == this)
-		{
-			return true;
-		}
-		if (other instanceof OrderLine)
-		{
-			return this.orderLineIdentifier.equals(((OrderLine)other).orderLineIdentifier);
-		}
-		return false;
-	}
-
-
-	@Override
-	public final int hashCode() {
-		return orderLineIdentifier.hashCode();
-	}
-	
 	@Override
 	public String toString() {
 		return productName + "(" + productIdentifier.toString() + ")" + " - " + quantity;

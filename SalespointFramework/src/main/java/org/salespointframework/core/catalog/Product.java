@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Column;
 import javax.persistence.Lob;
 
+import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.util.Iterables;
@@ -21,7 +22,7 @@ import org.salespointframework.util.Iterables;
  * 
  */
 @Entity
-public class Product implements Comparable<Product>
+public class Product extends AbstractEntity<ProductIdentifier> implements Comparable<Product>
 {
 	@EmbeddedId
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
@@ -56,30 +57,6 @@ public class Product implements Comparable<Product>
 		this.metric = Objects.requireNonNull(metric, "metric must not be null");
 	}
 
-	@Override
-	public final boolean equals(Object other)
-	{
-		if (other == null)
-		{
-			return false;
-		}
-		if (other == this)
-		{
-			return true;
-		}
-		if (other instanceof Product)
-		{
-			return this.productIdentifier.equals(((Product)other).productIdentifier);
-		}
-		return false;
-	}
-
-	@Override
-	public final int hashCode()
-	{
-		return productIdentifier.hashCode();
-	}
-	
 	@Override
 	public String toString()
 	{

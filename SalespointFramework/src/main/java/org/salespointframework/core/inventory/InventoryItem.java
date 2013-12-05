@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
+import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.catalog.Product;
 import org.salespointframework.core.quantity.MetricMismatchException;
 import org.salespointframework.core.quantity.Quantity;
@@ -20,7 +21,7 @@ import org.salespointframework.core.quantity.Quantity;
  *
  */
 @Entity
-public class InventoryItem 
+public class InventoryItem extends AbstractEntity<InventoryItemIdentifier>
 {
 	@EmbeddedId
 	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID"))
@@ -85,29 +86,5 @@ public class InventoryItem
 			throw new MetricMismatchException("this.product.getMetric is not equal to quantity.getMetric");
 		}
 		this.quantity = this.quantity.add(quantity);
-	}
-	
-	@Override
-	public final int hashCode() 
-	{
-		return inventoryItemIdentifier.hashCode();
-	}
-	
-	@Override
-	public final boolean equals(Object other)
-	{
-		if (other == null)
-		{
-			return false;
-		}
-		if (other == this)
-		{
-			return true;
-		}
-		if (other instanceof InventoryItem)
-		{
-			return this.inventoryItemIdentifier.equals(((InventoryItem)other).inventoryItemIdentifier);
-		}
-		return false;
 	}
 }
