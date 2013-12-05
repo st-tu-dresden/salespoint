@@ -19,6 +19,7 @@ import org.joda.time.Period;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.time.TimeService;
 import org.salespointframework.util.Iterables;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +40,7 @@ class PersistentAccountancy implements Accountancy {
 
 	private final TimeService timeService;
 	
+	@Autowired
 	public PersistentAccountancy(TimeService timeService) {
 		this.timeService = timeService;
 	}
