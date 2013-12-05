@@ -18,14 +18,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.money.Money;
 import org.salespointframework.core.useraccount.UserAccount;
-import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.util.Iterables;
 
 /**
@@ -36,7 +35,7 @@ import org.salespointframework.util.Iterables;
  */
 @Entity
 @Table(name = "ORDERS")
-public class Order implements Comparable<Order> {
+public class Order extends AbstractEntity<OrderIdentifier> implements Comparable<Order> {
 
 	@EmbeddedId
 	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID"))
@@ -59,7 +58,6 @@ public class Order implements Comparable<Order> {
 	private Set<OrderLine> orderLines = new HashSet<OrderLine>();
 
 	@OneToMany(cascade = CascadeType.ALL)
-	//@CollectionTable(joinColumns = @JoinColumn(name = "order_id"))
 	private Set<ChargeLine> chargeLines = new HashSet<ChargeLine>();
 
 	/**
@@ -73,7 +71,7 @@ public class Order implements Comparable<Order> {
 	 * Creates a new Order
 	 * 
 	 * @param userAccount
-	 *            The {@link UserAccountIdentifier}/{@link UserAccount} connected to this
+	 *            The {@link UserAccount} connected to this
 	 *            order
 	 * @param paymentMethod
 	 *            The {@link PaymentMethod} connected to this order
@@ -92,7 +90,7 @@ public class Order implements Comparable<Order> {
 	 * Creates a new Order
 	 * 
 	 * @param userAccount
-	 *            The {@link UserAccountIdentifier}/{@link UserAccount} connected to this
+	 *            The {@link UserAccount} connected to this
 	 *            order
 	 * @throws NullPointerException
 	 *             if userAccount is null
@@ -102,6 +100,12 @@ public class Order implements Comparable<Order> {
 				"userAccount must not be null");
 	}
 
+	/**
+	 * Adds an {@link Orderline} to the order, the {@link OrderStatus} must be OPEN 
+	 * @param orderLine the Orderline to be added
+	 * @return true if the orderline was added, else false
+	 * @throws NullPointerException if orderLine is null
+	 */
 	public boolean addOrderLine(OrderLine orderLine) {
 		Objects.requireNonNull(orderLine, "orderLine must not be null");
 		if (orderStatus != OrderStatus.OPEN) {
@@ -167,6 +171,10 @@ public class Order implements Comparable<Order> {
 		return userAccount;
 	}
 
+	/**
+	 * @deprecated  As of release 5.3.1, replaced by {@link OrderManager#cancelOrder(Order)}
+	 */
+	@Deprecated
 	public boolean cancelOrder() {
 		if (orderStatus == OrderStatus.OPEN) {
 			orderStatus = OrderStatus.CANCELLED;
@@ -196,25 +204,6 @@ public class Order implements Comparable<Order> {
 		return price;
 	}
 
-	@Override
-	public final boolean equals(Object other) {
-		if (other == null) {
-			return false;
-		}
-		if (other == this) {
-			return true;
-		}
-		if (other instanceof Order) {
-			return this.orderIdentifier
-					.equals(((Order) other).orderIdentifier);
-		}
-		return false;
-	}
-
-	@Override
-	public final int hashCode() {
-		return this.orderIdentifier.hashCode();
-	}
 
 	@Override
 	public String toString() {
@@ -354,44 +343,6 @@ public class Order implements Comparable<Order> {
 		return orderStatus == OrderStatus.OPEN;
 	}
 
-	
-
-	/*
-	 * private final class InternalOrderCompletionResult implements
-	 * OrderCompletionResult {
-	 * 
-	 * private final OrderCompletionStatus orderCompletionStatus; private final
-	 * Order order; private final List<ProductInstance>
-	 * removedProducts; private final EntityManager entityManager;
-	 * 
-	 * public InternalOrderCompletionResult( OrderCompletionStatus
-	 * orderCompletionStatus, Order order, EntityManager
-	 * entityManager, List<ProductInstance> removedProducts) {
-	 * this.orderCompletionStatus = orderCompletionStatus; this.order = order;
-	 * this.removedProducts = removedProducts; this.entityManager =
-	 * entityManager; }
-	 * 
-	 * @SuppressWarnings({ "unchecked", "rawtypes" })
-	 * 
-	 * @Override public final Order splitOrder() { if
-	 * (this.orderCompletionStatus == OrderCompletionStatus.SPLITORDER) { if
-	 * (this.entityManager.getTransaction().isActive()) { try { // Commit Fails
-	 * -> Auto Rollback? this.entityManager.getTransaction().commit(); } catch
-	 * (RollbackException e) { return null; } } orderStatus =
-	 * OrderStatus.COMPLETED; return order; } return null; }
-	 * 
-	 * @Override public final boolean rollBack() { if
-	 * (this.orderCompletionStatus == OrderCompletionStatus.SPLITORDER) { if
-	 * (this.entityManager.getTransaction().isActive()) {
-	 * this.entityManager.getTransaction().rollback(); removedProducts.clear();
-	 * return true; } else { return false; } } else { return false; } }
-	 * 
-	 * @Override public final OrderCompletionStatus getStatus() { return
-	 * this.orderCompletionStatus; }
-	 * 
-	 * @Override public Iterable<ProductInstance> getRemovedInstances() { return
-	 * Iterables.of(removedProducts); } }
-	 */
 
 	@Override
 	public int compareTo(Order other) {
@@ -416,6 +367,11 @@ public class Order implements Comparable<Order> {
 	void complete() {
 		this.orderStatus = OrderStatus.COMPLETED;
 	}
+	
+	void cancel() {
+		this.orderStatus = OrderStatus.CANCELLED;
+	}
+	
 	
 	int getNumberOfLineItems() {
 		return this.orderLines.size();

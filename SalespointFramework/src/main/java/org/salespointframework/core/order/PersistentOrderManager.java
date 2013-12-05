@@ -249,6 +249,7 @@ class PersistentOrderManager implements OrderManager
 	 * (non-Javadoc)
 	 * @see org.salespointframework.core.order.OrderManager#pay(org.salespointframework.core.order.Order)
 	 */
+	@Override
 	public boolean payOrder(Order order) {
 		Objects.requireNonNull(order, "order must not be null");
 		if (order.isPaymentExpected()) {
@@ -257,6 +258,17 @@ class PersistentOrderManager implements OrderManager
 
 		accountancy.add(order.markPaid());
 		return true;
+	}
+	
+	@Override
+	public boolean cancelOrder(Order order) {
+		Objects.requireNonNull(order, "order must not be null");
+		if (order.getOrderStatus() == OrderStatus.OPEN) {
+			order.cancel();
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	private final class InternalOrderCompletionResult implements OrderCompletionResult {

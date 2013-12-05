@@ -1,6 +1,7 @@
 package org.salespointframework.core.order;
 
 import org.joda.time.DateTime;
+import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
 
@@ -110,5 +111,19 @@ public interface OrderManager
 	 */
 	void update(Order order);
 	
+	/**
+	 * Pays the {@link Order}, {@link Orderstatus} must be OPEN and {@link PaymentMethod} must be set
+	 * @param order the order to be payed
+	 * @return true if the order could be payed
+	 * @throws NullPointerException if order is null
+	 */
 	boolean payOrder(Order order);
+	
+	/**
+	 * Cancels an {@link Order}, it can only be cancelled is {@link OrderStatus} is OPEN
+	 * @param order the order to be canceled
+	 * @return true if the order could be canceled
+	 * @throws NullPointerException if order is null
+	 */
+	boolean cancelOrder(Order order);
 }
