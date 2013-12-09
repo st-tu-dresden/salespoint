@@ -176,6 +176,10 @@ class PersistentOrderManager implements OrderManager
 	@Override
 	public OrderCompletionResult completeOrder(final Order order) {
 
+		if(order.getOrderStatus() != OrderStatus.PAYED)  {
+			return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
+		}
+		
 		Objects.requireNonNull(order, "order must not be null");
 		
 		final Map<InventoryItem, Quantity> goodItems = new HashMap<>();
@@ -252,7 +256,7 @@ class PersistentOrderManager implements OrderManager
 	@Override
 	public boolean payOrder(Order order) {
 		Objects.requireNonNull(order, "order must not be null");
-		if (order.isPaymentExpected()) {
+		if (!order.isPaymentExpected()) {
 			return false;
 		}
 
