@@ -17,7 +17,6 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<spring.version>4.0.0.RC1</spring.version>
 		<hibernate-validator.version>5.0.1.Final</hibernate-validator.version>
-		<thymeleaf.version>2.1.0.RELEASE</thymeleaf.version>
 		<thymeleaf-extras-springsecurity3.version>2.1.0.RELEASE</thymeleaf-extras-springsecurity3.version>
 	</properties>
 
@@ -65,7 +64,7 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>salespoint-framework</artifactId>
-			<version>5.3.1</version>
+			<version>5.3.2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

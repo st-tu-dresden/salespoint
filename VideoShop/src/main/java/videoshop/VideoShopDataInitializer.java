@@ -2,8 +2,7 @@ package videoshop;
 
 import java.util.Arrays;
 
-import javax.sql.DataSource;
-
+import org.salespointframework.core.DataInitializer;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.money.Money;
@@ -27,20 +26,35 @@ import videoshop.model.VideoCatalog;
 // diese werden hier erzeugt und hinzugefügt.
 
 @Component
-public class DataInitializer {
+public class VideoShopDataInitializer implements DataInitializer {
+
+	private final Inventory inventory;
+	private final VideoCatalog videoCatalog;
+	private final UserAccountManager userAccountManager;
+	private final CustomerRepository customerRepository;
 
 	@Autowired
-	public DataInitializer(Inventory inventory, VideoCatalog videoCatalog, UserAccountManager userAccountManager,
-			CustomerRepository customerRepository, DataSource dataSource) {
+	public VideoShopDataInitializer(CustomerRepository customerRepository, Inventory inventory,
+			UserAccountManager userAccountManager, VideoCatalog videoCatalog) {
+		this.customerRepository = customerRepository;
+		this.inventory = inventory;
+		this.userAccountManager = userAccountManager;
+		this.videoCatalog = videoCatalog;
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.DataInitializer#initialize()
+	 */
+	@Override
+	public void initialize() {
 
 		initializeUsers(userAccountManager, customerRepository);
 		initializeCatalog(videoCatalog, inventory);
-
 	}
 
 	private void initializeCatalog(VideoCatalog videoCatalog, Inventory inventory) {
 
-		// Skip creation if database was already populated
 		if (videoCatalog.findAll().iterator().hasNext()) {
 			return;
 		}
@@ -84,27 +98,25 @@ public class DataInitializer {
 		// um bestimmte Bereiche nicht zugänglich zu machen, das "ROLE_"-Prefix ist eine Konvention welche für Spring
 		// Security nötig ist.
 
-		final String bossLogin = "boss";
-		
-		UserAccountIdentifier bossUI = new UserAccountIdentifier(bossLogin);
+		UserAccountIdentifier bossUI = new UserAccountIdentifier("boss");
 
 		// Skip creation if database was already populated
 		if (userAccountManager.get(bossUI) != null) {
 			return;
 		}
 
-		UserAccount bossAccount = userAccountManager.create(bossLogin, "123", new Role("ROLE_BOSS"));
+		UserAccount bossAccount = userAccountManager.create(bossUI, "123", new Role("ROLE_BOSS"));
 		userAccountManager.save(bossAccount);
 
 		final Role customerRole = new Role("ROLE_CUSTOMER");
 
-		UserAccount ua1 = userAccountManager.create("hans", "123", customerRole);
+		UserAccount ua1 = userAccountManager.create(new UserAccountIdentifier("hans"), "123", customerRole);
 		userAccountManager.save(ua1);
-		UserAccount ua2 = userAccountManager.create("dextermorgan", "123", customerRole);
+		UserAccount ua2 = userAccountManager.create(new UserAccountIdentifier("dextermorgan"), "123", customerRole);
 		userAccountManager.save(ua2);
-		UserAccount ua3 = userAccountManager.create("earlhickey", "123", customerRole);
+		UserAccount ua3 = userAccountManager.create(new UserAccountIdentifier("earlhickey"), "123", customerRole);
 		userAccountManager.save(ua3);
-		UserAccount ua4 = userAccountManager.create("mclovinfogell", "123", customerRole);
+		UserAccount ua4 = userAccountManager.create(new UserAccountIdentifier("mclovinfogell"), "123", customerRole);
 		userAccountManager.save(ua4);
 
 		Customer c1 = new Customer(ua1, "wurst");
