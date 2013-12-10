@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import org.junit.Test;
+import org.salespointframework.core.DataInitializer;
 import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.order.OrderManager;
@@ -44,6 +45,7 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired AuthenticationManager authenticationManager;
 	@Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
+	@Autowired DataInitializer initializer;
 
 	@Test
 	public void createsApplicationComponents() {
@@ -55,5 +57,6 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 		assertThat(timeService, is(notNullValue()));
 		assertThat(authenticationManager, is(notNullValue()));
 		assertThat(argumentResolvers, hasSize(1));
+		assertThat(initializer, is(notNullValue()));
 	}
 }
