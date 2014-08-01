@@ -1,0 +1,71 @@
+= SalesPoint Framework - Technical Reference
+Andreas Zaschka; Paul Henke; Oliver Gierke;
+:source-base: ../../test/java/org/salespointframework
+:toc:
+{version}
+
+:toc:
+
+[[overview]]
+== Overview
+
+[[architecture]]
+== Technical Architecture
+
+[[stack]]
+== Technical Stack
+
+[[stack.spring-boot]]
+### Spring Boot
+
+Rapid application development framework based on Spring (see below).
+
+- http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle[Reference documentation]
+- https://spring.io/guides[Getting started guides]
+- http://projects.spring.io/spring-boot[Project home]
+
+[[stack.spring]]
+### Spring 4
+
+The de-facto standard Java application framework.
+
+- https://spring.io/guides[Getting started guides]
+- http://projects.spring.io/spring-framework[Project home]
+
+[[stack.spring-data-jpa]]
+### Spring Data JPA
+
+Spring module to easily build data acess layers using JPA 2.1 (Java Persistence API).
+
+- https://spring.io/guides?filter=jpa[Getting started guides]
+- http://projects.spring.io/spring-data-jpa[Project home]
+
+[[stack.thymeleaf]]
+### Thymeleaf
+
+Library to build HTML web views using natural templating.
+
+- https://spring.io/guides/gs/serving-web-content[Getting stared guide]
+- http://www.thymeleaf.org/doc/usingthymeleaf.html[Tutorial]
+
+[[modules]]
+== Business modules
+
+- Domain models
+
+[appendix]
+== Asciidoc template
+
+Some random snippets to show how Asciidoc is used. For more examples see the http://asciidoctor.org/docs/user-manual[user manual].
+
+.Example for code snippets
+[source, java]
+----
+class SomeClass { }
+----
+
+.Example for code included from the sources
+[source, java]
+----
+include::{source-base}/AbstractIntegrationTests.java[tags=testBase]
+----

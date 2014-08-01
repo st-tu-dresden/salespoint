@@ -25,9 +25,11 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * @author Oliver Gierke
  */
+// tag::testBase[]
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Salespoint.class)
 @Transactional
 public abstract class AbstractIntegrationTests {
 
 }
+// end::testBase[]

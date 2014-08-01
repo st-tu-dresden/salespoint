@@ -1,0 +1,23 @@
+# Salespoint Framework
+
+## Prerequisites
+
+- Java 8
+- Git
+- Maven 3.x
+
+## Building the project
+
+.Building the project
+[source, bash]
+----
+$ git clone https://github.com/st-tu-dresden/SalesPoint
+$ cd SalesPoint
+$ mvn clean install
+----
+
+## Documentation
+
+The reference documentation is written in Asciidoc and built using Asciidoctor. The main documentation source file is located in `src/main/asciidoc`.
+
+To build the reference documentation simply run `mvn generate-resources` on the command line. The generated HTML file is then located in `target/generated-docs/index.html`.
