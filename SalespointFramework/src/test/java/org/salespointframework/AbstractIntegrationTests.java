@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
 package org.salespointframework;
 
 import org.junit.runner.RunWith;
-import org.springframework.boot.context.initializer.ConfigFileApplicationContextInitializer;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Oliver Gierke
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = Salespoint.class, initializers = ConfigFileApplicationContextInitializer.class)
+@SpringApplicationConfiguration(classes = Salespoint.class)
 @Transactional
 public abstract class AbstractIntegrationTests {
 
