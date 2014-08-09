@@ -6,11 +6,57 @@ Andreas Zaschka; Paul Henke; Oliver Gierke;
 
 :toc:
 
-[[overview]]
-== Overview
+[[preface]]
+== Preface
+=== Typographic Conventions
+Two typographic conventions are employed throughout this document to highlight specific phrases. The following paragraphs describe when and why these highlightings are used:
++Keywords+
+The Keyword font is used to denote variable names, class names, type names, java keywords, java package names and so forth.
+_Termini_
+Proper names and termini are printed in termini font.
+
+=== Introduction
+The Salespoint Framework is intended to minimize developing effort of point-of-sale applications. Salespoint 2010 users complainted about complexity, missing features and bugs. Thus, the decision was made to re-design and re-implement the framework from scratch. In 2013 some parts again were re-implemented with components of the spring project. Our development goal was an easy-to-use framework primarily targeted for educational purposes. As such Salespoint 5 is not tailored to any specific application, but designed with a wide area of applications in mind.
+Models and design patterns employed in Salespoint 5 are inspired by “Enterprise Patterns and MDA: Building Better Software with Archetype Patterns and UML” by Jim Arlow [1]. An overview of the functionality of the new features in Salespoint 5 are detailed in this document.
+We would like to thank all Salespoint users who submitted their feedback and encourage future users of Salespoint 5 to do the same.
 
 [[architecture]]
 == Technical Architecture
+=== Spring
+In contrast to earlier versions of the Salespoint Framework, Salespoint 5 obeys the MVC pattern. Salespoint 5 can be seen as the Model of an MVC application, no parts of the View or the Controller are implemented in the framework. 
+Salespoint 5 is designed as basis for development of web applications, using the _Spring Framework_ [6] to implement Views and Controllers. To further ease the development, Salespoint 5 includes property editors to convert string based representations to Salespoint 5 identifier types. Furthermore, JSP tags to check, if a user is logged in and if a user has a certain capability are included in the framework.
+As a big new approach in development with JPA, the Spring Framework with its repository interfaces can make the work very fast, clean and easy. The Crudrepository provides the basic methods for working with the database (CRUD stands for Create, Read, Update and Delete).
+
+===	JodaMoney
+In Salespoint 5.3.X money class and its related components were replaced by the Joda-Money [7] project. 
+Prices and other money values are represented as +org.joda.money.Money+ or for more precisison as +org.joda.money.BigMoney+ objects.
+Due to the fact, that all representing objects are immutable, all arithmetic functions produce a new object (see Listing 1).
+.Example for JodaMoney operations
+[source, java]
+----
+Money value_1 = Money.parse(“USD 23.07”);
+Money value_2 = Money.parse(“USD 18.07”);
+Money sum = value_1.plus(value_2);
+----
+Joda-Money also supports Currency (see *Example for JodaMoney operations*). 
+A set of loaded currencies is provided by an instance of CurrencyUnitDataProvider. But new and funky CurrencyUnits can be created to. So with this currencies, money values can be converted from one to another currency.
+
+===	Configuration of Salespoint 5
+The configuration for an application can be modified on the application class in the root package (e.g.  videoshop.Videoshop for the videoshop project). 
+Methods, annotated with +@Configuration+, will be scanned at the beginning of the deployment on the application server (in this case Spring Boot). This configuration files will tell the application server the settings for the application.
+By overriding the configuration method, you can specify the login behaviour or security functions. 
+For a basic login strategy the videoshop is a good start. 
+There you can see, that with authorizeRequests() an authorization will be set. 
+Following by matchers, you can specify the pages, this authorization is made on.
+Further, you can easily set an login page with formLogin() and the path to the login page with loginProcessingUrl("/login"). 
+Analogue the logout settings works like login system.
+
+===	DataInitilizer or filling Application with Test-Data
+Every Application should be tested, so an easy way is, to use test data. 
+So for this goal a recommend solution is, to load on every start of the application a bundle of test data into your system.
+As shown in the Videoshop project, a Datainitilizer class is registered and creates a lot of data and finally adds this data to the application. 
+For that purpose the Salespoint has an Interface +org.salespointframework.core.DataInitializer+, which can be used.
+
 
 [[stack]]
 == Technical Stack
