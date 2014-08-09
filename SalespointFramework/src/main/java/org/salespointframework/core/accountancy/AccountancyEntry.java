@@ -10,8 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 
 import org.hibernate.annotations.Type;
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.salespointframework.core.AbstractEntity;
-import org.salespointframework.core.money.Money;
 
 /**
  * This class represents an accountancy entry. It is
@@ -37,7 +38,7 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	private AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();
 
 	@Lob
-	private Money value = Money.ZERO;
+	private Money value = Money.zero(CurrencyUnit.EUR);
 
 	@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")//
 	private LocalDateTime date = null;

@@ -1,6 +1,14 @@
 package org.salespointframework.core.rounding;
 
+import static org.hamcrest.core.AllOf.*;
+import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.*;
+import static org.salespointframework.core.rounding.IsEqual.*;
+import static org.salespointframework.core.rounding.IsGreaterThan.*;
+import static org.salespointframework.core.rounding.IsGreaterThanOrEqual.*;
+import static org.salespointframework.core.rounding.IsSmallerThan.*;
+import static org.salespointframework.core.rounding.IsSmallerThanOrEqual.*;
+import static org.salespointframework.core.rounding.IsZero.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,14 +21,6 @@ import java.util.Map.Entry;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.salespointframework.core.quantity.rounding.BasicRoundingStrategy;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.AllOf.allOf;
-import static org.salespointframework.core.rounding.IsEqual.*;
-import static org.salespointframework.core.rounding.IsGreaterThan.*;
-import static org.salespointframework.core.rounding.IsGreaterThanOrEqual.*;
-import static org.salespointframework.core.rounding.IsSmallerThan.*;
-import static org.salespointframework.core.rounding.IsSmallerThanOrEqual.*;
-import static org.salespointframework.core.rounding.IsZero.*;
 
 /**
  * step rounding tests tested is each rounding direction with a value smaller
@@ -145,7 +145,8 @@ public class StepRoundingTests {
 					result.put(multipleStep.multiply(BigDecimal.valueOf(1.05)),
 							multipleStep);
 
-					break;
+				default:
+
 				}
 
 				for (Entry<BigDecimal, BigDecimal> e : result.entrySet()) {
@@ -219,7 +220,7 @@ public class StepRoundingTests {
 
 	@Test
 	public void StepTests() {
-		List<BigDecimal> values;
+		
 		BigDecimal result, remainder;
 		String msg;
 		for (RoundingMode mode : modes) {

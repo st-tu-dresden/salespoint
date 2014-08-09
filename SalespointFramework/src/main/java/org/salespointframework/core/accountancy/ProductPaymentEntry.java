@@ -1,5 +1,7 @@
 package org.salespointframework.core.accountancy;
 
+import java.util.Objects;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -7,13 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
+import org.joda.money.Money;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
-import org.salespointframework.core.money.Money;
 import org.salespointframework.core.order.OrderIdentifier;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
-
-import java.util.Objects;
 
 /**
  * A <code>ProductPaymentEntry</code> is used to store information of payments

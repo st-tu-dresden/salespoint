@@ -1,10 +1,10 @@
 package org.salespointframework.core.quantity;
 
+import java.math.RoundingMode;
+
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.junit.Test;
-import org.salespointframework.core.money.Money;
-import org.salespointframework.core.quantity.Metric;
-import org.salespointframework.core.quantity.Quantity;
-import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.quantity.rounding.RoundingStrategy;
 
 @SuppressWarnings("javadoc")
@@ -13,16 +13,16 @@ public class QuantityTests {
 	@Test
 	public void multiply() {
 		Quantity q = new Quantity(5, Units.METRIC, RoundingStrategy.ROUND_ONE);
-		Money m = new Money(2);
-		Money r = q.multiply(m);
+		Money m = Money.of(CurrencyUnit.EUR, 2);
+		Money r = m.multipliedBy(q.amount, RoundingMode.HALF_UP);
 		System.out.println("Result: " + r.toString());
 	}
 	
 	@Test
 	public void unitTest() {
 		Units u = Units.of(4);
-		Money m = new Money(15.76);
-		Money r = u.multiply(m);
+		Money m = Money.of(CurrencyUnit.EUR, 15.76);
+		Money r = m.multipliedBy(u.amount, RoundingMode.HALF_UP);
 		System.out.println("Result of " + u.toString() + " * " + m.toString() + " = " + r.toString());
 	}
 }

@@ -1,15 +1,15 @@
 package org.salespointframework.core.order;
 
+import java.util.Objects;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 
+import org.joda.money.Money;
 import org.salespointframework.core.AbstractEntity;
-import org.salespointframework.core.money.Money;
-
-import java.util.Objects;
 
 /**
  * A chargeline represents extra expenses like shipping.

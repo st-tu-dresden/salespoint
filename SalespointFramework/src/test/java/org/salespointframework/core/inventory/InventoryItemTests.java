@@ -2,11 +2,11 @@ package org.salespointframework.core.inventory;
 
 import static org.junit.Assert.*;
 
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.core.catalog.Keks;
-import org.salespointframework.core.inventory.InventoryItem;
-import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Units;
 
 @SuppressWarnings({ "javadoc"})
@@ -19,7 +19,7 @@ public class InventoryItemTests {
 
 	@Before
 	public void before() {
-		keks = new Keks("Superkeks " + (counter++), Money.ZERO);
+		keks = new Keks("Superkeks " + counter++, Money.zero(CurrencyUnit.EUR));
 
 		item = new InventoryItem(keks, Units.TEN);
 	}

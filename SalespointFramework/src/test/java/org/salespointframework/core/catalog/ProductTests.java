@@ -1,13 +1,13 @@
 package org.salespointframework.core.catalog;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Random;
 
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
-import org.salespointframework.core.money.Money;
 
 @SuppressWarnings("javadoc")
 public class ProductTests {
@@ -16,7 +16,7 @@ public class ProductTests {
 
 	@Before
 	public void before() {
-		keks = new Keks("Schoooki", Money.ZERO);
+		keks = new Keks("Schoooki", Money.zero(CurrencyUnit.EUR));
 	}
 
 	@Test(expected = NullPointerException.class)

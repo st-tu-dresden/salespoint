@@ -2,6 +2,8 @@ package org.salespointframework.core.order;
 
 import static org.junit.Assert.*;
 
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
@@ -9,7 +11,6 @@ import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.catalog.Keks;
 import org.salespointframework.core.catalog.Product;
-import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountManager;
@@ -32,7 +33,7 @@ public class OrderLineTests extends AbstractIntegrationTests {
 
 	@Before
 	public void before() {
-		Product keks = new Keks("OrderLine Keks " + keksCounter++, Money.ZERO);
+		Product keks = new Keks("OrderLine Keks " + keksCounter++, Money.zero(CurrencyUnit.EUR));
 
 		catalog.add(keks);
 

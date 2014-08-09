@@ -19,10 +19,11 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 import org.hamcrest.Matchers;
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,7 +40,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	@Test
 	public void findsProductsByCategory() {
 		
-		Product product = new Product("MacBook", new Money(2700.0), Units.METRIC);
+		Product product = new Product("MacBook", Money.of(CurrencyUnit.EUR, 2700.0), Units.METRIC);
 		product.addCategory("Apple");
 		
 		catalog.add(product);
@@ -52,7 +53,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	
 	@Before
 	public void before() {
-		keks = new Keks("Schoki", new Money(0));
+		keks = new Keks("Schoki", Money.zero(CurrencyUnit.EUR));
 	}
 
 	@Test

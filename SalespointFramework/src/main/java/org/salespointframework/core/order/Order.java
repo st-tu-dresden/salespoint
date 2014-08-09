@@ -18,10 +18,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
-import org.salespointframework.core.money.Money;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.util.Iterables;
 
@@ -183,21 +184,21 @@ public class Order extends AbstractEntity<OrderIdentifier> implements Comparable
 	}
 
 	public Money getTotalPrice() {
-		return this.getOrderedLinesPrice().add(this.getChargeLinesPrice());
+		return this.getOrderedLinesPrice().plus(this.getChargeLinesPrice());
 	}
 
 	public Money getOrderedLinesPrice() {
-		Money price = Money.ZERO;
+		Money price = Money.zero(CurrencyUnit.EUR);
 		for (OrderLine orderLine : orderLines) {
-			price = price.add(orderLine.getPrice());
+			price = price.plus(orderLine.getPrice());
 		}
 		return price;
 	}
 
 	public Money getChargeLinesPrice() {
-		Money price = Money.ZERO;
+		Money price = Money.zero(CurrencyUnit.EUR);
 		for (ChargeLine chargeLine : chargeLines) {
-			price = price.add(chargeLine.getPrice());
+			price = price.plus(chargeLine.getPrice());
 		}
 		return price;
 	}

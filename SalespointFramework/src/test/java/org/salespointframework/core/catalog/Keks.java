@@ -2,8 +2,8 @@ package org.salespointframework.core.catalog;
 
 import javax.persistence.Entity;
 
-import org.salespointframework.core.catalog.Product;
-import org.salespointframework.core.money.Money;
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.salespointframework.core.quantity.Units;
 
 @SuppressWarnings("javadoc")
@@ -18,6 +18,6 @@ public class Keks extends Product {
 	}
 	
 	public Keks(String name, Money price) {
-		super(name, Money.OVER9000, Units.METRIC);
+		super(name, Money.of(CurrencyUnit.EUR, 9001), Units.METRIC);
 	}
 }

@@ -15,8 +15,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.salespointframework.core.Interval;
-import org.salespointframework.core.money.Money;
 import org.salespointframework.core.time.BusinessTime;
 import org.salespointframework.util.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,9 +148,9 @@ class PersistentAccountancy implements Accountancy {
 		Map<Interval, Iterable<T>> entries = find(clazz, from, to, period);
 
 		for (Entry<Interval, Iterable<T>> e : entries.entrySet()) {
-			total = Money.ZERO;
+			total = Money.zero(CurrencyUnit.EUR);
 			for (T t : e.getValue()) {
-				total = total.add(t.getValue());
+				total = total.plus(t.getValue());
 			}
 			sales.put(e.getKey(), total);
 		}

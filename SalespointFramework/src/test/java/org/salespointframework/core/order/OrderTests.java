@@ -6,8 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.accountancy.payment.Cash;
-import org.salespointframework.core.order.Order;
-import org.salespointframework.core.order.OrderStatus;
 import org.salespointframework.core.order.OrderCompletionResult.OrderCompletionStatus;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountManager;

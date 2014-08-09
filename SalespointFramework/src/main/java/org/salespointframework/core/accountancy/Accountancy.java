@@ -4,8 +4,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import org.joda.money.Money;
 import org.salespointframework.core.Interval;
-import org.salespointframework.core.money.Money;
 
 /**
  * The {@code Accountancy} interface is implemented by classes offering a

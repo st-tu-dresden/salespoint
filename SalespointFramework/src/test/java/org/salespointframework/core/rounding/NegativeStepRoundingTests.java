@@ -1,15 +1,14 @@
 package org.salespointframework.core.rounding;
 
+import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.*;
+import static org.salespointframework.core.rounding.IsEqual.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import org.junit.Test;
 import org.salespointframework.core.quantity.rounding.BasicRoundingStrategy;
-
-import static org.hamcrest.core.Is.is;
-import static org.salespointframework.core.rounding.IsEqual.*;
 
 @SuppressWarnings("javadoc")
 public class NegativeStepRoundingTests {

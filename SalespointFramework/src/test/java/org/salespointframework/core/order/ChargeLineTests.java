@@ -2,11 +2,12 @@ package org.salespointframework.core.order;
 
 import static org.junit.Assert.*;
 
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.accountancy.payment.Cash;
-import org.salespointframework.core.money.Money;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class ChargeLineTests  extends AbstractIntegrationTests {
 	public void before() {
 		user = userAccountManager.create("userId", "");
 		order = new Order(user, Cash.CASH);
-		chargeLine = new ChargeLine(Money.ZERO, "gaaar nix");
+		chargeLine = new ChargeLine(Money.zero(CurrencyUnit.EUR), "gaaar nix");
 	}
 
 	@Test(expected = NullPointerException.class)

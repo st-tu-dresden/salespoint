@@ -4,7 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import org.salespointframework.core.money.Money;
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.salespointframework.util.Iterables;
 
 public class Basket {
@@ -43,9 +44,9 @@ public class Basket {
 	}
 	
 	public Money getPrice() {
-		Money price = Money.ZERO;
+		Money price = Money.zero(CurrencyUnit.EUR);
 		for (OrderLine orderLine : orderLines) {
-			price = price.add(orderLine.getPrice());
+			price = price.plus(orderLine.getPrice());
 		}
 		return price;
 	}

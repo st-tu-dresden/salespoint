@@ -1,13 +1,15 @@
 package org.salespointframework.core.inventory;
 
-import static junit.framework.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.catalog.Keks;
-import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,7 +28,7 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 
 	@Before
 	public void before() {
-		keks = new Keks("Superkeks " + (counter++), Money.ZERO);
+		keks = new Keks("Superkeks " + (counter++), Money.zero(CurrencyUnit.EUR));
 
 		item = new InventoryItem(keks, Units.TEN);
 
@@ -41,7 +43,7 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 	@Test
 	public void addInInventoryAddsProductInCatalog() {
 		inventory.add(item);
-		assertTrue(catalog.contains(keks.getIdentifier()));
+		assertThat(catalog.contains(keks.getIdentifier()), is(true));
 	}
 
 	@Test
@@ -64,7 +66,7 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 		catalog.add(keks);
 		inventory.add(item);
 		inventory.remove(item.getIdentifier());
-		assertTrue(catalog.contains(keks.getIdentifier()));
+		assertThat(catalog.contains(keks.getIdentifier()), is(true));
 	}
 
 }

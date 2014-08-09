@@ -5,8 +5,9 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.salespointframework.core.Interval;
-import org.salespointframework.core.money.Money;
 import org.springframework.transaction.annotation.Transactional;
 
 // FIXME
@@ -70,10 +71,10 @@ public class AccountancyPeriodTests { // extends AbstractIntegrationTests {
 		System.out.println("Getting entries from " + from + " to " + to);
 		Map<Interval, Iterable<ProductPaymentEntry>> m = a.find(ProductPaymentEntry.class, from, to, Duration.ofMillis(200));
 		for (Entry<Interval, Iterable<ProductPaymentEntry>> e : m.entrySet()) {
-			total = Money.ZERO;
+			total = Money.zero(CurrencyUnit.EUR);
 			for (ProductPaymentEntry p : e.getValue()) {
 				System.out.println("\t" + p.getValue());
-				total = total.add(p.getValue());
+				total = total.plus(p.getValue());
 			}
 			System.out.println("Money for interval " + e.getKey() + ": " + total);
 

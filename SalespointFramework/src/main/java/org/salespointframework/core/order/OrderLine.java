@@ -1,5 +1,6 @@
 package org.salespointframework.core.order;
 
+import java.math.RoundingMode;
 import java.util.Objects;
 
 import javax.persistence.AttributeOverride;
@@ -9,20 +10,19 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.catalog.Product;
 import org.salespointframework.core.catalog.ProductIdentifier;
-import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.MetricMismatchException;
 import org.salespointframework.core.quantity.Quantity;
 
-
-// TODO comments
 /**
- * This class is immutable.
+ * An order line
  * 
  * @author Paul Henke
- *
+ * @author Oliver Gierke
  */
 @Entity
 public class OrderLine extends AbstractEntity<OrderLineIdentifier>
@@ -35,9 +35,8 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier>
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
 	private ProductIdentifier productIdentifier;
 
-
 	@Lob
-	private Money price = Money.ONE;
+	private Money price = Money.of(CurrencyUnit.EUR, 1.0);
 
 	private String productName;
 
@@ -59,7 +58,7 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier>
 			throw new MetricMismatchException("product.getMetric() is not equal to this.quantity.getMetric()");
 		}
 		
-		this.price = quantity.multiply(product.getPrice());
+		this.price = product.getPrice().multipliedBy(quantity.getAmount(), RoundingMode.HALF_UP);
 		this.productName = product.getName();
 	}
 

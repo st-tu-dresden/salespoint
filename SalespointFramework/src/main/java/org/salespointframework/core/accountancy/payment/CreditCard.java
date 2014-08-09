@@ -3,7 +3,7 @@ package org.salespointframework.core.accountancy.payment;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import org.salespointframework.core.money.Money;
+import org.joda.money.Money;
 
 /**
  * 

@@ -5,21 +5,22 @@ import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Column;
 import javax.persistence.Lob;
 
+import org.joda.money.Money;
 import org.salespointframework.core.AbstractEntity;
-import org.salespointframework.core.money.Money;
 import org.salespointframework.core.quantity.Metric;
 import org.salespointframework.util.Iterables;
 
 /**
- * A persistent implementation of the {@link Product} interface.
- * @author Paul Henke
+ * A product.
  * 
+ * @author Paul Henke
+ * @author Oliver Gierke
  */
 @Entity
 public class Product extends AbstractEntity<ProductIdentifier> implements Comparable<Product>
@@ -29,6 +30,7 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 	private ProductIdentifier productIdentifier = new ProductIdentifier();
 
 	private String name;
+	
 	@Lob
 	private Money price;
 
