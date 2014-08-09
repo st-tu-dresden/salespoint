@@ -2,7 +2,8 @@ package org.salespointframework.core.accountancy;
 
 import static org.junit.Assert.*;
 
-import org.joda.time.DateTime;
+import java.time.LocalDateTime;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
@@ -20,8 +21,8 @@ public class AccountancyTests extends AbstractIntegrationTests {
 	@Autowired Accountancy a;
 	@Autowired UserAccountManager userAccountManager;
 
-	private DateTime from;
-	private DateTime to;
+	private LocalDateTime from;
+	private LocalDateTime to;
 
 	@Before
 	public void testSetup() throws Exception {
@@ -42,11 +43,11 @@ public class AccountancyTests extends AbstractIntegrationTests {
 			}
 
 			if (year == 2002) {
-				from = new DateTime();
+				from = LocalDateTime.now();
 			}
 			
 			if (year == 2008) {
-				to = new DateTime();
+				to = LocalDateTime.now();
 			}
 
 			Thread.sleep(1 * 10);

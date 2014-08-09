@@ -1,5 +1,7 @@
 package org.salespointframework.core.accountancy;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,11 +15,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
-import org.joda.time.Period;
+import org.salespointframework.core.Interval;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.time.TimeService;
+import org.salespointframework.core.time.BusinessTime;
 import org.salespointframework.util.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,11 +38,11 @@ class PersistentAccountancy implements Accountancy {
 	@PersistenceContext
 	private EntityManager em;
 
-	private final TimeService timeService;
+	private final BusinessTime businessTime;
 	
 	@Autowired
-	public PersistentAccountancy(TimeService timeService) {
-		this.timeService = timeService;
+	public PersistentAccountancy(BusinessTime businessTime) {
+		this.businessTime = businessTime;
 	}
 	
 	
@@ -58,7 +58,7 @@ class PersistentAccountancy implements Accountancy {
 	public final void add(AccountancyEntry accountancyEntry) {
 		Objects.requireNonNull(accountancyEntry, "accountancyEntry must not be null");
 		if(accountancyEntry.getDate() == null) {
-			accountancyEntry.setDate(timeService.getTime().getDateTime());
+			accountancyEntry.setDate(businessTime.getTime());
 		}
 		em.persist(accountancyEntry);
 	}
@@ -90,7 +90,7 @@ class PersistentAccountancy implements Accountancy {
 
 	@Override
 	public final <T extends AccountancyEntry> Iterable<T> find(
-			Class<T> clazz, DateTime from, DateTime to) {
+			Class<T> clazz, LocalDateTime from, LocalDateTime to) {
 		Objects.requireNonNull(from, "from must not be null");
 		Objects.requireNonNull(to, "to must not be null");
 		Objects.requireNonNull(clazz, "clazz must not be null");
@@ -100,7 +100,7 @@ class PersistentAccountancy implements Accountancy {
 		Root<T> entry = q.from(clazz);
 
 		Predicate p1 = cb.between(entry.get(AccountancyEntry_.date),
-				from.toDate(), to.toDate());
+				from, to);
 
 		q.where(p1);
 		TypedQuery<T> tq = em.createQuery(q);
@@ -110,19 +110,19 @@ class PersistentAccountancy implements Accountancy {
 
 	@Override
 	public final <T extends AccountancyEntry> Map<Interval, Iterable<T>> find(
-			Class<T> clazz, DateTime from, DateTime to, Period period) {
+			Class<T> clazz, LocalDateTime from, LocalDateTime to, Duration duration) {
+		
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(from, "from must not be null");
 		Objects.requireNonNull(to, "to must not be null");
-		Objects.requireNonNull(period, "period must not be null");
+		Objects.requireNonNull(duration, "period must not be null");
 
-		DateTime nextStep;
+		LocalDateTime nextStep;
 		Map<Interval, Iterable<T>> entries = new HashMap<Interval, Iterable<T>>();
 
-		for (; from.isBefore(to.minus(period)); from = from.plus(period)) {
-			nextStep = from.plus(period);
-			entries.put(new Interval(from, nextStep),
-					find(clazz, from, nextStep));
+		for (; from.isBefore(to.minus(duration)); from = from.plus(duration)) {
+			nextStep = from.plus(duration);
+			entries.put(new Interval(from, nextStep), find(clazz, from, nextStep));
 		}
 		/*
 		 * Remove last interval from loop, to save the test for the last
@@ -135,7 +135,8 @@ class PersistentAccountancy implements Accountancy {
 
 	@Override
 	public final <T extends AccountancyEntry> Map<Interval, Money> salesVolume(
-			Class<T> clazz, DateTime from, DateTime to, Period period) {
+			Class<T> clazz, LocalDateTime from, LocalDateTime to, Duration period) {
+		
 		Objects.requireNonNull(clazz, "clazz must not be null");
 		Objects.requireNonNull(from, "from must not be null");
 		Objects.requireNonNull(to, "to must not be null");

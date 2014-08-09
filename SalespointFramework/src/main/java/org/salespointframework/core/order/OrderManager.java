@@ -1,6 +1,7 @@
 package org.salespointframework.core.order;
 
-import org.joda.time.DateTime;
+import java.time.LocalDateTime;
+
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountIdentifier;
@@ -10,7 +11,7 @@ import org.salespointframework.core.useraccount.UserAccountIdentifier;
  * 
  * @author Thomas Dedek
  * @author Paul Henke
- * 
+ * @author Oliver Gierke
  */
 public interface OrderManager
 {
@@ -62,7 +63,7 @@ public interface OrderManager
 	 *         to
 	 * @throws NullPointerException if from or to are null         
 	 */
-	<E extends Order> Iterable<E> find(Class<E> clazz, DateTime from, DateTime to);
+	<E extends Order> Iterable<E> find(Class<E> clazz, LocalDateTime from, LocalDateTime to);
 	
 	/**
 	 * Returns all {@link Order}s from the given {@link UserAccountIdentifier}. If this user
@@ -94,8 +95,7 @@ public interface OrderManager
 	 *         specified user in the specified period.
 	 * @throws NullPointerException if any argument is null         
 	 */
-	<E extends Order> Iterable<E> find(Class<E> clazz, UserAccount userAccount, DateTime from, DateTime to);
-	
+	<E extends Order> Iterable<E> find(Class<E> clazz, UserAccount userAccount, LocalDateTime from, LocalDateTime to);
 	
 	/**
 	 * Tries to complete this order, the {@link OrderStatus} has to be PAYED 

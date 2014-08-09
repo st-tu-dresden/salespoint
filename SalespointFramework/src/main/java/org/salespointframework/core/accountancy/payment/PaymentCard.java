@@ -1,7 +1,6 @@
 package org.salespointframework.core.accountancy.payment;
 
-import org.joda.time.DateTime;
-import org.salespointframework.core.accountancy.payment.PaymentMethod;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -28,9 +27,9 @@ public abstract class PaymentCard extends PaymentMethod {
 
 	private final String billingAddress;
 
-	private final DateTime validFrom;
+	private final LocalDateTime validFrom;
 
-	private final DateTime expiryDate;
+	private final LocalDateTime expiryDate;
 
 	private final String cardVerificationCode;
 
@@ -56,7 +55,7 @@ public abstract class PaymentCard extends PaymentMethod {
 	 */
 	public PaymentCard(String cardName, String cardAssociationName,
 			String cardNumber, String nameOnCard, String billingAddress,
-			DateTime validFrom, DateTime expiryDate, String cardVerificationCode) {
+			LocalDateTime validFrom, LocalDateTime expiryDate, String cardVerificationCode) {
 		super(Objects.requireNonNull(cardName, "cardName  must not be null"));
 		
 		this.cardAssociationName = Objects.requireNonNull(cardAssociationName, "cardAssociationName  must not be null");
@@ -108,7 +107,7 @@ public abstract class PaymentCard extends PaymentMethod {
 	 * @return {@link DateTime} representing the date from which the card
 	 *         is valid.
 	 */
-	public DateTime getValidFrom() {
+	public LocalDateTime getValidFrom() {
 		return validFrom;
 	}
 
@@ -118,7 +117,7 @@ public abstract class PaymentCard extends PaymentMethod {
 	 * @return {@link DateTime} representing the date on which the card
 	 *         expires.
 	 */
-	public DateTime getExpiryDate() {
+	public LocalDateTime getExpiryDate() {
 		return expiryDate;
 	}
 

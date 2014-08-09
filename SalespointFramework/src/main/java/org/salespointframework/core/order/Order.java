@@ -1,6 +1,6 @@
 package org.salespointframework.core.order;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -16,10 +16,8 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import org.joda.time.DateTime;
+import org.hibernate.annotations.Type;
 import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.accountancy.ProductPaymentEntry;
 import org.salespointframework.core.accountancy.payment.PaymentMethod;
@@ -31,7 +29,7 @@ import org.salespointframework.util.Iterables;
  * 
  * @author Thomas Dedek
  * @author Paul Henke
- * 
+ * @author Oliver Gierke
  */
 @Entity
 @Table(name = "ORDERS")
@@ -48,8 +46,8 @@ public class Order extends AbstractEntity<OrderIdentifier> implements Comparable
 	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))
 	private UserAccount userAccount;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateCreated = null;
+	@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
+	private LocalDateTime dateCreated = null;
 
 	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus = OrderStatus.OPEN;
@@ -211,8 +209,8 @@ public class Order extends AbstractEntity<OrderIdentifier> implements Comparable
 				+ orderIdentifier.toString();
 	}
 
-	public final DateTime getDateCreated() {
-		return new DateTime(dateCreated);
+	public final LocalDateTime getDateCreated() {
+		return dateCreated;
 	}
 
 
@@ -392,7 +390,7 @@ public class Order extends AbstractEntity<OrderIdentifier> implements Comparable
 			return ppe;
 	}
 
-	void setDateCreated(DateTime dateTime) {
-		this.dateCreated = dateTime.toDate();
+	void setDateCreated(LocalDateTime dateTime) {
+		this.dateCreated = dateTime;
 	}
 }

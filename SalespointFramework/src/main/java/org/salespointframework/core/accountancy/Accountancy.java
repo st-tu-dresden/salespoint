@@ -1,10 +1,10 @@
 package org.salespointframework.core.accountancy;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Map;
 
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
-import org.joda.time.Period;
+import org.salespointframework.core.Interval;
 import org.salespointframework.core.money.Money;
 
 /**
@@ -76,15 +76,15 @@ public interface Accountancy {
 	 *            common super type of all entries returned
 	 * 
 	 * @param from
-	 *            {@link DateTime} denoting the start of the requested time period
+	 *            {@link LocalDateTime} denoting the start of the requested time period
 	 * @param to
-	 *            {@link DateTime} denoting the end of the requested time period
+	 *            {@link LocalDateTime} denoting the end of the requested time period
 	 * @param clazz
 	 *            class type of the requested entries, has to implement
 	 *            {@link AccountancyEntry}
 	 * @return an {@link Iterable} containing all entries between from and to of type E
 	 */
-	<E extends AccountancyEntry> Iterable<E> find(Class<E> clazz, DateTime from, DateTime to);
+	<E extends AccountancyEntry> Iterable<E> find(Class<E> clazz, LocalDateTime from, LocalDateTime to);
 
 	
 	// TODO comment fortsetzen? -> " If no entries for an interval exist"
@@ -115,7 +115,7 @@ public interface Accountancy {
 	 * @param to
 	 *            all returned entries will have a time stamp before
 	 *            {@code to}
-	 * @param period
+	 * @param duration
 	 *            length of the time intervals, the period between
 	 *            {@code from} and {@code to} is divided
 	 * @return a map, with intervals of {@code period} length between
@@ -124,7 +124,7 @@ public interface Accountancy {
 	 *         <code>Interval</code>
 	 */
 	<E extends AccountancyEntry> Map<Interval, Iterable<E>> find(Class<E> clazz,
-			DateTime from, DateTime to, Period period);
+			LocalDateTime from, LocalDateTime to, Duration duration);
 
 	/**
 	 * Returns the sum of the field {@code amount} of all
@@ -156,7 +156,7 @@ public interface Accountancy {
 	 * @param to
 	 *            all returned entries will have a time stamp before
 	 *            {@code to}
-	 * @param period
+	 * @param duration
 	 *            length of the time intervals, the period between
 	 *            {@code from} and {@code to} is divided
 	 * @return a map, with intervals of {@code period} length between
@@ -165,5 +165,5 @@ public interface Accountancy {
 	 *         of all entries within the key-<code>Interval</code>
 	 */
 	<E extends AccountancyEntry> Map<Interval, Money> salesVolume(Class<E> clazz,
-			DateTime from, DateTime to, Period period);
+			LocalDateTime from, LocalDateTime to, Duration duration);
 }

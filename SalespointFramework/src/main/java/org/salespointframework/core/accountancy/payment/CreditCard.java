@@ -1,13 +1,14 @@
 package org.salespointframework.core.accountancy.payment;
 
-import org.joda.time.DateTime;
-import org.salespointframework.core.accountancy.payment.PaymentCard;
-import org.salespointframework.core.money.Money;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import org.salespointframework.core.money.Money;
 
 /**
  * 
  * @author Hannes Weisbach
+ * @author Oliver Gierke
  * 
  */
 @SuppressWarnings("serial")
@@ -51,7 +52,7 @@ public final class CreditCard extends PaymentCard {
 	 */
 	public CreditCard(String cardName, String cardAssociationName,
 			String cardNumber, String nameOnCard, String billingAddress,
-			DateTime validFrom, DateTime expiryDate,
+			LocalDateTime validFrom, LocalDateTime expiryDate,
 			String cardVerificationCode, Money dailyWithdrawalLimit,
 			Money creditLimit) {
 		super(Objects.requireNonNull(cardName, "cardName must not be null"), 
@@ -92,8 +93,8 @@ public final class CreditCard extends PaymentCard {
 	 *            the issuing association to the card owner
 	 */
 	public CreditCard(String cardAssociationName, String cardNumber,
-			String nameOnCard, String billingAddress, DateTime validFrom,
-			DateTime expiryDate, String cardVerificationCode,
+			String nameOnCard, String billingAddress, LocalDateTime validFrom,
+			LocalDateTime expiryDate, String cardVerificationCode,
 			Money dailyWithdrawalLimit, Money creditLimit) {
 		super("A credit card", Objects.requireNonNull(cardAssociationName,
 				"cardAssociationName must not be null"), Objects.requireNonNull(cardNumber,

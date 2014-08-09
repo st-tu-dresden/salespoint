@@ -25,7 +25,7 @@ import org.salespointframework.core.DataInitializer;
 import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.order.OrderManager;
-import org.salespointframework.core.time.TimeService;
+import org.salespointframework.core.time.BusinessTime;
 import org.salespointframework.core.useraccount.AuthenticationManager;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 	@Autowired Inventory inventory;
 	@Autowired OrderManager orderManager;
 	@Autowired Catalog catalog;
-	@Autowired TimeService timeService;
+	@Autowired BusinessTime businessTime;
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired AuthenticationManager authenticationManager;
 	@Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
@@ -54,7 +54,7 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 		assertThat(orderManager, is(notNullValue()));
 		assertThat(catalog, is(notNullValue()));
 		assertThat(userAccountManager, is(notNullValue()));
-		assertThat(timeService, is(notNullValue()));
+		assertThat(businessTime, is(notNullValue()));
 		assertThat(authenticationManager, is(notNullValue()));
 		assertThat(argumentResolvers, hasSize(1));
 		assertThat(initializer, is(notNullValue()));

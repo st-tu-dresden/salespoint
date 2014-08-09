@@ -1,5 +1,6 @@
 package org.salespointframework.core.order;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -12,14 +13,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.joda.time.DateTime;
 import org.salespointframework.core.accountancy.Accountancy;
 import org.salespointframework.core.catalog.ProductIdentifier;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.inventory.InventoryItem;
 import org.salespointframework.core.order.OrderCompletionResult.OrderCompletionStatus;
 import org.salespointframework.core.quantity.Quantity;
-import org.salespointframework.core.time.TimeService;
+import org.salespointframework.core.time.BusinessTime;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.util.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +34,16 @@ import org.springframework.transaction.support.TransactionTemplate;
  * 
  * @author Thomas Dedek
  * @author Paul Henke
- * 
+ * @author Oliver Gierke
  */
 @Service
 @Transactional
-class PersistentOrderManager implements OrderManager
-{
+class PersistentOrderManager implements OrderManager {
 
 	private final Inventory inventory;
 	private final TransactionTemplate txTemplate;
 	private final Accountancy accountancy;
-	private final TimeService timeService;
+	private final BusinessTime businessTime;
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -53,11 +52,11 @@ class PersistentOrderManager implements OrderManager
 	 * creates a new PersistentOrderManager
 	 */
 	@Autowired
-	public PersistentOrderManager(Inventory inventory, Accountancy accountancy, TimeService timeService, PlatformTransactionManager txManager) {
+	public PersistentOrderManager(Inventory inventory, Accountancy accountancy, BusinessTime businessTime, PlatformTransactionManager txManager) {
 		
 		this.inventory = Objects.requireNonNull(inventory, "inventory must not be null!");
 		this.accountancy = Objects.requireNonNull(accountancy, "accountancy must not be null!");
-		this.timeService = Objects.requireNonNull(timeService, "timeService must not be null!");
+		this.businessTime = Objects.requireNonNull(businessTime, "businessTime must not be null!");
 		this.txTemplate = new TransactionTemplate(txManager);
 	}
 	
@@ -66,7 +65,7 @@ class PersistentOrderManager implements OrderManager
 	{
 		Objects.requireNonNull(order, "order must be not null");
 		if(order.getDateCreated() == null) {
-			order.setDateCreated(timeService.getTime().getDateTime());
+			order.setDateCreated(businessTime.getTime());
 		}
 		entityManager.persist(order);
 	}
@@ -102,7 +101,7 @@ class PersistentOrderManager implements OrderManager
 	}
 
 	@Override
-	public final <T extends Order> Iterable<T> find(Class<T> clazz, DateTime from, DateTime to)
+	public final <T extends Order> Iterable<T> find(Class<T> clazz, LocalDateTime from, LocalDateTime to)
 	{
 		Objects.requireNonNull(from, "from must not be null");
 		Objects.requireNonNull(to, "to must not be null");
@@ -110,7 +109,7 @@ class PersistentOrderManager implements OrderManager
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(clazz);
 		Root<T> entry = cq.from(clazz);
-		cq.where(cb.between(entry.get(Order_.dateCreated), from.toDate(), to.toDate()));
+		cq.where(cb.between(entry.get(Order_.dateCreated), from, to));
 		TypedQuery<T> tq = entityManager.createQuery(cq);
 
 		return Iterables.of(tq.getResultList());
@@ -147,7 +146,7 @@ class PersistentOrderManager implements OrderManager
 	}
 
 	@Override
-	public final <T extends Order> Iterable<T> find(Class<T> clazz, UserAccount userAccount, DateTime from, DateTime to)
+	public final <T extends Order> Iterable<T> find(Class<T> clazz, UserAccount userAccount, LocalDateTime from, LocalDateTime to)
 	{
 		Objects.requireNonNull(userAccount, "userAccount must not be null");
 		Objects.requireNonNull(from, "from must not be null");
@@ -157,7 +156,7 @@ class PersistentOrderManager implements OrderManager
 		CriteriaQuery<T> cq = cb.createQuery(clazz);
 		Root<T> entry = cq.from(clazz);
 		Predicate p1 = cb.equal(entry.get(Order_.userAccount), userAccount);
-		Predicate p2 = cb.between(entry.get(Order_.dateCreated), from.toDate(), to.toDate());
+		Predicate p2 = cb.between(entry.get(Order_.dateCreated), from, to);
 		cq.where(p1, p2);
 		TypedQuery<T> tq = entityManager.createQuery(cq);
 

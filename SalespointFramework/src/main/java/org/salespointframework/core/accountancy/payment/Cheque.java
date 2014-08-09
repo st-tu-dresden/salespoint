@@ -1,9 +1,7 @@
 package org.salespointframework.core.accountancy.payment;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
-
-import org.joda.time.DateTime;
-import org.salespointframework.core.accountancy.payment.PaymentMethod;
 
 /**
  * A is a written bill of exchange (or draft), a written order by the drawer
@@ -25,7 +23,7 @@ public final class Cheque extends PaymentMethod {
 
 	private final String payee;
 
-	private final DateTime dateWritten;
+	private final LocalDateTime dateWritten;
 
 	private final String bankName;
 	// TODO Address class
@@ -58,7 +56,7 @@ public final class Cheque extends PaymentMethod {
 	 *            known as the bank routing number.
 	 */
 	public Cheque(String accountName, String accountNumber,
-			String chequeNumber, String payee, DateTime dateWritten,
+			String chequeNumber, String payee, LocalDateTime dateWritten,
 			String bankName, String bankAddress, String bankIdentificationNumber) {
 		super("Cheque");
 		this.accountName = Objects.requireNonNull(accountName, "accountName must be not null");
@@ -113,7 +111,7 @@ public final class Cheque extends PaymentMethod {
 	 * 
 	 * @return DateTime containing the date on which the cheque was written.
 	 */
-	public DateTime getDateWritten() {
+	public LocalDateTime getDateWritten() {
 		return dateWritten;
 	}
 

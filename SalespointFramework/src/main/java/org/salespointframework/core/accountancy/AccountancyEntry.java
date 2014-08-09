@@ -1,20 +1,17 @@
 package org.salespointframework.core.accountancy;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import org.joda.time.DateTime;
+import org.hibernate.annotations.Type;
 import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.money.Money;
-
-import java.util.Objects;
 
 /**
  * This class represents an accountancy entry. It is
@@ -22,7 +19,7 @@ import java.util.Objects;
  * for example a {@link ProductPaymentEntry}.
  * 
  * @author Hannes Weisbach
- * 
+ * @author Oliver Gierke
  */
 @Entity
 //@Customizer(PersistentAccountancyEntryDescriptorCustomizer.class)
@@ -42,8 +39,8 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	@Lob
 	private Money value = Money.ZERO;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date date = null;
+	@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")//
+	private LocalDateTime date = null;
 
 	private String description = "";
 
@@ -83,12 +80,12 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	/**
 	 * @return the {@link DateTime} when this entry was posted.
 	 */
-	public final DateTime getDate() {
-		return new DateTime(date);
+	public final LocalDateTime getDate() {
+		return date;
 	}
 	
-	void setDate(DateTime dateTime) {
-		this.date = dateTime.toDate();
+	void setDate(LocalDateTime dateTime) {
+		this.date = dateTime; 
 	}
 
 	/**
