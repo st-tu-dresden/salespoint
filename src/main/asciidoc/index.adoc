@@ -1,6 +1,7 @@
 = SalesPoint Framework - Technical Reference
 Andreas Zaschka; Paul Henke; Oliver Gierke;
-:source-base: ../../test/java/org/salespointframework
+:source-base: ../../main/java/org/salespointframework
+:source-base-test: ../../test/java/org/salespointframework
 :toc:
 {version}
 
@@ -31,6 +32,7 @@ As a big new approach in development with JPA, the Spring Framework with its rep
 In Salespoint 5.3.X money class and its related components were replaced by the Joda-Money [7] project. 
 Prices and other money values are represented as +org.joda.money.Money+ or for more precisison as +org.joda.money.BigMoney+ objects.
 Due to the fact, that all representing objects are immutable, all arithmetic functions produce a new object (see Listing 1).
+
 .Example for JodaMoney operations
 [source, java]
 ----
@@ -38,7 +40,7 @@ Money value_1 = Money.parse(“USD 23.07”);
 Money value_2 = Money.parse(“USD 18.07”);
 Money sum = value_1.plus(value_2);
 ----
-Joda-Money also supports Currency (see *Example for JodaMoney operations*). 
+Joda-Money also supports Currency (see _Example for JodaMoney operations_). 
 A set of loaded currencies is provided by an instance of CurrencyUnitDataProvider. But new and funky CurrencyUnits can be created to. So with this currencies, money values can be converted from one to another currency.
 
 ===	Configuration of Salespoint 5
@@ -97,7 +99,72 @@ Library to build HTML web views using natural templating.
 [[modules]]
 == Business modules
 
-- Domain models
+[[modules.useraccount]]
+=== Useraccount
+To manage system accounts, Salespoint 5 has a notation of a user in the form of the User interface. 
+Users are managed by the UserAccountManager, who is also an interface. 
+Every user is uniquely identified by a +org.salespointframework.core.useraccount.UserAccountIdentifier+, which also serves as primary key attribute for the database. 
+
+.UserRole
++org.salespointframework.core.useraccount.Role+ s in conjunction with authorization tag _hasRole()_ can be used to change the appearance of a View, depending on a user’s status. 
+For example, a View for a user having an “administrator” role may display different content, for example delete buttons, than for a user not having that role. 
+Thus, roles allow for flexibility and assist in code reuse, when designing the View.
+
+.Login
+To reduce code repetition, Salespoint 5 contains code to automate user log in. 
+Using a JSP template, a special login form is generated, which is handled by an interceptor. 
+The interceptor verifies the user password and associates the current session with the user using _<login>_ and _<logoff>_. 
+The session is required, because multiple users can be logged on at the same time.
+
+.Limitation
+Due to the fact, that Salespoint use the SecuirtyContext for authentication, the +UserAccount+ cannot be extended.
+In the background the +org.salespointframework.core.useraccount.UserAccount+ is converted to an instance of 
++org.springframework.security.core.userdetails.UserDetails+ .
+[NOTE]
+.Extend the UserAccount
+====
+If this properties don’t meet all requirements, wrap the +UserAccount+ in a new +Entity+. + 
+Put all the new features in this new +Entity+ and connect this information via a +OneToOne+ relationship with the +UserAccount+. +
+An Example is the videoshop project.
+
+.Example for UserAccount extension
+[source, java]
+----
+@Entity
+public class UserAccountExtension {
+
+	private String string;
+	private Integer integer;
+
+	@OneToOne
+	private UserAccount userAccount;
+}
+----
+====
+
+[[modules.product]]
+=== Product
+Salespoint 5 is intended as framework for point-of-sale applications. 
+The items for sale are called “products” and represented by instances of classes who implement the Product interface. 
+To represent different kinds of products, +PersistentProduct+ can be sub-classed.
+PersistentProducts are aggregated by PersistentCatalog (see Section <<modules.catalog>>).
+
+.Product Identifier
+Products are supposed to be an abstraction, like an item on display or a picture in a catalog. 
+ProductInstances are used to represent the actual item you get, when you a buy a product. 
+Products are identified using a ProductIndentifier, whereas ProductInstances are identified by a SerialNumber. 
+ProductInstances can be thought of as identifiable instances of a certain product, which are identical apart from their SerialNumber.
+
+[[modules.catalog]]
+=== Catalog
+The Catalog interface was designed to manage Products and ProductFeatures in the system.
+It provides functionality to add, remove, and find Products.
+Products can be searched by their name or category.
+Products and ProductFeatures are more closely described in Section <<modules.product>>.
+The +PersistentCatalog+ is an implementation of the +Catalog+ interface.
+Additionally PersistentCatalog provides an update()-method to update and merge existing PersistentProducts to the database. 
+The find() methods request the database in the form of CriteriaQuerys which will be processed by JPA and results are returned in the form of Iterables. 
+The reason for this is to make returned objects immutable without making it difficult to iterate over these results.
 
 [appendix]
 == Asciidoc template
@@ -113,5 +180,5 @@ class SomeClass { }
 .Example for code included from the sources
 [source, java]
 ----
-include::{source-base}/AbstractIntegrationTests.java[tags=testBase]
+include::{source-base-test}/AbstractIntegrationTests.java[tags=testBase]
 ----
