@@ -37,24 +37,11 @@ class PersistentUserAccountManager implements UserAccountManager {
 		this.repository = repository;
 		this.passwordEncoder = passwordEncoder;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.core.useraccount.UserAccountManager#create(org.salespointframework.core.useraccount.UserAccountIdentifier, java.lang.String, org.salespointframework.core.useraccount.Role[])
+	 * @see org.salespointframework.core.useraccount.UserAccountManager#create(java.lang.String, java.lang.String, org.salespointframework.core.useraccount.Role[])
 	 */
-	@Override
-	@Deprecated
-	public UserAccount create(UserAccountIdentifier userAccountIdentifier, String password, Role... roles) {
-
-		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
-		Objects.requireNonNull(password, "password must not be null");
-		Objects.requireNonNull(roles, "roles must not be null");
-
-		UserAccount userAccount = new UserAccount(userAccountIdentifier, password, roles);
-		return userAccount;
-	}
-	
-	
 	@Override
 	public UserAccount create(String userName, String password, Role... roles) {
 
@@ -62,7 +49,9 @@ class PersistentUserAccountManager implements UserAccountManager {
 		Objects.requireNonNull(password, "password must not be null");
 		Objects.requireNonNull(roles, "roles must not be null");
 
-		return this.create(new UserAccountIdentifier(userName), password, roles);
+		UserAccountIdentifier identifier = new UserAccountIdentifier(userName);
+		
+		return new UserAccount(identifier, password, roles);
 	}
 
 	/*

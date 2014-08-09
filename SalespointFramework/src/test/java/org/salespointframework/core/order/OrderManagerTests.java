@@ -6,10 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.accountancy.payment.Cash;
-import org.salespointframework.core.order.Order;
-import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.useraccount.UserAccount;
-import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,7 +24,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 
 	@Before
 	public void before() {
-		user = userAccountManager.create(new UserAccountIdentifier(), "");
+		user = userAccountManager.create("userId", "");
 		userAccountManager.save(user);
 		order = new Order(user, Cash.CASH);
 	}

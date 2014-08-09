@@ -1,17 +1,13 @@
 package org.salespointframework.core.order;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.accountancy.payment.Cash;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.order.ChargeLine;
-import org.salespointframework.core.order.Order;
 import org.salespointframework.core.useraccount.UserAccount;
-import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,7 +23,7 @@ public class ChargeLineTests  extends AbstractIntegrationTests {
 
 	@Before
 	public void before() {
-		user = userAccountManager.create(new UserAccountIdentifier(), "");
+		user = userAccountManager.create("userId", "");
 		order = new Order(user, Cash.CASH);
 		chargeLine = new ChargeLine(Money.ZERO, "gaaar nix");
 	}

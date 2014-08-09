@@ -12,12 +12,6 @@ package org.salespointframework.core.useraccount;
 public interface UserAccountManager {
 	
 	/**
-	 * @deprecated  As of release 5.3.1, replaced by {@link #create(String, String, Role...)}
-	 */
-	@Deprecated
-	UserAccount create(UserAccountIdentifier userAccountIdentifier, String password, Role... roles);
-	
-	/**
 	 * Creates a new {@link UserAccount}
 	 * @param userName the unique name of the user, the name is also used as loginname
 	 * @param password the password

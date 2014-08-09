@@ -1,7 +1,6 @@
 package org.salespointframework.core.order;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,11 +10,8 @@ import org.salespointframework.core.catalog.Catalog;
 import org.salespointframework.core.catalog.Keks;
 import org.salespointframework.core.catalog.Product;
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.order.Order;
-import org.salespointframework.core.order.OrderLine;
 import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.useraccount.UserAccount;
-import org.salespointframework.core.useraccount.UserAccountIdentifier;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,7 +36,7 @@ public class OrderLineTests extends AbstractIntegrationTests {
 
 		catalog.add(keks);
 
-		user = userAccountManager.create(new UserAccountIdentifier(), "");
+		user = userAccountManager.create("userId", "");
 		order = new Order(user, Cash.CASH);
 		orderLine = new OrderLine(keks, Units.TEN);
 	}

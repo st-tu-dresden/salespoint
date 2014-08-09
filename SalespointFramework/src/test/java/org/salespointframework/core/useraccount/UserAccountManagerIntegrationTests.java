@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * Integration tests for {@link PersistentUserAccountManager}.
  *
- *@author Paul Henke
+ * @author Paul Henke
  * @author Oliver Gierke
  */
 @SuppressWarnings("javadoc")
@@ -23,14 +23,11 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired PasswordEncoder passwordEncoder;
 	
-	UserAccountIdentifier userAccountIdentifier;
 	UserAccount userAccount;
 	
 	@Before
 	public void before() {
-		
-		userAccountIdentifier = new UserAccountIdentifier();
-		userAccount = userAccountManager.create(userAccountIdentifier, "");
+		userAccount = userAccountManager.create("userId", "");
 	}
 	
 	@Test(expected = NullPointerException.class)
@@ -98,8 +95,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	@Test
 	public void changesPasswordCorrectly() {
 		
-		UserAccountIdentifier UI = new UserAccountIdentifier("Bob");
-    UserAccount acc = userAccountManager.create(UI, "123", new Role("ROLE_CHEF"));
+    UserAccount acc = userAccountManager.create("Bob", "123", new Role("ROLE_CHEF"));
     userAccountManager.save(acc);
     
     userAccountManager.changePassword(acc, "asd");
