@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.metamodel.EntityType;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,18 +38,22 @@ import org.springframework.util.Assert;
 class JpaEntityConverter implements ConditionalGenericConverter {
 
 	private final SalespointIdentifierConverter identifierConverter;
-	@PersistenceContext private EntityManager em;
+	private final EntityManager em;
 
 	/**
 	 * Creates a new {@link JpaEntityConverter} using the given {@link SalespointIdentifierConverter}.
 	 * 
 	 * @param identifierConverter must not be {@literal null}.
+	 * @param em must not be {@literal null}.
 	 */
 	@Autowired
-	public JpaEntityConverter(SalespointIdentifierConverter identifierConverter) {
+	public JpaEntityConverter(SalespointIdentifierConverter identifierConverter, EntityManager em) {
 		
 		Assert.notNull(identifierConverter, "Identifier converter must not be null!");
+		Assert.notNull(em, "EntityManager must not be null!");
+		
 		this.identifierConverter = identifierConverter;
+		this.em = em;
 	}
 
 	/*
