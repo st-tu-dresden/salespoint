@@ -9,17 +9,22 @@ Andreas Zaschka; Paul Henke; Oliver Gierke;
 
 [[preface]]
 == Preface
+
 === Typographic Conventions
 Two typographic conventions are employed throughout this document to highlight specific phrases. The following paragraphs describe when and why these highlightings are used:
+
 +Keywords+
-The Keyword font is used to denote variable names, class names, type names, java keywords, java package names and so forth.
+
+The Keyword font is used to denote variable names, class names, type names, Java keywords, Java package names and so forth.
+
 _Termini_
+
 Proper names and termini are printed in termini font.
 
 === Introduction
 The Salespoint Framework is intended to minimize developing effort of point-of-sale applications. Salespoint 2010 users complainted about complexity, missing features and bugs. Thus, the decision was made to re-design and re-implement the framework from scratch. In 2013 some parts again were re-implemented with components of the spring project. Our development goal was an easy-to-use framework primarily targeted for educational purposes. As such Salespoint 5 is not tailored to any specific application, but designed with a wide area of applications in mind.
-Models and design patterns employed in Salespoint 5 are inspired by “Enterprise Patterns and MDA: Building Better Software with Archetype Patterns and UML” by Jim Arlow [1]. An overview of the functionality of the new features in Salespoint 5 are detailed in this document.
-We would like to thank all Salespoint users who submitted their feedback and encourage future users of Salespoint 5 to do the same.
+
+Models and design patterns employed in Salespoint 5 are inspired by “Enterprise Patterns and MDA: Building Better Software with Archetype Patterns and UML” by Jim Arlow [1]. An overview of the functionality of the new features in Salespoint 5 are detailed in this document. We would like to thank all Salespoint users who submitted their feedback and encourage future users of Salespoint 5 to do the same.
 
 [[architecture]]
 == Technical Architecture
@@ -28,12 +33,13 @@ We would like to thank all Salespoint users who submitted their feedback and enc
 Pending
 
 === Spring
-In contrast to earlier versions of the Salespoint Framework, Salespoint 5 obeys the MVC pattern. Salespoint 5 can be seen as the Model of an MVC application, no parts of the View or the Controller are implemented in the framework. 
+In contrast to earlier versions of the Salespoint Framework, Salespoint 5 obeys the MVC pattern. Salespoint 5 can be seen as the Model of an MVC application, no parts of the View or the Controller are implemented in the framework.
 Salespoint 5 is designed as basis for development of web applications, using the _Spring Framework_ [6] to implement Views and Controllers. To further ease the development, Salespoint 5 includes property editors to convert string based representations to Salespoint 5 identifier types. Furthermore, JSP tags to check, if a user is logged in and if a user has a certain capability are included in the framework.
+
 As a big new approach in development with JPA, the Spring Framework with its repository interfaces can make the work very fast, clean and easy. The Crudrepository provides the basic methods for working with the database (CRUD stands for Create, Read, Update and Delete).
 
 ===	JodaMoney
-In Salespoint 5.3.X money class and its related components were replaced by the Joda-Money [7] project. 
+In Salespoint 5.3.X money class and its related components were replaced by the Joda-Money [7] project.
 Prices and other money values are represented as +org.joda.money.Money+ or for more precisison as +org.joda.money.BigMoney+ objects.
 Due to the fact, that all representing objects are immutable, all arithmetic functions produce a new object (see Listing 1).
 
@@ -44,23 +50,23 @@ Money value_1 = Money.parse(“USD 23.07”);
 Money value_2 = Money.parse(“USD 18.07”);
 Money sum = value_1.plus(value_2);
 ----
-Joda-Money also supports Currency (see _Example for JodaMoney operations_). 
+Joda-Money also supports Currency (see _Example for JodaMoney operations_).
 A set of loaded currencies is provided by an instance of CurrencyUnitDataProvider. But new and funky CurrencyUnits can be created to. So with this currencies, money values can be converted from one to another currency.
 
 ===	Configuration of Salespoint 5
-The configuration for an application can be modified on the application class in the root package (e.g.  videoshop.Videoshop for the videoshop project). 
+The configuration for an application can be modified on the application class in the root package (e.g.  videoshop.Videoshop for the videoshop project).
 Methods, annotated with +@Configuration+, will be scanned at the beginning of the deployment on the application server (in this case Spring Boot). This configuration files will tell the application server the settings for the application.
-By overriding the configuration method, you can specify the login behaviour or security functions. 
-For a basic login strategy the videoshop is a good start. 
-There you can see, that with authorizeRequests() an authorization will be set. 
+By overriding the configuration method, you can specify the login behaviour or security functions.
+For a basic login strategy the videoshop is a good start.
+There you can see, that with authorizeRequests() an authorization will be set.
 Following by matchers, you can specify the pages, this authorization is made on.
-Further, you can easily set an login page with formLogin() and the path to the login page with loginProcessingUrl("/login"). 
+Further, you can easily set an login page with formLogin() and the path to the login page with loginProcessingUrl("/login").
 Analogue the logout settings works like login system.
 
 ===	DataInitilizer or filling Application with Test-Data
-Every Application should be tested, so an easy way is, to use test data. 
+Every Application should be tested, so an easy way is, to use test data.
 So for this goal a recommend solution is, to load on every start of the application a bundle of test data into your system.
-As shown in the Videoshop project, a Datainitilizer class is registered and creates a lot of data and finally adds this data to the application. 
+As shown in the Videoshop project, a Datainitilizer class is registered and creates a lot of data and finally adds this data to the application.
 For that purpose the Salespoint has an Interface +org.salespointframework.core.DataInitializer+, which can be used.
 
 
@@ -105,29 +111,29 @@ Library to build HTML web views using natural templating.
 
 [[modules.useraccount]]
 === Useraccount
-To manage system accounts, Salespoint 5 has a notation of a user in the form of the User interface. 
-Users are managed by the UserAccountManager, who is also an interface. 
-Every user is uniquely identified by a +org.salespointframework.core.useraccount.UserAccountIdentifier+, which also serves as primary key attribute for the database. 
+To manage system accounts, Salespoint 5 has a notation of a user in the form of the User interface.
+Users are managed by the UserAccountManager, who is also an interface.
+Every user is uniquely identified by a +org.salespointframework.core.useraccount.UserAccountIdentifier+, which also serves as primary key attribute for the database.
 
 .UserRole
-+org.salespointframework.core.useraccount.Role+ s in conjunction with authorization tag _hasRole()_ can be used to change the appearance of a View, depending on a user’s status. 
-For example, a View for a user having an “administrator” role may display different content, for example delete buttons, than for a user not having that role. 
++org.salespointframework.core.useraccount.Role+ s in conjunction with authorization tag _hasRole()_ can be used to change the appearance of a View, depending on a user’s status.
+For example, a View for a user having an “administrator” role may display different content, for example delete buttons, than for a user not having that role.
 Thus, roles allow for flexibility and assist in code reuse, when designing the View.
 
 .Login
-To reduce code repetition, Salespoint 5 contains code to automate user log in. 
-Using a JSP template, a special login form is generated, which is handled by an interceptor. 
-The interceptor verifies the user password and associates the current session with the user using _<login>_ and _<logoff>_. 
+To reduce code repetition, Salespoint 5 contains code to automate user log in.
+Using a JSP template, a special login form is generated, which is handled by an interceptor.
+The interceptor verifies the user password and associates the current session with the user using _<login>_ and _<logoff>_.
 The session is required, because multiple users can be logged on at the same time.
 
 .Limitation
 Due to the fact, that Salespoint use the SecuirtyContext for authentication, the +UserAccount+ cannot be extended.
-In the background the +org.salespointframework.core.useraccount.UserAccount+ is converted to an instance of 
+In the background the +org.salespointframework.core.useraccount.UserAccount+ is converted to an instance of
 +org.springframework.security.core.userdetails.UserDetails+ .
 [NOTE]
 .Extend the UserAccount
 ====
-If this properties don’t meet all requirements, wrap the +UserAccount+ in a new +Entity+. + 
+If this properties don’t meet all requirements, wrap the +UserAccount+ in a new +Entity+. +
 Put all the new features in this new +Entity+ and connect this information via a +@OneToOne+ relationship with the +UserAccount+. +
 An Example is the videoshop project.
 
@@ -148,21 +154,21 @@ public class UserAccountExtension {
 
 [[modules.product]]
 === Product
-Salespoint 5 is intended as framework for point-of-sale applications. 
-The items for sale are called “products” and represented by instances of class +Product+ . 
+Salespoint 5 is intended as framework for point-of-sale applications.
+The items for sale are called “products” and represented by instances of class +Product+ .
 To represent different kinds of products, +Product+ can be sub-classed.
 Products are aggregated by +PersistentCatalog+ (see Section <<modules.catalog>>).
 
 [[modules.product.identifier]]
 .Product Identifier
-Products are supposed to be an abstraction, like an item on display or a picture in a catalog. 
-ProductInstances are used to represent the actual item you get, when you a buy a product. 
-Products are identified using a +ProductIndentifier+ , whereas ProductInstances are identified by a SerialNumber. 
+Products are supposed to be an abstraction, like an item on display or a picture in a catalog.
+ProductInstances are used to represent the actual item you get, when you a buy a product.
+Products are identified using a +ProductIndentifier+ , whereas ProductInstances are identified by a SerialNumber.
 ProductInstances can be thought of as identifiable instances of a certain product, which are identical apart from their SerialNumber.
 
 [[modules.quantity]]
 === Quantity
-+Quantity+ is used to represent amaounts of anything. 
++Quantity+ is used to represent amaounts of anything.
 +Quantity+ objects are immutable and the class implements the +Comparable+ interface.
 
 .Attributes of Quantity
@@ -185,7 +191,7 @@ For the example of a meter a possible description could be "The meter is the len
 
 [[modules.quantity.rounding]]
 .Rounding
-There are many rounding strategies, for money operations and so on. 
+There are many rounding strategies, for money operations and so on.
 For this case, Salespoint ships with a +RoundingStrategy+ interface providing a _round()_ method.
 This implementation of this +RoundingStrategy+, +BasicRoundingStrategy+ offers two ways to describe
 a rounding operation: using the decimal places after (or before) the decimal delimiter and using a rounding step.
@@ -198,8 +204,8 @@ Products can be searched by their name or category.
 Products and ProductFeatures are more closely described in Section <<modules.product>>.
 The +PersistentCatalog+ is an implementation of the +Catalog+ interface.
 
-Additionally PersistentCatalog provides an update()-method to update and merge existing PersistentProducts to the database. 
-The find() methods request the database in the form of CriteriaQuerys which will be processed by JPA and results are returned in the form of Iterables. 
+Additionally PersistentCatalog provides an update()-method to update and merge existing PersistentProducts to the database.
+The find() methods request the database in the form of CriteriaQuerys which will be processed by JPA and results are returned in the form of Iterables.
 The reason for this is to make returned objects immutable without making it difficult to iterate over these results.
 
 [[modules.accountancy]]
@@ -209,13 +215,13 @@ The accountancy package contains functionality supporting book keeping.
 +Accountancy+ aggregates AccountancyEntrys.
 Every +AccountancyEntry+ is uniquely identified by an +AccountancyEntryIdentifier+ . +
 
-+AccountancyEntry+ extends +AbstractEntity+ and serves as persistence entity, 
++AccountancyEntry+ extends +AbstractEntity+ and serves as persistence entity,
 while +PersistentAccountancy+ implements +Accountancy+ and provides transparent access to the JPA layer.
 +AccountancyEntryIdentifier+ is used as primary key attribute, when entities are stored in the database. +
 
 By implementing and sub-classing the +Accountancy+ interface, the notion of different accounts, as known from double-entry bookkeeping, can be realised. +
 
-Payment information also includes a user identifier referencing the buyer, 
+Payment information also includes a user identifier referencing the buyer,
 an order identifier referring to the <<modules.catalog>> which was payed, and a <<modules.accountancy.payment>> describing the money transfer.
 The attributes are named _userIdentifier_ , _orderIdentifier_ , and _paymentMethod_ respectively. +
 
@@ -237,7 +243,7 @@ An +OrderLine+ in turn is uniquely identified by an +OrderLineIdentifier+ .
 An +OrderLine+ contains all information to identify a _ProductInstance_ (see Section <<modules.product>> ).
 A _ProductInstance_ is identified by a +ProductIdentifier+ , and an optional set of _ProductFeature_ s. +
 
-A +ChargeLine+ represents additional costs or discounts and can be applied to an +OrderLine+ or an +Order+ . 
+A +ChargeLine+ represents additional costs or discounts and can be applied to an +OrderLine+ or an +Order+ .
 [NOTE]
 ====
 For example, +ChargeLine+ s can be used to handle special taxes or handling fees.
@@ -261,15 +267,15 @@ State transistions are automatically carried out when certain methods are called
 A +Order+ can only be modified in state _OPEN_ .
 _PAYED_ , _CANCELLED_ and _COMPLETED_ +Order+ s are immutable.
 Calling the _payOrder()_ method changes the state to _PAYED_ ,makes the +Order+ immutable and creates an +ProductPaymentEntry+ object.
-Ordered objects will only be removed from inventory when the _completeOrder()_ method is called.  
-_COMPLETED_ is one of the final states and it is not possible to change the state of such orders. +  
+Ordered objects will only be removed from inventory when the _completeOrder()_ method is called.
+_COMPLETED_ is one of the final states and it is not possible to change the state of such orders. +
 
 Completing an order causes product instances to be removed from the inventory.
 Because product instances may not be present anymore in the inventory, or their number may not be suffice to fulfill an order, completing an order requires special attention.
 To handle these situations, the +OrderCompletionResult+ interface was introduced.
 First of all, these +OrderCompletionStatus+ are possible:
 
-* _SUCCESSFUL_ The order was completed successfully, and all products were removed from the inventory. 
+* _SUCCESSFUL_ The order was completed successfully, and all products were removed from the inventory.
 * _FAILED_ An error from which recovery is impossible occured. +
 
 The +OrderManager+ aggregates +Order+ s.
