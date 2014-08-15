@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import org.salespointframework.core.money.Money;
-import org.salespointframework.core.quantity.Quantity;
+import org.salespointframework.quantity.Quantity;
 
 @SuppressWarnings("javadoc")
 @Entity

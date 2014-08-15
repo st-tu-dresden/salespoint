@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.salespointframework.core.catalog.ProductIdentifier;
+import org.salespointframework.catalog.ProductIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;

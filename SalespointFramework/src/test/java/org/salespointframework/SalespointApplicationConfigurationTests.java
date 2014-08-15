@@ -21,14 +21,14 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import org.junit.Test;
+import org.salespointframework.catalog.Product;
+import org.salespointframework.catalog.Products;
 import org.salespointframework.core.DataInitializer;
-import org.salespointframework.core.catalog.Product;
-import org.salespointframework.core.catalog.Products;
-import org.salespointframework.core.inventory.Inventory;
-import org.salespointframework.core.order.OrderManager;
-import org.salespointframework.core.time.BusinessTime;
-import org.salespointframework.core.useraccount.AuthenticationManager;
-import org.salespointframework.core.useraccount.UserAccountManager;
+import org.salespointframework.inventory.Inventory;
+import org.salespointframework.order.OrderManager;
+import org.salespointframework.time.BusinessTime;
+import org.salespointframework.useraccount.AuthenticationManager;
+import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
