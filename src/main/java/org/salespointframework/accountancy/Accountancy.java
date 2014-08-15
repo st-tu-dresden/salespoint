@@ -3,9 +3,10 @@ package org.salespointframework.accountancy;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 import org.joda.money.Money;
-import org.salespointframework.core.Interval;
+import org.salespointframework.time.Interval;
 
 /**
  * The {@code Accountancy} interface is implemented by classes offering a
@@ -16,14 +17,14 @@ import org.salespointframework.core.Interval;
  * 
  * @author Hannes Weisbach
  */
-public interface Accountancy {
+public interface Accountancy<T extends AccountancyEntry> {
 	/**
 	 * Adds a new {@link AccountancyEntry} to this {@code Accountancy}.
 	 * 
 	 * @param accountancyEntry
 	 *            entry to be added to the accountancy
 	 */
-	void add(AccountancyEntry accountancyEntry);
+	T add(T accountancyEntry);
 
 	/**
 	 * Returns all {@link AccountancyEntry}s of the specified type
@@ -42,7 +43,7 @@ public interface Accountancy {
 	 * 
 	 * @return an {@link Iterable} containing all entries of type clazz
 	 */
-	<E extends AccountancyEntry> Iterable<E> find(Class<E> clazz);
+	Iterable<T> findAll();
 
 	/**
 	 * Returns the {@link AccountancyEntry} of type {@code clazz} and
@@ -61,8 +62,7 @@ public interface Accountancy {
 	 *         {@code clazz} which has the identifier
 	 *         {@link AccountancyEntryIdentifier}
 	 */
-	<E extends AccountancyEntry> E get(Class<E> clazz,
-			AccountancyEntryIdentifier accountancyEntryIdentifier);
+	Optional<T> get(AccountancyEntryIdentifier accountancyEntryIdentifier);
 
 	/**
 	 * Returns all {@link AccountancyEntry}s in between the dates
@@ -84,7 +84,7 @@ public interface Accountancy {
 	 *            {@link AccountancyEntry}
 	 * @return an {@link Iterable} containing all entries between from and to of type E
 	 */
-	<E extends AccountancyEntry> Iterable<E> find(Class<E> clazz, LocalDateTime from, LocalDateTime to);
+	Iterable<T> find(LocalDateTime from, LocalDateTime to);
 
 	
 	// TODO comment fortsetzen? -> " If no entries for an interval exist"
@@ -123,8 +123,7 @@ public interface Accountancy {
 	 *         <code>Iterable</code> containing all entries within the key-
 	 *         <code>Interval</code>
 	 */
-	<E extends AccountancyEntry> Map<Interval, Iterable<E>> find(Class<E> clazz,
-			LocalDateTime from, LocalDateTime to, Duration duration);
+	Map<Interval, Iterable<T>> find(LocalDateTime from, LocalDateTime to, Duration duration);
 
 	/**
 	 * Returns the sum of the field {@code amount} of all
@@ -146,10 +145,6 @@ public interface Accountancy {
 	 * 
 	 * @param <E>
 	 *            common super type of all entries returned
-	 * 
-	 * @param clazz
-	 *            class type of the requested entries; has implement
-	 *            {@link AccountancyEntry}
 	 * @param from
 	 *            all returned entries will have a time stamp after
 	 *            {@code from}
@@ -164,6 +159,5 @@ public interface Accountancy {
 	 *         <code>Money</code> object, equal to the sum of the amount fields
 	 *         of all entries within the key-<code>Interval</code>
 	 */
-	<E extends AccountancyEntry> Map<Interval, Money> salesVolume(Class<E> clazz,
-			LocalDateTime from, LocalDateTime to, Duration duration);
+	Map<Interval, Money> salesVolume(LocalDateTime from, LocalDateTime to, Duration duration);
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.salespointframework.catalog.Product;
-import org.salespointframework.catalog.Products;
+import org.salespointframework.catalog.Catalog;
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.inventory.Inventory;
 import org.salespointframework.order.OrderManager;
@@ -26,7 +26,7 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 
 	@Autowired Inventory inventory;
 	@Autowired OrderManager orderManager;
-	@Autowired Products<Product> product;
+	@Autowired Catalog<Product> product;
 	@Autowired BusinessTime businessTime;
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired AuthenticationManager authenticationManager;

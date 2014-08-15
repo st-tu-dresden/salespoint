@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.salespointframework.useraccount.UserAccountRepositoryIntegrationTests.*;
 
+import java.util.Optional;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +36,7 @@ public class SpringSecurityAuthenticationManagerUnitTests {
 	public void setUp() {
 		
 		this.account = createAccount();
-		when(repository.findOne(account.getIdentifier())).thenReturn(account);
+		when(repository.findOne(account.getIdentifier())).thenReturn(Optional.of(account));
 		
 		this.authenticationManager = new SpringSecurityAuthenticationManager(repository, passwordEncoder);
 	}
@@ -43,7 +45,6 @@ public class SpringSecurityAuthenticationManagerUnitTests {
 	public void resetAuthentication() {
 		SecurityContextHolder.getContext().setAuthentication(null);
 	}
-	
 	
 	@Test
 	public void returnsNullIfNoUserIsAuthenticated() {
@@ -54,7 +55,11 @@ public class SpringSecurityAuthenticationManagerUnitTests {
 	public void returnsCurrentlyAuthenticatedUser() {
 		
 		authenticate(account);
-		assertThat(authenticationManager.getCurrentUser(), is(account));
+		
+		Optional<UserAccount> currentUser = authenticationManager.getCurrentUser();
+		
+		assertThat(currentUser.isPresent(), is(true));
+		assertThat(currentUser.get(), is(account));
 	}
 	
 	@Test

@@ -1,6 +1,7 @@
 package org.salespointframework.useraccount;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,7 +60,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 * @see org.salespointframework.useraccount.UserAccountManager#get(org.salespointframework.useraccount.UserAccountIdentifier)
 	 */
 	@Override
-	public UserAccount get(UserAccountIdentifier userAccountIdentifier) {
+	public Optional<UserAccount> get(UserAccountIdentifier userAccountIdentifier) {
 
 		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		return repository.findOne(userAccountIdentifier);
@@ -88,11 +89,9 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 */
 	@Override
 	public void enable(UserAccountIdentifier userAccountIdentifier) {
+		
 		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
-		UserAccount userAccount = this.get(userAccountIdentifier);
-		if (userAccount != null) {
-			userAccount.setEnabled(true);
-		}
+		get(userAccountIdentifier).ifPresent(account -> account.setEnabled(true));
 	}
 
 	/*
@@ -103,13 +102,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 	public void disable(UserAccountIdentifier userAccountIdentifier) {
 		
 		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
-		UserAccount userAccount = this.get(userAccountIdentifier);
-		
-		if (userAccount != null) {
-			userAccount.setEnabled(false);
-		}
-
-		save(userAccount);
+		get(userAccountIdentifier).ifPresent(account -> account.setEnabled(false));
 	}
 
 	/*

@@ -1,6 +1,7 @@
 package org.salespointframework.order;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.salespointframework.accountancy.payment.PaymentMethod;
 import org.salespointframework.useraccount.UserAccount;
@@ -13,14 +14,14 @@ import org.salespointframework.useraccount.UserAccountIdentifier;
  * @author Paul Henke
  * @author Oliver Gierke
  */
-public interface OrderManager
+public interface OrderManager<T extends Order>
 {
 	/**
 	 * Adds a new {@link Order} to the OrderManager
 	 * @param order the {@link Order} to be added
 	 * @throws NullPointerException if order is null
 	 */
-	void add(Order order);
+	T add(T order);
 	
 	/**
 	 * Returns the order identified by an {@link OrderIdentifier}
@@ -28,7 +29,7 @@ public interface OrderManager
 	 * @return the order if the orderIdentifier matches, otherwise null
 	 * @throws NullPointerException if orderIdentifier is null
 	 */
-	<E extends Order> E get(Class<E> clazz, OrderIdentifier orderIdentifier);
+	Optional<T> get(OrderIdentifier orderIdentifier);
 	
 	/**
 	 * Checks if this OrderManager contains an order
@@ -47,7 +48,7 @@ public interface OrderManager
 	 * @return an Iterable containing all {@link Order}s with the specified {@link OrderStatus}
 	 * @throws NullPointerException if orderStatus is null
 	 */
-	<E extends Order> Iterable<E> find(Class<E> clazz, OrderStatus orderStatus);
+	Iterable<T> find(OrderStatus orderStatus);
 	
 	/**
 	 * Returns all {@link Order}s in between the dates
@@ -63,7 +64,7 @@ public interface OrderManager
 	 *         to
 	 * @throws NullPointerException if from or to are null         
 	 */
-	<E extends Order> Iterable<E> find(Class<E> clazz, LocalDateTime from, LocalDateTime to);
+	Iterable<T> find(LocalDateTime from, LocalDateTime to);
 	
 	/**
 	 * Returns all {@link Order}s from the given {@link UserAccountIdentifier}. If this user
@@ -76,7 +77,7 @@ public interface OrderManager
 	 *         specified user.
 	 * @throws NullPointerException if clazz oder userAccount are null
 	 */
-	<E extends Order> Iterable<E> find(Class<E> clazz, UserAccount userAccount);
+	 Iterable<T> find(UserAccount userAccount);
 	
 	/**
 	 * Returns all {@link Order}s from the given {@link UserAccountIdentifier} in between the
@@ -95,21 +96,21 @@ public interface OrderManager
 	 *         specified user in the specified period.
 	 * @throws NullPointerException if any argument is null         
 	 */
-	<E extends Order> Iterable<E> find(Class<E> clazz, UserAccount userAccount, LocalDateTime from, LocalDateTime to);
+	Iterable<T> find(UserAccount userAccount, LocalDateTime from, LocalDateTime to);
 	
 	/**
 	 * Tries to complete this order, the {@link OrderStatus} has to be PAYED 
 	 * @param order the order to complete
 	 * @return an {@link OrderCompletionResult}
 	 */
-	OrderCompletionResult completeOrder(Order order);
+	OrderCompletionResult completeOrder(T order);
 
 	/**
 	 * Updates and persists an existing {@link Order} to the PersistentOrderManager and the Database
 	 * @param order the {@link Order} to be updated
 	 * @throws NullPointerException if order is null
 	 */
-	void update(Order order);
+	void update(T order);
 	
 	/**
 	 * Pays the {@link Order}, {@link OrderStatus} must be OPEN and {@link PaymentMethod} must be set
@@ -117,7 +118,7 @@ public interface OrderManager
 	 * @return true if the order could be payed
 	 * @throws NullPointerException if order is null
 	 */
-	boolean payOrder(Order order);
+	boolean payOrder(T order);
 	
 	/**
 	 * Cancels an {@link Order}, it can only be cancelled is {@link OrderStatus} is OPEN
@@ -125,5 +126,5 @@ public interface OrderManager
 	 * @return true if the order could be canceled
 	 * @throws NullPointerException if order is null
 	 */
-	boolean cancelOrder(Order order);
+	boolean cancelOrder(T order);
 }

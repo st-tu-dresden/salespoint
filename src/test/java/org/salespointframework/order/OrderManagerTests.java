@@ -1,6 +1,9 @@
 package org.salespointframework.order;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,17 +15,21 @@ import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@SuppressWarnings("javadoc")
+/**
+ * Integration tests for {@link OrderManager}.
+ * 
+ * @author Hannes Weissbach
+ * @author Paul Henke
+ * @author Oliver Gierke
+ */
 public class OrderManagerTests extends AbstractIntegrationTests {
 
+	@Autowired UserAccountManager userAccountManager;
 	
-	@Autowired
-	private UserAccountManager userAccountManager;
+	@Autowired OrderManager<Order> orderManager;
 	
-	@Autowired
-	private OrderManager orderManager;
-	private UserAccount user;
-	private Order order;
+	UserAccount user;
+	Order order;
 
 	@Before
 	public void before() {
@@ -31,7 +38,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 		order = new Order(user, Cash.CASH);
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void nullAddtest() {
 		orderManager.add(null);
 	}
@@ -49,8 +56,12 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 
 	@Test
 	public void testGet() {
-		orderManager.add(order);
-		assertEquals(order,
-				orderManager.get(Order.class, order.getIdentifier()));
+
+		order = orderManager.add(order);
+		
+		Optional<Order> result = orderManager.get(order.getIdentifier());
+		
+		assertThat(result.isPresent(), is(true));
+		assertThat(result.get(), is(order));
 	}
 }

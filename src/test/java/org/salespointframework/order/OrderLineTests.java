@@ -10,7 +10,7 @@ import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.accountancy.payment.Cash;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
-import org.salespointframework.catalog.Products;
+import org.salespointframework.catalog.Catalog;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Units;
@@ -21,14 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class OrderLineTests extends AbstractIntegrationTests {
 
-	
-	@Autowired
-	private UserAccountManager userAccountManager;
-	
-	@Autowired
-	private Products<Product> catalog;
+	@Autowired UserAccountManager userAccountManager;
+	@Autowired Catalog<Product> catalog;
 
 	private static int keksCounter = 0;
+	
 	private UserAccount user;
 	private Order order;
 	private OrderLine orderLine;

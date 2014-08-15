@@ -23,7 +23,7 @@ import org.joda.money.Money;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Product;
-import org.salespointframework.catalog.Products;
+import org.salespointframework.catalog.Catalog;
 import org.salespointframework.quantity.Units;
 import org.salespointframework.support.JpaEntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ import org.springframework.core.convert.TypeDescriptor;
 public class JpaEntityConverterIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired JpaEntityConverter converter;
-	@Autowired Products<Product> products;
+	@Autowired Catalog<Product> catalog;
 	
 	@Test
 	public void convertsStringIdToProduct() {
@@ -45,7 +45,7 @@ public class JpaEntityConverterIntegrationTests extends AbstractIntegrationTests
 		Product product = new Product("iPad", Money.of(CurrencyUnit.EUR, 400), Units.METRIC);
 		String identifier = product.getIdentifier().getIdentifier();
 		
-		products.save(product);
+		catalog.save(product);
 		
 		Object result = converter.convert(identifier, TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Product.class));
 		assertThat(result, is((Object) product));

@@ -21,7 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SuppressWarnings("javadoc")
 public class AccountancyTests extends AbstractIntegrationTests {
 
-	@Autowired Accountancy a;
+	@Autowired Accountancy<AccountancyEntry> a;
+	@Autowired Accountancy<ProductPaymentEntry> p;
 	@Autowired UserAccountManager userAccountManager;
 
 	private LocalDateTime from;
@@ -62,7 +63,7 @@ public class AccountancyTests extends AbstractIntegrationTests {
 	@Test
 	public void select() {
 
-		Iterable<AccountancyEntry> i = a.find(AccountancyEntry.class, from, to);
+		Iterable<AccountancyEntry> i = a.find(from, to);
 
 		// TODO not really a test, because the Iterable is always non-null.
 		// Instead, we need to test for non-emptyness of the Iterable, or three
@@ -77,13 +78,13 @@ public class AccountancyTests extends AbstractIntegrationTests {
 	@Test
 	public void selectType() {
 		System.out.println("AccountancyEntries: ");
-		Iterable<ProductPaymentEntry> i = a.find(ProductPaymentEntry.class, from, to);
+		Iterable<ProductPaymentEntry> i = p.find(from, to);
 		for (AccountancyEntry e : i) {
 			System.out.println(e.toString());
 		}
 
 		System.out.println("All entries:");
-		Iterable<AccountancyEntry> g = a.find(AccountancyEntry.class, from, to);
+		Iterable<AccountancyEntry> g = a.find(from, to);
 		for (AccountancyEntry e : g) {
 			System.out.println(e.toString());
 		}

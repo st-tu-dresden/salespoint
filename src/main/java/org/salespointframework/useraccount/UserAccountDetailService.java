@@ -3,6 +3,7 @@ package org.salespointframework.useraccount;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -44,13 +45,11 @@ class UserAccountDetailService implements UserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-		UserAccountIdentifier userAccountIdentifier = new UserAccountIdentifier(name);
-		UserAccount userAccount = repository.findOne(userAccountIdentifier);
-
-		if (userAccount == null)
-			throw new UsernameNotFoundException("Useraccount: " + name + "not found");
-
-		return new UserAccountDetails(userAccount);
+		
+		Optional<UserAccount> candidate = repository.findOne(new UserAccountIdentifier(name));
+		UserAccount account = candidate.orElseThrow(() -> new UsernameNotFoundException("Useraccount: " + name + "not found"));
+		
+		return new UserAccountDetails(account);
 	}
 
 	@SuppressWarnings("serial")

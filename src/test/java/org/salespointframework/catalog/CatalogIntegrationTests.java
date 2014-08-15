@@ -10,21 +10,21 @@ import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Product;
-import org.salespointframework.catalog.Products;
+import org.salespointframework.catalog.Catalog;
 import org.salespointframework.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 /**
- * Integration tests for {@link Products}.
+ * Integration tests for {@link Catalog}.
  * 
  * @author Oliver Gierke
  */
-public class ProductsIntegrationTests extends AbstractIntegrationTests {
+public class CatalogIntegrationTests extends AbstractIntegrationTests {
 
-	@Autowired Products<Product> products;
-	@Autowired Products<Cookie> cookies;
-	@Autowired CookieRepository cookieRepository;
+	@Autowired Catalog<Product> catalog;
+	@Autowired Catalog<Cookie> cookies;
+	@Autowired CookieCatalog cookieCatalog;
 	
 	Cookie cookie;
 	
@@ -42,9 +42,9 @@ public class ProductsIntegrationTests extends AbstractIntegrationTests {
 		Product product = new Product("MacBook", Money.of(CurrencyUnit.EUR, 2700.0), Units.METRIC);
 		product.addCategory("Apple");
 		
-		products.save(product);
+		catalog.save(product);
 		
-		Iterable<Product> result = products.findByCategory("Apple");
+		Iterable<Product> result = catalog.findByCategory("Apple");
 		
 		assertThat(result, is(iterableWithSize(1)));
 		assertThat(result, hasItem(product));
@@ -56,10 +56,10 @@ public class ProductsIntegrationTests extends AbstractIntegrationTests {
 	@Test
 	public void findsSameInstanceOnGenericRepositories() {
 		
-		products.save(cookie);
+		catalog.save(cookie);
 		
 		Cookie kT1 = cookies.findOne(cookie.getIdentifier());
-		Product kT2 = products.findOne(cookie.getIdentifier());
+		Product kT2 = catalog.findOne(cookie.getIdentifier());
 		
 		assertThat(kT1, is(kT2));
 	}
@@ -69,7 +69,7 @@ public class ProductsIntegrationTests extends AbstractIntegrationTests {
 	 */
 	@Test(expected = InvalidDataAccessApiUsageException.class)
 	public void nullAddTest() {
-		products.save((Product) null);
+		catalog.save((Product) null);
 	}
 
 	/**
@@ -78,8 +78,8 @@ public class ProductsIntegrationTests extends AbstractIntegrationTests {
 	@Test
 	public void addTest() {
 		
-		Cookie result = products.save(cookie);
-		assertThat(products.findOne(result.getIdentifier()), is(result));
+		Cookie result = catalog.save(cookie);
+		assertThat(catalog.findOne(result.getIdentifier()), is(result));
 	}
 	
 	/**
@@ -88,10 +88,10 @@ public class ProductsIntegrationTests extends AbstractIntegrationTests {
 	@Test
 	public void testRemove() {
 		
-		products.save(cookie);
-		products.delete(cookie.getIdentifier());
+		catalog.save(cookie);
+		catalog.delete(cookie.getIdentifier());
 		
-		assertThat(products.exists(cookie.getIdentifier()), is(false));
+		assertThat(catalog.exists(cookie.getIdentifier()), is(false));
 	}
 	
 	/**
@@ -100,8 +100,8 @@ public class ProductsIntegrationTests extends AbstractIntegrationTests {
 	@Test
 	public void testContains() {
 		
-		Cookie result = products.save(cookie);
-		assertThat(products.exists(result.getIdentifier()), is(true));
+		Cookie result = catalog.save(cookie);
+		assertThat(catalog.exists(result.getIdentifier()), is(true));
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public class ProductsIntegrationTests extends AbstractIntegrationTests {
 	@Test
 	public void getTest() {
 		
-		Cookie result = products.save(cookie);
+		Cookie result = catalog.save(cookie);
 		assertThat(cookies.findOne(cookie.getIdentifier()), is(result));
 	}
  
@@ -134,7 +134,7 @@ public class ProductsIntegrationTests extends AbstractIntegrationTests {
 
 		Cookie doubleChoc = createCookie();
 		
-		Product product = products.findOne(doubleChoc.getIdentifier());
+		Product product = catalog.findOne(doubleChoc.getIdentifier());
 		assertThat(product, is(instanceOf(Cookie.class)));
 		assertThat(product, is(doubleChoc));
 	}

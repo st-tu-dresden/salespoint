@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
-import org.salespointframework.catalog.Products;
+import org.salespointframework.catalog.Catalog;
 import org.salespointframework.inventory.Inventory;
 import org.salespointframework.inventory.InventoryItem;
 import org.salespointframework.quantity.Units;
@@ -20,9 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 
 	@Autowired
-	private Inventory inventory;
+	private Inventory<InventoryItem> inventory;
 	@Autowired
-	private Products<Product> catalog;
+	private Catalog<Product> catalog;
 	
 	private Cookie cookie;
 	private InventoryItem item;
@@ -39,35 +39,35 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 	@Test
 	public void addInCatalogThenInInventoryThrowsNoException() {
 		catalog.save(cookie);
-		inventory.add(item);
+		inventory.save(item);
 	}
 
 	@Test
 	public void addInInventoryAddsProductInCatalog() {
-		inventory.add(item);
+		inventory.save(item);
 		assertThat(catalog.exists(cookie.getIdentifier()), is(true));
 	}
 
 	@Test
 	public void removeInInventory() {
-		inventory.add(item);
-		inventory.remove(item.getIdentifier());
+		inventory.save(item);
+		inventory.delete(item.getIdentifier());
 	}
 
 	// TODO negativ-test davon:
 	@Test
 	public void removeInInventoryThenRemoveInCatalog() {
 		catalog.save(cookie);
-		inventory.add(item);
-		inventory.remove(item.getIdentifier());
+		inventory.save(item);
+		inventory.delete(item.getIdentifier());
 		catalog.delete(cookie.getIdentifier());
 	}
 
 	@Test
 	public void removeInInventoryDoesNotRemoveInCatalog() {
 		catalog.save(cookie);
-		inventory.add(item);
-		inventory.remove(item.getIdentifier());
+		inventory.save(item);
+		inventory.delete(item.getIdentifier());
 		assertThat(catalog.exists(cookie.getIdentifier()), is(true));
 	}
 

@@ -14,15 +14,14 @@ import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@SuppressWarnings("javadoc")
+
 public class ChargeLineTests  extends AbstractIntegrationTests {
 
-	@Autowired
-	private UserAccountManager userAccountManager;
+	@Autowired UserAccountManager userAccountManager;
 	
-	private UserAccount user;
-	private Order order;
-	private ChargeLine chargeLine;
+	UserAccount user;
+	Order order;
+	ChargeLine chargeLine;
 
 	@Before
 	public void before() {

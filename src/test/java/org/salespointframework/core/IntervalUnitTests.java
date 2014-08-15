@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
 import java.time.LocalDateTime;
 
 import org.junit.Test;
+import org.salespointframework.time.Interval;
 
 /**
  * @author Oliver Gierke

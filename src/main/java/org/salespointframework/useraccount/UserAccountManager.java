@@ -1,5 +1,7 @@
 package org.salespointframework.useraccount;
 
+import java.util.Optional;
+
 
 
 
@@ -26,7 +28,7 @@ public interface UserAccountManager {
 	 * @param userAccountIdentifier 
 	 * @return
 	 */
-	UserAccount get(UserAccountIdentifier userAccountIdentifier);
+	Optional<UserAccount> get(UserAccountIdentifier userAccountIdentifier);
 	
 	/**
 	 * Saves the {@link UserAccount}

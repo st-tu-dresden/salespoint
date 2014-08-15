@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.core;
+package org.salespointframework.time;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
+ * Simple value object to represent time intervals.
+ * 
  * @author Oliver Gierke
  */
 public final class Interval {
@@ -26,6 +28,12 @@ public final class Interval {
 	private final LocalDateTime start;
 	private final LocalDateTime end;
 
+	/**
+	 * Creates a new {@link Interval} between the given start and end.
+	 * 
+	 * @param start must not be {@literal null}.
+	 * @param end must not be {@literal null}.
+	 */
 	public Interval(LocalDateTime start, LocalDateTime end) {
 
 		Objects.requireNonNull(start, "Start must not be null!");
@@ -75,12 +83,15 @@ public final class Interval {
 	 */
 	@Override
 	public int hashCode() {
-
-		int result = 31;
-
-		result += 17 * start.hashCode();
-		result += 17 * end.hashCode();
-
-		return result;
+		return Objects.hash(start, end);
+	}
+	
+	/* 
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return String.format("Interval from %s to %s", start, end);
 	}
 }

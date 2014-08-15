@@ -4,16 +4,10 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import java.util.Optional;
 
 import org.salespointframework.accountancy.Accountancy;
+import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.inventory.Inventory;
 import org.salespointframework.inventory.InventoryItem;
@@ -24,236 +18,231 @@ import org.salespointframework.useraccount.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.util.Assert;
 
 /**
- * 
  * @author Thomas Dedek
  * @author Paul Henke
  * @author Oliver Gierke
  */
 @Service
 @Transactional
-class PersistentOrderManager implements OrderManager {
+class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
-	private final Inventory inventory;
+	private final Inventory<InventoryItem> inventory;
 	private final TransactionTemplate txTemplate;
-	private final Accountancy accountancy;
+	private final Accountancy<AccountancyEntry> accountancy;
 	private final BusinessTime businessTime;
+	private final OrderRepository<T> orderRepository;
 
-	@PersistenceContext
-	private EntityManager entityManager;
-	
 	/**
-	 * creates a new PersistentOrderManager
+	 * Creates a new {@link PersistentOrderManager} using the given {@link Inventory}, {@link Accountancy}
+	 * {@link BusinessTime}, {@link OrderRepository} and {@link PlatformTransactionManager}.
+	 * 
+	 * @param inventory must not be {@literal null}.
+	 * @param accountancy must not be {@literal null}.
+	 * @param businessTime must not be {@literal null}.
+	 * @param orderRepository must not be {@literal null}.
+	 * @param txManager must not be {@literal null}.
 	 */
 	@Autowired
-	public PersistentOrderManager(Inventory inventory, Accountancy accountancy, BusinessTime businessTime, PlatformTransactionManager txManager) {
-		
-		this.inventory = Objects.requireNonNull(inventory, "inventory must not be null!");
-		this.accountancy = Objects.requireNonNull(accountancy, "accountancy must not be null!");
-		this.businessTime = Objects.requireNonNull(businessTime, "businessTime must not be null!");
+	public PersistentOrderManager(Inventory<InventoryItem> inventory, Accountancy<AccountancyEntry> accountancy,
+			BusinessTime businessTime, OrderRepository<T> orderRepository, PlatformTransactionManager txManager) {
+
+		Assert.notNull(inventory, "Inventory must not be null!");
+		Assert.notNull(accountancy, "Accountancy must not be null!");
+		Assert.notNull(businessTime, "BusinessTime must not be null!");
+		Assert.notNull(orderRepository, "OrderRepository must not be null!");
+		Assert.notNull(txManager, "PlatformTransactionManager must not be null!");
+
+		this.inventory = inventory;
+		this.accountancy = accountancy;
+		this.businessTime = businessTime;
+		this.orderRepository = orderRepository;
 		this.txTemplate = new TransactionTemplate(txManager);
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.OrderManager#add(org.salespointframework.order.Order)
+	 */
 	@Override
-	public void add(Order order)
-	{
-		Objects.requireNonNull(order, "order must be not null");
-		if(order.getDateCreated() == null) {
+	public T add(T order) {
+
+		Assert.notNull(order, "order must be not null");
+
+		if (order.getDateCreated() == null) {
 			order.setDateCreated(businessTime.getTime());
 		}
-		entityManager.persist(order);
+
+		return orderRepository.save(order);
 	}
-	
-	/**
-	 * Adds multiple {@link Order}s to this PersistentOrderManager
-	 * 
-	 * @param orders
-	 *            an {@link Iterable} of {@link Order}s to be added
-	 * 
-	 * @throws NullPointerException if orders is null
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.OrderManager#get(org.salespointframework.order.OrderIdentifier)
 	 */
-	public void addAll(Iterable<? extends Order> orders) {
-		Objects.requireNonNull(orders, "orders must not be null");
-		for(Order order : orders) {
-			entityManager.persist(order);
-		}
-	}
-	
-
 	@Override
-	public final <T extends Order> T get(Class<T> clazz, OrderIdentifier orderIdentifier)
-	{
-		Objects.requireNonNull(orderIdentifier, "orderIdentifier must not be null");
-		return entityManager.find(clazz, orderIdentifier);
+	public final Optional<T> get(OrderIdentifier orderIdentifier) {
+		
+		Assert.notNull(orderIdentifier, "orderIdentifier must not be null");
+		return orderRepository.findOne(orderIdentifier);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.OrderManager#contains(org.salespointframework.order.OrderIdentifier)
+	 */
 	@Override
-	public final boolean contains(OrderIdentifier orderIdentifier)
-	{
-		Objects.requireNonNull(orderIdentifier, "orderIdentifier must not be null");
-		return entityManager.find(Order.class, orderIdentifier) != null;
+	public final boolean contains(OrderIdentifier orderIdentifier) {
+		
+		Assert.notNull(orderIdentifier, "orderIdentifier must not be null");
+		return orderRepository.exists(orderIdentifier);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.OrderManager#find(java.time.LocalDateTime, java.time.LocalDateTime)
+	 */
 	@Override
-	public final <T extends Order> Iterable<T> find(Class<T> clazz, LocalDateTime from, LocalDateTime to)
-	{
-		Objects.requireNonNull(from, "from must not be null");
-		Objects.requireNonNull(to, "to must not be null");
+	public final Iterable<T> find(LocalDateTime from, LocalDateTime to) {
+		
+		Assert.notNull(from, "from must not be null");
+		Assert.notNull(to, "to must not be null");
 
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<T> cq = cb.createQuery(clazz);
-		Root<T> entry = cq.from(clazz);
-		cq.where(cb.between(entry.get(Order_.dateCreated), from, to));
-		TypedQuery<T> tq = entityManager.createQuery(cq);
-
-		return tq.getResultList();
+		return orderRepository.findByDateCreatedBetween(from, to);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.OrderManager#find(org.salespointframework.order.OrderStatus)
+	 */
 	@Override
-	public final <T extends Order> Iterable<T> find(Class<T> clazz, OrderStatus orderStatus)
-	{
-		Objects.requireNonNull(clazz, "clazz must not be null");
-		Objects.requireNonNull(orderStatus, "orderStatus must not be null");
-
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<T> cq = cb.createQuery(clazz);
-		Root<T> entry = cq.from(clazz);
-		cq.where(cb.equal(entry.get(Order_.orderStatus), orderStatus));
-		TypedQuery<T> tq = entityManager.createQuery(cq);
-
-		return tq.getResultList();
+	public final Iterable<T> find(OrderStatus orderStatus) {
+		
+		Assert.notNull(orderStatus, "orderStatus must not be null");
+		return orderRepository.findByOrderStatus(orderStatus);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.OrderManager#find(org.salespointframework.useraccount.UserAccount)
+	 */
 	@Override
-	public final <T extends Order> Iterable<T> find(Class<T> clazz, UserAccount userAccount)
-	{
-		Objects.requireNonNull(clazz, "clazz must not be null");
-		Objects.requireNonNull(userAccount, "userAccount must not be null");
-
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<T> cq = cb.createQuery(clazz);
-		Root<T> entry = cq.from(clazz);
-		cq.where(cb.equal(entry.get(Order_.userAccount), userAccount));
-		TypedQuery<T> tq = entityManager.createQuery(cq);
-
-		return tq.getResultList();
+	public final Iterable<T> find(UserAccount userAccount) {
+		
+		Assert.notNull(userAccount, "userAccount must not be null");
+		return orderRepository.findByUserAccount(userAccount);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.OrderManager#find(org.salespointframework.useraccount.UserAccount, java.time.LocalDateTime, java.time.LocalDateTime)
+	 */
 	@Override
-	public final <T extends Order> Iterable<T> find(Class<T> clazz, UserAccount userAccount, LocalDateTime from, LocalDateTime to)
-	{
-		Objects.requireNonNull(userAccount, "userAccount must not be null");
-		Objects.requireNonNull(from, "from must not be null");
-		Objects.requireNonNull(to, "to must not be null");
+	public final Iterable<T> find(UserAccount userAccount, LocalDateTime from, LocalDateTime to) {
+		
+		Assert.notNull(userAccount, "userAccount must not be null");
+		Assert.notNull(from, "from must not be null");
+		Assert.notNull(to, "to must not be null");
 
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<T> cq = cb.createQuery(clazz);
-		Root<T> entry = cq.from(clazz);
-		Predicate p1 = cb.equal(entry.get(Order_.userAccount), userAccount);
-		Predicate p2 = cb.between(entry.get(Order_.dateCreated), from, to);
-		cq.where(p1, p2);
-		TypedQuery<T> tq = entityManager.createQuery(cq);
-
-		return tq.getResultList();
+		return orderRepository.findByUserAccountAndDateCreatedBetween(userAccount, from, to);
 	}
 
-
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.OrderManager#update(org.salespointframework.order.Order)
+	 */
 	@Override
-	public final void update(Order order)
-	{
-		Objects.requireNonNull(order, "order must not be null");
-		entityManager.merge(order);
+	public final void update(T order) {
+		
+		Assert.notNull(order, "order must not be null");
+		orderRepository.save(order);
 	}
-	
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.OrderManager#completeOrder(org.salespointframework.order.Order)
+	 */
 	@Override
 	public OrderCompletionResult completeOrder(final Order order) {
 
-		if(order.getOrderStatus() != OrderStatus.PAYED)  {
+		if (order.getOrderStatus() != OrderStatus.PAYED) {
 			return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
 		}
-		
-		Objects.requireNonNull(order, "order must not be null");
-		
+
+		Assert.notNull(order, "order must not be null");
+
 		final Map<InventoryItem, Quantity> goodItems = new HashMap<>();
 		final Map<InventoryItem, Quantity> badItems = new HashMap<>();
 
 		Iterable<OrderLine> lineItems = order.getOrderLines();
-		
+
 		for (OrderLine orderline : lineItems) {
-			ProductIdentifier productIdentifier = orderline
-					.getProductIdentifier();
-			InventoryItem inventoryItem = inventory
-					.getByProductIdentifier(InventoryItem.class,
-							productIdentifier);
+			ProductIdentifier productIdentifier = orderline.getProductIdentifier();
+			Optional<InventoryItem> inventoryItem = inventory.findByProductProductIdentifier(productIdentifier);
 
 			// TODO was machen wenn nicht im Inventar
-			if (inventoryItem == null) {
-				System.out.println("No InventoryItem with given ProductIndentifier found in PersistentInventory. Have you initialized your PersistentInventory? Do you need to re-stock your Inventory?");
+			if (!inventoryItem.isPresent()) {
+				System.out
+						.println("No InventoryItem with given ProductIndentifier found in PersistentInventory. Have you initialized your PersistentInventory? Do you need to re-stock your Inventory?");
 				break;
 			}
-			if (!inventoryItem.getQuantity().subtract(orderline.getQuantity())
-					.isNegative()) {
-				goodItems.put(inventoryItem, orderline.getQuantity());
+
+			if (!inventoryItem.get().getQuantity().subtract(orderline.getQuantity()).isNegative()) {
+				goodItems.put(inventoryItem.get(), orderline.getQuantity());
 			} else {
-				badItems.put(inventoryItem, orderline.getQuantity());
+				badItems.put(inventoryItem.get(), orderline.getQuantity());
 			}
 		}
-		
-		return txTemplate.execute(new TransactionCallback<OrderCompletionResult>() {
-			
-			@Override
-			public OrderCompletionResult doInTransaction(TransactionStatus status) {
 
-				if (goodItems.size() != order.getNumberOfLineItems()) {
-					
-					status.setRollbackOnly();
-					
-					System.out.println("Number of items requested by the OrderLine is greater than the number available in the Inventory. Please re-stock.");
-					return new InternalOrderCompletionResult(
-							OrderCompletionStatus.FAILED);
-				}
-				
-				System.out.println("Number of items requested by the OrderLine removed from the Inventory.");
-				
-				boolean failed = false;
-				
-				for (InventoryItem inventoryItem : goodItems.keySet()) {
-					Quantity quantity = goodItems.get(inventoryItem);
-					inventoryItem.decreaseQuantity(quantity);
-					if (inventoryItem.getQuantity().isNegative()) {
-						failed = true;
-						break;
-					}
-				}
+		return txTemplate.execute(status -> {
 
-				// TODO DRY IT
-				if (failed) {
-					
-					status.setRollbackOnly();
-					return new InternalOrderCompletionResult(
-							OrderCompletionStatus.FAILED);
-				}
-				
-				order.complete();
-				return new InternalOrderCompletionResult(
-						OrderCompletionStatus.SUCCESSFUL);
+			if (goodItems.size() != order.getNumberOfLineItems()) {
+
+				status.setRollbackOnly();
+
+				System.out
+						.println("Number of items requested by the OrderLine is greater than the number available in the Inventory. Please re-stock.");
+				return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
 			}
+
+			System.out.println("Number of items requested by the OrderLine removed from the Inventory.");
+
+			boolean failed = false;
+
+			for (InventoryItem inventoryItem : goodItems.keySet()) {
+				Quantity quantity = goodItems.get(inventoryItem);
+				inventoryItem.decreaseQuantity(quantity);
+				if (inventoryItem.getQuantity().isNegative()) {
+					failed = true;
+					break;
+				}
+			}
+
+			// TODO DRY IT
+			if (failed) {
+
+				status.setRollbackOnly();
+				return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
+			}
+
+			order.complete();
+			return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL);
 		});
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.salespointframework.order.OrderManager#pay(org.salespointframework.order.Order)
 	 */
 	@Override
 	public boolean payOrder(Order order) {
-		Objects.requireNonNull(order, "order must not be null");
+		
+		Assert.notNull(order, "order must not be null");
+		
 		if (!order.isPaymentExpected()) {
 			return false;
 		}
@@ -261,10 +250,12 @@ class PersistentOrderManager implements OrderManager {
 		accountancy.add(order.markPaid());
 		return true;
 	}
-	
+
 	@Override
 	public boolean cancelOrder(Order order) {
-		Objects.requireNonNull(order, "order must not be null");
+		
+		Assert.notNull(order, "order must not be null");
+		
 		if (order.getOrderStatus() == OrderStatus.OPEN) {
 			order.cancel();
 			return true;
@@ -272,7 +263,7 @@ class PersistentOrderManager implements OrderManager {
 			return false;
 		}
 	}
-	
+
 	private final class InternalOrderCompletionResult implements OrderCompletionResult {
 		private final OrderCompletionStatus status;
 

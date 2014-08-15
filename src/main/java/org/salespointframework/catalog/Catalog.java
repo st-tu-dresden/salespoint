@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @author Oliver Gierke
  */
-public interface Products<T extends Product> extends CrudRepository<T, ProductIdentifier> {
+public interface Catalog<T extends Product> extends CrudRepository<T, ProductIdentifier> {
 
 	/**
 	 * Returns all {@link Product}s assigned to the given category.
@@ -20,7 +20,7 @@ public interface Products<T extends Product> extends CrudRepository<T, ProductId
 	Iterable<T> findByCategory(String category);
 	
 	/**
-	 * Returns the products with the given name.
+	 * Returns the catalog with the given name.
 	 * 
 	 * @param name
 	 * @return

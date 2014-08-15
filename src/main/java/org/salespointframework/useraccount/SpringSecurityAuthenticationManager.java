@@ -15,6 +15,8 @@
  */
 package org.salespointframework.useraccount;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,7 +54,7 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager {
 	 * @see org.salespointframework.useraccount.AuthenticationManager#getCurrentUser()
 	 */
 	@Override
-	public UserAccount getCurrentUser() {
+	public Optional<UserAccount> getCurrentUser() {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
