@@ -12,43 +12,43 @@ import org.junit.Test;
 @SuppressWarnings("javadoc")
 public class ProductTests {
 
-	private Keks keks;
+	private Cookie cookie;
 
 	@Before
 	public void before() {
-		keks = new Keks("Schoooki", Money.zero(CurrencyUnit.EUR));
+		cookie = new Cookie("Schoooki", Money.zero(CurrencyUnit.EUR));
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void addNullCategory() {
-		keks.addCategory(null);
+		cookie.addCategory(null);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void removeNullCategory() {
-		keks.removeCategory(null);
+		cookie.removeCategory(null);
 	}
 
 	@Test
 	public void addCategory() {
-		assertTrue(keks.addCategory("Sci-Fi"));
+		assertTrue(cookie.addCategory("Sci-Fi"));
 	}
 
 	@Test
 	public void addCategory2() {
-		keks.addCategory("Fantasy");
-		assertFalse(keks.addCategory("Fantasy"));
+		cookie.addCategory("Fantasy");
+		assertFalse(cookie.addCategory("Fantasy"));
 	}
 
 	@Test
 	public void removeCategory() {
-		keks.addCategory("Sci-Fi");
-		assertTrue(keks.removeCategory("Sci-Fi"));
+		cookie.addCategory("Sci-Fi");
+		assertTrue(cookie.removeCategory("Sci-Fi"));
 	}
 
 	@Test
 	public void removeCategory2() {
-		assertFalse(keks.removeCategory(Double.toString(new Random()
+		assertFalse(cookie.removeCategory(Double.toString(new Random()
 				.nextDouble())));
 	}
 

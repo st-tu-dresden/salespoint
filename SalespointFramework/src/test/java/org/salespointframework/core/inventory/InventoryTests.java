@@ -1,6 +1,5 @@
 package org.salespointframework.core.inventory;
 
-import static junit.framework.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -9,26 +8,22 @@ import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.core.catalog.Catalog;
-import org.salespointframework.core.catalog.Keks;
+import org.salespointframework.core.catalog.Cookie;
 import org.salespointframework.core.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@SuppressWarnings({ "javadoc", "unused" })
 public class InventoryTests extends AbstractIntegrationTests {
 
 	@Autowired
 	private Inventory inventory;
-	@Autowired
-	private Catalog catalog;
-	private Keks keks;
+	private Cookie cookie;
 	private InventoryItem item;
 
 	@Before
 	public void before() {
-		keks = new Keks("Add Superkeks", Money.zero(CurrencyUnit.EUR));
+		cookie = new Cookie("Add Superkeks", Money.zero(CurrencyUnit.EUR));
 
-		item = new InventoryItem(keks, Units.TEN);
+		item = new InventoryItem(cookie, Units.TEN);
 
 	}
 

@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.core.catalog.ProductRepository;
+import org.salespointframework.core.catalog.Products;
 import org.salespointframework.core.money.Money;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

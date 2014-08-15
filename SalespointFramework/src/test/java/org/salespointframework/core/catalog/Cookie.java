@@ -8,16 +8,16 @@ import org.salespointframework.core.quantity.Units;
 
 @SuppressWarnings("javadoc")
 @Entity
-public class Keks extends Product {
+public class Cookie extends Product {
 
 	String property; 
 	
 	@Deprecated
-	protected Keks() {
+	protected Cookie() {
 		
 	}
 	
-	public Keks(String name, Money price) {
+	public Cookie(String name, Money price) {
 		super(name, Money.of(CurrencyUnit.EUR, 9001), Units.METRIC);
 	}
 }

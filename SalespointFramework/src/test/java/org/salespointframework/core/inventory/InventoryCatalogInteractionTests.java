@@ -8,8 +8,9 @@ import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.core.catalog.Catalog;
-import org.salespointframework.core.catalog.Keks;
+import org.salespointframework.core.catalog.Cookie;
+import org.salespointframework.core.catalog.Product;
+import org.salespointframework.core.catalog.Products;
 import org.salespointframework.core.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,31 +20,30 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 	@Autowired
 	private Inventory inventory;
 	@Autowired
-	private Catalog catalog;
+	private Products<Product> catalog;
 	
-	private Keks keks;
+	private Cookie cookie;
 	private InventoryItem item;
 
 	private static int counter = 0;
 
 	@Before
 	public void before() {
-		keks = new Keks("Superkeks " + (counter++), Money.zero(CurrencyUnit.EUR));
-
-		item = new InventoryItem(keks, Units.TEN);
-
+		
+		cookie = new Cookie("Superkeks " + (counter++), Money.zero(CurrencyUnit.EUR));
+		item = new InventoryItem(cookie, Units.TEN);
 	}
 
 	@Test
 	public void addInCatalogThenInInventoryThrowsNoException() {
-		catalog.add(keks);
+		catalog.save(cookie);
 		inventory.add(item);
 	}
 
 	@Test
 	public void addInInventoryAddsProductInCatalog() {
 		inventory.add(item);
-		assertThat(catalog.contains(keks.getIdentifier()), is(true));
+		assertThat(catalog.exists(cookie.getIdentifier()), is(true));
 	}
 
 	@Test
@@ -55,18 +55,18 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 	// TODO negativ-test davon:
 	@Test
 	public void removeInInventoryThenRemoveInCatalog() {
-		catalog.add(keks);
+		catalog.save(cookie);
 		inventory.add(item);
 		inventory.remove(item.getIdentifier());
-		catalog.remove(keks.getIdentifier());
+		catalog.delete(cookie.getIdentifier());
 	}
 
 	@Test
 	public void removeInInventoryDoesNotRemoveInCatalog() {
-		catalog.add(keks);
+		catalog.save(cookie);
 		inventory.add(item);
 		inventory.remove(item.getIdentifier());
-		assertThat(catalog.contains(keks.getIdentifier()), is(true));
+		assertThat(catalog.exists(cookie.getIdentifier()), is(true));
 	}
 
 }

@@ -8,15 +8,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.accountancy.payment.Cash;
-import org.salespointframework.core.catalog.Catalog;
-import org.salespointframework.core.catalog.Keks;
+import org.salespointframework.core.catalog.Cookie;
 import org.salespointframework.core.catalog.Product;
+import org.salespointframework.core.catalog.Products;
 import org.salespointframework.core.quantity.Units;
 import org.salespointframework.core.useraccount.UserAccount;
 import org.salespointframework.core.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@SuppressWarnings({ "javadoc" })
+
 public class OrderLineTests extends AbstractIntegrationTests {
 
 	
@@ -24,7 +24,7 @@ public class OrderLineTests extends AbstractIntegrationTests {
 	private UserAccountManager userAccountManager;
 	
 	@Autowired
-	private Catalog catalog;
+	private Products<Product> catalog;
 
 	private static int keksCounter = 0;
 	private UserAccount user;
@@ -33,9 +33,9 @@ public class OrderLineTests extends AbstractIntegrationTests {
 
 	@Before
 	public void before() {
-		Product keks = new Keks("OrderLine Keks " + keksCounter++, Money.zero(CurrencyUnit.EUR));
+		Product keks = new Cookie("OrderLine Cookie " + keksCounter++, Money.zero(CurrencyUnit.EUR));
 
-		catalog.add(keks);
+		catalog.save(keks);
 
 		user = userAccountManager.create("userId", "");
 		order = new Order(user, Cash.CASH);
@@ -73,11 +73,4 @@ public class OrderLineTests extends AbstractIntegrationTests {
 	public void removeTest2() {
 		assertFalse(order.removeOrderLine(orderLine.getIdentifier()));
 	}
-
-	/*
-	 * @Test(expected=IllegalArgumentException.class)
-	 * 
-	 * @Ignore public void numberOrderedNegativeTest() { new
-	 * PersistentOrderLine(new ProductIdentifier(), -1337); }
-	 */
 }

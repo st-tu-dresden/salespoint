@@ -22,7 +22,8 @@ import java.util.List;
 
 import org.junit.Test;
 import org.salespointframework.core.DataInitializer;
-import org.salespointframework.core.catalog.Catalog;
+import org.salespointframework.core.catalog.Product;
+import org.salespointframework.core.catalog.Products;
 import org.salespointframework.core.inventory.Inventory;
 import org.salespointframework.core.order.OrderManager;
 import org.salespointframework.core.time.BusinessTime;
@@ -40,7 +41,7 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 
 	@Autowired Inventory inventory;
 	@Autowired OrderManager orderManager;
-	@Autowired Catalog catalog;
+	@Autowired Products<Product> product;
 	@Autowired BusinessTime businessTime;
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired AuthenticationManager authenticationManager;
@@ -52,7 +53,7 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 
 		assertThat(inventory, is(notNullValue()));
 		assertThat(orderManager, is(notNullValue()));
-		assertThat(catalog, is(notNullValue()));
+		assertThat(product, is(notNullValue()));
 		assertThat(userAccountManager, is(notNullValue()));
 		assertThat(businessTime, is(notNullValue()));
 		assertThat(authenticationManager, is(notNullValue()));
