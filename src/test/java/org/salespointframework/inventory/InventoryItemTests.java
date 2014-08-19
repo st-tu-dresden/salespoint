@@ -10,7 +10,7 @@ import org.salespointframework.catalog.Cookie;
 import org.salespointframework.inventory.InventoryItem;
 import org.salespointframework.quantity.Units;
 
-@SuppressWarnings({ "javadoc"})
+@SuppressWarnings({ "javadoc" })
 public class InventoryItemTests {
 
 	private static int counter = 0;

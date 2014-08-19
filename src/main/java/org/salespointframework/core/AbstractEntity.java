@@ -37,20 +37,20 @@ public abstract class AbstractEntity<ID extends SalespointIdentifier> {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		
+
 		if (this == obj) {
 			return true;
 		}
-		
+
 		if (obj == null || !(obj.getClass().equals(this.getClass()))) {
 			return false;
 		}
-		
+
 		AbstractEntity<?> that = (AbstractEntity<?>) obj;
-		
+
 		return ObjectUtils.nullSafeEquals(this.getIdentifier(), that.getIdentifier());
 	}
-	
+
 	/* 
 	 * (non-Javadoc)
 	 * @see java.lang.Object#hashCode()

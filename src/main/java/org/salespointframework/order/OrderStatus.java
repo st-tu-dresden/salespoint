@@ -1,14 +1,11 @@
 package org.salespointframework.order;
 
-
 /**
  * @author Paul Henke
- *
+ * @author Oliver Gierke
  */
 @SuppressWarnings("javadoc")
 public enum OrderStatus {
-	OPEN, 
-	PAYED, 
-	COMPLETED, 
-	CANCELLED,
+
+	OPEN, PAID, COMPLETED, CANCELLED;
 }

@@ -13,9 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Basic salespoint security configuration setting up the {@link AuthenticationManagerBuilder} to work with the
- * {@link UserDetailsService} implementaiton as well as the {@link PasswordEncoder} we provide.
- * 
- * TODO: Pull {@link EnableGlobalMethodSecurity} in here as well as soon as it is supported on superclasses. 
+ * {@link UserDetailsService} implementaiton as well as the {@link PasswordEncoder} we provide. TODO: Pull
+ * {@link EnableGlobalMethodSecurity} in here as well as soon as it is supported on superclasses.
  * 
  * @author Oliver Gierke
  */

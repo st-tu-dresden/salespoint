@@ -3,7 +3,6 @@ package org.salespointframework.order;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.salespointframework.accountancy.Accountancy;
@@ -86,7 +85,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public final Optional<T> get(OrderIdentifier orderIdentifier) {
-		
+
 		Assert.notNull(orderIdentifier, "orderIdentifier must not be null");
 		return orderRepository.findOne(orderIdentifier);
 	}
@@ -97,7 +96,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public final boolean contains(OrderIdentifier orderIdentifier) {
-		
+
 		Assert.notNull(orderIdentifier, "orderIdentifier must not be null");
 		return orderRepository.exists(orderIdentifier);
 	}
@@ -108,7 +107,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public final Iterable<T> find(LocalDateTime from, LocalDateTime to) {
-		
+
 		Assert.notNull(from, "from must not be null");
 		Assert.notNull(to, "to must not be null");
 
@@ -121,7 +120,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public final Iterable<T> find(OrderStatus orderStatus) {
-		
+
 		Assert.notNull(orderStatus, "orderStatus must not be null");
 		return orderRepository.findByOrderStatus(orderStatus);
 	}
@@ -132,7 +131,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public final Iterable<T> find(UserAccount userAccount) {
-		
+
 		Assert.notNull(userAccount, "userAccount must not be null");
 		return orderRepository.findByUserAccount(userAccount);
 	}
@@ -143,7 +142,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public final Iterable<T> find(UserAccount userAccount, LocalDateTime from, LocalDateTime to) {
-		
+
 		Assert.notNull(userAccount, "userAccount must not be null");
 		Assert.notNull(from, "from must not be null");
 		Assert.notNull(to, "to must not be null");
@@ -157,7 +156,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public final void update(T order) {
-		
+
 		Assert.notNull(order, "order must not be null");
 		orderRepository.save(order);
 	}
@@ -169,18 +168,26 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	@Override
 	public OrderCompletionResult completeOrder(final Order order) {
 
-		if (order.getOrderStatus() != OrderStatus.PAYED) {
+		if (!order.isPaid()) {
 			return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
 		}
 
-		Assert.notNull(order, "order must not be null");
+		Assert.notNull(order, "Order must not be null");
 
 		final Map<InventoryItem, Quantity> goodItems = new HashMap<>();
 		final Map<InventoryItem, Quantity> badItems = new HashMap<>();
 
 		Iterable<OrderLine> lineItems = order.getOrderLines();
 
+		// Stream<OrderLine> stream = stream(lineItems.spliterator(), false);
+		// Stream<ProductIdentifier> identifiers = stream.map(OrderLine::getProductIdentifier);
+		// Stream<Optional<InventoryItem>> items = identifiers.map(identifier ->
+		// inventory.findByProductProductIdentifier(identifier));
+
+		// Stream<InventoryItem> filtereditems = items.flatMap(i -> i.map(Stream::of).orElseGet(Stream::empty));
+
 		for (OrderLine orderline : lineItems) {
+
 			ProductIdentifier productIdentifier = orderline.getProductIdentifier();
 			Optional<InventoryItem> inventoryItem = inventory.findByProductProductIdentifier(productIdentifier);
 
@@ -191,47 +198,53 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 				break;
 			}
 
-			if (!inventoryItem.get().getQuantity().subtract(orderline.getQuantity()).isNegative()) {
-				goodItems.put(inventoryItem.get(), orderline.getQuantity());
-			} else {
-				badItems.put(inventoryItem.get(), orderline.getQuantity());
-			}
+			inventoryItem.ifPresent(item -> {
+
+				Quantity orderLineQuantity = orderline.getQuantity();
+
+				if (!item.hasSufficientQuantity(orderLineQuantity)) {
+					goodItems.put(item, orderLineQuantity);
+				} else {
+					badItems.put(item, orderLineQuantity);
+				}
+			});
 		}
 
-		return txTemplate.execute(status -> {
+		return txTemplate
+				.execute(status -> {
 
-			if (goodItems.size() != order.getNumberOfLineItems()) {
+					if (goodItems.size() != order.getNumberOfLineItems()) {
 
-				status.setRollbackOnly();
+						status.setRollbackOnly();
 
-				System.out
-						.println("Number of items requested by the OrderLine is greater than the number available in the Inventory. Please re-stock.");
-				return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
-			}
+						System.out
+								.println("Number of items requested by the OrderLine is greater than the number available in the Inventory. Please re-stock.");
+						return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
+					}
 
-			System.out.println("Number of items requested by the OrderLine removed from the Inventory.");
+					System.out.println("Number of items requested by the OrderLine removed from the Inventory.");
 
-			boolean failed = false;
+					boolean failed = false;
 
-			for (InventoryItem inventoryItem : goodItems.keySet()) {
-				Quantity quantity = goodItems.get(inventoryItem);
-				inventoryItem.decreaseQuantity(quantity);
-				if (inventoryItem.getQuantity().isNegative()) {
-					failed = true;
-					break;
-				}
-			}
+					for (InventoryItem inventoryItem : goodItems.keySet()) {
+						Quantity quantity = goodItems.get(inventoryItem);
+						inventoryItem.decreaseQuantity(quantity);
+						if (inventoryItem.getQuantity().isNegative()) {
+							failed = true;
+							break;
+						}
+					}
 
-			// TODO DRY IT
-			if (failed) {
+					// TODO DRY IT
+					if (failed) {
 
-				status.setRollbackOnly();
-				return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
-			}
+						status.setRollbackOnly();
+						return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
+					}
 
-			order.complete();
-			return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL);
-		});
+					order.complete();
+					return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL);
+				});
 	}
 
 	/*
@@ -240,9 +253,9 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public boolean payOrder(Order order) {
-		
+
 		Assert.notNull(order, "order must not be null");
-		
+
 		if (!order.isPaymentExpected()) {
 			return false;
 		}
@@ -251,11 +264,15 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.OrderManager#cancelOrder(org.salespointframework.order.Order)
+	 */
 	@Override
 	public boolean cancelOrder(Order order) {
-		
+
 		Assert.notNull(order, "order must not be null");
-		
+
 		if (order.getOrderStatus() == OrderStatus.OPEN) {
 			order.cancel();
 			return true;

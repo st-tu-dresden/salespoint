@@ -45,10 +45,11 @@ class UserAccountDetailService implements UserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-		
+
 		Optional<UserAccount> candidate = repository.findOne(new UserAccountIdentifier(name));
-		UserAccount account = candidate.orElseThrow(() -> new UsernameNotFoundException("Useraccount: " + name + "not found"));
-		
+		UserAccount account = candidate.orElseThrow(() -> new UsernameNotFoundException("Useraccount: " + name
+				+ "not found"));
+
 		return new UserAccountDetails(account);
 	}
 
@@ -61,7 +62,7 @@ class UserAccountDetailService implements UserDetailsService {
 		private final List<GrantedAuthority> authorities = new LinkedList<>();
 
 		public UserAccountDetails(UserAccount userAccount) {
-			
+
 			this.username = userAccount.getIdentifier().toString();
 			this.password = userAccount.getPassword().toString();
 			this.isEnabled = userAccount.isEnabled();

@@ -1,7 +1,6 @@
 package org.salespointframework.accountancy;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -13,17 +12,17 @@ import org.hibernate.annotations.Type;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.order.ProductPaymentEntry;
+import org.springframework.util.Assert;
 
 /**
- * This class represents an accountancy entry. It is
- * advisable to sub-class it, to define specific entry types for an accountancy,
- * for example a {@link ProductPaymentEntry}.
+ * This class represents an accountancy entry. It is advisable to sub-class it, to define specific entry types for an
+ * accountancy, for example a {@link ProductPaymentEntry}.
  * 
  * @author Hannes Weisbach
  * @author Oliver Gierke
  */
 @Entity
-//@Customizer(PersistentAccountancyEntryDescriptorCustomizer.class)
 public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier> {
 
 	// TODO: if the column is not renamed, it does not work. instead,
@@ -33,12 +32,9 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	// IdClass annotation did not work. Maybe Using a DescriptorCustomizer can
 	// be used, to correct the mappings (don't forget to sacrifice a chicken, if
 	// it does).
-	@EmbeddedId
-	@AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID", nullable = false))
-	private AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();
+	@EmbeddedId @AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID", nullable = false)) private AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();
 
-	@Lob
-	private Money value = Money.zero(CurrencyUnit.EUR);
+	@Lob private Money value = Money.zero(CurrencyUnit.EUR);
 
 	@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")//
 	private LocalDateTime date = null;
@@ -46,36 +42,42 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	private String description = "";
 
 	/**
-	 * Protected, parameterless Constructor required by the persistence layer.
-	 * Do not use it.
+	 * Protected, parameterless Constructor required by the persistence layer. Do not use it.
 	 */
 	@Deprecated
-	protected AccountancyEntry() {
-	}
+	protected AccountancyEntry() {}
 
 	/**
-	 * Creates a new <code>PersistentAccountancyEntry</code> with a specific
-	 * value.
+	 * Creates a new <code>PersistentAccountancyEntry</code> with a specific value.
 	 * 
-	 * @param value
-	 *            The value that is stored in this entry.
+	 * @param value The value that is stored in this entry.
 	 */
 	public AccountancyEntry(Money value) {
 		this(value, "");
 	}
 
 	/**
-	 * Creates a new <code>PersistentAccountancyEntry</code> with a specific
-	 * value and a user defined time.
+	 * Creates a new <code>PersistentAccountancyEntry</code> with a specific value and a user defined time.
 	 * 
-	 * @param value
-	 *            The value that is stored in this entry.
-	 * @param description
-	 *            A user-supplied description for this entry.
+	 * @param value The value that is stored in this entry.
+	 * @param description A user-supplied description for this entry.
 	 */
 	public AccountancyEntry(Money value, String description) {
-		this.value = Objects.requireNonNull(value, "value must not be null");
-		this.description = Objects.requireNonNull(description, "description must not be null");
+
+		Assert.notNull(value, "Value must not be null");
+		Assert.notNull(description, "Description must not be null");
+
+		this.value = value;
+		this.description = description;
+	}
+
+	/**
+	 * Returns whether the {@link AccountancyEntry} already has a {@link Date} set.
+	 * 
+	 * @return
+	 */
+	public boolean hasDate() {
+		return date != null;
 	}
 
 	/**
@@ -84,13 +86,14 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	public final LocalDateTime getDate() {
 		return date;
 	}
-	
+
 	void setDate(LocalDateTime dateTime) {
-		this.date = dateTime; 
+		this.date = dateTime;
 	}
 
 	/**
 	 * The Money object is always non-{@literal null}.
+	 * 
 	 * @return the monetary value for this entry.
 	 */
 	public final Money getValue() {
@@ -98,7 +101,6 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	}
 
 	/**
-	 * 
 	 * @return description, detailing the entry.
 	 */
 	public final String getDescription() {
@@ -106,19 +108,16 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	}
 
 	/**
-	 * @return {@link AccountancyEntryIdentifier} to uniquely identify this
-	 *         entry.
-	 * 
+	 * @return {@link AccountancyEntryIdentifier} to uniquely identify this entry.
 	 */
 	@Override
 	public final AccountancyEntryIdentifier getIdentifier() {
 		return accountancyEntryIdentifier;
 	}
-	
 
 	@Override
 	public String toString() {
 		return value.toString() + " | " + date.toString() + " | " + description;
 	}
-	
+
 }

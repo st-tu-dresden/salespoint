@@ -10,6 +10,8 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.inventory.Inventory;
+import org.salespointframework.inventory.InventoryItem;
+import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderManager;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.AuthenticationManager;
@@ -24,8 +26,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
  */
 public class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
 
-	@Autowired Inventory inventory;
-	@Autowired OrderManager orderManager;
+	@Autowired Inventory<InventoryItem> inventory;
+	@Autowired OrderManager<Order> orderManager;
 	@Autowired Catalog<Product> product;
 	@Autowired BusinessTime businessTime;
 	@Autowired UserAccountManager userAccountManager;

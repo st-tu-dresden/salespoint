@@ -1,7 +1,6 @@
 package org.salespointframework.order;
 
 import java.math.RoundingMode;
-import java.util.Objects;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -17,6 +16,7 @@ import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.quantity.MetricMismatchException;
 import org.salespointframework.quantity.Quantity;
+import org.springframework.util.Assert;
 
 /**
  * An order line
@@ -25,69 +25,75 @@ import org.salespointframework.quantity.Quantity;
  * @author Oliver Gierke
  */
 @Entity
-public class OrderLine extends AbstractEntity<OrderLineIdentifier>
-{
-	@EmbeddedId
-	@AttributeOverride(name = "id", column = @Column(name = "ORDERLINE_ID"))
-	private OrderLineIdentifier orderLineIdentifier = new OrderLineIdentifier();
+public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Priced {
 
-	@Embedded
-	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
-	private ProductIdentifier productIdentifier;
+	@EmbeddedId @AttributeOverride(name = "id", column = @Column(name = "ORDERLINE_ID")) private OrderLineIdentifier orderLineIdentifier = new OrderLineIdentifier();
 
-	@Lob
-	private Money price = Money.of(CurrencyUnit.EUR, 1.0);
+	@Embedded @AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID")) private ProductIdentifier productIdentifier;
 
+	private @Lob Money price = Money.of(CurrencyUnit.EUR, 1.0);
+	private @Lob Quantity quantity;
 	private String productName;
-
-	@Lob
-	private Quantity quantity;
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
 	 */
 	@Deprecated
-	protected OrderLine() { }
-	
-	public OrderLine(Product product, Quantity quantity)
-	{
-		this.productIdentifier = Objects.requireNonNull(product, "product must be not null").getIdentifier();
-		this.quantity = Objects.requireNonNull(quantity, "quantity must be not null");
-		
-		if(!product.getMetric().equals(quantity.getMetric())) {
-			throw new MetricMismatchException("product.getMetric() is not equal to this.quantity.getMetric()");
+	protected OrderLine() {}
+
+	/**
+	 * Creates a new {@link OrderLine} for the given {@link Product} and {@link Quantity}.
+	 * 
+	 * @param product must not be {@literal null}.
+	 * @param quantity must not be {@literal null}.
+	 */
+	public OrderLine(Product product, Quantity quantity) {
+
+		Assert.notNull(product, "Product must be not null!");
+		Assert.notNull(quantity, "Quantity must be not null!");
+
+		if (!product.supports(quantity)) {
+			throw new MetricMismatchException(String.format("Product %s does not support quantity %s!", product, quantity));
 		}
-		
+
+		this.productIdentifier = product.getIdentifier();
+		this.quantity = quantity;
 		this.price = product.getPrice().multipliedBy(quantity.getAmount(), RoundingMode.HALF_UP);
 		this.productName = product.getName();
 	}
 
-
-	public final OrderLineIdentifier getIdentifier()
-	{
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.AbstractEntity#getIdentifier()
+	 */
+	public final OrderLineIdentifier getIdentifier() {
 		return orderLineIdentifier;
 	}
 
-	public final Money getPrice()
-	{
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.Priced#getPrice()
+	 */
+	public final Money getPrice() {
 		return price;
 	}
 
-	public final ProductIdentifier getProductIdentifier()
-	{
+	public final ProductIdentifier getProductIdentifier() {
 		return productIdentifier;
 	}
 
-	public final String getProductName()
-	{
+	public final String getProductName() {
 		return productName;
 	}
 
-	public final Quantity getQuantity()
-	{
+	public final Quantity getQuantity() {
 		return quantity;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return productName + "(" + productIdentifier.toString() + ")" + " - " + quantity;

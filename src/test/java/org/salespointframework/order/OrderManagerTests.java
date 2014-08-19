@@ -8,9 +8,7 @@ import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.accountancy.payment.Cash;
-import org.salespointframework.order.Order;
-import org.salespointframework.order.OrderManager;
+import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +23,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class OrderManagerTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
-	
+
 	@Autowired OrderManager<Order> orderManager;
-	
+
 	UserAccount user;
 	Order order;
 
 	@Before
 	public void before() {
-		user = userAccountManager.create("userId", "");
+		user = userAccountManager.create("userId", "password");
 		userAccountManager.save(user);
 		order = new Order(user, Cash.CASH);
 	}
@@ -58,9 +56,9 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 	public void testGet() {
 
 		order = orderManager.add(order);
-		
+
 		Optional<Order> result = orderManager.get(order.getIdentifier());
-		
+
 		assertThat(result.isPresent(), is(true));
 		assertThat(result.get(), is(order));
 	}

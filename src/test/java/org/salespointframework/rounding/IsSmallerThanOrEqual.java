@@ -10,10 +10,11 @@ import org.hamcrest.TypeSafeMatcher;
 @SuppressWarnings("javadoc")
 public class IsSmallerThanOrEqual extends TypeSafeMatcher<BigDecimal> {
 	private BigDecimal right;
-	
-	public  IsSmallerThanOrEqual(BigDecimal right) {
+
+	public IsSmallerThanOrEqual(BigDecimal right) {
 		this.right = right;
 	}
+
 	@Override
 	public void describeTo(Description description) {
 		description.appendText("not smaller than");
@@ -23,7 +24,7 @@ public class IsSmallerThanOrEqual extends TypeSafeMatcher<BigDecimal> {
 	public boolean matchesSafely(BigDecimal number) {
 		return number.compareTo(right) <= 0;
 	}
-	
+
 	@Factory
 	public static <T> Matcher<BigDecimal> smallerThanOrEqual(BigDecimal right) {
 		return new IsSmallerThanOrEqual(right);

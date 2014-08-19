@@ -41,21 +41,21 @@ public class DefaultBusinessTimeUnitTests {
 	public void returnsCurrentTimeByDefault() throws Exception {
 
 		LocalDateTime time = businessTime.getTime();
-		
+
 		Thread.sleep(20);
-		
+
 		assertThat(time.isBefore(LocalDateTime.now()), is(true));
 		assertThat(time.isAfter(LocalDateTime.now().minusSeconds(1)), is(true));
 	}
-	
+
 	/**
 	 * @see #7
 	 */
 	@Test
-	public void shiftsTimeByGivenDuration() throws Exception {		
+	public void shiftsTimeByGivenDuration() throws Exception {
 		assertTimeShifted(businessTime.getTime(), 2);
 	}
-	
+
 	/**
 	 * @see #7
 	 */
@@ -63,20 +63,20 @@ public class DefaultBusinessTimeUnitTests {
 	public void forwardingMultipleTimesAccumulatesOffset() throws Exception {
 		assertTimeShifted(businessTime.getTime(), 2, 4, 12);
 	}
-	
+
 	private void assertTimeShifted(LocalDateTime reference, int... days) throws Exception {
-		
+
 		int total = 0;
-		
+
 		for (int day : days) {
 			businessTime.forward(Duration.ofDays(day));
 			total += day;
 		}
-		
+
 		Thread.sleep(20);
-		
+
 		LocalDateTime time = businessTime.getTime();
-		
+
 		assertThat(time.isAfter(reference.plusDays(total)), is(true));
 		assertThat(time.isBefore(reference.plusDays(total).plusSeconds(1)), is(true));
 		assertThat(businessTime.getOffset(), is(Duration.ofDays(total)));

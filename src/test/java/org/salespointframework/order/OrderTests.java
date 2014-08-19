@@ -5,18 +5,13 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.accountancy.payment.Cash;
-import org.salespointframework.order.Order;
-import org.salespointframework.order.OrderCompletionResult;
-import org.salespointframework.order.OrderManager;
-import org.salespointframework.order.OrderStatus;
 import org.salespointframework.order.OrderCompletionResult.OrderCompletionStatus;
+import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * 
  * @author Hannes Weissbach
  * @author Paul Henke
  * @author Oliver Gierke
@@ -33,8 +28,8 @@ public class OrderTests extends AbstractIntegrationTests {
 
 	@Before
 	public void before() {
-		
-		user = userAccountManager.save(userAccountManager.create("OrderTests " + foobar, ""));
+
+		user = userAccountManager.save(userAccountManager.create("OrderTests " + foobar, "password"));
 		order = new Order(user, Cash.CASH);
 		foobar++;
 	}
@@ -63,7 +58,7 @@ public class OrderTests extends AbstractIntegrationTests {
 	public void cancelOrderTest3() {
 		orderManager.payOrder(order);
 		boolean result = orderManager.cancelOrder(order);
-		assertEquals(OrderStatus.PAYED, order.getOrderStatus());
+		assertEquals(OrderStatus.PAID, order.getOrderStatus());
 		assertFalse(result);
 	}
 
@@ -79,7 +74,7 @@ public class OrderTests extends AbstractIntegrationTests {
 	@Test
 	public void payOrderTest() {
 		boolean result = orderManager.payOrder(order);
-		assertEquals(OrderStatus.PAYED, order.getOrderStatus());
+		assertEquals(OrderStatus.PAID, order.getOrderStatus());
 		assertTrue(result);
 	}
 
@@ -87,7 +82,7 @@ public class OrderTests extends AbstractIntegrationTests {
 	public void payOrderTest2() {
 		orderManager.payOrder(order);
 		boolean result = orderManager.payOrder(order);
-		assertEquals(OrderStatus.PAYED, order.getOrderStatus());
+		assertEquals(OrderStatus.PAID, order.getOrderStatus());
 		assertFalse(result);
 	}
 

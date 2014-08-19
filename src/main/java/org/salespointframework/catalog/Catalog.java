@@ -18,7 +18,7 @@ public interface Catalog<T extends Product> extends CrudRepository<T, ProductIde
 	 */
 	@Query("select p from #{#entityName} p where ?1 member of p.categories")
 	Iterable<T> findByCategory(String category);
-	
+
 	/**
 	 * Returns the catalog with the given name.
 	 * 

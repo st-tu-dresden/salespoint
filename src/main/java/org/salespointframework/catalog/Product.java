@@ -1,7 +1,7 @@
 package org.salespointframework.catalog;
 
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -14,6 +14,9 @@ import javax.persistence.Lob;
 import org.joda.money.Money;
 import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.quantity.Metric;
+import org.salespointframework.quantity.MetricMismatchException;
+import org.salespointframework.quantity.Quantity;
+import org.springframework.util.Assert;
 
 /**
  * A product.
@@ -22,19 +25,14 @@ import org.salespointframework.quantity.Metric;
  * @author Oliver Gierke
  */
 @Entity
-public class Product extends AbstractEntity<ProductIdentifier> implements Comparable<Product>
-{
-	@EmbeddedId
-	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
-	private ProductIdentifier productIdentifier = new ProductIdentifier();
+public class Product extends AbstractEntity<ProductIdentifier> implements Comparable<Product> {
+	@EmbeddedId @AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID")) private ProductIdentifier productIdentifier = new ProductIdentifier();
 
 	private String name;
-	
-	@Lob
-	private Money price;
 
-	@ElementCollection
-	private Set<String> categories = new HashSet<String>();
+	@Lob private Money price;
+
+	@ElementCollection private Set<String> categories = new HashSet<String>();
 
 	private Metric metric;
 
@@ -42,79 +40,107 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 	 * Parameterless constructor required for JPA. Do not use.
 	 */
 	@Deprecated
-	protected Product() { }
+	protected Product() {}
 
 	/**
-	 * Creates a new Product
+	 * Creates a new {@link Product} with the given name, price and {@link Metric}.
 	 * 
-	 * @param name the name of the Product
-	 * @param price the price of the Product
-	 * @param metric the {@link Metric} of the Product
+	 * @param name the name of the {@link Product}, must not be {@literal null} or empty.
+	 * @param price the price of the {@link Product}, must not be {@literal null}.
+	 * @param metric the {@link Metric} of the {@link Product}, must not be {@literal null}.
 	 */
-	public Product(String name, Money price, Metric metric)
-	{
-		this.name = Objects.requireNonNull(name, "name must not be null");
-		this.price = Objects.requireNonNull(price, "price must not be null");
-		this.metric = Objects.requireNonNull(metric, "metric must not be null");
+	public Product(String name, Money price, Metric metric) {
+
+		Assert.hasText(name, "Name must not be null or empty!");
+		Assert.notNull(price, "Price must not be null!");
+		Assert.notNull(metric, "Metric must not be null!");
+
+		this.name = name;
+		this.price = price;
+		this.metric = metric;
 	}
 
-	@Override
-	public String toString()
-	{
-		return name;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public Money getPrice()
-	{
-		return price;
-	}
-
-
-
-	public final ProductIdentifier getIdentifier()
-	{
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.AbstractEntity#getIdentifier()
+	 */
+	public final ProductIdentifier getIdentifier() {
 		return productIdentifier;
 	}
 
-	public final boolean addCategory(String category)
-	{
-		Objects.requireNonNull(category, "category must not be null");
-		return categories.add(category);
-	}
-
-	public final boolean removeCategory(String category)
-	{
-		Objects.requireNonNull(category, "category must not be null");
-		return categories.remove(category);
-	}
-
-	public final Iterable<String> getCategories()
-	{
-		return categories;
-	}
-
-	@Override
-	public int compareTo(Product other)
-	{
-		return this.name.compareTo(other.name);
-	}
-
-	public final Metric getMetric()
-	{
-		return metric;
+	public String getName() {
+		return name;
 	}
 
 	public void setName(String name) {
-		this.name = Objects.requireNonNull(name, "name must not be null");
-		
+
+		Assert.hasText(name, "Name must not be null or empty!");
+		this.name = name;
+
+	}
+
+	public Money getPrice() {
+		return price;
 	}
 
 	public void setPrice(Money price) {
-		this.price = Objects.requireNonNull(price, "price must not be null");
+
+		Assert.notNull(price, "Price must not be null!");
+		this.price = price;
+	}
+
+	public final Iterable<String> getCategories() {
+		return Collections.unmodifiableSet(categories);
+	}
+
+	public final boolean addCategory(String category) {
+		Assert.notNull(category, "category must not be null");
+		return categories.add(category);
+	}
+
+	public final boolean removeCategory(String category) {
+		Assert.notNull(category, "category must not be null");
+		return categories.remove(category);
+	}
+
+	/**
+	 * Returns whether the {@link Product} supports the given {@link Quantity}.
+	 * 
+	 * @param quantity
+	 * @return
+	 */
+	public boolean supports(Quantity quantity) {
+		return quantity == null ? false : metric.equals(quantity.getMetric());
+	}
+
+	/**
+	 * Verifies the given {@link Quantity} to match the one supported by the current {@link Product}.
+	 * 
+	 * @param quantity
+	 * @throws MetricMismatchException in case the {@link Product} does not support the given {@link Quantity}.
+	 */
+	public void verify(Quantity quantity) {
+
+		if (!supports(quantity)) {
+			throw new MetricMismatchException(String.format("Product %s does not support quantity %s!", this, quantity));
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(Product other) {
+		return this.name.compareTo(other.name);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return name;
 	}
 }

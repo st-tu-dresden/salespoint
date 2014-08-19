@@ -3,11 +3,9 @@ package org.salespointframework.quantity;
 import java.io.Serializable;
 
 /**
- * Immutable metric representation. A metric consists of a name, a symbol and a
- * description.
+ * Immutable metric representation. A metric consists of a name, a symbol and a description.
  * 
  * @author Hannes Weisbach
- * 
  */
 @SuppressWarnings("serial")
 public class Metric implements Serializable {
@@ -19,13 +17,9 @@ public class Metric implements Serializable {
 	/**
 	 * Class constructor specifying name, symbol and definition.
 	 * 
-	 * @param name
-	 *            the name of the metric, for example 'meter'
-	 * @param symbol
-	 *            symbol used to represent the metric, for example 'm'
-	 * @param definition
-	 *            definition of the metric, i.e. 'the base unit of length in the
-	 *            International System of Units'
+	 * @param name the name of the metric, for example 'meter'
+	 * @param symbol symbol used to represent the metric, for example 'm'
+	 * @param definition definition of the metric, i.e. 'the base unit of length in the International System of Units'
 	 */
 	public Metric(String name, String symbol, String definition) {
 		this.name = name;
@@ -36,10 +30,8 @@ public class Metric implements Serializable {
 	/**
 	 * Class constructor specifying name and symbol.
 	 * 
-	 * @param name
-	 *            the name of the metric, for example 'meter'
-	 * @param symbol
-	 *            the symbol representing the metric, for example 'm'
+	 * @param name the name of the metric, for example 'meter'
+	 * @param symbol the symbol representing the metric, for example 'm'
 	 */
 	public Metric(String name, String symbol) {
 		this(name, symbol, "");
@@ -64,8 +56,7 @@ public class Metric implements Serializable {
 	}
 
 	/**
-	 * Returns the String containing the definition of this metric. The String
-	 * may be empty, but is non-null.
+	 * Returns the String containing the definition of this metric. The String may be empty, but is non-null.
 	 * 
 	 * @return the definition of this metric.
 	 */
@@ -74,14 +65,10 @@ public class Metric implements Serializable {
 	}
 
 	/**
-	 * Compares this <code>Metric</code> to {@code obj}.
+	 * Compares this <code>Metric</code> to {@code obj}. Returns {@literal false} if {@code obj} is not an instance of
+	 * <code>Metric</code>. Otherwise, two <code>Metric</code>s are equal, if their symbols and names are equal.
 	 * 
-	 * Returns {@literal false} if {@code obj} is not an instance of
-	 * <code>Metric</code>. Otherwise, two <code>Metric</code>s are equal, if
-	 * their symbols and names are equal.
-	 * 
-	 * @param obj
-	 *            the Object to which {@code this} is compared.
+	 * @param obj the Object to which {@code this} is compared.
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -96,16 +83,15 @@ public class Metric implements Serializable {
 			return symbol.equals(m.symbol) && name.equals(m.name);
 		}
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return this.symbol.hashCode() ^ this.name.hashCode();
 	}
 
 	/**
-	 * Returns a hash code for this <code>Metric</code> object. The result is
-	 * exclusive OR of the hash code of the name and the hash code of the
-	 * symbol.
+	 * Returns a hash code for this <code>Metric</code> object. The result is exclusive OR of the hash code of the name
+	 * and the hash code of the symbol.
 	 * 
 	 * @return a hash code for this <code>Metric</code> object.
 	 */
@@ -114,8 +100,8 @@ public class Metric implements Serializable {
 	}
 
 	/**
-	 * Returns a string representation of this <code>Metric</code> object. The
-	 * symbol is used to represent a <code>Metric</code> object as string.
+	 * Returns a string representation of this <code>Metric</code> object. The symbol is used to represent a
+	 * <code>Metric</code> object as string.
 	 */
 	@Override
 	public String toString() {

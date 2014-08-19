@@ -2,22 +2,24 @@ package org.salespointframework.order;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
+import org.springframework.util.Assert;
 
 public class Basket {
-	
+
 	private final List<OrderLine> orderLines = new LinkedList<>();
-	
-	public boolean addOrderLine(OrderLine orderLine) {
-		Objects.requireNonNull(orderLine, "orderLine must not be null");
+
+	public boolean add(OrderLine orderLine) {
+
+		Assert.notNull(orderLine, "orderLine must not be null");
 		return orderLines.add(orderLine);
 	}
-	
+
 	public boolean removeOrderLine(OrderLineIdentifier orderLineIdentifier) {
-		Objects.requireNonNull(orderLineIdentifier,	"orderLineIdentifier must not be null");
+
+		Assert.notNull(orderLineIdentifier, "orderLineIdentifier must not be null");
 
 		OrderLine temp = null;
 		for (OrderLine pol : orderLines) {
@@ -28,35 +30,36 @@ public class Basket {
 		}
 		return orderLines.remove(temp);
 	}
-	
+
 	public void clear() {
 		orderLines.clear();
 	}
-	
-	
+
 	public Iterable<OrderLine> getOrderLines() {
 		return orderLines;
 	}
-	
+
 	public boolean isEmpty() {
 		return orderLines.isEmpty();
 	}
-	
-	public Money getPrice() {
-		Money price = Money.zero(CurrencyUnit.EUR);
-		for (OrderLine orderLine : orderLines) {
-			price = price.plus(orderLine.getPrice());
-		}
-		return price;
+
+	public Money getTotalPrice() {
+
+		return orderLines.stream().//
+				map(OrderLine::getPrice).//
+				reduce((left, right) -> left.plus(right)).orElse(Money.zero(CurrencyUnit.EUR));
 	}
-	
+
 	public void commit(Order order) {
-		Objects.requireNonNull(order, "order must not be null");
-		if(order.getOrderStatus() != OrderStatus.OPEN) throw new IllegalArgumentException("OrderStatus must be OPEN");
-		for(OrderLine orderLine : orderLines) {
-			order.addOrderLine(orderLine);
+
+		Assert.notNull(order, "order must not be null");
+
+		if (order.getOrderStatus() != OrderStatus.OPEN) {
+			throw new IllegalArgumentException("OrderStatus must be OPEN");
+		}
+
+		for (OrderLine orderLine : orderLines) {
+			order.add(orderLine);
 		}
 	}
-	
-	
 }

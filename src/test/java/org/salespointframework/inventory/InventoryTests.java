@@ -19,8 +19,7 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 public class InventoryTests extends AbstractIntegrationTests {
 
-	@Autowired
-	private Inventory<InventoryItem> inventory;
+	@Autowired private Inventory<InventoryItem> inventory;
 	private Cookie cookie;
 	private InventoryItem item;
 
@@ -55,11 +54,11 @@ public class InventoryTests extends AbstractIntegrationTests {
 
 	@Test
 	public void testGet() {
-		
+
 		item = inventory.save(item);
-		
+
 		Optional<InventoryItem> result = inventory.findOne(item.getIdentifier());
-		
+
 		assertThat(result.isPresent(), is(true));
 		assertThat(result.get(), is(item));
 	}

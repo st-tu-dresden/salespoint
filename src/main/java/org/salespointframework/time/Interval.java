@@ -15,8 +15,11 @@
  */
 package org.salespointframework.time;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import org.springframework.util.Assert;
 
 /**
  * Simple value object to represent time intervals.
@@ -36,14 +39,16 @@ public final class Interval {
 	 */
 	public Interval(LocalDateTime start, LocalDateTime end) {
 
-		Objects.requireNonNull(start, "Start must not be null!");
-		Objects.requireNonNull(end, "End must not be null!");
+		Assert.notNull(start, "Start must not be null!");
+		Assert.notNull(end, "End must not be null!");
 
 		this.start = start;
 		this.end = end;
 	}
 
 	/**
+	 * Returns the start date of the {@link Interval}.
+	 * 
 	 * @return the start
 	 */
 	public LocalDateTime getStart() {
@@ -51,10 +56,21 @@ public final class Interval {
 	}
 
 	/**
+	 * Returns the end date of the {@link Interval}.
+	 * 
 	 * @return the end
 	 */
 	public LocalDateTime getEnd() {
 		return end;
+	}
+
+	/**
+	 * Returns the duration of the interval.
+	 * 
+	 * @return
+	 */
+	public Duration getDuration() {
+		return Duration.between(start, end);
 	}
 
 	/* 
@@ -85,7 +101,7 @@ public final class Interval {
 	public int hashCode() {
 		return Objects.hash(start, end);
 	}
-	
+
 	/* 
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()

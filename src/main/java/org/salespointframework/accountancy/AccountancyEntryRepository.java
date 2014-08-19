@@ -9,7 +9,8 @@ import org.salespointframework.core.SalespointRepository;
  * 
  * @author Oliver Gierke
  */
-interface AccountancyEntryRepository<T extends AccountancyEntry> extends SalespointRepository<T, AccountancyEntryIdentifier> {
+interface AccountancyEntryRepository<T extends AccountancyEntry> extends
+		SalespointRepository<T, AccountancyEntryIdentifier> {
 
 	/**
 	 * Returns all {@link AccountancyEntry}s in the given time frame.

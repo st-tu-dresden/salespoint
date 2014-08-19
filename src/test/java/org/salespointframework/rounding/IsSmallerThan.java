@@ -7,14 +7,14 @@ import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-
 @SuppressWarnings("javadoc")
 public class IsSmallerThan extends TypeSafeMatcher<BigDecimal> {
 	private BigDecimal right;
-	
-	public  IsSmallerThan(BigDecimal right) {
+
+	public IsSmallerThan(BigDecimal right) {
 		this.right = right;
 	}
+
 	@Override
 	public void describeTo(Description description) {
 		description.appendText("not smaller than");
@@ -24,7 +24,7 @@ public class IsSmallerThan extends TypeSafeMatcher<BigDecimal> {
 	public boolean matchesSafely(BigDecimal number) {
 		return number.compareTo(right) < 0;
 	}
-	
+
 	@Factory
 	public static <T> Matcher<BigDecimal> smallerThan(BigDecimal right) {
 		return new IsSmallerThan(right);

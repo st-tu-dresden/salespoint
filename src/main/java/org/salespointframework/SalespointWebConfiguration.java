@@ -28,7 +28,7 @@ public class SalespointWebConfiguration extends WebMvcConfigurerAdapter {
 		characterEncodingFilter.setForceEncoding(true);
 		return characterEncodingFilter;
 	}
-	
+
 	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
 		argumentResolvers.addAll(this.argumentResolvers);

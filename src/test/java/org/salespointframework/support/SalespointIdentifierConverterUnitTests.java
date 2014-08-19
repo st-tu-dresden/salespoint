@@ -33,24 +33,24 @@ public class SalespointIdentifierConverterUnitTests {
 	private static final TypeDescriptor PRODUCT_IDENTIFIER_DESCRIPTOR = TypeDescriptor.valueOf(ProductIdentifier.class);
 	private static final TypeDescriptor STRING_DESCRIPTOR = TypeDescriptor.valueOf(String.class);
 	private static final TypeDescriptor OBJECT_DESCRIPTOR = TypeDescriptor.valueOf(Object.class);
-	
+
 	SalespointIdentifierConverter converter = new SalespointIdentifierConverter();
-	
+
 	@Test
 	public void matchesForStringSourceSalespointIdentifierTarget() {
 		assertThat(converter.matches(STRING_DESCRIPTOR, PRODUCT_IDENTIFIER_DESCRIPTOR), is(true));
 	}
-	
+
 	@Test
 	public void doesNotMatchForNonStringSource() {
 		assertThat(converter.matches(OBJECT_DESCRIPTOR, PRODUCT_IDENTIFIER_DESCRIPTOR), is(false));
 	}
-	
+
 	@Test
 	public void doesNotMatchForNonSalespointIdentifierTarget() {
 		assertThat(converter.matches(STRING_DESCRIPTOR, OBJECT_DESCRIPTOR), is(false));
 	}
-	
+
 	@Test
 	@SuppressWarnings("deprecation")
 	public void convertsStringToProductIdentifier() {

@@ -19,7 +19,7 @@ public class QuantityTests {
 		Money r = m.multipliedBy(q.amount, RoundingMode.HALF_UP);
 		System.out.println("Result: " + r.toString());
 	}
-	
+
 	@Test
 	public void unitTest() {
 		Units u = Units.of(4);

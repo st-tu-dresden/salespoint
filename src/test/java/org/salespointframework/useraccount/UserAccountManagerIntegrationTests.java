@@ -28,13 +28,12 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 
 	@Before
 	public void before() {
-		userAccount = userAccountManager.create("userId", "");
+		userAccount = userAccountManager.create("userId", "password");
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testAddNull() {
 		userAccountManager.save(null);
-
 	}
 
 	@Test
@@ -69,6 +68,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 
 	@Test
 	public void testGet() {
+
 		userAccountManager.save(userAccount);
 		assertThat(userAccountManager.get(userAccount.getIdentifier()).get(), is(userAccount));
 	}

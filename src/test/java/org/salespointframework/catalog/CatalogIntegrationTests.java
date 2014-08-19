@@ -25,27 +25,27 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	@Autowired Catalog<Product> catalog;
 	@Autowired Catalog<Cookie> cookies;
 	@Autowired CookieCatalog cookieCatalog;
-	
+
 	Cookie cookie;
-	
+
 	@Before
 	public void before() {
 		cookie = new Cookie("Schoki", Money.zero(CurrencyUnit.EUR));
 	}
-	
+
 	/**
 	 * @see #19
 	 */
 	@Test
 	public void findsProductsByCategory() {
-		
+
 		Product product = new Product("MacBook", Money.of(CurrencyUnit.EUR, 2700.0), Units.METRIC);
 		product.addCategory("Apple");
-		
+
 		catalog.save(product);
-		
+
 		Iterable<Product> result = catalog.findByCategory("Apple");
-		
+
 		assertThat(result, is(iterableWithSize(1)));
 		assertThat(result, hasItem(product));
 	}
@@ -55,12 +55,12 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	 */
 	@Test
 	public void findsSameInstanceOnGenericRepositories() {
-		
+
 		catalog.save(cookie);
-		
+
 		Cookie kT1 = cookies.findOne(cookie.getIdentifier());
 		Product kT2 = catalog.findOne(cookie.getIdentifier());
-		
+
 		assertThat(kT1, is(kT2));
 	}
 
@@ -77,43 +77,43 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	 */
 	@Test
 	public void addTest() {
-		
+
 		Cookie result = catalog.save(cookie);
 		assertThat(catalog.findOne(result.getIdentifier()), is(result));
 	}
-	
+
 	/**
 	 * @see #19
 	 */
 	@Test
 	public void testRemove() {
-		
+
 		catalog.save(cookie);
 		catalog.delete(cookie.getIdentifier());
-		
+
 		assertThat(catalog.exists(cookie.getIdentifier()), is(false));
 	}
-	
+
 	/**
 	 * @see #19
 	 */
 	@Test
 	public void testContains() {
-		
+
 		Cookie result = catalog.save(cookie);
 		assertThat(catalog.exists(result.getIdentifier()), is(true));
 	}
-	
+
 	/**
 	 * @see #19
 	 */
 	@Test
 	public void getTest() {
-		
+
 		Cookie result = catalog.save(cookie);
 		assertThat(cookies.findOne(cookie.getIdentifier()), is(result));
 	}
- 
+
 	/**
 	 * @see #19
 	 */
@@ -125,7 +125,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 		assertKeksFound(cookies.findAll(), doubleChoc);
 		assertKeksFound(cookies.findByCategory("chocolate"), doubleChoc);
 	}
-	
+
 	/**
 	 * @see #19
 	 */
@@ -133,14 +133,14 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	public void generalRepoInstancesFinds() {
 
 		Cookie doubleChoc = createCookie();
-		
+
 		Product product = catalog.findOne(doubleChoc.getIdentifier());
 		assertThat(product, is(instanceOf(Cookie.class)));
 		assertThat(product, is(doubleChoc));
 	}
-	
+
 	private Cookie createCookie() {
-		
+
 		Cookie doubleChoc = new Cookie("DoubleChoc", Money.of(CurrencyUnit.EUR, 1.25d));
 		doubleChoc.addCategory("chocolate");
 		doubleChoc.property = "Yummy!";

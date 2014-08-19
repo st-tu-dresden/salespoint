@@ -47,12 +47,12 @@ public class SalespointWebApplicationConfigurationTests {
 	public void conversionServicePrepared() {
 		assertThat(conversionService.canConvert(String.class, ProductIdentifier.class), is(true));
 	}
-	
+
 	@Test
 	public void encodingFilterRegistered() {
 		assertThat(encodingFilter, is(notNullValue()));
 	}
-	
+
 	@Test
 	public void passwordEncoderRegistered() {
 		assertThat(passwordEncoder, is(notNullValue()));

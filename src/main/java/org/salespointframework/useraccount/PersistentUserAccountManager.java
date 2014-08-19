@@ -1,12 +1,12 @@
 package org.salespointframework.useraccount;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 /**
  * Implementation of {@link UserAccountManager} using a {@link UserAccountRepository} to persist {@link UserAccount}
@@ -32,13 +32,13 @@ class PersistentUserAccountManager implements UserAccountManager {
 	@Autowired
 	public PersistentUserAccountManager(UserAccountRepository repository, PasswordEncoder passwordEncoder) {
 
-		Objects.requireNonNull(repository, "UserAccountRepository must not be null!");
-		Objects.requireNonNull(passwordEncoder, "PasswordEncoder must not be null!");
+		Assert.notNull(repository, "UserAccountRepository must not be null!");
+		Assert.notNull(passwordEncoder, "PasswordEncoder must not be null!");
 
 		this.repository = repository;
 		this.passwordEncoder = passwordEncoder;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.salespointframework.useraccount.UserAccountManager#create(java.lang.String, java.lang.String, org.salespointframework.useraccount.Role[])
@@ -46,12 +46,12 @@ class PersistentUserAccountManager implements UserAccountManager {
 	@Override
 	public UserAccount create(String userName, String password, Role... roles) {
 
-		Objects.requireNonNull(userName, "userName must not be null");
-		Objects.requireNonNull(password, "password must not be null");
-		Objects.requireNonNull(roles, "roles must not be null");
+		Assert.notNull(userName, "userName must not be null");
+		Assert.notNull(password, "password must not be null");
+		Assert.notNull(roles, "roles must not be null");
 
 		UserAccountIdentifier identifier = new UserAccountIdentifier(userName);
-		
+
 		return new UserAccount(identifier, password, roles);
 	}
 
@@ -62,7 +62,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 	@Override
 	public Optional<UserAccount> get(UserAccountIdentifier userAccountIdentifier) {
 
-		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
+		Assert.notNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		return repository.findOne(userAccountIdentifier);
 	}
 
@@ -74,7 +74,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 	@Transactional
 	public UserAccount save(UserAccount userAccount) {
 
-		Objects.requireNonNull(userAccount, "userAccount must not be null");
+		Assert.notNull(userAccount, "userAccount must not be null");
 
 		Password password = userAccount.getPassword();
 		Password passwordToSet = password.isEncrypted() ? password : new Password(passwordEncoder.encode(password
@@ -89,8 +89,8 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 */
 	@Override
 	public void enable(UserAccountIdentifier userAccountIdentifier) {
-		
-		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
+
+		Assert.notNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		get(userAccountIdentifier).ifPresent(account -> account.setEnabled(true));
 	}
 
@@ -100,8 +100,8 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 */
 	@Override
 	public void disable(UserAccountIdentifier userAccountIdentifier) {
-		
-		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
+
+		Assert.notNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		get(userAccountIdentifier).ifPresent(account -> account.setEnabled(false));
 	}
 
@@ -113,8 +113,8 @@ class PersistentUserAccountManager implements UserAccountManager {
 	@Transactional
 	public void changePassword(UserAccount userAccount, String password) {
 
-		Objects.requireNonNull(userAccount, "userAccount must not be null");
-		Objects.requireNonNull(password, "password must not be null");
+		Assert.notNull(userAccount, "userAccount must not be null");
+		Assert.notNull(password, "password must not be null");
 
 		userAccount.setPassword(new Password(password));
 		save(userAccount);
@@ -126,7 +126,8 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 */
 	@Override
 	public boolean contains(UserAccountIdentifier userAccountIdentifier) {
-		Objects.requireNonNull(userAccountIdentifier, "userAccountIdentifier must not be null");
+
+		Assert.notNull(userAccountIdentifier, "userAccountIdentifier must not be null");
 		return repository.exists(userAccountIdentifier);
 	}
 

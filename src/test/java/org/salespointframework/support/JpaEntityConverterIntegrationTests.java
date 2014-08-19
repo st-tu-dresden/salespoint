@@ -38,16 +38,17 @@ public class JpaEntityConverterIntegrationTests extends AbstractIntegrationTests
 
 	@Autowired JpaEntityConverter converter;
 	@Autowired Catalog<Product> catalog;
-	
+
 	@Test
 	public void convertsStringIdToProduct() {
-		
+
 		Product product = new Product("iPad", Money.of(CurrencyUnit.EUR, 400), Units.METRIC);
 		String identifier = product.getIdentifier().getIdentifier();
-		
+
 		catalog.save(product);
-		
-		Object result = converter.convert(identifier, TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Product.class));
+
+		Object result = converter.convert(identifier, TypeDescriptor.valueOf(String.class),
+				TypeDescriptor.valueOf(Product.class));
 		assertThat(result, is((Object) product));
 	}
 }

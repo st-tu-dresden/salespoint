@@ -7,7 +7,6 @@ import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-
 @SuppressWarnings("javadoc")
 public class IsZero extends TypeSafeMatcher<BigDecimal> {
 

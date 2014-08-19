@@ -8,11 +8,9 @@ import java.lang.annotation.Target;
 // see LoggedInUserAccountArgumentResolver
 
 /**
- * 
  * @author Paul Henke
- *
  */
-@Target({ElementType.TYPE, ElementType.METHOD, ElementType.PARAMETER})
+@Target({ ElementType.TYPE, ElementType.METHOD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LoggedIn {
 	String value() default "user";

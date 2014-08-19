@@ -11,13 +11,13 @@ import org.salespointframework.quantity.Units;
 @Entity
 public class Cookie extends Product {
 
-	String property; 
-	
+	String property;
+
 	@Deprecated
 	protected Cookie() {
-		
+
 	}
-	
+
 	public Cookie(String name, Money price) {
 		super(name, Money.of(CurrencyUnit.EUR, 9001), Units.METRIC);
 	}

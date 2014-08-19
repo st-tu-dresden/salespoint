@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 /**
- * A mutable implementation of {@link BusinessTime} to record {@link Duration}s to calculate the current business time by accumulating them.
+ * A mutable implementation of {@link BusinessTime} to record {@link Duration}s to calculate the current business time
+ * by accumulating them.
  * 
  * @author Oliver Gierke
  */

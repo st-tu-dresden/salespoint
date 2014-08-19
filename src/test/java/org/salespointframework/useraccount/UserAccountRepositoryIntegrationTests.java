@@ -44,42 +44,42 @@ public class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTe
 
 	@Autowired UserAccountRepository repository;
 	UserAccount firstUser, secondUser;
-	
+
 	@Before
 	public void setUp() {
-		
+
 		this.firstUser = createAccount();
 		this.firstUser.setPassword(new Password("encrypted", true));
 		this.firstUser = repository.save(firstUser);
-		
+
 		this.secondUser = createAccount();
 		this.secondUser.setPassword(new Password("encrypted2", true));
 		this.secondUser.setEnabled(false);
 		this.secondUser = repository.save(secondUser);
 	}
-	
+
 	@Ignore
 	@Test(expected = InvalidDataAccessApiUsageException.class)
 	public void preventsUnencryptedPasswordsFromBeingPersisted() {
 		repository.save(createAccount());
 	}
-	
+
 	@Test
 	public void findsEnabledUsers() {
-		
+
 		Iterable<UserAccount> result = repository.findByEnabledTrue();
 		assertThat(result, is(Matchers.<UserAccount> iterableWithSize(1)));
 		assertThat(result, hasItem(firstUser));
 	}
-	
+
 	@Test
 	public void findsDisabledUsers() {
-		
+
 		Iterable<UserAccount> result = repository.findByEnabledFalse();
 		assertThat(result, is(Matchers.<UserAccount> iterableWithSize(1)));
 		assertThat(result, hasItem(secondUser));
 	}
-	
+
 	static UserAccount createAccount() {
 		UserAccountIdentifier identifier = new UserAccountIdentifier(UUID.randomUUID().toString());
 		return new UserAccount(identifier, "password", new Role("USER"));

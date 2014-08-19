@@ -48,10 +48,10 @@ class JpaEntityConverter implements ConditionalGenericConverter {
 	 */
 	@Autowired
 	public JpaEntityConverter(SalespointIdentifierConverter identifierConverter, EntityManager em) {
-		
+
 		Assert.notNull(identifierConverter, "Identifier converter must not be null!");
 		Assert.notNull(em, "EntityManager must not be null!");
-		
+
 		this.identifierConverter = identifierConverter;
 		this.em = em;
 	}
@@ -88,7 +88,7 @@ class JpaEntityConverter implements ConditionalGenericConverter {
 		EntityType<?> entityType = em.getMetamodel().entity(targetType.getType());
 		Class<?> idType = entityType.getIdType().getJavaType();
 		Object id = identifierConverter.convert(source, sourceType, TypeDescriptor.valueOf(idType));
-		
+
 		return em.find(targetType.getType(), id);
 	}
 }

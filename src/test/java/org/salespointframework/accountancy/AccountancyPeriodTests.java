@@ -10,8 +10,9 @@ import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.accountancy.payment.Cash;
 import org.salespointframework.order.OrderIdentifier;
+import org.salespointframework.order.ProductPaymentEntry;
+import org.salespointframework.payment.Cash;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
@@ -30,18 +31,16 @@ public class AccountancyPeriodTests extends AbstractIntegrationTests {
 
 		UserAccount account = userAccountManager.save(userAccountManager.create("username", "password"));
 
-		
 		Money oneEuro = Money.of(CurrencyUnit.EUR, 1d);
-		
+
 		System.out.println("Creating AccountancyEntries: ");
-		
 
 		for (int i = 0; i < 20; i++) {
 
 			ProductPaymentEntry p = new ProductPaymentEntry(new OrderIdentifier(), account, oneEuro, "Rechnung nr. 3",
 					Cash.CASH);
 			a.add(p);
-			
+
 			System.out.println("Adding p " + p);
 
 			if (i == 5)

@@ -9,11 +9,9 @@ import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.accountancy.Accountancy;
-import org.salespointframework.accountancy.AccountancyEntry;
-import org.salespointframework.accountancy.ProductPaymentEntry;
-import org.salespointframework.accountancy.payment.Cash;
 import org.salespointframework.order.OrderIdentifier;
+import org.salespointframework.order.ProductPaymentEntry;
+import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +35,10 @@ public class AccountancyTests extends AbstractIntegrationTests {
 
 			if ((year % 2) == 0) {
 				System.out.println("ProductPaymentEntry");
-				UserAccount user = userAccountManager.create("userId", "");
+				UserAccount user = userAccountManager.create("userId", "password");
 				user = userAccountManager.save(user);
-				a.add(new ProductPaymentEntry(new OrderIdentifier(), user, Money.of(CurrencyUnit.EUR, 1.0), "Rechnung nr " + year,
-						Cash.CASH));
+				a.add(new ProductPaymentEntry(new OrderIdentifier(), user, Money.of(CurrencyUnit.EUR, 1.0), "Rechnung nr "
+						+ year, Cash.CASH));
 			} else {
 				System.out.println("PersistentAccountancyEntry");
 				a.add(new AccountancyEntry(Money.of(CurrencyUnit.EUR, 2.22)));
@@ -49,7 +47,7 @@ public class AccountancyTests extends AbstractIntegrationTests {
 			if (year == 2002) {
 				from = LocalDateTime.now();
 			}
-			
+
 			if (year == 2008) {
 				to = LocalDateTime.now();
 			}

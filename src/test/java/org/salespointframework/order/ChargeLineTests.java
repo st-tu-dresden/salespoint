@@ -7,64 +7,61 @@ import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.accountancy.payment.Cash;
-import org.salespointframework.order.ChargeLine;
-import org.salespointframework.order.Order;
+import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-public class ChargeLineTests  extends AbstractIntegrationTests {
+public class ChargeLineTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
-	
+
 	UserAccount user;
 	Order order;
 	ChargeLine chargeLine;
 
 	@Before
 	public void before() {
-		user = userAccountManager.create("userId", "");
+		user = userAccountManager.create("userId", "password");
 		order = new Order(user, Cash.CASH);
 		chargeLine = new ChargeLine(Money.zero(CurrencyUnit.EUR), "gaaar nix");
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void nullTest() {
-		order.addChargeLine(null);
+		order.add((ChargeLine) null);
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void nullTest2() {
-		order.removeChargeLine(null);
+		order.remove((ChargeLine) null);
 	}
 
 	@Test
 	public void addTest() {
-		assertTrue(order.addChargeLine(chargeLine));
+		assertTrue(order.add(chargeLine));
 	}
 
 	@Test
 	public void addTest2() {
-		order.addChargeLine(chargeLine);
-		assertFalse(order.addChargeLine(chargeLine));
+		order.add(chargeLine);
+		assertFalse(order.add(chargeLine));
 	}
 
 	@Test
 	public void removeTest() {
-		order.addChargeLine(chargeLine);
-		assertTrue(order.removeChargeLine(chargeLine.getIdentifier()));
+		order.add(chargeLine);
+		assertTrue(order.remove(chargeLine));
 	}
 
 	@Test
 	public void removeTest2() {
-		assertFalse(order.removeChargeLine(chargeLine.getIdentifier()));
+		assertFalse(order.remove(chargeLine));
 	}
 
 	@Test
 	public void foo() {
-		order.addChargeLine(chargeLine);
+		order.add(chargeLine);
 		Iterable<ChargeLine> iter = order.getChargeLines();
 		for (ChargeLine c : iter) {
 			System.out.println(c.getIdentifier());

@@ -1,7 +1,5 @@
 package org.salespointframework.inventory;
 
-import java.util.Objects;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,79 +10,86 @@ import javax.persistence.OneToOne;
 
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.AbstractEntity;
-import org.salespointframework.quantity.MetricMismatchException;
 import org.salespointframework.quantity.Quantity;
+import org.springframework.util.Assert;
 
 /**
- * 
  * @author Paul Henke
- *
+ * @author Oliver Gierke
  */
 @Entity
-public class InventoryItem extends AbstractEntity<InventoryItemIdentifier>
-{
-	@EmbeddedId
-	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID"))
+public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
+
+	@EmbeddedId//
+	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID"))//
 	private InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
-	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, /* CascadeType.REMOVE,*/ CascadeType.REFRESH, CascadeType.DETACH})
+	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })//
 	private Product product;
-	
-	@Lob
-	private Quantity quantity;
+
+	private @Lob Quantity quantity;
 
 	@Deprecated
-	protected InventoryItem() { }
-	
+	protected InventoryItem() {}
+
 	/**
-	 * Creates a new InventoryItem
-	 * @param product the {@link Product} for this InventoryItem
-	 * @param quantity the initial {@link Quantity} for this InventoryItem
+	 * Creates a new {@link InventoryItem} for the given {@link Product} and {@link Quantity}.
+	 * 
+	 * @param product the {@link Product} for this {@link InventoryItem}, must not be {@literal null}.
+	 * @param quantity the initial {@link Quantity} for this {@link InventoryItem}, must not be {@literal null}.
 	 */
-	public InventoryItem(Product product, Quantity quantity)
-	{
-		this.product = Objects.requireNonNull(product, "product must be not null");
-		this.quantity = Objects.requireNonNull(quantity, "quantity must be not null");
-		
-		if(!product.getMetric().equals(quantity.getMetric())) 
-		{
-			throw new MetricMismatchException("product.getMetric() is not equal to this.quantity.getMetric()", product.getMetric(), this.quantity.getMetric());
-		}
+	public InventoryItem(Product product, Quantity quantity) {
+
+		Assert.notNull(product, "Product must be not null!");
+		Assert.notNull(quantity, "Quantity must be not null!");
+
+		product.verify(quantity);
+
+		this.product = product;
+		this.quantity = quantity;
+
 	}
-	
-	public final InventoryItemIdentifier getIdentifier() 
-	{
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.core.AbstractEntity#getIdentifier()
+	 */
+	public final InventoryItemIdentifier getIdentifier() {
 		return inventoryItemIdentifier;
 	}
 
-	public final Quantity getQuantity()
-	{
+	public final Quantity getQuantity() {
 		return quantity;
 	}
 
-	public final Product getProduct()
-	{
+	public final Product getProduct() {
 		return product;
 	}
 
-	public void decreaseQuantity(Quantity quantity)
-	{
-		Objects.requireNonNull(quantity, "quantity must not be null");
-		if(!this.getProduct().getMetric().equals(quantity.getMetric())) 
-		{
-			throw new MetricMismatchException("this.product.getMetric is not equal to quantity.getMetric");
-		}
-		
-		this.quantity = this.quantity.subtract(quantity); // TODO negative check? -> Exception?
+	/**
+	 * Returns whether the {@link InventoryItem} is available in exactly or more of the given quantity.
+	 * 
+	 * @param quantity must not be {@literal null}.
+	 * @return
+	 */
+	public boolean hasSufficientQuantity(Quantity quantity) {
+		return !this.quantity.subtract(quantity).isNegative();
 	}
 
-	public void increaseQuantity(Quantity quantity)
-	{
-		Objects.requireNonNull(quantity, "quantity must not be null");
-		if(!this.getProduct().getMetric().equals(quantity.getMetric())) 
-		{
-			throw new MetricMismatchException("this.product.getMetric is not equal to quantity.getMetric");
-		}
-		this.quantity = this.quantity.add(quantity);
+	public void decreaseQuantity(Quantity quantity) {
+
+		Assert.notNull(quantity, "Quantity must not be null!");
+
+		product.verify(quantity);
+
+		this.quantity = quantity.subtract(quantity); // TODO negative check? -> Exception?
+	}
+
+	public void increaseQuantity(Quantity quantity) {
+
+		Assert.notNull(quantity, "Quantity must not be null!");
+		product.verify(quantity);
+
+		this.quantity = quantity.add(quantity);
 	}
 }

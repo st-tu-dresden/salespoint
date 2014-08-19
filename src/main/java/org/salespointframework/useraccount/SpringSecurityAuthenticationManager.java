@@ -65,20 +65,20 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager {
 		UserAccountIdentifier userAccountIdentifier = new UserAccountIdentifier(authentication.getName());
 		return repository.findOne(userAccountIdentifier);
 	}
-	
+
 	/* 
 	 * (non-Javadoc)
 	 * @see org.salespointframework.useraccount.AuthenticationManager#matches(org.salespointframework.useraccount.Password, org.salespointframework.useraccount.Password)
 	 */
 	@Override
 	public boolean matches(Password candidate, Password existing) {
-		
+
 		Assert.notNull(existing);
-		
+
 		if (candidate == null) {
 			return false;
 		}
-		
+
 		return passwordEncoder.matches(candidate.toString(), existing.toString());
 	}
 }

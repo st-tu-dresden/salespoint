@@ -19,11 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SuppressWarnings({ "javadoc" })
 public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 
-	@Autowired
-	private Inventory<InventoryItem> inventory;
-	@Autowired
-	private Catalog<Product> catalog;
-	
+	@Autowired private Inventory<InventoryItem> inventory;
+	@Autowired private Catalog<Product> catalog;
+
 	private Cookie cookie;
 	private InventoryItem item;
 
@@ -31,7 +29,7 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 
 	@Before
 	public void before() {
-		
+
 		cookie = new Cookie("Superkeks " + (counter++), Money.zero(CurrencyUnit.EUR));
 		item = new InventoryItem(cookie, Units.TEN);
 	}

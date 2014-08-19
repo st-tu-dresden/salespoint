@@ -19,12 +19,12 @@ public class ProductTests {
 		cookie = new Cookie("Schoooki", Money.zero(CurrencyUnit.EUR));
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void addNullCategory() {
 		cookie.addCategory(null);
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void removeNullCategory() {
 		cookie.removeCategory(null);
 	}
@@ -48,8 +48,7 @@ public class ProductTests {
 
 	@Test
 	public void removeCategory2() {
-		assertFalse(cookie.removeCategory(Double.toString(new Random()
-				.nextDouble())));
+		assertFalse(cookie.removeCategory(Double.toString(new Random().nextDouble())));
 	}
 
 }

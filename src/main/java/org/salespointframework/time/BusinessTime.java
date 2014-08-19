@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 public interface BusinessTime {
 
 	/**
-	 * Returns the current business time. This will be the time of the system the application is running on by default
-	 * but can be adjusted by calling {@link #forward(Duration)}.
+	 * Returns the current business time. This will be the time of the system the application is running on by default but
+	 * can be adjusted by calling {@link #forward(Duration)}.
 	 * 
 	 * @return
 	 */

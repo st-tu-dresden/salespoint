@@ -30,7 +30,7 @@ class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolv
 	 */
 	@Autowired
 	public LoggedInUserAccountArgumentResolver(AuthenticationManager authenticationManager) {
-		
+
 		Assert.notNull(authenticationManager, "AuthenticationManager must not be null!");
 		this.authenticationManager = authenticationManager;
 	}
