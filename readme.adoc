@@ -11,8 +11,8 @@
 .Building the project
 [source, bash]
 ----
-$ git clone https://github.com/st-tu-dresden/SalesPoint
-$ cd SalesPoint
+$ git clone https://github.com/st-tu-dresden/salespoint
+$ cd salespoint
 $ mvn clean install
 ----
 
@@ -20,4 +20,7 @@ $ mvn clean install
 
 The reference documentation is written in Asciidoc and built using Asciidoctor. The main documentation source file is located in `src/main/asciidoc`.
 
-To build the reference documentation simply run `mvn generate-resources` on the command line. The generated HTML file is then located in `target/generated-docs/index.html`.
+To build the reference documentation simply run `mvn generate-resources` on the command line. This generates the following HTML files:
+
+* the Salespoint website in `target/generated-docs/index.html`.
+* the Salespoint reference in `target/generated-docs/salespoint-reference.html`.
