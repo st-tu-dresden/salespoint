@@ -234,7 +234,7 @@ include::{source-base}/order/Order.java[tags=orderStatus]
 
 State transistions are automatically carried out when certain methods are called on an `Order` object, for example `cancelOrder()`.
 
-A `Order` can only be modified in state `OPEN`. `PAID` , `CANCELLED` and `COMPLETED` `Order` s are immutable. Calling the `payOrder()` method changes the state to `PAID` ,makes the `Order` immutable and creates an `ProductPaymentEntry` object. Ordered objects will only be removed from inventory when the `completeOrder() method is called. `COMPLETED` is one of the final states and it is not possible to change the state of such orders.
+A `Order` can only be modified in state `OPEN`. `PAID` , `CANCELLED` and `COMPLETED` `Order` s are immutable. Calling the `payOrder()` method changes the state to `PAID` ,makes the `Order` immutable and creates an `ProductPaymentEntry` object. Ordered objects will only be removed from inventory when the `completeOrder()` method is called. `COMPLETED` is one of the final states and it is not possible to change the state of such orders.
 
 Completing an order causes product instances to be removed from the inventory. Because product instances may not be present anymore in the inventory, or their number may not be suffice to fulfill an order, completing an order requires special attention. To handle these situations, the `OrderCompletionResult` interface was introduced. First of all, these `OrderCompletionStatus` are possible:
 
