@@ -255,6 +255,13 @@ Every application should be tested, so an easy way is, to use test data. So for 
 
 = Appendix
 
+[appendix]
+== FAQ
+
+[qanda]
+Why do I see warning log statements about database tables not being accessible at startup?::
+  This is due to a bug in Hibernate in combination with HSQLDB and constraints in databases. Hibernate tries to drop those on application startup but fails to as the (in-memory database) is empty. See https://hibernate.atlassian.net/browse/HHH-9038[this bug report] for reference.
+
 [[glossary]]
 [appendix, glossary]
 == Glossary
