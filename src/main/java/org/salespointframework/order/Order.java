@@ -49,8 +49,10 @@ public class Order extends AbstractEntity<OrderIdentifier> implements Comparable
 	@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")//
 	private LocalDateTime dateCreated = null;
 
+	// tag::orderStatus[]
 	@Enumerated(EnumType.STRING)//
 	private OrderStatus orderStatus = OrderStatus.OPEN;
+	// end::orderStatus[]
 
 	@OneToMany(cascade = CascadeType.ALL)//
 	private Set<OrderLine> orderLines = new HashSet<OrderLine>();
