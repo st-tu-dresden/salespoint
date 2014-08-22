@@ -24,3 +24,18 @@ To build the reference documentation simply run `mvn generate-resources` on the 
 
 * the Salespoint website in `target/generated-docs/index.html`.
 * the Salespoint reference in `target/generated-docs/salespoint-reference.html`.
+
+## Deployment
+
+To deploy artifacts to the salespoint repository, simply run `mvn clean deploy`. This requires your `settings.xml` (located in `~/.m2`) to contain a server defintion with the credentials to access the Salespoint server via SFTP:
+
+[source, xml]
+----
+<server>
+    <id>salespoint</id>
+    <username>…</username>
+    <password>…</password>
+</server>
+----
+
+To deploy the website and reference documentation, run `mvn site:deploy`.

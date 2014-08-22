@@ -1,5 +1,30 @@
 = Salespoint Framework
 Paul Henke, Andreas Zaschka, Oliver Gierke
 :toc:
-:revnumber: {version}
 :revdate: {localdate}
+
+[[resources]]
+== Resources
+
+[[resources.latest]]
+=== Latest release version
+* link:salespoint-reference.html[Reference documentation]
+* link:api[JavaDoc]
+
+[[resources.development]]
+=== Current development version
+* link:dev/salespoint-reference.html[Reference documentation]
+* link:dev/api[JavaDoc]
+
+[[appendix]]
+= Appendix
+
+[appendix]
+[[archive]]
+== Archive
+* link:v5.0/wiki[Version 5.0]
+* link:v4.0[Version 4.0]
+* link:v3.3[Version 3.3]
+* link:v3.2[Version 3.2]
+* link:v3.1[Version 3.1]
+* link:v3.0[Version 3.0]

@@ -14,6 +14,19 @@
 		<version>1.1.5.RELEASE</version>
 	</parent>
 
+	<properties>
+		<dev>/dev</dev>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<properties>
+				<dev></dev>
+			</properties>
+		</profile>
+	</profiles>
+
 	<dependencies>
 
 		<dependency>
@@ -64,6 +77,15 @@
 	</dependencies>
 
 	<build>
+
+		<extensions>
+		    <extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>2.6</version>
+			</extension>
+		</extensions>
+
 		<plugins>
 
 			<plugin>
@@ -90,6 +112,7 @@
 				</executions>
 				<configuration>
 	                <additionalparam>-Xdoclint:none</additionalparam>
+	                <outputDirectory>${project.build.directory}/site${dev}/api</outputDirectory>
 	            </configuration>
 			</plugin>
 
@@ -120,28 +143,55 @@
 				<version>1.5.0</version>
 				<executions>
 					<execution>
-						<id>html</id>
+						<id>website</id>
 						<phase>generate-resources</phase>
 						<goals>
 							<goal>process-asciidoc</goal>
 						</goals>
 						<configuration>
-							<doctype>book</doctype>
-							<backend>html5</backend>
-							<sourceHighlighter>prettify</sourceHighlighter>
-							<attributes>
-								<version>${project.version}</version>
-								<linkcss>true</linkcss>
-								<numbered>true</numbered>
-								<icons>font</icons>
-								<sectanchors>true</sectanchors>
-							</attributes>
+							<sourceDocumentName>index.adoc</sourceDocumentName>
+							<outputDirectory>${project.build.directory}/site</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>reference</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>process-asciidoc</goal>
+						</goals>
+						<configuration>
+							<sourceDocumentName>salespoint-reference.adoc</sourceDocumentName>
+							<outputDirectory>${project.build.directory}/site${dev}</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
+				<configuration>
+					<doctype>book</doctype>
+					<backend>html5</backend>
+					<sourceHighlighter>prettify</sourceHighlighter>
+					<outputDirectory>${project.build.directory}/site</outputDirectory>
+					<attributes>
+						<version>${project.version}</version>
+						<linkcss>true</linkcss>
+						<numbered>true</numbered>
+						<icons>font</icons>
+						<sectanchors>true</sectanchors>
+					</attributes>
+				</configuration>
 			</plugin>
 
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>salespoint</id>
+			<url>sftp://st.inf.tu-dresden.de:44/home/salespnt/salespoint/repository</url>
+		</repository>
+		<site>
+			<id>salespoint</id>
+			<url>sftp://st.inf.tu-dresden.de:44/home/salespnt/salespoint</url>
+		</site>
+	</distributionManagement>
 
 </project>
