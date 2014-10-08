@@ -1,7 +1,20 @@
 = Salespoint Framework
 Paul Henke, Andreas Zaschka, Oliver Gierke
-:toc:
 :revdate: {localdate}
+:toc:
+:toc-placement!:
+
+Salespoint is a Java-based application framework to develop point of sales (PoS) applications using Spring Framework and Spring Boot. It consists of a variety of business modules that allows users to implement sophisticated web applications on top of them. 
+
+toc::[]
+
+The framework generally consists of:
+
+* 6 business modules - accountancy, inventory, catalog, orders, business time and user accounts.
+* Domain types (entities and value objects) as well as Spring based repository and service implementations to provide Java APIs to be extended by (web) application developers.
+* Core Spring application configuration classes to bootstrap the application using Spring Boot.
+
+Read more details about Salespoint in the link:salespoint-reference.html[reference documentation].
 
 [[resources]]
 == Resources
@@ -15,6 +28,17 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 === Current development version
 * link:dev/salespoint-reference.html[Reference documentation]
 * link:dev/api[JavaDoc]
+
+[[resources.sample-projects]]
+=== Sample projects
+
+[[resources.sample-projects.videoshop]]
+==== Videoshop
+The primary sample project for Salespoint applications is the https://github.com/st-tu-dresden/videoshop[Videoshop]. It's a web application to manage Blu-ray discs and DVD. It uses Salespoint's order, catalog, inventory and user management modules and is a web application centered around Spring Boot, Spring MVC and Thymeleaf.
+
+[[resources.sample-projects.guestbook]]
+==== Guestbook
+If you want to familiarize your self with the technology stack that Salespoint link:salespoint-reference.adoc#stack[is built upon], check out the https://github.com/st-tu-dresden/guestbook[Guestbook project]. It's a simple guestbook web application built solely on top og Spring Boot, Spring MVC, Spring Data JPA as well as Thymeleaf and Bootstrap.
 
 [[appendix]]
 = Appendix

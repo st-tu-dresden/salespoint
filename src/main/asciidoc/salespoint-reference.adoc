@@ -39,18 +39,37 @@ Proper names and termini are printed in termini font.
 * A variety of business modules to contain entities and repositories, in some cases even service interfaces
 * Spring configuration setup
 * Sample projects
-** Guestbook - sample illustrating the tech stack, no SalesPoint involved.
-** Videoshop - Sample web application built on top of Salespoint.
-** Kickstart - Empty template project to build an app on top of Salespoint.
+** https://github.com/st-tu-dresden/guestbook[Guestbook] - A sample illustrating the pure tech stack, no Salespoint involved.
+** https://github.com/st-tu-dresden/videoshop[Videoshop] - A sample web application built on top of Salespoint.
+** https://github.com/st-tu-dresden/kickstart[Kickstart] - Empty template project to build an app on top of Salespoint.
 
 [[architecture.core-concepts]]
 == Core concepts
+Before we dive into the technical details of Salespoint, let's make sure we understand some core concepts that will help us understand the different modules of the framework a bit better. Each of the <<modules, modules>> consists of a bit of code and the classes can usually be grouped into 3 different buckets: entities and value objects, summarized to <<architecture.core-concepts.ddd.newables, newables>>, repositories and services, summarized to <<architecture.core-concepts.ddd.injectables, injectables>> as well as <<architecture.core-concepts.container-configuration, Spring container configuration and extension code>>. The following sections will cast some light on these kinds of types and their special traits.
 
-[[architecture.core-concepts.ddd]]
-=== Entities, ValueObjects, Repositories
+[[architecture.core-concepts.ddd.newables]]
+=== Entities and value objects
+
+TODO
+
+[[architecture.core-concepts.ddd.injectables]]
+=== Repositories, services and controllers
+
+Repositories and services are used ot interact with entities and value objects. Repositories usually abstract data access into an interface that simulates a collection of entities that instances can be added to, or looked up using a parameterized criteria like "all users with a certain lastname like…". As Salespoint is using a relational database as persistence backend it leverages the Java Persistence API (JPA) and <<stack.spring-data-jpa, Spring Data JPA>> to implement repositories.
+
+As repositories abstract a collection of an aggregate root (e.g. an order with it's charge and line items), we usually need a higher level abstraction that exposes a more use-case oriented API: a service. It fulfils a more coarse grained set of operations that might include the interaction with multiple repositories, trigger other services in the system etc.
+
+Repositories, services and controllers are types whose instances are managed by the Spring container. Thus they're never instantiated manually in the application code, except for unit testing purposes. Application code uses dependency injection to access 
+
+[[architecture.core-concepts.container-configuration]]
+=== Container configuration and extensions
+
+TODO
 
 [[architecture.maven]]
 == Maven
+
+TODO
 
 [[architecture.spring]]
 == Spring
@@ -89,6 +108,11 @@ The de-facto standard Java application framework.
 
 TODO
 
+[[stack.spring.core-concepts.dependency-injection]]
+==== Dependency injection
+
+TODO
+
 [[stack.spring.core-concepts.components]]
 ==== Components and component scanning
 
@@ -118,13 +142,13 @@ With Salespoint 6.0 money class and its related components were replaced by the 
 ====
 [source, java]
 ----
-Money value_1 = Money.parse(“USD 23.07”);
-Money value_2 = Money.parse(“USD 18.07”);
-Money sum = value_1.plus(value_2);
+Money first = Money.parse(“USD 23.07”);
+Money second = Money.parse(“USD 18.07”);
+Money sum = first.plus(second);
 ----
 ====
 
-Joda-Money also supports Currency (see _Example for JodaMoney operations_). A set of loaded currencies is provided by an instance of `CurrencyUnitDataProvider`. But new and funky `CurrencyUnits` can be created to. So with this currencies, money values can be converted from one to another currency.
+Joda-Money also supports `Currency` (see _Example for JodaMoney operations_). A set of loaded currencies is provided by an instance of `CurrencyUnitDataProvider`. But new and funky `CurrencyUnits` can be created to. So with this currencies, money values can be converted from one to another currency.
 
 [[modules]]
 = Business modules
@@ -210,8 +234,9 @@ Payment information also includes a user identifier referencing the buyer, an or
 To create a new account, AccountancyEntry has to be sub-classed. Every object of such a class belongs to the same account. Accessing per-account entries is facilitated by specifiying the desired class type when calling _get()_ or _find()_ methods of Accountancy.
 
 [[modules.payment]]
-== PaymentMethod
-Pending
+== Payments
+
+TODO
 
 [[modules.order]]
 == Order
@@ -219,7 +244,7 @@ An `Order` can be considered as a sheet of paper which basically consists of lin
 
 A `ChargeLine` represents additional costs or discounts and can be applied to an `OrderLine` or an `Order`.
 
-NOTE: For example, `ChargeLine` s can be used to handle special taxes or handling fees.
+NOTE: For example, `ChargeLine`s can be used to handle special taxes or handling fees.
 
 A `ChargeLine` is uniquely identified by a `ChargeLineIdentifier` .
 
@@ -241,7 +266,10 @@ Completing an order causes product instances to be removed from the inventory. B
 * `SUCCESSFUL` -- The order was completed successfully, and all products were removed from the inventory.
 * `FAILED` -- An error from which recovery is impossible occured.
 
-The `OrderManager` aggregates `Order` s. The implementation of `OrderManager` interface, `PersistentOrderManager` , is used to persist, update, find and remove orders to/from the database. In `Order` aggregated objects, like `OrderLine` s and `ChargeLine` s will also be persisted, updated or removed with the `Order` object.
+The `OrderManager` aggregates `Order`s. The implementation of `OrderManager` interface, `PersistentOrderManager`, is used to persist, update, find and remove orders to/from the database. In `Order` aggregated objects, like `OrderLine`s and `ChargeLine`s will also be persisted, updated or removed with the `Order` object.
+
+[[modules.business-time]]
+== Business time
 
 [[modules.technical-apis]]
 == Technical APIs
@@ -266,6 +294,10 @@ Why do I see warning log statements about database tables not being accessible a
 [appendix, glossary]
 == Glossary
 
+[[glossary.dependency-injection]]
+Dependency injection::
+   Dependency injection is a software design pattern that implements inversion of control and allows a program design to follow the dependency inversion principle. The term was coined by Martin Fowler. See http://en.wikipedia.org/wiki/Dependency_injection[Wikipedia].
+
 [[glossary.spi]]
 SPI::
    Service Provider Interface -- interfaces to be implemented to extend the functionality of the core framework. See http://en.wikipedia.org/wiki/Service_provider_interface[Wikipedia] for details.
@@ -273,7 +305,9 @@ SPI::
 [[bibliography]]
 [appendix, bibliography]
 == Bibliography
+- [[[ddd]]] Eric Evans. Domain-Driven Design: Tackling Complexity in the Heart of Software. Prentice Hall. 2003
 - [[[epam]]] Jim Arlow, Ila Neustadt. Enterprise Patterns and MDA: Building Better Software with Archetype Patterns and UML. Addison-Wesley. 2004.
+- [[[di]]] Martin Fowler. Inversion of Control Containers and the Dependency Injection pattern. 2004. http://www.martinfowler.com/articles/injection.html
 
 [appendix]
 == Asciidoc template
