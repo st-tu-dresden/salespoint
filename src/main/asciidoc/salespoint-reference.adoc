@@ -169,8 +169,7 @@ To reduce code repetition, Salespoint 5 contains code to automate user log in. U
 === Limitation
 Due to the fact, that Salespoint use the `SecurityContext` for authentication, the `UserAccount` cannot be extended. In the background the `org.salespointframework.useraccount.UserAccount` is converted to an instance of `org.springframework.security.core.userdetails.UserDetails`.
 
-If this properties don’t meet all requirements, wrap the `UserAccount` in a new `Entity`. Put all the new features in this new `Entity` and connect this information via a `@OneToOne` relationship with the `UserAccount`.
-An Example is the videoshop project.
+If this properties don’t meet all requirements, wrap the `UserAccount` in a new `Entity`. Put all the new features in this new `Entity` and connect this information via a `@OneToOne` relationship with the `UserAccount`. An Example is the videoshop project.
 
 .Example of a UserAccount extension
 ====
@@ -179,22 +178,22 @@ An Example is the videoshop project.
 @Entity
 public class UserAccountExtension {
 
-	private String string;
-	private Integer integer;
+  private String string;
+  private Integer integer;
 
-	@OneToOne
-	private UserAccount userAccount;
+  @OneToOne
+  private UserAccount userAccount;
 }
 ----
 ====
 
 [[modules.product]]
 == Product
-Salespoint 5 is intended as framework for point-of-sale applications. The items for sale are called “products” and represented by instances of class `Product` . To represent different kinds of products, `Product` can be sub-classed. Products are aggregated by `PersistentCatalog` (see Section <<modules.catalog>>).
+Salespoint 5 is intended as framework for point-of-sale applications. The items for sale are called products and represented by instances of class `Product`. To represent different kinds of products, `Product` can be sub-classed. Products are aggregated by `PersistentCatalog` (see Section <<modules.catalog>>).
 
 [[modules.product.identifier]]
 === Product Identifier
-Products are supposed to be an abstraction, like an item on display or a picture in a catalog. ProductInstances are used to represent the actual item you get, when you a buy a product. Products are identified using a `ProductIndentifier` , whereas ProductInstances are identified by a SerialNumber. ProductInstances can be thought of as identifiable instances of a certain product, which are identical apart from their SerialNumber.
+Products are supposed to be an abstraction, like an item on display or a picture in a catalog. ProductInstances are used to represent the actual item you get, when you a buy a product. Products are identified using a `ProductIndentifier`, whereas ProductInstances are identified by a SerialNumber. ProductInstances can be thought of as identifiable instances of a certain product, which are identical apart from their SerialNumber.
 
 [[modules.quantity]]
 == Quantity
@@ -202,7 +201,7 @@ Products are supposed to be an abstraction, like an item on display or a picture
 
 === Attributes of Quantity
 * a numerical value -> <<modules.quantity.value>>
-* a (meansurement) unit or metric -> <<modules.quantity.metric>>
+* a (measurement) unit or metric -> <<modules.quantity.metric>>
 * a type specifing the rounding of the numerical type -> <<modules.quantity.rounding>>
 
 [[modules.quantity.value]]
@@ -221,32 +220,62 @@ There are many rounding strategies, for money operations and so on. For this cas
 == Catalog
 The `Catalog` interface was designed to manage Products and ProductFeatures in the system. It provides functionality to add, remove, and find Products. Products can be searched by their name or category. Products and ProductFeatures are more closely described in Section <<modules.product>>. The `PersistentCatalog` is an implementation of the `Catalog` interface.
 
-Additionally `PersistentCatalog` provides an `update()`-method to update and merge existing `PersistentProduct`s to the database. The `find()` methods request the database in the form of CriteriaQuerys which will be processed by JPA and results are returned in the form of Iterables. The reason for this is to make returned objects immutable without making it difficult to iterate over these results.
+////
+[Product]<-[<<Interface>> Catalog]
+[<<Interface>> SalespointRepository]^[<<Interface>> Catalog]
+////
+image::http://yuml.me/da2d249a[title="Catalog"]
+
+Additionally `PersistentCatalog` provides an `update()`-method to update and merge existing ``PersistentProduct``s to the database. The `find()` methods request the database in the form of CriteriaQuerys which will be processed by JPA and results are returned in the form of Iterables. The reason for this is to make returned objects immutable without making it difficult to iterate over these results.
 
 [[modules.accountancy]]
 == Accountancy
 The accountancy package contains functionality supporting book keeping. `AccountancyEntry` is a representation of an accounting entry. `Accountancy` aggregates AccountancyEntrys. Every `AccountancyEntry` is uniquely identified by an `AccountancyEntryIdentifier` . `AccountancyEntry` extends `AbstractEntity` and serves as persistence entity, while `PersistentAccountancy` implements `Accountancy` and provides transparent access to the JPA layer. `AccountancyEntryIdentifier` is used as primary key attribute, when entities are stored in the database.
 
+////
+[<<Interface>> Accountancy]^-.-[PersistentAccountancy]
+[PersistentAccountancy]uses-.->[<<Interface>> AccountancyEntryRepository]
+[AccountancyEntry|-id:AccountancyEntryIdentifier]
+////
+image::http://yuml.me/a88563ec[Accountancy, title="Accountancy"]
+
 By implementing and sub-classing the `Accountancy` interface, the notion of different accounts, as known from double-entry bookkeeping, can be realised.
 
-Payment information also includes a user identifier referencing the buyer, an order identifier referring to the <<modules.catalog>> which was payed, and a <<modules.payment>> describing the money transfer. The attributes are named `userIdentifier` , `orderIdentifier` , and `paymentMethod` respectively.
+Payment information also includes a user identifier referencing the buyer, an order identifier referring to the <<modules.catalog>> which was payed, and a <<modules.payment>> describing the money transfer. The attributes are named `userIdentifier`, `orderIdentifier`, and `paymentMethod` respectively.
 
-To create a new account, AccountancyEntry has to be sub-classed. Every object of such a class belongs to the same account. Accessing per-account entries is facilitated by specifiying the desired class type when calling _get()_ or _find()_ methods of Accountancy.
+To create a new account, `AccountancyEntry` has to be sub-classed. Every object of such a class belongs to the same account. Accessing per-account entries is facilitated by specifiying the desired class type when calling `get()` or `find()` methods of `Accountancy`.
 
 [[modules.payment]]
 == Payments
+
+////
+[PaymentMethod]^[Cash]
+[PaymentMethod]^[Cheque]
+[PaymentMethod]^[PaymentCard]
+[PaymentCard]^[DebitCard]
+[PaymentCard]^[CreditCard]
+////
+image::http://yuml.me/a80800b1[title="Payment domain types"]
 
 TODO
 
 [[modules.order]]
 == Order
-An `Order` can be considered as a sheet of paper which basically consists of lines, each representing an ordered product. An order can be uniquely identified by an `OrderIdentifier`. Every product of an order is stored in a separate `OrderLine`. An `OrderLine` in turn is uniquely identified by an `OrderLineIdentifier`. An `OrderLine` contains all information to identify a `ProductInstance` (see Section <<modules.product>> ). A `ProductInstance` is identified by a `ProductIdentifier` , and an optional set of `ProductFeature` s.
+An `Order` can be considered as a sheet of paper which basically consists of lines, each representing an ordered product. An order can be uniquely identified by an `OrderIdentifier`. Every product of an order is stored in a separate `OrderLine`. An `OrderLine` in turn is uniquely identified by an `OrderLineIdentifier`. An `OrderLine` contains all information to identify a `ProductInstance` (see Section <<modules.product>> ). A `ProductInstance` is identified by a `ProductIdentifier`, and an optional set of `ProductFeature` s.
+
+////
+[Order]->[UserAccount]
+[Order]->[PaymentMethod]
+[Order|-id:OrderIdentifier;-orderStatus:OrderStatus;-dateCreated:LocalDateTime]1++-*>[OrderLine]
+[Order]1++-*>[ChargeLine]
+////
+image::http://yuml.me/c603ebb3[title="Order"]
 
 A `ChargeLine` represents additional costs or discounts and can be applied to an `OrderLine` or an `Order`.
 
-NOTE: For example, `ChargeLine`s can be used to handle special taxes or handling fees.
+NOTE: For example, ``ChargeLine``s can be used to handle special taxes or handling fees.
 
-A `ChargeLine` is uniquely identified by a `ChargeLineIdentifier` .
+A `ChargeLine` is uniquely identified by a `ChargeLineIdentifier`.
 
 === Order status lifecycle
 `Orders` are lifecycle-objects. The lifecycle covers four states which are defined by enumeration type `OrderStatus`. The lifecycle state cannot be arbitrarily changed, but follows a fixed scheme.
@@ -259,17 +288,22 @@ include::{source-base}/order/Order.java[tags=orderStatus]
 
 State transistions are automatically carried out when certain methods are called on an `Order` object, for example `cancelOrder()`.
 
-A `Order` can only be modified in state `OPEN`. `PAID` , `CANCELLED` and `COMPLETED` `Order` s are immutable. Calling the `payOrder()` method changes the state to `PAID` ,makes the `Order` immutable and creates an `ProductPaymentEntry` object. Ordered objects will only be removed from inventory when the `completeOrder()` method is called. `COMPLETED` is one of the final states and it is not possible to change the state of such orders.
+A `Order` can only be modified in state `OPEN`. `PAID`, `CANCELLED` and `COMPLETED` `Order` s are immutable. Calling the `payOrder()` method changes the state to `PAID`, makes the `Order` immutable and creates an `ProductPaymentEntry` object. Ordered objects will only be removed from inventory when the `completeOrder()` method is called. `COMPLETED` is one of the final states and it is not possible to change the state of such orders.
 
 Completing an order causes product instances to be removed from the inventory. Because product instances may not be present anymore in the inventory, or their number may not be suffice to fulfill an order, completing an order requires special attention. To handle these situations, the `OrderCompletionResult` interface was introduced. First of all, these `OrderCompletionStatus` are possible:
 
 * `SUCCESSFUL` -- The order was completed successfully, and all products were removed from the inventory.
 * `FAILED` -- An error from which recovery is impossible occured.
 
-The `OrderManager` aggregates `Order`s. The implementation of `OrderManager` interface, `PersistentOrderManager`, is used to persist, update, find and remove orders to/from the database. In `Order` aggregated objects, like `OrderLine`s and `ChargeLine`s will also be persisted, updated or removed with the `Order` object.
+The `OrderManager` aggregates ``Order``s. The implementation of `OrderManager` interface, `PersistentOrderManager`, is used to persist, update, find and remove orders to/from the database. In `Order` aggregated objects, like `OrderLine`s and `ChargeLine`s will also be persisted, updated or removed with the `Order` object.
 
 [[modules.business-time]]
 == Business time
+
+////
+[<<Interface>> BusinessTime]^[DefaultBusinessTime]
+////
+image::http://yuml.me/759ac0c7[title="Business time"]
 
 [[modules.technical-apis]]
 == Technical APIs
