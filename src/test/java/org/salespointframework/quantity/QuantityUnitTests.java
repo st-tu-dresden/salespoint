@@ -3,9 +3,7 @@ package org.salespointframework.quantity;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import org.javamoney.moneta.Money;
 import org.junit.Test;
-import org.salespointframework.core.Currencies;
 
 /**
  * Unit tests for {@link Quantity}.
@@ -16,13 +14,75 @@ import org.salespointframework.core.Currencies;
 public class QuantityUnitTests {
 
 	/**
-	 * @see #34
+	 * @see #9
+	 */
+	@Test
+	public void defaultsToUnitAsMetric() {
+		assertThat(Quantity.of(1).getMetric(), is(Metric.UNIT));
+	}
+
+	/**
+	 * @see #9
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void rejectsNullMetric() {
+		Quantity.of(0, null);
+	}
+
+	/**
+	 * @see #9
+	 */
+	@Test
+	public void rejectsIncompatibleMetric() {
+
+		assertThat(Quantity.of(1).isCompatibleWith(Metric.UNIT), is(true));
+		assertThat(Quantity.of(1).isCompatibleWith(Metric.KILOGRAM), is(false));
+	}
+
+	/**
+	 * @see #9
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void rejectsIncompatibleQuantityOnAddition() {
+		Quantity.of(1).add(Quantity.of(1, Metric.KILOGRAM));
+	}
+
+	/**
+	 * @see #9
+	 */
+	@Test
+	public void addsQuantitiesCorrectly() {
+
+		assertThat(Quantity.of(1).add(Quantity.of(1)), is(Quantity.of(2)));
+		assertThat(Quantity.of(1.5).add(Quantity.of(1.5)), is(Quantity.of(3.0)));
+	}
+
+	/**
+	 * @see #9
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void rejectsIncompatibleQuantityOnSubtraction() {
+		Quantity.of(1).subtract(Quantity.of(1, Metric.KILOGRAM));
+	}
+
+	/**
+	 * @see #64, #65, #9
+	 */
+	@Test
+	public void subtractsQuantitiesCorrectly() {
+
+		assertThat(Quantity.of(10).subtract(Quantity.of(1)), is(Quantity.of(9)));
+		assertThat(Quantity.of(10.5).subtract(Quantity.of(7.25)), is(Quantity.of(3.25)));
+	}
+
+	/**
+	 * @see #34, #9
 	 */
 	@Test
 	public void comparesQuantitiesCorrectly() {
 
-		Quantity five = new Quantity(5.0, Units.METRIC, RoundingStrategy.MONETARY_ROUNDING);
-		Quantity ten = new Quantity(10.0, Units.METRIC, RoundingStrategy.MONETARY_ROUNDING);
+		Quantity five = Quantity.of(5);
+		Quantity ten = Quantity.of(10);
 
 		assertThat(five.isLessThan(ten), is(true));
 		assertThat(five.isGreaterThan(ten), is(false));
@@ -34,35 +94,14 @@ public class QuantityUnitTests {
 		assertThat(ten.isGreaterThanOrEqualTo(five), is(true));
 	}
 
-	@Test
-	public void multiply() {
-
-		Quantity quantity = new Quantity(5, Units.METRIC, RoundingStrategy.ROUND_ONE);
-		Money money = Money.of(2, Currencies.EURO);
-		Money result = money.multiply(quantity.amount);
-
-		assertThat(result, is(Money.of(10, Currencies.EURO)));
-	}
-
-	@Test
-	public void unitTest() {
-
-		Units unit = Units.of(4);
-		Money money = Money.of(15.76, Currencies.EURO);
-		Money result = money.multiply(unit.amount);
-
-		assertThat(result, is(Money.of(63.04, Currencies.EURO)));
-	}
-
 	/**
-	 * @see #64, #65
+	 * @see #9
 	 */
 	@Test
-	public void subtractsCorrectly() {
+	public void discoversNegativeQuantity() {
 
-		Quantity q1 = new Quantity(10, Units.METRIC, RoundingStrategy.MONETARY_ROUNDING);
-		Quantity q2 = new Quantity(1, Units.METRIC, RoundingStrategy.MONETARY_ROUNDING);
-
-		assertThat(q1.subtract(q2), is(new Quantity(9, Units.METRIC, RoundingStrategy.MONETARY_ROUNDING)));
+		assertThat(Quantity.of(-1).isNegative(), is(true));
+		assertThat(Quantity.of(0).isNegative(), is(false));
+		assertThat(Quantity.of(1).isNegative(), is(false));
 	}
 }

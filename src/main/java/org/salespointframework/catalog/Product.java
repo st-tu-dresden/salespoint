@@ -43,6 +43,10 @@ public class Product extends AbstractEntity<ProductIdentifier>implements Compara
 	@Deprecated
 	protected Product() {}
 
+	public Product(String name, Money price) {
+		this(name, price, Metric.UNIT);
+	}
+
 	/**
 	 * Creates a new {@link Product} with the given name, price and {@link Metric}.
 	 * 
@@ -111,7 +115,9 @@ public class Product extends AbstractEntity<ProductIdentifier>implements Compara
 	 * @return
 	 */
 	public boolean supports(Quantity quantity) {
-		return quantity == null ? false : metric.equals(quantity.getMetric());
+
+		Assert.notNull(quantity, "Quantity must not be null!");
+		return quantity.isCompatibleWith(metric);
 	}
 
 	/**

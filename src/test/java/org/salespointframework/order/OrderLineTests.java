@@ -8,7 +8,7 @@ import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.payment.Cash;
-import org.salespointframework.quantity.Units;
+import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class OrderLineTests extends AbstractIntegrationTests {
 
 		user = userAccountManager.create("userId", "password");
 		order = new Order(user, Cash.CASH);
-		orderLine = new OrderLine(cookie, Units.TEN);
+		orderLine = new OrderLine(cookie, Quantity.of(10));
 	}
 
 	@Test(expected = IllegalArgumentException.class)

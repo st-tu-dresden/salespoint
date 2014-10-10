@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.core.Currencies;
-import org.salespointframework.quantity.Units;
+import org.salespointframework.quantity.Quantity;
 
 /**
  * Unit tests for {@link InventoryItem}.
@@ -16,7 +16,8 @@ import org.salespointframework.quantity.Units;
  */
 public class InventoryItemTests {
 
-	private static final Units TWENTY = Units.TEN.add(Units.TEN);
+	private static final Quantity TEN = Quantity.of(10);
+	private static final Quantity TWENTY = TEN.add(TEN);
 
 	private Cookie cookie;
 	private InventoryItem item;
@@ -25,7 +26,7 @@ public class InventoryItemTests {
 	public void before() {
 
 		cookie = new Cookie("Superkeks", Currencies.ZERO_EURO);
-		item = new InventoryItem(cookie, Units.TEN);
+		item = new InventoryItem(cookie, TEN);
 	}
 
 	/**
@@ -34,8 +35,8 @@ public class InventoryItemTests {
 	@Test
 	public void increasesQuantityCorrectly() {
 
-		item.increaseQuantity(Units.ONE);
-		assertThat(item.getQuantity(), is(Units.of(11)));
+		item.increaseQuantity(Quantity.of(1));
+		assertThat(item.getQuantity(), is(Quantity.of(11)));
 	}
 
 	/**
@@ -52,8 +53,8 @@ public class InventoryItemTests {
 	@Test
 	public void decreasesQuantityCorrectly() {
 
-		item.decreaseQuantity(Units.ONE);
+		item.decreaseQuantity(Quantity.of(1));
 
-		assertThat(item.getQuantity(), is(Units.TEN.subtract(Units.ONE)));
+		assertThat(item.getQuantity(), is(TEN.subtract(Quantity.of(1))));
 	}
 }

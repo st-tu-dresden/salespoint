@@ -17,7 +17,7 @@ import org.salespointframework.inventory.Inventory;
 import org.salespointframework.inventory.InventoryItem;
 import org.salespointframework.order.OrderCompletionResult.OrderCompletionStatus;
 import org.salespointframework.payment.Cash;
-import org.salespointframework.quantity.Units;
+import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,8 +81,8 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 	public void completesOrderIfAllLineItemsAreAvailableInSufficientQuantity() {
 
 		Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
-		inventory.save(new InventoryItem(cookie, Units.of(100)));
-		order.add(new OrderLine(cookie, Units.TEN));
+		inventory.save(new InventoryItem(cookie, Quantity.of(100)));
+		order.add(new OrderLine(cookie, Quantity.of(10)));
 
 		orderManager.payOrder(order);
 		OrderCompletionResult result = orderManager.completeOrder(order);
@@ -97,8 +97,8 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 	public void failsOrderCompletionIfLineItemsAreNotAvailableInSufficientQuantity() {
 
 		Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
-		inventory.save(new InventoryItem(cookie, Units.of(1)));
-		order.add(new OrderLine(cookie, Units.TEN));
+		inventory.save(new InventoryItem(cookie, Quantity.of(1)));
+		order.add(new OrderLine(cookie, Quantity.of(10)));
 
 		orderManager.payOrder(order);
 		OrderCompletionResult result = orderManager.completeOrder(order);

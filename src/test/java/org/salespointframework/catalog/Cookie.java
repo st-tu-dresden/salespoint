@@ -4,20 +4,17 @@ import javax.persistence.Entity;
 
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;
-import org.salespointframework.quantity.Units;
 
-@SuppressWarnings("javadoc")
 @Entity
+@SuppressWarnings("serial")
 public class Cookie extends Product {
 
 	String property;
 
 	@Deprecated
-	protected Cookie() {
-
-	}
+	Cookie() {}
 
 	public Cookie(String name, Money price) {
-		super(name, Money.of(9001, Currencies.EURO), Units.METRIC);
+		super(name, Money.of(9001, Currencies.EURO));
 	}
 }

@@ -10,7 +10,7 @@ import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
-import org.salespointframework.quantity.Units;
+import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
@@ -27,7 +27,7 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 	public void before() {
 
 		cookie = new Cookie("Superkeks " + (counter++), Currencies.ZERO_EURO);
-		item = new InventoryItem(cookie, Units.TEN);
+		item = new InventoryItem(cookie, Quantity.of(10));
 	}
 
 	@Test

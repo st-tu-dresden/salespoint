@@ -16,6 +16,7 @@
 
 	<properties>
 		<dev>/dev</dev>
+		<java.version>1.8</java.version>
 		<spring-security.version>4.0.1.RELEASE</spring-security.version>
 		<spring-data-releasetrain.version>Fowler-RELEASE</spring-data-releasetrain.version>
 	</properties>
@@ -98,6 +99,13 @@
 			<artifactId>httpclient</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.4</version>
+			<scope>provided</scope>
+		</dependency>
 
 	</dependencies>
 
@@ -112,16 +120,6 @@
 		</extensions>
 
 		<plugins>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-					<compilerArgument>-proc:none</compilerArgument>
-				</configuration>
-			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -1,316 +1,172 @@
 package org.salespointframework.quantity;
 
-import java.io.Serializable;
+import lombok.AccessLevel;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+
 import java.math.BigDecimal;
 
+import javax.persistence.Embeddable;
+
+import org.springframework.util.Assert;
+
 /**
- * The Quantity class represents an amount of something. 'Something' is specified using a <code>Metric</code>. A
- * <code>RoundingStrategy</code> accommodates amounts that do not fit the value set of a given metric (Think of money:
- * 0.0001€ has no meaning in the real world). The {@code roundingStrategy} is applied to {@code amount} in the class
- * constructor. This way, every instance has a valid {@code amount}. To allow arithmetic operations on
- * <code>Quantity</code> objects and instances of subclasses of <code>Quantity</code> to return the correct type (and
- * thus avoiding casts), <code>Quantity</code> instances are immutable and all subclasses of <code>Quantity</code> have
- * to be immutable or implement a suitable {@code clone()}-method.
+ * A value object to represent a quantity.
  * 
- * @author Hannes Weisbach
+ * @author Oliver Gierke
  */
+@Embeddable
+@Value(staticConstructor = "of")
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public class Quantity {
 
-@SuppressWarnings("serial")
-public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
+	private static final String INCOMPATIBLE = "Quantity %s is incompatible to quantity %s!";
 
-	// immutable
+	private @NonNull final BigDecimal amount;
+	private @NonNull final Metric metric;
+
+	Quantity() {
+		this.amount = null;
+		this.metric = null;
+	}
+
 	/**
-	 * <code>BigDecimal</code> object, holding the value of this <code>Quantity</code>.
-	 */
-	protected BigDecimal amount;
-	// immutable
-	private Metric metric;
-	// immutable
-	private RoundingStrategy roundingStrategy;
-
-	/**
-	 * Parameterized class constructor. {@code amount} is immediately rounded using the supplied {@code roundingStrategy}.
+	 * Creates a new {@link Quantity} of the given amount. Defaults the metric to {@value Metric#UNIT}.
 	 * 
-	 * @param amount {@code amount} represented by this <code>Quantity</code>
-	 * @param metric {@code metric} used for this <code>Quantity</code>
-	 * @param roundingStrategy {@code roundingStrategy} to be used with this <code>Quantity</code>
-	 */
-	public Quantity(BigDecimal amount, Metric metric, RoundingStrategy roundingStrategy) {
-		this.amount = roundingStrategy.round(amount);
-		this.metric = metric;
-		this.roundingStrategy = roundingStrategy;
-
-	}
-
-	/**
-	 * Translates an {@code int} to a <code>Quantity</code>. The Integer is rounded according to the supplied
-	 * <code>RoudingStrategy</code>.
-	 * 
-	 * @param amount {@code int} value to be converted to <code>Quantity</code>
-	 * @param metric {@code metric} to be used with this <code>Quantity</code>
-	 * @param roundingStrategy {@code roudingStrategy} to be used with this <code>Quantity</code>
-	 */
-	public Quantity(int amount, Metric metric, RoundingStrategy roundingStrategy) {
-		this.amount = roundingStrategy.round(new BigDecimal(amount));
-		this.metric = metric;
-		this.roundingStrategy = roundingStrategy;
-	}
-
-	/**
-	 * Translates a {@code long} to a <code>Quantity</code>.
-	 * 
-	 * @param amount {@code long} value to be converted to a <code>Quantity</code>
-	 * @param metric {@code metric} to be used with this <code>Quantity</code>
-	 * @param roundingStrategy {@code roundingStrategy} to be used with this <code>Quantity</code>
-	 */
-	public Quantity(long amount, Metric metric, RoundingStrategy roundingStrategy) {
-		this.amount = roundingStrategy.round(new BigDecimal(amount));
-		this.metric = metric;
-		this.roundingStrategy = roundingStrategy;
-	}
-
-	/**
-	 * Translates a {@code float} to a <code>Quantity</code>.
-	 * 
-	 * @param amount {@code float} value to be converted to a <code>Quantity</code>
-	 * @param metric {@code metric} to be used with this <code>Quantity</code>
-	 * @param roundingStrategy {@code roundingStrategy} to be used with this <code>Quantity</code>
-	 */
-	public Quantity(float amount, Metric metric, RoundingStrategy roundingStrategy) {
-		this.amount = roundingStrategy.round(new BigDecimal(amount));
-		this.metric = metric;
-		this.roundingStrategy = roundingStrategy;
-	}
-
-	/**
-	 * Translates a {@code double} to a <code>Quantity</code>.
-	 * 
-	 * @param amount {@code double} value to be converted to a <code>Quantity</code>
-	 * @param metric {@code metric} to be used with this <code>Quantity</code>
-	 * @param roundingStrategy {@code roundingStrategy} to be used with this <code>Quantity</code>
-	 */
-	public Quantity(double amount, Metric metric, RoundingStrategy roundingStrategy) {
-		this.amount = roundingStrategy.round(new BigDecimal(amount));
-		this.metric = metric;
-		this.roundingStrategy = roundingStrategy;
-	}
-
-	/**
-	 * Returns the {@code metric} associated with this <code>Quantity</code>.
-	 * 
-	 * @return <code>Metric</code> of this <code>Quantity</code>.
-	 */
-	public Metric getMetric() {
-		return metric;
-	}
-
-	/**
-	 * Returns the <code>RoundingStrategy</code> of this <code>Quantity</code>.
-	 * 
-	 * @return <code>RoundingStrategy</code> of this <code>Quantity</code>.
-	 */
-	public RoundingStrategy getRoundingStrategy() {
-		return roundingStrategy;
-	}
-
-	/**
-	 * Returns the {@code amount} of this as {@code float}.
-	 * 
-	 * @return the {@code amount} of this as {@code float}.
-	 */
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	@Override
-	public int compareTo(Quantity o) {
-		return amount.compareTo(o.amount);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-
-		if (obj == null)
-			return false;
-		if (obj == this)
-			return true;
-		if (!(obj instanceof Quantity))
-			return false;
-		else {
-			Quantity q = (Quantity) obj;
-			return roundingStrategy.equals(q.roundingStrategy) && amount.compareTo(q.amount) == 0 && metric.equals(metric);
-		}
-	}
-
-	/**
-	 * Check if this quantity is negative
-	 * 
-	 * @return true if the quantity is negative
-	 */
-	public boolean isNegative() {
-		return amount.signum() == -1;
-	}
-
-	/**
-	 * Compares Quantities
-	 * 
-	 * @param other {@link Quantity} to which this Quantity is to be compared.
-	 * @return true if this quantity is less than the other quantity.
-	 */
-	public boolean isLessThan(Quantity other) {
-		return this.compareTo(other) < 0;
-	}
-
-	/**
-	 * Compares Quantities.
-	 * 
-	 * @param other {@link Quantity} to which this {@link Quantity} is to be compared.
-	 * @return true if this quantity is greater than the other quantity.
-	 */
-	public boolean isGreaterThan(Quantity other) {
-		return this.compareTo(other) > 0;
-	}
-
-	/**
-	 * Compares Quantities.
-	 * 
-	 * @param other {@link Quantity} to which this {@link Quantity} is to be compared.
-	 * @return true if this quantity is greater than the other quantity or equal to it.
+	 * @param amount must not be {@literal null}.
 	 * @return
 	 */
+	public static Quantity of(long amount) {
+		return of(amount, Metric.UNIT);
+	}
+
+	/**
+	 * Creates a new {@link Quantity} of the given amount. Defaults the metric to {@value Metric#UNIT}.
+	 * 
+	 * @param amount must not be {@literal null}.
+	 * @return
+	 */
+	public static Quantity of(double amount) {
+		return of(amount, Metric.UNIT);
+	}
+
+	/**
+	 * Creates a new {@link Quantity} of the given amount and {@link Metric}.
+	 * 
+	 * @param amount must not be {@literal null}.
+	 * @param metric must not be {@literal null}.
+	 * @return
+	 */
+	public static Quantity of(long amount, Metric metric) {
+		return new Quantity(BigDecimal.valueOf(amount), metric);
+	}
+
+	/**
+	 * Creates a new {@link Quantity} of the given amount and {@link Metric}.
+	 * 
+	 * @param amount must not be {@literal null}.
+	 * @param metric must not be {@literal null}.
+	 * @return
+	 */
+	public static Quantity of(double amount, Metric metric) {
+		return new Quantity(BigDecimal.valueOf(amount), metric);
+	}
+
+	/**
+	 * Returns whether the {@link Quantity} is compatible with the given {@link Metric}.
+	 * 
+	 * @param metric must not be {@literal null}.
+	 * @return
+	 */
+	public boolean isCompatibleWith(Metric metric) {
+
+		Assert.notNull(metric, "Metric must not be null!");
+		return this.metric.isCompatibleWith(metric);
+	}
+
+	/**
+	 * Adds the given {@link Quantity} to the current one.
+	 * 
+	 * @param other the {@link Quantity} to add. The given {@link Quantity}'s {@link Metric} must be compatible with the
+	 *          current one.
+	 * @return
+	 * @see #isCompatibleWith(Metric)
+	 */
+	public Quantity add(Quantity other) {
+
+		assertCompatibility(other);
+		return new Quantity(this.amount.add(other.amount), this.metric);
+	}
+
+	/**
+	 * Subtracts the given Quantity from the current one.
+	 * 
+	 * @param other the {@link Quantity} to add. The given {@link Quantity}'s {@link Metric} must be compatible with the
+	 *          current one.
+	 * @return
+	 * @see #isCompatibleWith(Metric)
+	 */
+	public Quantity subtract(Quantity other) {
+
+		assertCompatibility(other);
+		return new Quantity(this.amount.subtract(other.amount), this.metric);
+	}
+
+	/**
+	 * Returns whether the given {@link Quantity} is less than the current one.
+	 * 
+	 * @param other must not be {@literal null}. The given {@link Quantity}'s {@link Metric} must be compatible with the
+	 *          current one.
+	 * @return
+	 * @see #isCompatibleWith(Metric)
+	 */
+	public boolean isLessThan(Quantity other) {
+
+		assertCompatibility(other);
+		return this.amount.compareTo(other.amount) < 0;
+	}
+
+	/**
+	 * Returns whether the given {@link Quantity} is greater than the current one.
+	 * 
+	 * @param other must not be {@literal null}. The given {@link Quantity}'s {@link Metric} must be compatible with the
+	 *          current one.
+	 * @return
+	 * @see #isCompatibleWith(Metric)
+	 */
+	public boolean isGreaterThan(Quantity other) {
+
+		assertCompatibility(other);
+		return this.amount.compareTo(other.amount) > 0;
+	}
+
+	/**
+	 * Returns whether the given {@link Quantity} is greater than or equal to the current one.
+	 * 
+	 * @param other must not be {@literal null}. The given {@link Quantity}'s {@link Metric} must be compatible with the
+	 *          current one.
+	 * @return
+	 * @see #isCompatibleWith(Metric)
+	 */
 	public boolean isGreaterThanOrEqualTo(Quantity other) {
-		return this.compareTo(other) >= 0;
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return amount + metric.getSymbol();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public final int hashCode() {
-		return amount.hashCode();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#clone()
-	 */
-	@Override
-	public Object clone() {
-
-		try {
-			return (Quantity) super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException(e);
-		}
+		assertCompatibility(other);
+		return this.amount.compareTo(other.amount) >= 0;
 	}
 
 	/**
-	 * Sums two quantities up. The {@code amount} of this and quantity are added, and a new <code>Quantity</code>-instance
-	 * is returned, representing the sum. The metric and rounding strategy of {@code quantity} are used for the new
-	 * instance. No check is performed, whether the metrics of both quantities are compatible, i.e. it is possible to
-	 * combine, say kg and s.
-	 * <p>
-	 * To avoid casting, arithmetic methods are generic. If a sub class of <code>Quantity</code> is passed as parameter,
-	 * the result will have the same type, as the parameter.
+	 * Returns whether the current {@link Quantity} is negative.
 	 * 
-	 * @param <T> type of the parameter and returned object
-	 * @param quantity <code>Quantity</code> to be added to this.
-	 * @return a new <code>Quantity</code> object representing the sum of this and {@code quantity}.
+	 * @return
 	 */
-	public <T extends Quantity> T add(T quantity) {
-		@SuppressWarnings("unchecked")
-		T q = (T) quantity.clone();
-		q.amount = quantity.getRoundingStrategy().round(amount.add(quantity.amount));
-		return q;
+	public boolean isNegative() {
+		return this.amount.compareTo(BigDecimal.ZERO) < 0;
 	}
 
-	// public Quantity add(Quantity quantity) {
-	// return new Quantity(amount.add(quantity.amount), metric,
-	// roundingStrategy);
-	// }
+	private void assertCompatibility(Quantity quantity) {
 
-	/**
-	 * Subtracts a quantity from this. The {@code amount} of this is subtracted by that of quantity, and a new
-	 * <code>Quantity</code>-instance is returned, representing the difference. The metric and rounding strategy of
-	 * {@code quantity} are used for the new instance. No check is performed, whether the metrics of both quantities are
-	 * compatible, i.e. it is possible to combine, say kg and s.
-	 * <p>
-	 * To avoid casting, arithmetic methods are generic. If a sub class of <code>Quantity</code> is passed as parameter,
-	 * the result will have the same type, as the parameter.
-	 * 
-	 * @param <T> type of the parameter and returned object
-	 * @param quantity <code>Quantity</code> to be subtracted from this.
-	 * @return a new <code>Quantity</code> object representing the difference of this and {@code quantity}.
-	 */
-	public <T extends Quantity> T subtract(T quantity) {
-		@SuppressWarnings("unchecked")
-		T q = (T) quantity.clone();
-		q.amount = quantity.getRoundingStrategy().round(amount.subtract(quantity.amount));
-		return q;
+		Assert.notNull(quantity, "Quantity must not be null!");
+		Assert.isTrue(quantity.isCompatibleWith(metric), String.format(INCOMPATIBLE, this, quantity));
 	}
-
-	// public Quantity subtract(Quantity quantity) {
-	// return new Quantity(amount.subtract(quantity.amount), metric,
-	// roundingStrategy);
-	// }
-
-	/**
-	 * Multiplies two quantities. The {@code amount} of this and quantity are multiplied, and a new <code>Quantity</code>
-	 * -instance is returned, representing the product. The metric and rounding Strategy of this are used for the new
-	 * instance. No check is performed, whether the metrics of both quantities are compatible, i.e. it is possible to
-	 * combine, say kg and s.
-	 * <p>
-	 * To avoid casting, arithmetic methods are generic. If a sub class of <code>Quantity</code> is passed as parameter,
-	 * the result will have the same type, as the parameter.
-	 * 
-	 * @param <T> type of the parameter and returned object
-	 * @param quantity <code>Quantity</code> to be multiplied with this.
-	 * @return a new <code>Quantity</code> object representing the product of this and {@code quantity}.
-	 */
-	public <T extends Quantity> T multiply(T quantity) {
-		@SuppressWarnings("unchecked")
-		T q = (T) quantity.clone();
-		q.amount = quantity.getRoundingStrategy().round(amount.multiply(quantity.amount));
-		return q;
-	}
-
-	// public Quantity multiply(Quantity quantity) {
-	// return new Quantity(amount.multiply(quantity.amount), metric,
-	// roundingStrategy);
-	// }
-
-	/**
-	 * Divides this by another quantity. The {@code amount} of this the dividend, {@code quantity} the divisor, and a new
-	 * <code>Quantity</code>-instance is returned as quotient. The metric and rounding Strategy of this are used for the
-	 * new instance. No check is performed, whether the metrics of both quantities are compatible, i.e. it is possible to
-	 * combine, say kg and s.
-	 * <p>
-	 * To avoid casting, arithmetic methods are generic. If a sub class of <code>Quantity</code> is passed as parameter,
-	 * the result will have the same type, as the parameter.
-	 * 
-	 * @param <T> type of the parameter and returned object
-	 * @param quantity <code>Quantity</code> to be used as divisor.
-	 * @return a new <code>Quantity</code> object representing the quotient.
-	 */
-	public <T extends Quantity> T divide(T quantity) {
-		@SuppressWarnings("unchecked")
-		T q = (T) quantity.clone();
-		q.amount = quantity.getRoundingStrategy().round(amount.divide(quantity.amount));
-		return q;
-	}
-	// public Quantity divide(Quantity quantity) {
-	// return new Quantity(amount.divide(quantity.amount), metric,
-	// roundingStrategy);
-	// }
-
 }

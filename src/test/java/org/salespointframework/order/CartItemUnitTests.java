@@ -10,8 +10,6 @@ import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.MetricMismatchException;
 import org.salespointframework.quantity.Quantity;
-import org.salespointframework.quantity.RoundingStrategy;
-import org.salespointframework.quantity.Units;
 
 /**
  * Unit tests for {@link CartItem}.
@@ -21,15 +19,15 @@ import org.salespointframework.quantity.Units;
  */
 public class CartItemUnitTests {
 
-	static final Quantity quantity = Units.TEN;
-	static final Product product = new Product("name", Money.of(1, Currencies.EURO), Units.METRIC);
+	static final Quantity QUANTITY = Quantity.of(10);
+	static final Product PRODUCT = new Product("name", Money.of(1, Currencies.EURO));
 
 	/**
 	 * @see #44
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void rejectsNullProduct() {
-		new CartItem(null, quantity);
+		new CartItem(null, QUANTITY);
 	}
 
 	/**
@@ -37,7 +35,7 @@ public class CartItemUnitTests {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void rejectsNullQuantity() {
-		new CartItem(product, null);
+		new CartItem(PRODUCT, null);
 	}
 
 	/**
@@ -45,7 +43,7 @@ public class CartItemUnitTests {
 	 */
 	@Test(expected = MetricMismatchException.class)
 	public void rejectsQuantityWithInvalidMetric() {
-		new CartItem(product, new Quantity(0, new Metric("a", "b", "c"), RoundingStrategy.ROUND_ONE));
+		new CartItem(PRODUCT, Quantity.of(0, Metric.KILOGRAM));
 	}
 
 	/**
@@ -54,12 +52,12 @@ public class CartItemUnitTests {
 	@Test
 	public void returnsCorrectDetails() {
 
-		CartItem item = new CartItem(product, quantity);
+		CartItem item = new CartItem(PRODUCT, QUANTITY);
 
 		assertThat(item.getIdentifier(), is(notNullValue()));
-		assertThat(item.getProduct(), is(product));
-		assertThat(item.getQuantity(), is(quantity));
-		assertThat(item.getProductName(), is(product.getName()));
+		assertThat(item.getProduct(), is(PRODUCT));
+		assertThat(item.getQuantity(), is(QUANTITY));
+		assertThat(item.getProductName(), is(PRODUCT.getName()));
 	}
 
 	/**
@@ -68,9 +66,9 @@ public class CartItemUnitTests {
 	@Test
 	public void calculatesPriceCorrectly() {
 
-		CartItem item = new CartItem(product, quantity);
+		CartItem item = new CartItem(PRODUCT, QUANTITY);
 
-		assertThat(item.getPrice(), is(product.getPrice().multiply(quantity.getAmount())));
+		assertThat(item.getPrice(), is(PRODUCT.getPrice().multiply(QUANTITY.getAmount())));
 	}
 
 	/**
@@ -79,11 +77,11 @@ public class CartItemUnitTests {
 	@Test
 	public void createsOrderLineCorrectly() {
 
-		OrderLine orderLine = new CartItem(product, quantity).toOrderLine();
+		OrderLine orderLine = new CartItem(PRODUCT, QUANTITY).toOrderLine();
 
 		assertThat(orderLine, is(notNullValue()));
-		assertThat(orderLine.getProductIdentifier(), is(product.getIdentifier()));
-		assertThat(orderLine.getQuantity(), is(quantity));
+		assertThat(orderLine.getProductIdentifier(), is(PRODUCT.getIdentifier()));
+		assertThat(orderLine.getQuantity(), is(QUANTITY));
 
 	}
 
@@ -93,11 +91,11 @@ public class CartItemUnitTests {
 	@Test
 	public void equals() {
 
-		CartItem item = new CartItem(product, quantity);
-		CartItem item2 = new CartItem(product, quantity);
+		CartItem item = new CartItem(PRODUCT, QUANTITY);
+		CartItem item2 = new CartItem(PRODUCT, QUANTITY);
 
 		assertThat(item, is(item2));
 		assertThat(item2, is(item));
-		assertThat(item, is(not(product)));
+		assertThat(item, is(not(PRODUCT)));
 	}
 }

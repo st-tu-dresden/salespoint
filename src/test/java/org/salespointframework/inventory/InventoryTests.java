@@ -18,7 +18,7 @@ import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
-import org.salespointframework.quantity.Units;
+import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -41,7 +41,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 	public void before() {
 
 		cookie = catalog.save(new Cookie("Add Superkeks", Currencies.ZERO_EURO));
-		item = inventory.save(new InventoryItem(cookie, Units.TEN));
+		item = inventory.save(new InventoryItem(cookie, Quantity.of(10)));
 	}
 
 	@Test
@@ -111,13 +111,13 @@ public class InventoryTests extends AbstractIntegrationTests {
 	public void decreasesItemAndPersistsIt() {
 
 		InventoryItem item = inventory.findByProduct(cookie).get();
-		item.decreaseQuantity(Units.ONE);
+		item.decreaseQuantity(Quantity.of(1));
 
 		// Trigger another finder to flush
 		Optional<InventoryItem> result = inventory.findByProductIdentifier(cookie.getIdentifier());
 
 		assertThat(result.isPresent(), is(true));
-		assertThat(result.get().getQuantity(), is(Units.of(9)));
+		assertThat(result.get().getQuantity(), is(Quantity.of(9)));
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 		exception.expect(PersistenceException.class);
 		exception.expectCause(is(instanceOf(ConstraintViolationException.class)));
 
-		inventory.save(new InventoryItem(cookie, Units.TEN));
+		inventory.save(new InventoryItem(cookie, Quantity.of(10)));
 
 		em.flush();
 	}

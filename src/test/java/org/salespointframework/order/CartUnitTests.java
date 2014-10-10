@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
-import org.salespointframework.quantity.Units;
 
 /**
  * Unit tests for {@link Cart}.
@@ -21,8 +20,8 @@ import org.salespointframework.quantity.Units;
  */
 public class CartUnitTests {
 
-	static final Quantity quantity = Units.TEN;
-	static final Product product = new Product("name", Money.of(1, Currencies.EURO), Units.METRIC);
+	static final Quantity QUANTITY = Quantity.of(10);
+	static final Product PRODUCT = new Product("name", Money.of(1, Currencies.EURO));
 
 	Cart cart;
 
@@ -37,7 +36,7 @@ public class CartUnitTests {
 	@Test
 	public void addsCartItemCorrectly() {
 
-		CartItem reference = cart.addOrUpdateItem(product, quantity);
+		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
 		assertThat(cart, hasItem(reference));
 		assertThat(cart, is(iterableWithSize(1)));
@@ -48,7 +47,7 @@ public class CartUnitTests {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void rejectsNullQuantityOnAdding() {
-		cart.addOrUpdateItem(product, null);
+		cart.addOrUpdateItem(PRODUCT, null);
 	}
 
 	/**
@@ -56,7 +55,7 @@ public class CartUnitTests {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void rejectsNullProductOnAdding() {
-		cart.addOrUpdateItem(null, quantity);
+		cart.addOrUpdateItem(null, QUANTITY);
 	}
 
 	/**
@@ -73,7 +72,7 @@ public class CartUnitTests {
 	@Test
 	public void removesItemsCorrectly() {
 
-		CartItem reference = cart.addOrUpdateItem(product, quantity);
+		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
 		assertThat(cart.removeItem(reference.getIdentifier()).isPresent(), is(true));
 		assertThat(cart, is(iterableWithSize(0)));
@@ -85,7 +84,7 @@ public class CartUnitTests {
 	@Test
 	public void providesAccessToCartItem() {
 
-		CartItem reference = cart.addOrUpdateItem(product, quantity);
+		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 		Optional<CartItem> item = cart.getItem(reference.getIdentifier());
 
 		assertThat(item.isPresent(), is(true));
@@ -98,7 +97,7 @@ public class CartUnitTests {
 	@Test
 	public void returnsEmptyOptionalForNonExistingIdentifier() {
 
-		cart.addOrUpdateItem(product, quantity);
+		cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
 		assertThat(cart.getItem("foobar"), is(Optional.empty()));
 	}
@@ -117,7 +116,7 @@ public class CartUnitTests {
 	@Test
 	public void clearsCartCorrectly() {
 
-		cart.addOrUpdateItem(product, quantity);
+		cart.addOrUpdateItem(PRODUCT, QUANTITY);
 		cart.clear();
 
 		assertThat(cart, is(iterableWithSize(0)));
@@ -132,7 +131,7 @@ public class CartUnitTests {
 
 		assertThat(cart.isEmpty(), is(true));
 
-		cart.addOrUpdateItem(product, quantity);
+		cart.addOrUpdateItem(PRODUCT, QUANTITY);
 		assertThat(cart.isEmpty(), is(false));
 	}
 
@@ -150,18 +149,17 @@ public class CartUnitTests {
 	@Test
 	public void updatesCartItemIfOneForProductAlreadyExists() {
 
-		CartItem item = cart.addOrUpdateItem(product, quantity);
+		CartItem item = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
-		assertThat(item.getProduct(), is(product));
-		assertThat(item.getQuantity(), is(quantity));
+		assertThat(item.getProduct(), is(PRODUCT));
+		assertThat(item.getQuantity(), is(QUANTITY));
 		assertThat(cart, is(iterableWithSize(1)));
 
-		CartItem updated = cart.addOrUpdateItem(product, quantity);
+		CartItem updated = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
 		assertThat(updated, is(not(item)));
 		assertThat(cart, is(iterableWithSize(1)));
-		assertThat(updated.getProduct(), is(product));
-		assertThat(updated.getQuantity(), is(quantity.add(quantity)));
+		assertThat(updated.getProduct(), is(PRODUCT));
+		assertThat(updated.getQuantity(), is(QUANTITY.add(QUANTITY)));
 	}
-
 }

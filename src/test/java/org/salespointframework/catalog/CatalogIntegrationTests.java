@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.Currencies;
-import org.salespointframework.quantity.Units;
+import org.salespointframework.quantity.Metric;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -38,7 +38,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	@Test
 	public void findsProductsByCategory() {
 
-		Product product = new Product("MacBook", Money.of(2700.0, Currencies.EURO), Units.METRIC);
+		Product product = new Product("MacBook", Money.of(2700.0, Currencies.EURO), Metric.UNIT);
 		product.addCategory("Apple");
 
 		catalog.save(product);
