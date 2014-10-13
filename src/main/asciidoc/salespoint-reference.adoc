@@ -257,7 +257,12 @@ To create a new account, `AccountancyEntry` has to be sub-classed. Every object 
 ////
 image::http://yuml.me/a80800b1[title="Payment domain types"]
 
-TODO
+For the paying transaction, Salespoint provides some payment strategies.
+
+* `DebitCard` -- representation of e.g. EC-card or MaestroCard
+* `CreditCard` -- equal to `DebitCard` but with creditLimit-Attribute
+* `Cheque` -- represents a written order of payment in a digital form
+* `Cash` -- represents a payment, made direct in cash
 
 [[modules.order]]
 == Order
