@@ -15,7 +15,7 @@ import org.salespointframework.useraccount.UserAccountIdentifier;
 import org.springframework.util.Assert;
 
 /**
- * A <code>ProductPaymentEntry</code> is used to store information of payments of orders.
+ * A {@link ProductPaymentEntry} is used to store information of payments of orders.
  * 
  * @author Hannes Weisbach
  * @author Thomas Dedek
@@ -25,14 +25,14 @@ import org.springframework.util.Assert;
 public class ProductPaymentEntry extends AccountancyEntry {
 
 	/**
-	 * The {@link OrderIdentifier} to which this <code>ProductPaymentEntry</code> refers to.
+	 * The {@link OrderIdentifier} to which this {@link ProductPaymentEntry} refers to.
 	 */
 	@Embedded//
 	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID", nullable = true))//
 	private OrderIdentifier orderIdentifier;
 
 	/**
-	 * The {@link UserAccountIdentifier} to which this <code>ProductPaymentEntry</code> refers to.
+	 * The {@link UserAccountIdentifier} to which this {@link ProductPaymentEntry} refers to.
 	 */
 	@OneToOne//
 	@AttributeOverride(name = "id", column = @Column(name = "USER_ID", nullable = true))//

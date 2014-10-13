@@ -15,6 +15,8 @@
  */
 package org.salespointframework.core;
 
+import javax.persistence.MappedSuperclass;
+
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -22,6 +24,7 @@ import org.springframework.util.ObjectUtils;
  *
  * @author Oliver Gierke
  */
+@MappedSuperclass
 public abstract class AbstractEntity<ID extends SalespointIdentifier> {
 
 	/**
