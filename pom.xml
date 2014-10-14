@@ -74,6 +74,20 @@
 			<version>3.2.0.GA</version>
 		</dependency>
 
+		<!--  For changelog creation -->
+
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -149,7 +163,7 @@
 							<goal>process-asciidoc</goal>
 						</goals>
 						<configuration>
-							<sourceDocumentName>index.adoc</sourceDocumentName>
+							<sourceDirectory>src/main/asciidoc/site</sourceDirectory>
 							<outputDirectory>${project.build.directory}/site</outputDirectory>
 						</configuration>
 					</execution>
