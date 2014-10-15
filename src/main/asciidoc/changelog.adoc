@@ -1,0 +1,32 @@
+= Salespoint Framework Changelog
+Paul Henke, Andreas Zaschka, Oliver Gierke
+:numbered!:
+
+== 6.0 M1 - 2014-10-13
+----
+-  #4 - Release 6.0 M1.
+- #30 - Upgrade to Spring Boot 1.1.8.
+-  #5 - Renew technical documentation.
+- #13 - Improve design of JpaEntityConverter.
+- #29 - Release 6.0 M1.
+- #18 - Add package-info.java files for packages.
+- #28 - Upgrade to Spring Boot 1.1.7.
+- #17 - Add deployment of artifacts and documentation to project build.
+- #26 - Update Asciidoctor and APT plugin.
+- #25 - Overhaul domain code.
+- #24 - Use Spring Data repositories in inventory and accountancy as well.
+- #14 - Extract BlankWeb into separate repository.
+- #15 - Remove Calendar project and extract Blankweb into separate repository.
+- #16 - Pull up SalespointFramework to become top level project.
+- #22 - Bump version number to 6.0.
+- #19 - Simplify Catalog.
+- #21 - Consolidate packages.
+- #20 - Remove Spielwiese.
+- #11 - Switch to JodaMoney.
+-  #1 - Extract Guestbook and VideoShop projects into separate repositories.
+-  #6 - Upgrade to Spring Boot 1.1.5.
+-  #7 - Simplify time management.
+-  #8 - Switch from JodaTime to JDK 8 Date/Time abstractions.
+-  #3 - Upgrade to latest Spring Boot and Spring Framework versions.
+-  #2 - Setup Asciidoctor Maven build and sample file.
+----

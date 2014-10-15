@@ -4,14 +4,14 @@
 
 	<groupId>de.tudresden.inf.st</groupId>
 	<artifactId>salespoint-framework</artifactId>
-	<version>6.0.0-SNAPSHOT</version>
+	<version>6.0.0.BUILD-SNAPSHOT</version>
 
 	<name>Salespoint</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.1.7.RELEASE</version>
+		<version>1.1.8.RELEASE</version>
 	</parent>
 
 	<properties>
@@ -72,6 +72,20 @@
 			<groupId>org.jadira.usertype</groupId>
 			<artifactId>usertype.extended</artifactId>
 			<version>3.2.0.GA</version>
+		</dependency>
+
+		<!--  For changelog creation -->
+
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
@@ -149,7 +163,7 @@
 							<goal>process-asciidoc</goal>
 						</goals>
 						<configuration>
-							<sourceDocumentName>index.adoc</sourceDocumentName>
+							<sourceDirectory>src/main/asciidoc/site</sourceDirectory>
 							<outputDirectory>${project.build.directory}/site</outputDirectory>
 						</configuration>
 					</execution>

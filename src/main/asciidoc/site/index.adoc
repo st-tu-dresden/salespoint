@@ -23,6 +23,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 === Latest release version
 * link:salespoint-reference.html[Reference documentation]
 * link:api[JavaDoc]
+* link:changelog.html[Changelog]
 
 [[resources.development]]
 === Current development version

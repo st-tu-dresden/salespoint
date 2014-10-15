@@ -3,14 +3,14 @@ package org.salespointframework.catalog;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
+import java.util.Optional;
+
 import org.hamcrest.Matchers;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.catalog.Product;
-import org.salespointframework.catalog.Catalog;
 import org.salespointframework.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -58,10 +58,12 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 
 		catalog.save(cookie);
 
-		Cookie kT1 = cookies.findOne(cookie.getIdentifier());
-		Product kT2 = catalog.findOne(cookie.getIdentifier());
+		Optional<Cookie> kT1 = cookies.findOne(cookie.getIdentifier());
+		Optional<Product> kT2 = catalog.findOne(cookie.getIdentifier());
 
-		assertThat(kT1, is(kT2));
+		assertThat(kT1.isPresent(), is(true));
+		assertThat(kT2.isPresent(), is(true));
+		assertThat(kT1.get(), is(kT2.get()));
 	}
 
 	/**
@@ -79,7 +81,10 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	public void addTest() {
 
 		Cookie result = catalog.save(cookie);
-		assertThat(catalog.findOne(result.getIdentifier()), is(result));
+		Optional<Product> cookie = catalog.findOne(result.getIdentifier());
+
+		assertThat(cookie.isPresent(), is(true));
+		assertThat(cookie.get(), is(result));
 	}
 
 	/**
@@ -110,8 +115,11 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	@Test
 	public void getTest() {
 
-		Cookie result = catalog.save(cookie);
-		assertThat(cookies.findOne(cookie.getIdentifier()), is(result));
+		Cookie reference = catalog.save(cookie);
+		Optional<Cookie> result = cookies.findOne(cookie.getIdentifier());
+
+		assertThat(result.isPresent(), is(true));
+		assertThat(result.get(), is(reference));
 	}
 
 	/**
@@ -133,10 +141,11 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	public void generalRepoInstancesFinds() {
 
 		Cookie doubleChoc = createCookie();
+		Optional<Product> product = catalog.findOne(doubleChoc.getIdentifier());
 
-		Product product = catalog.findOne(doubleChoc.getIdentifier());
-		assertThat(product, is(instanceOf(Cookie.class)));
-		assertThat(product, is(doubleChoc));
+		assertThat(product.isPresent(), is(true));
+		assertThat(product.get(), is(instanceOf(Cookie.class)));
+		assertThat(product.get(), is(doubleChoc));
 	}
 
 	private Cookie createCookie() {
