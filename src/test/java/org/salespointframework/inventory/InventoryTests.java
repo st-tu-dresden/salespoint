@@ -10,23 +10,31 @@ import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
+import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
-import org.salespointframework.inventory.Inventory;
-import org.salespointframework.inventory.InventoryItem;
+import org.salespointframework.catalog.Product;
 import org.salespointframework.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 
+/**
+ * Integration tests for {@link Inventory}.
+ *
+ * @author Oliver Gierke
+ */
 public class InventoryTests extends AbstractIntegrationTests {
 
-	@Autowired private Inventory<InventoryItem> inventory;
-	private Cookie cookie;
-	private InventoryItem item;
+	@Autowired Inventory<InventoryItem> inventory;
+	@Autowired Catalog<Product> catalog;
+
+	Cookie cookie;
+	InventoryItem item;
 
 	@Before
 	public void before() {
-		cookie = new Cookie("Add Superkeks", Money.zero(CurrencyUnit.EUR));
-		item = new InventoryItem(cookie, Units.TEN);
+
+		cookie = catalog.save(new Cookie("Add Superkeks", Money.zero(CurrencyUnit.EUR)));
+		item = inventory.save(new InventoryItem(cookie, Units.TEN));
 	}
 
 	@Test(expected = InvalidDataAccessApiUsageException.class)
@@ -35,29 +43,60 @@ public class InventoryTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	public void testAdd() {
-		inventory.save(item);
+	public void savesItemsCorrectly() {
+		assertThat(inventory.save(item).getIdentifier(), is(notNullValue()));
 	}
 
+	/**
+	 * @see #34
+	 */
 	@Test
-	public void testRemove() {
-		item = inventory.save(item);
+	public void deletesItemsCorrectly() {
+
 		inventory.delete(item.getIdentifier());
+
 		assertThat(inventory.exists(item.getIdentifier()), is(false));
 	}
 
+	/**
+	 * @see #34
+	 */
 	@Test
-	public void testContains() {
-		item = inventory.save(item);
+	public void testExists() {
 		assertThat(inventory.exists(item.getIdentifier()), is(true));
 	}
 
+	/**
+	 * @see #34
+	 */
 	@Test
 	public void testGet() {
 
-		item = inventory.save(item);
-
 		Optional<InventoryItem> result = inventory.findOne(item.getIdentifier());
+
+		assertThat(result.isPresent(), is(true));
+		assertThat(result.get(), is(item));
+	}
+
+	/**
+	 * @see #34
+	 */
+	@Test
+	public void testFindItemsByProduct() {
+
+		Optional<InventoryItem> result = inventory.findByProduct(cookie);
+
+		assertThat(result.isPresent(), is(true));
+		assertThat(result.get(), is(item));
+	}
+
+	/**
+	 * @see #34
+	 */
+	@Test
+	public void testFindItemsByProductId() {
+
+		Optional<InventoryItem> result = inventory.findByProductIdentifier(cookie.getIdentifier());
 
 		assertThat(result.isPresent(), is(true));
 		assertThat(result.get(), is(item));

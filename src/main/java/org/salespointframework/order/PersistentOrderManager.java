@@ -189,7 +189,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 		for (OrderLine orderline : lineItems) {
 
 			ProductIdentifier productIdentifier = orderline.getProductIdentifier();
-			Optional<InventoryItem> inventoryItem = inventory.findByProductProductIdentifier(productIdentifier);
+			Optional<InventoryItem> inventoryItem = inventory.findByProductIdentifier(productIdentifier);
 
 			// TODO was machen wenn nicht im Inventar
 			if (!inventoryItem.isPresent()) {

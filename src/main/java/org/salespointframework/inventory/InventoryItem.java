@@ -22,7 +22,7 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 
 	@EmbeddedId//
 	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID"))//
-	private InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
+	private final InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })//
 	private Product product;
@@ -79,10 +79,12 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 	public void decreaseQuantity(Quantity quantity) {
 
 		Assert.notNull(quantity, "Quantity must not be null!");
+		Assert.isTrue(this.quantity.isGreaterThanOrEqualTo(quantity),
+				String.format("Insufficient quantity! Have %s but was requested to reduce by %s.", this.quantity, quantity));
 
 		product.verify(quantity);
 
-		this.quantity = quantity.subtract(quantity); // TODO negative check? -> Exception?
+		this.quantity = quantity.subtract(quantity);
 	}
 
 	public void increaseQuantity(Quantity quantity) {
