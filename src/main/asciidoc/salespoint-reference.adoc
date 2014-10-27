@@ -306,7 +306,7 @@ Completing an order causes product instances to be removed from the inventory. B
 * `SUCCESSFUL` -- The order was completed successfully, and all products were removed from the inventory.
 * `FAILED` -- An error from which recovery is impossible occured.
 
-The `OrderManager` aggregates ``Order``s. The implementation of `OrderManager` interface, `PersistentOrderManager`, is used to persist, update, find and remove orders to/from the database. In `Order` aggregated objects, like `OrderLine`s and `ChargeLine`s will also be persisted, updated or removed with the `Order` object.
+The `OrderManager` aggregates ``Order``s. The implementation of `OrderManager` interface, `PersistentOrderManager`, is used to persist, update, find and remove orders to/from the database. In `Order` aggregated objects, like ``OrderLine``s and ``ChargeLine``s will also be persisted, updated or removed with the `Order` object.
 
 Payment information also includes a user identifier referencing the buyer, an order identifier referring to the <<modules.catalog, product>> which was payed, and a <<modules.payment>> describing the money transfer. The attributes are named `userAccount` and `paymentMethod` respectively.
 
@@ -332,7 +332,7 @@ Besides the business modules, Salespoint containes a few <<glossary.spi,SPIs>> t
 [[modules.technical-apis.data-initializer]]
 === DataInitializer
 
-Every application should be tested, so an easy way is, to use test data. So for this goal a recommend solution is, to load on every start of the application a bundle of test data into your system. As shown in the Videoshop project, a `DataInitializer` class is registered and creates a lot of data and finally adds this data to the application. For that purpose the Salespoint has an Interface `org.salespointframework.DataInitializer`, which can be used.
+Every application should be tested, so an easy way is, to use test data. Salespoint provides an SPI called `DataInitializer` for you to implement. If your implementation is registered as Spring bean (e.g. by annotating it with `@Component`), it will automatically be found and `initialize()` will be called at application startup. As shown in the Videoshop project, a `DataInitializer` class is registered and creates a lot of data and finally adds this data to the application.
 
 = Appendix
 
