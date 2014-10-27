@@ -1,9 +1,12 @@
 package org.salespointframework.useraccount.web;
 
+import java.util.Optional;
+
 import org.salespointframework.useraccount.AuthenticationManager;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.ResolvableType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -20,6 +23,9 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  */
 @Component
 class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolver {
+
+	private static final ResolvableType OPTIONAL_OF_USER_ACCOUNT = ResolvableType.forClassWithGenerics(Optional.class,
+			UserAccount.class);
 
 	private final AuthenticationManager authenticationManager;
 
@@ -51,7 +57,12 @@ class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolv
 	 */
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
-		return parameter.hasParameterAnnotation(LoggedIn.class)
-				&& UserAccount.class.isAssignableFrom(parameter.getParameterType());
+
+		if (!parameter.hasParameterAnnotation(LoggedIn.class)) {
+			return false;
+		}
+
+		ResolvableType type = ResolvableType.forMethodParameter(parameter);
+		return OPTIONAL_OF_USER_ACCOUNT.isAssignableFrom(type);
 	}
 }
