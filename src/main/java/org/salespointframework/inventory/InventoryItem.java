@@ -27,7 +27,7 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })//
 	private Product product;
 
-	private @Lob Quantity quantity;
+	private @Lob @Column(length = 4 * 1024 /* 4kB */) Quantity quantity;
 
 	@Deprecated
 	protected InventoryItem() {}
@@ -84,7 +84,7 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 
 		product.verify(quantity);
 
-		this.quantity = quantity.subtract(quantity);
+		this.quantity = this.quantity.subtract(quantity);
 	}
 
 	public void increaseQuantity(Quantity quantity) {

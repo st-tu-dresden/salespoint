@@ -43,4 +43,15 @@ public class InventoryItemTests {
 	public void doesNotAllowDecreasingQuantityMoreThanAvailable() {
 		item.decreaseQuantity(TWENTY);
 	}
+
+	/**
+	 * @see #34
+	 */
+	@Test
+	public void decreasesQuantityCorrectly() {
+
+		item.decreaseQuantity(Units.ONE);
+
+		assertThat(item.getQuantity(), is(Units.TEN.subtract(Units.ONE)));
+	}
 }

@@ -101,4 +101,20 @@ public class InventoryTests extends AbstractIntegrationTests {
 		assertThat(result.isPresent(), is(true));
 		assertThat(result.get(), is(item));
 	}
+
+	/**
+	 * @see #34
+	 */
+	@Test
+	public void decreasesItemAndPersistsIt() {
+
+		InventoryItem item = inventory.findByProduct(cookie).get();
+		item.decreaseQuantity(Units.ONE);
+
+		// Trigger another finder to flush
+		Optional<InventoryItem> result = inventory.findByProductIdentifier(cookie.getIdentifier());
+
+		assertThat(result.isPresent(), is(true));
+		assertThat(result.get().getQuantity(), is(Units.of(9)));
+	}
 }
