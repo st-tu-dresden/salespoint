@@ -15,11 +15,13 @@
  */
 package org.salespointframework;
 
+import org.salespointframework.support.MailSenderAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -30,6 +32,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan(excludeFilters = @Filter(value = Configuration.class))
+@Import(MailSenderAutoConfiguration.class)
 public class Salespoint {
 
 	@Bean

@@ -74,6 +74,19 @@
 			<version>3.2.0.GA</version>
 		</dependency>
 
+		<!--  Email support -->
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+
 		<!--  For changelog creation -->
 
 		<dependency>
