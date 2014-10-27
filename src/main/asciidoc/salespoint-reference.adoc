@@ -12,9 +12,23 @@ Andreas Zaschka; Paul Henke; Oliver Gierke;
 [preface]
 [[preface.introduction]]
 == Introduction
-The Salespoint Framework is intended to minimize developing effort of point-of-sale applications. Salespoint 2010 users complainted about complexity, missing features and bugs. Thus, the decision was made to re-design and re-implement the framework from scratch. In 2013 some parts again were re-implemented with components of the spring project. Our development goal was an easy-to-use framework primarily targeted for educational purposes. As such Salespoint 5 is not tailored to any specific application, but designed with a wide area of applications in mind.
+The Salespoint Framework is intended to minimize developing effort of point-of-sale applications. Salespoint 2010 users complainted about complexity, missing features and bugs. Thus, the decision was made to re-design and re-implement the framework from scratch. In 2013 some parts again were re-implemented with components of the http://spring.io[Spring framework]. Our development goal was an easy-to-use framework primarily targeted for educational purposes. As such Salespoint {majorversion} is not tailored to any specific application, but designed with a wide area of applications in mind.
 
-Models and design patterns employed in Salespoint 5 are inspired by _Enterprise Patterns and MDA_ <<epam>>. An overview of the functionality of the new features in Salespoint 5 are detailed in this document. We would like to thank all Salespoint users who submitted their feedback and encourage future users of Salespoint 5 to do the same.
+Models and design patterns employed in Salespoint {majorversion} are inspired by _Enterprise Patterns and MDA_ <<epam>>. An overview of the functionality of the new features in Salespoint {majorversion} are detailed in this document. We would like to thank all Salespoint users who submitted their feedback and encourage future users of Salespoint {majorversion} to do the same.
+
+[preface]
+[[preface.prerequisites]]
+== Prerequisites
+Working with Salespoint requires some basic knowledge of the underlying technologies such as the Spring Framework as well as JPA to implement the persistence layer. static.olivergierke.de/spring-webapps/index.html[This script] gives you an introduction into these technologies. Also the https://github.com/st-tu-dresden/guestbook[Guestbook] sample project is a good starting point to get familiar with the technology stack.
+
+== The Videoshop sample project
+To give you an example of waht applications built on top of Salespoint can actually look like, we provide the https://github.com/st-tu-dresden/videoshop[Videoshop] sample project that covers a few key areas:
+
+* Using and extending the business modules provided by Salespoint to abstract a concrete problem domain.
+* Implementing a web layer (controllers, views) on top of Java based business services of that business domain.
+* Adding the necessary bits and pieces for technical aspects such as security and transactions.
+
+TIP: The following sections will refer to code of the sample project here and there so it might be useful to have the repository cloned and the project imported into your IDE of choice to quickly be able to navigate these.
 
 [preface]
 [[preface.typographic-conventions]]
@@ -32,16 +46,9 @@ Proper names and termini are printed in termini font.
 [[architecture]]
 = Technical Architecture
 
-* Library and foundation for a Java based web application
-* Spring
-* Built with Maven
-* Reference documentation with Asciidoctor
-* A variety of business modules to contain entities and repositories, in some cases even service interfaces
-* Spring configuration setup
-* Sample projects
-** https://github.com/st-tu-dresden/guestbook[Guestbook] - A sample illustrating the pure tech stack, no Salespoint involved.
-** https://github.com/st-tu-dresden/videoshop[Videoshop] - A sample web application built on top of Salespoint.
-** https://github.com/st-tu-dresden/kickstart[Kickstart] - Empty template project to build an app on top of Salespoint.
+Technically Salespoint is a library to build Java based Point of Sales (PoS) applications. Whiles these applications are usually implemented as web applications, large parts of Salespoint are also usable if the application architecture of choice is a rich client implemented in Java.
+
+The technical foundation for Salespoint is the Spring Frameworkfootnote:[Spring Framework - http://en.wikipedia.org/wiki/Spring_Framework[Wikipedia]] and Spring Boot (as some kind of opinionated layer on top of Spring Framework to ease its applicance to a large degree. Salespoint is built using the Maven build systemfootnote:[Apache Maven - http://en.wikipedia.org/wiki/Apache_Maven[Wikipedia]]. The reference documentation and static website are built with Asciidoctorfootnote:[Asciidoctor - http://asciidoctor.org[Website]].
 
 [[architecture.core-concepts]]
 == Core concepts
@@ -59,7 +66,7 @@ Repositories and services are used ot interact with entities and value objects. 
 
 As repositories abstract a collection of an aggregate root (e.g. an order with it's charge and line items), we usually need a higher level abstraction that exposes a more use-case oriented API: a service. It fulfils a more coarse grained set of operations that might include the interaction with multiple repositories, trigger other services in the system etc.
 
-Repositories, services and controllers are types whose instances are managed by the Spring container. Thus they're never instantiated manually in the application code, except for unit testing purposes. Application code uses dependency injection to access 
+Repositories, services and controllers are types whose instances are managed by the Spring container. Thus they're never instantiated manually in the application code, except for unit testing purposes. Application code uses dependency injection to access
 
 [[architecture.core-concepts.container-configuration]]
 === Container configuration and extensions
@@ -73,8 +80,9 @@ TODO
 
 [[architecture.spring]]
 == Spring
-In contrast to earlier versions of the Salespoint Framework, Salespoint 5 obeys the MVC pattern. Salespoint 5 can be seen as the Model of an MVC application, no parts of the View or the Controller are implemented in the framework.
-Salespoint 5 is designed as basis for development of web applications, using the _Spring Framework_ [6] to implement Views and Controllers. To further ease the development, Salespoint 5 includes property editors to convert string based representations to Salespoint 5 identifier types. Furthermore, JSP tags to check, if a user is logged in and if a user has a certain capability are included in the framework. Read more about this in <<stack.spring>>.
+In contrast to earlier versions of the Salespoint Framework, Salespoint {majorversion} obeys the MVC pattern. Salespoint {majorversion} mostly provides the application services to interact with the the model of an MVC application as no parts of the view or the controller are implemented in the framework.
+
+Salespoint {majorversion} is designed as foundation for development of web applications, using the Spring Framework to implement views, controllers and business services abstracting the domain your application-to-be-created is applied to. To ease this development, Salespoint includes a few extensions to the Spring Framework that will avoid you having to implement very tedious tasks over and over again. Read more about this in <<stack.spring>>.
 
 As a big new approach in development with JPA, the Spring Framework with its repository interfaces can make the work very fast, clean and easy. The Crudrepository provides the basic methods for working with the database (CRUD stands for Create, Read, Update and Delete).
 
@@ -136,7 +144,7 @@ Library to build HTML web views using natural templating.
 
 [[stack.joda-money]]
 ==  JodaMoney
-With Salespoint 6.0 money class and its related components were replaced by the Joda-Money [7] project. Prices and other money values are represented as `org.joda.money.Money` or for more precisison as `org.joda.money.BigMoney` objects. Due to the fact, that all representing objects are immutable, all arithmetic functions produce a new instance.
+With Salespoint {majorversion} money class and its related components were replaced by the Joda-Money [7] project. Prices and other money values are represented as `org.joda.money.Money` or for more precisison as `org.joda.money.BigMoney` objects. Due to the fact, that all representing objects are immutable, all arithmetic functions produce a new instance.
 
 .Example for JodaMoney operations
 ====
@@ -154,22 +162,29 @@ Joda-Money also supports `Currency` (see _Example for JodaMoney operations_). A 
 = Business modules
 
 [[modules.useraccount]]
-== Useraccount
-To manage system accounts, Salespoint 5 has a notation of a user in the form of the User interface. Users are managed by the UserAccountManager, who is also an interface. Every user is uniquely identified by a `org.salespointframework.useraccount.UserAccountIdentifier`, which also serves as primary key attribute for the database.
+== Users
 
-[[modules.useraccount.userrole]]
-=== UserRole
-`org.salespointframework.useraccount.Role` s in conjunction with authorization tag `hasRole()` can be used to change the appearance of a View, depending on a user’s status. For example, a View for a user having an “administrator” role may display different content, for example delete buttons, than for a user not having that role. Thus, roles allow for flexibility and assist in code reuse, when designing the `View`.
+////
+[User|-enabled:boolean]-0..*>[Role]
+[User]->[Password]
+////
+image::http://yuml.me/2369094d[title=User]
+
+To manage system accounts, Salespoint {majorversion} has a notation of a user in the form of the `User` class. Users are managed by the `UserAccountManager`. Every user is uniquely identified by a `org.salespointframework.useraccount.UserAccountIdentifier`, which also serves as primary key attribute for the database.
+
+[[modules.useraccount.role]]
+=== Roles
+`org.salespointframework.useraccount.Role`s in conjunction with authorization tag `hasRole()` can be used to change the appearance of a View, depending on a user’s status. For example, a View for a user having an “administrator” role may display different content, for example delete buttons, than for a user not having that role. Thus, roles allow for flexibility and assist in code reuse, when designing the `View`.
 
 [[modules.useraccount.login]]
 === Login
-To reduce code repetition, Salespoint 5 contains code to automate user log in. Using a JSP template, a special login form is generated, which is handled by an interceptor. The interceptor verifies the user password and associates the current session with the user using `<login>` and `<logoff>`. The session is required, because multiple users can be logged on at the same time.
+To reduce code repetition, Salespoint {majorversion} contains code to automate the user log in. Using a Thymeleaf template, a special login form is generated, which is handled by an interceptor. The interceptor verifies the user password and associates the current session with the user using `<login>` and `<logoff>`. The session is required, because multiple users can be logged on at the same time.
 
 [[modules.useraccount.limitation]]
 === Limitation
 Due to the fact, that Salespoint use the `SecurityContext` for authentication, the `UserAccount` cannot be extended. In the background the `org.salespointframework.useraccount.UserAccount` is converted to an instance of `org.springframework.security.core.userdetails.UserDetails`.
 
-If this properties don’t meet all requirements, wrap the `UserAccount` in a new `Entity`. Put all the new features in this new `Entity` and connect this information via a `@OneToOne` relationship with the `UserAccount`. An Example is the videoshop project.
+If these properties don’t meet all requirements, wrap the `UserAccount` in a new entity. Put all the new features in this new entity and connect this information via a `@OneToOne` relationship with the `UserAccount`. An example can be found in the Videoshop project.
 
 .Example of a UserAccount extension
 ====
@@ -183,17 +198,11 @@ public class UserAccountExtension {
 
   @OneToOne
   private UserAccount userAccount;
+
+  …
 }
 ----
 ====
-
-[[modules.product]]
-== Product
-Salespoint 5 is intended as framework for point-of-sale applications. The items for sale are called products and represented by instances of class `Product`. To represent different kinds of products, `Product` can be sub-classed. Products are aggregated by `PersistentCatalog` (see Section <<modules.catalog>>).
-
-[[modules.product.identifier]]
-=== Product Identifier
-Products are supposed to be an abstraction, like an item on display or a picture in a catalog. ProductInstances are used to represent the actual item you get, when you a buy a product. Products are identified using a `ProductIndentifier`, whereas ProductInstances are identified by a SerialNumber. ProductInstances can be thought of as identifiable instances of a certain product, which are identical apart from their SerialNumber.
 
 [[modules.quantity]]
 == Quantity
@@ -218,7 +227,10 @@ There are many rounding strategies, for money operations and so on. For this cas
 
 [[modules.catalog]]
 == Catalog
-The `Catalog` interface was designed to manage Products and ProductFeatures in the system. It provides functionality to add, remove, and find Products. Products can be searched by their name or category. Products and ProductFeatures are more closely described in Section <<modules.product>>. The `PersistentCatalog` is an implementation of the `Catalog` interface.
+
+Salespoint {majorversion} is intended as framework for point-of-sale applications. Items for sale are called products and represented by instances of the class `Product`. To represent different kinds of products, `Product` can be sub-classed. Products are managed by a `Catalog` implementation (see below). Products are identified using a `ProductIndentifier`.
+
+The `Catalog` interface was designed to manage `Product` instances in the system. It provides functionality to add, remove, and find products. Products can be searched by their name or category. The `PersistentCatalog` is an implementation of the `Catalog` interface.
 
 ////
 [Product]<-[<<Interface>> Catalog]
@@ -226,11 +238,9 @@ The `Catalog` interface was designed to manage Products and ProductFeatures in t
 ////
 image::http://yuml.me/da2d249a[title="Catalog"]
 
-Additionally `PersistentCatalog` provides an `update()`-method to update and merge existing ``PersistentProduct``s to the database. The `find()` methods request the database in the form of CriteriaQuerys which will be processed by JPA and results are returned in the form of Iterables. The reason for this is to make returned objects immutable without making it difficult to iterate over these results.
-
 [[modules.accountancy]]
 == Accountancy
-The accountancy package contains functionality supporting book keeping. `AccountancyEntry` is a representation of an accounting entry. `Accountancy` aggregates AccountancyEntrys. Every `AccountancyEntry` is uniquely identified by an `AccountancyEntryIdentifier` . `AccountancyEntry` extends `AbstractEntity` and serves as persistence entity, while `PersistentAccountancy` implements `Accountancy` and provides transparent access to the JPA layer. `AccountancyEntryIdentifier` is used as primary key attribute, when entities are stored in the database.
+The accountancy package contains functionality supporting book keeping. `AccountancyEntry` is a representation of an accounting entry. `Accountancy` aggregates ``AccountancyEntry``s. Every `AccountancyEntry` is uniquely identified by an ``AccountancyEntryIdentifier``. `AccountancyEntry` extends `AbstractEntity` and serves as persistence entity, while `PersistentAccountancy` implements `Accountancy` and provides transparent access to the JPA layer. `AccountancyEntryIdentifier` is used as primary key attribute, when entities are stored in the database.
 
 ////
 [<<Interface>> Accountancy]^-.-[PersistentAccountancy]
@@ -239,9 +249,7 @@ The accountancy package contains functionality supporting book keeping. `Account
 ////
 image::http://yuml.me/a88563ec[Accountancy, title="Accountancy"]
 
-By implementing and sub-classing the `Accountancy` interface, the notion of different accounts, as known from double-entry bookkeeping, can be realised.
-
-Payment information also includes a user identifier referencing the buyer, an order identifier referring to the <<modules.catalog>> which was payed, and a <<modules.payment>> describing the money transfer. The attributes are named `userIdentifier`, `orderIdentifier`, and `paymentMethod` respectively.
+By implementing and sub-classing `Accountancy`, the notion of different accounts, as known from double-entry bookkeeping, can be realised.
 
 To create a new account, `AccountancyEntry` has to be sub-classed. Every object of such a class belongs to the same account. Accessing per-account entries is facilitated by specifiying the desired class type when calling `get()` or `find()` methods of `Accountancy`.
 
@@ -266,7 +274,7 @@ For the paying transaction, Salespoint provides some payment strategies.
 
 [[modules.order]]
 == Order
-An `Order` can be considered as a sheet of paper which basically consists of lines, each representing an ordered product. An order can be uniquely identified by an `OrderIdentifier`. Every product of an order is stored in a separate `OrderLine`. An `OrderLine` in turn is uniquely identified by an `OrderLineIdentifier`. An `OrderLine` contains all information to identify a `ProductInstance` (see Section <<modules.product>> ). A `ProductInstance` is identified by a `ProductIdentifier`, and an optional set of `ProductFeature` s.
+An `Order` can be considered as a sheet of paper which basically consists of lines, each representing an ordered product. An order can be uniquely identified by an `OrderIdentifier`. Every product of an order is stored in a separate `OrderLine`. An `OrderLine` in turn is uniquely identified by an `OrderLineIdentifier`. An `OrderLine` contains all information to identify a `Product` (see Section <<modules.catalog>> ).
 
 ////
 [Order]->[UserAccount]
@@ -276,14 +284,12 @@ An `Order` can be considered as a sheet of paper which basically consists of lin
 ////
 image::http://yuml.me/c603ebb3[title="Order"]
 
-A `ChargeLine` represents additional costs or discounts and can be applied to an `OrderLine` or an `Order`.
+A `ChargeLine` represents additional costs or discounts and can be applied to an `OrderLine` or an `Order`. A `ChargeLine` is uniquely identified by a `ChargeLineIdentifier`.
 
-NOTE: For example, ``ChargeLine``s can be used to handle special taxes or handling fees.
-
-A `ChargeLine` is uniquely identified by a `ChargeLineIdentifier`.
+TIP: For example, ``ChargeLine``s can be used to handle special taxes or handling fees.
 
 === Order status lifecycle
-`Orders` are lifecycle-objects. The lifecycle covers four states which are defined by enumeration type `OrderStatus`. The lifecycle state cannot be arbitrarily changed, but follows a fixed scheme.
+``Order``s are entities. The lifecycle covers four states which are defined by enumeration type `OrderStatus`. The lifecycle state cannot be arbitrarily changed, but follows a fixed scheme.
 
 .Example for OrderStatus as field `orderStatus` in the class `Order`
 [source, java, indent=0]
@@ -293,7 +299,7 @@ include::{source-base}/order/Order.java[tags=orderStatus]
 
 State transistions are automatically carried out when certain methods are called on an `Order` object, for example `cancelOrder()`.
 
-A `Order` can only be modified in state `OPEN`. `PAID`, `CANCELLED` and `COMPLETED` `Order` s are immutable. Calling the `payOrder()` method changes the state to `PAID`, makes the `Order` immutable and creates an `ProductPaymentEntry` object. Ordered objects will only be removed from inventory when the `completeOrder()` method is called. `COMPLETED` is one of the final states and it is not possible to change the state of such orders.
+A `Order` can only be modified in state `OPEN`. `PAID`, `CANCELLED` and `COMPLETED` ``Order``s are immutable. Calling the `payOrder()` method changes the state to `PAID`, makes the `Order` immutable and creates an `ProductPaymentEntry` object. Ordered objects will only be removed from inventory when the `completeOrder()` method is called. `COMPLETED` is one of the final states and it is not possible to change the state of such orders.
 
 Completing an order causes product instances to be removed from the inventory. Because product instances may not be present anymore in the inventory, or their number may not be suffice to fulfill an order, completing an order requires special attention. To handle these situations, the `OrderCompletionResult` interface was introduced. First of all, these `OrderCompletionStatus` are possible:
 
@@ -302,8 +308,16 @@ Completing an order causes product instances to be removed from the inventory. B
 
 The `OrderManager` aggregates ``Order``s. The implementation of `OrderManager` interface, `PersistentOrderManager`, is used to persist, update, find and remove orders to/from the database. In `Order` aggregated objects, like `OrderLine`s and `ChargeLine`s will also be persisted, updated or removed with the `Order` object.
 
+Payment information also includes a user identifier referencing the buyer, an order identifier referring to the <<modules.catalog, product>> which was payed, and a <<modules.payment>> describing the money transfer. The attributes are named `userAccount` and `paymentMethod` respectively.
+
 [[modules.business-time]]
 == Business time
+
+To be able to simulate the state of the system in a given point in time all components in the system that set a point in time on entities or lookup the current time use the `BusinessTime` interface.
+
+By default, the implementation will just return the current system date. However, it also allows to "forward" the current business time by calling the `BusinessTime.forward(…)` method. This will augment the current business time by the duration handed into the method. E.g. forwading the business time by 2 months will return the very same time but two months ahead for each call to `BusinessTime.getTime()`.
+
+This is particularly useful for demoing purposes if e.g. orders can be timed to a certain date, credit cards become invalid after a certain point in time etc.
 
 ////
 [<<Interface>> BusinessTime]^[DefaultBusinessTime]
@@ -328,6 +342,21 @@ Every application should be tested, so an easy way is, to use test data. So for 
 [qanda]
 Why do I see warning log statements about database tables not being accessible at startup?::
   This is due to a bug in Hibernate in combination with HSQLDB and constraints in databases. Hibernate tries to drop those on application startup but fails to as the (in-memory database) is empty. See https://hibernate.atlassian.net/browse/HHH-9038[this bug report] for reference.
+
+How do I send emails from a Salespoint application?::
+  Salespoint has everything prepared for you in terms of necessary dependencies. All you need to do is configure the following properties in `application.properties`:
++
+[source]
+----
+spring.mail.host=
+spring.mail.username=
+spring.mail.password=
+----
+If these properties get real values assigned, Salespoint will automatically create a Spring component of type `JavaMailSender` for you that you can inject into your clients and use to send emails. See the Spring reference documentation on details for that.
++
+WARNING: Never push your email credentials into the version control system.
++
+Alternatively for testing purposes, configure the `ConsoleWritingMailSender` as a Spring bean to simply write emails to be sent to the console instead of sending them to a real SMTP server. To automatically switch between the two setups have a look at how to use Spring's http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-profiles[profile support with Boot].
 
 [[glossary]]
 [appendix, glossary]

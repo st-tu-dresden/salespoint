@@ -199,6 +199,7 @@
 					<outputDirectory>${project.build.directory}/site</outputDirectory>
 					<attributes>
 						<version>${project.version}</version>
+						<majorversion>6</majorversion>
 						<linkcss>true</linkcss>
 						<numbered>true</numbered>
 						<icons>font</icons>

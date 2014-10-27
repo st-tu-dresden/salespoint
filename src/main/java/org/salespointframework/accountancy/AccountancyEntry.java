@@ -115,9 +115,12 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 		return accountancyEntryIdentifier;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return value.toString() + " | " + date.toString() + " | " + description;
 	}
-
 }
