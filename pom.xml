@@ -16,6 +16,7 @@
 
 	<properties>
 		<dev>/dev</dev>
+		<tomcat.version>8.0.14</tomcat.version>
 	</properties>
 
 	<profiles>
