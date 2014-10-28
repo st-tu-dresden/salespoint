@@ -75,8 +75,7 @@ TODO
 
 [[architecture.maven]]
 == Maven
-
-TODO
+_Maven_ simplifies the management of project dependencies, furthermore it downloads and organizes all dependencies. Another focus of _Maven_ is the management of a project's build. All settings are placed in the `pom.xml` file (http://maven.apache.org/pom.html).
 
 [[architecture.spring]]
 == Spring
