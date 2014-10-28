@@ -20,7 +20,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 == Resources
 
 [[resources.latest]]
-=== Latest release version - 6.0 M1
+=== Latest release version - 6.0 RC1
 * link:salespoint-reference.html[Reference documentation]
 * link:api[JavaDoc]
 * link:changelog.html[Changelog]

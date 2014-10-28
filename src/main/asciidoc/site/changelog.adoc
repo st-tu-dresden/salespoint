@@ -3,6 +3,24 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :revdate: {localdate}
 
 :numbered!:
+[6.0-RC1]
+== 6.0 RC1
+
+Release date: 2014-10-28
+
+----
+- Upgrade to Tomcat 8.0.14 - #39
+- PersistentOrderManager.commit(…) sorts OrderLines into wrong intermediate collection - #38
+- LoggedInUserAccountArgumentResolver needs to be adapted to work with Optional<UserAccount> only - #37
+- Rename Basket to Cart and polish API - #36
+- Simplify setting up infrastructure to send emails - #35
+- Improve Inventory API - #34
+- Add Maven dependency block to static website - #33
+- Add changelog to website - #32
+- Remove deprecated types where possible - #10
+----
+
+:numbered!:
 [6.0-M1]
 == 6.0 M1
 
