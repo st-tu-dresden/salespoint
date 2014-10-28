@@ -76,6 +76,11 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 		return !this.quantity.subtract(quantity).isNegative();
 	}
 
+	/**
+	 * Decreases the quantity of the current {@link InventoryItem} by the given {@link Quantity}.
+	 * 
+	 * @param quantity must not be {@literal null}.
+	 */
 	public void decreaseQuantity(Quantity quantity) {
 
 		Assert.notNull(quantity, "Quantity must not be null!");
@@ -87,11 +92,16 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 		this.quantity = this.quantity.subtract(quantity);
 	}
 
+	/**
+	 * Increases the quantity of the current {@link InventoryItem} by the given {@link Quantity}.
+	 * 
+	 * @param quantity must not be {@literal null}.
+	 */
 	public void increaseQuantity(Quantity quantity) {
 
 		Assert.notNull(quantity, "Quantity must not be null!");
 		product.verify(quantity);
 
-		this.quantity = quantity.add(quantity);
+		this.quantity = this.quantity.add(quantity);
 	}
 }

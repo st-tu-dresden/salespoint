@@ -29,11 +29,14 @@ public class InventoryItemTests {
 		item = new InventoryItem(cookie, Units.TEN);
 	}
 
+	/**
+	 * @see #34
+	 */
 	@Test
 	public void increasesQuantityCorrectly() {
 
-		item.increaseQuantity(Units.TEN);
-		assertThat(item.getQuantity(), is(TWENTY));
+		item.increaseQuantity(Units.ONE);
+		assertThat(item.getQuantity(), is(Units.of(11)));
 	}
 
 	/**
