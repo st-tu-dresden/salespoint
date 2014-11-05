@@ -3,9 +3,12 @@ package org.salespointframework.order;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
+import org.salespointframework.catalog.Product;
+import org.salespointframework.quantity.Quantity;
 import org.springframework.util.Assert;
 
 /**
@@ -14,39 +17,69 @@ import org.springframework.util.Assert;
  * @authow Paul Henke
  * @author Oliver Gierke
  */
-public class Cart implements Iterable<OrderLine> {
+public class Cart implements Iterable<CartItem> {
 
-	private final List<OrderLine> orderLines = new ArrayList<>();
+	private final List<CartItem> cartItems = new ArrayList<>();
 
 	/**
-	 * Adds the given {@link OrderLine} to the cart.
-	 * 
-	 * @param orderLine must not be {@literal null}.
-	 * @return
+	 * This method is a NOP and deprecated, please use #add(Product, Quantity)}. 
 	 */
+	@Deprecated
 	public boolean add(OrderLine orderLine) {
+		throw new UnsupportedOperationException("This method is deprecated, please use the other add method.");
+	}
 
-		Assert.notNull(orderLine, "OrderLine must not be null!");
-		return orderLines.add(orderLine);
+	
+	/**
+	 * Creates a {@link CartItem} and adds it to the cart.
+	 * @param product must not be {@literal null}
+	 * @param quantity must not be {@literal null}
+	 * @return The created CartItem.
+	 */
+	
+	public CartItem add(Product product, Quantity quantity)  {
+		Assert.notNull(product, "Product must not be null!");
+		Assert.notNull(quantity, "Quantity must not be null!");
+		CartItem cartItem = new CartItem(product, quantity);
+		cartItems.add(cartItem);
+		return cartItem;
 	}
 
 	/**
-	 * Removes all {@link OrderLine}s with the given {@link OrderLineIdentifier}.
-	 * 
-	 * @param orderLineIdentifier must not be {@literal null}.
+	 * This method is a NOP and deprecated, please use {@link #remove(String).
+	 */
+	@Deprecated
+	public boolean removeOrderLine(OrderLineIdentifier orderLineIdentifier) {
+		throw new UnsupportedOperationException("This method is deprecated, please use the other remove method.");
+	}
+	
+	/**
+	 * Removes the {@link CartItem} with the given identifier.
+	 * @param cartItemIdentifier
 	 * @return
 	 */
-	public boolean removeOrderLine(OrderLineIdentifier orderLineIdentifier) {
-
-		Assert.notNull(orderLineIdentifier, "OrderLineIdentifier must not be null!");
-		return orderLines.removeIf(item -> item.getIdentifier().equals(orderLineIdentifier));
+	public Optional<CartItem> remove(String cartItemIdentifier) {
+		Assert.notNull(cartItemIdentifier, "CartItemIdentifier must not be null!");
+		Optional<CartItem> optionalItem = get(cartItemIdentifier);
+		optionalItem.ifPresent(cartItem -> cartItems.remove(cartItem));
+		return optionalItem;
+	}
+	
+	/**
+	 * Returns the CartItem for the given identifier.
+	 * @param cartItemIdentifier
+	 * @return
+	 */
+	public Optional<CartItem> get(String cartItemIdentifier) {
+		Assert.notNull(cartItemIdentifier, "CartItemIdentifier must not be null!");
+		return cartItems.stream().filter(item -> item.getIdentifier().equals(cartItemIdentifier)).findFirst();
 	}
 
 	/**
 	 * Clears the cart.
 	 */
 	public void clear() {
-		orderLines.clear();
+		cartItems.clear();
 	}
 
 	/**
@@ -55,7 +88,7 @@ public class Cart implements Iterable<OrderLine> {
 	 * @return
 	 */
 	public boolean isEmpty() {
-		return orderLines.isEmpty();
+		return cartItems.isEmpty();
 	}
 
 	/**
@@ -64,9 +97,8 @@ public class Cart implements Iterable<OrderLine> {
 	 * @return
 	 */
 	public Money getTotalPrice() {
-
-		return orderLines.stream().//
-				map(OrderLine::getPrice).//
+		return cartItems.stream().//
+				map(CartItem::getPrice).//
 				reduce((left, right) -> left.plus(right)).orElse(Money.zero(CurrencyUnit.EUR));
 	}
 
@@ -76,14 +108,11 @@ public class Cart implements Iterable<OrderLine> {
 	 * @param order must not be {@literal null}.
 	 */
 	public void toOrder(Order order) {
-
 		Assert.notNull(order, "Order must not be null!");
-
 		if (order.getOrderStatus() != OrderStatus.OPEN) {
 			throw new IllegalArgumentException("OrderStatus must be OPEN");
 		}
-
-		orderLines.forEach(item -> order.add(item));
+		cartItems.forEach(item -> order.add(item.toOrderline()));
 	}
 
 	/* 
@@ -91,7 +120,7 @@ public class Cart implements Iterable<OrderLine> {
 	 * @see java.lang.Iterable#iterator()
 	 */
 	@Override
-	public Iterator<OrderLine> iterator() {
-		return orderLines.iterator();
+	public Iterator<CartItem> iterator() {
+		return cartItems.iterator();
 	}
 }
