@@ -26,7 +26,7 @@ public class Cart implements Iterable<CartItem> {
 	 */
 	@Deprecated
 	public boolean add(OrderLine orderLine) {
-		return false;
+		throw new UnsupportedOperationException("This method is deprecated, please use the other add method.");
 	}
 
 	
@@ -50,7 +50,7 @@ public class Cart implements Iterable<CartItem> {
 	 */
 	@Deprecated
 	public boolean removeOrderLine(OrderLineIdentifier orderLineIdentifier) {
-		return false;
+		throw new UnsupportedOperationException("This method is deprecated, please use the other remove method.");
 	}
 	
 	/**
