@@ -17,102 +17,99 @@ import org.springframework.util.Assert;
  * @authow Paul Henke
  * @author Oliver Gierke
  */
-public class Cart implements Iterable<CartItem> {
+public class Cart implements Iterable<CartItem>, Priced {
 
-	private final List<CartItem> cartItems = new ArrayList<>();
+	private final List<CartItem> items = new ArrayList<>();
 
 	/**
-	 * This method is a NOP and deprecated, please use #add(Product, Quantity)}. 
-	 */
-	@Deprecated
-	public boolean add(OrderLine orderLine) {
-		throw new UnsupportedOperationException("This method is deprecated, please use the other add method.");
-	}
-
-	
-	/**
-	 * Creates a {@link CartItem} and adds it to the cart.
+	 * Creates a {@link CartItem} for the given {@link Product} and {@link Quantity}. If a {@link CartItem} for the given
+	 * {@link Product} already exists the {@link Cart} will be updated to reflect the combined {@link Quantity} for the
+	 * backing {@link CartItem}.
+	 * 
 	 * @param product must not be {@literal null}
 	 * @param quantity must not be {@literal null}
-	 * @return The created CartItem.
+	 * @return The created {@link CartItem}.
 	 */
-	
-	public CartItem add(Product product, Quantity quantity)  {
+	public CartItem addOrUpdateItem(Product product, Quantity quantity) {
+
 		Assert.notNull(product, "Product must not be null!");
 		Assert.notNull(quantity, "Quantity must not be null!");
-		CartItem cartItem = new CartItem(product, quantity);
-		cartItems.add(cartItem);
-		return cartItem;
+
+		return items.stream().//
+				filter(item -> item.getProduct().equals(product)).findFirst().//
+				map(item -> {
+					this.removeItem(item.getIdentifier());
+					return addItem(product, item.getQuantity().add(quantity));
+				}).//
+				orElseGet(() -> addItem(product, quantity));
 	}
 
 	/**
-	 * This method is a NOP and deprecated, please use {@link #remove(String).
-	 */
-	@Deprecated
-	public boolean removeOrderLine(OrderLineIdentifier orderLineIdentifier) {
-		throw new UnsupportedOperationException("This method is deprecated, please use the other remove method.");
-	}
-	
-	/**
 	 * Removes the {@link CartItem} with the given identifier.
-	 * @param cartItemIdentifier
+	 * 
+	 * @param identifier must not be {@literal null}.
 	 * @return
 	 */
-	public Optional<CartItem> remove(String cartItemIdentifier) {
-		Assert.notNull(cartItemIdentifier, "CartItemIdentifier must not be null!");
-		Optional<CartItem> optionalItem = get(cartItemIdentifier);
-		optionalItem.ifPresent(cartItem -> cartItems.remove(cartItem));
-		return optionalItem;
+	public Optional<CartItem> removeItem(String identifier) {
+
+		Assert.notNull(identifier, "CartItem identifier must not be null!");
+
+		return getItem(identifier).map(item -> {
+			items.remove(item);
+			return item;
+		});
 	}
-	
+
 	/**
 	 * Returns the CartItem for the given identifier.
-	 * @param cartItemIdentifier
+	 * 
+	 * @param identifier must not be {@literal null}.
 	 * @return
 	 */
-	public Optional<CartItem> get(String cartItemIdentifier) {
-		Assert.notNull(cartItemIdentifier, "CartItemIdentifier must not be null!");
-		return cartItems.stream().filter(item -> item.getIdentifier().equals(cartItemIdentifier)).findFirst();
+	public Optional<CartItem> getItem(String identifier) {
+
+		Assert.notNull(identifier, "CartItem identifier must not be null!");
+		return items.stream().filter(item -> item.getIdentifier().equals(identifier)).findFirst();
 	}
 
 	/**
 	 * Clears the cart.
 	 */
 	public void clear() {
-		cartItems.clear();
+		items.clear();
 	}
 
 	/**
-	 * Returns whether the cart is currently empty.
+	 * Returns whether the {@link Cart} is currently empty.
 	 * 
 	 * @return
 	 */
 	public boolean isEmpty() {
-		return cartItems.isEmpty();
-	}
-
-	/**
-	 * Returns the total price of the cart.
-	 * 
-	 * @return
-	 */
-	public Money getTotalPrice() {
-		return cartItems.stream().//
-				map(CartItem::getPrice).//
-				reduce((left, right) -> left.plus(right)).orElse(Money.zero(CurrencyUnit.EUR));
+		return items.isEmpty();
 	}
 
 	/**
 	 * Turns the current state of the cart into an {@link Order}.
 	 * 
 	 * @param order must not be {@literal null}.
+	 * @throws IllegalStateException if the given Order is not {@link OrderStatus#OPEN} anymore.
 	 */
-	public void toOrder(Order order) {
+	public void addItemsTo(Order order) {
+
 		Assert.notNull(order, "Order must not be null!");
-		if (order.getOrderStatus() != OrderStatus.OPEN) {
-			throw new IllegalArgumentException("OrderStatus must be OPEN");
-		}
-		cartItems.forEach(item -> order.add(item.toOrderline()));
+		items.forEach(item -> order.add(item.toOrderLine()));
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.Priced#getPrice()
+	 */
+	@Override
+	public Money getPrice() {
+
+		return items.stream().//
+				map(CartItem::getPrice).//
+				reduce((left, right) -> left.plus(right)).orElse(Money.zero(CurrencyUnit.EUR));
 	}
 
 	/* 
@@ -121,6 +118,21 @@ public class Cart implements Iterable<CartItem> {
 	 */
 	@Override
 	public Iterator<CartItem> iterator() {
-		return cartItems.iterator();
+		return items.iterator();
+	}
+
+	/**
+	 * Adds a {@link CartItem} for the given {@link Product} with the given {@link Quantity} to the {@link Cart}.
+	 * 
+	 * @param product must not be {@literal null}.
+	 * @param quantity must not be {@literal null}.
+	 * @return
+	 */
+	private CartItem addItem(Product product, Quantity quantity) {
+
+		CartItem cartItem = new CartItem(product, quantity);
+		this.items.add(cartItem);
+
+		return cartItem;
 	}
 }

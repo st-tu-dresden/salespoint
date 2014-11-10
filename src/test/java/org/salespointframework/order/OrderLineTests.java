@@ -1,7 +1,5 @@
 package org.salespointframework.order;
 
-import static org.junit.Assert.*;
-
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 import org.junit.Before;
@@ -16,6 +14,9 @@ import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Integration tests for {@link OrderLine}. TODO: Improve test cases (assertions, naming).
+ */
 public class OrderLineTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
@@ -29,13 +30,14 @@ public class OrderLineTests extends AbstractIntegrationTests {
 
 	@Before
 	public void before() {
-		Product keks = new Cookie("OrderLine Cookie " + keksCounter++, Money.zero(CurrencyUnit.EUR));
 
-		catalog.save(keks);
+		Product cookie = new Cookie("OrderLine Cookie " + keksCounter++, Money.zero(CurrencyUnit.EUR));
+
+		catalog.save(cookie);
 
 		user = userAccountManager.create("userId", "password");
 		order = new Order(user, Cash.CASH);
-		orderLine = new OrderLine(keks, Units.TEN);
+		orderLine = new OrderLine(cookie, Units.TEN);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -50,23 +52,23 @@ public class OrderLineTests extends AbstractIntegrationTests {
 
 	@Test
 	public void addTest() {
-		assertTrue(order.add(orderLine));
+		order.add(orderLine);
 	}
 
 	@Test
 	public void addTest2() {
 		order.add(orderLine);
-		assertFalse(order.add(orderLine));
+		order.add(orderLine);
 	}
 
 	@Test
 	public void removeTest() {
 		order.add(orderLine);
-		assertTrue(order.remove(orderLine));
+		order.remove(orderLine);
 	}
 
 	@Test
 	public void removeTest2() {
-		assertFalse(order.remove(orderLine));
+		order.remove(orderLine);
 	}
 }

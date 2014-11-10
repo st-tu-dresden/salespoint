@@ -133,34 +133,42 @@ public class Order extends AbstractEntity<OrderIdentifier> implements Comparable
 	}
 
 	/**
-	 * Adds an {@link OrderLine} to the order, the {@link OrderStatus} must be OPEN
+	 * Adds an {@link OrderLine} to the {@link Order}, the {@link OrderStatus} must be OPEN.
 	 * 
-	 * @param orderLine the Orderline to be added
-	 * @return true if the orderline was added, else false
-	 * @throws NullPointerException if orderLine is null
+	 * @param orderLine the {@link OrderLine} to be added.
+	 * @return true if the orderline was added, else {@literal false}.
+	 * @throws IllegalArgumentException if orderLine is {@literal null}.
 	 */
-	public boolean add(OrderLine orderLine) {
+	public void add(OrderLine orderLine) {
 
-		Assert.notNull(orderLine, "orderLine must not be null");
-		return isOpen() ? orderLines.add(orderLine) : false;
+		Assert.notNull(orderLine, "OrderLine must not be null!");
+		assertOrderIsOpen();
+
+		this.orderLines.add(orderLine);
 	}
 
-	public boolean remove(OrderLine orderLine) {
+	public void remove(OrderLine orderLine) {
 
-		Assert.notNull(orderLine, "orderLine must not be null");
-		return isOpen() ? orderLines.remove(orderLine) : false;
+		Assert.notNull(orderLine, "OrderLine must not be null!");
+		assertOrderIsOpen();
+
+		this.orderLines.remove(orderLine);
 	}
 
-	public boolean add(ChargeLine chargeLine) {
+	public void add(ChargeLine chargeLine) {
 
-		Assert.notNull(chargeLine, "chargeLine must not be null");
-		return isOpen() ? chargeLines.add(chargeLine) : false;
+		Assert.notNull(chargeLine, "ChargeLine must not be null!");
+		assertOrderIsOpen();
+
+		this.chargeLines.add(chargeLine);
 	}
 
-	public boolean remove(ChargeLine chargeLine) {
+	public void remove(ChargeLine chargeLine) {
 
-		Assert.notNull(chargeLine, "chargeLinemust not be null");
-		return isOpen() ? chargeLines.remove(chargeLine) : false;
+		Assert.notNull(chargeLine, "ChargeLine must not be null!");
+		assertOrderIsOpen();
+
+		this.chargeLines.remove(chargeLine);
 	}
 
 	private Money sumUp(Collection<? extends Priced> priced) {
@@ -247,6 +255,17 @@ public class Order extends AbstractEntity<OrderIdentifier> implements Comparable
 
 	void setDateCreated(LocalDateTime dateTime) {
 		this.dateCreated = dateTime;
+	}
+
+	/**
+	 * Asserts that the {@link Order} is {@link OrderStatus#OPEN}. Usually a precondition to manipulate the {@link Order}
+	 * state internally.
+	 */
+	private void assertOrderIsOpen() {
+
+		if (!isOpen()) {
+			throw new IllegalStateException("Order is not open anymore! Current state is: " + orderStatus);
+		}
 	}
 
 	/*
