@@ -3,12 +3,26 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :revdate: {localdate}
 
 :numbered!:
+[6.0-GA]
+== 6.0 GA
+
+Release date: 2014-11-10
+
+----
+- Improve Cart API - #44
+- Remove JPA meta-model types - #43
+- Release version 6.0 GA - #42
+- Enable global method security in SalespointSecurityConfiguration - #41
+----
+
+:numbered!:
 [6.0-RC1]
 == 6.0 RC1
 
 Release date: 2014-10-28
 
 ----
+- Release version 6.0 RC1 - #40
 - Upgrade to Tomcat 8.0.14 - #39
 - PersistentOrderManager.commit(…) sorts OrderLines into wrong intermediate collection - #38
 - LoggedInUserAccountArgumentResolver needs to be adapted to work with Optional<UserAccount> only - #37

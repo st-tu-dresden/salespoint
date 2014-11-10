@@ -20,7 +20,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 == Resources
 
 [[resources.latest]]
-=== Latest release version - 6.0 RC1
+=== Latest release version - 6.0 GA
 * link:salespoint-reference.html[Reference documentation]
 * link:api[JavaDoc]
 * link:changelog.html[Changelog]
@@ -40,12 +40,12 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 <dependency>
   <groupId>de.tudresden.inf.st</groupId>
   <artifactId>salespoint-framework</artifactId>
-  <version>6.0.0.M1<version>
+  <version>6.0.0.RELEASE<version>
 </dependency>
 ----
 
 [[resources.development]]
-=== Current development snapshot - 6.0 snapshots
+=== Current development snapshot - 6.0.x snapshots
 * link:dev/salespoint-reference.html[Reference documentation]
 * link:dev/api[JavaDoc]
 * Maven repository declaration:
@@ -64,7 +64,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 <dependency>
   <groupId>de.tudresden.inf.st</groupId>
   <artifactId>salespoint-framework</artifactId>
-  <version>6.0.0.BUILD-SNAPSHOT<version>
+  <version>6.0.1.BUILD-SNAPSHOT<version>
 </dependency>
 ----
 
