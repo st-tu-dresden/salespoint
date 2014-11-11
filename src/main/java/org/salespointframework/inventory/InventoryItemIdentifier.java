@@ -11,14 +11,17 @@ import org.salespointframework.core.SalespointIdentifier;
  * used as a key for non-persistent, <code>Map</code>-based implementations.
  * 
  * @author Paul Henke
+ * @author Oliver Gierke
  */
-@SuppressWarnings("serial")
 @Embeddable
 public class InventoryItemIdentifier extends SalespointIdentifier {
+
+	private static final long serialVersionUID = -5195493076944614L;
+
 	/**
 	 * Creates a new unique identifier for {@link InventoryItem}s.
 	 */
-	public InventoryItemIdentifier() {
+	InventoryItemIdentifier() {
 		super();
 	}
 
@@ -27,18 +30,7 @@ public class InventoryItemIdentifier extends SalespointIdentifier {
 	 * 
 	 * @param inventoryItemIdentifier The string representation of the identifier.
 	 */
-	@Deprecated
-	public InventoryItemIdentifier(String inventoryItemIdentifier) {
+	InventoryItemIdentifier(String inventoryItemIdentifier) {
 		super(inventoryItemIdentifier);
-	}
-
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		return super.equals(other);
 	}
 }

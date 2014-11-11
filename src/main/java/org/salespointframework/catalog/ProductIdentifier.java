@@ -1,24 +1,29 @@
 package org.salespointframework.catalog;
 
+import java.util.Map;
+
 import javax.persistence.Embeddable;
 
 import org.salespointframework.core.SalespointIdentifier;
 
 /**
- * <code>ProductIdentifier</code> serves as an identifier type for {@link Product} objects. The main reason for its
- * existence is type safety for identifier across the Salespoint Framework. <br />
- * <code>ProductIdentifier</code> instances serve as primary key attribute in {@link Product}, but can also be used as a
- * key for non-persistent, <code>Map</code>-based implementations.
+ * {link ProductIdentifier} serves as an identifier type for {@link Product} objects. The main reason for its existence
+ * is type safety for identifier across the Salespoint Framework. <br />
+ * {@link ProductIdentifier} instances serve as primary key attribute in {@link Product}, but can also be used as a key
+ * for non-persistent, {@link Map}-based implementations.
  * 
  * @author Paul Henke
+ * @author Oliver Gierke
  */
-@SuppressWarnings("serial")
 @Embeddable
 public final class ProductIdentifier extends SalespointIdentifier {
+
+	private static final long serialVersionUID = 7740660930809051850L;
+
 	/**
 	 * Creates a new unique identifier for {@link Product}s.
 	 */
-	public ProductIdentifier() {
+	ProductIdentifier() {
 		super();
 	}
 
@@ -27,18 +32,7 @@ public final class ProductIdentifier extends SalespointIdentifier {
 	 * 
 	 * @param productIdentifier The string representation of the identifier.
 	 */
-	@Deprecated
-	public ProductIdentifier(String productIdentifier) {
+	ProductIdentifier(String productIdentifier) {
 		super(productIdentifier);
-	}
-
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		return super.equals(other);
 	}
 }
