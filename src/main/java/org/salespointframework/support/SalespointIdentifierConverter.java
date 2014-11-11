@@ -64,7 +64,7 @@ class SalespointIdentifierConverter implements ConditionalGenericConverter {
 
 		try {
 
-			Constructor<?> constructor = targetClass.getConstructor(String.class);
+			Constructor<?> constructor = targetClass.getDeclaredConstructor(String.class);
 			return BeanUtils.instantiateClass(constructor, source);
 
 		} catch (NoSuchMethodException | SecurityException e) {
