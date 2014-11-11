@@ -157,4 +157,15 @@ class PersistentUserAccountManager implements UserAccountManager {
 	public Iterable<UserAccount> findDisabled() {
 		return repository.findByEnabledFalse();
 	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.useraccount.UserAccountManager#findByUsername(java.lang.String)
+	 */
+	@Override
+	public Optional<UserAccount> findByUsername(String username) {
+
+		Assert.hasText(username, "Username must not be null or empty!");
+		return repository.findOne(new UserAccountIdentifier(username));
+	}
 }

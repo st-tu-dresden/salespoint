@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface UserAccountManager {
 
 	/**
-	 * Creates a new {@link UserAccount}
+	 * Creates a new {@link UserAccount}.
 	 * 
 	 * @param userName the unique name of the user, the name is also used as loginname
 	 * @param password the password
@@ -22,7 +22,7 @@ public interface UserAccountManager {
 	UserAccount create(String userName, String password, Role... roles);
 
 	/**
-	 * Returns an {@link UserAccount} for a given identifier
+	 * Returns an {@link UserAccount} for a given identifier.
 	 * 
 	 * @param userAccountIdentifier
 	 * @return
@@ -38,21 +38,21 @@ public interface UserAccountManager {
 	UserAccount save(UserAccount userAccount);
 
 	/**
-	 * Enables the {@link UserAccount}
+	 * Enables the {@link UserAccount}.
 	 * 
 	 * @param userAccountIdentifier
 	 */
 	void enable(UserAccountIdentifier userAccountIdentifier);
 
 	/**
-	 * Disables the {@link UserAccount}
+	 * Disables the {@link UserAccount}.
 	 * 
 	 * @param userAccountIdentifier
 	 */
 	void disable(UserAccountIdentifier userAccountIdentifier);
 
 	/**
-	 * Changes the passwort of the {@link UserAccount}
+	 * Changes the passwort of the {@link UserAccount}.
 	 * 
 	 * @param userAccount
 	 * @param password
@@ -60,7 +60,7 @@ public interface UserAccountManager {
 	void changePassword(UserAccount userAccount, String password);
 
 	/**
-	 * Checks if an {@link UserAccount} exists
+	 * Checks if an {@link UserAccount} exists.
 	 * 
 	 * @param userAccountIdentifier
 	 * @return
@@ -68,23 +68,31 @@ public interface UserAccountManager {
 	boolean contains(UserAccountIdentifier userAccountIdentifier);
 
 	/**
-	 * Finds all {@link UserAccount}s
+	 * Finds all {@link UserAccount}s.
 	 * 
 	 * @return
 	 */
 	Iterable<UserAccount> findAll();
 
 	/**
-	 * Finds only enabled {@link UserAccount}s
+	 * Finds only enabled {@link UserAccount}s.
 	 * 
 	 * @return
 	 */
 	Iterable<UserAccount> findEnabled();
 
 	/**
-	 * Finds only disabled {@link UserAccount}s
+	 * Finds only disabled {@link UserAccount}s.
 	 * 
 	 * @return
 	 */
 	Iterable<UserAccount> findDisabled();
+
+	/**
+	 * Returns the user with the given user name.
+	 * 
+	 * @param username must not be {@literal null} or empty.
+	 * @return
+	 */
+	Optional<UserAccount> findByUsername(String username);
 }
