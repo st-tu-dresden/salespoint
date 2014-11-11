@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.salespointframework.catalog.ProductIdentifier;
-import org.salespointframework.support.SalespointIdentifierConverter;
+import org.salespointframework.core.SalespointIdentifier;
 import org.springframework.core.convert.TypeDescriptor;
 
 /**
@@ -52,9 +52,34 @@ public class SalespointIdentifierConverterUnitTests {
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
 	public void convertsStringToProductIdentifier() {
+
 		Object result = converter.convert("5", STRING_DESCRIPTOR, PRODUCT_IDENTIFIER_DESCRIPTOR);
-		assertThat(result, is((Object) new ProductIdentifier("5")));
+
+		assertThat(result, is(instanceOf(ProductIdentifier.class)));
+		assertThat(result.toString(), is("5"));
+	}
+
+	/**
+	 * @see #46
+	 */
+	@Test
+	public void createsIdentifierInstanceFromPrivateConstructor() {
+
+		Object result = converter.convert("5", STRING_DESCRIPTOR, TypeDescriptor.valueOf(MySalespointIdentifier.class));
+		assertThat(result, is(instanceOf(MySalespointIdentifier.class)));
+	}
+
+	static class MySalespointIdentifier extends SalespointIdentifier {
+
+		private static final long serialVersionUID = 1419011598975206455L;
+
+		public MySalespointIdentifier() {
+			super();
+		}
+
+		MySalespointIdentifier(String id) {
+			super(id);
+		}
 	}
 }
