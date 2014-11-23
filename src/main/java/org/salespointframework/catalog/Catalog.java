@@ -20,7 +20,7 @@ public interface Catalog<T extends Product> extends SalespointRepository<T, Prod
 	Iterable<T> findByCategory(String category);
 
 	/**
-	 * Returns the catalog with the given name.
+	 * Returns the {@link Product}s with the given name.
 	 * 
 	 * @param name
 	 * @return
