@@ -24,6 +24,8 @@ import org.springframework.util.Assert;
 @Entity
 public class ProductPaymentEntry extends AccountancyEntry {
 
+	private static final long serialVersionUID = 8273712561197143396L;
+
 	/**
 	 * The {@link OrderIdentifier} to which this {@link ProductPaymentEntry} refers to.
 	 */

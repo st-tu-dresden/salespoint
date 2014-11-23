@@ -33,7 +33,9 @@ import org.springframework.util.Assert;
  */
 @Entity
 @Table(name = "ORDERS")
-public class Order extends AbstractEntity<OrderIdentifier> implements Comparable<Order> {
+public class Order extends AbstractEntity<OrderIdentifier> {
+
+	private static final long serialVersionUID = 7417079332245151314L;
 
 	@EmbeddedId//
 	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID"))//
@@ -266,15 +268,6 @@ public class Order extends AbstractEntity<OrderIdentifier> implements Comparable
 		if (!isOpen()) {
 			throw new IllegalStateException("Order is not open anymore! Current state is: " + orderStatus);
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	@Override
-	public int compareTo(Order other) {
-		return this.orderIdentifier.compareTo(other.orderIdentifier);
 	}
 
 	/*

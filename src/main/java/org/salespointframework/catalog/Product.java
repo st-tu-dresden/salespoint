@@ -26,14 +26,15 @@ import org.springframework.util.Assert;
  */
 @Entity
 public class Product extends AbstractEntity<ProductIdentifier> implements Comparable<Product> {
-	@EmbeddedId @AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID")) private ProductIdentifier productIdentifier = new ProductIdentifier();
 
+	private static final long serialVersionUID = 6645371648836029780L;
+
+	@EmbeddedId//
+	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))//
+	private ProductIdentifier productIdentifier = new ProductIdentifier();
 	private String name;
-
-	@Lob private Money price;
-
-	@ElementCollection private Set<String> categories = new HashSet<String>();
-
+	private @Lob Money price;
+	private @ElementCollection Set<String> categories = new HashSet<String>();
 	private Metric metric;
 
 	/**

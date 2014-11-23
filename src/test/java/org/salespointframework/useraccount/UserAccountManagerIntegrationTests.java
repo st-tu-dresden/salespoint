@@ -117,4 +117,16 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 		assertThat(user.isPresent(), is(true));
 		assertThat(user.get(), is(reference));
 	}
+
+	/**
+	 * @see #55
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void rejectsCreationOfUserWithExistingUsername() {
+
+		UserAccount account = userAccountManager.create("username", "password");
+		account = userAccountManager.save(account);
+
+		userAccountManager.create("username", "password");
+	}
 }

@@ -25,12 +25,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.useraccount.Password;
-import org.salespointframework.useraccount.Role;
-import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountIdentifier;
-import org.salespointframework.useraccount.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountRepository repository;
+
 	UserAccount firstUser, secondUser;
 
 	@Before
@@ -78,6 +75,17 @@ public class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTe
 		Iterable<UserAccount> result = repository.findByEnabledFalse();
 		assertThat(result, is(Matchers.<UserAccount> iterableWithSize(1)));
 		assertThat(result, hasItem(secondUser));
+	}
+
+	/**
+	 * @see #55
+	 */
+	@Test(expected = DataIntegrityViolationException.class)
+	public void testname() {
+
+		UserAccount account = new UserAccount(firstUser.getIdentifier(), "someotherPassword");
+
+		repository.save(account);
 	}
 
 	static UserAccount createAccount() {
