@@ -5,35 +5,58 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+/**
+ * Web-specific configuration for Salespoint. See the individual {@code @Bean} methods for details.
+ *
+ * @author Paul Henke
+ * @author Oliver Gierke
+ */
 @Configuration
-@Import(Salespoint.class)
 public class SalespointWebConfiguration extends WebMvcConfigurerAdapter {
 
 	@Autowired List<? extends Converter<?, ?>> converters;
 	@Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
 
+	/**
+	 * Registers a {@link CharacterEncodingFilter} to enforce UTF-8 encoding for responses.
+	 * 
+	 * @return
+	 */
 	@Bean
 	public CharacterEncodingFilter characterEncodingFilter() {
-		final CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+
+		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
 		characterEncodingFilter.setEncoding("UTF-8");
 		characterEncodingFilter.setForceEncoding(true);
 		return characterEncodingFilter;
 	}
 
+	/**
+	 * Registers the {@link Salespoint} specific {@link HandlerMethodArgumentResolver} with Spring MVC.
+	 * 
+	 * @see org.salespointframework.useraccount.web.LoggedInUserAccountArgumentResolver
+	 */
 	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
 		argumentResolvers.addAll(this.argumentResolvers);
 	}
 
+	/**
+	 * Registers the {@link Salespoint} specific {@link Converter}s with Spring MVC.
+	 * 
+	 * @see org.salespointframework.support.SalespointIdentifierConverter
+	 * @see org.salespointframework.support.JpaEntityConverter
+	 * @see org.salespointframework.support.StringToRoleConverter
+	 */
 	@Override
 	public void addFormatters(FormatterRegistry registry) {
+
 		for (Converter<?, ?> converter : converters) {
 			registry.addConverter(converter);
 		}

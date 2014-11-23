@@ -1,5 +1,6 @@
 = Salespoint Framework - Technical Reference
 Andreas Zaschka; Paul Henke; Oliver Gierke;
+:javadoc: /SalesPoint/{dev}/api
 :source-base: ../../main/java/org/salespointframework
 :source-base-test: ../../test/java/org/salespointframework
 :toc:
@@ -35,6 +36,9 @@ TIP: The following sections will refer to code of the sample project here and th
 == What's new in Salespoint 6.1?
 === Upgrade to Spring Boot 1.2 and Spring 4.1
 For Salespoint 6.1 we upgraded to Spring Boot 1.2, which transitively updates a few third party dependencies, most notably Spring 4.1. Read more on the new features of Spring Boot in its http://docs.spring.io/spring-boot/docs/1.2.x/reference/htmlsingle[reference documentation] as well as new features in Spring 4.1 http://docs.spring.io/spring-framework/docs/4.1.x/spring-framework-reference/htmlsingle/#new-in-4.1[here].
+
+=== New @EnableSalespoint annotation to simplify configuration
+Activating Salespoint in a web application has been quite cumbersome so far and required a dedicated set of annotations and imports of configuration classes. To simplify this, Salespoint 6.1 introduces `@EnableSalespoint` to take care of the previously manual steps. For more information on what gets acivated and imported, see the link:{javadoc}/org/salespointframework/EnableSalespoint.html[JavaDoc of the annotation].
 
 === Usage of the mail autoconfiguration shipping with Spring Boot 1.2
 As Salespoint 6.1 upgrades to Spring Boot 1.2 we now use the email auto-configuration settings shipping with that release. This most notably means that you slightly have to alter your properties to configure the meail user, password and host. See Boot's http://docs.spring.io/spring-boot/docs/1.2.x/reference/htmlsingle/#boot-features-email[reference documentation] and the http://docs.spring.io/spring-boot/docs/1.2.0.RC2/reference/htmlsingle/#common-application-properties[list of current application properties] for details.

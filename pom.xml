@@ -71,7 +71,7 @@
 			<artifactId>usertype.extended</artifactId>
 			<version>3.2.0.GA</version>
 		</dependency>
-		
+
 		<!-- Thymeleaf -->
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
@@ -175,6 +175,7 @@
 						<numbered>true</numbered>
 						<icons>font</icons>
 						<sectanchors>true</sectanchors>
+						<dev>${dev}</dev>
 					</attributes>
 				</configuration>
 			</plugin>
@@ -198,7 +199,7 @@
 			<id>spring-libs-snapshot</id>
 			<url>https://repo.spring.io/libs-snapshot</url>
 		</repository>
-		
+
 		<repository>
 			<id>sonatype-snapshots</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
