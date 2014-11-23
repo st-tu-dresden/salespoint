@@ -2,7 +2,6 @@ package org.salespointframework;
 
 import java.util.List;
 
-import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +17,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class SalespointWebConfiguration extends WebMvcConfigurerAdapter {
 
 	@Autowired List<? extends Converter<?, ?>> converters;
-	@Autowired UserAccountManager userAccountManager;
 	@Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
 
 	@Bean

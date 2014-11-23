@@ -19,9 +19,9 @@ Models and design patterns employed in Salespoint {majorversion} are inspired by
 [preface]
 [[preface.prerequisites]]
 == Prerequisites
-Working with Salespoint requires some basic knowledge of the underlying technologies such as the Spring Framework as well as JPA to implement the persistence layer. static.olivergierke.de/spring-webapps/index.html[This script] gives you an introduction into these technologies. Also the https://github.com/st-tu-dresden/guestbook[Guestbook] sample project is a good starting point to get familiar with the technology stack.
+Working with Salespoint requires some basic knowledge of the underlying technologies such as the Spring Framework as well as JPA to implement the persistence layer. http://static.olivergierke.de/spring-webapps/index.html[This script] gives you an introduction into these technologies. Also the https://github.com/st-tu-dresden/guestbook[Guestbook] sample project is a good starting point to get familiar with the technology stack.
 
-== The Videoshop sample project
+=== The Videoshop sample project
 To give you an example of waht applications built on top of Salespoint can actually look like, we provide the https://github.com/st-tu-dresden/videoshop[Videoshop] sample project that covers a few key areas:
 
 * Using and extending the business modules provided by Salespoint to abstract a concrete problem domain.
@@ -31,17 +31,13 @@ To give you an example of waht applications built on top of Salespoint can actua
 TIP: The following sections will refer to code of the sample project here and there so it might be useful to have the repository cloned and the project imported into your IDE of choice to quickly be able to navigate these.
 
 [preface]
-[[preface.typographic-conventions]]
-== Typographic Conventions
-Two typographic conventions are employed throughout this document to highlight specific phrases. The following paragraphs describe when and why these highlightings are used:
+[[preface.whats-new-in-6.1]]
+== What's new in Salespoint 6.1?
+=== Upgrade to Spring Boot 1.2 and Spring 4.1
+For Salespoint 6.1 we upgraded to Spring Boot 1.2, which transitively updates a few third party dependencies, most notably Spring 4.1. Read more on the new features of Spring Boot in its http://docs.spring.io/spring-boot/docs/1.2.x/reference/htmlsingle[reference documentation] as well as new features in Spring 4.1 http://docs.spring.io/spring-framework/docs/4.1.x/spring-framework-reference/htmlsingle/#new-in-4.1[here].
 
-`Keywords`
-
-The monospace font is used to denote variable names, class names, type names, Java keywords, Java package names and so forth.
-
-_Termini_
-
-Proper names and termini are printed in termini font.
+=== Usage of the mail autoconfiguration shipping with Spring Boot 1.2
+As Salespoint 6.1 upgrades to Spring Boot 1.2 we now use the email auto-configuration settings shipping with that release. This most notably means that you slightly have to alter your properties to configure the meail user, password and host. See Boot's http://docs.spring.io/spring-boot/docs/1.2.x/reference/htmlsingle/#boot-features-email[reference documentation] and the http://docs.spring.io/spring-boot/docs/1.2.0.RC2/reference/htmlsingle/#common-application-properties[list of current application properties] for details.
 
 [[architecture]]
 = Technical Architecture
