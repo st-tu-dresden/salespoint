@@ -50,9 +50,12 @@ class PersistentUserAccountManager implements UserAccountManager {
 		Assert.notNull(password, "password must not be null");
 		Assert.notNull(roles, "roles must not be null");
 
-		UserAccountIdentifier identifier = new UserAccountIdentifier(userName);
+		// Reject username if a user with that name already exists
+		findByUsername(userName).ifPresent(user -> {
+			throw new IllegalArgumentException(String.format("User with name %s already exists!", userName));
+		});
 
-		return new UserAccount(identifier, password, roles);
+		return new UserAccount(new UserAccountIdentifier(userName), password, roles);
 	}
 
 	/*

@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 /**
  * Integration tests for {@link Catalog}.
@@ -64,14 +63,6 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 		assertThat(kT1.isPresent(), is(true));
 		assertThat(kT2.isPresent(), is(true));
 		assertThat(kT1.get(), is(kT2.get()));
-	}
-
-	/**
-	 * @see #19
-	 */
-	@Test(expected = InvalidDataAccessApiUsageException.class)
-	public void nullAddTest() {
-		catalog.save((Product) null);
 	}
 
 	/**

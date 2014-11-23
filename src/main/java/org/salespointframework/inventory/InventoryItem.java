@@ -20,6 +20,8 @@ import org.springframework.util.Assert;
 @Entity
 public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 
+	private static final long serialVersionUID = 3322056345377472377L;
+
 	@EmbeddedId//
 	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID"))//
 	private final InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();

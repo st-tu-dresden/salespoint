@@ -15,7 +15,6 @@ import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 /**
  * Integration tests for {@link Inventory}.
@@ -35,11 +34,6 @@ public class InventoryTests extends AbstractIntegrationTests {
 
 		cookie = catalog.save(new Cookie("Add Superkeks", Money.zero(CurrencyUnit.EUR)));
 		item = inventory.save(new InventoryItem(cookie, Units.TEN));
-	}
-
-	@Test(expected = InvalidDataAccessApiUsageException.class)
-	public void testNullCheckArgument() {
-		inventory.save((InventoryItem) null);
 	}
 
 	@Test
