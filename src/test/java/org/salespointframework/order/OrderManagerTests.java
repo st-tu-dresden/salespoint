@@ -49,24 +49,24 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void nullAddtest() {
-		orderManager.add(null);
+		orderManager.save(null);
 	}
 
 	@Test
 	public void addTest() {
-		orderManager.add(order);
+		orderManager.save(order);
 	}
 
 	@Test
 	public void testContains() {
-		orderManager.add(order);
+		orderManager.save(order);
 		assertTrue(orderManager.contains(order.getIdentifier()));
 	}
 
 	@Test
 	public void testGet() {
 
-		order = orderManager.add(order);
+		order = orderManager.save(order);
 
 		Optional<Order> result = orderManager.get(order.getIdentifier());
 

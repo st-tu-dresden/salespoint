@@ -67,12 +67,12 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 		this.txTemplate = new TransactionTemplate(txManager);
 	}
 
-	/*
+	/* 
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#add(org.salespointframework.order.Order)
+	 * @see org.salespointframework.order.OrderManager#save(org.salespointframework.order.Order)
 	 */
 	@Override
-	public T add(T order) {
+	public T save(T order) {
 
 		Assert.notNull(order, "order must be not null");
 
@@ -152,17 +152,6 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 		Assert.notNull(to, "to must not be null");
 
 		return orderRepository.findByUserAccountAndDateCreatedBetween(userAccount, from, to);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#update(org.salespointframework.order.Order)
-	 */
-	@Override
-	public final void update(T order) {
-
-		Assert.notNull(order, "order must not be null");
-		orderRepository.save(order);
 	}
 
 	/*

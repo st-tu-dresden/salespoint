@@ -16,11 +16,12 @@ import org.salespointframework.useraccount.UserAccount;
 public interface OrderManager<T extends Order> {
 
 	/**
-	 * Adds a new {@link Order} to the {@link OrderManager}.
+	 * Saves the given {@link Order} or persists changes to it.
 	 * 
-	 * @param order the {@link Order} to be added, must not be {@literal null}.
+	 * @param order the order to be saved, must not be {@literal null}.
+	 * @return
 	 */
-	T add(T order);
+	T save(T order);
 
 	/**
 	 * Returns the order identified by an {@link OrderIdentifier}
@@ -62,7 +63,8 @@ public interface OrderManager<T extends Order> {
 	 * Returns all {@link Order}s of the given {@link UserAccount}. If this user has no orders, an empty {@link Iterable}
 	 * is returned.
 	 * 
-	 * @param userAccount Denoting the {@link UserAccount} on which the orders will be requested.
+	 * @param userAccount Denoting the {@link UserAccount} on which the orders will be requested, must not be
+	 *          {@literal null}.
 	 * @return an {@link Iterable} containing all orders of the specified user.
 	 */
 	Iterable<T> find(UserAccount userAccount);
@@ -81,34 +83,24 @@ public interface OrderManager<T extends Order> {
 	/**
 	 * Tries to complete this order, the {@link OrderStatus} has to be PAID.
 	 * 
-	 * @param order the order to complete
+	 * @param order the order to complete, must not be {@literal null}.
 	 * @return an {@link OrderCompletionResult}
 	 */
 	OrderCompletionResult completeOrder(T order);
 
 	/**
-	 * Updates and persists an existing {@link Order}.
-	 * 
-	 * @param order the {@link Order} to be updated
-	 * @throws NullPointerException if order is null
-	 */
-	void update(T order);
-
-	/**
 	 * Pays the {@link Order}, {@link OrderStatus} must be OPEN and {@link PaymentMethod} must be set.
 	 * 
-	 * @param order the order to be payed
+	 * @param order the order to be payed, must not be {@literal null}.
 	 * @return true if the order could be payed
-	 * @throws NullPointerException if order is null
 	 */
 	boolean payOrder(T order);
 
 	/**
 	 * Cancels an {@link Order}, it can only be cancelled is {@link OrderStatus} is OPEN.
 	 * 
-	 * @param order the order to be canceled
+	 * @param order the order to be canceled, must not be {@literal null}.
 	 * @return true if the order could be canceled
-	 * @throws NullPointerException if order is null
 	 */
 	boolean cancelOrder(T order);
 }
