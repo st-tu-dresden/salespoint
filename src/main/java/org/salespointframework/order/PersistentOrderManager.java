@@ -73,6 +73,15 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public T add(T order) {
+		return save(order);
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.OrderManager#save(org.salespointframework.order.Order)
+	 */
+	@Override
+	public T save(T order) {
 
 		Assert.notNull(order, "order must be not null");
 
@@ -160,9 +169,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public final void update(T order) {
-
-		Assert.notNull(order, "order must not be null");
-		orderRepository.save(order);
+		save(order);
 	}
 
 	/*
