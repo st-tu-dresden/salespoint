@@ -1,5 +1,7 @@
 package org.salespointframework.support;
 
+import java.util.Optional;
+
 import org.salespointframework.support.MailSenderAutoConfiguration.MailProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -36,6 +38,8 @@ public class MailSenderAutoConfiguration {
 		sender.setHost(properties.getHost());
 		sender.setDefaultEncoding("UTF-8");
 
+		properties.getPort().ifPresent(sender::setPort);
+
 		return sender;
 	}
 
@@ -43,6 +47,7 @@ public class MailSenderAutoConfiguration {
 	public static class MailProperties {
 
 		private String host, username, password;
+		private Integer port;
 
 		public String getHost() {
 			return host;
@@ -66,6 +71,14 @@ public class MailSenderAutoConfiguration {
 
 		public void setPassword(String password) {
 			this.password = password;
+		}
+
+		public Optional<Integer> getPort() {
+			return Optional.ofNullable(port);
+		}
+
+		public void setPort(Integer port) {
+			this.port = port;
 		}
 	}
 }

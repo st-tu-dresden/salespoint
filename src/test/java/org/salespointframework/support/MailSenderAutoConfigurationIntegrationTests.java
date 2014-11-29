@@ -15,6 +15,7 @@ import org.springframework.core.io.support.ResourcePropertySource;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * Integration tests for {@link MailSenderAutoConfiguration}.
@@ -65,6 +66,21 @@ public class MailSenderAutoConfigurationIntegrationTests {
 			JavaMailSenderImpl impl = (JavaMailSenderImpl) mailSender;
 
 			assertThat(impl.getUsername(), is(nullValue()));
+		}
+	}
+
+	/**
+	 * @see #59
+	 */
+	@Test
+	public void autoconfiguresMailSenderPort() throws Exception {
+
+		try (ConfigurableApplicationContext context = getContextWith("with-mail.properties")) {
+
+			MailSender mailSender = context.getBean(MailSender.class);
+
+			assertThat(mailSender, is(notNullValue()));
+			assertThat(ReflectionTestUtils.getField(mailSender, "port"), is((Object) 4711));
 		}
 	}
 
