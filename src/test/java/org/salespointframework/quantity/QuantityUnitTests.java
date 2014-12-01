@@ -9,7 +9,13 @@ import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 import org.junit.Test;
 
-public class QuantityTests {
+/**
+ * Unit tests for {@link Quantity}.
+ *
+ * @author Oliver Gierke
+ * @author Paul Henke
+ */
+public class QuantityUnitTests {
 
 	/**
 	 * @see #34
@@ -37,7 +43,7 @@ public class QuantityTests {
 		Money money = Money.of(CurrencyUnit.EUR, 2);
 		Money result = money.multipliedBy(quantity.amount, RoundingMode.HALF_UP);
 
-		assertThat(result.toString(), is("EUR 10.00"));
+		assertThat(result, is(Money.of(CurrencyUnit.EUR, 10)));
 	}
 
 	@Test
@@ -47,7 +53,7 @@ public class QuantityTests {
 		Money money = Money.of(CurrencyUnit.EUR, 15.76);
 		Money result = money.multipliedBy(unit.amount, RoundingMode.HALF_UP);
 
-		System.out.println("Result of " + unit.toString() + " * " + money.toString() + " = " + result.toString());
+		assertThat(result, is(Money.of(CurrencyUnit.EUR, 63.04)));
 	}
 
 	/**
