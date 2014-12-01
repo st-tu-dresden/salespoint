@@ -4,7 +4,7 @@
 
 	<groupId>de.tudresden.inf.st</groupId>
 	<artifactId>salespoint-framework</artifactId>
-	<version>6.0.1.BUILD-SNAPSHOT</version>
+	<version>6.0.1.RELEASE</version>
 
 	<name>Salespoint</name>
 
@@ -16,7 +16,7 @@
 
 	<properties>
 		<dev>/dev</dev>
-		<tomcat.version>8.0.14</tomcat.version>
+		<tomcat.version>8.0.15</tomcat.version>
 	</properties>
 
 	<profiles>
