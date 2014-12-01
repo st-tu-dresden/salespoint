@@ -3,6 +3,26 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :revdate: {localdate}
 
 :numbered!:
+[6.0.1]
+== 6.0.1
+
+Release date: 2014-12-01
+
+----
+- Subtracting quantities returns invalid result (not a bug). - #64
+- Make 6.1 the next development version - #63
+- Unify OrderManager.add(…) and ….update(…) - #60
+- Add port-property to MailSenderAutoConfiguration.MailProperties - #59
+- Upgrade to Spring Boot 1.1.9 - #58
+- UserAccount is missing an uniqueness constraint on identifier - #55
+- Fix JavaDoc for Catalog.findByName(…) - #54
+- Typo in dependency declaration on Salespoint homepage - #53
+- Release version 6.0.1. - #49
+- Provide UserAccountManager.findByUsername(…) to avoid leaking internals of UserAccountIdentifier - #48
+- Support private constructors in SalespointIdentifiers - #46
+----
+
+:numbered!:
 [6.0-GA]
 == 6.0 GA
 
