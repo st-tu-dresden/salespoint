@@ -49,4 +49,16 @@ public class QuantityTests {
 
 		System.out.println("Result of " + unit.toString() + " * " + money.toString() + " = " + result.toString());
 	}
+
+	/**
+	 * @see #64, #65
+	 */
+	@Test
+	public void subtractsCorrectly() {
+
+		Quantity q1 = new Quantity(10, Units.METRIC, RoundingStrategy.MONETARY_ROUNDING);
+		Quantity q2 = new Quantity(1, Units.METRIC, RoundingStrategy.MONETARY_ROUNDING);
+
+		assertThat(q1.subtract(q2), is(new Quantity(9, Units.METRIC, RoundingStrategy.MONETARY_ROUNDING)));
+	}
 }
