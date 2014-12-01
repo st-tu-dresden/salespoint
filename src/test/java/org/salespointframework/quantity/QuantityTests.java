@@ -3,7 +3,10 @@ package org.salespointframework.quantity;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
+
+import junit.framework.Assert;
 
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
@@ -39,6 +42,17 @@ public class QuantityTests {
 
 		assertThat(result.toString(), is("EUR 10.00"));
 	}
+	
+	@Test
+	public void subtract() {
+		Quantity q1 = new Quantity(10, Units.METRIC, RoundingStrategy.MONETARY_ROUNDING);
+		Quantity q2 = new Quantity(1, Units.METRIC, RoundingStrategy.MONETARY_ROUNDING);
+		
+		Quantity result = q1.subtract(q2);
+		
+		assertThat(result.getAmount(), is(new BigDecimal(9)));
+	}
+
 
 	@Test
 	public void unitTest() {
