@@ -5,6 +5,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
@@ -26,10 +27,13 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID"))//
 	private final InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
+	@JoinColumn(unique = true)//
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })//
 	private Product product;
 
-	private @Lob @Column(length = 4 * 1024 /* 4kB */) Quantity quantity;
+	@Lob//
+	@Column(length = 4 * 1024 /* 4kB */)//
+	private Quantity quantity;
 
 	@Deprecated
 	protected InventoryItem() {}

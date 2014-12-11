@@ -5,10 +5,16 @@ import static org.junit.Assert.*;
 
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+
+import org.hibernate.exception.ConstraintViolationException;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
@@ -23,8 +29,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class InventoryTests extends AbstractIntegrationTests {
 
+	public @Rule ExpectedException exception = ExpectedException.none();
+
 	@Autowired Inventory<InventoryItem> inventory;
 	@Autowired Catalog<Product> catalog;
+	@Autowired EntityManager em;
 
 	Cookie cookie;
 	InventoryItem item;
@@ -110,5 +119,18 @@ public class InventoryTests extends AbstractIntegrationTests {
 
 		assertThat(result.isPresent(), is(true));
 		assertThat(result.get().getQuantity(), is(Units.of(9)));
+	}
+
+	/**
+	 * @see #68
+	 */
+	public void rejectsNewInventoryItemForExistingProducts() {
+
+		exception.expect(PersistenceException.class);
+		exception.expectCause(is(instanceOf(ConstraintViolationException.class)));
+
+		inventory.save(new InventoryItem(cookie, Units.TEN));
+
+		em.flush();
 	}
 }
