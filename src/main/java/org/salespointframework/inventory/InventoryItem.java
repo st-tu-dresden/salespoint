@@ -31,11 +31,7 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID"))//
 	private final InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
-<<<<<<< HEAD
 	@JoinColumn(unique = true)//
-=======
-	@JoinColumn(name = "PRODUCT_FK")
->>>>>>> #68 - test and solution
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })//
 	private Product product;
 
