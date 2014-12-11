@@ -1,12 +1,16 @@
 package org.salespointframework.inventory;
 
 import javax.persistence.AttributeOverride;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.AbstractEntity;
@@ -18,6 +22,7 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "PRODUCT_FK"))
 public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 
 	private static final long serialVersionUID = 3322056345377472377L;
@@ -26,6 +31,7 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID"))//
 	private final InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
+	@JoinColumn(name = "PRODUCT_FK")
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })//
 	private Product product;
 
