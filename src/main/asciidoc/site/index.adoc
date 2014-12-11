@@ -4,7 +4,7 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :toc:
 :toc-placement!:
 
-Salespoint is a Java-based application framework to develop point of sales (PoS) applications using Spring Framework and Spring Boot. It consists of a variety of business modules that allows users to implement sophisticated web applications on top of them. 
+Salespoint is a Java-based application framework to develop point of sales (PoS) applications using Spring Framework and Spring Boot. It consists of a variety of business modules that allows users to implement sophisticated web applications on top of them.
 
 toc::[]
 
@@ -20,15 +20,53 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 == Resources
 
 [[resources.latest]]
-=== Latest release version
+=== Latest release version - 6.0.1.RELEASE
 * link:salespoint-reference.html[Reference documentation]
 * link:api[JavaDoc]
 * link:changelog.html[Changelog]
+* Maven repository declaration:
++
+[source, xml]
+----
+<repository>
+  <id>salespoint-framework</id> <!-- Name doesn't matter -->
+  <url>http://www.st.inf.tu-dresden.de/SalesPoint/repository</url>
+</repository>
+----
+* Maven dependency:
++
+[source, xml]
+----
+<dependency>
+  <groupId>de.tudresden.inf.st</groupId>
+  <artifactId>salespoint-framework</artifactId>
+  <version>6.0.1.RELEASE</version>
+</dependency>
+----
 
 [[resources.development]]
-=== Current development version
+=== Current development snapshot - 6.1.x snapshots
 * link:dev/salespoint-reference.html[Reference documentation]
 * link:dev/api[JavaDoc]
+* Maven repository declaration:
++
+[source, xml]
+----
+<repository>
+  <id>salespoint-framework</id> <!-- Name doesn't matter -->
+  <url>http://www.st.inf.tu-dresden.de/SalesPoint/repository</url>
+</repository>
+----
+* Maven dependency:
++
+[source, xml]
+----
+<dependency>
+  <groupId>de.tudresden.inf.st</groupId>
+  <artifactId>salespoint-framework</artifactId>
+  <version>6.1.0.BUILD-SNAPSHOT</version>
+</dependency>
+----
 
 [[resources.sample-projects]]
 === Sample projects

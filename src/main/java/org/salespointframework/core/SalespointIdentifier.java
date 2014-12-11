@@ -5,20 +5,24 @@ import java.util.UUID;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 /**
  * @author Hannes Weisbach
  * @author Thomas Dedek
+ * @author Oliver Gierke
  */
-@SuppressWarnings("serial")
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public class SalespointIdentifier implements Serializable, Comparable<SalespointIdentifier> {
-	private final String id;
+public class SalespointIdentifier implements Serializable {
+
+	private static final long serialVersionUID = -859038278950680970L;
+
+	private final @Column(unique = true) String id;
 
 	public SalespointIdentifier() {
-		id = UUID.randomUUID().toString();
+		this.id = UUID.randomUUID().toString();
 	}
 
 	public SalespointIdentifier(String id) {
@@ -29,13 +33,22 @@ public class SalespointIdentifier implements Serializable, Comparable<Salespoint
 		return id;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return id;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object other) {
+
 		if (other == null) {
 			return false;
 		}
@@ -48,13 +61,12 @@ public class SalespointIdentifier implements Serializable, Comparable<Salespoint
 		return false;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		return id.hashCode();
-	}
-
-	@Override
-	public int compareTo(SalespointIdentifier other) {
-		return this.id.compareTo(other.id);
 	}
 }

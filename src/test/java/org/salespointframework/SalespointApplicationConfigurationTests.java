@@ -6,8 +6,8 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import org.junit.Test;
-import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.Catalog;
+import org.salespointframework.catalog.Product;
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.inventory.Inventory;
 import org.salespointframework.inventory.InventoryItem;
@@ -17,6 +17,8 @@ import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.AuthenticationManager;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 /**
@@ -34,6 +36,7 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 	@Autowired AuthenticationManager authenticationManager;
 	@Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
 	@Autowired List<DataInitializer> initializer;
+	@Autowired MailSender mailSender;
 
 	@Test
 	public void createsApplicationComponents() {
@@ -46,5 +49,11 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 		assertThat(authenticationManager, is(notNullValue()));
 		assertThat(argumentResolvers, hasSize(1));
 		assertThat(initializer, is(not(emptyIterable())));
+
+		assertThat(mailSender, is(instanceOf(JavaMailSenderImpl.class)));
+		JavaMailSenderImpl impl = (JavaMailSenderImpl) mailSender;
+		assertThat(impl.getUsername(), is("username"));
+		assertThat(impl.getHost(), is("host"));
+		assertThat(impl.getPassword(), is("password"));
 	}
 }

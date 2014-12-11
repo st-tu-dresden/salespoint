@@ -1,25 +1,29 @@
 package org.salespointframework.accountancy;
 
+import java.util.Map;
+
 import javax.persistence.Embeddable;
 
 import org.salespointframework.core.SalespointIdentifier;
 
 /**
- * <code>AccountancyEntryIdentifier</code> serves as an identifier type for {@link AccountancyEntry} objects. The main
- * reason for its existence is type safety for identifier across the Salespoint Framework. <br />
- * <code>AccoutancyEntryIdentifier</code> instances serve as primary key attribute in {@link PersistentAccountancyEntry}
- * , but can also be used as a key for non-persistent, <code>Map</code>-based implementations.
+ * {@link AccountancyEntryIdentifier} serves as an identifier type for {@link AccountancyEntry} objects. The main reason
+ * for its existence is type safety for identifier across the Salespoint Framework. <br />
+ * {@link AccountancyEntryIdentifier} instances serve as primary key attribute in {@link PersistentAccountancyEntry} ,
+ * but can also be used as a key for non-persistent, {@link Map}-based implementations.
  * 
  * @author Hannes Weisbach
+ * @author Oliver Gierke
  */
-@SuppressWarnings("serial")
 @Embeddable
 public final class AccountancyEntryIdentifier extends SalespointIdentifier {
+
+	private static final long serialVersionUID = 1767274605223942263L;
 
 	/**
 	 * Creates a new unique identifier for accountancy entries.
 	 */
-	public AccountancyEntryIdentifier() {
+	AccountancyEntryIdentifier() {
 		super();
 	}
 
@@ -28,18 +32,7 @@ public final class AccountancyEntryIdentifier extends SalespointIdentifier {
 	 * 
 	 * @param identifier The string representation of the identifier.
 	 */
-	@Deprecated
-	public AccountancyEntryIdentifier(String identifier) {
+	AccountancyEntryIdentifier(String identifier) {
 		super(identifier);
-	}
-
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		return super.equals(other);
 	}
 }

@@ -9,6 +9,7 @@ import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
+import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.ProductPaymentEntry;
 import org.salespointframework.payment.Cash;
@@ -35,10 +36,12 @@ public class AccountancyTests extends AbstractIntegrationTests {
 
 			if ((year % 2) == 0) {
 				System.out.println("ProductPaymentEntry");
-				UserAccount user = userAccountManager.create("userId", "password");
+				UserAccount user = userAccountManager.create("userId" + year, "password");
 				user = userAccountManager.save(user);
-				a.add(new ProductPaymentEntry(new OrderIdentifier(), user, Money.of(CurrencyUnit.EUR, 1.0), "Rechnung nr "
-						+ year, Cash.CASH));
+				OrderIdentifier orderIdentifier = new Order(user).getIdentifier();
+
+				a.add(new ProductPaymentEntry(orderIdentifier, user, Money.of(CurrencyUnit.EUR, 1.0), "Rechnung nr " + year,
+						Cash.CASH));
 			} else {
 				System.out.println("PersistentAccountancyEntry");
 				a.add(new AccountancyEntry(Money.of(CurrencyUnit.EUR, 2.22)));

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 class StringToRoleConverter implements Converter<String, Role> {
 
 	/*
-	 * 
 	 * (non-Javadoc)
 	 * @see org.springframework.core.convert.converter.Converter#convert(java.lang.Object)
 	 */

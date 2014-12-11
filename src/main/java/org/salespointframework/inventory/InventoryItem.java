@@ -20,14 +20,16 @@ import org.springframework.util.Assert;
 @Entity
 public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 
+	private static final long serialVersionUID = 3322056345377472377L;
+
 	@EmbeddedId//
 	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID"))//
-	private InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
+	private final InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })//
 	private Product product;
 
-	private @Lob Quantity quantity;
+	private @Lob @Column(length = 4 * 1024 /* 4kB */) Quantity quantity;
 
 	@Deprecated
 	protected InventoryItem() {}
@@ -76,20 +78,32 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 		return !this.quantity.subtract(quantity).isNegative();
 	}
 
+	/**
+	 * Decreases the quantity of the current {@link InventoryItem} by the given {@link Quantity}.
+	 * 
+	 * @param quantity must not be {@literal null}.
+	 */
 	public void decreaseQuantity(Quantity quantity) {
 
 		Assert.notNull(quantity, "Quantity must not be null!");
+		Assert.isTrue(this.quantity.isGreaterThanOrEqualTo(quantity),
+				String.format("Insufficient quantity! Have %s but was requested to reduce by %s.", this.quantity, quantity));
 
 		product.verify(quantity);
 
-		this.quantity = quantity.subtract(quantity); // TODO negative check? -> Exception?
+		this.quantity = this.quantity.subtract(quantity);
 	}
 
+	/**
+	 * Increases the quantity of the current {@link InventoryItem} by the given {@link Quantity}.
+	 * 
+	 * @param quantity must not be {@literal null}.
+	 */
 	public void increaseQuantity(Quantity quantity) {
 
 		Assert.notNull(quantity, "Quantity must not be null!");
 		product.verify(quantity);
 
-		this.quantity = quantity.add(quantity);
+		this.quantity = this.quantity.add(quantity);
 	}
 }

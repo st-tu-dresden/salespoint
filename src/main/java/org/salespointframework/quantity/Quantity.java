@@ -129,6 +129,7 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 
 	@Override
 	public boolean equals(Object obj) {
+
 		if (obj == null)
 			return false;
 		if (obj == this)
@@ -153,43 +154,64 @@ public class Quantity implements Comparable<Quantity>, Serializable, Cloneable {
 	/**
 	 * Compares Quantities
 	 * 
-	 * @param other Quantity to which this Quantity is to be compared.
-	 * @return true if this quantity is less than the other quantity
+	 * @param other {@link Quantity} to which this Quantity is to be compared.
+	 * @return true if this quantity is less than the other quantity.
 	 */
-	public boolean lessThan(Quantity other) {
+	public boolean isLessThan(Quantity other) {
 		return this.compareTo(other) < 0;
 	}
 
 	/**
-	 * Compares Quantities
+	 * Compares Quantities.
 	 * 
-	 * @param other Quantity to which this Quantity is to be compared.
-	 * @return true if this quantity is greater than the other quantity
+	 * @param other {@link Quantity} to which this {@link Quantity} is to be compared.
+	 * @return true if this quantity is greater than the other quantity.
 	 */
-	public boolean greaterThan(Quantity other) {
+	public boolean isGreaterThan(Quantity other) {
 		return this.compareTo(other) > 0;
 	}
 
+	/**
+	 * Compares Quantities.
+	 * 
+	 * @param other {@link Quantity} to which this {@link Quantity} is to be compared.
+	 * @return true if this quantity is greater than the other quantity or equal to it.
+	 * @return
+	 */
+	public boolean isGreaterThanOrEqualTo(Quantity other) {
+		return this.compareTo(other) >= 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return amount + metric.getSymbol();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public final int hashCode() {
 		return amount.hashCode();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#clone()
+	 */
 	@Override
 	public Object clone() {
-		Quantity clone;
+
 		try {
-			clone = (Quantity) super.clone();
+			return (Quantity) super.clone();
 		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-			return null;
+			throw new RuntimeException(e);
 		}
-		return clone;
 	}
 
 	/**

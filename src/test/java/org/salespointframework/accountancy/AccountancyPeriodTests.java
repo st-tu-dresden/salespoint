@@ -10,6 +10,7 @@ import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
+import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.ProductPaymentEntry;
 import org.salespointframework.payment.Cash;
@@ -30,6 +31,7 @@ public class AccountancyPeriodTests extends AbstractIntegrationTests {
 	public void testSetup() throws Exception {
 
 		UserAccount account = userAccountManager.save(userAccountManager.create("username", "password"));
+		OrderIdentifier orderIdentifier = new Order(account).getIdentifier();
 
 		Money oneEuro = Money.of(CurrencyUnit.EUR, 1d);
 
@@ -37,8 +39,7 @@ public class AccountancyPeriodTests extends AbstractIntegrationTests {
 
 		for (int i = 0; i < 20; i++) {
 
-			ProductPaymentEntry p = new ProductPaymentEntry(new OrderIdentifier(), account, oneEuro, "Rechnung nr. 3",
-					Cash.CASH);
+			ProductPaymentEntry p = new ProductPaymentEntry(orderIdentifier, account, oneEuro, "Rechnung nr. 3", Cash.CASH);
 			a.add(p);
 
 			System.out.println("Adding p " + p);

@@ -27,9 +27,15 @@ import org.springframework.util.Assert;
 @Entity
 public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Priced {
 
-	@EmbeddedId @AttributeOverride(name = "id", column = @Column(name = "ORDERLINE_ID")) private OrderLineIdentifier orderLineIdentifier = new OrderLineIdentifier();
+	private static final long serialVersionUID = -4310089726057038893L;
 
-	@Embedded @AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID")) private ProductIdentifier productIdentifier;
+	@EmbeddedId//
+	@AttributeOverride(name = "id", column = @Column(name = "ORDERLINE_ID"))//
+	private OrderLineIdentifier orderLineIdentifier = new OrderLineIdentifier();
+
+	@Embedded//
+	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))//
+	private ProductIdentifier productIdentifier;
 
 	private @Lob Money price = Money.of(CurrencyUnit.EUR, 1.0);
 	private @Lob Quantity quantity;

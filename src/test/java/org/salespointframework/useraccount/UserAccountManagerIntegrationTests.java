@@ -103,4 +103,30 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 		assertThat(acc.getPassword().isEncrypted(), is(true));
 		assertThat(passwordEncoder.matches("asd", acc.getPassword().toString()), is(true));
 	}
+
+	/**
+	 * @see #46
+	 */
+	@Test
+	public void findsUserByUsername() {
+
+		UserAccount reference = userAccountManager.save(userAccountManager.create("Bob", "123", new Role("ROLE_CHEF")));
+
+		Optional<UserAccount> user = userAccountManager.findByUsername("Bob");
+
+		assertThat(user.isPresent(), is(true));
+		assertThat(user.get(), is(reference));
+	}
+
+	/**
+	 * @see #55
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void rejectsCreationOfUserWithExistingUsername() {
+
+		UserAccount account = userAccountManager.create("username", "password");
+		account = userAccountManager.save(account);
+
+		userAccountManager.create("username", "password");
+	}
 }

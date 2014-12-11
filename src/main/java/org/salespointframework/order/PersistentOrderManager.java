@@ -14,6 +14,8 @@ import org.salespointframework.order.OrderCompletionResult.OrderCompletionStatus
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.UserAccount;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -29,6 +31,8 @@ import org.springframework.util.Assert;
 @Service
 @Transactional
 class PersistentOrderManager<T extends Order> implements OrderManager<T> {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(PersistentOrderManager.class);
 
 	private final Inventory<InventoryItem> inventory;
 	private final TransactionTemplate txTemplate;
@@ -63,12 +67,12 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 		this.txTemplate = new TransactionTemplate(txManager);
 	}
 
-	/*
+	/* 
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#add(org.salespointframework.order.Order)
+	 * @see org.salespointframework.order.OrderManager#save(org.salespointframework.order.Order)
 	 */
 	@Override
-	public T add(T order) {
+	public T save(T order) {
 
 		Assert.notNull(order, "order must be not null");
 
@@ -152,17 +156,6 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#update(org.salespointframework.order.Order)
-	 */
-	@Override
-	public final void update(T order) {
-
-		Assert.notNull(order, "order must not be null");
-		orderRepository.save(order);
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see org.salespointframework.order.OrderManager#completeOrder(org.salespointframework.order.Order)
 	 */
 	@Override
@@ -189,12 +182,12 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 		for (OrderLine orderline : lineItems) {
 
 			ProductIdentifier productIdentifier = orderline.getProductIdentifier();
-			Optional<InventoryItem> inventoryItem = inventory.findByProductProductIdentifier(productIdentifier);
+			Optional<InventoryItem> inventoryItem = inventory.findByProductIdentifier(productIdentifier);
 
 			// TODO was machen wenn nicht im Inventar
 			if (!inventoryItem.isPresent()) {
-				System.out
-						.println("No InventoryItem with given ProductIndentifier found in PersistentInventory. Have you initialized your PersistentInventory? Do you need to re-stock your Inventory?");
+				LOGGER
+						.error("No InventoryItem with given ProductIndentifier found in PersistentInventory. Have you initialized your PersistentInventory? Do you need to re-stock your Inventory?");
 				break;
 			}
 
@@ -202,7 +195,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 				Quantity orderLineQuantity = orderline.getQuantity();
 
-				if (!item.hasSufficientQuantity(orderLineQuantity)) {
+				if (item.hasSufficientQuantity(orderLineQuantity)) {
 					goodItems.put(item, orderLineQuantity);
 				} else {
 					badItems.put(item, orderLineQuantity);
@@ -217,19 +210,20 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 						status.setRollbackOnly();
 
-						System.out
-								.println("Number of items requested by the OrderLine is greater than the number available in the Inventory. Please re-stock.");
+						LOGGER
+								.error("Number of items requested by the OrderLine is greater than the number available in the Inventory. Please re-stock.");
 						return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
 					}
 
-					System.out.println("Number of items requested by the OrderLine removed from the Inventory.");
+					LOGGER.info("Number of items requested by the OrderLine removed from the Inventory.");
 
 					boolean failed = false;
 
 					for (InventoryItem inventoryItem : goodItems.keySet()) {
-						Quantity quantity = goodItems.get(inventoryItem);
-						inventoryItem.decreaseQuantity(quantity);
-						if (inventoryItem.getQuantity().isNegative()) {
+
+						try {
+							inventoryItem.decreaseQuantity(goodItems.get(inventoryItem));
+						} catch (IllegalArgumentException o_O) {
 							failed = true;
 							break;
 						}
