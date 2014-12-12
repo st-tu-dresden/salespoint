@@ -35,7 +35,7 @@ TIP: The following sections will refer to code of the sample project here and th
 [[preface.whats-new-in-6.1]]
 == What's new in Salespoint 6.1?
 === Upgrade to Spring Boot 1.2 and Spring 4.1
-For Salespoint 6.1 we upgraded to Spring Boot 1.2, which transitively updates a few third party dependencies, most notably Spring 4.1. Read more on the new features of Spring Boot in its http://docs.spring.io/spring-boot/docs/1.2.x/reference/htmlsingle[reference documentation] as well as new features in Spring 4.1 http://docs.spring.io/spring-framework/docs/4.1.x/spring-framework-reference/htmlsingle/#new-in-4.1[here].
+For Salespoint 6.1 we upgraded to Spring Boot 1.2, which transitively updates a few third party dependencies, most notably Spring 4.1. Read more on the new features of Spring Boot in its http://docs.spring.io/spring-boot/docs/1.2.x/reference/htmlsingle[reference documentation] and skim through the https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-1.2-Release-Notes#upgrading-from-spring-boot-11[upgrade notes] as well. The new features of Spring 4.1 are described http://docs.spring.io/spring-framework/docs/4.1.x/spring-framework-reference/htmlsingle/#new-in-4.1[here].
 
 === New @EnableSalespoint annotation to simplify configuration
 Activating Salespoint in a web application has been quite cumbersome so far and required a dedicated set of annotations and imports of configuration classes. To simplify this, Salespoint 6.1 introduces `@EnableSalespoint` to take care of the previously manual steps. For more information on what gets acivated and imported, see the link:{javadoc}/org/salespointframework/EnableSalespoint.html[JavaDoc of the annotation].
