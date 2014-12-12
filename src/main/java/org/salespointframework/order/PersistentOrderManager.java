@@ -159,7 +159,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 * @see org.salespointframework.order.OrderManager#completeOrder(org.salespointframework.order.Order)
 	 */
 	@Override
-	public OrderCompletionResult completeOrder(final Order order) {
+	public OrderCompletionResult completeOrder(final T order) {
 
 		if (!order.isPaid()) {
 			return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
@@ -237,6 +237,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 					}
 
 					order.complete();
+					save(order);
 					return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL);
 				});
 	}

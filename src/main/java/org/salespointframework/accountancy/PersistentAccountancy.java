@@ -134,8 +134,7 @@ class PersistentAccountancy<T extends AccountancyEntry> implements Accountancy<T
 
 			sales.put(e.getKey(), stream(e.getValue().spliterator(), false).//
 					map(AccountancyEntry::getValue).//
-					reduce((left, right) -> left.plus(right)).//
-					orElse(Money.zero(CurrencyUnit.EUR)));
+					reduce(Money.zero(CurrencyUnit.EUR), Money::plus));
 		}
 
 		return sales;
