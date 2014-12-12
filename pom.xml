@@ -126,6 +126,7 @@
 	                <additionalparam>-Xdoclint:none</additionalparam>
 	                <excludePackageNames>org.thymeleaf.*</excludePackageNames>
 	                <outputDirectory>${project.build.directory}/site${dev}/api</outputDirectory>
+					<show>package</show>
 	            </configuration>
 			</plugin>
 
