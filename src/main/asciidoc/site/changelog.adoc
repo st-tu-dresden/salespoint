@@ -3,6 +3,23 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :revdate: {localdate}
 
 :numbered!:
+[6.1]
+== 6.1
+
+Release date: 2014-12-12
+
+----
+- Include Thymeleaf / Spring Security integration library by default - #71
+- JavaDoc should list package protected types - #70
+- PersistentOrderManager needs to invoke save(…) after completing the order - #69
+- Remove deprecated OrderManager.add(…) and update(…) methods - #62
+- Add @EnableSalespoint to simplify bootstrapping of Salespoint applications - #57
+- Upgrade to Spring Boot 1.2 - #56
+- Provide component to let Thymeleaf render JDK 8 date formats correctly. - #52
+- Reduce visibility of constructors of SalespointIdentifier subtypes - #47
+----
+
+:numbered!:
 [6.0.1]
 == 6.0.1
 
