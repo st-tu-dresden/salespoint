@@ -6,6 +6,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.salespointframework.EnableSalespoint.SalespointSecurityAutoConfiguration;
+import org.salespointframework.EnableSalespoint.SalespointWebAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +36,7 @@ import org.springframework.context.annotation.Import;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(Salespoint.class)
+@Import({ Salespoint.class, SalespointWebAutoConfiguration.class, SalespointSecurityAutoConfiguration.class })
 @SpringBootApplication
 public @interface EnableSalespoint {
 

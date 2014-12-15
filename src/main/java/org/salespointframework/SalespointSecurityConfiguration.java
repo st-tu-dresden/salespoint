@@ -2,6 +2,7 @@ package org.salespointframework;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,8 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * 
  * @author Oliver Gierke
  */
+@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SalespointSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired UserDetailsService userDetailsService;
@@ -51,4 +52,8 @@ public class SalespointSecurityConfiguration extends WebSecurityConfigurerAdapte
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/resources/**");
 	}
+
+	@Configuration
+	@EnableGlobalMethodSecurity(prePostEnabled = true)
+	static class MethodSecurityConfiguration {}
 }
