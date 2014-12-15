@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<context version="7.1.10.209">
+<context version="7.2.0.217">
     <scope type="Project" name="salespoint-framework">
         <element type="TypeFilterReferenceOverridden" name="Filter">
             <element type="IncludeTypePattern" name="org.salespointframework.**"/>
@@ -14,6 +14,7 @@
                     </element>
                     <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|Accountancy" type="AllowedDependency"/>
                     <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|Catalog" type="AllowedDependency"/>
+                    <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|Inventory" type="AllowedDependency"/>
                     <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|Payment" type="AllowedDependency"/>
                     <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|User" type="AllowedDependency"/>
                 </element>
