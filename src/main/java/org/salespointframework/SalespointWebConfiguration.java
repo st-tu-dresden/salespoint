@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
@@ -34,6 +36,21 @@ public class SalespointWebConfiguration extends WebMvcConfigurerAdapter {
 	}
 
 	/**
+	 * Needs to be decalred although Boot has provided a default bean since 1.2 until #2148 gets fixed.
+	 * 
+	 * @return
+	 * @see https://github.com/spring-projects/spring-boot/issues/2148
+	 */
+	@Bean
+	public CharacterEncodingFilter prioritizedCharacterEncodingFilter() {
+
+		CharacterEncodingFilter filter = new PriorityOrderedCharacterEncodingFilter();
+		filter.setEncoding("UTF-8");
+		filter.setForceEncoding(true);
+		return filter;
+	}
+
+	/**
 	 * Registers the {@link Salespoint} specific {@link HandlerMethodArgumentResolver} with Spring MVC.
 	 * 
 	 * @see org.salespointframework.useraccount.web.LoggedInUserAccountArgumentResolver
@@ -55,6 +72,18 @@ public class SalespointWebConfiguration extends WebMvcConfigurerAdapter {
 
 		for (Converter<?, ?> converter : converters) {
 			registry.addConverter(converter);
+		}
+	}
+
+	static class PriorityOrderedCharacterEncodingFilter extends CharacterEncodingFilter implements Ordered {
+
+		/* 
+		 * (non-Javadoc)
+		 * @see org.springframework.core.Ordered#getOrder()
+		 */
+		@Override
+		public int getOrder() {
+			return Ordered.HIGHEST_PRECEDENCE;
 		}
 	}
 }
