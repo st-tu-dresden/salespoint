@@ -41,14 +41,11 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager {
 	@Override
 	public Optional<UserAccount> getCurrentUser() {
 
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-		if (authentication == null) {
-			return null;
-		}
-
-		UserAccountIdentifier userAccountIdentifier = new UserAccountIdentifier(authentication.getName());
-		return repository.findOne(userAccountIdentifier);
+		return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication()).//
+				flatMap(authentication -> {
+					UserAccountIdentifier userAccountIdentifier = new UserAccountIdentifier(authentication.getName());
+					return repository.findOne(userAccountIdentifier);
+				});
 	}
 
 	/* 
