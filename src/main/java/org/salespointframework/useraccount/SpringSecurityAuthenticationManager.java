@@ -55,12 +55,10 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager {
 	@Override
 	public boolean matches(Password candidate, Password existing) {
 
-		Assert.notNull(existing);
+		Assert.notNull(existing, "Existing password must not be null!");
 
-		if (candidate == null) {
-			return false;
-		}
-
-		return passwordEncoder.matches(candidate.toString(), existing.toString());
+		return Optional.ofNullable(candidate).//
+				map(c -> passwordEncoder.matches(c.toString(), existing.toString())).//
+				orElse(false);
 	}
 }
