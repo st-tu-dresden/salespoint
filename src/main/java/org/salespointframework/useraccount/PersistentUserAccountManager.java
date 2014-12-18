@@ -77,12 +77,13 @@ class PersistentUserAccountManager implements UserAccountManager {
 	@Transactional
 	public UserAccount save(UserAccount userAccount) {
 
-		Assert.notNull(userAccount, "userAccount must not be null");
+		Assert.notNull(userAccount, "UserAccount must not be null!");
 
 		Password password = userAccount.getPassword();
-		Password passwordToSet = password.isEncrypted() ? password : new Password(passwordEncoder.encode(password
-				.toString()), true);
-		userAccount.setPassword(passwordToSet);
+
+		userAccount.setPassword(password.isEncrypted() ? password : new Password(
+				passwordEncoder.encode(password.toString()), true));
+
 		return repository.save(userAccount);
 	}
 
@@ -91,9 +92,10 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 * @see org.salespointframework.useraccount.UserAccountManager#enable(org.salespointframework.useraccount.UserAccountIdentifier)
 	 */
 	@Override
+	@Transactional
 	public void enable(UserAccountIdentifier userAccountIdentifier) {
 
-		Assert.notNull(userAccountIdentifier, "userAccountIdentifier must not be null");
+		Assert.notNull(userAccountIdentifier, "UserAccountIdentifier must not be null!");
 		get(userAccountIdentifier).ifPresent(account -> account.setEnabled(true));
 	}
 
@@ -102,9 +104,10 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 * @see org.salespointframework.useraccount.UserAccountManager#disable(org.salespointframework.useraccount.UserAccountIdentifier)
 	 */
 	@Override
+	@Transactional
 	public void disable(UserAccountIdentifier userAccountIdentifier) {
 
-		Assert.notNull(userAccountIdentifier, "userAccountIdentifier must not be null");
+		Assert.notNull(userAccountIdentifier, "UserAccountIdentifier must not be null!");
 		get(userAccountIdentifier).ifPresent(account -> account.setEnabled(false));
 	}
 

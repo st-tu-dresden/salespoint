@@ -77,6 +77,15 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 	}
 
 	/**
+	 * Returns the user's username.
+	 * 
+	 * @return will never be {@literal null}.
+	 */
+	public String getUsername() {
+		return userAccountIdentifier.getIdentifier();
+	}
+
+	/**
 	 * Adds a {@link Role} to the {@link UserAccount}.
 	 * 
 	 * @param role {@code role} which the {@code user} will receive, must not be {@literal null}.
