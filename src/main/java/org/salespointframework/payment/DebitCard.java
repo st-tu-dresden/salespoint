@@ -3,6 +3,7 @@ package org.salespointframework.payment;
 import java.time.LocalDateTime;
 
 import org.joda.money.Money;
+import org.springframework.util.ObjectUtils;
 
 /**
  * A debit card provides the holder with electronic access to his or her bank account. A payment made with such a card
@@ -72,4 +73,35 @@ public final class DebitCard extends PaymentCard {
 		return dailyWithdrawalLimit;
 	}
 
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.payment.PaymentCard#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null || !this.getClass().equals(obj.getClass())) {
+			return false;
+		}
+
+		DebitCard that = (DebitCard) obj;
+
+		return super.equals(obj) && ObjectUtils.nullSafeEquals(this.dailyWithdrawalLimit, that.dailyWithdrawalLimit);
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.payment.PaymentCard#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+
+		int result = super.hashCode();
+		result += 31 * ObjectUtils.nullSafeHashCode(dailyWithdrawalLimit);
+		return result;
+	}
 }

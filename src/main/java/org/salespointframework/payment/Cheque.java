@@ -132,4 +132,61 @@ public final class Cheque extends PaymentMethod {
 	public String getBankIdentificationNumber() {
 		return bankIdentificationNumber;
 	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.payment.PaymentMethod#toString()
+	 */
+	@Override
+	public String toString() {
+		return String.format("%s - %s - %s - %s", super.toString(), accountName, accountNumber, dateWritten);
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null || !this.getClass().equals(obj.getClass())) {
+			return false;
+		}
+
+		Cheque that = (Cheque) obj;
+
+		return super.equals(obj) && this.accountName.equals(that.accountName) && //
+				this.accountNumber.equals(that.accountNumber) && //
+				this.bankAddress.equals(that.bankAddress) && //
+				this.bankIdentificationNumber.equals(that.bankIdentificationNumber) && //
+				this.bankName.equals(that.bankName) && //
+				this.chequeNumber.equals(that.chequeNumber) && //
+				this.dateWritten.equals(that.dateWritten) && //
+				this.payee.equals(that.payee);
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.payment.PaymentMethod#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+
+		int result = super.hashCode();
+
+		result += 31 * accountNumber.hashCode();
+		result += 31 * accountName.hashCode();
+		result += 31 * bankAddress.hashCode();
+		result += 31 * bankIdentificationNumber.hashCode();
+		result += 31 * bankName.hashCode();
+		result += 31 * chequeNumber.hashCode();
+		result += 31 * dateWritten.hashCode();
+		result += 31 * payee.hashCode();
+
+		return result;
+	}
 }

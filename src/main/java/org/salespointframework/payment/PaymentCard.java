@@ -1,6 +1,7 @@
 package org.salespointframework.payment;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.util.Assert;
 
@@ -16,6 +17,8 @@ import org.springframework.util.Assert;
  */
 @SuppressWarnings("serial")
 public abstract class PaymentCard extends PaymentMethod {
+
+	private static final DateTimeFormatter MONTH_YEAR = DateTimeFormatter.ofPattern("MM/YY");
 
 	private final String cardAssociationName;
 	private final String cardNumber;
@@ -118,5 +121,61 @@ public abstract class PaymentCard extends PaymentMethod {
 	 */
 	public String getCardVerificationCode() {
 		return cardVerificationCode;
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.payment.PaymentMethod#toString()
+	 */
+	@Override
+	public String toString() {
+		return String.format("%s - %s - %s - valid from %s to %s", super.toString(), cardNumber, nameOnCard,
+				validFrom.format(MONTH_YEAR), expiryDate.format(MONTH_YEAR));
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null || !this.getClass().equals(obj.getClass())) {
+			return false;
+		}
+
+		PaymentCard that = (PaymentCard) obj;
+
+		return super.equals(obj) && this.billingAddress.equals(that.billingAddress) && //
+				this.cardAssociationName.equals(that.cardAssociationName) && //
+				this.cardNumber.equals(that.cardNumber) && //
+				this.cardVerificationCode.equals(that.cardVerificationCode) && //
+				this.expiryDate.equals(that.expiryDate) && //
+				this.nameOnCard.equals(that.nameOnCard) && //
+				this.validFrom.equals(that.validFrom);
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.payment.PaymentMethod#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+
+		int result = super.hashCode();
+
+		result += 31 * billingAddress.hashCode();
+		result += 31 * cardAssociationName.hashCode();
+		result += 31 * cardNumber.hashCode();
+		result += 31 * cardVerificationCode.hashCode();
+		result += 31 * expiryDate.hashCode();
+		result += 31 * nameOnCard.hashCode();
+		result += 31 * validFrom.hashCode();
+
+		return result;
 	}
 }

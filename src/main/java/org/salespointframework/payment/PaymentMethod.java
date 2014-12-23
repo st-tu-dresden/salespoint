@@ -38,4 +38,36 @@ public abstract class PaymentMethod implements Serializable {
 	public String toString() {
 		return description;
 	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null || !getClass().equals(obj.getClass())) {
+			return false;
+		}
+
+		PaymentMethod that = (PaymentMethod) obj;
+
+		return this.description.equals(that.description);
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+
+		int result = 17;
+		result += 31 * description.hashCode();
+		return result;
+	}
 }
