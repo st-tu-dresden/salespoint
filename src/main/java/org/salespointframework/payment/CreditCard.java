@@ -98,4 +98,40 @@ public final class CreditCard extends PaymentCard {
 	public Money getCreditLimit() {
 		return creditLimit;
 	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.payment.PaymentCard#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null || !this.getClass().equals(obj.getClass())) {
+			return false;
+		}
+
+		CreditCard that = (CreditCard) obj;
+
+		return super.equals(obj) && this.creditLimit.equals(that.creditLimit)
+				&& this.dailyWithdrawalLimit.equals(that.dailyWithdrawalLimit);
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.payment.PaymentCard#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+
+		int result = super.hashCode();
+
+		result += 31 * creditLimit.hashCode();
+		result += 31 * dailyWithdrawalLimit.hashCode();
+
+		return result;
+	}
 }
