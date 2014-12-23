@@ -34,7 +34,7 @@ import com.jayway.jsonpath.JsonPath;
  */
 class ChangelogCreator {
 
-	private static final String MILESTONE_ID = "5";
+	private static final String MILESTONE_ID = "8";
 	private static final String URI_TEMPLATE = "https://api.github.com/repos/st-tu-dresden/salespoint/issues?milestone={id}&state=closed&sort=updated";
 
 	public static void main(String... args) throws Exception {

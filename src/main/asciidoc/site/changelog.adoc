@@ -3,6 +3,20 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :revdate: {localdate}
 
 :numbered!:
+[6.1.1]
+== 6.1.1
+
+Release date: 2014-12-23
+
+----
+- Add equals(…)  / hashCode() / toString() methods to value objects in payment package - #80
+- SpringSecurityAuthenticationManager should return Optional.empty() if no user is logged in - #76
+- Update architecture description to reflect allowed dependency from orders to inventory - #75
+- Make sure auto-configuration for web and security gets applied - #74
+- Reintroduce CharacterEncodingFilter bean declaration as the default in Boot 1.2.0 doesn't work as advertised - #72
+----
+
+:numbered!:
 [6.1]
 == 6.1
 

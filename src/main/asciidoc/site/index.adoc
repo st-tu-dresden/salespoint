@@ -20,7 +20,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 == Resources
 
 [[resources.latest]]
-=== Latest release version - 6.1.0.RELEASE
+=== Latest release version - 6.1.1.RELEASE
 * link:salespoint-reference.html[Reference documentation]
 * link:api[JavaDoc]
 * link:changelog.html[Changelog]
@@ -40,7 +40,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 <dependency>
   <groupId>de.tudresden.inf.st</groupId>
   <artifactId>salespoint-framework</artifactId>
-  <version>6.1.0.RELEASE</version>
+  <version>6.1.1.RELEASE</version>
 </dependency>
 ----
 
