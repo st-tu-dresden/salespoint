@@ -105,6 +105,42 @@ public final class Temporals {
         final Object hour, final Object minute, final Object second, final Object nanosecond) {
         return temporalCreationUtils.create(year, month, day, hour, minute, second, nanosecond);
     }
+    
+    /**
+     *
+     * @return a instance of java.time.LocalDate
+     * @since 2.1.0
+     */
+    public Temporal createDate(final String isoDate) {
+        return temporalCreationUtils.createDate(isoDate);
+    }
+    
+    /**
+     *
+     * @return a instance of java.time.LocalDateTime
+     * @since 2.1.0
+     */
+    public Temporal createDateTime(final String isoDate) {
+        return temporalCreationUtils.createDateTime(isoDate);
+    }
+    
+    /**
+     *
+     * @return a instance of java.time.LocalDate
+     * @since 2.1.0
+     */
+    public Temporal createDate(final String isoDate, final String pattern) {
+        return temporalCreationUtils.createDate(isoDate, pattern);
+    }
+    
+    /**
+     *
+     * @return a instance of java.time.LocalDateTime
+     * @since 2.1.0
+     */
+    public Temporal createDateTime(final String isoDate, final String pattern) {
+        return temporalCreationUtils.createDateTime(isoDate, pattern);
+    }
 
     /**
      *
@@ -120,8 +156,8 @@ public final class Temporals {
      * @return a instance of java.time.ZonedDateTime
      * @since 2.1.0
      */
-    public Temporal createNowForTimeZone(final Object timeZone) {
-        return temporalCreationUtils.createNowForTimeZone(timeZone);
+    public Temporal createNowForTimeZone(final Object zoneId) {
+        return temporalCreationUtils.createNowForTimeZone(zoneId);
     }
 
     /**

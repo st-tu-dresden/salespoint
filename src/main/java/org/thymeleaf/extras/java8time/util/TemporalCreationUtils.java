@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
 import java.util.TimeZone;
 import org.thymeleaf.util.EvaluationUtil;
@@ -118,6 +119,42 @@ public final class TemporalCreationUtils {
     public Temporal createTodayForTimeZone(final Object zoneId) {
         return ZonedDateTime.now(zoneId(zoneId))
             .withHour(0).withMinute(0).withSecond(0).withNano(0);
+    }
+
+    /**
+     *
+     * @return a instance of java.time.LocalDate
+     * @since 2.1.0
+     */
+    public Temporal createDate(String isoDate) {
+        return LocalDate.parse(isoDate);
+    }
+
+    /**
+     *
+     * @return a instance of java.time.LocalDateTime
+     * @since 2.1.0
+     */
+    public Temporal createDateTime(String isoDate) {
+        return LocalDateTime.parse(isoDate);
+    }
+
+    /**
+     *
+     * @return a instance of java.time.LocalDate
+     * @since 2.1.0
+     */
+    public Temporal createDate(String isoDate, String pattern) {
+        return LocalDate.parse(isoDate, DateTimeFormatter.ofPattern(pattern));
+    }
+
+    /**
+     *
+     * @return a instance of java.time.LocalDateTime
+     * @since 2.1.0
+     */
+    public Temporal createDateTime(String isoDate, String pattern) {
+        return LocalDateTime.parse(isoDate, DateTimeFormatter.ofPattern(pattern));
     }
 
     private int integer(final Object number) {
