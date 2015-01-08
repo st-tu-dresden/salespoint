@@ -119,4 +119,56 @@ public class TemporalsCreationTest {
         assertEquals(0, time.getSecond());
         assertEquals(0, time.getNano());
     }
+
+    @Test
+    public void testCreateDate() {
+        Temporal temporal = temporals.createDate("2015-12-31");
+        assertNotNull(temporal);
+        assertTrue(temporal instanceof LocalDate);
+        LocalDate date = (LocalDate) temporal;
+        assertEquals(2015, date.getYear());
+        assertEquals(  12, date.getMonthValue());
+        assertEquals(  31, date.getDayOfMonth());
+    }
+    
+    @Test
+    public void testCreateDateTime() {
+        Temporal temporal = temporals.createDateTime("2015-12-31T23:59:00");
+        assertNotNull(temporal);
+        assertTrue(temporal instanceof LocalDateTime);
+        LocalDateTime time = (LocalDateTime) temporal;
+        assertEquals(2015, time.getYear());
+        assertEquals(  12, time.getMonthValue());
+        assertEquals(  31, time.getDayOfMonth());
+        assertEquals(  23, time.getHour());
+        assertEquals(  59, time.getMinute());
+        assertEquals(   0, time.getSecond());
+        assertEquals(   0, time.getNano());
+    }
+    
+    @Test
+    public void testCreateDateWithPattern() {
+        Temporal temporal = temporals.createDate("31.12.2015", "dd.MM.yyyy");
+        assertNotNull(temporal);
+        assertTrue(temporal instanceof LocalDate);
+        LocalDate date = (LocalDate) temporal;
+        assertEquals(2015, date.getYear());
+        assertEquals(  12, date.getMonthValue());
+        assertEquals(  31, date.getDayOfMonth());
+    }
+    @Test
+    public void testCreateDateTimeWithPattern() {
+        Temporal temporal = temporals.createDateTime("31.12.2015 23:59", "dd.MM.yyyy HH:mm");
+        assertNotNull(temporal);
+        assertTrue(temporal instanceof LocalDateTime);
+        LocalDateTime time = (LocalDateTime) temporal;
+        assertEquals(2015, time.getYear());
+        assertEquals(  12, time.getMonthValue());
+        assertEquals(  31, time.getDayOfMonth());
+        assertEquals(  23, time.getHour());
+        assertEquals(  59, time.getMinute());
+        assertEquals(   0, time.getSecond());
+        assertEquals(   0, time.getNano());
+    }
+
 }
