@@ -36,21 +36,6 @@ public class SalespointWebConfiguration extends WebMvcConfigurerAdapter {
 	}
 
 	/**
-	 * Needs to be decalred although Boot has provided a default bean since 1.2 until #2148 gets fixed.
-	 * 
-	 * @return
-	 * @see https://github.com/spring-projects/spring-boot/issues/2148
-	 */
-	@Bean
-	public CharacterEncodingFilter prioritizedCharacterEncodingFilter() {
-
-		CharacterEncodingFilter filter = new PriorityOrderedCharacterEncodingFilter();
-		filter.setEncoding("UTF-8");
-		filter.setForceEncoding(true);
-		return filter;
-	}
-
-	/**
 	 * Registers the {@link Salespoint} specific {@link HandlerMethodArgumentResolver} with Spring MVC.
 	 * 
 	 * @see org.salespointframework.useraccount.web.LoggedInUserAccountArgumentResolver
