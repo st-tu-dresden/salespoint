@@ -18,7 +18,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 import org.salespointframework.core.AbstractEntity;
@@ -48,7 +47,6 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))//
 	private UserAccount userAccount;
 
-	@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")//
 	private LocalDateTime dateCreated = null;
 
 	// tag::orderStatus[]

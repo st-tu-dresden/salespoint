@@ -17,6 +17,7 @@
 	<properties>
 		<dev>/dev</dev>
 		<spring-security.version>4.0.0.RELEASE</spring-security.version>
+		<spring-data-releasetrain.version>Fowler-RELEASE</spring-data-releasetrain.version>
 	</properties>
 
 	<profiles>
@@ -82,12 +83,6 @@
 			<groupId>org.joda</groupId>
 			<artifactId>joda-money</artifactId>
 			<version>0.9.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jadira.usertype</groupId>
-			<artifactId>usertype.extended</artifactId>
-			<version>3.2.0.GA</version>
 		</dependency>
 
 		<!-- For changelog creation -->

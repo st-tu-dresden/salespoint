@@ -10,6 +10,7 @@ import org.salespointframework.EnableSalespoint.SalespointSecurityAutoConfigurat
 import org.salespointframework.EnableSalespoint.SalespointWebAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -37,6 +38,7 @@ import org.springframework.context.annotation.Import;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Import({ Salespoint.class, SalespointWebAutoConfiguration.class, SalespointSecurityAutoConfiguration.class })
+@EntityScan
 @SpringBootApplication
 public @interface EnableSalespoint {
 
