@@ -46,7 +46,17 @@ public interface OrderManager<T extends Order> {
 	 * @param orderStatus Denoting the {@link OrderStatus} on which the {@link Order}s will be requested.
 	 * @return an Iterable containing all {@link Order}s with the specified {@link OrderStatus}
 	 */
+	@Deprecated
 	Iterable<T> find(OrderStatus orderStatus);
+	
+	/**
+	 * Returns all {@link Order}s having the {@link OrderStatus} {@code status}. If no orders with the specified status
+	 * exist, an empty Iterable is returned.
+	 * 
+	 * @param orderStatus	Denoting the {@link OrderStatus} on which the {@link Order}s will be requested.
+	 * @return	an Iterable containing all {@link Order}s with the specified {@link OrderStatus}
+	 */
+	Iterable<T> findOrdersByOrderStatus(OrderStatus orderStatus);
 
 	/**
 	 * Returns all {@link Order}s in between the dates {@code from} and {@code to}, including from and to. So every entry
@@ -57,7 +67,19 @@ public interface OrderManager<T extends Order> {
 	 * @param to time stamp denoting the end of the requested time period, must not be {@literal null}.
 	 * @return an {@link Iterable} containing all {@link Order}s between from and to.
 	 */
+	@Deprecated
 	Iterable<T> find(LocalDateTime from, LocalDateTime to);
+	
+	/**
+	 * Returns all {@link Order}s in between the interval {@code from} and {@code to}, including from and to. So every entry
+	 * with an time stamp <= to and >= from is returned. If no {@link Order}s within the specified time span exist, an
+	 * empty Iterable is returned.
+	 * 
+	 * @param from	Time stamp denoting the start of the requested time period, must not be {@literal null}.
+	 * @param to	Time stamp denoting the end of the requested time period, must not be {@literal null}.
+	 * @return		an {@link Iterable} containing all {@link Order}s between from and to.
+	 */
+	Iterable<T> findOrdersBetween(LocalDateTime from, LocalDateTime to);
 
 	/**
 	 * Returns all {@link Order}s of the given {@link UserAccount}. If this user has no orders, an empty {@link Iterable}
@@ -67,7 +89,18 @@ public interface OrderManager<T extends Order> {
 	 *          {@literal null}.
 	 * @return an {@link Iterable} containing all orders of the specified user.
 	 */
+	@Deprecated
 	Iterable<T> find(UserAccount userAccount);
+	
+	/**
+	 * Returns all {@link Order}s of the given {@link UserAccount}. If this user has no orders, an empty {@link Iterable}
+	 * is returned.
+	 * 
+	 * @param userAccount	Denoting the {@link UserAccount} on which the orders will be requested, must not be
+	 *          {@literal null}.
+	 * @return	an {@link Iterable} containing all orders of the specified user.
+	 */
+	Iterable<T> findOrdersByUserAccount(UserAccount userAccount);
 
 	/**
 	 * Returns all {@link Order}s from the given {@link UserAccount} in between the dates {@code from} and {@code to},
@@ -78,7 +111,20 @@ public interface OrderManager<T extends Order> {
 	 * @param to time stamp denoting the end of the requested time period, must not be {@literal null}.
 	 * @return an {@link Iterable} containing all orders from the specified user in the specified period.
 	 */
+	@Deprecated
 	Iterable<T> find(UserAccount userAccount, LocalDateTime from, LocalDateTime to);
+	
+	/**
+	 * Returns all {@link Order}s from the given {@link UserAccount} in between the dates {@code from} and {@code to},
+	 * including from and to. So every entry with an time stamp <= to and >= from is returned. If this user has no 
+	 * {@link Order}s in this period, an empty {@link Iterable} is returned.
+	 * 
+	 * @param userAccount	The {@link UserAccount} whose {@link Order}s shall be returned, must not be {@literal null}.
+	 * @param from			Time stamp denoting the start of the requested time period,must not be {@literal null}.
+	 * @param to			Time stamp denoting the end of the requested time period, must not be {@literal null}.
+	 * @return				an {@link Iterable} containing all orders from the specified user in the specified period.
+	 */
+	Iterable<T> findOrders(UserAccount userAccount, LocalDateTime from, LocalDateTime to);
 
 	/**
 	 * Tries to complete this order, the {@link OrderStatus} has to be PAID.
