@@ -16,7 +16,7 @@
 
 	<properties>
 		<dev>/dev</dev>
-		<spring-security.version>4.0.0.RELEASE</spring-security.version>
+		<spring-security.version>4.0.1.RELEASE</spring-security.version>
 		<spring-data-releasetrain.version>Fowler-RELEASE</spring-data-releasetrain.version>
 	</properties>
 
