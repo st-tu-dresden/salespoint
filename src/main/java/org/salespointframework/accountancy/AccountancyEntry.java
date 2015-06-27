@@ -2,6 +2,7 @@ package org.salespointframework.accountancy;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Optional;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -82,8 +83,8 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	/**
 	 * @return the {@link DateTime} when this entry was posted.
 	 */
-	public final LocalDateTime getDate() {
-		return date;
+	public final Optional<LocalDateTime> getDate() {
+		return Optional.ofNullable(date);
 	}
 
 	void setDate(LocalDateTime dateTime) {

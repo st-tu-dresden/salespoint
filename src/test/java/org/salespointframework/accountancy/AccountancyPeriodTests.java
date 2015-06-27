@@ -45,9 +45,9 @@ public class AccountancyPeriodTests extends AbstractIntegrationTests {
 			System.out.println("Adding p " + p);
 
 			if (i == 5)
-				from = p.getDate();
+				from = p.getDate().get();
 			if (i == 15)
-				to = p.getDate();
+				to = p.getDate().get();
 
 			Thread.sleep(5);
 		}
