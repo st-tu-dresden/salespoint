@@ -1,6 +1,7 @@
 package org.salespointframework.accountancy;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -8,9 +9,9 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.order.ProductPaymentEntry;
 import org.springframework.util.Assert;
 
@@ -31,9 +32,10 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	// IdClass annotation did not work. Maybe Using a DescriptorCustomizer can
 	// be used, to correct the mappings (don't forget to sacrifice a chicken, if
 	// it does).
-	@EmbeddedId @AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID", nullable = false)) private AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();
+	@EmbeddedId @AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID", nullable = false) ) //
+	private AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();
 
-	@Lob private Money value = Money.zero(CurrencyUnit.EUR);
+	private @Lob Money value = Currencies.ZERO_EURO;
 
 	private LocalDateTime date = null;
 	private String description = "";

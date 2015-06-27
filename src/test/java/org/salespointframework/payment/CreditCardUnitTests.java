@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.junit.Test;
+import org.salespointframework.core.Currencies;
 
 /**
  * Unit tests for {@link CreditCard}.
@@ -18,15 +18,14 @@ public class CreditCardUnitTests {
 
 	static final LocalDateTime NOW = LocalDateTime.now();
 
-	static final CreditCard VISA = new CreditCard("VISA", "whatever", "1234123412341234", "Oliver Gierke",
-			"Some address", NOW, NOW.plusMonths(12), "567", Money.of(CurrencyUnit.EUR, 2000),
-			Money.of(CurrencyUnit.EUR, 2000));
+	static final Money AMOUNT = Money.of(2000, Currencies.EURO);
+
+	static final CreditCard VISA = new CreditCard("VISA", "whatever", "1234123412341234", "Oliver Gierke", "Some address",
+			NOW, NOW.plusMonths(12), "567", AMOUNT, AMOUNT);
 	static final CreditCard VISA_CLONE = new CreditCard("VISA", "whatever", "1234123412341234", "Oliver Gierke",
-			"Some address", NOW, NOW.plusMonths(12), "567", Money.of(CurrencyUnit.EUR, 2000),
-			Money.of(CurrencyUnit.EUR, 2000));
+			"Some address", NOW, NOW.plusMonths(12), "567", AMOUNT, AMOUNT);
 	static final CreditCard MASTER_CARD = new CreditCard("MasterCard", "whatever", "1234123412341234", "Oliver Gierke",
-			"Some address", NOW, NOW.plusMonths(12), "567", Money.of(CurrencyUnit.EUR, 2000),
-			Money.of(CurrencyUnit.EUR, 2000));
+			"Some address", NOW, NOW.plusMonths(12), "567", AMOUNT, AMOUNT);
 
 	/**
 	 * @see #80

@@ -5,14 +5,14 @@ import static org.junit.Assert.*;
 
 import java.util.Optional;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.inventory.Inventory;
 import org.salespointframework.inventory.InventoryItem;
 import org.salespointframework.order.OrderCompletionResult.OrderCompletionStatus;
@@ -80,7 +80,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 	@Test
 	public void completesOrderIfAllLineItemsAreAvailableInSufficientQuantity() {
 
-		Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(CurrencyUnit.EUR, 1.2)));
+		Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
 		inventory.save(new InventoryItem(cookie, Units.of(100)));
 		order.add(new OrderLine(cookie, Units.TEN));
 
@@ -96,7 +96,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 	@Test
 	public void failsOrderCompletionIfLineItemsAreNotAvailableInSufficientQuantity() {
 
-		Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(CurrencyUnit.EUR, 1.2)));
+		Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
 		inventory.save(new InventoryItem(cookie, Units.of(1)));
 		order.add(new OrderLine(cookie, Units.TEN));
 

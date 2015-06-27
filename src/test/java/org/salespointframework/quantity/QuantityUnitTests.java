@@ -3,11 +3,9 @@ package org.salespointframework.quantity;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import java.math.RoundingMode;
-
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.junit.Test;
+import org.salespointframework.core.Currencies;
 
 /**
  * Unit tests for {@link Quantity}.
@@ -40,20 +38,20 @@ public class QuantityUnitTests {
 	public void multiply() {
 
 		Quantity quantity = new Quantity(5, Units.METRIC, RoundingStrategy.ROUND_ONE);
-		Money money = Money.of(CurrencyUnit.EUR, 2);
-		Money result = money.multipliedBy(quantity.amount, RoundingMode.HALF_UP);
+		Money money = Money.of(2, Currencies.EURO);
+		Money result = money.multiply(quantity.amount);
 
-		assertThat(result, is(Money.of(CurrencyUnit.EUR, 10)));
+		assertThat(result, is(Money.of(10, Currencies.EURO)));
 	}
 
 	@Test
 	public void unitTest() {
 
 		Units unit = Units.of(4);
-		Money money = Money.of(CurrencyUnit.EUR, 15.76);
-		Money result = money.multipliedBy(unit.amount, RoundingMode.HALF_UP);
+		Money money = Money.of(15.76, Currencies.EURO);
+		Money result = money.multiply(unit.amount);
 
-		assertThat(result, is(Money.of(CurrencyUnit.EUR, 63.04)));
+		assertThat(result, is(Money.of(63.04, Currencies.EURO)));
 	}
 
 	/**

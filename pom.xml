@@ -80,9 +80,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.joda</groupId>
-			<artifactId>joda-money</artifactId>
-			<version>0.9.1</version>
+			<groupId>org.javamoney</groupId>
+			<artifactId>moneta</artifactId>
+			<version>1.0</version>
 		</dependency>
 
 		<!-- For changelog creation -->

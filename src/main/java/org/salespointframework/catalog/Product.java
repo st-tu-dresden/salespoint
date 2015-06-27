@@ -11,7 +11,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.MetricMismatchException;
@@ -25,12 +25,12 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Entity
-public class Product extends AbstractEntity<ProductIdentifier> implements Comparable<Product> {
+public class Product extends AbstractEntity<ProductIdentifier>implements Comparable<Product> {
 
 	private static final long serialVersionUID = 6645371648836029780L;
 
-	@EmbeddedId//
-	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))//
+	@EmbeddedId //
+	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID") ) //
 	private ProductIdentifier productIdentifier = new ProductIdentifier();
 	private String name;
 	private @Lob Money price;

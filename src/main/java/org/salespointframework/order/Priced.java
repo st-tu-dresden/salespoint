@@ -1,6 +1,6 @@
 package org.salespointframework.order;
 
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 
 /**
  * Interface for any priced item to ease summing up priced items.
@@ -10,7 +10,7 @@ import org.joda.money.Money;
 interface Priced {
 
 	/**
-	 * Returns the proce of the item.
+	 * Returns the price of the item.
 	 * 
 	 * @return
 	 */

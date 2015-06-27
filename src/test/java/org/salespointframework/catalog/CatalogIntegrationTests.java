@@ -6,11 +6,11 @@ import static org.junit.Assert.*;
 import java.util.Optional;
 
 import org.hamcrest.Matchers;
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,7 +29,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 
 	@Before
 	public void before() {
-		cookie = new Cookie("Schoki", Money.zero(CurrencyUnit.EUR));
+		cookie = new Cookie("Schoki", Currencies.ZERO_EURO);
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	@Test
 	public void findsProductsByCategory() {
 
-		Product product = new Product("MacBook", Money.of(CurrencyUnit.EUR, 2700.0), Units.METRIC);
+		Product product = new Product("MacBook", Money.of(2700.0, Currencies.EURO), Units.METRIC);
 		product.addCategory("Apple");
 
 		catalog.save(product);
@@ -141,7 +141,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 
 	private Cookie createCookie() {
 
-		Cookie doubleChoc = new Cookie("DoubleChoc", Money.of(CurrencyUnit.EUR, 1.25d));
+		Cookie doubleChoc = new Cookie("DoubleChoc", Money.of(1.25d, Currencies.EURO));
 		doubleChoc.addCategory("chocolate");
 		doubleChoc.property = "Yummy!";
 

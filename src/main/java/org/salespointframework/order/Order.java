@@ -18,9 +18,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.util.Assert;
@@ -36,28 +36,28 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	private static final long serialVersionUID = 7417079332245151314L;
 
-	@EmbeddedId//
-	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID"))//
+	@EmbeddedId //
+	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID") ) //
 	private OrderIdentifier orderIdentifier = new OrderIdentifier();
 
-	@Lob//
+	@Lob //
 	private PaymentMethod paymentMethod;
 
-	@OneToOne//
-	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID"))//
+	@OneToOne //
+	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID") ) //
 	private UserAccount userAccount;
 
 	private LocalDateTime dateCreated = null;
 
 	// tag::orderStatus[]
-	@Enumerated(EnumType.STRING)//
+	@Enumerated(EnumType.STRING) //
 	private OrderStatus orderStatus = OrderStatus.OPEN;
 	// end::orderStatus[]
 
-	@OneToMany(cascade = CascadeType.ALL)//
+	@OneToMany(cascade = CascadeType.ALL) //
 	private Set<OrderLine> orderLines = new HashSet<OrderLine>();
 
-	@OneToMany(cascade = CascadeType.ALL)//
+	@OneToMany(cascade = CascadeType.ALL) //
 	private Set<ChargeLine> chargeLines = new HashSet<ChargeLine>();
 
 	/**
@@ -117,7 +117,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	}
 
 	public Money getTotalPrice() {
-		return getOrderedLinesPrice().plus(getChargeLinesPrice());
+		return getOrderedLinesPrice().add(getChargeLinesPrice());
 	}
 
 	public Money getOrderedLinesPrice() {
@@ -175,7 +175,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 		return priced.stream().//
 				map(Priced::getPrice).//
-				reduce((left, right) -> left.plus(right)).orElse(Money.zero(CurrencyUnit.EUR));
+				reduce((left, right) -> left.add(right)).orElse(Currencies.ZERO_EURO);
 	}
 
 	/**

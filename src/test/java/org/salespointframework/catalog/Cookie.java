@@ -2,9 +2,8 @@ package org.salespointframework.catalog;
 
 import javax.persistence.Entity;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
-import org.salespointframework.catalog.Product;
+import org.javamoney.moneta.Money;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Units;
 
 @SuppressWarnings("javadoc")
@@ -19,6 +18,6 @@ public class Cookie extends Product {
 	}
 
 	public Cookie(String name, Money price) {
-		super(name, Money.of(CurrencyUnit.EUR, 9001), Units.METRIC);
+		super(name, Money.of(9001, Currencies.EURO), Units.METRIC);
 	}
 }

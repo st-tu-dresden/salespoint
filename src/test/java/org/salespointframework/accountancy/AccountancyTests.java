@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.ProductPaymentEntry;
@@ -40,11 +40,11 @@ public class AccountancyTests extends AbstractIntegrationTests {
 				user = userAccountManager.save(user);
 				OrderIdentifier orderIdentifier = new Order(user).getIdentifier();
 
-				a.add(new ProductPaymentEntry(orderIdentifier, user, Money.of(CurrencyUnit.EUR, 1.0), "Rechnung nr " + year,
+				a.add(new ProductPaymentEntry(orderIdentifier, user, Money.of(1, Currencies.EURO), "Rechnung nr " + year,
 						Cash.CASH));
 			} else {
 				System.out.println("PersistentAccountancyEntry");
-				a.add(new AccountancyEntry(Money.of(CurrencyUnit.EUR, 2.22)));
+				a.add(new AccountancyEntry(Money.of(2.22, Currencies.EURO)));
 			}
 
 			if (year == 2002) {

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.salespointframework.time.Interval;
 
 /**

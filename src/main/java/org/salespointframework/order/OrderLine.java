@@ -1,7 +1,5 @@
 package org.salespointframework.order;
 
-import java.math.RoundingMode;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -9,8 +7,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.core.AbstractEntity;
@@ -25,19 +22,19 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Entity
-public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Priced {
+public class OrderLine extends AbstractEntity<OrderLineIdentifier>implements Priced {
 
 	private static final long serialVersionUID = -4310089726057038893L;
 
-	@EmbeddedId//
-	@AttributeOverride(name = "id", column = @Column(name = "ORDERLINE_ID"))//
+	@EmbeddedId //
+	@AttributeOverride(name = "id", column = @Column(name = "ORDERLINE_ID") ) //
 	private OrderLineIdentifier orderLineIdentifier = new OrderLineIdentifier();
 
-	@Embedded//
-	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))//
+	@Embedded //
+	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID") ) //
 	private ProductIdentifier productIdentifier;
 
-	private @Lob Money price = Money.of(CurrencyUnit.EUR, 1.0);
+	private @Lob Money price;
 	private @Lob Quantity quantity;
 	private String productName;
 
@@ -64,7 +61,7 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Pr
 
 		this.productIdentifier = product.getIdentifier();
 		this.quantity = quantity;
-		this.price = product.getPrice().multipliedBy(quantity.getAmount(), RoundingMode.HALF_UP);
+		this.price = product.getPrice().multiply(quantity.getAmount());
 		this.productName = product.getName();
 	}
 

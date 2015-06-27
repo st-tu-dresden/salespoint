@@ -1,9 +1,8 @@
 package org.salespointframework.order;
 
-import java.math.RoundingMode;
 import java.util.UUID;
 
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.util.Assert;
@@ -35,7 +34,7 @@ public class CartItem implements Priced {
 		product.verify(quantity);
 
 		this.quantity = quantity;
-		this.price = product.getPrice().multipliedBy(quantity.getAmount(), RoundingMode.HALF_UP);
+		this.price = product.getPrice().multiply(quantity.getAmount());
 		this.product = product;
 	}
 

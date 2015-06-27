@@ -11,8 +11,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.time.Interval;
 import org.salespointframework.time.Intervals;
@@ -132,9 +132,10 @@ class PersistentAccountancy<T extends AccountancyEntry> implements Accountancy<T
 
 		for (Entry<Interval, Iterable<T>> e : find(from, to, period).entrySet()) {
 
-			sales.put(e.getKey(), stream(e.getValue().spliterator(), false).//
-					map(AccountancyEntry::getValue).//
-					reduce(Money.zero(CurrencyUnit.EUR), Money::plus));
+			sales.put(e.getKey(),
+					stream(e.getValue().spliterator(), false).//
+							map(AccountancyEntry::getValue).//
+							reduce(Money.of(0, Currencies.EURO), Money::add));
 		}
 
 		return sales;

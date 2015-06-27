@@ -1,13 +1,12 @@
 package org.salespointframework.order;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Units;
 import org.salespointframework.useraccount.UserAccount;
@@ -31,7 +30,7 @@ public class OrderLineTests extends AbstractIntegrationTests {
 	@Before
 	public void before() {
 
-		Product cookie = new Cookie("OrderLine Cookie " + keksCounter++, Money.zero(CurrencyUnit.EUR));
+		Product cookie = new Cookie("OrderLine Cookie " + keksCounter++, Currencies.ZERO_EURO);
 
 		catalog.save(cookie);
 

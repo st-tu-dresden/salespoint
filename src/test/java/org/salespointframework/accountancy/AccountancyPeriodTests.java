@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.ProductPaymentEntry;
@@ -33,7 +33,7 @@ public class AccountancyPeriodTests extends AbstractIntegrationTests {
 		UserAccount account = userAccountManager.save(userAccountManager.create("username", "password"));
 		OrderIdentifier orderIdentifier = new Order(account).getIdentifier();
 
-		Money oneEuro = Money.of(CurrencyUnit.EUR, 1d);
+		Money oneEuro = Money.of(1, Currencies.EURO);
 
 		System.out.println("Creating AccountancyEntries: ");
 
@@ -83,10 +83,10 @@ public class AccountancyPeriodTests extends AbstractIntegrationTests {
 		System.out.println("Getting entries from " + from + " to " + to);
 		Map<Interval, Iterable<ProductPaymentEntry>> m = a.find(from, to, Duration.ofMillis(200));
 		for (Entry<Interval, Iterable<ProductPaymentEntry>> e : m.entrySet()) {
-			total = Money.zero(CurrencyUnit.EUR);
+			total = Currencies.ZERO_EURO;
 			for (ProductPaymentEntry p : e.getValue()) {
 				System.out.println("\t" + p.getValue());
-				total = total.plus(p.getValue());
+				total = total.add(p.getValue());
 			}
 			System.out.println("Money for interval " + e.getKey() + ": " + total);
 

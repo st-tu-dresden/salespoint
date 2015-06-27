@@ -3,12 +3,10 @@ package org.salespointframework.order;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import java.math.RoundingMode;
-
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.junit.Test;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.MetricMismatchException;
 import org.salespointframework.quantity.Quantity;
@@ -24,7 +22,7 @@ import org.salespointframework.quantity.Units;
 public class CartItemUnitTests {
 
 	static final Quantity quantity = Units.TEN;
-	static final Product product = new Product("name", Money.of(CurrencyUnit.EUR, 1), Units.METRIC);
+	static final Product product = new Product("name", Money.of(1, Currencies.EURO), Units.METRIC);
 
 	/**
 	 * @see #44
@@ -72,7 +70,7 @@ public class CartItemUnitTests {
 
 		CartItem item = new CartItem(product, quantity);
 
-		assertThat(item.getPrice(), is(product.getPrice().multipliedBy(quantity.getAmount(), RoundingMode.HALF_UP)));
+		assertThat(item.getPrice(), is(product.getPrice().multiply(quantity.getAmount())));
 	}
 
 	/**

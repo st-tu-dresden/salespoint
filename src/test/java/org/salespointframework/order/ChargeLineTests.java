@@ -1,10 +1,9 @@
 package org.salespointframework.order;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
@@ -25,7 +24,7 @@ public class ChargeLineTests extends AbstractIntegrationTests {
 	public void before() {
 		user = userAccountManager.create("userId", "password");
 		order = new Order(user, Cash.CASH);
-		chargeLine = new ChargeLine(Money.zero(CurrencyUnit.EUR), "gaaar nix");
+		chargeLine = new ChargeLine(Currencies.ZERO_EURO, "gaaar nix");
 	}
 
 	@Test(expected = IllegalArgumentException.class)

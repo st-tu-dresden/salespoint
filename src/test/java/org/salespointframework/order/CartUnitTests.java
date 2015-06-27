@@ -5,11 +5,11 @@ import static org.junit.Assert.*;
 
 import java.util.Optional;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.quantity.Units;
 
@@ -22,7 +22,7 @@ import org.salespointframework.quantity.Units;
 public class CartUnitTests {
 
 	static final Quantity quantity = Units.TEN;
-	static final Product product = new Product("name", Money.of(CurrencyUnit.EUR, 1), Units.METRIC);
+	static final Product product = new Product("name", Money.of(1, Currencies.EURO), Units.METRIC);
 
 	Cart cart;
 

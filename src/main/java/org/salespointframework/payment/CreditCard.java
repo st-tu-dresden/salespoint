@@ -2,7 +2,7 @@ package org.salespointframework.payment;
 
 import java.time.LocalDateTime;
 
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.springframework.util.Assert;
 
 /**

@@ -3,11 +3,11 @@ package org.salespointframework.order;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Units;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class CartIntegrationTests extends AbstractIntegrationTests {
 
 		Cart cart = new Cart();
 		CartItem cartItem = cart.addOrUpdateItem(//
-				new Product("name", Money.of(CurrencyUnit.EUR, 1), Units.METRIC), Units.TEN);
+				new Product("name", Money.of(1, Currencies.EURO), Units.METRIC), Units.TEN);
 
 		Order order = new Order(userAccountManager.create("foobar", "barfoo"));
 		cart.addItemsTo(order);

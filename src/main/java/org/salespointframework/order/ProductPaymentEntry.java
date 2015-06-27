@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.useraccount.UserAccount;
@@ -29,15 +29,15 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	/**
 	 * The {@link OrderIdentifier} to which this {@link ProductPaymentEntry} refers to.
 	 */
-	@Embedded//
-	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID", nullable = true))//
+	@Embedded //
+	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID", nullable = true) ) //
 	private OrderIdentifier orderIdentifier;
 
 	/**
 	 * The {@link UserAccountIdentifier} to which this {@link ProductPaymentEntry} refers to.
 	 */
-	@OneToOne//
-	@AttributeOverride(name = "id", column = @Column(name = "USER_ID", nullable = true))//
+	@OneToOne //
+	@AttributeOverride(name = "id", column = @Column(name = "USER_ID", nullable = true) ) //
 	private UserAccount userAccount;
 
 	private @Lob PaymentMethod paymentMethod;
@@ -60,9 +60,8 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	 * @param description textual description of the payment entry, must not be {@literal null}.
 	 * @param paymentMethod must not be {@literal null}.
 	 */
-
-	public ProductPaymentEntry(OrderIdentifier orderIdentifier, UserAccount userAccount, Money amount,
-			String description, PaymentMethod paymentMethod) {
+	public ProductPaymentEntry(OrderIdentifier orderIdentifier, UserAccount userAccount, Money amount, String description,
+			PaymentMethod paymentMethod) {
 
 		super(amount, description);
 

@@ -5,9 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.util.Assert;
 
@@ -109,7 +109,7 @@ public class Cart implements Iterable<CartItem>, Priced {
 
 		return items.stream().//
 				map(CartItem::getPrice).//
-				reduce((left, right) -> left.plus(right)).orElse(Money.zero(CurrencyUnit.EUR));
+				reduce((left, right) -> left.add(right)).orElse(Money.of(0, Currencies.EURO));
 	}
 
 	/* 

@@ -9,8 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
 import org.hibernate.exception.ConstraintViolationException;
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,6 +17,7 @@ import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,7 +40,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 	@Before
 	public void before() {
 
-		cookie = catalog.save(new Cookie("Add Superkeks", Money.zero(CurrencyUnit.EUR)));
+		cookie = catalog.save(new Cookie("Add Superkeks", Currencies.ZERO_EURO));
 		item = inventory.save(new InventoryItem(cookie, Units.TEN));
 	}
 

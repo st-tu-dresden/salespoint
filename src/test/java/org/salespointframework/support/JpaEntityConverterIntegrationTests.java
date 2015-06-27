@@ -18,14 +18,13 @@ package org.salespointframework.support;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import org.javamoney.moneta.Money;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.Catalog;
+import org.salespointframework.catalog.Product;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Units;
-import org.salespointframework.support.JpaEntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.TypeDescriptor;
 
@@ -42,7 +41,7 @@ public class JpaEntityConverterIntegrationTests extends AbstractIntegrationTests
 	@Test
 	public void convertsStringIdToProduct() {
 
-		Product product = new Product("iPad", Money.of(CurrencyUnit.EUR, 400), Units.METRIC);
+		Product product = new Product("iPad", Money.of(400, Currencies.EURO), Units.METRIC);
 		String identifier = product.getIdentifier().getIdentifier();
 
 		catalog.save(product);

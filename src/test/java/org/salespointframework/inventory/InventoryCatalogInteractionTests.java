@@ -3,14 +3,13 @@ package org.salespointframework.inventory;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Units;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,7 +26,7 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 	@Before
 	public void before() {
 
-		cookie = new Cookie("Superkeks " + (counter++), Money.zero(CurrencyUnit.EUR));
+		cookie = new Cookie("Superkeks " + (counter++), Currencies.ZERO_EURO);
 		item = new InventoryItem(cookie, Units.TEN);
 	}
 
@@ -71,5 +70,4 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 
 		assertThat(catalog.exists(cookie.getIdentifier()), is(true));
 	}
-
 }
