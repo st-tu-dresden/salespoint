@@ -1,14 +1,10 @@
 package org.salespointframework.order;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-
-import java.time.LocalDateTime;
 import java.util.Optional;
-
-import org.hamcrest.collection.IsIterableWithSize;
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
+import static org.hamcrest.CoreMatchers.is;
+import org.javamoney.moneta.Money;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
@@ -107,19 +103,5 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 		OrderCompletionResult result = orderManager.completeOrder(order);
 
 		assertThat(result.getStatus(), is(OrderCompletionStatus.FAILED));
-	}
-	
-	/**
-	 * @see #61
-	 */
-	@Test
-	public void findOrdersBetweenWhenFromEqual() {
-		
-		order = orderManager.save(order);
-		LocalDateTime dateCreated = order.getDateCreated();
-		
-		Iterable<Order> result = orderManager.findOrdersBetween(dateCreated, dateCreated.plusHours(1L));
-		
-		assertThat(result, IsIterableWithSize.<Order>iterableWithSize(1));
 	}
 }
