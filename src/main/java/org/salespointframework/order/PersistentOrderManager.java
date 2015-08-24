@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
 import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.catalog.ProductIdentifier;
@@ -19,7 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.Assert;
 
@@ -32,315 +33,321 @@ import org.springframework.util.Assert;
 @Transactional
 class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(PersistentOrderManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersistentOrderManager.class);
 
-	private final Inventory<InventoryItem> inventory;
-	private final TransactionTemplate txTemplate;
-	private final Accountancy<AccountancyEntry> accountancy;
-	private final BusinessTime businessTime;
-	private final OrderRepository<T> orderRepository;
+    private final Inventory<InventoryItem> inventory;
+    private final TransactionTemplate txTemplate;
+    private final Accountancy<AccountancyEntry> accountancy;
+    private final BusinessTime businessTime;
+    private final OrderRepository<T> orderRepository;
 
-	/**
-	 * Creates a new {@link PersistentOrderManager} using the given {@link Inventory}, {@link Accountancy}
-	 * {@link BusinessTime}, {@link OrderRepository} and {@link PlatformTransactionManager}.
-	 * 
-	 * @param inventory must not be {@literal null}.
-	 * @param accountancy must not be {@literal null}.
-	 * @param businessTime must not be {@literal null}.
-	 * @param orderRepository must not be {@literal null}.
-	 * @param txManager must not be {@literal null}.
-	 */
-	@Autowired
-	public PersistentOrderManager(Inventory<InventoryItem> inventory, Accountancy<AccountancyEntry> accountancy,
-			BusinessTime businessTime, OrderRepository<T> orderRepository, PlatformTransactionManager txManager) {
+    /**
+     * Creates a new {@link PersistentOrderManager} using the given {@link Inventory}, {@link Accountancy}
+     * {@link BusinessTime}, {@link OrderRepository} and
+     * {@link PlatformTransactionManager}.
+     *
+     * @param inventory must not be {@literal null}.
+     * @param accountancy must not be {@literal null}.
+     * @param businessTime must not be {@literal null}.
+     * @param orderRepository must not be {@literal null}.
+     * @param txManager must not be {@literal null}.
+     */
+    @Autowired
+    public PersistentOrderManager(Inventory<InventoryItem> inventory, Accountancy<AccountancyEntry> accountancy,
+            BusinessTime businessTime, OrderRepository<T> orderRepository, PlatformTransactionManager txManager) {
 
-		Assert.notNull(inventory, "Inventory must not be null!");
-		Assert.notNull(accountancy, "Accountancy must not be null!");
-		Assert.notNull(businessTime, "BusinessTime must not be null!");
-		Assert.notNull(orderRepository, "OrderRepository must not be null!");
-		Assert.notNull(txManager, "PlatformTransactionManager must not be null!");
+        Assert.notNull(inventory, "Inventory must not be null!");
+        Assert.notNull(accountancy, "Accountancy must not be null!");
+        Assert.notNull(businessTime, "BusinessTime must not be null!");
+        Assert.notNull(orderRepository, "OrderRepository must not be null!");
+        Assert.notNull(txManager, "PlatformTransactionManager must not be null!");
 
-		this.inventory = inventory;
-		this.accountancy = accountancy;
-		this.businessTime = businessTime;
-		this.orderRepository = orderRepository;
-		this.txTemplate = new TransactionTemplate(txManager);
-	}
+        this.inventory = inventory;
+        this.accountancy = accountancy;
+        this.businessTime = businessTime;
+        this.orderRepository = orderRepository;
+        this.txTemplate = new TransactionTemplate(txManager);
+    }
 
-	/* 
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#save(org.salespointframework.order.Order)
-	 */
-	@Override
-	public T save(T order) {
+    /* 
+     * (non-Javadoc)
+     * @see org.salespointframework.order.OrderManager#save(org.salespointframework.order.Order)
+     */
+    @Override
+    public T save(T order) {
 
-		Assert.notNull(order, "order must be not null");
+        Assert.notNull(order, "order must be not null");
 
-		if (order.getDateCreated() == null) {
-			order.setDateCreated(businessTime.getTime());
-		}
+        if (order.getDateCreated() == null) {
+            order.setDateCreated(businessTime.getTime());
+        }
 
-		return orderRepository.save(order);
-	}
+        return orderRepository.save(order);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#get(org.salespointframework.order.OrderIdentifier)
-	 */
-	@Override
-	public final Optional<T> get(OrderIdentifier orderIdentifier) {
+    /*
+     * (non-Javadoc)
+     * @see org.salespointframework.order.OrderManager#get(org.salespointframework.order.OrderIdentifier)
+     */
+    @Override
+    public final Optional<T> get(OrderIdentifier orderIdentifier) {
 
-		Assert.notNull(orderIdentifier, "orderIdentifier must not be null");
-		return orderRepository.findOne(orderIdentifier);
-	}
+        Assert.notNull(orderIdentifier, "orderIdentifier must not be null");
+        return orderRepository.findOne(orderIdentifier);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#contains(org.salespointframework.order.OrderIdentifier)
-	 */
-	@Override
-	public final boolean contains(OrderIdentifier orderIdentifier) {
+    /*
+     * (non-Javadoc)
+     * @see org.salespointframework.order.OrderManager#contains(org.salespointframework.order.OrderIdentifier)
+     */
+    @Override
+    public final boolean contains(OrderIdentifier orderIdentifier) {
 
-		Assert.notNull(orderIdentifier, "orderIdentifier must not be null");
-		return orderRepository.exists(orderIdentifier);
-	}
+        Assert.notNull(orderIdentifier, "orderIdentifier must not be null");
+        return orderRepository.exists(orderIdentifier);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#find(java.time.LocalDateTime, java.time.LocalDateTime)
-	 */
-	@Deprecated
-	@Override
-	public final Iterable<T> find(LocalDateTime from, LocalDateTime to) {
+    /*
+     * (non-Javadoc)
+     * @see org.salespointframework.order.OrderManager#find(java.time.LocalDateTime, java.time.LocalDateTime)
+     */
+    @Deprecated
+    @Override
+    public final Iterable<T> find(LocalDateTime from, LocalDateTime to) {
 
-		Assert.notNull(from, "from must not be null");
-		Assert.notNull(to, "to must not be null");
+        Assert.notNull(from, "from must not be null");
+        Assert.notNull(to, "to must not be null");
 
-		return orderRepository.findByDateCreatedBetween(from, to);
-	}
+        return orderRepository.findByDateCreatedBetween(from, to);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#findOrdersBetween(java.time.LocalDateTime, java.time.LocalDateTime)
-	 */
-	@Override
-	public Iterable<T> findOrdersBetween(LocalDateTime from, LocalDateTime to) {
-		
-		Assert.notNull(from, "from must not be null");
-		Assert.notNull(to, "to must not be null");
-		Assert.isTrue(from.isBefore(to) || from.isEqual(to), "time from must be before or equal to time to");
-		
-		return orderRepository.findByDateCreatedBetween(from, to);
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.salespointframework.order.OrderManager#findOrdersBetween(java.time.LocalDateTime, java.time.LocalDateTime)
+     */
+    @Override
+    public Iterable<T> findOrdersBetween(LocalDateTime from, LocalDateTime to) {
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#find(org.salespointframework.order.OrderStatus)
-	 */
-	@Deprecated
-	@Override
-	public final Iterable<T> find(OrderStatus orderStatus) {
+        Assert.notNull(from, "from must not be null");
+        Assert.notNull(to, "to must not be null");
+        Assert.isTrue(from.isBefore(to) || from.isEqual(to), "time from must be before or equal to time to");
 
-		Assert.notNull(orderStatus, "orderStatus must not be null");
-		return orderRepository.findByOrderStatus(orderStatus);
-	}
+        return orderRepository.findByDateCreatedBetween(from, to);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#findOrdersByOrderStatus(org.salespointframework.order.OrderStatus)
-	 */
-	@Override
-	public Iterable<T> findOrdersByOrderStatus(OrderStatus orderStatus) {
-		
-		Assert.notNull(orderStatus, "orderStatus must not be null");
-		return orderRepository.findByOrderStatus(orderStatus);
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.salespointframework.order.OrderManager#find(org.salespointframework.order.OrderStatus)
+     */
+    @Deprecated
+    @Override
+    public final Iterable<T> find(OrderStatus orderStatus) {
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#find(org.salespointframework.useraccount.UserAccount)
-	 */
-	@Deprecated
-	@Override
-	public final Iterable<T> find(UserAccount userAccount) {
+        Assert.notNull(orderStatus, "orderStatus must not be null");
+        return orderRepository.findByOrderStatus(orderStatus);
+    }
 
-		Assert.notNull(userAccount, "userAccount must not be null");
-		return orderRepository.findByUserAccount(userAccount);
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.salespointframework.order.OrderManager#findOrdersByOrderStatus(org.salespointframework.order.OrderStatus)
+     */
+    @Override
+    public Iterable<T> findOrdersByOrderStatus(OrderStatus orderStatus) {
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#findOrdersByUserAccount(org.salespointframework.useraccount.UserAccount)
-	 */
-	@Override
-	public Iterable<T> findOrdersByUserAccount(UserAccount userAccount) {
-		
-		Assert.notNull(userAccount, "userAccount must not be null");
-		return orderRepository.findByUserAccount(userAccount);
-	}
+        Assert.notNull(orderStatus, "orderStatus must not be null");
+        return orderRepository.findByOrderStatus(orderStatus);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#find(org.salespointframework.useraccount.UserAccount, java.time.LocalDateTime, java.time.LocalDateTime)
-	 */
-	@Deprecated
-	@Override
-	public final Iterable<T> find(UserAccount userAccount, LocalDateTime from, LocalDateTime to) {
+    /*
+     * (non-Javadoc)
+     * @see org.salespointframework.order.OrderManager#find(org.salespointframework.useraccount.UserAccount)
+     */
+    @Deprecated
+    @Override
+    public final Iterable<T> find(UserAccount userAccount) {
 
-		Assert.notNull(userAccount, "userAccount must not be null");
-		Assert.notNull(from, "from must not be null");
-		Assert.notNull(to, "to must not be null");
+        Assert.notNull(userAccount, "userAccount must not be null");
+        return orderRepository.findByUserAccount(userAccount);
+    }
 
-		return orderRepository.findByUserAccountAndDateCreatedBetween(userAccount, from, to);
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.salespointframework.order.OrderManager#findOrdersByUserAccount(org.salespointframework.useraccount.UserAccount)
+     */
+    @Override
+    public Iterable<T> findOrdersByUserAccount(UserAccount userAccount) {
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#findOrders(org.salespointframework.useraccount.UserAccount, java.time.LocalDateTime, java.time.LocalDateTime)
-	 */
-	@Override
-	public Iterable<T> findOrders(UserAccount userAccount, LocalDateTime from, LocalDateTime to) {
-		
-		Assert.notNull(userAccount, "userAccount must not be null");
-		Assert.notNull(from, "from must not be null");
-		Assert.notNull(to, "to must not be null");
-		Assert.isTrue(from.isBefore(to) || from.isEqual(to), "time from must be before or equal to time to");
+        Assert.notNull(userAccount, "userAccount must not be null");
+        return orderRepository.findByUserAccount(userAccount);
+    }
 
-		return orderRepository.findByUserAccountAndDateCreatedBetween(userAccount, from, to);
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.salespointframework.order.OrderManager#find(org.salespointframework.useraccount.UserAccount, java.time.LocalDateTime, java.time.LocalDateTime)
+     */
+    @Deprecated
+    @Override
+    public final Iterable<T> find(UserAccount userAccount, LocalDateTime from, LocalDateTime to) {
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#completeOrder(org.salespointframework.order.Order)
-	 */
-	@Override
-	public OrderCompletionResult completeOrder(final T order) {
+        Assert.notNull(userAccount, "userAccount must not be null");
+        Assert.notNull(from, "from must not be null");
+        Assert.notNull(to, "to must not be null");
 
-		if (!order.isPaid()) {
-			return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
-		}
+        return orderRepository.findByUserAccountAndDateCreatedBetween(userAccount, from, to);
+    }
 
-		Assert.notNull(order, "Order must not be null");
+    /*
+     * (non-Javadoc)
+     * @see org.salespointframework.order.OrderManager#findOrders(org.salespointframework.useraccount.UserAccount, java.time.LocalDateTime, java.time.LocalDateTime)
+     */
+    @Override
+    public Iterable<T> findOrders(UserAccount userAccount, LocalDateTime from, LocalDateTime to) {
 
-		final Map<InventoryItem, Quantity> goodItems = new HashMap<>();
-		final Map<InventoryItem, Quantity> badItems = new HashMap<>();
+        Assert.notNull(userAccount, "userAccount must not be null");
+        Assert.notNull(from, "from must not be null");
+        Assert.notNull(to, "to must not be null");
+        Assert.isTrue(from.isBefore(to) || from.isEqual(to), "time from must be before or equal to time to");
 
-		Iterable<OrderLine> lineItems = order.getOrderLines();
+        return orderRepository.findByUserAccountAndDateCreatedBetween(userAccount, from, to);
+    }
 
-		// Stream<OrderLine> stream = stream(lineItems.spliterator(), false);
-		// Stream<ProductIdentifier> identifiers = stream.map(OrderLine::getProductIdentifier);
-		// Stream<Optional<InventoryItem>> items = identifiers.map(identifier ->
-		// inventory.findByProductProductIdentifier(identifier));
+    /*
+     * (non-Javadoc)
+     * @see org.salespointframework.order.OrderManager#completeOrder(org.salespointframework.order.Order)
+     */
+    @Override
+    public OrderCompletionResult completeOrder(final T order) {
 
-		// Stream<InventoryItem> filtereditems = items.flatMap(i -> i.map(Stream::of).orElseGet(Stream::empty));
+        Assert.notNull(order, "Order must not be null");
 
-		for (OrderLine orderline : lineItems) {
+        if (!order.isPaid()) {
+            return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
+        }
 
-			ProductIdentifier productIdentifier = orderline.getProductIdentifier();
-			Optional<InventoryItem> inventoryItem = inventory.findByProductIdentifier(productIdentifier);
+        final Map<InventoryItem, Quantity> goodItems = new HashMap<>();
+        final Map<ProductIdentifier, Quantity> understockedItems = new HashMap<>();
+        final Map<ProductIdentifier, Quantity> missingItems = new HashMap<>();
 
-			// TODO was machen wenn nicht im Inventar
-			if (!inventoryItem.isPresent()) {
-				LOGGER
-						.error("No InventoryItem with given ProductIndentifier found in PersistentInventory. Have you initialized your PersistentInventory? Do you need to re-stock your Inventory?");
-				break;
-			}
+        for (OrderLine orderline : order.getOrderLines()) {
 
-			inventoryItem.ifPresent(item -> {
+            final ProductIdentifier productIdentifier = orderline.getProductIdentifier();
+            final Optional<InventoryItem> optItem = inventory.findByProductIdentifier(productIdentifier);
+            final Quantity orderLineQuantity = orderline.getQuantity();
 
-				Quantity orderLineQuantity = orderline.getQuantity();
+            if (false == optItem.isPresent()) {
+                missingItems.put(productIdentifier, orderLineQuantity);
+                LOGGER.error("No InventoryItem with given ProductIndentifier found in PersistentInventory. "
+                        + "Have you initialized your PersistentInventory? Do you need to re-stock your Inventory?");
 
-				if (item.hasSufficientQuantity(orderLineQuantity)) {
-					goodItems.put(item, orderLineQuantity);
-				} else {
-					badItems.put(item, orderLineQuantity);
-				}
-			});
-		}
+                continue;
+            }
 
-		return txTemplate
-				.execute(status -> {
+            final InventoryItem item = optItem.get();
 
-					if (goodItems.size() != order.getNumberOfLineItems()) {
+            if (item.hasSufficientQuantity(orderLineQuantity)) {
+                goodItems.put(item, orderLineQuantity);
+            } else {
+                understockedItems.put(productIdentifier, orderLineQuantity);
+            }
+        }
 
-						status.setRollbackOnly();
+        if (false == missingItems.isEmpty()) {
 
-						LOGGER
-								.error("Number of items requested by the OrderLine is greater than the number available in the Inventory. Please re-stock.");
-						return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
-					}
+            return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED_PRODUCTS_MISSING, missingItems);
+        }
 
-					LOGGER.info("Number of items requested by the OrderLine removed from the Inventory.");
+        if (false == understockedItems.isEmpty()) {
 
-					boolean failed = false;
+            return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED_PRODUCTS_UNDERSTOCKED, understockedItems);
+        }
 
-					for (InventoryItem inventoryItem : goodItems.keySet()) {
+        return txTemplate.execute(new TransactionCallback<InternalOrderCompletionResult>() {
 
-						try {
-							inventoryItem.decreaseQuantity(goodItems.get(inventoryItem));
-						} catch (IllegalArgumentException o_O) {
-							failed = true;
-							break;
-						}
-					}
+            @Override
+            public InternalOrderCompletionResult doInTransaction(TransactionStatus ts) {
 
-					// TODO DRY IT
-					if (failed) {
+                for (InventoryItem inventoryItem : goodItems.keySet()) {
 
-						status.setRollbackOnly();
-						return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
-					}
+                    try {
+                        inventoryItem.decreaseQuantity(goodItems.get(inventoryItem));
+                        
+                    } catch (IllegalArgumentException o_O) {
+                        ts.setRollbackOnly();
+                        return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
+                    }
+                }
 
-					order.complete();
-					save(order);
-					return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL);
-				});
-	}
+                order.complete();
+                save(order);
+                
+                Map<ProductIdentifier, Quantity> productResult = new HashMap<>(goodItems.size());
+                goodItems.forEach((k,v) -> productResult.put(k.getProduct().getIdentifier(), v));
+                
+                return new InternalOrderCompletionResult(
+                        OrderCompletionStatus.SUCCESSFUL,
+                        productResult);
+            }
+        });
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#pay(org.salespointframework.order.Order)
-	 */
-	@Override
-	public boolean payOrder(Order order) {
+    /*
+     * (non-Javadoc)
+     * @see org.salespointframework.order.OrderManager#pay(org.salespointframework.order.Order)
+     */
+    @Override
+    public boolean payOrder(Order order) {
 
-		Assert.notNull(order, "order must not be null");
+        Assert.notNull(order, "order must not be null");
 
-		if (!order.isPaymentExpected()) {
-			return false;
-		}
+        if (!order.isPaymentExpected()) {
+            return false;
+        }
 
-		accountancy.add(order.markPaid());
-		return true;
-	}
+        accountancy.add(order.markPaid());
+        return true;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#cancelOrder(org.salespointframework.order.Order)
-	 */
-	@Override
-	public boolean cancelOrder(Order order) {
+    /*
+     * (non-Javadoc)
+     * @see org.salespointframework.order.OrderManager#cancelOrder(org.salespointframework.order.Order)
+     */
+    @Override
+    public boolean cancelOrder(Order order) {
 
-		Assert.notNull(order, "order must not be null");
+        Assert.notNull(order, "order must not be null");
 
-		if (order.getOrderStatus() == OrderStatus.OPEN) {
-			order.cancel();
-			return true;
-		} else {
-			return false;
-		}
-	}
+        if (order.getOrderStatus() == OrderStatus.OPEN) {
+            order.cancel();
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	private final class InternalOrderCompletionResult implements OrderCompletionResult {
-		private final OrderCompletionStatus status;
+    private final class InternalOrderCompletionResult implements OrderCompletionResult {
 
-		public InternalOrderCompletionResult(OrderCompletionStatus status) {
-			this.status = status;
-		}
+        private final OrderCompletionStatus status;
+        private final Map<ProductIdentifier, Quantity> failedProducts;
 
-		@Override
-		public OrderCompletionStatus getStatus() {
-			return status;
-		}
-	}
+        public InternalOrderCompletionResult(OrderCompletionStatus status) {
+            this.status = status;
+            this.failedProducts = new HashMap<>();
+        }
+
+        public InternalOrderCompletionResult(OrderCompletionStatus status,
+                Map<ProductIdentifier, Quantity> failedProducts) {
+            this.status = status;
+            this.failedProducts = failedProducts;
+        }
+
+        @Override
+        public OrderCompletionStatus getStatus() {
+            return status;
+        }
+
+        @Override
+        public Map<ProductIdentifier, Quantity> getProducts() {
+            return failedProducts;
+        }
+    }
 }
