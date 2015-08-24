@@ -20,6 +20,7 @@ import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -105,13 +106,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 		assertThat(result.isPresent(), is(true));
 		assertThat(result.get(), is(item));
 	}
-
-	@Test
-	public void testFindByProductIdentifer() {
-		OrderLine orderLine = new OrderLine(cookie, Units.of(11L));
-		Optional<InventoryItem> result = inventory.findByProductIdentifier(orderLine.getProductIdentifier());
-		assertThat(result.isPresent(), is(true));
-	}
+	
 	/**
 	 * @see #34
 	 */

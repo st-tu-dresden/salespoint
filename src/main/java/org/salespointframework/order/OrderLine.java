@@ -6,7 +6,6 @@ import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
-
 import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
@@ -16,7 +15,15 @@ import org.salespointframework.quantity.Quantity;
 import org.springframework.util.Assert;
 
 /**
- * An order line
+ * An order line represents the total price and the {@link Quantity} 
+ * of a {@link Product} of an {@link Order}. 
+ * 
+ * <pre>
+ * Example: 
+ * Product 'Car' with price 15.000, Quantity of 3
+ * Orderline:  price -> 3 * 15.000
+ *             quantity -> 3
+ * </pre>
  * 
  * @author Paul Henke
  * @author Oliver Gierke
@@ -34,6 +41,9 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier>implements Pri
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID") ) //
 	private ProductIdentifier productIdentifier;
 
+        /**
+         * Total price for {@link Product} multiply the {@link Quantity}
+         */
 	private @Lob Money price;
 	private @Lob Quantity quantity;
 	private String productName;

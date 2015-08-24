@@ -82,7 +82,8 @@ public interface OrderManager<T extends Order> {
 	Iterable<T> findOrders(UserAccount userAccount, LocalDateTime from, LocalDateTime to);
 
 	/**
-	 * Tries to complete this order, the {@link OrderStatus} has to be PAID.
+	 * Tries to complete this order.
+         * The {@link OrderStatus} has to be PAID.
 	 * 
 	 * @param order the order to complete, must not be {@literal null}.
 	 * @return an {@link OrderCompletionResult}

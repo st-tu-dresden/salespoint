@@ -1,5 +1,6 @@
 package org.salespointframework.order;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import static org.hamcrest.CoreMatchers.is;
@@ -79,95 +80,91 @@ public class OrderManagerTests extends AbstractIntegrationTests {
         assertThat(result.get(), is(order));
     }
 
-    /**
-     * @see #38
-     */
-    @Test
-    public void completesOrderIfAllLineItemsAreAvailableInSufficientQuantity() {
+	/**
+	 * @see #38
+	 */
+	@Test
+	public void completeOrder_LineItems_AreAvailableInSufficientQuantity() {
 
         Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
         inventory.save(new InventoryItem(cookie, Quantity.of(100)));
         order.add(new OrderLine(cookie, Quantity.of(10)));
 
+		orderManager.payOrder(order);
+		OrderCompletionResult result = orderManager.completeOrder(order);
+                
+                Optional<InventoryItem> inventoryItem = inventory
+                        .findByProductIdentifier(cookie.getIdentifier());
+                
+                Optional<Order> orderFromDB = orderManager.get(order.getIdentifier());
+
+		assertThat(result.getStatus(), is(OrderCompletionStatus.SUCCESSFUL));
+                assertThat(result.getProducts().size(), is(1));
+                assertThat(result.getProducts().get(cookie.getIdentifier()), is(Quantity.of(10)));
+                
+                assertThat(orderFromDB.isPresent(), is(true));
+                assertThat(orderFromDB.get().getOrderStatus(), is(OrderStatus.COMPLETED));
+                
+                assertThat(inventoryItem.isPresent(), is(true));
+                assertThat(inventoryItem.get().getQuantity(), is(Quantity.of(90)));
+	}
+
+	/**
+	 * @see #38
+	 */
+	@Test
+	public void completeOrder_LineItem_IsNotAvailableInSufficientQuantity() {
+
+		Cookie cookieNotSufficient = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
+                Cookie cookie= catalog.save(new Cookie("Triple choc", Money.of(1.2, Currencies.EURO)));
+                
+		inventory.save(new InventoryItem(cookieNotSufficient, Quantity.of(1)));
+                inventory.save(new InventoryItem(cookie, Quantity.of(10)));
+                
+		order.add(new OrderLine(cookieNotSufficient, Quantity.of(10)));
+                order.add(new OrderLine(cookie, Quantity.of(10)));
+
         orderManager.payOrder(order);
         OrderCompletionResult result = orderManager.completeOrder(order);
 
-        assertThat(result.getStatus(), is(OrderCompletionStatus.SUCCESSFUL));
-    }
-
-    /**
-     * @see #38
-     */
-    @Test
-    public void failsOrderCompletionIfLineItemsAreNotAvailableInSufficientQuantity() {
-
-        Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
-        inventory.save(new InventoryItem(cookie, Quantity.of(1)));
-        order.add(new OrderLine(cookie, Quantity.of(10)));
-
-        orderManager.payOrder(order);
-        OrderCompletionResult result = orderManager.completeOrder(order);
-
-        assertThat(result.getStatus(), is(OrderCompletionStatus.FAILED));
-    }
-
-    /**
-     * @see #61
-     */
-    @Test
-    public void findOrdersBetween() {
-
-        order = orderManager.save(order);
-        LocalDateTime dateCreated = order.getDateCreated();
-
-        Iterable<Order> result = orderManager.findOrdersBetween(dateCreated, dateCreated.plusHours(1L));
-
-        assertThat(result, IsIterableWithSize.<Order>iterableWithSize(1));
-        assertThat(result.iterator().next(), is(order));
-    }
-
-    /**
-     * @see #61
-     */
-    @Test
-    public void findOrdersBetweenWhenFromToEqual() {
-
-        order = orderManager.save(order);
-        LocalDateTime dateCreated = order.getDateCreated();
-
-        Iterable<Order> result = orderManager.findOrdersBetween(dateCreated, dateCreated);
-
-        assertThat(result, IsIterableWithSize.<Order>iterableWithSize(1));
-        assertThat(result.iterator().next(), is(order));
-    }
-    
-    /**
-     * @see #61
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void findOrdersBetweenWhenToLowerThenFrom() {
+		assertThat(result.getStatus(), is(OrderCompletionStatus.FAILED_PRODUCTS_UNDERSTOCKED));
+                assertThat(result.getProducts().size(), is(1));
+                assertThat(result.getProducts().get(cookieNotSufficient.getIdentifier()), is(Quantity.of(10)));
+	}
         
-        order = orderManager.save(order);
-        LocalDateTime dateCreated = order.getDateCreated();
-
-        Iterable<Order> result = orderManager.findOrdersBetween(dateCreated, dateCreated.minusHours(1l));
-    }
-    
-    /**
-     * @see #61
-     */
-    @Test
-    public void findOrdersByOrderStatus_OPEN() {
+        /**
+         * @see #23
+         */
+        @Test
+        public void completeOrder_LineItem_IsNotAvailableInInventory() {
+                
+                Cookie cookieMissing = catalog.save(new Cookie("Not Stored Cookie", Money.of(BigDecimal.ZERO, Currencies.EURO)));
+                Cookie cookie= catalog.save(new Cookie("Triple choc", Money.of(1.2, Currencies.EURO)));
+                
+                inventory.save(new InventoryItem(cookie, Quantity.of(10)));
+                order.add(new OrderLine(cookieMissing, Quantity.of(10)));
+                order.add(new OrderLine(cookie, Quantity.of(10)));
+                
+                orderManager.payOrder(order);
+                OrderCompletionResult result = orderManager.completeOrder(order);
+                
+                assertThat(result.getStatus(), is(OrderCompletionStatus.FAILED_PRODUCTS_MISSING));
+                assertThat(result.getProducts().size(), is(1));
+                assertThat(result.getProducts().get(cookieMissing.getIdentifier()), is(Quantity.of(10)));
+        }
         
-        Order openOrder = new Order(user, Cash.CASH);
-        openOrder = orderManager.save(openOrder);
-        orderManager.save(order);
-        
-        orderManager.payOrder(order);
-        
-        Iterable<Order> openOrders = orderManager.findOrdersByOrderStatus(OrderStatus.OPEN);
-        
-        assertThat(openOrders, IsIterableWithSize.<Order>iterableWithSize(1));
-        assertThat(openOrders.iterator().next(), is(openOrder));
-    }
+        /**
+         * @see #23
+         */
+        @Test
+        public void completeOrder_notPaid() {
+            
+                Cookie cookie = catalog.save(new Cookie("Cookie", Money.of(BigDecimal.ZERO, Currencies.EURO)));
+                order.add(new OrderLine(cookie, Quantity.of(10)));
+                
+                OrderCompletionResult result = orderManager.completeOrder(order);
+                
+                assertThat(result.getStatus(), is(OrderCompletionStatus.FAILED));
+                assertThat(result.getProducts().isEmpty(), is(true));
+        }
 }
