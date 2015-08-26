@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
 import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.catalog.ProductIdentifier;
@@ -107,20 +106,6 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#find(java.time.LocalDateTime, java.time.LocalDateTime)
-	 */
-	@Deprecated
-	@Override
-	public final Iterable<T> find(LocalDateTime from, LocalDateTime to) {
-
-		Assert.notNull(from, "from must not be null");
-		Assert.notNull(to, "to must not be null");
-
-		return orderRepository.findByDateCreatedBetween(from, to);
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see org.salespointframework.order.OrderManager#findOrdersBetween(java.time.LocalDateTime, java.time.LocalDateTime)
 	 */
 	@Override
@@ -128,21 +113,9 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 		
 		Assert.notNull(from, "from must not be null");
 		Assert.notNull(to, "to must not be null");
-		Assert.isTrue(from.isBefore(to) || from.isEqual(to), "time from must be before or equal to time to");
+		Assert.isTrue(from.isBefore(to) || from.isEqual(to), "LocalDateTime 'from' must be before or equal to LocalDateTime 'to'");
 		
 		return orderRepository.findByDateCreatedBetween(from, to);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#find(org.salespointframework.order.OrderStatus)
-	 */
-	@Deprecated
-	@Override
-	public final Iterable<T> find(OrderStatus orderStatus) {
-
-		Assert.notNull(orderStatus, "orderStatus must not be null");
-		return orderRepository.findByOrderStatus(orderStatus);
 	}
 
 	/*
@@ -158,18 +131,6 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#find(org.salespointframework.useraccount.UserAccount)
-	 */
-	@Deprecated
-	@Override
-	public final Iterable<T> find(UserAccount userAccount) {
-
-		Assert.notNull(userAccount, "userAccount must not be null");
-		return orderRepository.findByUserAccount(userAccount);
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see org.salespointframework.order.OrderManager#findOrdersByUserAccount(org.salespointframework.useraccount.UserAccount)
 	 */
 	@Override
@@ -177,21 +138,6 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 		
 		Assert.notNull(userAccount, "userAccount must not be null");
 		return orderRepository.findByUserAccount(userAccount);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#find(org.salespointframework.useraccount.UserAccount, java.time.LocalDateTime, java.time.LocalDateTime)
-	 */
-	@Deprecated
-	@Override
-	public final Iterable<T> find(UserAccount userAccount, LocalDateTime from, LocalDateTime to) {
-
-		Assert.notNull(userAccount, "userAccount must not be null");
-		Assert.notNull(from, "from must not be null");
-		Assert.notNull(to, "to must not be null");
-
-		return orderRepository.findByUserAccountAndDateCreatedBetween(userAccount, from, to);
 	}
 
 	/*
@@ -204,7 +150,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 		Assert.notNull(userAccount, "userAccount must not be null");
 		Assert.notNull(from, "from must not be null");
 		Assert.notNull(to, "to must not be null");
-		Assert.isTrue(from.isBefore(to) || from.isEqual(to), "time from must be before or equal to time to");
+		Assert.isTrue(from.isBefore(to) || from.isEqual(to), "LocalDateTime 'from' must be before or equal to LocalDateTime 'to'");
 
 		return orderRepository.findByUserAccountAndDateCreatedBetween(userAccount, from, to);
 	}
