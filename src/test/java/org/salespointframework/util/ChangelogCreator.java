@@ -1,12 +1,12 @@
 package org.salespointframework.util;
 
+import net.minidev.json.JSONArray;
+
 import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
-
-import net.minidev.json.JSONArray;
 
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -34,7 +34,7 @@ import com.jayway.jsonpath.JsonPath;
  */
 class ChangelogCreator {
 
-	private static final String MILESTONE_ID = "8";
+	private static final String MILESTONE_ID = "6.2 RC1";
 	private static final String URI_TEMPLATE = "https://api.github.com/repos/st-tu-dresden/salespoint/issues?milestone={id}&state=closed&sort=updated";
 
 	public static void main(String... args) throws Exception {

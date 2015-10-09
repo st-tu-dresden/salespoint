@@ -20,7 +20,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 == Resources
 
 [[resources.latest]]
-=== Latest release version - 6.1.1.RELEASE
+=== Latest release version - 6.2.0.RC1
 * link:salespoint-reference.html[Reference documentation]
 * link:api[JavaDoc]
 * link:changelog.html[Changelog]
@@ -40,7 +40,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 <dependency>
   <groupId>de.tudresden.inf.st</groupId>
   <artifactId>salespoint-framework</artifactId>
-  <version>6.1.1.RELEASE</version>
+  <version>6.2.0.RC1</version>
 </dependency>
 ----
 
@@ -86,6 +86,7 @@ If you want to familiarize your self with the technology stack that Salespoint l
 [[archive]]
 == Archive
 
+* Version 6.1 - link:v6.1/salespoint-reference.html[Reference], link:v6.1/api[JavaDoc]
 * Version 6.0 - link:v6.0/salespoint-reference.html[Reference], link:v6.0/api[JavaDoc]
 * link:v5.0/wiki[Version 5.0]
 * link:v4.0[Version 4.0]

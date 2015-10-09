@@ -4,7 +4,7 @@
 
 	<groupId>de.tudresden.inf.st</groupId>
 	<artifactId>salespoint-framework</artifactId>
-	<version>6.2.0.BUILD-SNAPSHOT</version>
+	<version>6.2.0.RC1</version>
 
 	<name>Salespoint</name>
 
@@ -17,7 +17,6 @@
 	<properties>
 		<dev>/dev</dev>
 		<java.version>1.8</java.version>
-		<spring-security.version>4.0.2.RELEASE</spring-security.version>
 	</properties>
 
 	<profiles>
