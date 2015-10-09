@@ -167,7 +167,9 @@ Joda-Money also supports `Currency` (see _Example for JodaMoney operations_). A 
 [User|-enabled:boolean]-0..*>[Role]
 [User]->[Password]
 ////
-image::http://yuml.me/2369094d[title=User]
+image::images/User.png[title="User"]
+
+image::images/UserAccount.png[title="User Account"]
 
 To manage system accounts, Salespoint {majorversion} has a notation of a user in the form of the `User` class. Users are managed by the `UserAccountManager`. Every user is uniquely identified by a `org.salespointframework.useraccount.UserAccountIdentifier`, which also serves as primary key attribute for the database.
 
@@ -235,7 +237,7 @@ The `Catalog` interface was designed to manage `Product` instances in the system
 [Product]<-[<<Interface>> Catalog]
 [<<Interface>> SalespointRepository]^[<<Interface>> Catalog]
 ////
-image::http://yuml.me/da2d249a[title="Catalog"]
+image::images/Catalog.png[title="Catalog"]
 
 [[modules.accountancy]]
 == Accountancy
@@ -246,7 +248,7 @@ The accountancy package contains functionality supporting book keeping. `Account
 [PersistentAccountancy]uses-.->[<<Interface>> AccountancyEntryRepository]
 [AccountancyEntry|-id:AccountancyEntryIdentifier]
 ////
-image::http://yuml.me/a88563ec[Accountancy, title="Accountancy"]
+image::images/Accountancy.png[Accountancy, title="Accountancy"]
 
 By implementing and sub-classing `Accountancy`, the notion of different accounts, as known from double-entry bookkeeping, can be realised.
 
@@ -262,7 +264,7 @@ To create a new account, `AccountancyEntry` has to be sub-classed. Every object 
 [PaymentCard]^[DebitCard]
 [PaymentCard]^[CreditCard]
 ////
-image::http://yuml.me/a80800b1[title="Payment domain types"]
+image::images/PaymentMethod.png[title="Payment domain types"]
 
 For the paying transaction, Salespoint provides some payment strategies.
 
@@ -281,13 +283,15 @@ An `Order` can be considered as a sheet of paper which basically consists of lin
 [Order|-id:OrderIdentifier;-orderStatus:OrderStatus;-dateCreated:LocalDateTime]1++-*>[OrderLine]
 [Order]1++-*>[ChargeLine]
 ////
-image::http://yuml.me/c603ebb3[title="Order"]
+image::images/Order(light).png[title="Order"]
 
 A `ChargeLine` represents additional costs or discounts and can be applied to an `OrderLine` or an `Order`. A `ChargeLine` is uniquely identified by a `ChargeLineIdentifier`.
 
 TIP: For example, ``ChargeLine``s can be used to handle special taxes or handling fees.
 
 === Order status lifecycle
+image::images/Order_status_lifecycle.png[title="Order status lifecycle state machine"]
+
 ``Order``s are entities. The lifecycle covers four states which are defined by enumeration type `OrderStatus`. The lifecycle state cannot be arbitrarily changed, but follows a fixed scheme.
 
 .Example for OrderStatus as field `orderStatus` in the class `Order`
@@ -321,7 +325,7 @@ This is particularly useful for demoing purposes if e.g. orders can be timed to 
 ////
 [<<Interface>> BusinessTime]^[DefaultBusinessTime]
 ////
-image::http://yuml.me/759ac0c7[title="Business time"]
+image::images/BusinessTime.png[title="Business time"]
 
 [[modules.technical-apis]]
 == Technical APIs
