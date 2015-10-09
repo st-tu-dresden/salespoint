@@ -3,6 +3,8 @@ package org.salespointframework;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.HttpEncodingProperties;
+import org.springframework.boot.context.web.OrderedCharacterEncodingFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -24,6 +26,7 @@ public class SalespointWebConfiguration extends WebMvcConfigurerAdapter {
 
 	@Autowired List<? extends Converter<?, ?>> converters;
 	@Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
+	@Autowired HttpEncodingProperties httpEncodingProperties;
 
 	/**
 	 * Special dialect to support Java 8 type formatting.
@@ -33,6 +36,23 @@ public class SalespointWebConfiguration extends WebMvcConfigurerAdapter {
 	@Bean
 	public Java8TimeDialect java8TimeDialect() {
 		return new Java8TimeDialect();
+	}
+
+	/**
+	 * Workaround for https://github.com/spring-projects/spring-boot/issues/3912
+	 * 
+	 * @return
+	 */
+	@Bean
+	public OrderedCharacterEncodingFilter characterEncodingFilter() {
+
+		OrderedCharacterEncodingFilter filter = new OrderedCharacterEncodingFilter();
+
+		filter.setEncoding(this.httpEncodingProperties.getCharset().name());
+		filter.setForceEncoding(this.httpEncodingProperties.isForce());
+		filter.setOrder(Ordered.HIGHEST_PRECEDENCE);
+
+		return filter;
 	}
 
 	/**
