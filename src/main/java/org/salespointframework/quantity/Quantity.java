@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 import javax.persistence.Embeddable;
 
@@ -168,5 +169,13 @@ public class Quantity {
 
 		Assert.notNull(quantity, "Quantity must not be null!");
 		Assert.isTrue(quantity.isCompatibleWith(metric), String.format(INCOMPATIBLE, this, quantity));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new DecimalFormat().format(amount).concat(metric.getAbbreviation());
 	}
 }

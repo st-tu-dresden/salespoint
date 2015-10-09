@@ -104,4 +104,17 @@ public class QuantityUnitTests {
 		assertThat(Quantity.of(0).isNegative(), is(false));
 		assertThat(Quantity.of(1).isNegative(), is(false));
 	}
+
+	/**
+	 * @see #99
+	 */
+	@Test
+	public void printsReasonableToString() {
+
+		assertThat(Quantity.of(5).toString(), is("5"));
+		assertThat(Quantity.of(5, Metric.LITER).toString(), is("5l"));
+		assertThat(Quantity.of(5.0, Metric.LITER).toString(), is("5l"));
+		assertThat(Quantity.of(5.1, Metric.LITER).toString(), is("5,1l"));
+		assertThat(Quantity.of(5.11, Metric.LITER).toString(), is("5,11l"));
+	}
 }
