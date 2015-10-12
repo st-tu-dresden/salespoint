@@ -42,7 +42,7 @@ For Salespoint 6.1 we upgraded to Spring Boot 1.2, which transitively updates a 
 Activating Salespoint in a web application has been quite cumbersome so far and required a dedicated set of annotations and imports of configuration classes. To simplify this, Salespoint 6.1 introduces `@EnableSalespoint` to take care of the previously manual steps. For more information on what gets acivated and imported, see the link:{javadoc}/org/salespointframework/EnableSalespoint.html[JavaDoc of the annotation].
 
 === Usage of the mail autoconfiguration shipping with Spring Boot 1.2
-As Salespoint 6.1 upgrades to Spring Boot 1.2 we now use the email auto-configuration settings shipping with that release. This most notably means that you slightly have to alter your properties to configure the meail user, password and host. See Boot's http://docs.spring.io/spring-boot/docs/1.2.x/reference/htmlsingle/#boot-features-email[reference documentation] and the http://docs.spring.io/spring-boot/docs/1.2.0.RC2/reference/htmlsingle/#common-application-properties[list of current application properties] for details.
+As Salespoint 6.1 upgrades to Spring Boot 1.2 we now use the email auto-configuration settings shipping with that release. This most notably means that you slightly have to alter your properties to configure the mail user, password and host. See Boot's http://docs.spring.io/spring-boot/docs/1.2.x/reference/htmlsingle/#boot-features-email[reference documentation] and the http://docs.spring.io/spring-boot/docs/1.2.0.RC2/reference/htmlsingle/#common-application-properties[list of current application properties] for details.
 
 [[architecture]]
 = Technical Architecture
