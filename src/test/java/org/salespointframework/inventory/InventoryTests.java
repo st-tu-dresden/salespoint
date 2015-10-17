@@ -1,8 +1,5 @@
 package org.salespointframework.inventory;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
