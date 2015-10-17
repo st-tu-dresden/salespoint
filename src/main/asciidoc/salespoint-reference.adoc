@@ -51,6 +51,8 @@ Technically Salespoint is a library to build Java based Point of Sales (PoS) app
 
 The technical foundation for Salespoint is the Spring Frameworkfootnote:[Spring Framework - http://en.wikipedia.org/wiki/Spring_Framework[Wikipedia]] and Spring Boot (as some kind of opinionated layer on top of Spring Framework to ease its applicance to a large degree. Salespoint is built using the Maven build systemfootnote:[Apache Maven - http://en.wikipedia.org/wiki/Apache_Maven[Wikipedia]]. The reference documentation and static website are built with Asciidoctorfootnote:[Asciidoctor - http://asciidoctor.org[Website]].
 
+Here you can find the link:images/salespoint-classdiagram.png[salespoint class diagram] about the basic structure.
+
 [[architecture.core-concepts]]
 == Core concepts
 Before we dive into the technical details of Salespoint, let's make sure we understand some core concepts that will help us understand the different modules of the framework a bit better. Each of the <<modules, modules>> consists of a bit of code and the classes can usually be grouped into 3 different buckets: entities and value objects, summarized to <<architecture.core-concepts.ddd.newables, newables>>, repositories and services, summarized to <<architecture.core-concepts.ddd.injectables, injectables>> as well as <<architecture.core-concepts.container-configuration, Spring container configuration and extension code>>. The following sections will cast some light on these kinds of types and their special traits.
