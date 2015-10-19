@@ -175,6 +175,7 @@ image::user.png[title="User"]
 image::user-account.png[title="User Account"]
 
 To manage system accounts, Salespoint {majorversion} has a notation of a user in the form of the `User` class. Users are managed by the `UserAccountManager`. Every user is uniquely identified by a `org.salespointframework.useraccount.UserAccountIdentifier`, which also serves as primary key attribute for the database.
+The username of the `org.salespointframework.useraccount.UserAccount` can be retrieved by the `getUsername()` method.
 
 [[modules.useraccount.role]]
 === Roles
@@ -186,6 +187,7 @@ To reduce code repetition, Salespoint {majorversion} contains code to automate t
 
 [[modules.useraccount.limitation]]
 === Limitation
+The `org.salespointframework.useraccount.UserAccount` is limited to the given attributes and methods.
 Due to the fact, that Salespoint use the `SecurityContext` for authentication, the `UserAccount` cannot be extended. In the background the `org.salespointframework.useraccount.UserAccount` is converted to an instance of `org.springframework.security.core.userdetails.UserDetails`.
 
 If these properties don’t meet all requirements, wrap the `UserAccount` in a new entity. Put all the new features in this new entity and connect this information via a `@OneToOne` relationship with the `UserAccount`. An example can be found in the Videoshop project.
