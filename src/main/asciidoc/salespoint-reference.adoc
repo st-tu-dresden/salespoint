@@ -212,24 +212,15 @@ public class UserAccountExtension {
 
 [[modules.quantity]]
 == Quantity
-`Quantity` is used to represent amaounts of anything. `Quantity` objects are immutable and the class implements the `Comparable` interface.
+`Quantity` is used to represent amounts of anything. Furthermore a `Quantity` can be used to calc with (plus, minus).
+But only `Quantities` with the same `Metric` can be combined or compared, so every `Quantity` has an `Metric` attribute.
 
-=== Attributes of Quantity
-* a numerical value -> <<modules.quantity.value>>
-* a (measurement) unit or metric -> <<modules.quantity.metric>>
-* a type specifing the rounding of the numerical type -> <<modules.quantity.rounding>>
-
-[[modules.quantity.value]]
-=== BigDecimal - Representing numerical values
-`BigDecimal` was chosen as datatype for the `amount` attribute over `float` or `double` because of its arbitraty precision. Moreover, objects of `BigDecimal` are `immutable` and the `BigDecimal` class provides operations for including, but not limited to: arithmetic, rounding, and comparison.
+And of course, every `Quantity` has an amount value, represented as a `java.math.BigDecimal`.
 
 [[modules.quantity.metric]]
-=== Metric - What is represented
-The composite type `Metric` contains all information pertaining to the unit or metric of the represented object. Examples for units or metrics are: m (meter), s (second), pcs (pieces). For example consider the unit of length "meter": represented by an object of the class `Metric` the symbol would be set to `m` and the name to `meter`. Furthermore, an object of type `Metric` has a description field, to explain the meaning of the metric in detail. For the example of a meter a possible description could be "The meter is the length of the path travelled by light in vacuum during a time interval of 1/299 792 458 of a second.".
-
-[[modules.quantity.rounding]]
-=== Rounding
-There are many rounding strategies, for money operations and so on. For this case, Salespoint ships with a `RoundingStrategy` interface providing a `round()` method. This implementation of this `RoundingStrategy`, `BasicRoundingStrategy` offers two ways to describe a rounding operation: using the decimal places after (or before) the decimal delimiter and using a rounding step.
+=== Metric
+The composite type `Metric` contains all information pertaining to the unit or metric of the represented object.
+Furthermore, an object of type `Metric` has a description field, to explain the meaning of the metric in detail. For the example of a meter a possible description could be "The meter is the length of the path travelled by light in vacuum during a time interval of 1/299 792 458 of a second.".
 
 [[modules.catalog]]
 == Catalog
