@@ -4,11 +4,13 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import java.util.Optional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
-
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import org.hibernate.exception.ConstraintViolationException;
+import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,6 +20,7 @@ import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -103,7 +106,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 		assertThat(result.isPresent(), is(true));
 		assertThat(result.get(), is(item));
 	}
-
+	
 	/**
 	 * @see #34
 	 */
