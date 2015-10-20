@@ -1,8 +1,9 @@
 package org.salespointframework.order;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
+
 import org.salespointframework.payment.PaymentMethod;
+import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
 
 /**
@@ -45,18 +46,16 @@ public interface OrderManager<T extends Order> {
 	 * @param orderStatus Denoting the {@link OrderStatus} on which the {@link Order}s will be requested.
 	 * @return an Iterable containing all {@link Order}s with the specified {@link OrderStatus}
 	 */
-	Iterable<T> findOrdersByOrderStatus(OrderStatus orderStatus);
+	Iterable<T> findBy(OrderStatus orderStatus);
 
 	/**
-	 * Returns all {@link Order}s in between the interval {@code from} and {@code to}, including from and to. So every
-	 * entry with an time stamp <= to and >= from is returned. If no {@link Order}s within the specified time span exist,
-	 * an empty Iterable is returned.
+	 * Returns all {@link Order}s in between the {@link Interval}. So every entry with an time stamp <= to and >= from is
+	 * returned. If no {@link Order}s within the specified time span exist, an empty {@link Iterable} is returned.
 	 * 
-	 * @param from Time stamp denoting the start of the requested time period, must not be {@literal null}.
-	 * @param to Time stamp denoting the end of the requested time period, must not be {@literal null}.
-	 * @return an {@link Iterable} containing all {@link Order}s between from and to.
+	 * @param interval The time interval to find {@link Order}s in, must not be {@literal null}.
+	 * @return an {@link Iterable} containing all {@link Order}s in the given {@link Interval}.
 	 */
-	Iterable<T> findOrdersBetween(LocalDateTime from, LocalDateTime to);
+	Iterable<T> findBy(Interval interval);
 
 	/**
 	 * Returns all {@link Order}s of the given {@link UserAccount}. If this user has no orders, an empty {@link Iterable}
@@ -66,7 +65,7 @@ public interface OrderManager<T extends Order> {
 	 *          {@literal null}.
 	 * @return an {@link Iterable} containing all orders of the specified user.
 	 */
-	Iterable<T> findOrdersByUserAccount(UserAccount userAccount);
+	Iterable<T> findBy(UserAccount userAccount);
 
 	/**
 	 * Returns all {@link Order}s from the given {@link UserAccount} in between the dates {@code from} and {@code to},
@@ -74,11 +73,10 @@ public interface OrderManager<T extends Order> {
 	 * {@link Order}s in this period, an empty {@link Iterable} is returned.
 	 * 
 	 * @param userAccount The {@link UserAccount} whose {@link Order}s shall be returned, must not be {@literal null}.
-	 * @param from Time stamp denoting the start of the requested time period,must not be {@literal null}.
-	 * @param to Time stamp denoting the end of the requested time period, must not be {@literal null}.
+	 * @param interval The time interval to find {@link Order}s in, must not be {@literal null}.
 	 * @return an {@link Iterable} containing all orders from the specified user in the specified period.
 	 */
-	Iterable<T> findOrders(UserAccount userAccount, LocalDateTime from, LocalDateTime to);
+	Iterable<T> findBy(UserAccount userAccount, Interval interval);
 
 	/**
 	 * Tries to complete this order, the {@link OrderStatus} has to be PAID.

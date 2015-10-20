@@ -50,11 +50,11 @@ public class Intervals implements Iterable<Interval> {
 		LocalDateTime target = start.plus(duration);
 
 		if (!target.isBefore(end)) {
-			return Collections.singletonList(new Interval(start, end));
+			return Collections.singletonList(Interval.from(start).to(end));
 		}
 
 		List<Interval> intervals = new ArrayList<>();
-		intervals.add(new Interval(start, target));
+		intervals.add(Interval.from(start).to(target));
 		intervals.addAll(getIntervals(target, end, duration));
 
 		return Collections.unmodifiableList(intervals);

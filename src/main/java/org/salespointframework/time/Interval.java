@@ -1,5 +1,9 @@
 package org.salespointframework.time;
 
+import lombok.AccessLevel;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -22,13 +26,24 @@ public final class Interval {
 	 * @param start must not be {@literal null}.
 	 * @param end must not be {@literal null}.
 	 */
-	public Interval(LocalDateTime start, LocalDateTime end) {
+	private Interval(LocalDateTime start, LocalDateTime end) {
 
 		Assert.notNull(start, "Start must not be null!");
 		Assert.notNull(end, "End must not be null!");
+		Assert.isTrue(start.isBefore(end) || start.isEqual(end), "Start must be before or equal to end!");
 
 		this.start = start;
 		this.end = end;
+	}
+
+	/**
+	 * Starts building a new {@link Interval} with the given start time.
+	 * 
+	 * @param start must not be {@literal null}.
+	 * @return
+	 */
+	public static IntervalBuilder from(LocalDateTime start) {
+		return new IntervalBuilder(start);
 	}
 
 	/**
@@ -94,5 +109,21 @@ public final class Interval {
 	@Override
 	public String toString() {
 		return String.format("Interval from %s to %s", start, end);
+	}
+
+	@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+	public static class IntervalBuilder {
+
+		private final @NonNull LocalDateTime from;
+
+		/**
+		 * Creates an {@link Interval} from the current start time until the given end time.
+		 * 
+		 * @param end must not be {@literal null} and after the current start time or equal to it.
+		 * @return
+		 */
+		public Interval to(LocalDateTime end) {
+			return new Interval(from, end);
+		}
 	}
 }

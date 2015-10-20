@@ -19,7 +19,7 @@ public class IntervalUnitTests {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void preventsNullStart() {
-		new Interval(null, LocalDateTime.now());
+		Interval.from(null);
 	}
 
 	/**
@@ -27,7 +27,7 @@ public class IntervalUnitTests {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void preventsNullEnd() {
-		new Interval(LocalDateTime.now(), null);
+		Interval.from(LocalDateTime.now()).to(null);
 	}
 
 	/**
@@ -39,8 +39,8 @@ public class IntervalUnitTests {
 		LocalDateTime start = LocalDateTime.now();
 		LocalDateTime end = start.plusDays(2);
 
-		Interval first = new Interval(start, end);
-		Interval second = new Interval(start, end);
+		Interval first = Interval.from(start).to(end);
+		Interval second = Interval.from(start).to(end);
 
 		assertThat(first, is(first));
 		assertThat(first, is(second));
@@ -55,8 +55,8 @@ public class IntervalUnitTests {
 
 		LocalDateTime start = LocalDateTime.now();
 
-		Interval first = new Interval(start, start.plusDays(1));
-		Interval second = new Interval(start, start.plusDays(2));
+		Interval first = Interval.from(start).to(start.plusDays(1));
+		Interval second = Interval.from(start).to(start.plusDays(2));
 
 		assertThat(first, is(not(second)));
 		assertThat(second, is(not(first)));
@@ -70,8 +70,8 @@ public class IntervalUnitTests {
 
 		LocalDateTime reference = LocalDateTime.now();
 
-		Interval first = new Interval(reference.minusDays(1), reference);
-		Interval second = new Interval(reference.minusDays(2), reference);
+		Interval first = Interval.from(reference.minusDays(1)).to(reference);
+		Interval second = Interval.from(reference.minusDays(2)).to(reference);
 
 		assertThat(first, is(not(second)));
 		assertThat(second, is(not(first)));
@@ -85,8 +85,8 @@ public class IntervalUnitTests {
 
 		LocalDateTime reference = LocalDateTime.now();
 
-		Interval first = new Interval(reference.minusDays(1), reference);
-		Interval second = new Interval(reference.plusDays(1), reference.plusDays(2));
+		Interval first = Interval.from(reference.minusDays(1)).to(reference);
+		Interval second = Interval.from(reference.plusDays(1)).to(reference.plusDays(2));
 
 		assertThat(first, is(not(second)));
 		assertThat(second, is(not(first)));
