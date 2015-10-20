@@ -1,11 +1,12 @@
 package org.salespointframework.order;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-
+import java.time.LocalDateTime;
 import java.util.Optional;
-
+import static org.hamcrest.CoreMatchers.is;
+import org.hamcrest.collection.IsIterableWithSize;
 import org.javamoney.moneta.Money;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
@@ -24,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Integration tests for {@link OrderManager}.
- * 
+ *
  * @author Hannes Weissbach
  * @author Paul Henke
  * @author Oliver Gierke
@@ -104,5 +105,65 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 		OrderCompletionResult result = orderManager.completeOrder(order);
 
 		assertThat(result.getStatus(), is(OrderCompletionStatus.FAILED));
+	}
+
+	/**
+	 * @see #61
+	 */
+	@Test
+	public void findOrdersBetween() {
+
+		order = orderManager.save(order);
+		LocalDateTime dateCreated = order.getDateCreated();
+
+		Iterable<Order> result = orderManager.findOrdersBetween(dateCreated, dateCreated.plusHours(1L));
+
+		assertThat(result, IsIterableWithSize.<Order> iterableWithSize(1));
+		assertThat(result.iterator().next(), is(order));
+	}
+
+	/**
+	 * @see #61
+	 */
+	@Test
+	public void findOrdersBetweenWhenFromToEqual() {
+
+		order = orderManager.save(order);
+		LocalDateTime dateCreated = order.getDateCreated();
+
+		Iterable<Order> result = orderManager.findOrdersBetween(dateCreated, dateCreated);
+
+		assertThat(result, IsIterableWithSize.<Order> iterableWithSize(1));
+		assertThat(result.iterator().next(), is(order));
+	}
+
+	/**
+	 * @see #61
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void findOrdersBetweenWhenToLowerThenFrom() {
+
+		order = orderManager.save(order);
+		LocalDateTime dateCreated = order.getDateCreated();
+
+		orderManager.findOrdersBetween(dateCreated, dateCreated.minusHours(1l));
+	}
+
+	/**
+	 * @see #61
+	 */
+	@Test
+	public void findOrdersByOrderStatus_OPEN() {
+
+		Order openOrder = new Order(user, Cash.CASH);
+		openOrder = orderManager.save(openOrder);
+		orderManager.save(order);
+
+		orderManager.payOrder(order);
+
+		Iterable<Order> openOrders = orderManager.findOrdersByOrderStatus(OrderStatus.OPEN);
+
+		assertThat(openOrders, IsIterableWithSize.<Order> iterableWithSize(1));
+		assertThat(openOrders.iterator().next(), is(openOrder));
 	}
 }
