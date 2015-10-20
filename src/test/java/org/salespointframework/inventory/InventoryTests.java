@@ -4,11 +4,13 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import java.util.Optional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
-
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import org.hibernate.exception.ConstraintViolationException;
+import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -104,6 +106,12 @@ public class InventoryTests extends AbstractIntegrationTests {
 		assertThat(result.get(), is(item));
 	}
 
+	@Test
+	public void testFindByProductIdentifer() {
+		OrderLine orderLine = new OrderLine(cookie, Units.of(11L));
+		Optional<InventoryItem> result = inventory.findByProductIdentifier(orderLine.getProductIdentifier());
+		assertThat(result.isPresent(), is(true));
+	}
 	/**
 	 * @see #34
 	 */
