@@ -110,11 +110,12 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public Iterable<T> findOrdersBetween(LocalDateTime from, LocalDateTime to) {
-		
+
 		Assert.notNull(from, "from must not be null");
 		Assert.notNull(to, "to must not be null");
-		Assert.isTrue(from.isBefore(to) || from.isEqual(to), "LocalDateTime 'from' must be before or equal to LocalDateTime 'to'");
-		
+		Assert.isTrue(from.isBefore(to) || from.isEqual(to),
+				"LocalDateTime 'from' must be before or equal to LocalDateTime 'to'");
+
 		return orderRepository.findByDateCreatedBetween(from, to);
 	}
 
@@ -124,7 +125,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public Iterable<T> findOrdersByOrderStatus(OrderStatus orderStatus) {
-		
+
 		Assert.notNull(orderStatus, "orderStatus must not be null");
 		return orderRepository.findByOrderStatus(orderStatus);
 	}
@@ -135,7 +136,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public Iterable<T> findOrdersByUserAccount(UserAccount userAccount) {
-		
+
 		Assert.notNull(userAccount, "userAccount must not be null");
 		return orderRepository.findByUserAccount(userAccount);
 	}
@@ -146,11 +147,12 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public Iterable<T> findOrders(UserAccount userAccount, LocalDateTime from, LocalDateTime to) {
-		
+
 		Assert.notNull(userAccount, "userAccount must not be null");
 		Assert.notNull(from, "from must not be null");
 		Assert.notNull(to, "to must not be null");
-		Assert.isTrue(from.isBefore(to) || from.isEqual(to), "LocalDateTime 'from' must be before or equal to LocalDateTime 'to'");
+		Assert.isTrue(from.isBefore(to) || from.isEqual(to),
+				"LocalDateTime 'from' must be before or equal to LocalDateTime 'to'");
 
 		return orderRepository.findByUserAccountAndDateCreatedBetween(userAccount, from, to);
 	}
@@ -187,8 +189,8 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 			// TODO was machen wenn nicht im Inventar
 			if (!inventoryItem.isPresent()) {
-				LOGGER
-						.error("No InventoryItem with given ProductIndentifier found in PersistentInventory. Have you initialized your PersistentInventory? Do you need to re-stock your Inventory?");
+				LOGGER.error(
+						"No InventoryItem with given ProductIndentifier found in PersistentInventory. Have you initialized your PersistentInventory? Do you need to re-stock your Inventory?");
 				break;
 			}
 
@@ -204,43 +206,42 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 			});
 		}
 
-		return txTemplate
-				.execute(status -> {
+		return txTemplate.execute(status -> {
 
-					if (goodItems.size() != order.getNumberOfLineItems()) {
+			if (goodItems.size() != order.getNumberOfLineItems()) {
 
-						status.setRollbackOnly();
+				status.setRollbackOnly();
 
-						LOGGER
-								.error("Number of items requested by the OrderLine is greater than the number available in the Inventory. Please re-stock.");
-						return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
-					}
+				LOGGER.error(
+						"Number of items requested by the OrderLine is greater than the number available in the Inventory. Please re-stock.");
+				return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
+			}
 
-					LOGGER.info("Number of items requested by the OrderLine removed from the Inventory.");
+			LOGGER.info("Number of items requested by the OrderLine removed from the Inventory.");
 
-					boolean failed = false;
+			boolean failed = false;
 
-					for (InventoryItem inventoryItem : goodItems.keySet()) {
+			for (InventoryItem inventoryItem : goodItems.keySet()) {
 
-						try {
-							inventoryItem.decreaseQuantity(goodItems.get(inventoryItem));
-						} catch (IllegalArgumentException o_O) {
-							failed = true;
-							break;
-						}
-					}
+				try {
+					inventoryItem.decreaseQuantity(goodItems.get(inventoryItem));
+				} catch (IllegalArgumentException o_O) {
+					failed = true;
+					break;
+				}
+			}
 
-					// TODO DRY IT
-					if (failed) {
+			// TODO DRY IT
+			if (failed) {
 
-						status.setRollbackOnly();
-						return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
-					}
+				status.setRollbackOnly();
+				return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
+			}
 
-					order.complete();
-					save(order);
-					return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL);
-				});
+			order.complete();
+			save(order);
+			return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL);
+		});
 	}
 
 	/*

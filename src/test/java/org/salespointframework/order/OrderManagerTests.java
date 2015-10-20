@@ -32,142 +32,138 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class OrderManagerTests extends AbstractIntegrationTests {
 
-    @Autowired
-    UserAccountManager userAccountManager;
-    @Autowired
-    OrderManager<Order> orderManager;
+	@Autowired UserAccountManager userAccountManager;
+	@Autowired OrderManager<Order> orderManager;
 
-    @Autowired
-    Catalog<Product> catalog;
-    @Autowired
-    Inventory<InventoryItem> inventory;
+	@Autowired Catalog<Product> catalog;
+	@Autowired Inventory<InventoryItem> inventory;
 
-    UserAccount user;
-    Order order;
+	UserAccount user;
+	Order order;
 
-    @Before
-    public void before() {
-        user = userAccountManager.create("userId", "password");
-        userAccountManager.save(user);
-        order = new Order(user, Cash.CASH);
-    }
+	@Before
+	public void before() {
+		user = userAccountManager.create("userId", "password");
+		userAccountManager.save(user);
+		order = new Order(user, Cash.CASH);
+	}
 
-    @Test(expected = IllegalArgumentException.class)
-    public void nullAddtest() {
-        orderManager.save(null);
-    }
+	@Test(expected = IllegalArgumentException.class)
+	public void nullAddtest() {
+		orderManager.save(null);
+	}
 
-    @Test
-    public void addTest() {
-        orderManager.save(order);
-    }
+	@Test
+	public void addTest() {
+		orderManager.save(order);
+	}
 
-    @Test
-    public void testContains() {
-        orderManager.save(order);
-        assertTrue(orderManager.contains(order.getIdentifier()));
-    }
+	@Test
+	public void testContains() {
+		orderManager.save(order);
+		assertTrue(orderManager.contains(order.getIdentifier()));
+	}
 
-    @Test
-    public void testGet() {
+	@Test
+	public void testGet() {
 
-        order = orderManager.save(order);
+		order = orderManager.save(order);
 
-        Optional<Order> result = orderManager.get(order.getIdentifier());
+		Optional<Order> result = orderManager.get(order.getIdentifier());
 
-        assertThat(result.isPresent(), is(true));
-        assertThat(result.get(), is(order));
-    }
+		assertThat(result.isPresent(), is(true));
+		assertThat(result.get(), is(order));
+	}
 
-    /**
-     * @see #38
-     */
-    @Test
-    public void completesOrderIfAllLineItemsAreAvailableInSufficientQuantity() {
+	/**
+	 * @see #38
+	 */
+	@Test
+	public void completesOrderIfAllLineItemsAreAvailableInSufficientQuantity() {
 
-        Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
-        inventory.save(new InventoryItem(cookie, Quantity.of(100)));
-        order.add(new OrderLine(cookie, Quantity.of(10)));
+		Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
+		inventory.save(new InventoryItem(cookie, Quantity.of(100)));
+		order.add(new OrderLine(cookie, Quantity.of(10)));
 
-        orderManager.payOrder(order);
-        OrderCompletionResult result = orderManager.completeOrder(order);
+		orderManager.payOrder(order);
+		OrderCompletionResult result = orderManager.completeOrder(order);
 
-        assertThat(result.getStatus(), is(OrderCompletionStatus.SUCCESSFUL));
-    }
+		assertThat(result.getStatus(), is(OrderCompletionStatus.SUCCESSFUL));
+	}
 
-    /**
-     * @see #38
-     */
-    @Test
-    public void failsOrderCompletionIfLineItemsAreNotAvailableInSufficientQuantity() {
+	/**
+	 * @see #38
+	 */
+	@Test
+	public void failsOrderCompletionIfLineItemsAreNotAvailableInSufficientQuantity() {
 
-        Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
-        inventory.save(new InventoryItem(cookie, Quantity.of(1)));
-        order.add(new OrderLine(cookie, Quantity.of(10)));
+		Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
+		inventory.save(new InventoryItem(cookie, Quantity.of(1)));
+		order.add(new OrderLine(cookie, Quantity.of(10)));
 
-        orderManager.payOrder(order);
-        OrderCompletionResult result = orderManager.completeOrder(order);
+		orderManager.payOrder(order);
+		OrderCompletionResult result = orderManager.completeOrder(order);
 
-        assertThat(result.getStatus(), is(OrderCompletionStatus.FAILED));
-    }
+		assertThat(result.getStatus(), is(OrderCompletionStatus.FAILED));
+	}
 
-    /**
-     * @see #61
-     */
-    @Test
-    public void findOrdersBetween() {
+	/**
+	 * @see #61
+	 */
+	@Test
+	public void findOrdersBetween() {
 
-        order = orderManager.save(order);
-        LocalDateTime dateCreated = order.getDateCreated();
+		order = orderManager.save(order);
+		LocalDateTime dateCreated = order.getDateCreated();
 
-        Iterable<Order> result = orderManager.findOrdersBetween(dateCreated, dateCreated.plusHours(1L));
+		Iterable<Order> result = orderManager.findOrdersBetween(dateCreated, dateCreated.plusHours(1L));
 
-        assertThat(result, IsIterableWithSize.<Order>iterableWithSize(1));
-        assertThat(result.iterator().next(), is(order));
-    }
+		assertThat(result, IsIterableWithSize.<Order> iterableWithSize(1));
+		assertThat(result.iterator().next(), is(order));
+	}
 
-    /**
-     * @see #61
-     */
-    @Test
-    public void findOrdersBetweenWhenFromToEqual() {
+	/**
+	 * @see #61
+	 */
+	@Test
+	public void findOrdersBetweenWhenFromToEqual() {
 
-        order = orderManager.save(order);
-        LocalDateTime dateCreated = order.getDateCreated();
+		order = orderManager.save(order);
+		LocalDateTime dateCreated = order.getDateCreated();
 
-        Iterable<Order> result = orderManager.findOrdersBetween(dateCreated, dateCreated);
+		Iterable<Order> result = orderManager.findOrdersBetween(dateCreated, dateCreated);
 
-        assertThat(result, IsIterableWithSize.<Order>iterableWithSize(1));
-        assertThat(result.iterator().next(), is(order));
-    }
-    
-    /**
-     * @see #61
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void findOrdersBetweenWhenToLowerThenFrom() {
-        
-        order = orderManager.save(order);
-        LocalDateTime dateCreated = order.getDateCreated();
+		assertThat(result, IsIterableWithSize.<Order> iterableWithSize(1));
+		assertThat(result.iterator().next(), is(order));
+	}
 
-        Iterable<Order> result = orderManager.findOrdersBetween(dateCreated, dateCreated.minusHours(1l));
-    }
-    
-    /**
-     * @see #61
-     */
-    @Test
-    public void findOrdersByOrderStatus_OPEN() {
-        
-        Order openOrder = new Order(user, Cash.CASH);
-        openOrder = orderManager.save(openOrder);
-        orderManager.save(order);
-        
-        orderManager.payOrder(order);
-        
-        Iterable<Order> openOrders = orderManager.findOrdersByOrderStatus(OrderStatus.OPEN);
-        
-        assertThat(openOrders, IsIterableWithSize.<Order>iterableWithSize(1));
-        assertThat(openOrders.iterator().next(), is(openOrder));
-    }
+	/**
+	 * @see #61
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void findOrdersBetweenWhenToLowerThenFrom() {
+
+		order = orderManager.save(order);
+		LocalDateTime dateCreated = order.getDateCreated();
+
+		orderManager.findOrdersBetween(dateCreated, dateCreated.minusHours(1l));
+	}
+
+	/**
+	 * @see #61
+	 */
+	@Test
+	public void findOrdersByOrderStatus_OPEN() {
+
+		Order openOrder = new Order(user, Cash.CASH);
+		openOrder = orderManager.save(openOrder);
+		orderManager.save(order);
+
+		orderManager.payOrder(order);
+
+		Iterable<Order> openOrders = orderManager.findOrdersByOrderStatus(OrderStatus.OPEN);
+
+		assertThat(openOrders, IsIterableWithSize.<Order> iterableWithSize(1));
+		assertThat(openOrders.iterator().next(), is(openOrder));
+	}
 }
