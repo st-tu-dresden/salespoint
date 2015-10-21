@@ -90,6 +90,6 @@ public class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTe
 
 	static UserAccount createAccount() {
 		UserAccountIdentifier identifier = new UserAccountIdentifier(UUID.randomUUID().toString());
-		return new UserAccount(identifier, "password", new Role("USER"));
+		return new UserAccount(identifier, "password", Role.of("USER"));
 	}
 }

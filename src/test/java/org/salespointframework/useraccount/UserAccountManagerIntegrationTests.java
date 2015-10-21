@@ -95,7 +95,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	@Test
 	public void changesPasswordCorrectly() {
 
-		UserAccount acc = userAccountManager.create("Bob", "123", new Role("ROLE_CHEF"));
+		UserAccount acc = userAccountManager.create("Bob", "123", Role.of("ROLE_CHEF"));
 		userAccountManager.save(acc);
 
 		userAccountManager.changePassword(acc, "asd");
@@ -110,7 +110,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	@Test
 	public void findsUserByUsername() {
 
-		UserAccount reference = userAccountManager.save(userAccountManager.create("Bob", "123", new Role("ROLE_CHEF")));
+		UserAccount reference = userAccountManager.save(userAccountManager.create("Bob", "123", Role.of("ROLE_CHEF")));
 
 		Optional<UserAccount> user = userAccountManager.findByUsername("Bob");
 

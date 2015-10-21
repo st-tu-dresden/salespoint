@@ -19,6 +19,6 @@ class StringToRoleConverter implements Converter<String, Role> {
 	 */
 	@Override
 	public Role convert(String text) {
-		return new Role(text);
+		return Role.of(text);
 	}
 }

@@ -1,5 +1,9 @@
 package org.salespointframework.useraccount;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.Value;
+
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
@@ -12,64 +16,35 @@ import org.springframework.util.Assert;
  * @author Christopher Bellmann
  * @author Paul Henke
  */
+@Value
 @Embeddable
-@SuppressWarnings("serial")
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public final class Role implements Serializable, Comparable<Role> {
 
-	private final String name;
+	private static final long serialVersionUID = 5440415491197908839L;
+
+	String name;
 
 	/**
-	 * Protected, parameterless Constructor required by the persistence layer. Do not use it.
+	 * Creates a new {@link Role} instance with the given name.
+	 * 
+	 * @param name the name of the Role, must not be {@literal null} or empty.
+	 * @deprecated use {@link #of(String)} instead.
 	 */
 	@Deprecated
-	protected Role() {
-		name = "";
-	}
-
-	/**
-	 * Creates a new Role
-	 * 
-	 * @param name the name of the Role
-	 * @throws NullPointerException if name is null
-	 */
 	public Role(String name) {
 
-		Assert.hasText(name, "Name must not be null!");
+		Assert.hasText(name, "Name must not be null or empty!");
 		this.name = name;
 	}
 
 	/**
-	 * @return the name of the Role
+	 * Creates a new {@link Role} instance with the given name.
+	 * 
+	 * @param name the name of the Role, must not be {@literal null} or empty.
 	 */
-	public final String getName() {
-		return name;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public final boolean equals(Object other) {
-
-		if (other == this) {
-			return true;
-		}
-
-		if (!(other instanceof Role)) {
-			return false;
-		}
-
-		return this.name.equals(((Role) other).name);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public final int hashCode() {
-		return name.hashCode();
+	public static Role of(String name) {
+		return new Role(name);
 	}
 
 	/*
@@ -77,7 +52,7 @@ public final class Role implements Serializable, Comparable<Role> {
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public final String toString() {
+	public String toString() {
 		return name;
 	}
 
