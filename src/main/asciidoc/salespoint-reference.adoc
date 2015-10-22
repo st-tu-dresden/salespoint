@@ -57,10 +57,12 @@ Here you can find the link:images/salespoint-classdiagram.png[salespoint class d
 == Core concepts
 Before we dive into the technical details of Salespoint, let's make sure we understand some core concepts that will help us understand the different modules of the framework a bit better. Each of the <<modules, modules>> consists of a bit of code and the classes can usually be grouped into 3 different buckets: entities and value objects, summarized to <<architecture.core-concepts.ddd.newables, newables>>, repositories and services, summarized to <<architecture.core-concepts.ddd.injectables, injectables>> as well as <<architecture.core-concepts.container-configuration, Spring container configuration and extension code>>. The following sections will cast some light on these kinds of types and their special traits.
 
+////
 [[architecture.core-concepts.ddd.newables]]
 === Entities and value objects
 
 TODO
+////
 
 [[architecture.core-concepts.ddd.injectables]]
 === Repositories, services and controllers
@@ -71,10 +73,12 @@ As repositories abstract a collection of an aggregate root (e.g. an order with i
 
 Repositories, services and controllers are types whose instances are managed by the Spring container. Thus they're never instantiated manually in the application code, except for unit testing purposes. Application code uses dependency injection to access
 
+////
 [[architecture.core-concepts.container-configuration]]
 === Container configuration and extensions
 
 TODO
+////
 
 [[architecture.maven]]
 == Maven
@@ -113,6 +117,7 @@ The de-facto standard Java application framework.
 - https://spring.io/guides[Getting started guides]
 - http://projects.spring.io/spring-framework[Project home]
 
+////
 [[stack.spring.core-concepts]]
 === Core concepts
 
@@ -127,6 +132,7 @@ TODO
 ==== Components and component scanning
 
 TODO
+////
 
 [[stack.spring-data-jpa]]
 == Spring Data JPA
