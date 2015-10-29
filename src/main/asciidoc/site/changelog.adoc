@@ -3,6 +3,26 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :revdate: {localdate}
 
 :numbered!:
+[6.2-GA]
+== 6.2 GA
+
+Release date: 2015-10-29
+
+----
+- Upgrade to Spring Boot 1.3 RC1 - #113
+- Remove obsolete Thymeleaf tests - #112
+- Update Sonargraph architecture description - #111
+- Remove TODOs from reference documentation - #108
+- Turn Role into value object - #107
+- Create link to the UML class diagram in the technical reference - #104
+- Fixed small typo. - #101
+- Update UML diagrams - #100
+- Update UML diagrams in reference documentation  - #97
+- Improve documention about Quantity attributes - #67
+- Improve naming of find(…) methods in OrderManager - #61
+----
+
+:numbered!:
 [6.2-RC1]
 == 6.2 RC1
 
