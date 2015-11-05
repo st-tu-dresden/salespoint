@@ -3,13 +3,11 @@ package org.salespointframework.accountancy;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
-
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.Currencies;
@@ -87,7 +85,11 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 		return Optional.ofNullable(date);
 	}
 
-	void setDate(LocalDateTime dateTime) {
+        /**
+         * TODO/Caution: Only for test purpose !
+         * @param dateTime 
+         */
+	public void setDate(LocalDateTime dateTime) {
 		this.date = dateTime;
 	}
 
