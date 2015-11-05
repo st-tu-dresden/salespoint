@@ -24,8 +24,10 @@ public class Quantity {
 
 	private static final String INCOMPATIBLE = "Quantity %s is incompatible to quantity %s!";
 
+	// tag::attributes[]
 	private @NonNull final BigDecimal amount;
 	private @NonNull final Metric metric;
+	// end::attributes[]
 
 	Quantity() {
 		this.amount = null;

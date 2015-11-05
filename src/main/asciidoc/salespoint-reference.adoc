@@ -150,27 +150,30 @@ Library to build HTML web views using natural templating.
 - https://spring.io/guides/gs/serving-web-content[Getting stared guide]
 - http://www.thymeleaf.org/doc/usingthymeleaf.html[Tutorial]
 
-[[stack.joda-money]]
-==  JodaMoney
-With Salespoint {majorversion} money class and its related components were replaced by the Joda-Money [7] project. Prices and other money values are represented as `org.joda.money.Money` or for more precisison as `org.joda.money.BigMoney` objects. Due to the fact, that all representing objects are immutable, all arithmetic functions produce a new instance.
+[[stack.java-money]]
+==  JavaMoney
+With Salespoint {majorversion} money class and its related components were replaced by the Java-Money project. Prices and other money values are represented as `org.javamoney.moneta.Money`. Due to the fact, that all representing objects are immutable, all arithmetic functions produce a new instance.
 
-.Example for JodaMoney operations
-====
-[source, java]
-----
-Money first = Money.parse(“USD 23.07”);
-Money second = Money.parse(“USD 18.07”);
-Money sum = first.plus(second);
-----
-====
+Java-Money also supports `Currency`. Some currencies are provided through `org.salespointframework.core.Currencies`. But new and funky `CurrencyUnits` can be created too. So with this currencies, money values can be converted from one to another currency.
 
-Joda-Money also supports `Currency` (see _Example for JodaMoney operations_). A set of loaded currencies is provided by an instance of `CurrencyUnitDataProvider`. But new and funky `CurrencyUnits` can be created to. So with this currencies, money values can be converted from one to another currency.
+- http://javamoney.org[Project Home]
+- https://github.com/JavaMoney/javamoney-examples[Usage, Examples]
+
+.Usage of JavaMoney
+[source,java]
+----
+CurrencyUnit euro = Monetary.getCurrency("EURO"); # <1>
+Money money = Money.of(120, euro); # <2>
+----
+<1> First create a CurrencyUnit
+<2> Second create a Money value of 120 with CurrencyUnit of 'EURO'
 
 [[modules]]
 = Business modules
 
 [[modules.useraccount]]
 == Users
+=== UserAccount
 
 ////
 [User|-enabled:boolean]-0..*>[Role]
@@ -183,23 +186,36 @@ image::user-account.png[title="User Account"]
 To manage system accounts, Salespoint {majorversion} has a notation of a user in the form of the `User` class. Users are managed by the `UserAccountManager`. Every user is uniquely identified by a `org.salespointframework.useraccount.UserAccountIdentifier`, which also serves as primary key attribute for the database.
 The username of the `org.salespointframework.useraccount.UserAccount` can be retrieved by the `getUsername()` method.
 
+**`UserAccount` can not be sub-classed.** +
+**`UserAccount` are managed by `UserAccountManager`.**
+
+**Example of working with `UserAccount` see https://github.com/st-tu-dresden/videoshop/blob/master/src/main/java/videoshop/VideoShopDataInitializer.java#L123[Videoshop @ Github].**
+
+.Overview of UserAccount attributes
+[source, java, indent=0]
+----
+include::{source-base}/useraccount/UserAccount.java[tags=attributes]
+----
+<1> username of UserAccount, required
+<2> password for UserAccount, required
+<3> roles for UserAccount, required
+
 [[modules.useraccount.role]]
 === Roles
-`org.salespointframework.useraccount.Role`s in conjunction with authorization tag `hasRole()` can be used to change the appearance of a View, depending on a user’s status. For example, a View for a user having an “administrator” role may display different content, for example delete buttons, than for a user not having that role. Thus, roles allow for flexibility and assist in code reuse, when designing the `View`.
+`org.salespointframework.useraccount.Role` s in conjunction with authorization tag `hasRole()` can be used to change the appearance of a View, depending on a user’s status. For example, a View for a user having an “administrator” role may display different content, for example delete buttons, than for a user not having that role. Thus, roles allow for flexibility and assist in code reuse, when designing the `View`.
 
 [[modules.useraccount.login]]
 === Login
-To reduce code repetition, Salespoint {majorversion} contains code to automate the user log in. Using a Thymeleaf template, a special login form is generated, which is handled by an interceptor. The interceptor verifies the user password and associates the current session with the user using `<login>` and `<logoff>`. The session is required, because multiple users can be logged on at the same time.
+To reduce code repetition, Salespoint {version} contains code to automate the user log in. Using a Thymeleaf template, a special login form is generated, which is handled by an interceptor. The interceptor verifies the user password and associates the current session with the user using `<login>` and `<logoff>`. The session is required, because multiple users can be logged on at the same time.
 
 [[modules.useraccount.limitation]]
 === Limitation
-The `org.salespointframework.useraccount.UserAccount` is limited to the given attributes and methods.
+IMPORTANT: The `org.salespointframework.useraccount.UserAccount` is limited to the given attributes and methods.
 Due to the fact, that Salespoint use the `SecurityContext` for authentication, the `UserAccount` cannot be extended. In the background the `org.salespointframework.useraccount.UserAccount` is converted to an instance of `org.springframework.security.core.userdetails.UserDetails`.
 
 If these properties don’t meet all requirements, wrap the `UserAccount` in a new entity. Put all the new features in this new entity and connect this information via a `@OneToOne` relationship with the `UserAccount`. An example can be found in the Videoshop project.
 
 .Example of a UserAccount extension
-====
 [source, java]
 ----
 @Entity
@@ -214,14 +230,18 @@ public class UserAccountExtension {
   …
 }
 ----
-====
 
 [[modules.quantity]]
 == Quantity
 `Quantity` is used to represent amounts of anything. Furthermore a `Quantity` can be used to calc with (plus, minus).
 But only `Quantities` with the same `Metric` can be combined or compared, so every `Quantity` has an `Metric` attribute.
-
 And of course, every `Quantity` has an amount value, represented as a `java.math.BigDecimal`.
+
+.Overview of Quantity attributes
+[source, java, indent=0]
+----
+include::{source-base}/quantity/Quantity.java[tags=attributes]
+----
 
 [[modules.quantity.metric]]
 === Metric
@@ -229,22 +249,29 @@ The composite type `Metric` contains all information pertaining to the unit or m
 Furthermore, an object of type `Metric` has a description field, to explain the meaning of the metric in detail. For the example of a meter a possible description could be "The meter is the length of the path travelled by light in vacuum during a time interval of 1/299 792 458 of a second.".
 
 [[modules.catalog]]
-== Catalog
+== Product
+Salespoint {majorversion} is intended as framework for point-of-sale applications. Items for sale are called products and represented by instances of the class `Product`. To represent different kinds of products, `Product` can be sub-classed. Products are identified using a `ProductIndentifier`.
 
-Salespoint {majorversion} is intended as framework for point-of-sale applications. Items for sale are called products and represented by instances of the class `Product`. To represent different kinds of products, `Product` can be sub-classed. Products are managed by a `Catalog` implementation (see below). Products are identified using a `ProductIndentifier`.
+**`Products` are managed by a `Catalog` implementation.** +
+**`Products` can be sub-classed**
 
-The `Catalog` interface was designed to manage `Product` instances in the system. It provides functionality to add, remove, and find products. Products can be searched by their name or category. The `PersistentCatalog` is an implementation of the `Catalog` interface.
+.Overview of Product attributes
+[source, java, indent=0]
+----
+include::{source-base}/catalog/Product.java[tags=attributes]
+----
 
+=== Catalog
 ////
 [Product]<-[<<Interface>> Catalog]
 [<<Interface>> SalespointRepository]^[<<Interface>> Catalog]
 ////
 image::catalog.png[title="Catalog"]
 
+The `Catalog` interface was designed to manage `Product` instances in the system. It provides functionality to add, remove, and find products. Products can be searched by their name or category.
+
 [[modules.accountancy]]
 == Accountancy
-The accountancy package contains functionality supporting book keeping. `AccountancyEntry` is a representation of an accounting entry. `Accountancy` aggregates ``AccountancyEntry``s. Every `AccountancyEntry` is uniquely identified by an ``AccountancyEntryIdentifier``. `AccountancyEntry` extends `AbstractEntity` and serves as persistence entity, while `PersistentAccountancy` implements `Accountancy` and provides transparent access to the JPA layer. `AccountancyEntryIdentifier` is used as primary key attribute, when entities are stored in the database.
-
 ////
 [<<Interface>> Accountancy]^-.-[PersistentAccountancy]
 [PersistentAccountancy]uses-.->[<<Interface>> AccountancyEntryRepository]
@@ -252,9 +279,24 @@ The accountancy package contains functionality supporting book keeping. `Account
 ////
 image::accountancy.png[Accountancy, title="Accountancy"]
 
+The accountancy package contains functionality supporting book keeping. `AccountancyEntry` is a representation of an accounting entry. Every `AccountancyEntry` is uniquely identified by an `AccountancyEntryIdentifier`. `AccountancyEntryIdentifier` is used as primary key attribute, when entities are stored in the database.
+
 By implementing and sub-classing `Accountancy`, the notion of different accounts, as known from double-entry bookkeeping, can be realised.
 
 To create a new account, `AccountancyEntry` has to be sub-classed. Every object of such a class belongs to the same account. Accessing per-account entries is facilitated by specifiying the desired class type when calling `get()` or `find()` methods of `Accountancy`.
+
+.Usage of Accountancy
+[source, java, indent=0]
+----
+public class ExampleImplementation {
+
+include::{source-base-test}/accountancy/AccountancyTests.java[tags=init]
+
+        {...}
+}
+----
+<1> Initialization of an `Accountancy` of class `AccountancyEntry`
+<2> Initialization of an `Accountancy` of class `ProductPaymentEntry`, (sub-class of `AccountancyEntry`)
 
 [[modules.payment]]
 == Payments
@@ -334,6 +376,12 @@ image::business-time.png[title="Business time"]
 
 Besides the business modules, Salespoint containes a few <<glossary.spi,SPIs>> that can be used to extend the functionality of the core framework. These SPIs usually exist to make repeated use-cases easier to implement and free you from writing too much boilerplate code.
 
+=== Salespoint-Interfaces (Salespoint-Repository)
+
+==== Interfaces extended from `SalespointRepository`
+
+==== Interfaces not from `SalespointRepository`
+
 [[modules.technical-apis.data-initializer]]
 === DataInitializer
 
@@ -381,24 +429,3 @@ SPI::
 - [[[ddd]]] Eric Evans. Domain-Driven Design: Tackling Complexity in the Heart of Software. Prentice Hall. 2003
 - [[[epam]]] Jim Arlow, Ila Neustadt. Enterprise Patterns and MDA: Building Better Software with Archetype Patterns and UML. Addison-Wesley. 2004.
 - [[[di]]] Martin Fowler. Inversion of Control Containers and the Dependency Injection pattern. 2004. http://www.martinfowler.com/articles/injection.html
-
-[appendix]
-== Asciidoc template
-
-Some random snippets to show how Asciidoc is used. For more examples see the http://asciidoctor.org/docs/user-manual[user manual].
-
-.Example for code snippets
-====
-[source, java]
-----
-class SomeClass { }
-----
-====
-
-.Example for code included from the sources
-====
-[source, java]
-----
-include::{source-base-test}/AbstractIntegrationTests.java[tags=testBase]
-----
-====

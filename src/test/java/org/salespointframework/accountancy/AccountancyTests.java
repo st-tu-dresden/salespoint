@@ -20,8 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SuppressWarnings("javadoc")
 public class AccountancyTests extends AbstractIntegrationTests {
 
-	@Autowired Accountancy<AccountancyEntry> a;
-	@Autowired Accountancy<ProductPaymentEntry> p;
+	// tag::init[]
+	@Autowired Accountancy<AccountancyEntry> a; //<1>
+	@Autowired Accountancy<ProductPaymentEntry> p; //<2>
+	// end::init[]
 	@Autowired UserAccountManager userAccountManager;
 
 	private LocalDateTime from;
@@ -40,11 +42,14 @@ public class AccountancyTests extends AbstractIntegrationTests {
 				user = userAccountManager.save(user);
 				OrderIdentifier orderIdentifier = new Order(user).getIdentifier();
 
-				a.add(new ProductPaymentEntry(orderIdentifier, user, Money.of(1, Currencies.EURO), "Rechnung nr " + year,
-						Cash.CASH));
+				// tag::addP[]
+				a.add(new ProductPaymentEntry(orderIdentifier, user, Money.of(1, Currencies.EURO), "Rechnung nr " + year, Cash.CASH));
+				// end::addP[]
 			} else {
 				System.out.println("PersistentAccountancyEntry");
+				// tag::addA[]
 				a.add(new AccountancyEntry(Money.of(2.22, Currencies.EURO)));
+				// end::addA[]
 			}
 
 			if (year == 2002) {

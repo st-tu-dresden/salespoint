@@ -29,6 +29,7 @@ public class Product extends AbstractEntity<ProductIdentifier>implements Compara
 
 	private static final long serialVersionUID = 6645371648836029780L;
 
+	// tag::attributes[]
 	@EmbeddedId //
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID") ) //
 	private ProductIdentifier productIdentifier = new ProductIdentifier();
@@ -36,6 +37,7 @@ public class Product extends AbstractEntity<ProductIdentifier>implements Compara
 	private @Lob Money price;
 	private @ElementCollection Set<String> categories = new HashSet<String>();
 	private Metric metric;
+	// end::attributes[]
 
 	/**
 	 * Parameterless constructor required for JPA. Do not use.

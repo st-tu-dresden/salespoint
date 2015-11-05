@@ -26,21 +26,23 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 
 	private static final long serialVersionUID = -795038599473743418L;
 
+	// tag::attributes[]
 	@EmbeddedId//
 	@AttributeOverride(name = "id", column = @Column(name = "USERACCOUNT_ID"))//
-	private UserAccountIdentifier userAccountIdentifier;
+	private UserAccountIdentifier userAccountIdentifier; // <1>
 
 	@Column(nullable = false)//
-	private Password password;
+	private Password password; // <2>
 
 	private String firstname;
 	private String lastname;
 	private String email;
 
 	@ElementCollection(fetch = FetchType.EAGER)//
-	private Set<Role> roles = new TreeSet<Role>();
+	private Set<Role> roles = new TreeSet<Role>(); // <3>
 
 	private boolean enabled;
+	// end::attributes[]
 
 	@Deprecated
 	protected UserAccount() {
