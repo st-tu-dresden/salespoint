@@ -1,16 +1,14 @@
 package org.salespointframework.accountancy;
 
-import static java.util.function.Function.*;
-import static java.util.stream.Collectors.*;
-import static java.util.stream.StreamSupport.*;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.StreamSupport.stream;
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.time.BusinessTime;
@@ -113,7 +111,7 @@ class PersistentAccountancy<T extends AccountancyEntry> implements Accountancy<T
 		Assert.notNull(duration, "period must not be null");
 
 		return new Intervals(from, to, duration).//
-				stream().parallel().//
+				stream().//
 				collect(toMap(identity(), i -> find(i.getStart(), i.getEnd())));
 	}
 
