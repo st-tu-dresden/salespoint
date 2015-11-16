@@ -3,7 +3,6 @@ package org.salespointframework;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.HttpEncodingProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -23,7 +22,6 @@ public class SalespointWebConfiguration extends WebMvcConfigurerAdapter {
 
 	@Autowired List<? extends Converter<?, ?>> converters;
 	@Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
-	@Autowired HttpEncodingProperties httpEncodingProperties;
 
 	/**
 	 * Special dialect to support Java 8 type formatting.
