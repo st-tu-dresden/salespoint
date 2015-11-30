@@ -185,7 +185,10 @@ The username of the `org.salespointframework.useraccount.UserAccount` can be ret
 
 [[modules.useraccount.role]]
 === Roles
-`org.salespointframework.useraccount.Role`s in conjunction with authorization tag `hasRole()` can be used to change the appearance of a View, depending on a user’s status. For example, a View for a user having an “administrator” role may display different content, for example delete buttons, than for a user not having that role. Thus, roles allow for flexibility and assist in code reuse, when designing the `View`.
+As the name suggests, a `Role` represents the role a `UserAccount` has. It is usually used in security expressions with either `@Secured` or in a Thymeleaf template to restrict access to functionality or change the appearance of a view depending on a user’s status.
+A view for a user having an administrator role may display different content -- e.g. delete buttons -- than for a user not having that role.
+
+`Role` is a value typefootnoteref:[value-objects, http://blog.joda.org/2014/03/valjos-value-java-objects.html[Value Objects]] and thus instances are created using a factory method: `Role.of("ROLE_ADMIN");`.
 
 [[modules.useraccount.login]]
 === Login
