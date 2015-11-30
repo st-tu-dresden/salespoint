@@ -7,7 +7,7 @@ import javax.persistence.Embeddable;
 import org.salespointframework.core.SalespointIdentifier;
 
 /**
- * {@link OrderIdentifier serves as an identifier type for {@link Order} objects. The main reason for its existence is
+ * {@link OrderIdentifier} serves as an identifier type for {@link Order} objects. The main reason for its existence is
  * type safety for identifier across the Salespoint Framework. <br />
  * {@link OrderIdentifier} instances serve as primary key attribute in {@link Order}, but can also be used as a key for
  * non-persistent, {@link Map}-based implementations.
