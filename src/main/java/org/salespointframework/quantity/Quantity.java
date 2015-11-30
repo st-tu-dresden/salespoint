@@ -1,6 +1,7 @@
 package org.salespointframework.quantity;
 
 import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -18,19 +19,22 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Embeddable
-@Value(staticConstructor = "of")
+@Value
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Quantity {
 
 	private static final String INCOMPATIBLE = "Quantity %s is incompatible to quantity %s!";
 
+	/**
+	 * The amount of the Quantity.
+	 */
 	private @NonNull final BigDecimal amount;
-	private @NonNull final Metric metric;
 
-	Quantity() {
-		this.amount = null;
-		this.metric = null;
-	}
+	/**
+	 * The metric of the Quantity.
+	 */
+	private @NonNull final Metric metric;
 
 	/**
 	 * Creates a new {@link Quantity} of the given amount. Defaults the metric to {@value Metric#UNIT}.
@@ -163,6 +167,15 @@ public class Quantity {
 	 */
 	public boolean isNegative() {
 		return this.amount.compareTo(BigDecimal.ZERO) < 0;
+	}
+
+	/**
+	 * Returns a new {@link Quantity} of zero with the {@link Metric} of the current one.
+	 * 
+	 * @return will never be {@literal null}.
+	 */
+	public Quantity toZero() {
+		return Quantity.of(0, metric);
 	}
 
 	private void assertCompatibility(Quantity quantity) {

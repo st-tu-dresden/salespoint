@@ -117,4 +117,17 @@ public class QuantityUnitTests {
 		assertThat(Quantity.of(5.1, Metric.LITER).toString(), is("5,1l"));
 		assertThat(Quantity.of(5.11, Metric.LITER).toString(), is("5,11l"));
 	}
+
+	/**
+	 * @see #129
+	 */
+	@Test
+	public void comparesToZero() {
+
+		Quantity quantity = Quantity.of(5);
+		Quantity zero = Quantity.of(0, Metric.LITER);
+
+		assertThat(quantity.isGreaterThan(quantity.toZero()), is(true));
+		assertThat(zero.equals(zero.toZero()), is(true));
+	}
 }
