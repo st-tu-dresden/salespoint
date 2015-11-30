@@ -118,6 +118,25 @@
 
 		<plugins>
 
+			<!-- Delombok sources to make sure generated methods can be picked up by JavaDoc -->
+			<plugin>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok-maven-plugin</artifactId>
+				<version>1.16.6.1</version>
+				<configuration>
+					<addOutputDirectory>false</addOutputDirectory>
+					<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>delombok</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -135,6 +154,7 @@
 	                <excludePackageNames>org.thymeleaf.*</excludePackageNames>
 	                <outputDirectory>${project.build.directory}/site${dev}/api</outputDirectory>
 					<show>package</show>
+					<sourcepath>target/generated-sources/delombok</sourcepath>
 	            </configuration>
 			</plugin>
 
