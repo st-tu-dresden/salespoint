@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface Inventory<T extends InventoryItem> extends SalespointRepository<T, InventoryItemIdentifier> {
 
 	/**
-	 * Returns all {@link InventoryItem}s for the {@link Product} with the given identifier.
+	 * Returns the {@link InventoryItem} for the {@link Product} with the given identifier.
 	 * 
 	 * @param productIdentifier must not be {@literal null}.
 	 * @return
@@ -24,7 +24,7 @@ public interface Inventory<T extends InventoryItem> extends SalespointRepository
 	Optional<T> findByProductIdentifier(ProductIdentifier productIdentifier);
 
 	/**
-	 * Returns all {@link InventoryItem}s for the given {@link Product}.
+	 * Returns the {@link InventoryItem} for the given {@link Product}.
 	 * 
 	 * @param product must not be {@literal null}.
 	 * @return
