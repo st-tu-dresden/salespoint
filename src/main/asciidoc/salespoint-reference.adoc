@@ -150,11 +150,11 @@ Library to build HTML web views using natural templating.
 - https://spring.io/guides/gs/serving-web-content[Getting stared guide]
 - http://www.thymeleaf.org/doc/usingthymeleaf.html[Tutorial]
 
-[[stack.joda-money]]
-==  JodaMoney
-With Salespoint {majorversion} money class and its related components were replaced by the Joda-Money [7] project. Prices and other money values are represented as `org.joda.money.Money` or for more precisison as `org.joda.money.BigMoney` objects. Due to the fact, that all representing objects are immutable, all arithmetic functions produce a new instance.
+[[stack.java-money]]
+==  Java Money
+With Salespoint {majorversion} `Money` class and its related components were replaced by the Java Money library. Prices and other monetary values are represented as `org.javamoney.moneta.Money` objects. Due to the fact that all representing objects are immutable, all arithmetic functions produce a new instance.
 
-.Example for JodaMoney operations
+.Example for Money operations
 ====
 [source, java]
 ----
@@ -164,7 +164,7 @@ Money sum = first.plus(second);
 ----
 ====
 
-Joda-Money also supports `Currency` (see _Example for JodaMoney operations_). A set of loaded currencies is provided by an instance of `CurrencyUnitDataProvider`. But new and funky `CurrencyUnits` can be created to. So with this currencies, money values can be converted from one to another currency.
+When used in domain objects, `Money` instances need to be mapped using `@Lob`.
 
 [[modules]]
 = Business modules
