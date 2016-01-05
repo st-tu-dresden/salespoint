@@ -4,7 +4,7 @@
 
 	<groupId>de.tudresden.inf.st</groupId>
 	<artifactId>salespoint-framework</artifactId>
-	<version>6.2.1.BUILD-SNAPSHOT</version>
+	<version>6.2.1.RELEASE</version>
 
 	<name>Salespoint</name>
 
