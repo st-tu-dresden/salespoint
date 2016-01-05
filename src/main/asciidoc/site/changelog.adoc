@@ -3,6 +3,24 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :revdate: {localdate}
 
 :numbered!:
+[6.2.1]
+== 6.2.1
+
+Release date: 2016-01-05
+
+----
+- Upgrade to Asciidoctor Maven plugin 1.5.3 - #136
+- Fix Javadoc on Inventory - #135
+- Upgrade to Spring Boot 1.3.1 to benefit from devtools - #134
+- Improve reference documentation on Money - #131
+- Make sure JavaDoc is correct for Lombok generated methods - #130
+- Add Quantity.toZero() - #129
+- Improve JavaDoc of ConsoleWritingMailSender - #126
+- Documentation for updated Role usage - #124
+- Upgrade to Spring Boot 1.3 GA - #120
+----
+
+:numbered!:
 [6.2-GA]
 == 6.2 GA
 
