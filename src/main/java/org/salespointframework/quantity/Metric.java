@@ -30,4 +30,22 @@ public enum Metric {
 
 		return this.equals(metric);
 	}
+
+	/**
+	 * Returns the {@link Metric} for the given abbreviation.
+	 * 
+	 * @param abbreviation
+	 * @return will never be {@literal null}.
+	 * @throws IllegalArgumentException if no {@link Metric} can be found for the given abbreviation.
+	 */
+	public static Metric from(String abbreviation) {
+
+		for (Metric metric : Metric.values()) {
+			if (metric.getAbbreviation().equals(abbreviation)) {
+				return metric;
+			}
+		}
+
+		throw new IllegalArgumentException(String.format("Unsupported abbreviation %s!", abbreviation));
+	}
 }

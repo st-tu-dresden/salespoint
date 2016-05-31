@@ -2,6 +2,7 @@ package org.salespointframework.core;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
+import javax.money.MonetaryAmount;
 
 import org.javamoney.moneta.Money;
 
@@ -14,5 +15,5 @@ public interface Currencies {
 
 	public static final CurrencyUnit EURO = Monetary.getCurrency("EUR");
 
-	public static final Money ZERO_EURO = Money.of(0, EURO);
+	public static final MonetaryAmount ZERO_EURO = Money.of(0, EURO);
 }

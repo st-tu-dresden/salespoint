@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import javax.money.MonetaryAmount;
+
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.time.BusinessTime;
@@ -122,20 +124,20 @@ class PersistentAccountancy<T extends AccountancyEntry> implements Accountancy<T
 	 * @see org.salespointframework.accountancy.Accountancy#salesVolume(java.time.LocalDateTime, java.time.LocalDateTime, java.time.Duration)
 	 */
 	@Override
-	public final Map<Interval, Money> salesVolume(LocalDateTime from, LocalDateTime to, Duration period) {
+	public final Map<Interval, MonetaryAmount> salesVolume(LocalDateTime from, LocalDateTime to, Duration period) {
 
 		Assert.notNull(from, "from must not be null");
 		Assert.notNull(to, "to must not be null");
 		Assert.notNull(period, "period must not be null");
 
-		Map<Interval, Money> sales = new HashMap<Interval, Money>();
+		Map<Interval, MonetaryAmount> sales = new HashMap<Interval, MonetaryAmount>();
 
 		for (Entry<Interval, Iterable<T>> e : find(from, to, period).entrySet()) {
 
 			sales.put(e.getKey(),
 					stream(e.getValue().spliterator(), false).//
 							map(AccountancyEntry::getValue).//
-							reduce(Money.of(0, Currencies.EURO), Money::add));
+							reduce(Money.of(0, Currencies.EURO), MonetaryAmount::add));
 		}
 
 		return sales;

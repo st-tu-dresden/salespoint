@@ -1,5 +1,6 @@
 package org.salespointframework.catalog;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
 
 import org.javamoney.moneta.Money;
@@ -14,7 +15,7 @@ public class Cookie extends Product {
 	@Deprecated
 	Cookie() {}
 
-	public Cookie(String name, Money price) {
+	public Cookie(String name, MonetaryAmount price) {
 		super(name, Money.of(9001, Currencies.EURO));
 	}
 }

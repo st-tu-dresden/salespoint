@@ -4,13 +4,12 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 
-import org.javamoney.moneta.Money;
 import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.ProductPaymentEntry;
@@ -36,7 +35,7 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	@EmbeddedId @AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID", nullable = false) ) //
 	private AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();
 
-	private @Lob Money value = Currencies.ZERO_EURO;
+	private MonetaryAmount value = Currencies.ZERO_EURO;
 
 	private LocalDateTime date = null;
 	private String description = "";
@@ -52,7 +51,7 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	 * 
 	 * @param value The value that is stored in this entry.
 	 */
-	public AccountancyEntry(Money value) {
+	public AccountancyEntry(MonetaryAmount value) {
 		this(value, "");
 	}
 
@@ -62,7 +61,7 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	 * @param value The value that is stored in this entry.
 	 * @param description A user-supplied description for this entry.
 	 */
-	public AccountancyEntry(Money value, String description) {
+	public AccountancyEntry(MonetaryAmount value, String description) {
 
 		Assert.notNull(value, "Value must not be null");
 		Assert.notNull(description, "Description must not be null");
@@ -96,7 +95,7 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	 * 
 	 * @return the monetary value for this entry.
 	 */
-	public final Money getValue() {
+	public final MonetaryAmount getValue() {
 		return value;
 	}
 

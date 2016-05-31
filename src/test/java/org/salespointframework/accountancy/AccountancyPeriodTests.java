@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.money.MonetaryAmount;
+
 import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,7 +81,7 @@ public class AccountancyPeriodTests extends AbstractIntegrationTests {
 
 	@Test
 	public void periodMoneyTest() {
-		Money total;
+		MonetaryAmount total;
 		System.out.println("Getting entries from " + from + " to " + to);
 		Map<Interval, Iterable<ProductPaymentEntry>> m = a.find(from, to, Duration.ofMillis(200));
 		for (Entry<Interval, Iterable<ProductPaymentEntry>> e : m.entrySet()) {
@@ -88,13 +90,13 @@ public class AccountancyPeriodTests extends AbstractIntegrationTests {
 				System.out.println("\t" + p.getValue());
 				total = total.add(p.getValue());
 			}
-			System.out.println("Money for interval " + e.getKey() + ": " + total);
+			System.out.println("MonetaryAmount for interval " + e.getKey() + ": " + total);
 
 		}
 		System.out.println("Getting entries from " + from + " to " + to);
-		Map<Interval, Money> sales = a.salesVolume(from, to, Duration.ofMillis(200));
-		for (Entry<Interval, Money> e : sales.entrySet()) {
-			System.out.println("Money for interval " + e.getKey() + ": " + e.getValue());
+		Map<Interval, MonetaryAmount> sales = a.salesVolume(from, to, Duration.ofMillis(200));
+		for (Entry<Interval, MonetaryAmount> e : sales.entrySet()) {
+			System.out.println("MonetaryAmount for interval " + e.getKey() + ": " + e.getValue());
 		}
 	}
 }

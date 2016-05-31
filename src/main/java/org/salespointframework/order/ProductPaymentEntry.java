@@ -1,5 +1,6 @@
 package org.salespointframework.order;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -60,8 +61,8 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	 * @param description textual description of the payment entry, must not be {@literal null}.
 	 * @param paymentMethod must not be {@literal null}.
 	 */
-	public ProductPaymentEntry(OrderIdentifier orderIdentifier, UserAccount userAccount, Money amount, String description,
-			PaymentMethod paymentMethod) {
+	public ProductPaymentEntry(OrderIdentifier orderIdentifier, UserAccount userAccount, MonetaryAmount amount,
+			String description, PaymentMethod paymentMethod) {
 
 		super(amount, description);
 

@@ -5,7 +5,8 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
-import org.javamoney.moneta.Money;
+import javax.money.MonetaryAmount;
+
 import org.salespointframework.time.Interval;
 
 /**
@@ -70,7 +71,8 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * respective date, entries are sorted in exactly one of the time intervals. The last time interval may be shorter
 	 * than {@code period}.<br />
 	 * Returned is a map, having a {@link Interval} objects as its key, and an {@link Iterable} as value. The
-	 * {@link Iterable} contains all entries of the specific type with its date in the interval specified by the key.<br />
+	 * {@link Iterable} contains all entries of the specific type with its date in the interval specified by the key.
+	 * <br />
 	 * If no entries for an interval exist, the {@link Iterable}.
 	 * 
 	 * @param <T> common super type of all entries returned
@@ -89,18 +91,18 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * The time between {@code from} and {@code to} is divided into parts of {@code period} length. According to their
 	 * time stamp, entries are sorted in exactly one of the time intervals. The last time interval may be shorter than
 	 * {@code period}.<br />
-	 * Returned is a map, having a {@link Interval} objects as its key, and an {@link Money} as value. The {@link Money}
-	 * object's value is equal to the sum of all entries' {@code amount}-field, with a date within the key-
-	 * {@link Interval}. If within an interval no entries of the specified type exist, a {@link Money} object with a value
-	 * of zero is added as value for that interval.
+	 * Returned is a map, having a {@link Interval} objects as its key, and a {@link MonetaryAmount} as value. The
+	 * {@link MonetaryAmount} object's value is equal to the sum of all entries' {@code amount}-field, with a date within
+	 * the key- {@link Interval}. If within an interval no entries of the specified type exist, a {@link MonetaryAmount}
+	 * object with a value of zero is added as value for that interval.
 	 * 
 	 * @param <T> common super type of all entries returned.
 	 * @param from all returned entries will have a time stamp after {@code from}.
 	 * @param to all returned entries will have a time stamp before {@code to}.
 	 * @param duration length of the time intervals, the period between {@code from} and {@code to} is divided.
 	 * @return a {@link Map}, with intervals of {@code period} length between {@code from} and {@code to} as keys, and as
-	 *         value a {@link Money} object, equal to the sum of the amount fields of all entries within the key-
+	 *         value a {@link MonetaryAmount} object, equal to the sum of the amount fields of all entries within the key-
 	 *         {@link Interval}.
 	 */
-	Map<Interval, Money> salesVolume(LocalDateTime from, LocalDateTime to, Duration duration);
+	Map<Interval, MonetaryAmount> salesVolume(LocalDateTime from, LocalDateTime to, Duration duration);
 }

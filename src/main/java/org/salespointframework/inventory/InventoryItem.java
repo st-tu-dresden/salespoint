@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
 import org.salespointframework.catalog.Product;
@@ -23,16 +22,14 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 
 	private static final long serialVersionUID = 3322056345377472377L;
 
-	@EmbeddedId//
-	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID"))//
+	@EmbeddedId //
+	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID") ) //
 	private final InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
-	@JoinColumn(unique = true)//
-	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })//
+	@JoinColumn(unique = true) //
+	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH }) //
 	private Product product;
 
-	@Lob//
-	@Column(length = 4 * 1024 /* 4kB */)//
 	private Quantity quantity;
 
 	@Deprecated

@@ -2,7 +2,8 @@ package org.salespointframework.order;
 
 import java.util.UUID;
 
-import org.javamoney.moneta.Money;
+import javax.money.MonetaryAmount;
+
 import org.salespointframework.catalog.Product;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.util.Assert;
@@ -15,7 +16,7 @@ import org.springframework.util.Assert;
  */
 public class CartItem implements Priced {
 
-	private final Money price;
+	private final MonetaryAmount price;
 	private final Quantity quantity;
 	private final Product product;
 	private final String identifier = UUID.randomUUID().toString();
@@ -51,7 +52,7 @@ public class CartItem implements Priced {
 	 * (non-Javadoc)
 	 * @see org.salespointframework.order.Priced#getPrice()
 	 */
-	public final Money getPrice() {
+	public final MonetaryAmount getPrice() {
 		return price;
 	}
 

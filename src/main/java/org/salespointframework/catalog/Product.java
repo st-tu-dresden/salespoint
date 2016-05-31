@@ -4,12 +4,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.AbstractEntity;
@@ -25,7 +25,7 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Entity
-public class Product extends AbstractEntity<ProductIdentifier>implements Comparable<Product> {
+public class Product extends AbstractEntity<ProductIdentifier> implements Comparable<Product> {
 
 	private static final long serialVersionUID = 6645371648836029780L;
 
@@ -33,7 +33,7 @@ public class Product extends AbstractEntity<ProductIdentifier>implements Compara
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID") ) //
 	private ProductIdentifier productIdentifier = new ProductIdentifier();
 	private String name;
-	private @Lob Money price;
+	private MonetaryAmount price;
 	private @ElementCollection Set<String> categories = new HashSet<String>();
 	private Metric metric;
 
@@ -43,7 +43,7 @@ public class Product extends AbstractEntity<ProductIdentifier>implements Compara
 	@Deprecated
 	protected Product() {}
 
-	public Product(String name, Money price) {
+	public Product(String name, MonetaryAmount price) {
 		this(name, price, Metric.UNIT);
 	}
 
@@ -54,7 +54,7 @@ public class Product extends AbstractEntity<ProductIdentifier>implements Compara
 	 * @param price the price of the {@link Product}, must not be {@literal null}.
 	 * @param metric the {@link Metric} of the {@link Product}, must not be {@literal null}.
 	 */
-	public Product(String name, Money price, Metric metric) {
+	public Product(String name, MonetaryAmount price, Metric metric) {
 
 		Assert.hasText(name, "Name must not be null or empty!");
 		Assert.notNull(price, "Price must not be null!");
@@ -81,10 +81,9 @@ public class Product extends AbstractEntity<ProductIdentifier>implements Compara
 
 		Assert.hasText(name, "Name must not be null or empty!");
 		this.name = name;
-
 	}
 
-	public Money getPrice() {
+	public MonetaryAmount getPrice() {
 		return price;
 	}
 

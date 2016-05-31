@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import javax.money.MonetaryAmount;
+
 import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
@@ -105,7 +107,7 @@ public class Cart implements Iterable<CartItem>, Priced {
 	 * @see org.salespointframework.order.Priced#getPrice()
 	 */
 	@Override
-	public Money getPrice() {
+	public MonetaryAmount getPrice() {
 
 		return items.stream().//
 				map(CartItem::getPrice).//

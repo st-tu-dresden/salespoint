@@ -3,9 +3,9 @@ package org.salespointframework.inventory;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
 
-import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
@@ -57,7 +57,7 @@ public class ExtendedInventoryTests extends AbstractIntegrationTests {
 	@SuppressWarnings("serial")
 	static class Wine extends Product {
 
-		public Wine(String name, Money price) {
+		public Wine(String name, MonetaryAmount price) {
 			super(name, price, Metric.LITER);
 		}
 

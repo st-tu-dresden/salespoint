@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,7 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.javamoney.moneta.Money;
 import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.payment.PaymentMethod;
@@ -116,15 +116,15 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		return userAccount;
 	}
 
-	public Money getTotalPrice() {
+	public MonetaryAmount getTotalPrice() {
 		return getOrderedLinesPrice().add(getChargeLinesPrice());
 	}
 
-	public Money getOrderedLinesPrice() {
+	public MonetaryAmount getOrderedLinesPrice() {
 		return sumUp(orderLines);
 	}
 
-	public Money getChargeLinesPrice() {
+	public MonetaryAmount getChargeLinesPrice() {
 		return sumUp(chargeLines);
 	}
 
@@ -171,7 +171,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		this.chargeLines.remove(chargeLine);
 	}
 
-	private Money sumUp(Collection<? extends Priced> priced) {
+	private MonetaryAmount sumUp(Collection<? extends Priced> priced) {
 
 		return priced.stream().//
 				map(Priced::getPrice).//

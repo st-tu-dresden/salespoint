@@ -1,6 +1,6 @@
 package org.salespointframework.order;
 
-import org.javamoney.moneta.Money;
+import javax.money.MonetaryAmount;
 
 /**
  * Interface for any priced item to ease summing up priced items.
@@ -14,5 +14,5 @@ interface Priced {
 	 * 
 	 * @return
 	 */
-	Money getPrice();
+	MonetaryAmount getPrice();
 }

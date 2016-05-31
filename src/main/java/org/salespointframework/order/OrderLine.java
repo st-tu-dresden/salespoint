@@ -1,13 +1,12 @@
 package org.salespointframework.order;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 
-import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.core.AbstractEntity;
@@ -22,7 +21,7 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Entity
-public class OrderLine extends AbstractEntity<OrderLineIdentifier>implements Priced {
+public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Priced {
 
 	private static final long serialVersionUID = -4310089726057038893L;
 
@@ -34,8 +33,8 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier>implements Pri
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID") ) //
 	private ProductIdentifier productIdentifier;
 
-	private @Lob Money price;
-	private @Lob Quantity quantity;
+	private MonetaryAmount price;
+	private Quantity quantity;
 	private String productName;
 
 	/**
@@ -77,7 +76,7 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier>implements Pri
 	 * (non-Javadoc)
 	 * @see org.salespointframework.order.Priced#getPrice()
 	 */
-	public final Money getPrice() {
+	public final MonetaryAmount getPrice() {
 		return price;
 	}
 
