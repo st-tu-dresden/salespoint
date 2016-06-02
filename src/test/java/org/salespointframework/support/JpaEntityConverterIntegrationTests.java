@@ -34,19 +34,18 @@ import org.springframework.core.convert.TypeDescriptor;
  */
 public class JpaEntityConverterIntegrationTests extends AbstractIntegrationTests {
 
+	static final TypeDescriptor PRODUCT_TYPE = TypeDescriptor.valueOf(Product.class);
+	static final TypeDescriptor STRING_TYPE = TypeDescriptor.valueOf(String.class);
+
 	@Autowired JpaEntityConverter converter;
 	@Autowired Catalog<Product> catalog;
 
 	@Test
 	public void convertsStringIdToProduct() {
 
-		Product product = new Product("iPad", Money.of(400, Currencies.EURO));
+		Product product = catalog.save(new Product("iPad", Money.of(400, Currencies.EURO)));
 		String identifier = product.getIdentifier().getIdentifier();
 
-		catalog.save(product);
-
-		Object result = converter.convert(identifier, TypeDescriptor.valueOf(String.class),
-				TypeDescriptor.valueOf(Product.class));
-		assertThat(result, is((Object) product));
+		assertThat(converter.convert(identifier, STRING_TYPE, PRODUCT_TYPE), is((Object) product));
 	}
 }

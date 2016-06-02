@@ -1,5 +1,9 @@
 package org.salespointframework.inventory;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +22,7 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Entity
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated) )
 public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 
 	private static final long serialVersionUID = 3322056345377472377L;
@@ -26,14 +31,13 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID") ) //
 	private final InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
+	@Getter //
 	@JoinColumn(unique = true) //
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH }) //
 	private Product product;
 
+	@Getter //
 	private Quantity quantity;
-
-	@Deprecated
-	protected InventoryItem() {}
 
 	/**
 	 * Creates a new {@link InventoryItem} for the given {@link Product} and {@link Quantity}.
@@ -59,14 +63,6 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 	 */
 	public final InventoryItemIdentifier getIdentifier() {
 		return inventoryItemIdentifier;
-	}
-
-	public final Quantity getQuantity() {
-		return quantity;
-	}
-
-	public final Product getProduct() {
-		return product;
 	}
 
 	/**

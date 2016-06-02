@@ -1,5 +1,8 @@
 package org.salespointframework.useraccount;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
@@ -13,6 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 
 import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.core.Streamable;
 import org.springframework.util.Assert;
 
 /**
@@ -21,31 +25,28 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  * @author Paul Henke
  */
+
 @Entity
 public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 
 	private static final long serialVersionUID = -795038599473743418L;
 
-	@EmbeddedId//
-	@AttributeOverride(name = "id", column = @Column(name = "USERACCOUNT_ID"))//
+	@EmbeddedId //
+	@AttributeOverride(name = "id", column = @Column(name = "USERACCOUNT_ID") ) //
 	private UserAccountIdentifier userAccountIdentifier;
 
-	@Column(nullable = false)//
+	@Getter @Setter //
+	@Column(nullable = false) //
 	private Password password;
 
-	private String firstname;
-	private String lastname;
-	private String email;
+	private @Getter @Setter String firstname;
+	private @Getter @Setter String lastname;
+	private @Getter @Setter String email;
 
-	@ElementCollection(fetch = FetchType.EAGER)//
+	@ElementCollection(fetch = FetchType.EAGER) //
 	private Set<Role> roles = new TreeSet<Role>();
 
-	private boolean enabled;
-
-	@Deprecated
-	protected UserAccount() {
-
-	}
+	private @Getter @Setter boolean enabled;
 
 	UserAccount(UserAccountIdentifier userAccountIdentifier, String password, Role... roles) {
 		this(userAccountIdentifier, password, null, null, null, Arrays.asList(roles));
@@ -54,13 +55,13 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 	UserAccount(UserAccountIdentifier userAccountIdentifier, String password, String firstname, String lastname,
 			String email, Collection<Role> roles) {
 
-		Assert.notNull(userAccountIdentifier, "userAccountIdentifier must not be null");
-		Assert.notNull(password, "password must not be null");
-		Assert.notNull(roles, "roles must not be null");
+		Assert.notNull(userAccountIdentifier, "User account identifier must not be null");
+		Assert.notNull(password, "Password must not be null");
+		Assert.notNull(roles, "Roles must not be null");
 
 		this.enabled = true;
 		this.userAccountIdentifier = userAccountIdentifier;
-		this.password = new Password(password);
+		this.password = Password.unencrypted(password);
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.email = email;
@@ -121,47 +122,7 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 	/**
 	 * @return An <code>Iterable/code> with all {@link Role}s of the user
 	 */
-	public Iterable<Role> getRoles() {
-		return roles;
-	}
-
-	public Password getPassword() {
-		return password;
-	}
-
-	void setPassword(Password password) {
-		this.password = password;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	void setEnabled(boolean isEnabled) {
-		this.enabled = isEnabled;
-	}
-
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public Streamable<Role> getRoles() {
+		return Streamable.of(roles);
 	}
 }

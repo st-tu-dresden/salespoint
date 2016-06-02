@@ -1,45 +1,39 @@
 package org.salespointframework.useraccount.web;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import java.util.Optional;
 
 import org.salespointframework.useraccount.AuthenticationManager;
 import org.salespointframework.useraccount.UserAccount;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
- * {@link HandlerMethodArgumentResolver} to inject the UserAccount of the currently logged in user int Spring MVC
- * controller method parameters annotated with {@link LoggedIn}.
+ * {@link HandlerMethodArgumentResolver} to inject the {@link UserAccount} of the currently logged in user into Spring
+ * MVC controller method parameters annotated with {@link LoggedIn}. The parameter can also use {@link Optional} as
+ * wrapper for {@link UserAccount} to indicate that an anonymous invocation is possible.
  * 
  * @author Paul Henke
  * @author Oliver Gierke
  */
 @Component
+@RequiredArgsConstructor
 class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolver {
 
+	private static final String USER_ACCOUNT_EXPECTED = "Expected to find a current user but none available! If the user does not necessarily have to be logged in, use Optional<UserAccount> instead!";
+	private static final ResolvableType USER_ACCOUNT = ResolvableType.forClass(UserAccount.class);
 	private static final ResolvableType OPTIONAL_OF_USER_ACCOUNT = ResolvableType.forClassWithGenerics(Optional.class,
 			UserAccount.class);
 
-	private final AuthenticationManager authenticationManager;
-
-	/**
-	 * Creates a new {@link LoggedInUserAccountArgumentResolver} using the given {@link AuthenticationManager}.
-	 * 
-	 * @param authenticationManager must not be {@literal null}.
-	 */
-	@Autowired
-	public LoggedInUserAccountArgumentResolver(AuthenticationManager authenticationManager) {
-
-		Assert.notNull(authenticationManager, "AuthenticationManager must not be null!");
-		this.authenticationManager = authenticationManager;
-	}
+	private final @NonNull AuthenticationManager authenticationManager;
 
 	/*
 	 * (non-Javadoc)
@@ -48,7 +42,12 @@ class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolv
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-		return authenticationManager.getCurrentUser();
+
+		Optional<UserAccount> user = authenticationManager.getCurrentUser();
+		ResolvableType parameterType = ResolvableType.forMethodParameter(parameter);
+
+		return OPTIONAL_OF_USER_ACCOUNT.isAssignableFrom(parameterType) ? user
+				: user.orElseThrow(() -> new ServletRequestBindingException(USER_ACCOUNT_EXPECTED));
 	}
 
 	/*
@@ -63,6 +62,6 @@ class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolv
 		}
 
 		ResolvableType type = ResolvableType.forMethodParameter(parameter);
-		return OPTIONAL_OF_USER_ACCOUNT.isAssignableFrom(type);
+		return USER_ACCOUNT.isAssignableFrom(type) || OPTIONAL_OF_USER_ACCOUNT.isAssignableFrom(type);
 	}
 }

@@ -3,11 +3,12 @@ package org.salespointframework.time;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
 
+import org.salespointframework.core.Streamable;
 import org.springframework.util.Assert;
 
 /**
@@ -15,9 +16,9 @@ import org.springframework.util.Assert;
  * 
  * @author Oliver Gierke
  */
-public class Intervals implements Iterable<Interval> {
+public class Intervals implements Streamable<Interval> {
 
-	private final List<Interval> intervals;
+	private final Iterable<Interval> intervals;
 
 	/**
 	 * Creates a new {@link Intervals} instance with all {@link Interval}s of the given duration between the givne start
@@ -27,7 +28,7 @@ public class Intervals implements Iterable<Interval> {
 	 * @param end must not be {@literal null}.
 	 * @param duration must not be {@literal null}.
 	 */
-	public Intervals(LocalDateTime start, LocalDateTime end, Duration duration) {
+	private Intervals(LocalDateTime start, LocalDateTime end, Duration duration) {
 
 		Assert.notNull(start, "Start date must not be null!");
 		Assert.notNull(end, "End date must not be null!");
@@ -38,6 +39,21 @@ public class Intervals implements Iterable<Interval> {
 	}
 
 	/**
+	 * Divides the given {@link Interval} into smaller intervals of the given duration.
+	 * 
+	 * @param interval must not be {@literal null}.
+	 * @param duration must not be {@literal null}.
+	 * @return
+	 */
+	public static Intervals divide(Interval interval, Duration duration) {
+
+		Assert.notNull(interval, "Interval must not be null!");
+		Assert.notNull(duration, "Duration must not be null!");
+
+		return new Intervals(interval.getStart(), interval.getEnd(), duration);
+	}
+
+	/**
 	 * Recursively builds up all {@link Interval}s of the given duration between the given start and end date.
 	 * 
 	 * @param start must not be {@literal null}.
@@ -45,12 +61,12 @@ public class Intervals implements Iterable<Interval> {
 	 * @param duration must not be {@literal null}.
 	 * @return
 	 */
-	private static List<Interval> getIntervals(LocalDateTime start, LocalDateTime end, Duration duration) {
+	private static Collection<Interval> getIntervals(LocalDateTime start, LocalDateTime end, Duration duration) {
 
 		LocalDateTime target = start.plus(duration);
 
 		if (!target.isBefore(end)) {
-			return Collections.singletonList(Interval.from(start).to(end));
+			return Collections.singleton(Interval.from(start).to(end));
 		}
 
 		List<Interval> intervals = new ArrayList<>();
@@ -58,15 +74,6 @@ public class Intervals implements Iterable<Interval> {
 		intervals.addAll(getIntervals(target, end, duration));
 
 		return Collections.unmodifiableList(intervals);
-	}
-
-	/**
-	 * Returns a {@link Stream} of {@link Interval}s.
-	 * 
-	 * @return
-	 */
-	public Stream<Interval> stream() {
-		return intervals.stream();
 	}
 
 	/* 

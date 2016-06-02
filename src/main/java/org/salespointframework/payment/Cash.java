@@ -1,12 +1,16 @@
 package org.salespointframework.payment;
 
+import lombok.EqualsAndHashCode;
+import lombok.Value;
+
 /**
  * The cash {@link PaymentMethod} is used to designate all payments made in cash.
  * 
  * @author Hannes Weisbach
  */
-@SuppressWarnings("serial")
-public final class Cash extends PaymentMethod {
+@Value
+@EqualsAndHashCode(callSuper = true)
+public class Cash extends PaymentMethod {
 
 	/**
 	 * A convenience instance {@link Cash#CASH} is defined in this class, which can be reused, instead of instantiating a
@@ -17,7 +21,7 @@ public final class Cash extends PaymentMethod {
 	/**
 	 * Creates a new cash instance. You can use {@link Cash#CASH} instead of instantiating a new one.
 	 */
-	public Cash() {
+	private Cash() {
 		super("Cash");
 	}
 }

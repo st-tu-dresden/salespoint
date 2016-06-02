@@ -1,5 +1,10 @@
 package org.salespointframework.order;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.money.MonetaryAmount;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -21,6 +26,8 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Entity
+@ToString
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated) )
 public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Priced {
 
 	private static final long serialVersionUID = -4310089726057038893L;
@@ -31,17 +38,11 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Pr
 
 	@Embedded //
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID") ) //
-	private ProductIdentifier productIdentifier;
+	private @Getter ProductIdentifier productIdentifier;
 
-	private MonetaryAmount price;
-	private Quantity quantity;
-	private String productName;
-
-	/**
-	 * Parameterless constructor required for JPA. Do not use.
-	 */
-	@Deprecated
-	protected OrderLine() {}
+	private @Getter MonetaryAmount price;
+	private @Getter Quantity quantity;
+	private @Getter String productName;
 
 	/**
 	 * Creates a new {@link OrderLine} for the given {@link Product} and {@link Quantity}.
@@ -70,34 +71,5 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Pr
 	 */
 	public final OrderLineIdentifier getIdentifier() {
 		return orderLineIdentifier;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.Priced#getPrice()
-	 */
-	public final MonetaryAmount getPrice() {
-		return price;
-	}
-
-	public final ProductIdentifier getProductIdentifier() {
-		return productIdentifier;
-	}
-
-	public final String getProductName() {
-		return productName;
-	}
-
-	public final Quantity getQuantity() {
-		return quantity;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return productName + "(" + productIdentifier.toString() + ")" + " - " + quantity;
 	}
 }

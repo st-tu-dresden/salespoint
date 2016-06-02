@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Application configuration for Salespoint.
@@ -16,8 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(excludeFilters = @Filter(value = Configuration.class))
-@EntityScan(basePackageClasses = { Salespoint.class, Jsr310JpaConverters.class })
+@ComponentScan(excludeFilters = @Filter(value = Configuration.class) )
+@EntityScan
+@EnableTransactionManagement(proxyTargetClass = false)
 public class Salespoint {
 
 	@Bean

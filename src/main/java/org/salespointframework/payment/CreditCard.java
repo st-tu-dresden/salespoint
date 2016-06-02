@@ -1,6 +1,12 @@
 package org.salespointframework.payment;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.Value;
+
 import java.time.LocalDateTime;
+
+import javax.money.MonetaryAmount;
 
 import org.javamoney.moneta.Money;
 import org.springframework.util.Assert;
@@ -11,18 +17,20 @@ import org.springframework.util.Assert;
  * @author Hannes Weisbach
  * @author Oliver Gierke
  */
-@SuppressWarnings("serial")
-public final class CreditCard extends PaymentCard {
+@Value
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class CreditCard extends PaymentCard {
 
 	/**
 	 * The maximum amount of money, the card holder can dispose of within a day.
 	 */
-	private final Money dailyWithdrawalLimit;
+	MonetaryAmount dailyWithdrawalLimit;
 
 	/**
 	 * Line of credit extended by the issuing association to the card holder.
 	 */
-	private final Money creditLimit;
+	MonetaryAmount creditLimit;
 
 	/**
 	 * Instantiates a specific credit card.
@@ -41,7 +49,7 @@ public final class CreditCard extends PaymentCard {
 	 */
 	public CreditCard(String cardName, String cardAssociationName, String cardNumber, String nameOnCard,
 			String billingAddress, LocalDateTime validFrom, LocalDateTime expiryDate, String cardVerificationCode,
-			Money dailyWithdrawalLimit, Money creditLimit) {
+			MonetaryAmount dailyWithdrawalLimit, MonetaryAmount creditLimit) {
 
 		super(cardName, cardAssociationName, cardNumber, nameOnCard, billingAddress, validFrom, expiryDate,
 				cardVerificationCode);
@@ -68,8 +76,8 @@ public final class CreditCard extends PaymentCard {
 	 *          owner
 	 */
 	public CreditCard(String cardAssociationName, String cardNumber, String nameOnCard, String billingAddress,
-			LocalDateTime validFrom, LocalDateTime expiryDate, String cardVerificationCode, Money dailyWithdrawalLimit,
-			Money creditLimit) {
+			LocalDateTime validFrom, LocalDateTime expiryDate, String cardVerificationCode,
+			MonetaryAmount dailyWithdrawalLimit, MonetaryAmount creditLimit) {
 
 		super("A credit card", cardAssociationName, cardNumber, nameOnCard, billingAddress, validFrom, expiryDate,
 				cardVerificationCode);
@@ -79,59 +87,5 @@ public final class CreditCard extends PaymentCard {
 
 		this.dailyWithdrawalLimit = dailyWithdrawalLimit;
 		this.creditLimit = creditLimit;
-	}
-
-	/**
-	 * The maximum amount of money, the card holder can dispose of within a day.
-	 * 
-	 * @return {@link Money} object representing the the daily withdrawal limit
-	 */
-	public Money getDailyWithdrawalLimit() {
-		return dailyWithdrawalLimit;
-	}
-
-	/**
-	 * Line of credit extended by the issuing association to the card holder.
-	 * 
-	 * @return {@link Money} object representing the credit limit.
-	 */
-	public Money getCreditLimit() {
-		return creditLimit;
-	}
-
-	/* 
-	 * (non-Javadoc)
-	 * @see org.salespointframework.payment.PaymentCard#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-
-		if (this == obj) {
-			return true;
-		}
-
-		if (obj == null || !this.getClass().equals(obj.getClass())) {
-			return false;
-		}
-
-		CreditCard that = (CreditCard) obj;
-
-		return super.equals(obj) && this.creditLimit.equals(that.creditLimit)
-				&& this.dailyWithdrawalLimit.equals(that.dailyWithdrawalLimit);
-	}
-
-	/* 
-	 * (non-Javadoc)
-	 * @see org.salespointframework.payment.PaymentCard#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-
-		int result = super.hashCode();
-
-		result += 31 * creditLimit.hashCode();
-		result += 31 * dailyWithdrawalLimit.hashCode();
-
-		return result;
 	}
 }

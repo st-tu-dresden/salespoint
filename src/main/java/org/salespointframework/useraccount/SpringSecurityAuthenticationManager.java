@@ -1,8 +1,10 @@
 package org.salespointframework.useraccount;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,23 +18,11 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Component
+@RequiredArgsConstructor
 class SpringSecurityAuthenticationManager implements AuthenticationManager {
 
-	private final UserAccountRepository repository;
-	private final PasswordEncoder passwordEncoder;
-
-	/**
-	 * Creates a new {@link SpringSecurityAuthenticationManager} using the given {@link UserAccountRepository}.
-	 * 
-	 * @param repository must not be {@literal null}.
-	 */
-	@Autowired
-	public SpringSecurityAuthenticationManager(UserAccountRepository repository, PasswordEncoder passwordEncoder) {
-
-		Assert.notNull(repository, "UserAccountRepository must not be null!");
-		this.repository = repository;
-		this.passwordEncoder = passwordEncoder;
-	}
+	private final @NonNull UserAccountRepository repository;
+	private final @NonNull PasswordEncoder passwordEncoder;
 
 	/* 
 	 * (non-Javadoc)
@@ -42,10 +32,7 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager {
 	public Optional<UserAccount> getCurrentUser() {
 
 		return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication()).//
-				flatMap(authentication -> {
-					UserAccountIdentifier userAccountIdentifier = new UserAccountIdentifier(authentication.getName());
-					return repository.findOne(userAccountIdentifier);
-				});
+				flatMap(authentication -> repository.findOne(new UserAccountIdentifier(authentication.getName())));
 	}
 
 	/* 
@@ -58,7 +45,7 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager {
 		Assert.notNull(existing, "Existing password must not be null!");
 
 		return Optional.ofNullable(candidate).//
-				map(c -> passwordEncoder.matches(c.toString(), existing.toString())).//
+				map(c -> passwordEncoder.matches(c.getPassword(), existing.getPassword())).//
 				orElse(false);
 	}
 }

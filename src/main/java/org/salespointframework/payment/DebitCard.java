@@ -1,9 +1,14 @@
 package org.salespointframework.payment;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.Value;
+
 import java.time.LocalDateTime;
 
+import javax.money.MonetaryAmount;
+
 import org.javamoney.moneta.Money;
-import org.springframework.util.ObjectUtils;
 
 /**
  * A debit card provides the holder with electronic access to his or her bank account. A payment made with such a card
@@ -12,13 +17,15 @@ import org.springframework.util.ObjectUtils;
  * @author Hannes Weisbach
  * @author Oliver Gierke
  */
-@SuppressWarnings("serial")
-public final class DebitCard extends PaymentCard {
+@Value
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class DebitCard extends PaymentCard {
 
 	/**
 	 * Amount of money, the card holder can dispose of within a day.
 	 */
-	private final Money dailyWithdrawalLimit;
+	MonetaryAmount dailyWithdrawalLimit;
 
 	/**
 	 * Instantiates a specific type of debit card.
@@ -36,7 +43,7 @@ public final class DebitCard extends PaymentCard {
 	 */
 	public DebitCard(String cardName, String cardAssociationName, String cardNumber, String nameOnCard,
 			String billingAddress, LocalDateTime validFrom, LocalDateTime expiryDate, String cardVerificationCode,
-			Money dailyWithdrawalLimit) {
+			MonetaryAmount dailyWithdrawalLimit) {
 
 		super(cardName, cardAssociationName, cardNumber, nameOnCard, billingAddress, validFrom, expiryDate,
 				cardVerificationCode);
@@ -58,50 +65,10 @@ public final class DebitCard extends PaymentCard {
 	 *          the card owner
 	 */
 	public DebitCard(String cardAssociationName, String cardNumber, String nameOnCard, String billingAddress,
-			LocalDateTime validFrom, LocalDateTime expiryDate, String cardVerificationCode, Money dailyWithdrawalLimit) {
+			LocalDateTime validFrom, LocalDateTime expiryDate, String cardVerificationCode,
+			MonetaryAmount dailyWithdrawalLimit) {
 
 		this("A debit card", cardAssociationName, cardNumber, nameOnCard, billingAddress, validFrom, expiryDate,
 				cardVerificationCode, dailyWithdrawalLimit);
-	}
-
-	/**
-	 * Amount of money, the card holder can dispose of within a day.
-	 * 
-	 * @return {@link Money} object representing the daily withdrawal limit.
-	 */
-	public Money getDailyWithdrawalLimit() {
-		return dailyWithdrawalLimit;
-	}
-
-	/* 
-	 * (non-Javadoc)
-	 * @see org.salespointframework.payment.PaymentCard#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-
-		if (this == obj) {
-			return true;
-		}
-
-		if (obj == null || !this.getClass().equals(obj.getClass())) {
-			return false;
-		}
-
-		DebitCard that = (DebitCard) obj;
-
-		return super.equals(obj) && ObjectUtils.nullSafeEquals(this.dailyWithdrawalLimit, that.dailyWithdrawalLimit);
-	}
-
-	/* 
-	 * (non-Javadoc)
-	 * @see org.salespointframework.payment.PaymentCard#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-
-		int result = super.hashCode();
-		result += 31 * ObjectUtils.nullSafeHashCode(dailyWithdrawalLimit);
-		return result;
 	}
 }

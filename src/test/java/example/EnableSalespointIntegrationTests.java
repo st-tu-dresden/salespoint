@@ -9,11 +9,11 @@ import org.salespointframework.EnableSalespoint;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.method.MethodSecurityMetadataSource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 /**
@@ -21,8 +21,8 @@ import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
  * 
  * @author Oliver Gierke
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class EnableSalespointIntegrationTests {
 
 	@Configuration

@@ -16,7 +16,7 @@ public interface Catalog<T extends Product> extends SalespointRepository<T, Prod
 	 * @param category
 	 * @return
 	 */
-	@Query("select p from #{#entityName} p where ?1 member of p.categories")
+	@Query("select p from #{#entityName} p where :category member of p.categories")
 	Iterable<T> findByCategory(String category);
 
 	/**

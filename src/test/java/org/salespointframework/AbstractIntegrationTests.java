@@ -16,8 +16,9 @@
 package org.salespointframework;
 
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -26,10 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Oliver Gierke
  */
 // tag::testBase[]
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Salespoint.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = Salespoint.class, webEnvironment = WebEnvironment.NONE)
 @Transactional
-public abstract class AbstractIntegrationTests {
-
-}
+public abstract class AbstractIntegrationTests {}
 // end::testBase[]

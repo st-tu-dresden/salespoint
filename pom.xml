@@ -11,7 +11,8 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.3.1.RELEASE</version>
+		<version>1.4.1.RELEASE</version>
+		<relativePath />
 	</parent>
 
 	<properties>
@@ -63,7 +64,6 @@
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-java8time</artifactId>
-			<version>2.1.0.RELEASE</version>
 		</dependency>
 
 		<dependency>
@@ -100,7 +100,6 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.16.6</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -109,7 +108,7 @@
 	<build>
 
 		<extensions>
-		    <extension>
+			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-ssh</artifactId>
 				<version>2.6</version>
@@ -118,11 +117,21 @@
 
 		<plugins>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<compilerArgument>-parameters</compilerArgument>
+				</configuration>
+			</plugin>
+
 			<!-- Delombok sources to make sure generated methods can be picked up by JavaDoc -->
 			<plugin>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok-maven-plugin</artifactId>
-				<version>1.16.6.1</version>
+				<version>1.16.10.0</version>
 				<configuration>
 					<addOutputDirectory>false</addOutputDirectory>
 					<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
@@ -150,18 +159,25 @@
 					</execution>
 				</executions>
 				<configuration>
-	                <additionalparam>-Xdoclint:none</additionalparam>
-	                <excludePackageNames>org.thymeleaf.*</excludePackageNames>
-	                <outputDirectory>${project.build.directory}/site${dev}/api</outputDirectory>
+					<additionalparam>-Xdoclint:none</additionalparam>
+					<excludePackageNames>org.thymeleaf.*</excludePackageNames>
+					<outputDirectory>${project.build.directory}/site${dev}/api</outputDirectory>
 					<show>package</show>
 					<sourcepath>target/generated-sources/delombok</sourcepath>
-	            </configuration>
+				</configuration>
 			</plugin>
 
 			<plugin>
 				<groupId>org.asciidoctor</groupId>
 				<artifactId>asciidoctor-maven-plugin</artifactId>
 				<version>1.5.3</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctorj-pdf</artifactId>
+						<version>1.5.0-alpha.11</version>
+					</dependency>
+				</dependencies>
 				<executions>
 					<execution>
 						<id>website</id>

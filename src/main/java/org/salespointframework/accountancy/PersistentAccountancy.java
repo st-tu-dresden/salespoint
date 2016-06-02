@@ -2,11 +2,11 @@ package org.salespointframework.accountancy;
 
 import static java.util.function.Function.*;
 import static java.util.stream.Collectors.*;
-import static java.util.stream.StreamSupport.*;
+
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -15,10 +15,10 @@ import javax.money.MonetaryAmount;
 
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.core.Streamable;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.time.Interval;
 import org.salespointframework.time.Intervals;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -32,34 +32,18 @@ import org.springframework.util.Assert;
  */
 @Service
 @Transactional
-class PersistentAccountancy<T extends AccountancyEntry> implements Accountancy<T> {
+@RequiredArgsConstructor
+class PersistentAccountancy implements Accountancy {
 
-	private final BusinessTime businessTime;
-	private final AccountancyEntryRepository<T> repository;
-
-	/**
-	 * Creates a new {@link PersistentAccountancy} with the given {@link BusinessTime} and
-	 * {@link AccountancyEntryRepository}.
-	 * 
-	 * @param businessTime must not be {@literal null}.
-	 * @param repository must not be {@literal null}.
-	 */
-	@Autowired
-	public PersistentAccountancy(BusinessTime businessTime, AccountancyEntryRepository<T> repository) {
-
-		Assert.notNull(businessTime, "BusinessTime must not be null!");
-		Assert.notNull(repository, "AccountancyEntryRepository must not be null!");
-
-		this.businessTime = businessTime;
-		this.repository = repository;
-	}
+	private final @NonNull BusinessTime businessTime;
+	private final @NonNull AccountancyEntryRepository repository;
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.salespointframework.accountancy.Accountancy#add(org.salespointframework.accountancy.AccountancyEntry)
 	 */
 	@Override
-	public final T add(T accountancyEntry) {
+	public final <T extends AccountancyEntry> T add(T accountancyEntry) {
 
 		Assert.notNull(accountancyEntry, "Accountancy entry must not be null!");
 
@@ -75,7 +59,7 @@ class PersistentAccountancy<T extends AccountancyEntry> implements Accountancy<T
 	 * @see org.salespointframework.accountancy.Accountancy#get(org.salespointframework.accountancy.AccountancyEntryIdentifier)
 	 */
 	@Override
-	public final Optional<T> get(AccountancyEntryIdentifier accountancyEntryIdentifier) {
+	public final Optional<AccountancyEntry> get(AccountancyEntryIdentifier accountancyEntryIdentifier) {
 
 		Assert.notNull(accountancyEntryIdentifier, "Account entry identifier must not be null!");
 		return repository.findOne(accountancyEntryIdentifier);
@@ -86,8 +70,8 @@ class PersistentAccountancy<T extends AccountancyEntry> implements Accountancy<T
 	 * @see org.salespointframework.accountancy.Accountancy#findAll()
 	 */
 	@Override
-	public final Iterable<T> findAll() {
-		return repository.findAll();
+	public final Streamable<AccountancyEntry> findAll() {
+		return Streamable.of(repository.findAll());
 	}
 
 	/*
@@ -95,12 +79,11 @@ class PersistentAccountancy<T extends AccountancyEntry> implements Accountancy<T
 	 * @see org.salespointframework.accountancy.Accountancy#find(java.time.LocalDateTime, java.time.LocalDateTime)
 	 */
 	@Override
-	public final Iterable<T> find(LocalDateTime from, LocalDateTime to) {
+	public final Streamable<AccountancyEntry> find(Interval interval) {
 
-		Assert.notNull(from, "from must not be null");
-		Assert.notNull(to, "to must not be null");
+		Assert.notNull(interval, "Interval must not be null!");
 
-		return repository.findByDateBetween(from, to);
+		return Streamable.of(repository.findByDateIn(interval));
 	}
 
 	/*
@@ -108,15 +91,12 @@ class PersistentAccountancy<T extends AccountancyEntry> implements Accountancy<T
 	 * @see org.salespointframework.accountancy.Accountancy#find(java.time.LocalDateTime, java.time.LocalDateTime, java.time.Duration)
 	 */
 	@Override
-	public final Map<Interval, Iterable<T>> find(LocalDateTime from, LocalDateTime to, Duration duration) {
+	public final Map<Interval, Streamable<AccountancyEntry>> find(Interval interval, Duration duration) {
 
-		Assert.notNull(from, "from must not be null");
-		Assert.notNull(to, "to must not be null");
-		Assert.notNull(duration, "period must not be null");
+		Assert.notNull(interval, "Interval must not be null");
+		Assert.notNull(duration, "Duration must not be null");
 
-		return new Intervals(from, to, duration).//
-				stream().parallel().//
-				collect(toMap(identity(), i -> find(i.getStart(), i.getEnd())));
+		return Intervals.divide(interval, duration).stream().collect(toMap(identity(), this::find));
 	}
 
 	/*
@@ -124,22 +104,15 @@ class PersistentAccountancy<T extends AccountancyEntry> implements Accountancy<T
 	 * @see org.salespointframework.accountancy.Accountancy#salesVolume(java.time.LocalDateTime, java.time.LocalDateTime, java.time.Duration)
 	 */
 	@Override
-	public final Map<Interval, MonetaryAmount> salesVolume(LocalDateTime from, LocalDateTime to, Duration period) {
+	public final Map<Interval, MonetaryAmount> salesVolume(Interval interval, Duration period) {
 
-		Assert.notNull(from, "from must not be null");
-		Assert.notNull(to, "to must not be null");
+		Assert.notNull(interval, "Interval must not be null");
 		Assert.notNull(period, "period must not be null");
 
-		Map<Interval, MonetaryAmount> sales = new HashMap<Interval, MonetaryAmount>();
-
-		for (Entry<Interval, Iterable<T>> e : find(from, to, period).entrySet()) {
-
-			sales.put(e.getKey(),
-					stream(e.getValue().spliterator(), false).//
-							map(AccountancyEntry::getValue).//
-							reduce(Money.of(0, Currencies.EURO), MonetaryAmount::add));
-		}
-
-		return sales;
+		return find(interval, period).entrySet().stream().//
+				collect(toMap(Entry::getKey,
+						entry -> entry.getValue().stream().//
+								map(AccountancyEntry::getValue).//
+								reduce(Money.of(0, Currencies.EURO), MonetaryAmount::add)));
 	}
 }

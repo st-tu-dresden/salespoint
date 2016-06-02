@@ -17,7 +17,6 @@ import org.salespointframework.core.Currencies;
 public class CreditCardUnitTests {
 
 	static final LocalDateTime NOW = LocalDateTime.now();
-
 	static final Money AMOUNT = Money.of(2000, Currencies.EURO);
 
 	static final CreditCard VISA = new CreditCard("VISA", "whatever", "1234123412341234", "Oliver Gierke", "Some address",

@@ -20,10 +20,9 @@ import static org.junit.Assert.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.stream.IntStream;
 
 import org.junit.Test;
-import org.salespointframework.time.BusinessTime;
-import org.salespointframework.time.DefaultBusinessTime;
 
 /**
  * Unit tests for {@link DefaultBusinessTime}.
@@ -66,12 +65,9 @@ public class DefaultBusinessTimeUnitTests {
 
 	private void assertTimeShifted(LocalDateTime reference, int... days) throws Exception {
 
-		int total = 0;
-
-		for (int day : days) {
-			businessTime.forward(Duration.ofDays(day));
-			total += day;
-		}
+		int total = IntStream.of(days).//
+				peek(day -> businessTime.forward(Duration.ofDays(day))).//
+				sum();
 
 		Thread.sleep(20);
 

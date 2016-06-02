@@ -54,10 +54,10 @@ public class SalespointIdentifierConverterUnitTests {
 	@Test
 	public void convertsStringToProductIdentifier() {
 
-		Object result = converter.convert("5", STRING_DESCRIPTOR, PRODUCT_IDENTIFIER_DESCRIPTOR);
+		SalespointIdentifier result = converter.convert("5", STRING_DESCRIPTOR, PRODUCT_IDENTIFIER_DESCRIPTOR);
 
 		assertThat(result, is(instanceOf(ProductIdentifier.class)));
-		assertThat(result.toString(), is("5"));
+		assertThat(result.getIdentifier(), is("5"));
 	}
 
 	/**

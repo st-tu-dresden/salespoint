@@ -7,11 +7,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 /**
@@ -19,9 +18,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
  * 
  * @author Oliver Gierke
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@SpringApplicationConfiguration(classes = { SalespointWebConfiguration.class, Salespoint.class })
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = { SalespointWebConfiguration.class, Salespoint.class })
 public class SalespointWebApplicationConfigurationTests {
 
 	@Autowired ConversionService conversionService;

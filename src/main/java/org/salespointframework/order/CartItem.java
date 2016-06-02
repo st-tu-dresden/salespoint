@@ -1,5 +1,9 @@
 package org.salespointframework.order;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.util.UUID;
 
 import javax.money.MonetaryAmount;
@@ -14,12 +18,15 @@ import org.springframework.util.Assert;
  * @author Paul Henke
  * @author Oliver Gierke
  */
+@ToString
+@EqualsAndHashCode
+@Getter
 public class CartItem implements Priced {
 
+	private final String identifier = UUID.randomUUID().toString();
 	private final MonetaryAmount price;
 	private final Quantity quantity;
 	private final Product product;
-	private final String identifier = UUID.randomUUID().toString();
 
 	/**
 	 * Creates a new {@link CartItem}.
@@ -40,32 +47,6 @@ public class CartItem implements Priced {
 	}
 
 	/**
-	 * Returns the identifier of the {@link CartItem}.
-	 * 
-	 * @return
-	 */
-	public final String getIdentifier() {
-		return identifier;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.salespointframework.order.Priced#getPrice()
-	 */
-	public final MonetaryAmount getPrice() {
-		return price;
-	}
-
-	/**
-	 * Returns the {@link Product} associated with the {@link CartItem}.
-	 * 
-	 * @return
-	 */
-	public final Product getProduct() {
-		return product;
-	}
-
-	/**
 	 * Returns the name of the {@link Product} associated with the {@link CartItem}.
 	 * 
 	 * @return
@@ -75,58 +56,11 @@ public class CartItem implements Priced {
 	}
 
 	/**
-	 * Returns the {@link Quantity} of the {@link CartItem}.
-	 * 
-	 * @return
-	 */
-	public final Quantity getQuantity() {
-		return quantity;
-	};
-
-	/**
 	 * Creates an {@link OrderLine} from this CartItem.
 	 * 
 	 * @return
 	 */
 	final OrderLine toOrderLine() {
 		return new OrderLine(product, quantity);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object other) {
-
-		if (other == this) {
-			return true;
-		}
-
-		if (!(other instanceof CartItem)) {
-			return false;
-		}
-
-		CartItem that = (CartItem) other;
-
-		return this.product.equals(that.getProduct()) && this.quantity.equals(that.getQuantity());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return product.hashCode() ^ quantity.hashCode();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return getProductName() + " - " + quantity;
 	}
 }

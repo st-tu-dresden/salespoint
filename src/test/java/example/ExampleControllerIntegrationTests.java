@@ -4,13 +4,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.salespointframework.EnableSalespoint;
 import org.salespointframework.SalespointSecurityConfiguration;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.context.embedded.LocalServerPort;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -21,12 +22,10 @@ import org.springframework.web.client.RestTemplate;
  * @author Oliver Gierke
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration
-@WebAppConfiguration
-@IntegrationTest("server.port:0")
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ExampleControllerIntegrationTests {
 
-	@Value("${local.server.port}") int port;
+	@LocalServerPort int port;
 
 	/**
 	 * Sample configuration bootstrapping Salespoint as well as the components in the {@code example} package and
@@ -37,6 +36,14 @@ public class ExampleControllerIntegrationTests {
 	@Configuration
 	@EnableSalespoint
 	static class Config extends SalespointSecurityConfiguration {
+
+		/**
+		 * @param userDetailsService must not be {@literal null}.
+		 * @param passwordEncoder must not be {@literal null}.
+		 */
+		public Config(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+			super(userDetailsService, passwordEncoder);
+		}
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {

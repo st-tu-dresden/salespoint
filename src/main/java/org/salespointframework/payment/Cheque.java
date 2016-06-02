@@ -1,5 +1,8 @@
 package org.salespointframework.payment;
 
+import lombok.EqualsAndHashCode;
+import lombok.Value;
+
 import java.time.LocalDateTime;
 
 import org.springframework.util.Assert;
@@ -12,17 +15,49 @@ import org.springframework.util.Assert;
  * @author Hannes Weisbach
  * @author Oliver Gierke
  */
-@SuppressWarnings("serial")
+@Value
+@EqualsAndHashCode(callSuper = true)
 public final class Cheque extends PaymentMethod {
 
-	private final String accountName;
-	private final String accountNumber;
-	private final String chequeNumber;
-	private final String payee;
-	private final LocalDateTime dateWritten;
-	private final String bankName;
-	private final String bankAddress;
-	private final String bankIdentificationNumber;
+	/**
+	 * Name of the account holder.
+	 */
+	String accountName;
+
+	/**
+	 * Number of the account on which the cheque is drawn.
+	 */
+	String accountNumber;
+
+	/**
+	 * Number uniquely identifying this cheque.
+	 */
+	String chequeNumber;
+
+	/**
+	 * Name of the payee.
+	 */
+	String payee;
+
+	/**
+	 * Date on which the cheque was written.
+	 */
+	LocalDateTime dateWritten;
+
+	/**
+	 * Name of the bank, that issued the cheque.
+	 */
+	String bankName;
+
+	/**
+	 * Address of the bank, that issued the cheque.
+	 */
+	String bankAddress;
+
+	/**
+	 * Unique identification number of this bank. Also known as routing number.
+	 */
+	String bankIdentificationNumber;
 
 	/**
 	 * Instantiate a new <code>Cheque</code> instance.
@@ -61,78 +96,6 @@ public final class Cheque extends PaymentMethod {
 		this.bankIdentificationNumber = bankIdentificationNumber;
 	}
 
-	/**
-	 * Name of the account holder.
-	 * 
-	 * @return String containing the name of the account holder.
-	 */
-	public String getAccountName() {
-		return accountName;
-	}
-
-	/**
-	 * Number of the account on which the cheque is drawn.
-	 * 
-	 * @return String containing the account number on which the cheque is drawn.
-	 */
-	public String getAccountNumber() {
-		return accountNumber;
-	}
-
-	/**
-	 * Number uniquely identifying this cheque.
-	 * 
-	 * @return String containing the cheque number.
-	 */
-	public String getChequeNumber() {
-		return chequeNumber;
-	}
-
-	/**
-	 * Name of the payee.
-	 * 
-	 * @return String containing the name of the payee.
-	 */
-	public String getPayee() {
-		return payee;
-	}
-
-	/**
-	 * Date on which the cheque was written.
-	 * 
-	 * @return DateTime containing the date on which the cheque was written.
-	 */
-	public LocalDateTime getDateWritten() {
-		return dateWritten;
-	}
-
-	/**
-	 * Name of the bank, that issued the cheque.
-	 * 
-	 * @return String containing the name of the bank.
-	 */
-	public String getBankName() {
-		return bankName;
-	}
-
-	/**
-	 * Address of the bank, that issued the cheque.
-	 * 
-	 * @return String containing the address of the bank.
-	 */
-	public String getBankAddress() {
-		return bankAddress;
-	}
-
-	/**
-	 * Unique identification number of this bank. Also known as routing number.
-	 * 
-	 * @return String containing the identification number of this bank.
-	 */
-	public String getBankIdentificationNumber() {
-		return bankIdentificationNumber;
-	}
-
 	/* 
 	 * (non-Javadoc)
 	 * @see org.salespointframework.payment.PaymentMethod#toString()
@@ -140,53 +103,5 @@ public final class Cheque extends PaymentMethod {
 	@Override
 	public String toString() {
 		return String.format("%s - %s - %s - %s", super.toString(), accountName, accountNumber, dateWritten);
-	}
-
-	/* 
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-
-		if (this == obj) {
-			return true;
-		}
-
-		if (obj == null || !this.getClass().equals(obj.getClass())) {
-			return false;
-		}
-
-		Cheque that = (Cheque) obj;
-
-		return super.equals(obj) && this.accountName.equals(that.accountName) && //
-				this.accountNumber.equals(that.accountNumber) && //
-				this.bankAddress.equals(that.bankAddress) && //
-				this.bankIdentificationNumber.equals(that.bankIdentificationNumber) && //
-				this.bankName.equals(that.bankName) && //
-				this.chequeNumber.equals(that.chequeNumber) && //
-				this.dateWritten.equals(that.dateWritten) && //
-				this.payee.equals(that.payee);
-	}
-
-	/* 
-	 * (non-Javadoc)
-	 * @see org.salespointframework.payment.PaymentMethod#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-
-		int result = super.hashCode();
-
-		result += 31 * accountNumber.hashCode();
-		result += 31 * accountName.hashCode();
-		result += 31 * bankAddress.hashCode();
-		result += 31 * bankIdentificationNumber.hashCode();
-		result += 31 * bankName.hashCode();
-		result += 31 * chequeNumber.hashCode();
-		result += 31 * dateWritten.hashCode();
-		result += 31 * payee.hashCode();
-
-		return result;
 	}
 }

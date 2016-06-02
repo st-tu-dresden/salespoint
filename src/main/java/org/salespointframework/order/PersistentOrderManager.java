@@ -1,12 +1,15 @@
 package org.salespointframework.order;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import org.salespointframework.accountancy.Accountancy;
-import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.catalog.ProductIdentifier;
+import org.salespointframework.core.Streamable;
 import org.salespointframework.inventory.Inventory;
 import org.salespointframework.inventory.InventoryItem;
 import org.salespointframework.order.OrderCompletionResult.OrderCompletionStatus;
@@ -16,11 +19,9 @@ import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.transaction.support.TransactionOperations;
 import org.springframework.util.Assert;
 
 /**
@@ -30,42 +31,16 @@ import org.springframework.util.Assert;
  */
 @Service
 @Transactional
+@RequiredArgsConstructor
 class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PersistentOrderManager.class);
 
-	private final Inventory<InventoryItem> inventory;
-	private final TransactionTemplate txTemplate;
-	private final Accountancy<AccountancyEntry> accountancy;
-	private final BusinessTime businessTime;
-	private final OrderRepository<T> orderRepository;
-
-	/**
-	 * Creates a new {@link PersistentOrderManager} using the given {@link Inventory}, {@link Accountancy}
-	 * {@link BusinessTime}, {@link OrderRepository} and {@link PlatformTransactionManager}.
-	 * 
-	 * @param inventory must not be {@literal null}.
-	 * @param accountancy must not be {@literal null}.
-	 * @param businessTime must not be {@literal null}.
-	 * @param orderRepository must not be {@literal null}.
-	 * @param txManager must not be {@literal null}.
-	 */
-	@Autowired
-	public PersistentOrderManager(Inventory<InventoryItem> inventory, Accountancy<AccountancyEntry> accountancy,
-			BusinessTime businessTime, OrderRepository<T> orderRepository, PlatformTransactionManager txManager) {
-
-		Assert.notNull(inventory, "Inventory must not be null!");
-		Assert.notNull(accountancy, "Accountancy must not be null!");
-		Assert.notNull(businessTime, "BusinessTime must not be null!");
-		Assert.notNull(orderRepository, "OrderRepository must not be null!");
-		Assert.notNull(txManager, "PlatformTransactionManager must not be null!");
-
-		this.inventory = inventory;
-		this.accountancy = accountancy;
-		this.businessTime = businessTime;
-		this.orderRepository = orderRepository;
-		this.txTemplate = new TransactionTemplate(txManager);
-	}
+	private final @NonNull Inventory<InventoryItem> inventory;
+	private final @NonNull TransactionOperations txTemplate;
+	private final @NonNull Accountancy accountancy;
+	private final @NonNull BusinessTime businessTime;
+	private final @NonNull OrderRepository<T> orderRepository;
 
 	/* 
 	 * (non-Javadoc)
@@ -107,46 +82,47 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#findOrdersBetween(java.time.LocalDateTime, java.time.LocalDateTime)
+	 * @see org.salespointframework.order.OrderManager#findBy(org.salespointframework.time.Interval)
 	 */
 	@Override
-	public Iterable<T> findBy(Interval interval) {
-		return orderRepository.findByDateCreatedBetween(interval.getStart(), interval.getEnd());
+	public Streamable<T> findBy(Interval interval) {
+		return Streamable.of(orderRepository.findByDateCreatedBetween(interval.getStart(), interval.getEnd()));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#findOrdersByOrderStatus(org.salespointframework.order.OrderStatus)
+	 * @see org.salespointframework.order.OrderManager#findBy(org.salespointframework.order.OrderStatus)
 	 */
 	@Override
-	public Iterable<T> findBy(OrderStatus orderStatus) {
+	public Streamable<T> findBy(OrderStatus orderStatus) {
 
 		Assert.notNull(orderStatus, "OrderStatus must not be null");
-		return orderRepository.findByOrderStatus(orderStatus);
+		return Streamable.of(orderRepository.findByOrderStatus(orderStatus));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#findOrdersByUserAccount(org.salespointframework.useraccount.UserAccount)
+	 * @see org.salespointframework.order.OrderManager#findBy(org.salespointframework.useraccount.UserAccount)
 	 */
 	@Override
-	public Iterable<T> findBy(UserAccount userAccount) {
+	public Streamable<T> findBy(UserAccount userAccount) {
 
 		Assert.notNull(userAccount, "UserAccount must not be null");
-		return orderRepository.findByUserAccount(userAccount);
+		return Streamable.of(orderRepository.findByUserAccount(userAccount));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#findOrders(org.salespointframework.useraccount.UserAccount, java.time.LocalDateTime, java.time.LocalDateTime)
+	 * @see org.salespointframework.order.OrderManager#findBy(org.salespointframework.useraccount.UserAccount, org.salespointframework.time.Interval)
 	 */
 	@Override
-	public Iterable<T> findBy(UserAccount userAccount, Interval interval) {
+	public Streamable<T> findBy(UserAccount userAccount, Interval interval) {
 
 		Assert.notNull(userAccount, "UserAccount must not be null");
 		Assert.notNull(interval, "Interval must not be null!");
 
-		return orderRepository.findByUserAccountAndDateCreatedBetween(userAccount, interval.getStart(), interval.getEnd());
+		return Streamable.of(
+				orderRepository.findByUserAccountAndDateCreatedBetween(userAccount, interval.getStart(), interval.getEnd()));
 	}
 
 	/*
@@ -165,16 +141,9 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 		final Map<InventoryItem, Quantity> goodItems = new HashMap<>();
 		final Map<InventoryItem, Quantity> badItems = new HashMap<>();
 
-		Iterable<OrderLine> lineItems = order.getOrderLines();
+		Streamable<OrderLine> orderlines = order.getOrderLines();
 
-		// Stream<OrderLine> stream = stream(lineItems.spliterator(), false);
-		// Stream<ProductIdentifier> identifiers = stream.map(OrderLine::getProductIdentifier);
-		// Stream<Optional<InventoryItem>> items = identifiers.map(identifier ->
-		// inventory.findByProductProductIdentifier(identifier));
-
-		// Stream<InventoryItem> filtereditems = items.flatMap(i -> i.map(Stream::of).orElseGet(Stream::empty));
-
-		for (OrderLine orderline : lineItems) {
+		orderlines.forEach(orderline -> {
 
 			ProductIdentifier productIdentifier = orderline.getProductIdentifier();
 			Optional<InventoryItem> inventoryItem = inventory.findByProductIdentifier(productIdentifier);
@@ -183,7 +152,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 			if (!inventoryItem.isPresent()) {
 				LOGGER.error(
 						"No InventoryItem with given ProductIndentifier found in PersistentInventory. Have you initialized your PersistentInventory? Do you need to re-stock your Inventory?");
-				break;
+				return;
 			}
 
 			inventoryItem.ifPresent(item -> {
@@ -196,7 +165,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 					badItems.put(item, orderLineQuantity);
 				}
 			});
-		}
+		});
 
 		return txTemplate.execute(status -> {
 

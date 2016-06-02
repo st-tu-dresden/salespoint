@@ -1,5 +1,10 @@
 package org.salespointframework.catalog;
 
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,8 +16,8 @@ import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
-import org.javamoney.moneta.Money;
 import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.core.Streamable;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.MetricMismatchException;
 import org.salespointframework.quantity.Quantity;
@@ -25,6 +30,7 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Entity
+@ToString
 public class Product extends AbstractEntity<ProductIdentifier> implements Comparable<Product> {
 
 	private static final long serialVersionUID = 6645371648836029780L;
@@ -32,8 +38,8 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 	@EmbeddedId //
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID") ) //
 	private ProductIdentifier productIdentifier = new ProductIdentifier();
-	private String name;
-	private MonetaryAmount price;
+	private @NonNull @Getter @Setter String name;
+	private @NonNull @Getter @Setter MonetaryAmount price;
 	private @ElementCollection Set<String> categories = new HashSet<String>();
 	private Metric metric;
 
@@ -69,40 +75,34 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 	 * (non-Javadoc)
 	 * @see org.salespointframework.core.AbstractEntity#getIdentifier()
 	 */
+	@Override
 	public final ProductIdentifier getIdentifier() {
 		return productIdentifier;
 	}
 
-	public String getName() {
-		return name;
+	/**
+	 * Returns the categories the {@link Product} is assigned to.
+	 * 
+	 * @return will never be {@literal null}.
+	 */
+	public final Streamable<String> getCategories() {
+		return Streamable.of(Collections.unmodifiableSet(categories));
 	}
 
-	public void setName(String name) {
-
-		Assert.hasText(name, "Name must not be null or empty!");
-		this.name = name;
-	}
-
-	public MonetaryAmount getPrice() {
-		return price;
-	}
-
-	public void setPrice(Money price) {
-
-		Assert.notNull(price, "Price must not be null!");
-		this.price = price;
-	}
-
-	public final Iterable<String> getCategories() {
-		return Collections.unmodifiableSet(categories);
-	}
-
+	/**
+	 * Adds the {@link Product} to the given category.
+	 * 
+	 * @param category must not be {@literal null} or empty.
+	 * @return
+	 */
 	public final boolean addCategory(String category) {
-		Assert.notNull(category, "category must not be null");
+
+		Assert.hasText(category, "category must not be null");
 		return categories.add(category);
 	}
 
 	public final boolean removeCategory(String category) {
+
 		Assert.notNull(category, "category must not be null");
 		return categories.remove(category);
 	}
@@ -139,14 +139,5 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 	@Override
 	public int compareTo(Product other) {
 		return this.name.compareTo(other.name);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return name;
 	}
 }

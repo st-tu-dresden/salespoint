@@ -43,18 +43,18 @@ class SalespointIdentifierConverter implements ConditionalGenericConverter {
 	 * @see org.springframework.core.convert.converter.GenericConverter#convert(java.lang.Object, org.springframework.core.convert.TypeDescriptor, org.springframework.core.convert.TypeDescriptor)
 	 */
 	@Override
-	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
+	public SalespointIdentifier convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 
 		Class<?> targetClass = targetType.getType();
 
 		try {
 
 			Constructor<?> constructor = targetClass.getDeclaredConstructor(String.class);
-			return BeanUtils.instantiateClass(constructor, source);
+			return (SalespointIdentifier) BeanUtils.instantiateClass(constructor, source);
 
-		} catch (NoSuchMethodException | SecurityException e) {
-			throw new ConversionFailedException(TypeDescriptor.forObject(source), TypeDescriptor.valueOf(targetClass),
-					source, e);
+		} catch (NoSuchMethodException | SecurityException o_O) {
+			throw new ConversionFailedException(TypeDescriptor.forObject(source), TypeDescriptor.valueOf(targetClass), source,
+					o_O);
 		}
 	}
 }

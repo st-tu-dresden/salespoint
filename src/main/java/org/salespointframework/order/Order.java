@@ -1,8 +1,12 @@
 package org.salespointframework.order;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +24,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.salespointframework.core.AbstractEntity;
-import org.salespointframework.core.Currencies;
+import org.salespointframework.core.Streamable;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.util.Assert;
@@ -32,6 +36,8 @@ import org.springframework.util.Assert;
  */
 @Entity
 @Table(name = "ORDERS")
+@ToString
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated) )
 public class Order extends AbstractEntity<OrderIdentifier> {
 
 	private static final long serialVersionUID = 7417079332245151314L;
@@ -40,15 +46,17 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID") ) //
 	private OrderIdentifier orderIdentifier = new OrderIdentifier();
 
-	@Lob //
-	private PaymentMethod paymentMethod;
+	private @Lob PaymentMethod paymentMethod;
 
+	@Getter //
 	@OneToOne //
 	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID") ) //
 	private UserAccount userAccount;
 
-	private LocalDateTime dateCreated = null;
+	@Getter //
+	@Setter(AccessLevel.PACKAGE) private LocalDateTime dateCreated = null;
 
+	@Getter
 	// tag::orderStatus[]
 	@Enumerated(EnumType.STRING) //
 	private OrderStatus orderStatus = OrderStatus.OPEN;
@@ -59,12 +67,6 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	@OneToMany(cascade = CascadeType.ALL) //
 	private Set<ChargeLine> chargeLines = new HashSet<ChargeLine>();
-
-	/**
-	 * Parameterless constructor required for JPA. Do not use.
-	 */
-	@Deprecated
-	protected Order() {}
 
 	/**
 	 * Creates a new Order
@@ -100,20 +102,12 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		return orderIdentifier;
 	}
 
-	public Iterable<OrderLine> getOrderLines() {
-		return Collections.unmodifiableSet(orderLines);
+	public Streamable<OrderLine> getOrderLines() {
+		return Streamable.of(orderLines);
 	}
 
-	public Iterable<ChargeLine> getChargeLines() {
-		return Collections.unmodifiableSet(chargeLines);
-	}
-
-	public final OrderStatus getOrderStatus() {
-		return orderStatus;
-	}
-
-	public final UserAccount getUserAccount() {
-		return userAccount;
+	public Streamable<ChargeLine> getChargeLines() {
+		return Streamable.of(chargeLines);
 	}
 
 	public MonetaryAmount getTotalPrice() {
@@ -121,15 +115,11 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	}
 
 	public MonetaryAmount getOrderedLinesPrice() {
-		return sumUp(orderLines);
+		return Priced.sumUp(orderLines);
 	}
 
 	public MonetaryAmount getChargeLinesPrice() {
-		return sumUp(chargeLines);
-	}
-
-	public final LocalDateTime getDateCreated() {
-		return dateCreated;
+		return Priced.sumUp(chargeLines);
 	}
 
 	/**
@@ -169,13 +159,6 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		assertOrderIsOpen();
 
 		this.chargeLines.remove(chargeLine);
-	}
-
-	private MonetaryAmount sumUp(Collection<? extends Priced> priced) {
-
-		return priced.stream().//
-				map(Priced::getPrice).//
-				reduce((left, right) -> left.add(right)).orElse(Currencies.ZERO_EURO);
 	}
 
 	/**
@@ -253,10 +236,6 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		return ppe;
 	}
 
-	void setDateCreated(LocalDateTime dateTime) {
-		this.dateCreated = dateTime;
-	}
-
 	/**
 	 * Asserts that the {@link Order} is {@link OrderStatus#OPEN}. Usually a precondition to manipulate the {@link Order}
 	 * state internally.
@@ -266,14 +245,5 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		if (!isOpen()) {
 			throw new IllegalStateException("Order is not open anymore! Current state is: " + orderStatus);
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "User: " + userAccount.toString() + " | Order" + orderIdentifier.toString();
 	}
 }

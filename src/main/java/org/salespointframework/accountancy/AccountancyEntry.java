@@ -1,5 +1,11 @@
 package org.salespointframework.accountancy;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
@@ -23,7 +29,11 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Entity
+@ToString
+@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED, onConstructor = @__(@Deprecated) )
 public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier> {
+
+	private static final long serialVersionUID = 810396540898867801L;
 
 	// TODO: if the column is not renamed, it does not work. instead,
 	// ProductPaymentEntry's USER_ID column becomes PK. This fucks everything
@@ -35,16 +45,9 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	@EmbeddedId @AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID", nullable = false) ) //
 	private AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();
 
-	private MonetaryAmount value = Currencies.ZERO_EURO;
-
-	private LocalDateTime date = null;
-	private String description = "";
-
-	/**
-	 * Protected, parameterless Constructor required by the persistence layer. Do not use it.
-	 */
-	@Deprecated
-	protected AccountancyEntry() {}
+	private @Getter MonetaryAmount value = Currencies.ZERO_EURO;
+	private @Setter(AccessLevel.PACKAGE) LocalDateTime date = null;
+	private @Getter String description = "";
 
 	/**
 	 * Creates a new <code>PersistentAccountancyEntry</code> with a specific value.
@@ -86,40 +89,11 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 		return Optional.ofNullable(date);
 	}
 
-	void setDate(LocalDateTime dateTime) {
-		this.date = dateTime;
-	}
-
-	/**
-	 * The Money object is always non-{@literal null}.
-	 * 
-	 * @return the monetary value for this entry.
-	 */
-	public final MonetaryAmount getValue() {
-		return value;
-	}
-
-	/**
-	 * @return description, detailing the entry.
-	 */
-	public final String getDescription() {
-		return description;
-	}
-
 	/**
 	 * @return {@link AccountancyEntryIdentifier} to uniquely identify this entry.
 	 */
 	@Override
 	public final AccountancyEntryIdentifier getIdentifier() {
 		return accountancyEntryIdentifier;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return value.toString() + " | " + date.toString() + " | " + description;
 	}
 }

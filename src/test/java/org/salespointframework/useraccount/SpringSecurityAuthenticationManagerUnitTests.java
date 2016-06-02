@@ -68,9 +68,9 @@ public class SpringSecurityAuthenticationManagerUnitTests {
 	@Test
 	public void delegatesPasswordMatchCorrectly() {
 
-		Password existing = new Password("password", true);
-		Password matching = new Password("password");
-		Password failing = new Password("failing");
+		Password existing = Password.encrypted("password");
+		Password matching = Password.unencrypted("password");
+		Password failing = Password.unencrypted("failing");
 
 		when(passwordEncoder.matches("password", "password")).thenReturn(true);
 		when(passwordEncoder.matches("password", "failing")).thenReturn(false);

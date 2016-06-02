@@ -2,6 +2,8 @@ package org.salespointframework.useraccount;
 
 import java.util.Optional;
 
+import org.salespointframework.core.Streamable;
+
 /**
  * Central service to manager {@link UserAccount} instances.
  *
@@ -11,12 +13,12 @@ import java.util.Optional;
 public interface UserAccountManager {
 
 	/**
-	 * Creates a new {@link UserAccount}.
+	 * Creates a new {@link UserAccount} and persists it right away.
 	 * 
-	 * @param userName the unique name of the user, the name is also used as loginname
+	 * @param userName the unique name of the user, the name is also used as login name.
 	 * @param password the password
 	 * @param roles zero or more roles
-	 * @return an UserAccount
+	 * @return a {@link UserAccount}, will never be {@literal null}.
 	 * @throws NullPointerException if userName, password or roles is null
 	 */
 	UserAccount create(String userName, String password, Role... roles);
@@ -25,7 +27,7 @@ public interface UserAccountManager {
 	 * Returns an {@link UserAccount} for a given identifier.
 	 * 
 	 * @param userAccountIdentifier
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	Optional<UserAccount> get(UserAccountIdentifier userAccountIdentifier);
 
@@ -33,7 +35,7 @@ public interface UserAccountManager {
 	 * Saves the {@link UserAccount}
 	 * 
 	 * @param userAccount
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	UserAccount save(UserAccount userAccount);
 
@@ -52,7 +54,7 @@ public interface UserAccountManager {
 	void disable(UserAccountIdentifier userAccountIdentifier);
 
 	/**
-	 * Changes the passwort of the {@link UserAccount}.
+	 * Changes the password of the {@link UserAccount}.
 	 * 
 	 * @param userAccount
 	 * @param password
@@ -72,21 +74,21 @@ public interface UserAccountManager {
 	 * 
 	 * @return
 	 */
-	Iterable<UserAccount> findAll();
+	Streamable<UserAccount> findAll();
 
 	/**
 	 * Finds only enabled {@link UserAccount}s.
 	 * 
 	 * @return
 	 */
-	Iterable<UserAccount> findEnabled();
+	Streamable<UserAccount> findEnabled();
 
 	/**
 	 * Finds only disabled {@link UserAccount}s.
 	 * 
 	 * @return
 	 */
-	Iterable<UserAccount> findDisabled();
+	Streamable<UserAccount> findDisabled();
 
 	/**
 	 * Returns the user with the given user name.

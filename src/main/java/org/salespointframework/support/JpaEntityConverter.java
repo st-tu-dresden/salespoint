@@ -1,17 +1,18 @@
 package org.salespointframework.support;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import java.util.Collections;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 /**
  * {@link Converter} that can convert {@link String}s into JPA managed domain types. We expect the identifier types to
@@ -20,26 +21,11 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Component
+@RequiredArgsConstructor
 class JpaEntityConverter implements ConditionalGenericConverter {
 
-	private final SalespointIdentifierConverter identifierConverter;
-	private final EntityManager em;
-
-	/**
-	 * Creates a new {@link JpaEntityConverter} using the given {@link SalespointIdentifierConverter}.
-	 * 
-	 * @param identifierConverter must not be {@literal null}.
-	 * @param em must not be {@literal null}.
-	 */
-	@Autowired
-	public JpaEntityConverter(SalespointIdentifierConverter identifierConverter, EntityManager em) {
-
-		Assert.notNull(identifierConverter, "Identifier converter must not be null!");
-		Assert.notNull(em, "EntityManager must not be null!");
-
-		this.identifierConverter = identifierConverter;
-		this.em = em;
-	}
+	private final @NonNull SalespointIdentifierConverter identifierConverter;
+	private final @NonNull EntityManager em;
 
 	/*
 	 * (non-Javadoc)

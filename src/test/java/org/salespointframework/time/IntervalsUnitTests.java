@@ -18,10 +18,8 @@ public class IntervalsUnitTests {
 	@Test
 	public void setsUpIntervalsCorrectly() {
 
-		LocalDateTime start = LocalDateTime.now();
-		LocalDateTime end = start.plusDays(10);
-
-		Intervals intervals = new Intervals(start, end, Duration.ofDays(2));
+		Interval interval = Interval.from(LocalDateTime.now()).withLength(Duration.ofDays(10));
+		Intervals intervals = Intervals.divide(interval, Duration.ofDays(2));
 
 		assertThat(intervals, is(iterableWithSize(5)));
 	}
@@ -29,10 +27,8 @@ public class IntervalsUnitTests {
 	@Test
 	public void setsUpExceedingIntervalsCorrectly() {
 
-		LocalDateTime start = LocalDateTime.now();
-		LocalDateTime end = start.plusDays(10);
-
-		Intervals intervals = new Intervals(start, end, Duration.ofDays(3));
+		Interval interval = Interval.from(LocalDateTime.now()).withLength(Duration.ofDays(10));
+		Intervals intervals = Intervals.divide(interval, Duration.ofDays(3));
 
 		assertThat(intervals, is(iterableWithSize(4)));
 	}

@@ -3,10 +3,11 @@ package org.salespointframework.time;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.time.temporal.TemporalAmount;
 
 import org.springframework.util.Assert;
 
@@ -15,10 +16,18 @@ import org.springframework.util.Assert;
  * 
  * @author Oliver Gierke
  */
+@Value
 public final class Interval {
 
-	private final LocalDateTime start;
-	private final LocalDateTime end;
+	/**
+	 * The start date of the {@link Interval}.
+	 */
+	LocalDateTime start;
+
+	/**
+	 * The end date of the {@link Interval}.
+	 */
+	LocalDateTime end;
 
 	/**
 	 * Creates a new {@link Interval} between the given start and end.
@@ -40,66 +49,19 @@ public final class Interval {
 	 * Starts building a new {@link Interval} with the given start time.
 	 * 
 	 * @param start must not be {@literal null}.
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	public static IntervalBuilder from(LocalDateTime start) {
 		return new IntervalBuilder(start);
 	}
 
 	/**
-	 * Returns the start date of the {@link Interval}.
-	 * 
-	 * @return the start
-	 */
-	public LocalDateTime getStart() {
-		return start;
-	}
-
-	/**
-	 * Returns the end date of the {@link Interval}.
-	 * 
-	 * @return the end
-	 */
-	public LocalDateTime getEnd() {
-		return end;
-	}
-
-	/**
 	 * Returns the duration of the interval.
 	 * 
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	public Duration getDuration() {
 		return Duration.between(start, end);
-	}
-
-	/* 
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-
-		if (this == obj) {
-			return true;
-		}
-
-		if (!(obj instanceof Interval)) {
-			return false;
-		}
-
-		Interval that = (Interval) obj;
-
-		return this.start.equals(that.start) && this.end.equals(that.end);
-	}
-
-	/* 
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return Objects.hash(start, end);
 	}
 
 	/* 
@@ -120,10 +82,23 @@ public final class Interval {
 		 * Creates an {@link Interval} from the current start time until the given end time.
 		 * 
 		 * @param end must not be {@literal null} and after the current start time or equal to it.
-		 * @return
+		 * @return will never be {@literal null}.
 		 */
 		public Interval to(LocalDateTime end) {
 			return new Interval(from, end);
+		}
+
+		/**
+		 * Creates a new {@link Interval} from the current start time adding the given {@link TemporalAmount} to it.
+		 * 
+		 * @param amount must not be {@literal null}.
+		 * @return will never be {@literal null}.
+		 * @see Duration
+		 */
+		public Interval withLength(TemporalAmount amount) {
+
+			Assert.notNull(amount, "Temporal amount must not be null!");
+			return new Interval(from, from.plus(amount));
 		}
 	}
 }

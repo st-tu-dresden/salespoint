@@ -1,8 +1,11 @@
 package org.salespointframework.useraccount;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.salespointframework.core.Streamable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,27 +20,11 @@ import org.springframework.util.Assert;
  */
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 class PersistentUserAccountManager implements UserAccountManager {
 
-	private final UserAccountRepository repository;
-	private final PasswordEncoder passwordEncoder;
-
-	/**
-	 * Creates a new {@link PersistentUserAccountManager} using the given {@link UserAccountRepository} and
-	 * {@link PasswordEncoder}.
-	 * 
-	 * @param repository must not be {@literal null}.
-	 * @param passwordEncoder must not be {@literal null}.
-	 */
-	@Autowired
-	public PersistentUserAccountManager(UserAccountRepository repository, PasswordEncoder passwordEncoder) {
-
-		Assert.notNull(repository, "UserAccountRepository must not be null!");
-		Assert.notNull(passwordEncoder, "PasswordEncoder must not be null!");
-
-		this.repository = repository;
-		this.passwordEncoder = passwordEncoder;
-	}
+	private final @NonNull UserAccountRepository repository;
+	private final @NonNull PasswordEncoder passwordEncoder;
 
 	/*
 	 * (non-Javadoc)
@@ -55,7 +42,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 			throw new IllegalArgumentException(String.format("User with name %s already exists!", userName));
 		});
 
-		return new UserAccount(new UserAccountIdentifier(userName), password, roles);
+		return save(new UserAccount(new UserAccountIdentifier(userName), password, roles));
 	}
 
 	/*
@@ -81,8 +68,8 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 		Password password = userAccount.getPassword();
 
-		userAccount.setPassword(password.isEncrypted() ? password : new Password(
-				passwordEncoder.encode(password.toString()), true));
+		userAccount.setPassword(
+				password.isEncrypted() ? password : Password.encrypted(passwordEncoder.encode(password.getPassword())));
 
 		return repository.save(userAccount);
 	}
@@ -122,7 +109,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 		Assert.notNull(userAccount, "userAccount must not be null");
 		Assert.notNull(password, "password must not be null");
 
-		userAccount.setPassword(new Password(password));
+		userAccount.setPassword(Password.unencrypted(password));
 		save(userAccount);
 	}
 
@@ -142,8 +129,8 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 * @see org.salespointframework.useraccount.UserAccountManager#findAll()
 	 */
 	@Override
-	public Iterable<UserAccount> findAll() {
-		return repository.findAll();
+	public Streamable<UserAccount> findAll() {
+		return Streamable.of(repository.findAll());
 	}
 
 	/*
@@ -151,8 +138,8 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 * @see org.salespointframework.useraccount.UserAccountManager#findEnabled()
 	 */
 	@Override
-	public Iterable<UserAccount> findEnabled() {
-		return repository.findByEnabledTrue();
+	public Streamable<UserAccount> findEnabled() {
+		return Streamable.of(repository.findByEnabledTrue());
 	}
 
 	/*
@@ -160,8 +147,8 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 * @see org.salespointframework.useraccount.UserAccountManager#findDisabled()
 	 */
 	@Override
-	public Iterable<UserAccount> findDisabled() {
-		return repository.findByEnabledFalse();
+	public Streamable<UserAccount> findDisabled() {
+		return Streamable.of(repository.findByEnabledFalse());
 	}
 
 	/* 

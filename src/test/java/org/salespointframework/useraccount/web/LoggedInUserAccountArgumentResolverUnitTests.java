@@ -8,13 +8,16 @@ import java.lang.reflect.Method;
 import java.util.Optional;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.salespointframework.useraccount.AuthenticationManager;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.core.MethodParameter;
+import org.springframework.web.bind.ServletRequestBindingException;
 
 /**
  * Unit tests for {@link LoggedInUserAccountArgumentResolver}.
@@ -25,8 +28,11 @@ import org.springframework.core.MethodParameter;
 public class LoggedInUserAccountArgumentResolverUnitTests {
 
 	@Mock AuthenticationManager authenticationManager;
+	@Mock UserAccount account;
 
 	LoggedInUserAccountArgumentResolver resolver;
+
+	public @Rule ExpectedException exception = ExpectedException.none();
 
 	@Before
 	public void setUp() {
@@ -69,8 +75,31 @@ public class LoggedInUserAccountArgumentResolverUnitTests {
 	@Test
 	public void returnsUserAccountProvidedByAuthenticationManager() throws Exception {
 
+		Method method = Sample.class.getMethod("valid", Optional.class);
 		when(authenticationManager.getCurrentUser()).thenReturn(Optional.empty());
-		assertThat(resolver.resolveArgument(null, null, null, null), is(Optional.empty()));
+		assertThat(resolver.resolveArgument(new MethodParameter(method, 0), null, null, null), is(Optional.empty()));
+	}
+
+	@Test
+	public void supportsAnnotatedUserAccount() throws Exception {
+
+		Method method = Sample.class.getMethod("noOptional", UserAccount.class);
+		when(authenticationManager.getCurrentUser()).thenReturn(Optional.of(account));
+
+		assertThat(resolver.supportsParameter(new MethodParameter(method, 0)), is(true));
+		assertThat(resolver.resolveArgument(new MethodParameter(method, 0), null, null, null), is(account));
+	}
+
+	@Test
+	public void throwsExceptionIfNoUserAccountAvailableButRequired() throws Exception {
+
+		Method method = Sample.class.getMethod("noOptional", UserAccount.class);
+		when(authenticationManager.getCurrentUser()).thenReturn(Optional.empty());
+
+		exception.expect(ServletRequestBindingException.class);
+		exception.expectMessage("Optional<UserAccount>");
+
+		assertThat(resolver.resolveArgument(new MethodParameter(method, 0), null, null, null), is(account));
 	}
 
 	static interface Sample {

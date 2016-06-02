@@ -10,6 +10,7 @@ import javax.money.MonetaryAmount;
 import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.core.Streamable;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.util.Assert;
 
@@ -19,7 +20,7 @@ import org.springframework.util.Assert;
  * @authow Paul Henke
  * @author Oliver Gierke
  */
-public class Cart implements Iterable<CartItem>, Priced {
+public class Cart implements Streamable<CartItem>, Priced {
 
 	private final List<CartItem> items = new ArrayList<>();
 

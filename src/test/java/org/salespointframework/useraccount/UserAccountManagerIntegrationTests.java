@@ -82,10 +82,10 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	}
 
 	@Test
-	public void doesNotReEncryptExncryptedPassword() {
+	public void doesNotReEncryptEncryptedPassword() {
 
 		UserAccount account = userAccountManager.save(userAccount);
-		Password encryptedPassword = new Password("encrypted", true);
+		Password encryptedPassword = Password.encrypted("encrypted");
 		account.setPassword(encryptedPassword);
 
 		UserAccount result = userAccountManager.save(account);
@@ -96,7 +96,6 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	public void changesPasswordCorrectly() {
 
 		UserAccount acc = userAccountManager.create("Bob", "123", Role.of("ROLE_CHEF"));
-		userAccountManager.save(acc);
 
 		userAccountManager.changePassword(acc, "asd");
 
@@ -110,7 +109,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	@Test
 	public void findsUserByUsername() {
 
-		UserAccount reference = userAccountManager.save(userAccountManager.create("Bob", "123", Role.of("ROLE_CHEF")));
+		UserAccount reference = userAccountManager.create("Bob", "123", Role.of("ROLE_CHEF"));
 
 		Optional<UserAccount> user = userAccountManager.findByUsername("Bob");
 
@@ -124,9 +123,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	@Test(expected = IllegalArgumentException.class)
 	public void rejectsCreationOfUserWithExistingUsername() {
 
-		UserAccount account = userAccountManager.create("username", "password");
-		account = userAccountManager.save(account);
-
+		userAccountManager.create("username", "password");
 		userAccountManager.create("username", "password");
 	}
 }

@@ -29,7 +29,7 @@ public class OrderTests extends AbstractIntegrationTests {
 	@Before
 	public void before() {
 
-		user = userAccountManager.save(userAccountManager.create("OrderTests " + foobar, "password"));
+		user = userAccountManager.create("OrderTests " + foobar, "password");
 		order = new Order(user, Cash.CASH);
 		foobar++;
 	}

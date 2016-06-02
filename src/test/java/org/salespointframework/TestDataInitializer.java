@@ -13,7 +13,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * @author Oliver Gierke
  */
 @Component
-public class TestDataInitializer implements DataInitializer {
+class TestDataInitializer implements DataInitializer {
 
 	/* 
 	 * (non-Javadoc)

@@ -55,6 +55,6 @@ public class ConsoleWritingMailSender implements MailSender {
 	 */
 	@Override
 	public void send(SimpleMailMessage... simpleMessages) throws MailException {
-		Arrays.stream(simpleMessages).forEach(message -> send(message));
+		Arrays.stream(simpleMessages).forEach(this::send);
 	}
 }

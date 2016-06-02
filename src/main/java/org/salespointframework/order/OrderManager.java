@@ -2,6 +2,7 @@ package org.salespointframework.order;
 
 import java.util.Optional;
 
+import org.salespointframework.core.Streamable;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
@@ -46,7 +47,7 @@ public interface OrderManager<T extends Order> {
 	 * @param orderStatus Denoting the {@link OrderStatus} on which the {@link Order}s will be requested.
 	 * @return an Iterable containing all {@link Order}s with the specified {@link OrderStatus}
 	 */
-	Iterable<T> findBy(OrderStatus orderStatus);
+	Streamable<T> findBy(OrderStatus orderStatus);
 
 	/**
 	 * Returns all {@link Order}s in between the {@link Interval}. So every entry with an time stamp <= to and >= from is
@@ -55,7 +56,7 @@ public interface OrderManager<T extends Order> {
 	 * @param interval The time interval to find {@link Order}s in, must not be {@literal null}.
 	 * @return an {@link Iterable} containing all {@link Order}s in the given {@link Interval}.
 	 */
-	Iterable<T> findBy(Interval interval);
+	Streamable<T> findBy(Interval interval);
 
 	/**
 	 * Returns all {@link Order}s of the given {@link UserAccount}. If this user has no orders, an empty {@link Iterable}
@@ -65,7 +66,7 @@ public interface OrderManager<T extends Order> {
 	 *          {@literal null}.
 	 * @return an {@link Iterable} containing all orders of the specified user.
 	 */
-	Iterable<T> findBy(UserAccount userAccount);
+	Streamable<T> findBy(UserAccount userAccount);
 
 	/**
 	 * Returns all {@link Order}s from the given {@link UserAccount} in between the dates {@code from} and {@code to},
@@ -76,7 +77,7 @@ public interface OrderManager<T extends Order> {
 	 * @param interval The time interval to find {@link Order}s in, must not be {@literal null}.
 	 * @return an {@link Iterable} containing all orders from the specified user in the specified period.
 	 */
-	Iterable<T> findBy(UserAccount userAccount, Interval interval);
+	Streamable<T> findBy(UserAccount userAccount, Interval interval);
 
 	/**
 	 * Tries to complete this order, the {@link OrderStatus} has to be PAID.

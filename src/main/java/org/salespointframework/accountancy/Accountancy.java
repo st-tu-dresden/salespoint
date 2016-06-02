@@ -1,12 +1,12 @@
 package org.salespointframework.accountancy;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.money.MonetaryAmount;
 
+import org.salespointframework.core.Streamable;
 import org.salespointframework.time.Interval;
 
 /**
@@ -17,14 +17,14 @@ import org.salespointframework.time.Interval;
  * @author Hannes Weisbach
  * @author Oliver Gierke
  */
-public interface Accountancy<T extends AccountancyEntry> {
+public interface Accountancy {
 
 	/**
 	 * Adds a new {@link AccountancyEntry} to this {@code Accountancy}.
 	 * 
 	 * @param accountancyEntry entry to be added to the accountancy
 	 */
-	T add(T accountancyEntry);
+	<T extends AccountancyEntry> T add(T accountancyEntry);
 
 	/**
 	 * Returns all {@link AccountancyEntry}s of the specified type {@code clazz} and all sub-types, previously added to
@@ -33,9 +33,9 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * @param <T> common super type of all entries returned.
 	 * @param clazz Class object corresponding to the type of the entries to be returned, has to implement
 	 *          {@link AccountancyEntry}
-	 * @return an {@link Iterable} containing all entries of type clazz
+	 * @return a {@link Streamable} containing all entries of type clazz
 	 */
-	Iterable<T> findAll();
+	Streamable<AccountancyEntry> findAll();
 
 	/**
 	 * Returns the {@link AccountancyEntry} of type {@code clazz} and all sub-types, identified by
@@ -47,23 +47,18 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * @return the {@link AccountancyEntry} or sub type thereof of type {@code clazz} which has the identifier
 	 *         {@link AccountancyEntryIdentifier}
 	 */
-	Optional<T> get(AccountancyEntryIdentifier accountancyEntryIdentifier);
+	Optional<AccountancyEntry> get(AccountancyEntryIdentifier accountancyEntryIdentifier);
 
 	/**
-	 * Returns all {@link AccountancyEntry}s in between the dates {@code from} and {@code to} of the specified class type
-	 * {@code clazz} and all sub-types, including from and to. So every entry with an time stamp <= {@code to} and >=
-	 * {@code from} is returned. If no entries within the specified time span exist, or no entries of the specified class
-	 * type exist, an empty Iterable is returned.
+	 * Returns all {@link AccountancyEntry}s that were created in the given {@link Interval}. So every entry with an time
+	 * stamp <= {@code to} and >= {@code from} is returned. If no entries within the specified time span exist, or no
+	 * entries of the specified class type exist, an empty {@link Streamable} is returned.
 	 * 
-	 * @param <T> common super type of all entries returned
-	 * @param from {@link LocalDateTime} denoting the start of the requested time period
-	 * @param to {@link LocalDateTime} denoting the end of the requested time period
-	 * @param clazz class type of the requested entries, has to implement {@link AccountancyEntry}
-	 * @return an {@link Iterable} containing all entries between from and to of type E
+	 * @param interval the {@link Interval} we want to find {@link AccountancyEntry} instances for.
+	 * @return a {@link Streamable} containing all entries in the given {@link Interval}.
 	 */
-	Iterable<T> find(LocalDateTime from, LocalDateTime to);
+	Streamable<AccountancyEntry> find(Interval interval);
 
-	// TODO comment fortsetzen? -> " If no entries for an interval exist"
 	/**
 	 * Returns all {@link AccountancyEntry}s of type {@code clazz} and all sub-types, which have their {@code date} within
 	 * (including) {@code from} and {@code to}. <br />
@@ -73,7 +68,6 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * Returned is a map, having a {@link Interval} objects as its key, and an {@link Iterable} as value. The
 	 * {@link Iterable} contains all entries of the specific type with its date in the interval specified by the key.
 	 * <br />
-	 * If no entries for an interval exist, the {@link Iterable}.
 	 * 
 	 * @param <T> common super type of all entries returned
 	 * @param clazz class type of the requested entries; has to implement {@link AccountancyEntry}
@@ -83,7 +77,7 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 * @return a map, with intervals of {@code period} length between {@code from} and {@code to} as keys, and as value an
 	 *         <code>Iterable</code> containing all entries within the key- <code>Interval</code>
 	 */
-	Map<Interval, Iterable<T>> find(LocalDateTime from, LocalDateTime to, Duration duration);
+	Map<Interval, Streamable<AccountancyEntry>> find(Interval interval, Duration duration);
 
 	/**
 	 * Returns the sum of the field {@code amount} of all {@link AccountancyEntry}s of type {@code clazz} and its
@@ -104,5 +98,5 @@ public interface Accountancy<T extends AccountancyEntry> {
 	 *         value a {@link MonetaryAmount} object, equal to the sum of the amount fields of all entries within the key-
 	 *         {@link Interval}.
 	 */
-	Map<Interval, MonetaryAmount> salesVolume(LocalDateTime from, LocalDateTime to, Duration duration);
+	Map<Interval, MonetaryAmount> salesVolume(Interval interval, Duration duration);
 }

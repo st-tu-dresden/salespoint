@@ -82,20 +82,5 @@ public class CartItemUnitTests {
 		assertThat(orderLine, is(notNullValue()));
 		assertThat(orderLine.getProductIdentifier(), is(PRODUCT.getIdentifier()));
 		assertThat(orderLine.getQuantity(), is(QUANTITY));
-
-	}
-
-	/**
-	 * @see #44
-	 */
-	@Test
-	public void equals() {
-
-		CartItem item = new CartItem(PRODUCT, QUANTITY);
-		CartItem item2 = new CartItem(PRODUCT, QUANTITY);
-
-		assertThat(item, is(item2));
-		assertThat(item2, is(item));
-		assertThat(item, is(not(PRODUCT)));
 	}
 }
