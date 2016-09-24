@@ -18,7 +18,6 @@ import javax.persistence.Entity;
 
 import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.Currencies;
-import org.salespointframework.order.ProductPaymentEntry;
 import org.springframework.util.Assert;
 
 /**
@@ -30,7 +29,7 @@ import org.springframework.util.Assert;
  */
 @Entity
 @ToString
-@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED, onConstructor = @__(@Deprecated) )
+@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED, onConstructor = @__(@Deprecated))
 public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier> {
 
 	private static final long serialVersionUID = 810396540898867801L;
@@ -42,7 +41,7 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	// IdClass annotation did not work. Maybe Using a DescriptorCustomizer can
 	// be used, to correct the mappings (don't forget to sacrifice a chicken, if
 	// it does).
-	@EmbeddedId @AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID", nullable = false) ) //
+	@EmbeddedId @AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID", nullable = false)) //
 	private AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();
 
 	private @Getter MonetaryAmount value = Currencies.ZERO_EURO;
@@ -89,11 +88,12 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 		return Optional.ofNullable(date);
 	}
 
-	/**
-	 * @return {@link AccountancyEntryIdentifier} to uniquely identify this entry.
+	/* 
+	 * (non-Javadoc)
+	 * @see org.springframework.data.domain.Persistable#getId()
 	 */
 	@Override
-	public final AccountancyEntryIdentifier getIdentifier() {
+	public AccountancyEntryIdentifier getId() {
 		return accountancyEntryIdentifier;
 	}
 }

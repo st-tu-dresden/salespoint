@@ -3,25 +3,15 @@ package org.salespointframework.order;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
-import org.salespointframework.accountancy.Accountancy;
-import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.core.Streamable;
-import org.salespointframework.inventory.Inventory;
-import org.salespointframework.inventory.InventoryItem;
-import org.salespointframework.order.OrderCompletionResult.OrderCompletionStatus;
-import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionOperations;
 import org.springframework.util.Assert;
 
 /**
@@ -34,13 +24,9 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor
 class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(PersistentOrderManager.class);
-
-	private final @NonNull Inventory<InventoryItem> inventory;
-	private final @NonNull TransactionOperations txTemplate;
-	private final @NonNull Accountancy accountancy;
 	private final @NonNull BusinessTime businessTime;
 	private final @NonNull OrderRepository<T> orderRepository;
+	private final @NonNull ApplicationEventPublisher publisher;
 
 	/* 
 	 * (non-Javadoc)
@@ -130,79 +116,17 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 * @see org.salespointframework.order.OrderManager#completeOrder(org.salespointframework.order.Order)
 	 */
 	@Override
-	public OrderCompletionResult completeOrder(final T order) {
+	public void completeOrder(final T order) {
+
+		Assert.notNull(order, "Order must not be null!");
 
 		if (!order.isPaid()) {
-			return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
+			throw new OrderCompletionFailure(order, "Order is not paid yet!");
 		}
 
-		Assert.notNull(order, "Order must not be null");
+		publisher.publishEvent(order.complete());
 
-		final Map<InventoryItem, Quantity> goodItems = new HashMap<>();
-		final Map<InventoryItem, Quantity> badItems = new HashMap<>();
-
-		Streamable<OrderLine> orderlines = order.getOrderLines();
-
-		orderlines.forEach(orderline -> {
-
-			ProductIdentifier productIdentifier = orderline.getProductIdentifier();
-			Optional<InventoryItem> inventoryItem = inventory.findByProductIdentifier(productIdentifier);
-
-			// TODO was machen wenn nicht im Inventar
-			if (!inventoryItem.isPresent()) {
-				LOGGER.error(
-						"No InventoryItem with given ProductIndentifier found in PersistentInventory. Have you initialized your PersistentInventory? Do you need to re-stock your Inventory?");
-				return;
-			}
-
-			inventoryItem.ifPresent(item -> {
-
-				Quantity orderLineQuantity = orderline.getQuantity();
-
-				if (item.hasSufficientQuantity(orderLineQuantity)) {
-					goodItems.put(item, orderLineQuantity);
-				} else {
-					badItems.put(item, orderLineQuantity);
-				}
-			});
-		});
-
-		return txTemplate.execute(status -> {
-
-			if (goodItems.size() != order.getNumberOfLineItems()) {
-
-				status.setRollbackOnly();
-
-				LOGGER.error(
-						"Number of items requested by the OrderLine is greater than the number available in the Inventory. Please re-stock.");
-				return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
-			}
-
-			LOGGER.info("Number of items requested by the OrderLine removed from the Inventory.");
-
-			boolean failed = false;
-
-			for (InventoryItem inventoryItem : goodItems.keySet()) {
-
-				try {
-					inventoryItem.decreaseQuantity(goodItems.get(inventoryItem));
-				} catch (IllegalArgumentException o_O) {
-					failed = true;
-					break;
-				}
-			}
-
-			// TODO DRY IT
-			if (failed) {
-
-				status.setRollbackOnly();
-				return new InternalOrderCompletionResult(OrderCompletionStatus.FAILED);
-			}
-
-			order.complete();
-			save(order);
-			return new InternalOrderCompletionResult(OrderCompletionStatus.SUCCESSFUL);
-		});
+		save(order);
 	}
 
 	/*
@@ -210,7 +134,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 * @see org.salespointframework.order.OrderManager#pay(org.salespointframework.order.Order)
 	 */
 	@Override
-	public boolean payOrder(Order order) {
+	public boolean payOrder(T order) {
 
 		Assert.notNull(order, "order must not be null");
 
@@ -218,7 +142,10 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 			return false;
 		}
 
-		accountancy.add(order.markPaid());
+		publisher.publishEvent(order.markPaid());
+
+		save(order);
+
 		return true;
 	}
 
@@ -227,28 +154,15 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 * @see org.salespointframework.order.OrderManager#cancelOrder(org.salespointframework.order.Order)
 	 */
 	@Override
-	public boolean cancelOrder(Order order) {
+	public boolean cancelOrder(T order) {
 
 		Assert.notNull(order, "order must not be null");
 
-		if (order.getOrderStatus() == OrderStatus.OPEN) {
+		if (order.isOpen()) {
 			order.cancel();
 			return true;
 		} else {
 			return false;
-		}
-	}
-
-	private final class InternalOrderCompletionResult implements OrderCompletionResult {
-		private final OrderCompletionStatus status;
-
-		public InternalOrderCompletionResult(OrderCompletionStatus status) {
-			this.status = status;
-		}
-
-		@Override
-		public OrderCompletionStatus getStatus() {
-			return status;
 		}
 	}
 }

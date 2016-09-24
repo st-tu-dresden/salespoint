@@ -27,17 +27,17 @@ import org.springframework.util.Assert;
  */
 @Entity
 @ToString
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated) )
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated))
 public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Priced {
 
 	private static final long serialVersionUID = -4310089726057038893L;
 
 	@EmbeddedId //
-	@AttributeOverride(name = "id", column = @Column(name = "ORDERLINE_ID") ) //
+	@AttributeOverride(name = "id", column = @Column(name = "ORDERLINE_ID")) //
 	private OrderLineIdentifier orderLineIdentifier = new OrderLineIdentifier();
 
 	@Embedded //
-	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID") ) //
+	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID")) //
 	private @Getter ProductIdentifier productIdentifier;
 
 	private @Getter MonetaryAmount price;
@@ -59,17 +59,18 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Pr
 			throw new MetricMismatchException(String.format("Product %s does not support quantity %s!", product, quantity));
 		}
 
-		this.productIdentifier = product.getIdentifier();
+		this.productIdentifier = product.getId();
 		this.quantity = quantity;
 		this.price = product.getPrice().multiply(quantity.getAmount());
 		this.productName = product.getName();
 	}
 
-	/*
+	/* 
 	 * (non-Javadoc)
-	 * @see org.salespointframework.core.AbstractEntity#getIdentifier()
+	 * @see org.springframework.data.domain.Persistable#getId()
 	 */
-	public final OrderLineIdentifier getIdentifier() {
+	@Override
+	public OrderLineIdentifier getId() {
 		return orderLineIdentifier;
 	}
 }

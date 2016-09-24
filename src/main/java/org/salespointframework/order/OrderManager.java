@@ -45,7 +45,7 @@ public interface OrderManager<T extends Order> {
 	 * exist, an empty Iterable is returned.
 	 * 
 	 * @param orderStatus Denoting the {@link OrderStatus} on which the {@link Order}s will be requested.
-	 * @return an Iterable containing all {@link Order}s with the specified {@link OrderStatus}
+	 * @return a {@link Streamable} containing all {@link Order}s with the specified {@link OrderStatus}
 	 */
 	Streamable<T> findBy(OrderStatus orderStatus);
 
@@ -54,7 +54,7 @@ public interface OrderManager<T extends Order> {
 	 * returned. If no {@link Order}s within the specified time span exist, an empty {@link Iterable} is returned.
 	 * 
 	 * @param interval The time interval to find {@link Order}s in, must not be {@literal null}.
-	 * @return an {@link Iterable} containing all {@link Order}s in the given {@link Interval}.
+	 * @return a {@link Streamable} containing all {@link Order}s in the given {@link Interval}.
 	 */
 	Streamable<T> findBy(Interval interval);
 
@@ -64,7 +64,7 @@ public interface OrderManager<T extends Order> {
 	 * 
 	 * @param userAccount Denoting the {@link UserAccount} on which the orders will be requested, must not be
 	 *          {@literal null}.
-	 * @return an {@link Iterable} containing all orders of the specified user.
+	 * @return a {@link Streamable} containing all orders of the specified user.
 	 */
 	Streamable<T> findBy(UserAccount userAccount);
 
@@ -75,20 +75,20 @@ public interface OrderManager<T extends Order> {
 	 * 
 	 * @param userAccount The {@link UserAccount} whose {@link Order}s shall be returned, must not be {@literal null}.
 	 * @param interval The time interval to find {@link Order}s in, must not be {@literal null}.
-	 * @return an {@link Iterable} containing all orders from the specified user in the specified period.
+	 * @return a {@link Streamable} containing all orders from the specified user in the specified period.
 	 */
 	Streamable<T> findBy(UserAccount userAccount, Interval interval);
 
 	/**
-	 * Tries to complete this order, the {@link OrderStatus} has to be PAID.
+	 * Tries to complete this order, the {@link OrderStatus} has to be {@link OrderStatus#PAID}.
 	 * 
 	 * @param order the order to complete, must not be {@literal null}.
-	 * @return an {@link OrderCompletionResult}
+	 * @throws OrderCompletionFailure in case the order can't be completed.
 	 */
-	OrderCompletionResult completeOrder(T order);
+	void completeOrder(T order) throws OrderCompletionFailure;
 
 	/**
-	 * Pays the {@link Order}, {@link OrderStatus} must be OPEN and {@link PaymentMethod} must be set.
+	 * Pays the {@link Order}, {@link OrderStatus} must be {@link OrderStatus#OPEN} and {@link PaymentMethod} must be set.
 	 * 
 	 * @param order the order to be payed, must not be {@literal null}.
 	 * @return true if the order could be payed
@@ -96,7 +96,7 @@ public interface OrderManager<T extends Order> {
 	boolean payOrder(T order);
 
 	/**
-	 * Cancels an {@link Order}, it can only be cancelled is {@link OrderStatus} is OPEN.
+	 * Cancels an {@link Order}, it can only be cancelled is {@link OrderStatus} is {@link OrderStatus#OPEN}.
 	 * 
 	 * @param order the order to be canceled, must not be {@literal null}.
 	 * @return true if the order could be canceled

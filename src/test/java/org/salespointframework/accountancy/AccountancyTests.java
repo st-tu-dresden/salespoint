@@ -9,7 +9,6 @@ import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderIdentifier;
-import org.salespointframework.order.ProductPaymentEntry;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
@@ -35,7 +34,7 @@ public class AccountancyTests extends AbstractIntegrationTests {
 			if ((year % 2) == 0) {
 				System.out.println("ProductPaymentEntry");
 				UserAccount user = userAccountManager.create("userId" + year, "password");
-				OrderIdentifier orderIdentifier = new Order(user).getIdentifier();
+				OrderIdentifier orderIdentifier = new Order(user).getId();
 
 				accountancyEntries.add(new ProductPaymentEntry(orderIdentifier, user, Money.of(1, Currencies.EURO),
 						"Rechnung nr " + year, Cash.CASH));

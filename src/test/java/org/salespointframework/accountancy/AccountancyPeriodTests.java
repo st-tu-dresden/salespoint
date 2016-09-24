@@ -15,7 +15,6 @@ import org.salespointframework.core.Currencies;
 import org.salespointframework.core.Streamable;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderIdentifier;
-import org.salespointframework.order.ProductPaymentEntry;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
@@ -34,7 +33,7 @@ public class AccountancyPeriodTests extends AbstractIntegrationTests {
 	public void testSetup() throws Exception {
 
 		UserAccount account = userAccountManager.create("username", "password");
-		OrderIdentifier orderIdentifier = new Order(account).getIdentifier();
+		OrderIdentifier orderIdentifier = new Order(account).getId();
 
 		Money oneEuro = Money.of(1, Currencies.EURO);
 

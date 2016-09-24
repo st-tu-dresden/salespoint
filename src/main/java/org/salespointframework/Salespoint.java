@@ -1,5 +1,6 @@
 package org.salespointframework;
 
+import org.salespointframework.inventory.LineItemFilter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(excludeFilters = @Filter(value = Configuration.class) )
+@ComponentScan(excludeFilters = @Filter(value = Configuration.class))
 @EntityScan
 @EnableTransactionManagement(proxyTargetClass = false)
 public class Salespoint {
@@ -24,5 +25,10 @@ public class Salespoint {
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public LineItemFilter inventoryLineItemFilter() {
+		return LineItemFilter.handleAll();
 	}
 }

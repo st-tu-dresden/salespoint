@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.order.OrderCompletionResult.OrderCompletionStatus;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
@@ -88,17 +87,20 @@ public class OrderTests extends AbstractIntegrationTests {
 
 	@Test
 	public void completeOrderTest() {
+
 		orderManager.payOrder(order);
-		OrderCompletionResult result = orderManager.completeOrder(order);
+		orderManager.completeOrder(order);
+
 		assertEquals(OrderStatus.COMPLETED, order.getOrderStatus());
-		assertEquals(OrderCompletionStatus.SUCCESSFUL, result.getStatus());
 	}
 
 	@Test
 	public void completeOrderTest2() {
-		OrderCompletionResult result = orderManager.completeOrder(order);
-		assertEquals(OrderStatus.OPEN, order.getOrderStatus());
-		assertEquals(OrderCompletionStatus.FAILED, result.getStatus());
-	}
 
+		try {
+			orderManager.completeOrder(order);
+		} catch (OrderCompletionFailure o_O) {
+			assertEquals(OrderStatus.OPEN, order.getOrderStatus());
+		}
+	}
 }

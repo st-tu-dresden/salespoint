@@ -22,7 +22,7 @@ import org.salespointframework.core.AbstractEntity;
  * @author Oliver Gierke
  */
 @Entity
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated) )
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated))
 @RequiredArgsConstructor
 @Getter
 @ToString
@@ -31,16 +31,17 @@ public class ChargeLine extends AbstractEntity<ChargeLineIdentifier> implements 
 	private static final long serialVersionUID = 7589903169153242824L;
 
 	@EmbeddedId //
-	@AttributeOverride(name = "id", column = @Column(name = "CHARGELINE_ID") ) //
+	@AttributeOverride(name = "id", column = @Column(name = "CHARGELINE_ID")) //
 	private ChargeLineIdentifier chargeLineIdentifier = new ChargeLineIdentifier();
 
 	private final MonetaryAmount price;
 	private final String description;
 
-	/**
-	 * @return the {@link ChargeLineIdentifier} to uniquely identify this chargeline
+	/*
+	 * (non-Javadoc)
+	 * @see org.springframework.data.domain.Persistable#getId()
 	 */
-	public ChargeLineIdentifier getIdentifier() {
+	public ChargeLineIdentifier getId() {
 		return chargeLineIdentifier;
 	}
 }

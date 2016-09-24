@@ -41,7 +41,7 @@ public class Cart implements Streamable<CartItem>, Priced {
 		return items.stream().//
 				filter(item -> item.getProduct().equals(product)).findFirst().//
 				map(item -> {
-					this.removeItem(item.getIdentifier());
+					this.removeItem(item.getId());
 					return addItem(product, item.getQuantity().add(quantity));
 				}).//
 				orElseGet(() -> addItem(product, quantity));
@@ -72,7 +72,7 @@ public class Cart implements Streamable<CartItem>, Priced {
 	public Optional<CartItem> getItem(String identifier) {
 
 		Assert.notNull(identifier, "CartItem identifier must not be null!");
-		return items.stream().filter(item -> item.getIdentifier().equals(identifier)).findFirst();
+		return items.stream().filter(item -> item.getId().equals(identifier)).findFirst();
 	}
 
 	/**

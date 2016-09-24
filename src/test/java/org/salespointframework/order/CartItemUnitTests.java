@@ -54,7 +54,7 @@ public class CartItemUnitTests {
 
 		CartItem item = new CartItem(PRODUCT, QUANTITY);
 
-		assertThat(item.getIdentifier(), is(notNullValue()));
+		assertThat(item.getId(), is(notNullValue()));
 		assertThat(item.getProduct(), is(PRODUCT));
 		assertThat(item.getQuantity(), is(QUANTITY));
 		assertThat(item.getProductName(), is(PRODUCT.getName()));
@@ -80,7 +80,7 @@ public class CartItemUnitTests {
 		OrderLine orderLine = new CartItem(PRODUCT, QUANTITY).toOrderLine();
 
 		assertThat(orderLine, is(notNullValue()));
-		assertThat(orderLine.getProductIdentifier(), is(PRODUCT.getIdentifier()));
+		assertThat(orderLine.getProductIdentifier(), is(PRODUCT.getId()));
 		assertThat(orderLine.getQuantity(), is(QUANTITY));
 	}
 }

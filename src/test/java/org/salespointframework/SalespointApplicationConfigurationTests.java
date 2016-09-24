@@ -11,6 +11,7 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.inventory.Inventory;
 import org.salespointframework.inventory.InventoryItem;
+import org.salespointframework.inventory.LineItemFilter;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderManager;
 import org.salespointframework.time.BusinessTime;
@@ -37,6 +38,7 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 	@Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
 	@Autowired List<DataInitializer> initializer;
 	@Autowired MailSender mailSender;
+	@Autowired List<LineItemFilter> lineItemFilter;
 
 	@Test
 	public void createsApplicationComponents() {
@@ -49,8 +51,10 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 		assertThat(authenticationManager, is(notNullValue()));
 		assertThat(argumentResolvers, hasSize(1));
 		assertThat(initializer, is(not(emptyIterable())));
+		assertThat(lineItemFilter, hasSize(1));
 
 		assertThat(mailSender, is(instanceOf(JavaMailSenderImpl.class)));
+
 		JavaMailSenderImpl impl = (JavaMailSenderImpl) mailSender;
 		assertThat(impl.getUsername(), is("username"));
 		assertThat(impl.getHost(), is("host"));

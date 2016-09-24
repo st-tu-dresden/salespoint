@@ -36,7 +36,7 @@ public class SpringSecurityAuthenticationManagerUnitTests {
 	public void setUp() {
 
 		this.account = createAccount();
-		when(repository.findOne(account.getIdentifier())).thenReturn(Optional.of(account));
+		when(repository.findOne(account.getId())).thenReturn(Optional.of(account));
 
 		this.authenticationManager = new SpringSecurityAuthenticationManager(repository, passwordEncoder);
 	}

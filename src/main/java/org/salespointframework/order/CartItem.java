@@ -23,7 +23,7 @@ import org.springframework.util.Assert;
 @Getter
 public class CartItem implements Priced {
 
-	private final String identifier = UUID.randomUUID().toString();
+	private final String id = UUID.randomUUID().toString();
 	private final MonetaryAmount price;
 	private final Quantity quantity;
 	private final Product product;

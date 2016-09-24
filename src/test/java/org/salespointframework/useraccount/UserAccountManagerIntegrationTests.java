@@ -40,13 +40,13 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	public void testAddContains() {
 
 		userAccountManager.save(userAccount);
-		assertThat(userAccountManager.contains(userAccount.getIdentifier()), is(true));
+		assertThat(userAccountManager.contains(userAccount.getId()), is(true));
 	}
 
 	@Test
 	public void testDisable() {
 
-		UserAccountIdentifier id = userAccount.getIdentifier();
+		UserAccountIdentifier id = userAccount.getId();
 
 		userAccount = userAccountManager.save(userAccount);
 		userAccountManager.disable(id);
@@ -62,7 +62,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 		userAccountManager.save(userAccount);
 		Iterable<UserAccount> customers = userAccountManager.findAll();
 
-		assertThat(customers, is(Matchers.<UserAccount> iterableWithSize(1)));
+		assertThat(customers, is(Matchers.<UserAccount>iterableWithSize(1)));
 		assertThat(customers, hasItem(userAccount));
 	}
 
@@ -70,7 +70,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	public void testGet() {
 
 		userAccountManager.save(userAccount);
-		assertThat(userAccountManager.get(userAccount.getIdentifier()).get(), is(userAccount));
+		assertThat(userAccountManager.get(userAccount.getId()).get(), is(userAccount));
 	}
 
 	@Test

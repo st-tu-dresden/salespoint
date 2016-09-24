@@ -31,6 +31,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 * @see org.salespointframework.useraccount.UserAccountManager#create(java.lang.String, java.lang.String, org.salespointframework.useraccount.Role[])
 	 */
 	@Override
+	@Transactional
 	public UserAccount create(String userName, String password, Role... roles) {
 
 		Assert.notNull(userName, "userName must not be null");

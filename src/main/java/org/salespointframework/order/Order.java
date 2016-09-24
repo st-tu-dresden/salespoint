@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.Value;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -37,20 +38,20 @@ import org.springframework.util.Assert;
 @Entity
 @Table(name = "ORDERS")
 @ToString
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated) )
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated))
 public class Order extends AbstractEntity<OrderIdentifier> {
 
 	private static final long serialVersionUID = 7417079332245151314L;
 
 	@EmbeddedId //
-	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID") ) //
+	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID")) //
 	private OrderIdentifier orderIdentifier = new OrderIdentifier();
 
 	private @Lob PaymentMethod paymentMethod;
 
 	@Getter //
 	@OneToOne //
-	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID") ) //
+	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID")) //
 	private UserAccount userAccount;
 
 	@Getter //
@@ -94,11 +95,12 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		this.paymentMethod = paymentMethod;
 	}
 
-	/*
+	/* 
 	 * (non-Javadoc)
-	 * @see org.salespointframework.core.AbstractEntity#getIdentifier()
+	 * @see org.springframework.data.domain.Persistable#getId()
 	 */
-	public final OrderIdentifier getIdentifier() {
+	@Override
+	public OrderIdentifier getId() {
 		return orderIdentifier;
 	}
 
@@ -211,8 +213,11 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		this.paymentMethod = paymentMethod;
 	}
 
-	void complete() {
+	OrderCompleted complete() {
+
 		this.orderStatus = OrderStatus.COMPLETED;
+
+		return OrderCompleted.of(this);
 	}
 
 	void cancel() {
@@ -227,13 +232,11 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		return orderStatus == OrderStatus.OPEN && paymentMethod != null;
 	}
 
-	ProductPaymentEntry markPaid() {
+	OrderPaid markPaid() {
 
-		ProductPaymentEntry ppe = new ProductPaymentEntry(this.orderIdentifier, this.userAccount, this.getTotalPrice(),
-				"Rechnung Nr. " + this.orderIdentifier, this.paymentMethod);
-		orderStatus = OrderStatus.PAID;
+		this.orderStatus = OrderStatus.PAID;
 
-		return ppe;
+		return OrderPaid.of(this);
 	}
 
 	/**
@@ -245,5 +248,15 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		if (!isOpen()) {
 			throw new IllegalStateException("Order is not open anymore! Current state is: " + orderStatus);
 		}
+	}
+
+	@Value(staticConstructor = "of")
+	public static class OrderCompleted {
+		Order order;
+	}
+
+	@Value(staticConstructor = "of")
+	public static class OrderPaid {
+		Order order;
 	}
 }

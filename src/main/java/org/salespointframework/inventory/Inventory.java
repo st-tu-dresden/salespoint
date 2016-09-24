@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
  * 
  * @author Oliver Gierke
  */
+// tag::inventory[]
 public interface Inventory<T extends InventoryItem> extends SalespointRepository<T, InventoryItemIdentifier> {
 
 	/**
@@ -40,6 +41,7 @@ public interface Inventory<T extends InventoryItem> extends SalespointRepository
 	 * @return will never be {@literal null}.
 	 */
 	default Optional<T> findByProduct(Product product) {
-		return findByProductIdentifier(product.getIdentifier());
+		return findByProductIdentifier(product.getId());
 	}
 }
+// end::inventory[]

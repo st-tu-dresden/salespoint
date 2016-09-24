@@ -1,4 +1,4 @@
-package org.salespointframework.order;
+package org.salespointframework.accountancy;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,7 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
-import org.salespointframework.accountancy.AccountancyEntry;
+import org.salespointframework.order.Order;
+import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountIdentifier;
@@ -29,7 +30,7 @@ import org.springframework.util.Assert;
 @Entity
 @Getter
 @ToString
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated) )
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated))
 public class ProductPaymentEntry extends AccountancyEntry {
 
 	private static final long serialVersionUID = 8273712561197143396L;
@@ -38,20 +39,25 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	 * The {@link OrderIdentifier} which this {@link ProductPaymentEntry} refers to.
 	 */
 	@Embedded //
-	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID", nullable = true) ) //
+	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID", nullable = true)) //
 	private OrderIdentifier orderIdentifier;
 
 	/**
 	 * The {@link UserAccount} which this {@link ProductPaymentEntry} refers to.
 	 */
 	@OneToOne //
-	@AttributeOverride(name = "id", column = @Column(name = "USER_ID", nullable = true) ) //
+	@AttributeOverride(name = "id", column = @Column(name = "USER_ID", nullable = true)) //
 	private UserAccount userAccount;
 
 	/**
 	 * The {@link PaymentMethod} chosen for the order belonging to this <code>ProductPaymentEntry</code>
 	 */
 	private @Lob PaymentMethod paymentMethod;
+
+	public static ProductPaymentEntry of(Order order, String description) {
+		return new ProductPaymentEntry(order.getId(), order.getUserAccount(), order.getTotalPrice(), description,
+				order.getPaymentMethod());
+	}
 
 	/**
 	 * A {@code ProductPaymentEntry} is constructed for a specific {@link OrderIdentifier} attached to it. This entry

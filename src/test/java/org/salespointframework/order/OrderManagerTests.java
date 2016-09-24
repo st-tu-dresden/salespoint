@@ -9,7 +9,9 @@ import java.util.Optional;
 import org.hamcrest.collection.IsIterableWithSize;
 import org.javamoney.moneta.Money;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
@@ -17,7 +19,6 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.inventory.Inventory;
 import org.salespointframework.inventory.InventoryItem;
-import org.salespointframework.order.OrderCompletionResult.OrderCompletionStatus;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.Interval;
@@ -33,6 +34,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Oliver Gierke
  */
 public class OrderManagerTests extends AbstractIntegrationTests {
+
+	public @Rule ExpectedException exception = ExpectedException.none();
 
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired OrderManager<Order> orderManager;
@@ -63,7 +66,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 	@Test
 	public void testContains() {
 		orderManager.save(order);
-		assertTrue(orderManager.contains(order.getIdentifier()));
+		assertTrue(orderManager.contains(order.getId()));
 	}
 
 	@Test
@@ -71,7 +74,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 
 		order = orderManager.save(order);
 
-		Optional<Order> result = orderManager.get(order.getIdentifier());
+		Optional<Order> result = orderManager.get(order.getId());
 
 		assertThat(result.isPresent(), is(true));
 		assertThat(result.get(), is(order));
@@ -88,9 +91,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 		order.add(new OrderLine(cookie, Quantity.of(10)));
 
 		orderManager.payOrder(order);
-		OrderCompletionResult result = orderManager.completeOrder(order);
-
-		assertThat(result.getStatus(), is(OrderCompletionStatus.SUCCESSFUL));
+		orderManager.completeOrder(order);
 	}
 
 	/**
@@ -104,9 +105,10 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 		order.add(new OrderLine(cookie, Quantity.of(10)));
 
 		orderManager.payOrder(order);
-		OrderCompletionResult result = orderManager.completeOrder(order);
 
-		assertThat(result.getStatus(), is(OrderCompletionStatus.FAILED));
+		exception.expect(OrderCompletionFailure.class);
+
+		orderManager.completeOrder(order);
 	}
 
 	/**
@@ -120,7 +122,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 
 		Iterable<Order> result = orderManager.findBy(Interval.from(dateCreated).to(dateCreated.plusHours(1L)));
 
-		assertThat(result, IsIterableWithSize.<Order> iterableWithSize(1));
+		assertThat(result, IsIterableWithSize.<Order>iterableWithSize(1));
 		assertThat(result.iterator().next(), is(order));
 	}
 
@@ -135,7 +137,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 
 		Iterable<Order> result = orderManager.findBy(Interval.from(dateCreated).to(dateCreated));
 
-		assertThat(result, IsIterableWithSize.<Order> iterableWithSize(1));
+		assertThat(result, IsIterableWithSize.<Order>iterableWithSize(1));
 		assertThat(result.iterator().next(), is(order));
 	}
 
@@ -165,7 +167,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 
 		Iterable<Order> openOrders = orderManager.findBy(OrderStatus.OPEN);
 
-		assertThat(openOrders, IsIterableWithSize.<Order> iterableWithSize(1));
+		assertThat(openOrders, IsIterableWithSize.<Order>iterableWithSize(1));
 		assertThat(openOrders.iterator().next(), is(openOrder));
 	}
 }

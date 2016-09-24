@@ -46,7 +46,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 
 	@Test
 	public void savesItemsCorrectly() {
-		assertThat(inventory.save(item).getIdentifier(), is(notNullValue()));
+		assertThat(inventory.save(item).getId(), is(notNullValue()));
 	}
 
 	/**
@@ -55,9 +55,9 @@ public class InventoryTests extends AbstractIntegrationTests {
 	@Test
 	public void deletesItemsCorrectly() {
 
-		inventory.delete(item.getIdentifier());
+		inventory.delete(item.getId());
 
-		assertThat(inventory.exists(item.getIdentifier()), is(false));
+		assertThat(inventory.exists(item.getId()), is(false));
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 	 */
 	@Test
 	public void testExists() {
-		assertThat(inventory.exists(item.getIdentifier()), is(true));
+		assertThat(inventory.exists(item.getId()), is(true));
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 	@Test
 	public void testGet() {
 
-		Optional<InventoryItem> result = inventory.findOne(item.getIdentifier());
+		Optional<InventoryItem> result = inventory.findOne(item.getId());
 
 		assertThat(result.isPresent(), is(true));
 		assertThat(result.get(), is(item));
@@ -98,7 +98,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 	@Test
 	public void testFindItemsByProductId() {
 
-		Optional<InventoryItem> result = inventory.findByProductIdentifier(cookie.getIdentifier());
+		Optional<InventoryItem> result = inventory.findByProductIdentifier(cookie.getId());
 
 		assertThat(result.isPresent(), is(true));
 		assertThat(result.get(), is(item));
@@ -114,7 +114,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 		item.decreaseQuantity(Quantity.of(1));
 
 		// Trigger another finder to flush
-		Optional<InventoryItem> result = inventory.findByProductIdentifier(cookie.getIdentifier());
+		Optional<InventoryItem> result = inventory.findByProductIdentifier(cookie.getId());
 
 		assertThat(result.isPresent(), is(true));
 		assertThat(result.get().getQuantity(), is(Quantity.of(9)));

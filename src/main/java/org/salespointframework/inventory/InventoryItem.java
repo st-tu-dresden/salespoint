@@ -22,13 +22,13 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Entity
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated) )
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated))
 public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 
 	private static final long serialVersionUID = 3322056345377472377L;
 
 	@EmbeddedId //
-	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID") ) //
+	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID")) //
 	private final InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
 	@Getter //
@@ -59,9 +59,9 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.core.AbstractEntity#getIdentifier()
+	 * @see org.springframework.data.domain.Persistable#getId()
 	 */
-	public final InventoryItemIdentifier getIdentifier() {
+	public final InventoryItemIdentifier getId() {
 		return inventoryItemIdentifier;
 	}
 

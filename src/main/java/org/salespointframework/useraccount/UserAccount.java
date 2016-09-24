@@ -32,7 +32,7 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 	private static final long serialVersionUID = -795038599473743418L;
 
 	@EmbeddedId //
-	@AttributeOverride(name = "id", column = @Column(name = "USERACCOUNT_ID") ) //
+	@AttributeOverride(name = "id", column = @Column(name = "USERACCOUNT_ID")) //
 	private UserAccountIdentifier userAccountIdentifier;
 
 	@Getter @Setter //
@@ -73,7 +73,8 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 	 * 
 	 * @return the {@link UserAccountIdentifier} of this <code>UserAccount</code>
 	 */
-	public final UserAccountIdentifier getIdentifier() {
+	@Override
+	public UserAccountIdentifier getId() {
 		return userAccountIdentifier;
 	}
 

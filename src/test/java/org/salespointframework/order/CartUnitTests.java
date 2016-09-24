@@ -74,7 +74,7 @@ public class CartUnitTests {
 
 		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
-		assertThat(cart.removeItem(reference.getIdentifier()).isPresent(), is(true));
+		assertThat(cart.removeItem(reference.getId()).isPresent(), is(true));
 		assertThat(cart, is(iterableWithSize(0)));
 	}
 
@@ -85,7 +85,7 @@ public class CartUnitTests {
 	public void providesAccessToCartItem() {
 
 		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
-		Optional<CartItem> item = cart.getItem(reference.getIdentifier());
+		Optional<CartItem> item = cart.getItem(reference.getId());
 
 		assertThat(item.isPresent(), is(true));
 		assertThat(item.get(), is(reference));

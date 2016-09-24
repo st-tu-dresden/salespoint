@@ -36,7 +36,7 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 	private static final long serialVersionUID = 6645371648836029780L;
 
 	@EmbeddedId //
-	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID") ) //
+	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID")) //
 	private ProductIdentifier productIdentifier = new ProductIdentifier();
 	private @NonNull @Getter @Setter String name;
 	private @NonNull @Getter @Setter MonetaryAmount price;
@@ -71,12 +71,12 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 		this.metric = metric;
 	}
 
-	/*
+	/* 
 	 * (non-Javadoc)
-	 * @see org.salespointframework.core.AbstractEntity#getIdentifier()
+	 * @see org.springframework.data.domain.Persistable#getId()
 	 */
 	@Override
-	public final ProductIdentifier getIdentifier() {
+	public ProductIdentifier getId() {
 		return productIdentifier;
 	}
 

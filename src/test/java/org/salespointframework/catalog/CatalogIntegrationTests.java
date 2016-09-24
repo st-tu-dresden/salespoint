@@ -57,8 +57,8 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 
 		catalog.save(cookie);
 
-		Optional<Cookie> kT1 = cookies.findOne(cookie.getIdentifier());
-		Optional<Product> kT2 = catalog.findOne(cookie.getIdentifier());
+		Optional<Cookie> kT1 = cookies.findOne(cookie.getId());
+		Optional<Product> kT2 = catalog.findOne(cookie.getId());
 
 		assertThat(kT1.isPresent(), is(true));
 		assertThat(kT2.isPresent(), is(true));
@@ -72,7 +72,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	public void addTest() {
 
 		Cookie result = catalog.save(cookie);
-		Optional<Product> cookie = catalog.findOne(result.getIdentifier());
+		Optional<Product> cookie = catalog.findOne(result.getId());
 
 		assertThat(cookie.isPresent(), is(true));
 		assertThat(cookie.get(), is(result));
@@ -85,9 +85,9 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	public void testRemove() {
 
 		catalog.save(cookie);
-		catalog.delete(cookie.getIdentifier());
+		catalog.delete(cookie.getId());
 
-		assertThat(catalog.exists(cookie.getIdentifier()), is(false));
+		assertThat(catalog.exists(cookie.getId()), is(false));
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	public void testContains() {
 
 		Cookie result = catalog.save(cookie);
-		assertThat(catalog.exists(result.getIdentifier()), is(true));
+		assertThat(catalog.exists(result.getId()), is(true));
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	public void getTest() {
 
 		Cookie reference = catalog.save(cookie);
-		Optional<Cookie> result = cookies.findOne(cookie.getIdentifier());
+		Optional<Cookie> result = cookies.findOne(cookie.getId());
 
 		assertThat(result.isPresent(), is(true));
 		assertThat(result.get(), is(reference));
@@ -132,7 +132,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	public void generalRepoInstancesFinds() {
 
 		Cookie doubleChoc = createCookie();
-		Optional<Product> product = catalog.findOne(doubleChoc.getIdentifier());
+		Optional<Product> product = catalog.findOne(doubleChoc.getId());
 
 		assertThat(product.isPresent(), is(true));
 		assertThat(product.get(), is(instanceOf(Cookie.class)));
@@ -150,7 +150,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 
 	private static void assertKeksFound(Iterable<Cookie> result, Cookie cookie) {
 
-		assertThat(result, is(Matchers.<Cookie> iterableWithSize(1)));
+		assertThat(result, is(Matchers.<Cookie>iterableWithSize(1)));
 		assertThat(result, hasItem(cookie));
 		assertThat(result.iterator().next().property, is(cookie.property));
 	}

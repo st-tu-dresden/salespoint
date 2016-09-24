@@ -57,7 +57,7 @@ class UserAccountDetailService implements UserDetailsService {
 
 		public UserAccountDetails(UserAccount userAccount) {
 
-			this.username = userAccount.getIdentifier().toString();
+			this.username = userAccount.getUsername();
 			this.password = userAccount.getPassword().toString();
 			this.isEnabled = userAccount.isEnabled();
 			this.authorities = userAccount.getRoles().stream().//

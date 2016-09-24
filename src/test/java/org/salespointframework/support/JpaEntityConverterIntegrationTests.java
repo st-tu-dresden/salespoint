@@ -44,7 +44,7 @@ public class JpaEntityConverterIntegrationTests extends AbstractIntegrationTests
 	public void convertsStringIdToProduct() {
 
 		Product product = catalog.save(new Product("iPad", Money.of(400, Currencies.EURO)));
-		String identifier = product.getIdentifier().getIdentifier();
+		String identifier = product.getId().getIdentifier();
 
 		assertThat(converter.convert(identifier, STRING_TYPE, PRODUCT_TYPE), is((Object) product));
 	}
