@@ -169,6 +169,10 @@ public class Quantity {
 		return this.amount.compareTo(BigDecimal.ZERO) < 0;
 	}
 
+	public boolean isZeroOrNegative() {
+		return this.equals(toZero()) || isNegative();
+	}
+
 	/**
 	 * Returns a new {@link Quantity} of zero with the {@link Metric} of the current one.
 	 * 
@@ -181,7 +185,10 @@ public class Quantity {
 	private void assertCompatibility(Quantity quantity) {
 
 		Assert.notNull(quantity, "Quantity must not be null!");
-		Assert.isTrue(quantity.isCompatibleWith(metric), String.format(INCOMPATIBLE, this, quantity));
+
+		if (!isCompatibleWith(quantity.metric)) {
+			throw new MetricMismatchException(String.format(INCOMPATIBLE, this, quantity), metric, quantity.metric);
+		}
 	}
 
 	/*

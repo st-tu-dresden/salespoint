@@ -42,7 +42,7 @@ public class QuantityUnitTests {
 	/**
 	 * @see #9
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = MetricMismatchException.class)
 	public void rejectsIncompatibleQuantityOnAddition() {
 		Quantity.of(1).add(Quantity.of(1, Metric.KILOGRAM));
 	}
@@ -60,7 +60,7 @@ public class QuantityUnitTests {
 	/**
 	 * @see #9
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = MetricMismatchException.class)
 	public void rejectsIncompatibleQuantityOnSubtraction() {
 		Quantity.of(1).subtract(Quantity.of(1, Metric.KILOGRAM));
 	}
