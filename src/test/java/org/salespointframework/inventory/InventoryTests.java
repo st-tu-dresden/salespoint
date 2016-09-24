@@ -1,6 +1,6 @@
 package org.salespointframework.inventory;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 import java.util.Optional;
@@ -131,5 +131,24 @@ public class InventoryTests extends AbstractIntegrationTests {
 		inventory.save(new InventoryItem(cookie, Quantity.of(10)));
 
 		em.flush();
+	}
+
+	/**
+	 * @see #142
+	 */
+	@Test
+	public void findsInventoryItemsOutOfStock() {
+
+		assertThat(inventory.findItemsOutOfStock(), is(emptyIterable()));
+
+		Optional<InventoryItem> result = inventory.findByProduct(cookie);
+
+		assertThat(result.isPresent(), is(true));
+
+		result.ifPresent(item -> {
+
+			item.decreaseQuantity(Quantity.of(10));
+			assertThat(inventory.findItemsOutOfStock(), is(iterableWithSize(1)));
+		});
 	}
 }
