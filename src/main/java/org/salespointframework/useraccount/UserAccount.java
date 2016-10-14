@@ -1,6 +1,7 @@
 package org.salespointframework.useraccount;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Arrays;
@@ -27,6 +28,7 @@ import org.springframework.util.Assert;
  */
 
 @Entity
+@NoArgsConstructor
 public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 
 	private static final long serialVersionUID = -795038599473743418L;

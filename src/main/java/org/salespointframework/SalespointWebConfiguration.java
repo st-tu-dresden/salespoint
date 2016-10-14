@@ -1,9 +1,8 @@
 package org.salespointframework;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -19,11 +18,10 @@ import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
  * @author Oliver Gierke
  */
 @Configuration
-@RequiredArgsConstructor
 public class SalespointWebConfiguration extends WebMvcConfigurerAdapter {
 
-	private final List<? extends Converter<?, ?>> converters;
-	private final List<HandlerMethodArgumentResolver> argumentResolvers;
+	private @Autowired List<? extends Converter<?, ?>> converters;
+	private @Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
 
 	/**
 	 * Special dialect to support Java 8 type formatting.

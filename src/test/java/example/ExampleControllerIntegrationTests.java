@@ -9,8 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -37,14 +35,10 @@ public class ExampleControllerIntegrationTests {
 	@EnableSalespoint
 	static class Config extends SalespointSecurityConfiguration {
 
-		/**
-		 * @param userDetailsService must not be {@literal null}.
-		 * @param passwordEncoder must not be {@literal null}.
+		/*
+		 * (non-Javadoc)
+		 * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
 		 */
-		public Config(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-			super(userDetailsService, passwordEncoder);
-		}
-
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 

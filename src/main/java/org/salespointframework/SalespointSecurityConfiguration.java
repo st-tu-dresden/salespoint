@@ -1,7 +1,6 @@
 package org.salespointframework;
 
-import lombok.RequiredArgsConstructor;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,11 +20,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SalespointSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	private final UserDetailsService userDetailsService;
-	private final PasswordEncoder passwordEncoder;
+	@Autowired UserDetailsService userDetailsService;
+	@Autowired PasswordEncoder passwordEncoder;
 
 	/*
 	 * (non-Javadoc)

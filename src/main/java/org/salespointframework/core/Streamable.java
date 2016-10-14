@@ -34,7 +34,7 @@ public interface Streamable<T> extends Iterable<T> {
 
 		Assert.notNull(iterable, "Iterable must not be null!");
 
-		return () -> iterable.iterator();
+		return DefaultStreamable.of(() -> iterable.iterator());
 	}
 
 	/**
@@ -49,7 +49,7 @@ public interface Streamable<T> extends Iterable<T> {
 
 		Assert.notNull(supplier, "Supplier must not be null!");
 
-		return new Streamable<T>() {
+		return DefaultStreamable.of(new Streamable<T>() {
 
 			/* 
 			 * (non-Javadoc)
@@ -68,7 +68,7 @@ public interface Streamable<T> extends Iterable<T> {
 			public Iterator<T> iterator() {
 				return stream().iterator();
 			}
-		};
+		});
 	}
 
 	/**

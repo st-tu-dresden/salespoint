@@ -41,6 +41,8 @@ public class OrderCompletionFailure extends RuntimeException {
 	 */
 	public OrderCompletionFailure(OrderCompletionReport report) {
 
+		super("Order completion failed! ".concat(report.toString()));
+
 		Assert.notNull(report, "OrderCompletionReport must not be null!");
 		Assert.isTrue(report.hasErrors(), "OrderCompletionReport must contain errors!");
 
