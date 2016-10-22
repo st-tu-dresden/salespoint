@@ -30,7 +30,6 @@ public interface Accountancy {
 	 * Returns all {@link AccountancyEntry}s of the specified type {@code clazz} and all sub-types, previously added to
 	 * the accountancy. If no entries of the specified type exist, an empty {@code Iterable} is returned.
 	 * 
-	 * @param <T> common super type of all entries returned.
 	 * @param clazz Class object corresponding to the type of the entries to be returned, has to implement
 	 *          {@link AccountancyEntry}
 	 * @return a {@link Streamable} containing all entries of type clazz
@@ -41,7 +40,6 @@ public interface Accountancy {
 	 * Returns the {@link AccountancyEntry} of type {@code clazz} and all sub-types, identified by
 	 * {@link AccountancyEntryIdentifier}. {@literal null} is returned, if no entry with the given identifier exists.
 	 * 
-	 * @param <E> common super type of all entries returned.
 	 * @param clazz type of the entry to be returned; has to implement {@link AccountancyEntry}
 	 * @param accountancyEntryIdentifier the {@link AccountancyEntryIdentifier} of the entry to be returned
 	 * @return the {@link AccountancyEntry} or sub type thereof of type {@code clazz} which has the identifier
@@ -60,14 +58,12 @@ public interface Accountancy {
 	Streamable<AccountancyEntry> find(Interval interval);
 
 	/**
-	 * Returns all {@link AccountancyEntry}s of type {@code clazz} and all sub-types, which have their {@code date} within
-	 * (including) {@code from} and {@code to}. <br />
-	 * The time between {@code from} and {@code to} is divided into parts of {@code period} length. According to their
-	 * respective date, entries are sorted in exactly one of the time intervals. The last time interval may be shorter
-	 * than {@code period}.<br />
-	 * Returned is a map, having a {@link Interval} objects as its key, and an {@link Iterable} as value. The
-	 * {@link Iterable} contains all entries of the specific type with its date in the interval specified by the key.
-	 * <br />
+	 * Returns all {@link AccountancyEntry}s which have their {@code date} within the given {@link Interval}. The
+	 * {@link Interval} is divided into parts of length of the given {@link Duration}. According to their respective date,
+	 * entries are sorted in exactly one of the time intervals. The last time interval may be shorter than the given
+	 * {@link Duration}. Returned is a map, having a {@link Interval} objects as its key, and an {@link Streamable} as
+	 * value. The {@link Streamable} contains all entries of the specific type with its date in the interval specified by
+	 * the key.
 	 * 
 	 * @param <T> common super type of all entries returned
 	 * @param clazz class type of the requested entries; has to implement {@link AccountancyEntry}
@@ -80,8 +76,8 @@ public interface Accountancy {
 	Map<Interval, Streamable<AccountancyEntry>> find(Interval interval, Duration duration);
 
 	/**
-	 * Returns the sum of the field {@code amount} of all {@link AccountancyEntry}s of type {@code clazz} and its
-	 * sub-types, which have their {@code date} within (including) {@code from} and {@code to}. <br />
+	 * Returns the sum of the field {@code amount} of all {@link AccountancyEntry}s which have their {@code date} within
+	 * (including) {@code from} and {@code to}. <br />
 	 * The time between {@code from} and {@code to} is divided into parts of {@code period} length. According to their
 	 * time stamp, entries are sorted in exactly one of the time intervals. The last time interval may be shorter than
 	 * {@code period}.<br />
@@ -90,7 +86,6 @@ public interface Accountancy {
 	 * the key- {@link Interval}. If within an interval no entries of the specified type exist, a {@link MonetaryAmount}
 	 * object with a value of zero is added as value for that interval.
 	 * 
-	 * @param <T> common super type of all entries returned.
 	 * @param from all returned entries will have a time stamp after {@code from}.
 	 * @param to all returned entries will have a time stamp before {@code to}.
 	 * @param duration length of the time intervals, the period between {@code from} and {@code to} is divided.
