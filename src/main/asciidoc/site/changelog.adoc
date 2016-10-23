@@ -3,6 +3,26 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :revdate: {localdate}
 
 :numbered!:
+[6.3]
+== 6.3
+
+Release date: 2016-10-23
+
+----
+- Improve JavaDoc of Accountancy - #145
+- Quantity should throw more specific exception for operations with incompatible metrics - #143
+- Add JPA 2.1 AttributeConverter for MonetaryAmount - #139
+- Upgrade to Spring Boot 1.4 - #140
+- Rename SalespointDataInitializer to DataInitializerInvoker - #141
+- Add method to find items out of stock on Inventory - #142
+- Refactor handling of downstream actions in PersistentOrderManager to use events - #144
+- Improve JavaDoc of ConsoleWritingMailSender - #125
+- Upgrade to Spring Boot 1.3 GA - #119
+- Add example and test on how to extend Inventory. - #114
+- Switch to H2 as test database - #115
+----
+
+:numbered!:
 [6.2.1]
 == 6.2.1
 
