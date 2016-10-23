@@ -220,8 +220,25 @@
 				</configuration>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<pushChanges>false</pushChanges>
+					<scmCommentPrefix />
+					<tagNameFormat>${project.version}</tagNameFormat>
+					<releaseProfiles>release</releaseProfiles>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
+
+	<scm>
+		<url>https://github.com/st-tu-dresden/salespoint</url>
+		<connection>scm:git:https://github.com/st-tu-dresden/salespoint</connection>
+	</scm>
 
 	<distributionManagement>
 		<repository>
