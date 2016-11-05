@@ -386,7 +386,7 @@ If these properties get real values assigned, Salespoint will automatically crea
 +
 WARNING: Never push your email credentials into the version control system.
 +
-Alternatively for testing purposes, configure the `ConsoleWritingMailSender` as a Spring bean to simply write emails to be sent to the console instead of sending them to a real SMTP server. To automatically switch between the two setups have a look at how to use Spring's http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-profiles[profile support with Boot].
+Alternatively for testing purposes, configure the `RecordingMailSender` as a Spring bean to simply write emails to be sent to the console instead of sending them to a real SMTP server. To automatically switch between the two setups have a look at how to use Spring's http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-profiles[profile support with Boot].
 
 [[glossary]]
 [appendix, glossary]

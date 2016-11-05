@@ -9,8 +9,8 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
 /**
- * {@link MailSender} implementation writing the {@link SimpleMailMessage} to be sent into the logs. Should be used for
- * testing purposes only.
+ * {@link MailSender} implementation writing the {@link SimpleMailMessage} to be sent into the logs. If you want to
+ * access the mail messages sent, prefer {@link RecordingMailSender}.
  * <p>
  * The component can be used by declaring a Spring bean definition for it, e.g. in a Spring Boot application like this:
  * 
@@ -35,6 +35,7 @@ import org.springframework.mail.SimpleMailMessage;
  * 
  * @author Oliver Gierke
  * @see http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-email
+ * @see RecordingMailSender
  */
 public class ConsoleWritingMailSender implements MailSender {
 
