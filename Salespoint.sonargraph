@@ -8,21 +8,28 @@
         <architecture>
             <element type="Layer" name="Application">
                 <element type="TypeFilter" name="Assignment"/>
-                <element type="Subsystem" name="Order">
-                    <element type="TypeFilter" name="Assignment">
-                        <element type="IncludeTypePattern" name="**.order.**"/>
-                    </element>
-                    <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|Accountancy" type="AllowedDependency"/>
-                    <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|Catalog" type="AllowedDependency"/>
-                    <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|Inventory" type="AllowedDependency"/>
-                    <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|Payment" type="AllowedDependency"/>
-                    <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|User" type="AllowedDependency"/>
-                </element>
                 <element type="Subsystem" name="Inventory">
                     <element type="TypeFilter" name="Assignment">
                         <element type="IncludeTypePattern" name="**.inventory.**"/>
                     </element>
                     <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|Catalog" type="AllowedDependency"/>
+                    <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|Order" type="AllowedDependency"/>
+                </element>
+                <element type="Subsystem" name="Accountancy">
+                    <element type="TypeFilter" name="Assignment">
+                        <element type="IncludeTypePattern" name="**.accountancy.**"/>
+                    </element>
+                    <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|Order" type="AllowedDependency"/>
+                    <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|Payment" type="AllowedDependency"/>
+                    <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|User" type="AllowedDependency"/>
+                </element>
+                <element type="Subsystem" name="Order">
+                    <element type="TypeFilter" name="Assignment">
+                        <element type="IncludeTypePattern" name="**.order.**"/>
+                    </element>
+                    <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|Catalog" type="AllowedDependency"/>
+                    <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|Payment" type="AllowedDependency"/>
+                    <dependency toName="Project|salespoint-framework::Layer|Application::Subsystem|User" type="AllowedDependency"/>
                 </element>
                 <element type="Subsystem" name="Catalog">
                     <element type="TypeFilter" name="Assignment">
@@ -32,11 +39,6 @@
                 <element type="Subsystem" name="Payment">
                     <element type="TypeFilter" name="Assignment">
                         <element type="IncludeTypePattern" name="**.payment.**"/>
-                    </element>
-                </element>
-                <element type="Subsystem" name="Accountancy">
-                    <element type="TypeFilter" name="Assignment">
-                        <element type="IncludeTypePattern" name="**.accountancy.**"/>
                     </element>
                 </element>
                 <element type="Subsystem" name="Support">
@@ -60,14 +62,15 @@
             </element>
             <element type="Layer" name="Core">
                 <element type="TypeFilter" name="Assignment"/>
-                <element type="Subsystem" name="Core">
-                    <element type="TypeFilter" name="Assignment">
-                        <element type="IncludeTypePattern" name="**.core.**"/>
-                    </element>
-                </element>
                 <element type="Subsystem" name="Time">
                     <element type="TypeFilter" name="Assignment">
                         <element type="IncludeTypePattern" name="**.time.**"/>
+                    </element>
+                    <dependency toName="Project|salespoint-framework::Layer|Core::Subsystem|Core" type="AllowedDependency"/>
+                </element>
+                <element type="Subsystem" name="Core">
+                    <element type="TypeFilter" name="Assignment">
+                        <element type="IncludeTypePattern" name="**.core.**"/>
                     </element>
                 </element>
                 <element type="Subsystem" name="Quantity">
@@ -213,57 +216,57 @@
     </scope>
     <attributeConfiguration type="AttributeConfiguration">
         <property value="disabled" name="ExtendedCyclomaticComplexity"/>
-        <property value="disabled" name="NumberOfTypesWithImplementation"/>
-        <property value="disabled" name="NumberOfMetricWarnings"/>
-        <property value="disabled" name="NumberOfCyclicSubsystems"/>
-        <property value="disabled" name="NumberOfSubsystems"/>
-        <property value="disabled" name="AverageAccumulatedCyclomaticComplexityPerType"/>
-        <property value="disabled" name="RelativeAverageTypeDependency"/>
-        <property value="disabled" name="NumberOfAbstractMethods"/>
-        <property value="disabled" name="NumberOfDuplicateCodeBlocksWarnings"/>
-        <property value="disabled" name="NumberOfCyclicVerticalSliceGroups"/>
-        <property value="disabled" name="AverageAccumulatedExtendedCyclomaticComplexityPerType"/>
-        <property value="disabled" name="CyclomaticComplexity"/>
-        <property value="disabled" name="NumberOfTasks"/>
-        <property value="disabled" name="AverageCyclomaticComplexityPerMethod"/>
         <property value="disabled" name="MaxExtendedCyclomaticComplexityPerMethod"/>
+        <property value="disabled" name="NumberOfWarnings"/>
+        <property value="disabled" name="AverageCyclomaticComplexityPerMethod"/>
+        <property value="disabled" name="NumberOfAbstractTypes"/>
         <property value="disabled" name="JdkVersion"/>
-        <property value="disabled" name="NumberOfNameParts"/>
-        <property value="disabled" name="NumberOfVerticalSlices"/>
-        <property value="disabled" name="DistributedOverPathContainers"/>
-        <property value="disabled" name="NumberOfCyclicSourceFiles"/>
+        <property value="disabled" name="NumberOfCyclicDirectories"/>
+        <property value="disabled" name="CyclomaticComplexity"/>
+        <property value="disabled" name="NumberOfMethodsWithImplementation"/>
+        <property value="disabled" name="NumberOfIgnoredWarnings"/>
+        <property value="disabled" name="NumberOfNamedInterfaces"/>
         <property value="disabled" name="NumberOfCyclicProjects"/>
         <property value="disabled" name="NumberOfRefactorings"/>
-        <property value="disabled" name="NumberOfFixWarnings"/>
-        <property value="disabled" name="NumberOfCyclicNamespaces"/>
+        <property value="disabled" name="DependsUpon"/>
+        <property value="disabled" name="NumberOfVerticalSliceGroups"/>
+        <property value="disabled" name="DistributedOverPathContainers"/>
         <property value="disabled" name="AverageExtendedCyclomaticComplexityPerMethod"/>
+        <property value="disabled" name="AverageTypeDependency"/>
+        <property value="disabled" name="NumberOfDuplicateCodeBlocksWarnings"/>
+        <property value="disabled" name="RelativeAverageTypeDependency"/>
+        <property value="disabled" name="AverageAccumulatedExtendedCyclomaticComplexityPerType"/>
+        <property value="disabled" name="NumberOfLayerGroups"/>
         <property value="disabled" name="NumberOfIgnoredViolations"/>
+        <property value="disabled" name="NumberOfFixWarnings"/>
+        <property value="disabled" name="NumberOfExcludedSourceFiles"/>
+        <property value="disabled" name="NumberOfVerticalSlices"/>
+        <property value="disabled" name="AverageAccumulatedCyclomaticComplexityPerType"/>
+        <property value="disabled" name="Timestamp"/>
         <property value="disabled" name="AverageAssertionUsage"/>
-        <property value="disabled" name="AccumulatedCyclomaticComplexity"/>
-        <property value="disabled" name="NumberOfWarnings"/>
-        <property value="disabled" name="Level"/>
+        <property value="disabled" name="NumberOfCyclicSubsystems"/>
+        <property value="disabled" name="NumberOfCyclicNamespaces"/>
+        <property value="disabled" name="NumberOfExcludedTargetFiles"/>
+        <property value="disabled" name="NumberOfCyclicVerticalSliceGroups"/>
         <property value="disabled" name="AccumulatedExtendedCyclomaticComplexity"/>
         <property value="disabled" name="NumberOfLayers"/>
-        <property value="disabled" name="NumberOfVerticalSliceGroups"/>
-        <property value="disabled" name="NumberOfNamedInterfaces"/>
-        <property value="disabled" name="NumberOfAssertions"/>
-        <property value="disabled" name="AverageTypeDependency"/>
-        <property value="disabled" name="NumberOfIgnoredWarnings"/>
-        <property value="disabled" name="NumberOfExcludedSourceFiles"/>
-        <property value="disabled" name="NumberOfAbstractTypes"/>
+        <property value="disabled" name="NumberOfCyclicSourceFiles"/>
+        <property value="disabled" name="MaxAccumulatedCyclomaticComplexityPerType"/>
         <property value="disabled" name="MaxAccumulatedExtendedCyclomaticComplexityPerType"/>
-        <property value="disabled" name="Timestamp"/>
-        <property value="disabled" name="NumberOfLayerGroups"/>
         <property value="disabled" name="NumberOfCyclicLayerGroups"/>
-        <property value="disabled" name="DependsUpon"/>
-        <property value="disabled" name="NumberOfExcludedTargetFiles"/>
-        <property value="disabled" name="NumberOfMethodsWithImplementation"/>
+        <property value="disabled" name="NumberOfAssertions"/>
+        <property value="disabled" name="NumberOfCyclicVerticalSlices"/>
+        <property value="disabled" name="NormalizedCumulativeTypeDependency"/>
+        <property value="disabled" name="AccumulatedCyclomaticComplexity"/>
+        <property value="disabled" name="NumberOfMetricWarnings"/>
+        <property value="disabled" name="NumberOfNameParts"/>
+        <property value="disabled" name="NumberOfTasks"/>
+        <property value="disabled" name="NumberOfWorkspaceWarnings"/>
+        <property value="disabled" name="NumberOfAbstractMethods"/>
+        <property value="disabled" name="NumberOfTypesWithImplementation"/>
+        <property value="disabled" name="Level"/>
+        <property value="disabled" name="NumberOfSubsystems"/>
         <property value="disabled" name="NumberOfCyclicLayers"/>
         <property value="disabled" name="MaxCyclomaticComplexityPerMethod"/>
-        <property value="disabled" name="NumberOfWorkspaceWarnings"/>
-        <property value="disabled" name="NumberOfCyclicVerticalSlices"/>
-        <property value="disabled" name="MaxAccumulatedCyclomaticComplexityPerType"/>
-        <property value="disabled" name="NormalizedCumulativeTypeDependency"/>
-        <property value="disabled" name="NumberOfCyclicDirectories"/>
     </attributeConfiguration>
 </context>
