@@ -14,7 +14,7 @@ import org.springframework.mail.SimpleMailMessage;
  * {@link ConsoleWritingMailSender}'s JavaDoc.
  *
  * @author Oliver Gierke
- * @since 6.2.1
+ * @since 6.3.1
  * @soundtrack Benny Greb - Soulfood (Moving Parts Live - https://www.youtube.com/watch?v=q9Ft5xLlBg4)
  */
 public class RecordingMailSender extends ConsoleWritingMailSender {
