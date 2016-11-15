@@ -170,18 +170,26 @@ When used in domain objects, `Money` instances need to be mapped using `@Lob`.
 = Business modules
 
 [[modules.useraccount]]
-== Users
+== User accounts
 
 ////
 [User|-enabled:boolean]-0..*>[Role]
 [User]->[Password]
 ////
-image::user.png[title="User"]
+image::user.png[title="User Account"]
 
-image::user-account.png[title="User Account"]
+image::user-account.png[title="User Account Management"]
 
-To manage system accounts, Salespoint {majorversion} has a notation of a user in the form of the `User` class. Users are managed by the `UserAccountManager`. Every user is uniquely identified by a `org.salespointframework.useraccount.UserAccountIdentifier`, which also serves as primary key attribute for the database.
-The username of the `org.salespointframework.useraccount.UserAccount` can be retrieved by the `getUsername()` method.
+While Spring Security is used as primary technology to actually implement application security, there's also a domain abstraction of a user acoount in the form of a `UserAccount` entity.
+That means that `UserAccount` instances created within the system are automatically targets for authentication.
+The primary purpose of a `UserAccount` besides the security integration is the ability to assign other business entities like an order or a reservation to an account.
+As those other business entities often mandate a reference, `UserAccount`s cannot be removed from the system.
+That would render the business entities connected to them invalid.
+A `UserAccount` primarily consists of a `UserAccountIdentifier` whose `String` representation is used as the login name and a `Password` (representing an encrypted or non-encrypted password) value object.
+
+To create `UserAccounts`, the `UserAccountManager`'s method `create(String userName, String password, Role... role)` can be used.
+The `String` given as password will be encrypted using Spring Security.
+Also, it makes sure that the login names are unique and a password is always set.
 
 [[modules.useraccount.role]]
 === Roles
