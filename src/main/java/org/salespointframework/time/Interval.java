@@ -1,6 +1,7 @@
 package org.salespointframework.time;
 
 import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -17,6 +18,7 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Value
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public final class Interval {
 
 	/**
