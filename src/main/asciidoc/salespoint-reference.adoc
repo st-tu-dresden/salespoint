@@ -302,6 +302,8 @@ To create a new account, `AccountancyEntry` has to be sub-classed. Every object 
 [[modules.accountancy.payment-entry]]
 === Handling OrderPaid events
 
+The accountancy subsystem handles `OrderPaid` events by creating a `ProductPaymentEntry` for the order.
+
 [[modules.payment]]
 == Payments
 
@@ -347,6 +349,38 @@ Currently, the following events are exposed:
 
 * `OrderPaid` -- the event being throw if the order gets paid, usually through a call to `OrderManager.pay(…)`. The <<modules.accountancy>> module makes use of those events as described in <<modules.accountancy.payment-entry>>.
 * `OrderCompleted` -- the event being thrown when the `Order` is about to be completed, usually through a call to `OrderManager.completeOrder(…)`. The <<modules.inventory>> module ships with a listener for the `OrderCompleted` event to update the inventory and reduce the stock of ordered items.
+
+[[modules.order.handling-events]]
+==== Handling events
+
+In case you want to write custom code to react to those events you need to implement an event handler.
+An event handler is a simple Spring component that has methods annotated with either `@EventListener` or `@TransactionalEventListener`.
+
+[source, java]
+----
+@Component
+class MyEventListener {
+
+	@EventListener
+	public void handleEvent(OrderCompleted event) {
+		// Your code goes here
+	}
+
+	// alternatively
+
+	@TransactionalEventListener
+	public void handleEventAfterTransaction(OrderCompleted event) {
+		// Your code goes here
+	}
+}
+----
+
+The difference between the two methods is when they're actually invoked by the framework.
+The former method is called before the changes to the database are eventually persisted to the database.
+That means, the event listener can throw an exception and the action that caused the event to be published in the first place will be canceled, too.
+On the other hand an `@EventListener` will not be guaranteed that the original action will succeed as it might be rejected if it violates e.g. database constraints.
+In contrast, a `@TransactionalEventListener` will be called after the original action has completed successfully.
+That in turn means, that the listener has no chance to abort that action.
 
 [[modules.business-time]]
 == Business time
