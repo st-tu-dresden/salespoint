@@ -66,6 +66,38 @@ public final class Interval {
 		return Duration.between(start, end);
 	}
 
+	/**
+	 * Returns whether the given {@link LocalDateTime} is contained in the current {@link Interval}.
+	 * 
+	 * @param reference must not be {@literal null}.
+	 * @return
+	 */
+	public boolean contains(LocalDateTime reference) {
+
+		Assert.notNull(reference, "Reference must not be null!");
+
+		boolean afterOrOnStart = start.isBefore(reference) || start.isEqual(reference);
+		boolean beforeOrOnEnd = end.isAfter(reference) || end.isEqual(reference);
+
+		return afterOrOnStart && beforeOrOnEnd;
+	}
+
+	/**
+	 * Returns whether the current {@link Interval} overlaps with the given one.
+	 * 
+	 * @param reference must not be {@literal null}.
+	 * @return
+	 */
+	public boolean overlaps(Interval reference) {
+
+		Assert.notNull(reference, "Reference must not be null!");
+
+		boolean endsAfterOtherStarts = getEnd().isAfter(reference.getStart());
+		boolean startsBeforeOtherEnds = getStart().isBefore(reference.getEnd());
+
+		return startsBeforeOtherEnds && endsAfterOtherStarts;
+	}
+
 	/* 
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
