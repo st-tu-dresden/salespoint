@@ -36,6 +36,15 @@ public class MonetaryAmountAttributeConverter implements AttributeConverter<Mone
 	 */
 	@Override
 	public MonetaryAmount convertToEntityAttribute(String source) {
-		return source == null ? null : Money.parse(source, FORMAT);
+
+		if (source == null) {
+			return null;
+		}
+
+		try {
+			return Money.parse(source);
+		} catch (RuntimeException e) {
+			return Money.parse(source, FORMAT);
+		}
 	}
 }
