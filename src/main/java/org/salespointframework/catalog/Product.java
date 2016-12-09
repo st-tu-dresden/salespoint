@@ -1,6 +1,8 @@
 package org.salespointframework.catalog;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
@@ -31,6 +33,7 @@ import org.springframework.util.Assert;
  */
 @Entity
 @ToString
+@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class Product extends AbstractEntity<ProductIdentifier> implements Comparable<Product> {
 
 	private static final long serialVersionUID = 6645371648836029780L;
@@ -44,10 +47,11 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 	private Metric metric;
 
 	/**
-	 * Parameterless constructor required for JPA. Do not use.
+	 * Creates a new {@link Product} with the given name and price.
+	 * 
+	 * @param name must not be {@literal null} or empty.
+	 * @param price must not be {@literal null}.
 	 */
-	protected Product() {}
-
 	public Product(String name, MonetaryAmount price) {
 		this(name, price, Metric.UNIT);
 	}

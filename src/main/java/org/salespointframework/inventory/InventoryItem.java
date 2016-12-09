@@ -22,7 +22,7 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Entity
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 
 	private static final long serialVersionUID = 3322056345377472377L;
