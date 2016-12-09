@@ -27,7 +27,7 @@ import org.springframework.util.Assert;
  */
 @Entity
 @ToString
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated))
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Priced {
 
 	private static final long serialVersionUID = -4310089726057038893L;

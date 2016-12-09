@@ -30,7 +30,7 @@ import org.springframework.util.Assert;
 @Entity
 @Getter
 @ToString
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated))
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class ProductPaymentEntry extends AccountancyEntry {
 
 	private static final long serialVersionUID = 8273712561197143396L;

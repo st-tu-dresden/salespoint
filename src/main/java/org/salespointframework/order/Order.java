@@ -38,7 +38,7 @@ import org.springframework.util.Assert;
 @Entity
 @Table(name = "ORDERS")
 @ToString
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated))
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class Order extends AbstractEntity<OrderIdentifier> {
 
 	private static final long serialVersionUID = 7417079332245151314L;

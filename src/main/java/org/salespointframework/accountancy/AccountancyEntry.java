@@ -29,7 +29,7 @@ import org.springframework.util.Assert;
  */
 @Entity
 @ToString
-@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED, onConstructor = @__(@Deprecated))
+@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier> {
 
 	private static final long serialVersionUID = 810396540898867801L;

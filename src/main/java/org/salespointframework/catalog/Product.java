@@ -46,7 +46,6 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 	/**
 	 * Parameterless constructor required for JPA. Do not use.
 	 */
-	@Deprecated
 	protected Product() {}
 
 	public Product(String name, MonetaryAmount price) {
