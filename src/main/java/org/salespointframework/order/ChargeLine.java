@@ -22,7 +22,7 @@ import org.salespointframework.core.AbstractEntity;
  * @author Oliver Gierke
  */
 @Entity
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated))
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Getter
 @ToString
