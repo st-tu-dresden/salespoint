@@ -31,7 +31,7 @@ public interface Inventory<T extends InventoryItem> extends SalespointRepository
 	 * @param productIdentifier must not be {@literal null}.
 	 * @return will never be {@literal null}.
 	 */
-	@Query("select i from InventoryItem i where i.product.productIdentifier = ?1")
+	@Query("select i from InventoryItem i where i.product.id = ?1")
 	Optional<T> findByProductIdentifier(ProductIdentifier productIdentifier);
 
 	/**
