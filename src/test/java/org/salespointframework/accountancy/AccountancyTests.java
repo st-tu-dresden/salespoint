@@ -27,19 +27,15 @@ public class AccountancyTests extends AbstractIntegrationTests {
 	@Before
 	public void testSetup() throws Exception {
 
-		System.out.println("Creating AccountancyEntries: ");
-
 		for (int year = 2000; year < 2010; year++) {
 
 			if ((year % 2) == 0) {
-				System.out.println("ProductPaymentEntry");
 				UserAccount user = userAccountManager.create("userId" + year, "password");
 				OrderIdentifier orderIdentifier = new Order(user).getId();
 
 				accountancyEntries.add(new ProductPaymentEntry(orderIdentifier, user, Money.of(1, Currencies.EURO),
 						"Rechnung nr " + year, Cash.CASH));
 			} else {
-				System.out.println("AccountancyEntry");
 				accountancyEntries.add(new AccountancyEntry(Money.of(2.22, Currencies.EURO)));
 			}
 
@@ -50,11 +46,7 @@ public class AccountancyTests extends AbstractIntegrationTests {
 			if (year == 2008) {
 				to = LocalDateTime.now();
 			}
-
-			Thread.sleep(1 * 10);
-
 		}
-		System.out.println("Done.");
 	}
 
 	@Test
