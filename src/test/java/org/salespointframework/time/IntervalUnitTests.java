@@ -3,6 +3,7 @@ package org.salespointframework.time;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import org.junit.Test;
@@ -158,5 +159,16 @@ public class IntervalUnitTests {
 		LocalDateTime now = LocalDateTime.now();
 
 		Interval.from(now).to(now.plusDays(1)).overlaps(null);
+	}
+
+	/**
+	 * @see #162
+	 */
+	@Test
+	public void exposesIntervalAsDuration() {
+
+		LocalDateTime now = LocalDateTime.now();
+
+		assertThat(Interval.from(now).to(now.plusDays(1)).toDuration(), is(Duration.ofDays(1)));
 	}
 }

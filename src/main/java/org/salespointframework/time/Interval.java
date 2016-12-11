@@ -98,6 +98,15 @@ public final class Interval {
 		return startsBeforeOtherEnds && endsAfterOtherStarts;
 	}
 
+	/**
+	 * Returns the {@link Duration} represented by the given {@link Interval}.
+	 * 
+	 * @return
+	 */
+	public Object toDuration() {
+		return Duration.between(start, end);
+	}
+
 	/* 
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
