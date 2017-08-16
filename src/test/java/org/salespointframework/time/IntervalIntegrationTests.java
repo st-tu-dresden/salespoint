@@ -41,10 +41,7 @@ public class IntervalIntegrationTests extends AbstractIntegrationTests {
 	@Autowired SomeEntityRepository repository;
 	@Autowired EntityManager em;
 
-	/**
-	 * @see #152
-	 */
-	@Test
+	@Test // #152
 	public void intervalCanBePersistedAsEmbeddable() {
 
 		LocalDateTime now = LocalDateTime.now();

@@ -61,10 +61,7 @@ public class SpringSecurityAuthenticationManagerUnitTests {
 		SecurityContextHolder.getContext().setAuthentication(null);
 	}
 
-	/**
-	 * @see #76
-	 */
-	@Test
+	@Test // #76
 	public void returnsOptionalEmptyIfNoUserIsAuthenticated() {
 		assertThat(authenticationManager.getCurrentUser(), is(Optional.empty()));
 	}

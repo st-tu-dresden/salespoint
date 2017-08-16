@@ -66,7 +66,7 @@ public class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTe
 
 		Iterable<UserAccount> result = repository.findByEnabledTrue();
 
-		assertThat(result, is(Matchers.<UserAccount>iterableWithSize(1)));
+		assertThat(result, is(Matchers.<UserAccount> iterableWithSize(1)));
 		assertThat(result, hasItem(firstUser));
 	}
 
@@ -75,14 +75,11 @@ public class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTe
 
 		Iterable<UserAccount> result = repository.findByEnabledFalse();
 
-		assertThat(result, is(Matchers.<UserAccount>iterableWithSize(1)));
+		assertThat(result, is(Matchers.<UserAccount> iterableWithSize(1)));
 		assertThat(result, hasItem(secondUser));
 	}
 
-	/**
-	 * @see #55
-	 */
-	@Test(expected = DataIntegrityViolationException.class)
+	@Test(expected = DataIntegrityViolationException.class) // #55
 	public void rejectsUserAccountWithSameUsername() {
 		repository.save(new UserAccount(firstUser.getId(), "someotherPassword"));
 	}

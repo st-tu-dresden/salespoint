@@ -60,10 +60,7 @@ public class SalespointIdentifierConverterUnitTests {
 		assertThat(result.getIdentifier(), is("5"));
 	}
 
-	/**
-	 * @see #46
-	 */
-	@Test
+	@Test // #46
 	public void createsIdentifierInstanceFromPrivateConstructor() {
 
 		Object result = converter.convert("5", STRING_DESCRIPTOR, TypeDescriptor.valueOf(MySalespointIdentifier.class));

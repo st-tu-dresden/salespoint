@@ -56,10 +56,7 @@ public class ExtendedInventoryTests extends AbstractIntegrationTests {
 		wineItem = inventory.save(new InventoryItem(wine, Quantity.of(10, Metric.LITER)));
 	}
 
-	/**
-	 * @see #114
-	 */
-	@Test
+	@Test // #114
 	public void findsItemsWithSameMetricAndMatchingAmount() {
 
 		Iterable<InventoryItem> result = inventory.findByQuantityGreaterThan(Quantity.of(5, Metric.LITER));

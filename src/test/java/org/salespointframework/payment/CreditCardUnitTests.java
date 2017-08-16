@@ -41,10 +41,7 @@ public class CreditCardUnitTests {
 	static final CreditCard MASTER_CARD = new CreditCard("MasterCard", "whatever", "1234123412341234", "Oliver Gierke",
 			"Some address", NOW, NOW.plusMonths(12), "567", AMOUNT, AMOUNT);
 
-	/**
-	 * @see #80
-	 */
-	@Test
+	@Test // #80
 	public void hasCorrectToString() {
 
 		String cardString = VISA.toString();
@@ -55,10 +52,7 @@ public class CreditCardUnitTests {
 		assertThat(cardString, not(containsString(VISA.getCardVerificationCode())));
 	}
 
-	/**
-	 * @see #80
-	 */
-	@Test
+	@Test // #80
 	public void equalsHashCode() {
 
 		assertThat(VISA, is(VISA));

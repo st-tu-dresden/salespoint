@@ -37,10 +37,7 @@ public class CartIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
 
-	/**
-	 * @see #44
-	 */
-	@Test
+	@Test // #44
 	public void createsOrderFromCartCorrectly() {
 
 		Cart cart = new Cart();

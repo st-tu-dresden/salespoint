@@ -28,10 +28,7 @@ import org.salespointframework.order.OrderCompletionReport.OrderLineCompletion;
  */
 public class OrderCompletionReportUnitTests {
 
-	/**
-	 * @see #144
-	 */
-	@Test
+	@Test // #144
 	public void erroneousCompletionExposesFailure() {
 
 		OrderLineCompletion completion = OrderLineCompletion.error(mock(OrderLine.class), "Some message!");

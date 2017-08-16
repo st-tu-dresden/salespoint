@@ -62,10 +62,7 @@ public class ExampleControllerIntegrationTests {
 		}
 	}
 
-	/**
-	 * @see #72
-	 */
-	@Test
+	@Test // #72
 	public void usesUtf8ToDecodePayload() {
 
 		RestTemplate template = new RestTemplate();

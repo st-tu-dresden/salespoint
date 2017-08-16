@@ -33,10 +33,7 @@ public class DefaultBusinessTimeUnitTests {
 
 	BusinessTime businessTime = new DefaultBusinessTime();
 
-	/**
-	 * @see #7
-	 */
-	@Test
+	@Test // #7
 	public void returnsCurrentTimeByDefault() throws Exception {
 
 		LocalDateTime time = businessTime.getTime();
@@ -47,18 +44,12 @@ public class DefaultBusinessTimeUnitTests {
 		assertThat(time.isAfter(LocalDateTime.now().minusSeconds(1)), is(true));
 	}
 
-	/**
-	 * @see #7
-	 */
-	@Test
+	@Test // #7
 	public void shiftsTimeByGivenDuration() throws Exception {
 		assertTimeShifted(businessTime.getTime(), 2);
 	}
 
-	/**
-	 * @see #7
-	 */
-	@Test
+	@Test // #7
 	public void forwardingMultipleTimesAccumulatesOffset() throws Exception {
 		assertTimeShifted(businessTime.getTime(), 2, 4, 12);
 	}

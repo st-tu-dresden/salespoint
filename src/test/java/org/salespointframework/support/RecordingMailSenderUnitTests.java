@@ -27,10 +27,7 @@ import org.springframework.mail.SimpleMailMessage;
  */
 public class RecordingMailSenderUnitTests {
 
-	/**
-	 * @see #149
-	 */
-	@Test
+	@Test // #149
 	public void exposesSentEmails() {
 
 		SimpleMailMessage message = new SimpleMailMessage();

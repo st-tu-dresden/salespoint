@@ -76,10 +76,7 @@ public class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 		inventory.save(new InventoryItem(macBook, Quantity.of(1)));
 	}
 
-	/**
-	 * @see #144
-	 */
-	@Test
+	@Test // #144
 	public void triggersExceptionFoInsufficientStock() {
 
 		UserAccount user = userAccounts.create("username", "password");

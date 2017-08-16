@@ -51,10 +51,7 @@ public class SalespointSecurityConfigurationIntegrationTests {
 
 	@Autowired Controller controller;
 
-	/**
-	 * @see #41
-	 */
-	@Test
+	@Test // #41
 	public void preventsInvocationOfSecuredMethodWithoutAuthentication() {
 
 		exception.expect(AuthenticationCredentialsNotFoundException.class);

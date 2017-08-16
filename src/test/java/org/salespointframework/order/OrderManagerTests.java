@@ -95,10 +95,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 		assertThat(result.get(), is(order));
 	}
 
-	/**
-	 * @see #38
-	 */
-	@Test
+	@Test // #38
 	public void completesOrderIfAllLineItemsAreAvailableInSufficientQuantity() {
 
 		Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
@@ -109,10 +106,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 		orderManager.completeOrder(order);
 	}
 
-	/**
-	 * @see #38
-	 */
-	@Test
+	@Test // #38
 	public void failsOrderCompletionIfLineItemsAreNotAvailableInSufficientQuantity() {
 
 		Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
@@ -126,10 +120,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 		orderManager.completeOrder(order);
 	}
 
-	/**
-	 * @see #61
-	 */
-	@Test
+	@Test // #61
 	public void findOrdersBetween() {
 
 		order = orderManager.save(order);
@@ -137,14 +128,11 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 
 		Iterable<Order> result = orderManager.findBy(Interval.from(dateCreated).to(dateCreated.plusHours(1L)));
 
-		assertThat(result, IsIterableWithSize.<Order>iterableWithSize(1));
+		assertThat(result, IsIterableWithSize.<Order> iterableWithSize(1));
 		assertThat(result.iterator().next(), is(order));
 	}
 
-	/**
-	 * @see #61
-	 */
-	@Test
+	@Test // #61
 	public void findOrdersBetweenWhenFromToEqual() {
 
 		order = orderManager.save(order);
@@ -152,14 +140,11 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 
 		Iterable<Order> result = orderManager.findBy(Interval.from(dateCreated).to(dateCreated));
 
-		assertThat(result, IsIterableWithSize.<Order>iterableWithSize(1));
+		assertThat(result, IsIterableWithSize.<Order> iterableWithSize(1));
 		assertThat(result.iterator().next(), is(order));
 	}
 
-	/**
-	 * @see #61
-	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test // #61(expected = IllegalArgumentException.class)
 	public void findOrdersBetweenWhenToLowerThenFrom() {
 
 		order = orderManager.save(order);
@@ -168,10 +153,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 		orderManager.findBy(Interval.from(dateCreated).to(dateCreated.minusHours(1L)));
 	}
 
-	/**
-	 * @see #61
-	 */
-	@Test
+	@Test // #61
 	public void findOrdersByOrderStatus_OPEN() {
 
 		Order openOrder = new Order(user, Cash.CASH);
@@ -182,7 +164,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 
 		Iterable<Order> openOrders = orderManager.findBy(OrderStatus.OPEN);
 
-		assertThat(openOrders, IsIterableWithSize.<Order>iterableWithSize(1));
+		assertThat(openOrders, IsIterableWithSize.<Order> iterableWithSize(1));
 		assertThat(openOrders.iterator().next(), is(openOrder));
 	}
 }

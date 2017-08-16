@@ -47,10 +47,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 		cookie = new Cookie("Schoki", Currencies.ZERO_EURO);
 	}
 
-	/**
-	 * @see #19
-	 */
-	@Test
+	@Test // #19
 	public void findsProductsByCategory() {
 
 		Product product = new Product("MacBook", Money.of(2700.0, Currencies.EURO), Metric.UNIT);
@@ -64,10 +61,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 		assertThat(result, hasItem(product));
 	}
 
-	/**
-	 * @see #19
-	 */
-	@Test
+	@Test // #19
 	public void findsSameInstanceOnGenericRepositories() {
 
 		catalog.save(cookie);
@@ -80,10 +74,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 		assertThat(kT1.get(), is(kT2.get()));
 	}
 
-	/**
-	 * @see #19
-	 */
-	@Test
+	@Test // #19
 	public void addTest() {
 
 		Cookie result = catalog.save(cookie);
@@ -93,10 +84,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 		assertThat(cookie.get(), is(result));
 	}
 
-	/**
-	 * @see #19
-	 */
-	@Test
+	@Test // #19
 	public void testRemove() {
 
 		catalog.save(cookie);
@@ -105,20 +93,14 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 		assertThat(catalog.exists(cookie.getId()), is(false));
 	}
 
-	/**
-	 * @see #19
-	 */
-	@Test
+	@Test // #19
 	public void testContains() {
 
 		Cookie result = catalog.save(cookie);
 		assertThat(catalog.exists(result.getId()), is(true));
 	}
 
-	/**
-	 * @see #19
-	 */
-	@Test
+	@Test // #19
 	public void getTest() {
 
 		Cookie reference = catalog.save(cookie);
@@ -128,10 +110,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 		assertThat(result.get(), is(reference));
 	}
 
-	/**
-	 * @see #19
-	 */
-	@Test
+	@Test // #19
 	public void persistsProductSubtypesCorrectly() {
 
 		Cookie doubleChoc = createCookie();
@@ -140,10 +119,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 		assertKeksFound(cookies.findByCategory("chocolate"), doubleChoc);
 	}
 
-	/**
-	 * @see #19
-	 */
-	@Test
+	@Test // #19
 	public void generalRepoInstancesFinds() {
 
 		Cookie doubleChoc = createCookie();

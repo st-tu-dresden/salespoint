@@ -54,40 +54,28 @@ public class LoggedInUserAccountArgumentResolverUnitTests {
 		resolver = new LoggedInUserAccountArgumentResolver(authenticationManager);
 	}
 
-	/**
-	 * @see #37
-	 */
-	@Test
+	@Test // #37
 	public void supportsOptionalOfUserAccountAsMethodArgumentType() throws Exception {
 
 		Method method = Sample.class.getMethod("valid", Optional.class);
 		assertThat(resolver.supportsParameter(new MethodParameter(method, 0)), is(true));
 	}
 
-	/**
-	 * @see #37
-	 */
-	@Test
+	@Test // #37
 	public void rejectsNonAnnotatedOptionalOfUserAccountAsMethodArgumentType() throws Exception {
 
 		Method method = Sample.class.getMethod("notAnnotated", Optional.class);
 		assertThat(resolver.supportsParameter(new MethodParameter(method, 0)), is(false));
 	}
 
-	/**
-	 * @see #37
-	 */
-	@Test
+	@Test // #37
 	public void rejectsNonOptionalWrappedUserAccountAsMethodArgumentType() throws Exception {
 
 		Method method = Sample.class.getMethod("notAnnotated", Optional.class);
 		assertThat(resolver.supportsParameter(new MethodParameter(method, 0)), is(false));
 	}
 
-	/**
-	 * @see #37
-	 */
-	@Test
+	@Test // #37
 	public void returnsUserAccountProvidedByAuthenticationManager() throws Exception {
 
 		Method method = Sample.class.getMethod("valid", Optional.class);

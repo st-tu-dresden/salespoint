@@ -33,7 +33,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author Paul Henke
  * @author Oliver Gierke
  */
-@SuppressWarnings("javadoc")
 public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
@@ -77,7 +76,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 		userAccountManager.save(userAccount);
 		Iterable<UserAccount> customers = userAccountManager.findAll();
 
-		assertThat(customers, is(Matchers.<UserAccount>iterableWithSize(1)));
+		assertThat(customers, is(Matchers.<UserAccount> iterableWithSize(1)));
 		assertThat(customers, hasItem(userAccount));
 	}
 
@@ -118,10 +117,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 		assertThat(passwordEncoder.matches("asd", acc.getPassword().toString()), is(true));
 	}
 
-	/**
-	 * @see #46
-	 */
-	@Test
+	@Test // #46
 	public void findsUserByUsername() {
 
 		UserAccount reference = userAccountManager.create("Bob", "123", Role.of("ROLE_CHEF"));
@@ -132,10 +128,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 		assertThat(user.get(), is(reference));
 	}
 
-	/**
-	 * @see #55
-	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class) // #55
 	public void rejectsCreationOfUserWithExistingUsername() {
 
 		userAccountManager.create("username", "password");

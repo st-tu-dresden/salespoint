@@ -45,10 +45,7 @@ public class CartUnitTests {
 		cart = new Cart();
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test
+	@Test // #44
 	public void addsCartItemCorrectly() {
 
 		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
@@ -57,34 +54,22 @@ public class CartUnitTests {
 		assertThat(cart, is(iterableWithSize(1)));
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class) // #44
 	public void rejectsNullQuantityOnAdding() {
 		cart.addOrUpdateItem(PRODUCT, null);
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class) // #44
 	public void rejectsNullProductOnAdding() {
 		cart.addOrUpdateItem(null, QUANTITY);
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class) // #44
 	public void rejectsNullOnRemovingAnItem() {
 		cart.removeItem(null);
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test
+	@Test // #44
 	public void removesItemsCorrectly() {
 
 		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
@@ -93,10 +78,7 @@ public class CartUnitTests {
 		assertThat(cart, is(iterableWithSize(0)));
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test
+	@Test // #44
 	public void providesAccessToCartItem() {
 
 		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
@@ -106,10 +88,7 @@ public class CartUnitTests {
 		assertThat(item.get(), is(reference));
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test
+	@Test // #44
 	public void returnsEmptyOptionalForNonExistingIdentifier() {
 
 		cart.addOrUpdateItem(PRODUCT, QUANTITY);
@@ -117,18 +96,12 @@ public class CartUnitTests {
 		assertThat(cart.getItem("foobar"), is(Optional.empty()));
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class) // #44
 	public void rejectsNullIdentifier() {
 		cart.getItem(null);
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test
+	@Test // #44
 	public void clearsCartCorrectly() {
 
 		cart.addOrUpdateItem(PRODUCT, QUANTITY);
@@ -138,10 +111,7 @@ public class CartUnitTests {
 		assertThat(cart.isEmpty(), is(true));
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test
+	@Test // #44
 	public void isEmpty() {
 
 		assertThat(cart.isEmpty(), is(true));
@@ -150,18 +120,12 @@ public class CartUnitTests {
 		assertThat(cart.isEmpty(), is(false));
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class) // #44
 	public void toOrderFail() {
 		cart.addItemsTo(null);
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test
+	@Test // #44
 	public void updatesCartItemIfOneForProductAlreadyExists() {
 
 		CartItem item = cart.addOrUpdateItem(PRODUCT, QUANTITY);

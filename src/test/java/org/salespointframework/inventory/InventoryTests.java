@@ -64,10 +64,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 		assertThat(inventory.save(item).getId(), is(notNullValue()));
 	}
 
-	/**
-	 * @see #34
-	 */
-	@Test
+	@Test // #34
 	public void deletesItemsCorrectly() {
 
 		inventory.delete(item.getId());
@@ -75,18 +72,12 @@ public class InventoryTests extends AbstractIntegrationTests {
 		assertThat(inventory.exists(item.getId()), is(false));
 	}
 
-	/**
-	 * @see #34
-	 */
-	@Test
+	@Test // #34
 	public void testExists() {
 		assertThat(inventory.exists(item.getId()), is(true));
 	}
 
-	/**
-	 * @see #34
-	 */
-	@Test
+	@Test // #34
 	public void testGet() {
 
 		Optional<InventoryItem> result = inventory.findOne(item.getId());
@@ -95,10 +86,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 		assertThat(result.get(), is(item));
 	}
 
-	/**
-	 * @see #34
-	 */
-	@Test
+	@Test // #34
 	public void testFindItemsByProduct() {
 
 		Optional<InventoryItem> result = inventory.findByProduct(cookie);
@@ -107,10 +95,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 		assertThat(result.get(), is(item));
 	}
 
-	/**
-	 * @see #34
-	 */
-	@Test
+	@Test // #34
 	public void testFindItemsByProductId() {
 
 		Optional<InventoryItem> result = inventory.findByProductIdentifier(cookie.getId());
@@ -119,10 +104,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 		assertThat(result.get(), is(item));
 	}
 
-	/**
-	 * @see #34
-	 */
-	@Test
+	@Test // #34
 	public void decreasesItemAndPersistsIt() {
 
 		InventoryItem item = inventory.findByProduct(cookie).get();
@@ -148,10 +130,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 		em.flush();
 	}
 
-	/**
-	 * @see #142
-	 */
-	@Test
+	@Test // #142
 	public void findsInventoryItemsOutOfStock() {
 
 		assertThat(inventory.findItemsOutOfStock(), is(emptyIterable()));

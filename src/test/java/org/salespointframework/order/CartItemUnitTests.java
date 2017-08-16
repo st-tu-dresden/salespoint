@@ -37,34 +37,22 @@ public class CartItemUnitTests {
 	static final Quantity QUANTITY = Quantity.of(10);
 	static final Product PRODUCT = new Product("name", Money.of(1, Currencies.EURO));
 
-	/**
-	 * @see #44
-	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class) // #44
 	public void rejectsNullProduct() {
 		new CartItem(null, QUANTITY);
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class) // #44
 	public void rejectsNullQuantity() {
 		new CartItem(PRODUCT, null);
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test(expected = MetricMismatchException.class)
+	@Test(expected = MetricMismatchException.class) // #44
 	public void rejectsQuantityWithInvalidMetric() {
 		new CartItem(PRODUCT, Quantity.of(0, Metric.KILOGRAM));
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test
+	@Test // #44
 	public void returnsCorrectDetails() {
 
 		CartItem item = new CartItem(PRODUCT, QUANTITY);
@@ -75,10 +63,7 @@ public class CartItemUnitTests {
 		assertThat(item.getProductName(), is(PRODUCT.getName()));
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test
+	@Test // #44
 	public void calculatesPriceCorrectly() {
 
 		CartItem item = new CartItem(PRODUCT, QUANTITY);
@@ -86,10 +71,7 @@ public class CartItemUnitTests {
 		assertThat(item.getPrice(), is(PRODUCT.getPrice().multiply(QUANTITY.getAmount())));
 	}
 
-	/**
-	 * @see #44
-	 */
-	@Test
+	@Test // #44
 	public void createsOrderLineCorrectly() {
 
 		OrderLine orderLine = new CartItem(PRODUCT, QUANTITY).toOrderLine();

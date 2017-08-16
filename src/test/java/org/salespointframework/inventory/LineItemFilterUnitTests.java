@@ -43,10 +43,7 @@ public class LineItemFilterUnitTests {
 		this.filters = Arrays.asList(first, second);
 	}
 
-	/**
-	 * @see #144
-	 */
-	@Test
+	@Test // #144
 	public void supportsIfAllFiltersMatch() {
 
 		OrderLine orderLine = mock(OrderLine.class);
@@ -55,10 +52,7 @@ public class LineItemFilterUnitTests {
 		assertThat(LineItemFilter.shouldBeHandled(orderLine, filters)).isTrue();
 	}
 
-	/**
-	 * @see #144
-	 */
-	@Test
+	@Test // #144
 	public void doesNotSupportIfOneFilterDoesntMatch() {
 
 		OrderLine orderLine = mock(OrderLine.class);

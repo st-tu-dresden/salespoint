@@ -28,72 +28,48 @@ import org.junit.Test;
  */
 public class QuantityUnitTests {
 
-	/**
-	 * @see #9
-	 */
-	@Test
+	@Test // #9
 	public void defaultsToUnitAsMetric() {
 		assertThat(Quantity.of(1).getMetric(), is(Metric.UNIT));
 	}
 
-	/**
-	 * @see #9
-	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class) // #9
 	public void rejectsNullMetric() {
 		Quantity.of(0, null);
 	}
 
-	/**
-	 * @see #9
-	 */
-	@Test
+	@Test // #9
 	public void rejectsIncompatibleMetric() {
 
 		assertThat(Quantity.of(1).isCompatibleWith(Metric.UNIT), is(true));
 		assertThat(Quantity.of(1).isCompatibleWith(Metric.KILOGRAM), is(false));
 	}
 
-	/**
-	 * @see #9
-	 */
-	@Test(expected = MetricMismatchException.class)
+	@Test(expected = MetricMismatchException.class) // #9
 	public void rejectsIncompatibleQuantityOnAddition() {
 		Quantity.of(1).add(Quantity.of(1, Metric.KILOGRAM));
 	}
 
-	/**
-	 * @see #9
-	 */
-	@Test
+	@Test // #9
 	public void addsQuantitiesCorrectly() {
 
 		assertThat(Quantity.of(1).add(Quantity.of(1)), is(Quantity.of(2)));
 		assertThat(Quantity.of(1.5).add(Quantity.of(1.5)), is(Quantity.of(3.0)));
 	}
 
-	/**
-	 * @see #9
-	 */
-	@Test(expected = MetricMismatchException.class)
+	@Test(expected = MetricMismatchException.class) // #9
 	public void rejectsIncompatibleQuantityOnSubtraction() {
 		Quantity.of(1).subtract(Quantity.of(1, Metric.KILOGRAM));
 	}
 
-	/**
-	 * @see #64, #65, #9
-	 */
-	@Test
+	@Test // #64, #65, #9
 	public void subtractsQuantitiesCorrectly() {
 
 		assertThat(Quantity.of(10).subtract(Quantity.of(1)), is(Quantity.of(9)));
 		assertThat(Quantity.of(10.5).subtract(Quantity.of(7.25)), is(Quantity.of(3.25)));
 	}
 
-	/**
-	 * @see #34, #9
-	 */
-	@Test
+	@Test // #34, #9
 	public void comparesQuantitiesCorrectly() {
 
 		Quantity five = Quantity.of(5);
@@ -109,10 +85,7 @@ public class QuantityUnitTests {
 		assertThat(ten.isGreaterThanOrEqualTo(five), is(true));
 	}
 
-	/**
-	 * @see #9
-	 */
-	@Test
+	@Test // #9
 	public void discoversNegativeQuantity() {
 
 		assertThat(Quantity.of(-1).isNegative(), is(true));
@@ -120,10 +93,7 @@ public class QuantityUnitTests {
 		assertThat(Quantity.of(1).isNegative(), is(false));
 	}
 
-	/**
-	 * @see #99
-	 */
-	@Test
+	@Test // #99
 	public void printsReasonableToString() {
 
 		assertThat(Quantity.of(5).toString(), is("5"));
@@ -133,10 +103,7 @@ public class QuantityUnitTests {
 		assertThat(Quantity.of(5.11, Metric.LITER).toString(), is("5,11l"));
 	}
 
-	/**
-	 * @see #129
-	 */
-	@Test
+	@Test // #129
 	public void comparesToZero() {
 
 		Quantity quantity = Quantity.of(5);

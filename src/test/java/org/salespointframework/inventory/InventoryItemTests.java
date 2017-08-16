@@ -44,28 +44,19 @@ public class InventoryItemTests {
 		item = new InventoryItem(cookie, TEN);
 	}
 
-	/**
-	 * @see #34
-	 */
-	@Test
+	@Test // #34
 	public void increasesQuantityCorrectly() {
 
 		item.increaseQuantity(Quantity.of(1));
 		assertThat(item.getQuantity(), is(Quantity.of(11)));
 	}
 
-	/**
-	 * @see #34
-	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class) // #34
 	public void doesNotAllowDecreasingQuantityMoreThanAvailable() {
 		item.decreaseQuantity(TWENTY);
 	}
 
-	/**
-	 * @see #34
-	 */
-	@Test
+	@Test // #34
 	public void decreasesQuantityCorrectly() {
 
 		item.decreaseQuantity(Quantity.of(1));
