@@ -1,6 +1,24 @@
 = Salespoint Framework Changelog
 Paul Henke, Andreas Zaschka, Oliver Gierke
 :revdate: {localdate}
+:linkbase: https://github.com/st-tu-dresden/salespoint/issues/
+
+:numbered!:
+[6.4-GA]
+== 6.4 GA
+
+Release date: 2017-10-03
+
+- {linkbase}172[#172] - Upgrade to Spring Boot 1.5.7.
+- {linkbase}173[#173] - Minor polishing in domain model.
+- {linkbase}169[#169] - Add Apache License headers.
+- {linkbase}170[#170] - Switch to non-JavaDoc-violating references to issues in test cases.
+- {linkbase}171[#171] - Upgrade to Moneta 1.1.
+- {linkbase}164[#164] - Upgrade to Spring Boot 1.5.
+- {linkbase}166[#166] - Upgrade Maven Wagon plugin to 3.0.
+- {linkbase}167[#167] - Upgrade Lombok Maven plugin to 1.16.18.0.
+- {linkbase}168[#168] - Upgrade Asciidoctor Maven plugin to latest version.
+- {linkbase}165[#165] - Upgrade to AssertJ 3.8.
 
 :numbered!:
 [6.3.1]
@@ -8,13 +26,13 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 
 Release date: 2016-11-27
 
-- Add link:./salespoint-reference.html#modules.useraccount[section to reference documentation] on which features the `UserAccountManagement` actually provides - #147
-- Add link:./salespoint-reference.html#modules.order.handling-events[section to the reference documentation] on how to write custom event handlers - #148
-- Update JavaDoc of `@LoggedIn` to indicate that usage with a plain UserAccount is possible, too - #154
-- Allow to check `Interval` instances for overlaps - #153
-- Allow `Interval` to be used as JPA embeddable - #152
-- Add link:./api/org/salespointframework/support/RecordingMailSender.html[`MailSender` implementation] that allows to inspect the messages sent - #149
-- Update Sonargraph architecture description after the changes in `Order` events - #150
+- {linkbase}147[#147] - Add link:./salespoint-reference.html#modules.useraccount[section to reference documentation] on which features the `UserAccountManagement` actually provides.
+- {linkbase}148[#148] - Add link:./salespoint-reference.html#modules.order.handling-events[section to the reference documentation] on how to write custom event handlers.
+- {linkbase}154[#154] - Update JavaDoc of `@LoggedIn` to indicate that usage with a plain UserAccount is possible, too.
+- {linkbase}153[#153] - Allow to check `Interval` instances for overlaps.
+- {linkbase}152[#152] - Allow `Interval` to be used as JPA embeddable.
+- {linkbase}149[#149] - Add link:./api/org/salespointframework/support/RecordingMailSender.html[`MailSender` implementation] that allows to inspect the messages sent.
+- {linkbase}150[#150] - Update Sonargraph architecture description after the changes in `Order` events.
 
 :numbered!:
 [6.3]
@@ -22,17 +40,17 @@ Release date: 2016-11-27
 
 Release date: 2016-10-23
 
-- Improve JavaDoc of Accountancy - #145
-- Quantity should throw more specific exception for operations with incompatible metrics - #143
-- Add JPA 2.1 AttributeConverter for MonetaryAmount - #139
-- Upgrade to Spring Boot 1.4 - #140
-- Rename SalespointDataInitializer to DataInitializerInvoker - #141
-- Add method to find items out of stock on Inventory - #142
-- Refactor handling of downstream actions in PersistentOrderManager to use events - #144
-- Improve JavaDoc of ConsoleWritingMailSender - #125
-- Upgrade to Spring Boot 1.3 GA - #119
-- Add example and test on how to extend Inventory. - #114
-- Switch to H2 as test database - #115
+- {linkbase}145[#145] - Improve JavaDoc of Accountancy.
+- {linkbase}143[#143] - Quantity should throw more specific exception for operations with incompatible metrics.
+- {linkbase}139[#139] - Add JPA 2.1 AttributeConverter for MonetaryAmount.
+- {linkbase}140[#140] - Upgrade to Spring Boot 1.4.
+- {linkbase}141[#141] - Rename SalespointDataInitializer to DataInitializerInvoker.
+- {linkbase}142[#142] - Add method to find items out of stock on Inventory.
+- {linkbase}144[#144] - Refactor handling of downstream actions in PersistentOrderManager to use events.
+- {linkbase}125[#125] - Improve JavaDoc of ConsoleWritingMailSender.
+- {linkbase}119[#119] - Upgrade to Spring Boot 1.3 GA.
+- {linkbase}114[#114] - Add example and test on how to extend Inventory.
+- {linkbase}115[#115] - Switch to H2 as test database.
 
 :numbered!:
 [6.2.1]
@@ -40,15 +58,15 @@ Release date: 2016-10-23
 
 Release date: 2016-01-05
 
-- Upgrade to Asciidoctor Maven plugin 1.5.3 - #136
-- Fix Javadoc on Inventory - #135
-- Upgrade to Spring Boot 1.3.1 to benefit from devtools - #134
-- Improve reference documentation on Money - #131
-- Make sure JavaDoc is correct for Lombok generated methods - #130
-- Add Quantity.toZero() - #129
-- Improve JavaDoc of ConsoleWritingMailSender - #126
-- Documentation for updated Role usage - #124
-- Upgrade to Spring Boot 1.3 GA - #120
+- {linkbase}136[#136] - Upgrade to Asciidoctor Maven plugin 1.5.3.
+- {linkbase}135[#135] - Fix Javadoc on Inventory.
+- {linkbase}134[#134] - Upgrade to Spring Boot 1.3.1 to benefit from devtools.
+- {linkbase}131[#131] - Improve reference documentation on Money.
+- {linkbase}130[#130] - Make sure JavaDoc is correct for Lombok generated methods.
+- {linkbase}129[#129] - Add Quantity.toZero().
+- {linkbase}126[#126] - Improve JavaDoc of ConsoleWritingMailSender.
+- {linkbase}124[#124] - Documentation for updated Role usage.
+- {linkbase}120[#120] - Upgrade to Spring Boot 1.3 GA.
 
 :numbered!:
 [6.2-GA]
@@ -56,17 +74,17 @@ Release date: 2016-01-05
 
 Release date: 2015-10-29
 
-- Upgrade to Spring Boot 1.3 RC1 - #113
-- Remove obsolete Thymeleaf tests - #112
-- Update Sonargraph architecture description - #111
-- Remove TODOs from reference documentation - #108
-- Turn Role into value object - #107
-- Create link to the UML class diagram in the technical reference - #104
-- Fixed small typo. - #101
-- Update UML diagrams - #100
-- Update UML diagrams in reference documentation  - #97
-- Improve documention about Quantity attributes - #67
-- Improve naming of find(…) methods in OrderManager - #61
+- {linkbase}113[#113] - Upgrade to Spring Boot 1.3 RC1.
+- {linkbase}112[#112] - Remove obsolete Thymeleaf tests.
+- {linkbase}111[#111] - Update Sonargraph architecture description.
+- {linkbase}108[#108] - Remove TODOs from reference documentation.
+- {linkbase}107[#107] - Turn Role into value object.
+- {linkbase}104[#104] - Create link to the UML class diagram in the technical reference.
+- {linkbase}101[#101] - Fixed small typo.
+- {linkbase}100[#100] - Update UML diagrams.
+- {linkbase}97[#97] - Update UML diagrams in reference documentation.
+- {linkbase}67[#67] - Improve documention about Quantity attributes.
+- {linkbase}61[#61] - Improve naming of find(…) methods in OrderManager.
 
 :numbered!:
 [6.2-RC1]
@@ -74,20 +92,20 @@ Release date: 2015-10-29
 
 Release date: 2015-10-09
 
-- Improve Quantity's toString() method - #99
-- Upgrade to Spring Boot 1.3 - #96
-- Upgrade to Spring Boot 1.2.5 - #93
-- AccountancyEntry.getDate() should use Optional - #92
-- Upgrade to Spring Security 4.0.1 - #91
-- Upgrade to Spring Boot 1.2.4 - #90
-- Switch to Moneta for handling of monetary amounts - #89
-- Remove workaround for #87 - #88
-- Add temporary workaround for Spring Boot not picking up multiple @EntityScan annotations - #87
-- Upgrade to Spring Data Fowler - #86
-- Upgrade to Spring Security 4.0 - #85
-- Upgrade to Spring Boot 1.2.3 - #84
-- Switch to official release of Thymeleaf JDK 8 integration - #83
-- Simplify Quantity API - #9
+- {linkbase}99[#99] - Improve Quantity's toString() method.
+- {linkbase}96[#96] - Upgrade to Spring Boot 1.3.
+- {linkbase}93[#93] - Upgrade to Spring Boot 1.2.5.
+- {linkbase}92[#92] - AccountancyEntry.getDate() should use Optional.
+- {linkbase}91[#91] - Upgrade to Spring Security 4.0.1.
+- {linkbase}90[#90] - Upgrade to Spring Boot 1.2.4.
+- {linkbase}89[#89] - Switch to Moneta for handling of monetary amounts.
+- {linkbase}88[#88] - Remove workaround for #87.
+- {linkbase}87[#87] - Add temporary workaround for Spring Boot not picking up multiple @EntityScan annotations.
+- {linkbase}86[#86] - Upgrade to Spring Data Fowler.
+- {linkbase}85[#85] - Upgrade to Spring Security 4.0.
+- {linkbase}84[#84] - Upgrade to Spring Boot 1.2.3.
+- {linkbase}83[#83] - Switch to official release of Thymeleaf JDK 8 integration.
+- {linkbase}9[#9] - Simplify Quantity API.
 
 :numbered!:
 [6.1.1]
@@ -95,11 +113,11 @@ Release date: 2015-10-09
 
 Release date: 2014-12-23
 
-- Add equals(…)  / hashCode() / toString() methods to value objects in payment package - #80
-- SpringSecurityAuthenticationManager should return Optional.empty() if no user is logged in - #76
-- Update architecture description to reflect allowed dependency from orders to inventory - #75
-- Make sure auto-configuration for web and security gets applied - #74
-- Reintroduce CharacterEncodingFilter bean declaration as the default in Boot 1.2.0 doesn't work as advertised - #72
+- {linkbase}80[#80] - Add equals(…)  / hashCode() / toString() methods to value objects in payment package.
+- {linkbase}76[#76] - SpringSecurityAuthenticationManager should return Optional.empty() if no user is logged in.
+- {linkbase}75[#75] - Update architecture description to reflect allowed dependency from orders to inventory.
+- {linkbase}74[#74] - Make sure auto-configuration for web and security gets applied.
+- {linkbase}72[#72] - Reintroduce CharacterEncodingFilter bean declaration as the default in Boot 1.2.0 doesn't work as advertised.
 
 :numbered!:
 [6.1]
@@ -107,14 +125,14 @@ Release date: 2014-12-23
 
 Release date: 2014-12-12
 
-- Include Thymeleaf / Spring Security integration library by default - #71
-- JavaDoc should list package protected types - #70
-- PersistentOrderManager needs to invoke save(…) after completing the order - #69
-- Remove deprecated OrderManager.add(…) and update(…) methods - #62
-- Add @EnableSalespoint to simplify bootstrapping of Salespoint applications - #57
-- Upgrade to Spring Boot 1.2 - #56
-- Provide component to let Thymeleaf render JDK 8 date formats correctly. - #52
-- Reduce visibility of constructors of SalespointIdentifier subtypes - #47
+- {linkbase}71[#71] - Include Thymeleaf / Spring Security integration library by default.
+- {linkbase}70[#70] - JavaDoc should list package protected types.
+- {linkbase}69[#69] - PersistentOrderManager needs to invoke save(…) after completing the order.
+- {linkbase}62[#62] - Remove deprecated OrderManager.add(…) and update(…) methods.
+- {linkbase}57[#57] - Add @EnableSalespoint to simplify bootstrapping of Salespoint applications.
+- {linkbase}56[#56] - Upgrade to Spring Boot 1.2.
+- {linkbase}52[#52] - Provide component to let Thymeleaf render JDK 8 date formats correctly.
+- {linkbase}47[#47] - Reduce visibility of constructors of SalespointIdentifier subtypes.
 
 :numbered!:
 [6.0.1]
@@ -122,17 +140,17 @@ Release date: 2014-12-12
 
 Release date: 2014-12-01
 
-- Subtracting quantities returns invalid result (not a bug). - #64
-- Make 6.1 the next development version - #63
-- Unify OrderManager.add(…) and ….update(…) - #60
-- Add port-property to MailSenderAutoConfiguration.MailProperties - #59
-- Upgrade to Spring Boot 1.1.9 - #58
-- UserAccount is missing an uniqueness constraint on identifier - #55
-- Fix JavaDoc for Catalog.findByName(…) - #54
-- Typo in dependency declaration on Salespoint homepage - #53
-- Release version 6.0.1. - #49
-- Provide UserAccountManager.findByUsername(…) to avoid leaking internals of UserAccountIdentifier - #48
-- Support private constructors in SalespointIdentifiers - #46
+- {linkbase}64[#64] - Subtracting quantities returns invalid result (not a bug).
+- {linkbase}63[#63] - Make 6.1 the next development version.
+- {linkbase}60[#60] - Unify OrderManager.add(…) and ….update(…).
+- {linkbase}59[#59] - Add port-property to MailSenderAutoConfiguration.MailProperties.
+- {linkbase}58[#58] - Upgrade to Spring Boot 1.1.9.
+- {linkbase}55[#55] - UserAccount is missing an uniqueness constraint on identifier.
+- {linkbase}54[#54] - Fix JavaDoc for Catalog.findByName(…).
+- {linkbase}53[#53] - Typo in dependency declaration on Salespoint homepage.
+- {linkbase}49[#49] - Release version 6.0.1.
+- {linkbase}48[#48] - Provide UserAccountManager.findByUsername(…) to avoid leaking internals of UserAccountIdentifier.
+- {linkbase}46[#46] - Support private constructors in SalespointIdentifiers.
 
 :numbered!:
 [6.0-GA]
@@ -140,10 +158,10 @@ Release date: 2014-12-01
 
 Release date: 2014-11-10
 
-- Improve Cart API - #44
-- Remove JPA meta-model types - #43
-- Release version 6.0 GA - #42
-- Enable global method security in SalespointSecurityConfiguration - #41
+- {linkbase}44[#44] - Improve Cart API.
+- {linkbase}43[#43] - Remove JPA meta-model types.
+- {linkbase}42[#42] - Release version 6.0 GA.
+- {linkbase}41[#41] - Enable global method security in SalespointSecurityConfiguration.
 
 :numbered!:
 [6.0-RC1]
@@ -151,16 +169,16 @@ Release date: 2014-11-10
 
 Release date: 2014-10-28
 
-- Release version 6.0 RC1 - #40
-- Upgrade to Tomcat 8.0.14 - #39
-- PersistentOrderManager.commit(…) sorts OrderLines into wrong intermediate collection - #38
-- LoggedInUserAccountArgumentResolver needs to be adapted to work with Optional<UserAccount> only - #37
-- Rename Basket to Cart and polish API - #36
-- Simplify setting up infrastructure to send emails - #35
-- Improve Inventory API - #34
-- Add Maven dependency block to static website - #33
-- Add changelog to website - #32
-- Remove deprecated types where possible - #10
+- {linkbase}40[#40] - Release version 6.0 RC1.
+- {linkbase}39[#39] - Upgrade to Tomcat 8.0.14.
+- {linkbase}38[#38] - PersistentOrderManager.commit(…) sorts OrderLines into wrong intermediate collection.
+- {linkbase}37[#37] - LoggedInUserAccountArgumentResolver needs to be adapted to work with Optional<UserAccount> only.
+- {linkbase}36[#36] - Rename Basket to Cart and polish API.
+- {linkbase}35[#35] - Simplify setting up infrastructure to send emails.
+- {linkbase}34[#34] - Improve Inventory API.
+- {linkbase}33[#33] - Add Maven dependency block to static website.
+- {linkbase}32[#32] - Add changelog to website.
+- {linkbase}10[#10] - Remove deprecated types where possible.
 
 :numbered!:
 [6.0-M1]
@@ -168,28 +186,28 @@ Release date: 2014-10-28
 
 Release date: 2014-10-14
 
-- Release 6.0 M1 - #4
-- Upgrade to Spring Boot 1.1.8 - #30
-- Renew technical documentation - #5
-- Improve design of JpaEntityConverter - #13
-- Release 6.0 M1 - #29
-- Add package-info.java files for packages - #18
-- Upgrade to Spring Boot 1.1.7 - #28
-- Add deployment of artifacts and documentation to project build - #17
-- Update Asciidoctor and APT plugin - #26
-- Overhaul domain code - #25
-- Use Spring Data repositories in inventory and accountancy as well - #24
-- Extract BlankWeb into separate repository - #14
-- Remove Calendar project and extract Blankweb into separate repository - #15
-- Pull up SalespointFramework to become top level project - #16
-- Bump version number to 6.0 - #22
-- Simplify Catalog - #19
-- Consolidate packages - #21
-- Remove Spielwiese - #20
-- Switch to JodaMoney - #11
-- Extract Guestbook and VideoShop projects into separate repositories - #1
-- Upgrade to Spring Boot 1.1.5 - #6
-- Simplify time management - #7
-- Switch from JodaTime to JDK 8 Date/Time abstractions - #8
-- Upgrade to latest Spring Boot and Spring Framework versions - #3
-- Setup Asciidoctor Maven build and sample file - #2
+- {linkbase}4[#4] - Release 6.0 M1
+- {linkbase}30[#30] - Upgrade to Spring Boot 1.1.8
+- {linkbase}5[#5] - Renew technical documentation
+- {linkbase}13[#13] - Improve design of JpaEntityConverter
+- {linkbase}29[#29] - Release 6.0 M1
+- {linkbase}18[#18] - Add package-info.java files for packages
+- {linkbase}28[#28] - Upgrade to Spring Boot 1.1.7
+- {linkbase}17[#17] - Add deployment of artifacts and documentation to project build
+- {linkbase}26[#26] - Update Asciidoctor and APT plugin
+- {linkbase}25[#25] - Overhaul domain code
+- {linkbase}24[#24] - Use Spring Data repositories in inventory and accountancy as well
+- {linkbase}14[#14] - Extract BlankWeb into separate repository
+- {linkbase}15[#15] - Remove Calendar project and extract Blankweb into separate repository
+- {linkbase}16[#16] - Pull up SalespointFramework to become top level project
+- {linkbase}22[#22] - Bump version number to 6.0
+- {linkbase}19[#19] - Simplify Catalog
+- {linkbase}21[#21] - Consolidate packages
+- {linkbase}20[#20] - Remove Spielwiese
+- {linkbase}11[#11] - Switch to JodaMoney
+- {linkbase}1[#1] - Extract Guestbook and VideoShop projects into separate repositories
+- {linkbase}6[#6] - Upgrade to Spring Boot 1.1.5
+- {linkbase}7[#7] - Simplify time management
+- {linkbase}8[#8] - Switch from JodaTime to JDK 8 Date/Time abstractions
+- {linkbase}3[#3] - Upgrade to latest Spring Boot and Spring Framework versions
+- {linkbase}2[#2] - Setup Asciidoctor Maven build and sample file

@@ -49,8 +49,9 @@ import com.jayway.jsonpath.JsonPath;
  */
 class ChangelogCreator {
 
-	private static final String MILESTONE_ID = "13";
+	private static final String MILESTONE_ID = "14";
 	private static final String URI_TEMPLATE = "https://api.github.com/repos/st-tu-dresden/salespoint/issues?milestone={id}&state=closed&sort=updated";
+	private static final String TICKET_TEMPLATE = "- {linkbase}/%s[#%s] - %s";
 
 	public static void main(String... args) throws Exception {
 
@@ -71,19 +72,16 @@ class ChangelogCreator {
 		System.out.println(String.format("[%s]", milestone.replace(" ", "-")));
 		System.out.println(String.format("== %s\n", milestone));
 		System.out.println(String.format("Release date: %s\n", date));
-		System.out.println("----");
 
 		for (Object title : titles) {
 
 			Object id = ids.next();
 
-			// String format = String.format("- link:https://github.com/st-tu-dresden/salespoint/issues/%s[#%s] - %s", id, id,
-			// String format = String.format("- #%s - %s", id, title);
+			String ticket = String.format(TICKET_TEMPLATE, id, id, title);
+			ticket = ticket.endsWith(".") ? ticket : ticket.concat(".");
 
-			System.out.println(String.format("- %s - #%s", title, id));
+			System.out.println(ticket);
 		}
-
-		System.out.println("----");
 	}
 
 	private static RestTemplate setUpRestTemplate() throws IOException {
