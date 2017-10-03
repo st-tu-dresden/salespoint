@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.6.RELEASE</version>
+		<version>1.5.7.RELEASE</version>
 		<relativePath />
 	</parent>
 
@@ -170,7 +170,7 @@
 			<plugin>
 				<groupId>org.asciidoctor</groupId>
 				<artifactId>asciidoctor-maven-plugin</artifactId>
-				<version>1.5.5</version>
+				<version>1.5.6</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.asciidoctor</groupId>
@@ -237,8 +237,8 @@
 	<scm>
 		<url>https://github.com/st-tu-dresden/salespoint</url>
 		<connection>scm:git:https://github.com/st-tu-dresden/salespoint</connection>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<distributionManagement>
 		<repository>
