@@ -144,7 +144,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 		assertThat(result.iterator().next(), is(order));
 	}
 
-	@Test // #61(expected = IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class) // #61
 	public void findOrdersBetweenWhenToLowerThenFrom() {
 
 		order = orderManager.save(order);
