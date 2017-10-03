@@ -84,8 +84,9 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 		Password password = userAccount.getPassword();
 
-		userAccount.setPassword(
-				password.isEncrypted() ? password : Password.encrypted(passwordEncoder.encode(password.getPassword())));
+		if (!password.isEncrypted()) {
+			userAccount.setPassword(Password.encrypted(passwordEncoder.encode(password.getPassword())));
+		}
 
 		return repository.save(userAccount);
 	}
@@ -99,6 +100,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 	public void enable(UserAccountIdentifier userAccountIdentifier) {
 
 		Assert.notNull(userAccountIdentifier, "UserAccountIdentifier must not be null!");
+
 		get(userAccountIdentifier).ifPresent(account -> account.setEnabled(true));
 	}
 
@@ -111,6 +113,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 	public void disable(UserAccountIdentifier userAccountIdentifier) {
 
 		Assert.notNull(userAccountIdentifier, "UserAccountIdentifier must not be null!");
+
 		get(userAccountIdentifier).ifPresent(account -> account.setEnabled(false));
 	}
 

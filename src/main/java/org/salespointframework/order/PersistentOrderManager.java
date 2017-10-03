@@ -24,7 +24,6 @@ import org.salespointframework.core.Streamable;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -41,7 +40,6 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	private final @NonNull BusinessTime businessTime;
 	private final @NonNull OrderRepository<T> orderRepository;
-	private final @NonNull ApplicationEventPublisher publisher;
 
 	/* 
 	 * (non-Javadoc)
@@ -52,7 +50,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 		Assert.notNull(order, "Order must be not null");
 
-		if (order.getDateCreated() == null) {
+		if (!order.isNew()) {
 			order.setDateCreated(businessTime.getTime());
 		}
 
@@ -67,6 +65,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	public Optional<T> get(OrderIdentifier orderIdentifier) {
 
 		Assert.notNull(orderIdentifier, "orderIdentifier must not be null");
+
 		return orderRepository.findOne(orderIdentifier);
 	}
 
@@ -78,6 +77,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	public boolean contains(OrderIdentifier orderIdentifier) {
 
 		Assert.notNull(orderIdentifier, "OrderIdentifier must not be null");
+
 		return orderRepository.exists(orderIdentifier);
 	}
 
@@ -98,6 +98,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	public Streamable<T> findBy(OrderStatus orderStatus) {
 
 		Assert.notNull(orderStatus, "OrderStatus must not be null");
+
 		return Streamable.of(orderRepository.findByOrderStatus(orderStatus));
 	}
 
@@ -109,6 +110,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	public Streamable<T> findBy(UserAccount userAccount) {
 
 		Assert.notNull(userAccount, "UserAccount must not be null");
+
 		return Streamable.of(orderRepository.findByUserAccount(userAccount));
 	}
 
@@ -131,6 +133,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 * @see org.salespointframework.order.OrderManager#completeOrder(org.salespointframework.order.Order)
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public void completeOrder(final T order) {
 
 		Assert.notNull(order, "Order must not be null!");
@@ -139,9 +142,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 			throw new OrderCompletionFailure(order, "Order is not paid yet!");
 		}
 
-		publisher.publishEvent(order.complete());
-
-		save(order);
+		save((T) order.complete());
 	}
 
 	/*
@@ -149,17 +150,16 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 * @see org.salespointframework.order.OrderManager#pay(org.salespointframework.order.Order)
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public boolean payOrder(T order) {
 
-		Assert.notNull(order, "order must not be null");
+		Assert.notNull(order, "Order must not be null");
 
 		if (!order.isPaymentExpected()) {
 			return false;
 		}
 
-		publisher.publishEvent(order.markPaid());
-
-		save(order);
+		save((T) order.markPaid());
 
 		return true;
 	}
@@ -171,7 +171,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	@Override
 	public boolean cancelOrder(T order) {
 
-		Assert.notNull(order, "order must not be null");
+		Assert.notNull(order, "Order must not be null");
 
 		if (order.isOpen()) {
 			order.cancel();

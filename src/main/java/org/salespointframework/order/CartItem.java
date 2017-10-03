@@ -15,8 +15,10 @@
  */
 package org.salespointframework.order;
 
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.util.UUID;
@@ -36,6 +38,7 @@ import org.springframework.util.Assert;
 @ToString
 @EqualsAndHashCode
 @Getter
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class CartItem implements Priced {
 
 	private final String id = UUID.randomUUID().toString();

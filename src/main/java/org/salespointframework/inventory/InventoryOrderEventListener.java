@@ -96,7 +96,7 @@ class InventoryOrderEventListener {
 			ProductIdentifier identifier = orderLine.getProductIdentifier();
 			Optional<InventoryItem> inventoryItem = inventory.findByProductIdentifier(identifier);
 
-			OrderLineCompletion completion = inventoryItem//
+			OrderLineCompletion completion = inventoryItem //
 					.map(it -> it.hasSufficientQuantity(orderLine.getQuantity())) //
 					.map(sufficient -> sufficient ? success(orderLine) : error(orderLine, NOT_ENOUGH_STOCK)) //
 					.orElse(error(orderLine, NO_INVENTORY_ITEM));

@@ -23,6 +23,9 @@ import lombok.ToString;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,6 +46,8 @@ import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.core.Streamable;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.useraccount.UserAccount;
+import org.springframework.data.domain.AfterDomainEventPublication;
+import org.springframework.data.domain.DomainEvents;
 import org.springframework.util.Assert;
 
 /**
@@ -70,7 +75,8 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	private UserAccount userAccount;
 
 	@Getter //
-	@Setter(AccessLevel.PACKAGE) private LocalDateTime dateCreated = null;
+	@Setter(AccessLevel.PACKAGE) //
+	private LocalDateTime dateCreated = null;
 
 	@Getter
 	// tag::orderStatus[]
@@ -84,6 +90,8 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	@OneToMany(cascade = CascadeType.ALL) //
 	private Set<ChargeLine> chargeLines = new HashSet<ChargeLine>();
 
+	private transient final Collection<Object> events = new ArrayList<>();
+
 	/**
 	 * Creates a new Order
 	 * 
@@ -92,7 +100,9 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	public Order(UserAccount userAccount) {
 
 		Assert.notNull(userAccount, "userAccount must not be null");
+
 		this.userAccount = userAccount;
+		this.dateCreated = LocalDateTime.now();
 	}
 
 	/**
@@ -108,6 +118,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 		this.userAccount = userAccount;
 		this.paymentMethod = paymentMethod;
+		this.dateCreated = LocalDateTime.now();
 	}
 
 	/* 
@@ -228,11 +239,13 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		this.paymentMethod = paymentMethod;
 	}
 
-	OrderCompleted complete() {
+	Order complete() {
 
 		this.orderStatus = OrderStatus.COMPLETED;
 
-		return OrderCompleted.of(this);
+		registerEvent(OrderCompleted.of(this));
+
+		return this;
 	}
 
 	void cancel() {
@@ -247,11 +260,13 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		return orderStatus == OrderStatus.OPEN && paymentMethod != null;
 	}
 
-	OrderPaid markPaid() {
+	Order markPaid() {
 
 		this.orderStatus = OrderStatus.PAID;
 
-		return OrderPaid.of(this);
+		registerEvent(OrderPaid.of(this));
+
+		return this;
 	}
 
 	/**
@@ -267,11 +282,46 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	@Value(staticConstructor = "of")
 	public static class OrderCompleted {
+
 		Order order;
+
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		public String toString() {
+			return "OrderCompleted";
+		}
 	}
 
 	@Value(staticConstructor = "of")
 	public static class OrderPaid {
+
 		Order order;
+
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		public String toString() {
+			return "OrderPaid";
+		}
+	}
+
+	private <T> T registerEvent(T event) {
+
+		this.events.add(event);
+
+		return event;
+	}
+
+	@DomainEvents
+	Collection<Object> getEvents() {
+		return Collections.unmodifiableCollection(events);
+	}
+
+	@AfterDomainEventPublication
+	void wipeEvents() {
+		this.events.clear();
 	}
 }

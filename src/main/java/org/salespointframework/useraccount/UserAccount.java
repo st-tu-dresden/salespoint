@@ -15,6 +15,7 @@
  */
 package org.salespointframework.useraccount;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,7 +53,8 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 	@AttributeOverride(name = "id", column = @Column(name = "USERACCOUNT_ID")) //
 	private UserAccountIdentifier userAccountIdentifier;
 
-	@Getter @Setter //
+	@Getter //
+	@Setter(AccessLevel.PACKAGE) //
 	@Column(nullable = false) //
 	private Password password;
 

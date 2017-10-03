@@ -53,13 +53,14 @@ public class Cart implements Streamable<CartItem>, Priced {
 		Assert.notNull(product, "Product must not be null!");
 		Assert.notNull(quantity, "Quantity must not be null!");
 
-		return items.stream().//
-				filter(item -> item.getProduct().equals(product)).findFirst().//
-				map(item -> {
-					this.removeItem(item.getId());
+		return items.stream() //
+				.filter(item -> item.getProduct().equals(product)) //
+				.findFirst() //
+				.map(item -> {
+					removeItem(item.getId());
 					return addItem(product, item.getQuantity().add(quantity));
-				}).//
-				orElseGet(() -> addItem(product, quantity));
+				}) //
+				.orElseGet(() -> addItem(product, quantity));
 	}
 
 	/**
@@ -72,10 +73,11 @@ public class Cart implements Streamable<CartItem>, Priced {
 
 		Assert.notNull(identifier, "CartItem identifier must not be null!");
 
-		return getItem(identifier).map(item -> {
-			items.remove(item);
-			return item;
-		});
+		return getItem(identifier)//
+				.map(item -> {
+					items.remove(item);
+					return item;
+				});
 	}
 
 	/**
@@ -125,9 +127,10 @@ public class Cart implements Streamable<CartItem>, Priced {
 	@Override
 	public MonetaryAmount getPrice() {
 
-		return items.stream().//
-				map(CartItem::getPrice).//
-				reduce((left, right) -> left.add(right)).orElse(Money.of(0, Currencies.EURO));
+		return items.stream() //
+				.map(CartItem::getPrice) //
+				.reduce((left, right) -> left.add(right))//
+				.orElse(Money.of(0, Currencies.EURO));
 	}
 
 	/* 

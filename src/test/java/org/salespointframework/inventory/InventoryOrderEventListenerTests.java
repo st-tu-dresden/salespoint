@@ -77,7 +77,7 @@ public class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #144
-	public void triggersExceptionFoInsufficientStock() {
+	public void triggersExceptionForInsufficientStock() {
 
 		UserAccount user = userAccounts.create("username", "password");
 
