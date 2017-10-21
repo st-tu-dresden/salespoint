@@ -24,7 +24,7 @@ Models and design patterns employed in Salespoint {majorversion} are inspired by
 Working with Salespoint requires some basic knowledge of the underlying technologies such as the Spring Framework as well as JPA to implement the persistence layer. http://static.olivergierke.de/spring-webapps/index.html[This script] gives you an introduction into these technologies. Also the https://github.com/st-tu-dresden/guestbook[Guestbook] sample project is a good starting point to get familiar with the technology stack.
 
 === The Videoshop sample project
-To give you an example of waht applications built on top of Salespoint can actually look like, we provide the https://github.com/st-tu-dresden/videoshop[Videoshop] sample project that covers a few key areas:
+To give you an example of what applications built on top of Salespoint can actually look like, we provide the https://github.com/st-tu-dresden/videoshop[Videoshop] sample project that covers a few key areas:
 
 * Using and extending the business modules provided by Salespoint to abstract a concrete problem domain.
 * Implementing a web layer (controllers, views) on top of Java based business services of that business domain.
