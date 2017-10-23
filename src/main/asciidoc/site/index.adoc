@@ -77,7 +77,7 @@ The primary sample project for Salespoint applications is the https://github.com
 
 [[resources.sample-projects.guestbook]]
 ==== Guestbook
-If you want to familiarize your self with the technology stack that Salespoint link:salespoint-reference.adoc#stack[is built upon], check out the https://github.com/st-tu-dresden/guestbook[Guestbook project]. It's a simple guestbook web application built solely on top og Spring Boot, Spring MVC, Spring Data JPA as well as Thymeleaf and Bootstrap.
+If you want to familiarize your self with the technology stack that Salespoint link:salespoint-reference.html#stack[is built upon], check out the https://github.com/st-tu-dresden/guestbook[Guestbook project]. It's a simple guestbook web application built solely on top og Spring Boot, Spring MVC, Spring Data JPA as well as Thymeleaf and Bootstrap.
 
 [[appendix]]
 = Appendix
