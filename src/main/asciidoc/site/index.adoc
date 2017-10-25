@@ -64,7 +64,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 <dependency>
   <groupId>de.tudresden.inf.st</groupId>
   <artifactId>salespoint-framework</artifactId>
-  <version>6.4.0.BUILD-SNAPSHOT</version>
+  <version>7.0.0.BUILD-SNAPSHOT</version>
 </dependency>
 ----
 
