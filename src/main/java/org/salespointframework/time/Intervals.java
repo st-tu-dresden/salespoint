@@ -15,8 +15,8 @@
  */
 package org.salespointframework.time;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,12 +43,11 @@ public class Intervals implements Streamable<Interval> {
 	 * @param end must not be {@literal null}.
 	 * @param duration must not be {@literal null}.
 	 */
-	private Intervals(LocalDateTime start, LocalDateTime end, Duration duration) {
+	private Intervals(LocalDateTime start, LocalDateTime end, TemporalAmount duration) {
 
 		Assert.notNull(start, "Start date must not be null!");
 		Assert.notNull(end, "End date must not be null!");
 		Assert.notNull(duration, "Duration must not be null!");
-		Assert.isTrue(!duration.isNegative(), "Duration must not be negative");
 
 		this.intervals = getIntervals(start, end, duration);
 	}
@@ -60,7 +59,7 @@ public class Intervals implements Streamable<Interval> {
 	 * @param duration must not be {@literal null}.
 	 * @return
 	 */
-	public static Intervals divide(Interval interval, Duration duration) {
+	public static Intervals divide(Interval interval, TemporalAmount duration) {
 
 		Assert.notNull(interval, "Interval must not be null!");
 		Assert.notNull(duration, "Duration must not be null!");
@@ -76,7 +75,7 @@ public class Intervals implements Streamable<Interval> {
 	 * @param duration must not be {@literal null}.
 	 * @return
 	 */
-	private static Collection<Interval> getIntervals(LocalDateTime start, LocalDateTime end, Duration duration) {
+	private static Collection<Interval> getIntervals(LocalDateTime start, LocalDateTime end, TemporalAmount duration) {
 
 		LocalDateTime target = start.plus(duration);
 
