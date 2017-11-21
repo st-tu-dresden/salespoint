@@ -16,6 +16,7 @@
 package org.salespointframework.accountancy;
 
 import java.time.Duration;
+import java.time.temporal.TemporalAmount;
 import java.util.Map;
 import java.util.Optional;
 
@@ -88,7 +89,7 @@ public interface Accountancy {
 	 * @return a map, with intervals of {@code period} length between {@code from} and {@code to} as keys, and as value an
 	 *         <code>Iterable</code> containing all entries within the key- <code>Interval</code>
 	 */
-	Map<Interval, Streamable<AccountancyEntry>> find(Interval interval, Duration duration);
+	Map<Interval, Streamable<AccountancyEntry>> find(Interval interval, TemporalAmount duration);
 
 	/**
 	 * Returns the sum of the field {@code amount} of all {@link AccountancyEntry}s which have their {@code date} within
@@ -108,5 +109,5 @@ public interface Accountancy {
 	 *         value a {@link MonetaryAmount} object, equal to the sum of the amount fields of all entries within the key-
 	 *         {@link Interval}.
 	 */
-	Map<Interval, MonetaryAmount> salesVolume(Interval interval, Duration duration);
+	Map<Interval, MonetaryAmount> salesVolume(Interval interval, TemporalAmount duration);
 }

@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.*;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.time.Duration;
+import java.time.temporal.TemporalAmount;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -103,31 +103,30 @@ class PersistentAccountancy implements Accountancy {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.accountancy.Accountancy#find(java.time.LocalDateTime, java.time.LocalDateTime, java.time.Duration)
+	 * @see org.salespointframework.accountancy.Accountancy#find(org.salespointframework.time.Interval, java.time.temporal.TemporalAmount)
 	 */
 	@Override
-	public final Map<Interval, Streamable<AccountancyEntry>> find(Interval interval, Duration duration) {
+	public final Map<Interval, Streamable<AccountancyEntry>> find(Interval interval, TemporalAmount duration) {
 
 		Assert.notNull(interval, "Interval must not be null");
-		Assert.notNull(duration, "Duration must not be null");
+		Assert.notNull(duration, "TemporalAmount must not be null");
 
 		return Intervals.divide(interval, duration).stream().collect(toMap(identity(), this::find));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.accountancy.Accountancy#salesVolume(java.time.LocalDateTime, java.time.LocalDateTime, java.time.Duration)
+	 * @see org.salespointframework.accountancy.Accountancy#salesVolume(org.salespointframework.time.Interval, java.time.temporal.TemporalAmount)
 	 */
 	@Override
-	public final Map<Interval, MonetaryAmount> salesVolume(Interval interval, Duration period) {
+	public final Map<Interval, MonetaryAmount> salesVolume(Interval interval, TemporalAmount duration) {
 
 		Assert.notNull(interval, "Interval must not be null");
-		Assert.notNull(period, "period must not be null");
+		Assert.notNull(duration, "TemporalAmount must not be null");
 
-		return find(interval, period).entrySet().stream().//
-				collect(toMap(Entry::getKey,
-						entry -> entry.getValue().stream().//
-								map(AccountancyEntry::getValue).//
-								reduce(Money.of(0, Currencies.EURO), MonetaryAmount::add)));
+		return find(interval, duration).entrySet().stream().//
+				collect(toMap(Entry::getKey, entry -> entry.getValue().stream().//
+						map(AccountancyEntry::getValue).//
+						reduce(Money.of(0, Currencies.EURO), MonetaryAmount::add)));
 	}
 }
