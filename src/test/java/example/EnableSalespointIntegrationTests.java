@@ -23,10 +23,12 @@ import org.junit.runner.RunWith;
 import org.salespointframework.EnableSalespoint;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.support.FormattingConversionService;
 import org.springframework.security.access.method.MethodSecurityMetadataSource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
@@ -62,5 +64,14 @@ public class EnableSalespointIntegrationTests {
 
 		// Assert that @EnableGlobalMethodSecurity works
 		assertThat(securityMetadataSource, is(notNullValue()));
+	}
+
+	@Autowired FormattingConversionService conversionService;
+
+	@Test // #185
+	public void registersQuantityFormatter() {
+
+		conversionService.canConvert(Quantity.class, String.class);
+		conversionService.canConvert(String.class, Quantity.class);
 	}
 }

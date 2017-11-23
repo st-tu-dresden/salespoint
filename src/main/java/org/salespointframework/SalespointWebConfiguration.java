@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -36,6 +37,7 @@ import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 public class SalespointWebConfiguration extends WebMvcConfigurerAdapter {
 
 	private @Autowired List<? extends Converter<?, ?>> converters;
+	private @Autowired List<? extends Formatter<?>> formatters;
 	private @Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
 
 	/**
@@ -64,9 +66,12 @@ public class SalespointWebConfiguration extends WebMvcConfigurerAdapter {
 	 * @see org.salespointframework.support.SalespointIdentifierConverter
 	 * @see org.salespointframework.support.JpaEntityConverter
 	 * @see org.salespointframework.support.StringToRoleConverter
+	 * @see org.salespointframework.support.QuantityFormatter
 	 */
 	@Override
 	public void addFormatters(FormatterRegistry registry) {
+
 		converters.forEach(registry::addConverter);
+		formatters.forEach(registry::addFormatter);
 	}
 }
