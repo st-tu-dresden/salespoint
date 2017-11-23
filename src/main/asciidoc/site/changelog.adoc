@@ -4,6 +4,24 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[6.4.1]
+== 6.4.1
+
+Release date: 2017-11-23
+
+- {linkbase}/187[#187] - Add build status image to README.
+- {linkbase}/184[#184] - Fix too tight unit test for Quantity.
+- {linkbase}/185[#185] - Add dedicated Formatter implementation for Quantity.
+- {linkbase}/186[#186] - Remove custom registration of Thymeleaf JDK 8 date time dialect.
+- {linkbase}/183[#183] - Add configuration for Travis CI.
+- {linkbase}/181[#181] - Upgrade to Spring Boot 1.5.8.
+- {linkbase}/182[#182] - AccountancyEntry's date isn't mapped as timestamp so that lookup by Interval might fail.
+- {linkbase}/179[#179] - Fix next development version in website.
+- {linkbase}/177[#177] - Typo in Technical Reference.
+- {linkbase}/178[#178] - Fixed link in index.adoc.
+- {linkbase}/176[#176] - Document release procedure.
+
+:numbered!:
 [6.4-GA]
 == 6.4 GA
 
