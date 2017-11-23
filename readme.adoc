@@ -1,5 +1,7 @@
 # Salespoint Framework
 
+image:https://travis-ci.org/st-tu-dresden/salespoint.svg?branch=master["Build Status", link="https://travis-ci.org/st-tu-dresden/salespoint"]
+
 ## Prerequisites
 
 - Java 8
