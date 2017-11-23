@@ -94,6 +94,17 @@ public class Quantity {
 	}
 
 	/**
+	 * Creates a new {@link Quantity} of the given amount and {@link Metric}.
+	 * 
+	 * @param amount must not be {@literal null}.
+	 * @param metric must not be {@literal null}.
+	 * @return
+	 */
+	public static Quantity of(BigDecimal amount, Metric metric) {
+		return new Quantity(amount, metric);
+	}
+
+	/**
 	 * Returns whether the {@link Quantity} is compatible with the given {@link Metric}.
 	 * 
 	 * @param metric must not be {@literal null}.

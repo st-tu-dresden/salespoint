@@ -55,8 +55,10 @@ public enum Metric {
 	 */
 	public static Metric from(String abbreviation) {
 
+		String source = abbreviation.trim();
+
 		for (Metric metric : Metric.values()) {
-			if (metric.getAbbreviation().equals(abbreviation)) {
+			if (metric.getAbbreviation().equals(source)) {
 				return metric;
 			}
 		}
