@@ -15,8 +15,9 @@
  */
 package org.salespointframework.quantity;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
@@ -93,14 +94,14 @@ public class QuantityUnitTests {
 		assertThat(Quantity.of(1).isNegative(), is(false));
 	}
 
-	@Test // #99
+	@Test // #99, #184
 	public void printsReasonableToString() {
 
-		assertThat(Quantity.of(5).toString(), is("5"));
-		assertThat(Quantity.of(5, Metric.LITER).toString(), is("5l"));
-		assertThat(Quantity.of(5.0, Metric.LITER).toString(), is("5l"));
-		assertThat(Quantity.of(5.1, Metric.LITER).toString(), is("5,1l"));
-		assertThat(Quantity.of(5.11, Metric.LITER).toString(), is("5,11l"));
+		assertThat(Quantity.of(5).toString()).isEqualTo("5");
+		assertThat(Quantity.of(5, Metric.LITER).toString()).containsSequence("5", "l");
+		assertThat(Quantity.of(5.0, Metric.LITER).toString()).containsSequence("5", "l").doesNotContain("0");
+		assertThat(Quantity.of(5.1, Metric.LITER).toString()).containsSequence("5", "1", "l");
+		assertThat(Quantity.of(5.11, Metric.LITER).toString()).containsSequence("5", "11", "l");
 	}
 
 	@Test // #129
