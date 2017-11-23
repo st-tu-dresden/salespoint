@@ -44,11 +44,12 @@ To deploy the website and reference documentation, run `mvn site:deploy`.
 
 ## Release
 
-1. Make sure all tickets are closed, except the release one.
-2. Tweak `ChangelogCreator` (in `src/test/java`) to point to the milestone to be released. Run the creator. Copy console output into `src/main/asciidoc/site/changelog.adoc`.
-3. Commit as `#?? - Prepare release $version.`.
-4. Run `mvn release:prepare`.
-5. Edit commits to match commit message format, re-create tag.
-6. Push changes & tag.
-7. Check out tag.
-8. Run `mvn clean deploy site:deploy -Prelease -DskipTests`.
+. Make sure all tickets are closed, except the release one.
+. Tweak `ChangelogCreator` (in `src/test/java`) to point to the milestone to be released. Run the creator. Copy console output into `src/main/asciidoc/site/changelog.adoc`.
+. Update `src/main/asciidoc/site/index.adoc` to reflect version about to be released and correct next development version.
+. Commit as `#?? - Prepare release $version.`.
+. Run `mvn release:prepare -DscmCommentPrefix="$releaseTicketId - "`.
+. Edit commits to match commit message format, re-create tag.
+. Push changes & tag.
+. Check out tag.
+. Run `mvn clean deploy site:deploy -Prelease -DskipTests`.
