@@ -49,7 +49,6 @@ public class EnableSalespointIntegrationTests {
 	@Autowired ApplicationContext context;
 	@Autowired Catalog<Product> catalog;
 	@Autowired DummyRepository repository;
-	@Autowired Java8TimeDialect dialect;
 	@Autowired MethodSecurityMetadataSource securityMetadataSource;
 
 	@Test
@@ -58,9 +57,6 @@ public class EnableSalespointIntegrationTests {
 		assertThat(context, is(notNullValue()));
 		assertThat(repository, is(notNullValue()));
 		assertThat(catalog, is(notNullValue()));
-
-		// Make sure the web configuration is included if not declared explicitly
-		assertThat(dialect, is(notNullValue()));
 
 		// Assert that @EnableGlobalMethodSecurity works
 		assertThat(securityMetadataSource, is(notNullValue()));
@@ -73,5 +69,12 @@ public class EnableSalespointIntegrationTests {
 
 		conversionService.canConvert(Quantity.class, String.class);
 		conversionService.canConvert(String.class, Quantity.class);
+	}
+
+	@Autowired Java8TimeDialect dialect;
+
+	@Test // #186
+	public void registersJava8ThymeleafDialect() {
+		assertThat(dialect, is(notNullValue()));
 	}
 }

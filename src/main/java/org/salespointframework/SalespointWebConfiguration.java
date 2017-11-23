@@ -18,14 +18,12 @@ package org.salespointframework;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 /**
  * Web-specific configuration for Salespoint. See the individual {@code @Bean} methods for details.
@@ -39,16 +37,6 @@ public class SalespointWebConfiguration extends WebMvcConfigurerAdapter {
 	private @Autowired List<? extends Converter<?, ?>> converters;
 	private @Autowired List<? extends Formatter<?>> formatters;
 	private @Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
-
-	/**
-	 * Special dialect to support Java 8 type formatting.
-	 * 
-	 * @return
-	 */
-	@Bean
-	public Java8TimeDialect java8TimeDialect() {
-		return new Java8TimeDialect();
-	}
 
 	/**
 	 * Registers the {@link Salespoint} specific {@link HandlerMethodArgumentResolver} with Spring MVC.
