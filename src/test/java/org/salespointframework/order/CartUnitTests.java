@@ -15,10 +15,10 @@
  */
 package org.salespointframework.order;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.Optional;
 
@@ -158,5 +158,34 @@ public class CartUnitTests {
 		CartItem cartItem = cart.addOrUpdateItem(PRODUCT, 10.0);
 
 		assertThat(cartItem.getQuantity()).isEqualTo(Quantity.of(10.0));
+	}
+
+	@Test // #191
+	public void keepsIdOfUpdatedCartItem() {
+
+		CartItem cartItem = cart.addOrUpdateItem(PRODUCT, QUANTITY);
+		CartItem updated = cart.addOrUpdateItem(PRODUCT, QUANTITY);
+
+		assertThat(updated.getId()).isEqualTo(cartItem.getId());
+	}
+
+	@Test // #191
+	public void iteratorKeepsInsertionOrderEvenAfterUpdateItem() {
+
+		Money money = Money.of(1, Currencies.EURO);
+
+		Product product1 = new Product("product_1", money);
+		Product product2 = new Product("product_2", money);
+		Product product3 = new Product("product_2", money);
+
+		cart.addOrUpdateItem(product1, QUANTITY);
+		cart.addOrUpdateItem(product2, QUANTITY);
+		cart.addOrUpdateItem(product3, QUANTITY);
+
+		assertThat(cart).extracting(CartItem::getProduct).containsExactly(product1, product2, product3);
+
+		cart.addOrUpdateItem(product1, QUANTITY);
+
+		assertThat(cart).extracting(CartItem::getProduct).containsExactly(product1, product2, product3);
 	}
 }
