@@ -15,8 +15,8 @@
  */
 package org.salespointframework.time;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -26,7 +26,7 @@ import org.junit.Test;
 
 /**
  * Unit tests for {@link DefaultBusinessTime}.
- * 
+ *
  * @author Oliver Gierke
  */
 public class DefaultBusinessTimeUnitTests {
@@ -52,6 +52,48 @@ public class DefaultBusinessTimeUnitTests {
 	@Test // #7
 	public void forwardingMultipleTimesAccumulatesOffset() throws Exception {
 		assertTimeShifted(businessTime.getTime(), 2, 4, 12);
+	}
+
+	@Test
+	public void resetsTime() throws Exception {
+		businessTime.forward(Duration.ofDays(42));
+		businessTime.reset();
+
+		LocalDateTime businessNow = businessTime.getTime();
+		Thread.sleep(20);
+		LocalDateTime ldtNow = LocalDateTime.now();
+
+		assertThat(ldtNow.isAfter(businessNow), is(true));
+	}
+
+	@Test
+	public void resetsTimeDespiteMultipleForwards() throws Exception {
+		businessTime.forward(Duration.ofDays(42));
+		businessTime.forward(Duration.ofDays(13));
+		businessTime.reset();
+
+		LocalDateTime businessNow = businessTime.getTime();
+		Thread.sleep(20);
+		LocalDateTime ldtNow = LocalDateTime.now();
+
+		assertThat(ldtNow.isAfter(businessNow), is(true));
+	}
+
+	@Test
+	public void resetWithoutForwardDoesntBreakTime() throws Exception {
+		businessTime.reset();
+
+		LocalDateTime businessNow = businessTime.getTime();
+		LocalDateTime ldtNow = LocalDateTime.now();
+
+		assertThat(businessNow.isBefore(ldtNow.plusSeconds(1)), is(true));
+		assertThat(businessNow.plusSeconds(1).isAfter(ldtNow), is(true));
+	}
+
+	@Test
+	public void forwardsCorrectlyAfterReset() throws Exception {
+		businessTime.reset();
+		assertTimeShifted(businessTime.getTime(), 42);
 	}
 
 	private void assertTimeShifted(LocalDateTime reference, int... days) throws Exception {

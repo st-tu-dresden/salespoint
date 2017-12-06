@@ -49,4 +49,9 @@ public interface BusinessTime {
 	 * @return
 	 */
 	Duration getOffset();
+	
+	/**
+	 * Undoes any forwarding. Afterwards any call to {@link #getTime()} will be equivalent to the system's time again.
+	 */
+	void reset();
 }
