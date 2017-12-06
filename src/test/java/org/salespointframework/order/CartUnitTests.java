@@ -15,10 +15,10 @@
  */
 package org.salespointframework.order;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.*;
 
 import org.javamoney.moneta.Money;
 import org.junit.Before;
@@ -29,7 +29,7 @@ import org.salespointframework.quantity.Quantity;
 
 /**
  * Unit tests for {@link Cart}.
- * 
+ *
  * @author Paul Henke
  * @author Oliver Gierke
  */
@@ -50,8 +50,8 @@ public class CartUnitTests {
 
 		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
-		assertThat(cart, hasItem(reference));
-		assertThat(cart, is(iterableWithSize(1)));
+		assertThat(cart).contains(reference);
+		assertThat(cart).hasSize(1);
 	}
 
 	@Test(expected = IllegalArgumentException.class) // #44
@@ -73,9 +73,10 @@ public class CartUnitTests {
 	public void removesItemsCorrectly() {
 
 		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
+		Optional<CartItem> removed = cart.removeItem(reference.getId());
 
-		assertThat(cart.removeItem(reference.getId()).isPresent(), is(true));
-		assertThat(cart, is(iterableWithSize(0)));
+		assertThat(removed).isNotEmpty();
+		assertThat(cart).hasSize(0);
 	}
 
 	@Test // #44
@@ -84,8 +85,7 @@ public class CartUnitTests {
 		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 		Optional<CartItem> item = cart.getItem(reference.getId());
 
-		assertThat(item.isPresent(), is(true));
-		assertThat(item.get(), is(reference));
+		assertThat(item).isNotEmpty().contains(reference);
 	}
 
 	@Test // #44
@@ -93,7 +93,7 @@ public class CartUnitTests {
 
 		cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
-		assertThat(cart.getItem("foobar"), is(Optional.empty()));
+		assertThat(cart.getItem("foobar")).isEmpty();
 	}
 
 	@Test(expected = IllegalArgumentException.class) // #44
@@ -107,17 +107,17 @@ public class CartUnitTests {
 		cart.addOrUpdateItem(PRODUCT, QUANTITY);
 		cart.clear();
 
-		assertThat(cart, is(iterableWithSize(0)));
-		assertThat(cart.isEmpty(), is(true));
+		assertThat(cart).hasSize(0);
+		assertThat(cart.isEmpty()).isTrue();
 	}
 
 	@Test // #44
 	public void isEmpty() {
 
-		assertThat(cart.isEmpty(), is(true));
+		assertThat(cart.isEmpty()).isTrue();
 
 		cart.addOrUpdateItem(PRODUCT, QUANTITY);
-		assertThat(cart.isEmpty(), is(false));
+		assertThat(cart.isEmpty()).isFalse();
 	}
 
 	@Test(expected = IllegalArgumentException.class) // #44
@@ -130,15 +130,41 @@ public class CartUnitTests {
 
 		CartItem item = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
-		assertThat(item.getProduct(), is(PRODUCT));
-		assertThat(item.getQuantity(), is(QUANTITY));
-		assertThat(cart, is(iterableWithSize(1)));
+		assertThat(item.getProduct()).isEqualTo(PRODUCT);
+		assertThat(item.getQuantity()).isEqualTo(QUANTITY);
+		assertThat(cart).hasSize(1);
 
 		CartItem updated = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
-		assertThat(updated, is(not(item)));
-		assertThat(cart, is(iterableWithSize(1)));
-		assertThat(updated.getProduct(), is(PRODUCT));
-		assertThat(updated.getQuantity(), is(QUANTITY.add(QUANTITY)));
+		assertThat(updated).isNotEqualTo(item);
+		assertThat(cart).hasSize(1);
+		assertThat(updated.getProduct()).isEqualTo(PRODUCT);
+		assertThat(updated.getQuantity()).isEqualTo(QUANTITY.add(QUANTITY));
+	}
+
+	@Test // #191
+	public void keepsIdOfUpdatedCartItem() {
+		CartItem cartItem = cart.addOrUpdateItem(PRODUCT, QUANTITY);
+		CartItem updated = cart.addOrUpdateItem(PRODUCT, QUANTITY);
+
+		assertThat(updated.getId()).isEqualTo(cartItem.getId());
+	}
+
+	@Test // #191
+	public void iteratorKeepsInsertionOrderEvenAfterUpdateItem() {
+		Money money = Money.of(1, Currencies.EURO);
+		Product product1 = new Product("product_1", money);
+		Product product2 = new Product("product_2", money);
+		Product product3 = new Product("product_2", money);
+
+		cart.addOrUpdateItem(product1, QUANTITY);
+		cart.addOrUpdateItem(product2, QUANTITY);
+		cart.addOrUpdateItem(product3, QUANTITY);
+
+		assertThat(cart).extracting(CartItem::getProduct).containsExactly(product1, product2, product3);
+
+		cart.addOrUpdateItem(product1, QUANTITY);
+
+		assertThat(cart).extracting(CartItem::getProduct).containsExactly(product1, product2, product3);
 	}
 }

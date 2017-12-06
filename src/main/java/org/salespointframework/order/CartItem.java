@@ -15,13 +15,9 @@
  */
 package org.salespointframework.order;
 
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-
-import java.util.UUID;
 
 import javax.money.MonetaryAmount;
 
@@ -31,42 +27,43 @@ import org.springframework.util.Assert;
 
 /**
  * A CartItem consists of a {@link Product} and a {@link Quantity}.
- * 
+ *
  * @author Paul Henke
  * @author Oliver Gierke
  */
 @ToString
 @EqualsAndHashCode
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class CartItem implements Priced {
 
-	private final String id = UUID.randomUUID().toString();
+	private final String id;
 	private final MonetaryAmount price;
 	private final Quantity quantity;
 	private final Product product;
 
 	/**
 	 * Creates a new {@link CartItem}.
-	 * 
-	 * @param product must not be {@literal null}.
+	 *
+	 * @param id       must not be {@literal null} or empty.
+	 * @param product  must not be {@literal null}.
 	 * @param quantity must not be {@literal null}.
 	 */
-	CartItem(Product product, Quantity quantity) {
-
+	CartItem(String id, Product product, Quantity quantity) {
+		Assert.hasText(id, "Id must not be empty!");
 		Assert.notNull(product, "Product must be not null!");
 		Assert.notNull(quantity, "Quantity must be not null!");
 
 		product.verify(quantity);
 
+		this.id = id;
+		this.product = product;
 		this.quantity = quantity;
 		this.price = product.getPrice().multiply(quantity.getAmount());
-		this.product = product;
 	}
 
 	/**
 	 * Returns the name of the {@link Product} associated with the {@link CartItem}.
-	 * 
+	 *
 	 * @return
 	 */
 	public final String getProductName() {
@@ -75,7 +72,7 @@ public class CartItem implements Priced {
 
 	/**
 	 * Creates an {@link OrderLine} from this CartItem.
-	 * 
+	 *
 	 * @return
 	 */
 	final OrderLine toOrderLine() {
