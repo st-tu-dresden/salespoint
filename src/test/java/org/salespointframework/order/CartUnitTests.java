@@ -53,19 +53,25 @@ public class CartUnitTests {
 		assertThat(cart).hasSize(1);
 	}
 
-	@Test(expected = IllegalArgumentException.class) // #44
+	@Test // #44
 	public void rejectsNullQuantityOnAdding() {
-		cart.addOrUpdateItem(PRODUCT, null);
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> cart.addOrUpdateItem(PRODUCT, null));
 	}
 
-	@Test(expected = IllegalArgumentException.class) // #44
+	@Test // #44
 	public void rejectsNullProductOnAdding() {
-		cart.addOrUpdateItem(null, QUANTITY);
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> cart.addOrUpdateItem(null, QUANTITY));
 	}
 
-	@Test(expected = IllegalArgumentException.class) // #44
+	@Test // #44
 	public void rejectsNullOnRemovingAnItem() {
-		cart.removeItem(null);
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> cart.removeItem(null));
 	}
 
 	@Test // #44
@@ -119,9 +125,11 @@ public class CartUnitTests {
 		assertThat(cart.isEmpty()).isFalse();
 	}
 
-	@Test(expected = IllegalArgumentException.class) // #44
+	@Test // #44
 	public void toOrderFail() {
-		cart.addItemsTo(null);
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> cart.addItemsTo(null));
 	}
 
 	@Test // #44
