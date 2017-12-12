@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
  * 
  * @author Paul Henke
  * @author Oliver Gierke
+ * @author Rico Bergmann
  */
 public interface BusinessTime {
 
