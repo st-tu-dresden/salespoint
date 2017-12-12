@@ -20,6 +20,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.Wither;
 
 import java.util.UUID;
 
@@ -41,9 +42,9 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class CartItem implements Priced {
 
-	private final String id = UUID.randomUUID().toString();
+	private final String id;
 	private final MonetaryAmount price;
-	private final Quantity quantity;
+	private final @Wither(AccessLevel.PRIVATE) Quantity quantity;
 	private final Product product;
 
 	/**
@@ -59,6 +60,7 @@ public class CartItem implements Priced {
 
 		product.verify(quantity);
 
+		this.id = UUID.randomUUID().toString();
 		this.quantity = quantity;
 		this.price = product.getPrice().multiply(quantity.getAmount());
 		this.product = product;
@@ -71,6 +73,19 @@ public class CartItem implements Priced {
 	 */
 	public final String getProductName() {
 		return product.getName();
+	}
+
+	/**
+	 * Returns a new {@link CartItem} that has the given {@link Quantity} added to the current one.
+	 * 
+	 * @param quantity must not be {@literal null}.
+	 * @return
+	 */
+	final CartItem add(Quantity quantity) {
+
+		Assert.notNull(quantity, "Quantity must not be null!");
+
+		return withQuantity(this.quantity.add(quantity));
 	}
 
 	/**

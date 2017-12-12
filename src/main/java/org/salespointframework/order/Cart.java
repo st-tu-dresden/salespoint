@@ -15,9 +15,9 @@
  */
 package org.salespointframework.order;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.money.MonetaryAmount;
@@ -32,12 +32,12 @@ import org.springframework.util.Assert;
 /**
  * Abstraction of a shopping cart.
  *
- * @authow Paul Henke
+ * @author Paul Henke
  * @author Oliver Gierke
  */
 public class Cart implements Streamable<CartItem>, Priced {
 
-	private final List<CartItem> items = new ArrayList<>();
+	private final Map<Product, CartItem> items = new LinkedHashMap<>();
 
 	/**
 	 * Creates a {@link CartItem} for the given {@link Product} and {@link Quantity}. If a {@link CartItem} for the given
@@ -53,14 +53,10 @@ public class Cart implements Streamable<CartItem>, Priced {
 		Assert.notNull(product, "Product must not be null!");
 		Assert.notNull(quantity, "Quantity must not be null!");
 
-		return items.stream() //
-				.filter(item -> item.getProduct().equals(product)) //
-				.findFirst() //
-				.map(item -> {
-					removeItem(item.getId());
-					return addItem(product, item.getQuantity().add(quantity));
-				}) //
-				.orElseGet(() -> addItem(product, quantity));
+		return this.items.compute(product, //
+				(it, item) -> item == null //
+						? new CartItem(it, quantity) //
+						: item.add(quantity));
 	}
 
 	/**
@@ -99,11 +95,8 @@ public class Cart implements Streamable<CartItem>, Priced {
 
 		Assert.notNull(identifier, "CartItem identifier must not be null!");
 
-		return getItem(identifier)//
-				.map(item -> {
-					items.remove(item);
-					return item;
-				});
+		return getItem(identifier) //
+				.map(item -> items.remove(item.getProduct()));
 	}
 
 	/**
@@ -115,7 +108,10 @@ public class Cart implements Streamable<CartItem>, Priced {
 	public Optional<CartItem> getItem(String identifier) {
 
 		Assert.notNull(identifier, "CartItem identifier must not be null!");
-		return items.stream().filter(item -> item.getId().equals(identifier)).findFirst();
+
+		return items.values().stream() //
+				.filter(item -> item.getId().equals(identifier)) //
+				.findFirst();
 	}
 
 	/**
@@ -143,7 +139,7 @@ public class Cart implements Streamable<CartItem>, Priced {
 	public void addItemsTo(Order order) {
 
 		Assert.notNull(order, "Order must not be null!");
-		items.forEach(item -> order.add(item.toOrderLine()));
+		items.values().forEach(item -> order.add(item.toOrderLine()));
 	}
 
 	/* 
@@ -153,9 +149,9 @@ public class Cart implements Streamable<CartItem>, Priced {
 	@Override
 	public MonetaryAmount getPrice() {
 
-		return items.stream() //
+		return items.values().stream() //
 				.map(CartItem::getPrice) //
-				.reduce((left, right) -> left.add(right))//
+				.reduce(MonetaryAmount::add) //
 				.orElse(Money.of(0, Currencies.EURO));
 	}
 
@@ -165,21 +161,6 @@ public class Cart implements Streamable<CartItem>, Priced {
 	 */
 	@Override
 	public Iterator<CartItem> iterator() {
-		return items.iterator();
-	}
-
-	/**
-	 * Adds a {@link CartItem} for the given {@link Product} with the given {@link Quantity} to the {@link Cart}.
-	 * 
-	 * @param product must not be {@literal null}.
-	 * @param quantity must not be {@literal null}.
-	 * @return
-	 */
-	private CartItem addItem(Product product, Quantity quantity) {
-
-		CartItem cartItem = new CartItem(product, quantity);
-		this.items.add(cartItem);
-
-		return cartItem;
+		return items.values().iterator();
 	}
 }
