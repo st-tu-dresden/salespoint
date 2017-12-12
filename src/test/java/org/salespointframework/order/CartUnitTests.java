@@ -15,8 +15,10 @@
  */
 package org.salespointframework.order;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertThat;
 
 import java.util.Optional;
 
@@ -140,5 +142,21 @@ public class CartUnitTests {
 		assertThat(cart, is(iterableWithSize(1)));
 		assertThat(updated.getProduct(), is(PRODUCT));
 		assertThat(updated.getQuantity(), is(QUANTITY.add(QUANTITY)));
+	}
+
+	@Test // #198
+	public void addsProductWithLongAmount() {
+
+		CartItem cartItem = cart.addOrUpdateItem(PRODUCT, 10L);
+
+		assertThat(cartItem.getQuantity()).isEqualTo(Quantity.of(10L));
+	}
+
+	@Test // #198
+	public void addsProductWithDoubleAmount() {
+
+		CartItem cartItem = cart.addOrUpdateItem(PRODUCT, 10.0);
+
+		assertThat(cartItem.getQuantity()).isEqualTo(Quantity.of(10.0));
 	}
 }

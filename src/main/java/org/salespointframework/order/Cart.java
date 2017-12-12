@@ -64,6 +64,32 @@ public class Cart implements Streamable<CartItem>, Priced {
 	}
 
 	/**
+	 * Creates a {@link CartItem} for the given {@link Product} and amount. If a {@link CartItem} for the given
+	 * {@link Product} already exists the {@link Cart} will be updated to reflect the combined {@link Quantity} for the
+	 * backing {@link CartItem}.
+	 * 
+	 * @param product must not be {@literal null}.
+	 * @param amount must not be {@literal null}.
+	 * @return
+	 */
+	public CartItem addOrUpdateItem(Product product, long amount) {
+		return addOrUpdateItem(product, product.createQuantity(amount));
+	}
+
+	/**
+	 * Creates a {@link CartItem} for the given {@link Product} and amount. If a {@link CartItem} for the given
+	 * {@link Product} already exists the {@link Cart} will be updated to reflect the combined {@link Quantity} for the
+	 * backing {@link CartItem}.
+	 * 
+	 * @param product must not be {@literal null}.
+	 * @param amount must not be {@literal null}.
+	 * @return
+	 */
+	public CartItem addOrUpdateItem(Product product, double amount) {
+		return addOrUpdateItem(product, product.createQuantity(amount));
+	}
+
+	/**
 	 * Removes the {@link CartItem} with the given identifier.
 	 * 
 	 * @param identifier must not be {@literal null}.

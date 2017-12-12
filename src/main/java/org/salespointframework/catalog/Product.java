@@ -149,6 +149,26 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 			throw new MetricMismatchException(String.format("Product %s does not support quantity %s!", this, quantity));
 		}
 	}
+	
+	/**
+	 * Creates a {@link Quantity} of the given amount and the current {@link Product}'s underlying {@link Metric}.
+	 * 
+	 * @param amount must not be {@literal null}.
+	 * @return
+	 */
+	public Quantity createQuantity(double amount) {
+		return Quantity.of(amount, metric);
+	}
+
+	/**
+	 * Creates a {@link Quantity} of the given amount and the current {@link Product}'s underlying {@link Metric}.
+	 * 
+	 * @param amount must not be {@literal null}.
+	 * @return
+	 */
+	public Quantity createQuantity(long amount) {
+		return Quantity.of(amount, metric);
+	}
 
 	/*
 	 * (non-Javadoc)
