@@ -33,4 +33,14 @@ public class MetricUnitTests {
 		assertThat(Metric.from("l")).isEqualTo(Metric.LITER);
 		assertThat(Metric.from("  l  ")).isEqualTo(Metric.LITER);
 	}
+
+	@Test // #195
+	public void parsesMetricFromAdditionalAbbreviations() {
+		assertThat(Metric.from("m2")).isEqualTo(Metric.SQUARE_METER);
+	}
+
+	@Test // #195
+	public void rejectsNullAbbreviationSource() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> Metric.from(null));
+	}
 }
