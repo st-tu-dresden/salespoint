@@ -79,12 +79,9 @@ public enum Metric {
 
 		String source = abbreviation.trim();
 
-		for (Metric metric : Metric.values()) {
-			if (metric.abbreviation.equals(source) || metric.abbreviations.contains(source)) {
-				return metric;
-			}
-		}
-
-		throw new IllegalArgumentException(String.format("Unsupported abbreviation %s!", abbreviation));
+		return Arrays.stream(Metric.values()) //
+				.filter(it -> it.abbreviation.equals(source) || it.abbreviations.contains(source)) //
+				.findFirst() //
+				.orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported abbreviation %s!", abbreviation)));
 	}
 }
