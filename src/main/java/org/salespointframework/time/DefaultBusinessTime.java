@@ -57,10 +57,9 @@ class DefaultBusinessTime implements BusinessTime {
 	public Duration getOffset() {
 		return this.duration;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see org.salespointframework.time.BusinessTime#reset()
 	 */
 	@Override
