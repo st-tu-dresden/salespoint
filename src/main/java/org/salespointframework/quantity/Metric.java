@@ -18,6 +18,9 @@ package org.salespointframework.quantity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.util.Assert;
 
 /**
@@ -29,9 +32,26 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor
 public enum Metric {
 
-	METER("m"), KILOGRAM("kg"), LITER("l"), UNIT("");
+	SQUARE_METER("m²", "m2"), METER("m"), KILOGRAM("kg"), LITER("l"), UNIT("");
 
 	private final String abbreviation;
+	private final List<String> abbreviations;
+
+	/**
+	 * Creates a new {@link Metric} with the given primary abbreviation and a possibly additional ones that are used for
+	 * parsing {@link Metric} instances from {@link String} sources.
+	 * 
+	 * @param primaryAbbreviation must not be {@literal null}.
+	 * @param additionalAbbreviations must not be {@literal null}, see {@link #from(String)}.
+	 */
+	private Metric(String primaryAbbreviation, String... additionalAbbreviations) {
+
+		Assert.notNull(primaryAbbreviation, "Primary abbreviation must not be null!");
+		Assert.notNull(additionalAbbreviations, "Additional abbreviations must not be null!");
+
+		this.abbreviation = primaryAbbreviation;
+		this.abbreviations = Arrays.asList(additionalAbbreviations);
+	}
 
 	/**
 	 * Returns whether the given {@link Metric} is
@@ -49,16 +69,18 @@ public enum Metric {
 	/**
 	 * Returns the {@link Metric} for the given abbreviation.
 	 * 
-	 * @param abbreviation
+	 * @param abbreviation must not be {@literal null}.
 	 * @return will never be {@literal null}.
 	 * @throws IllegalArgumentException if no {@link Metric} can be found for the given abbreviation.
 	 */
 	public static Metric from(String abbreviation) {
 
+		Assert.notNull(abbreviation, "Abbreviation source must not be null!");
+
 		String source = abbreviation.trim();
 
 		for (Metric metric : Metric.values()) {
-			if (metric.getAbbreviation().equals(source)) {
+			if (metric.abbreviation.equals(source) || metric.abbreviations.contains(source)) {
 				return metric;
 			}
 		}
