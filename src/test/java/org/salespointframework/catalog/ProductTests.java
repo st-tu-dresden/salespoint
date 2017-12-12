@@ -15,13 +15,17 @@
  */
 package org.salespointframework.catalog;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 import java.util.Random;
 
+import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.quantity.Metric;
+import org.salespointframework.quantity.Quantity;
 
 @SuppressWarnings("javadoc")
 public class ProductTests {
@@ -63,5 +67,14 @@ public class ProductTests {
 	@Test
 	public void removeCategory2() {
 		assertFalse(cookie.removeCategory(Double.toString(new Random().nextDouble())));
+	}
+	
+	@Test // #198
+	public void createsQuantity() {
+
+		Product product = new Product("Some name", Money.of(10, Currencies.EURO), Metric.LITER);
+
+		assertThat(product.createQuantity(10L)).isEqualTo(Quantity.of(10L, Metric.LITER));
+		assertThat(product.createQuantity(10.0)).isEqualTo(Quantity.of(10.0, Metric.LITER));
 	}
 }
