@@ -45,8 +45,9 @@ interface Priced {
 
 		Assert.notNull(priced, "Iterable must not be null!");
 
-		return Streamable.of(priced).stream().//
-				map(Priced::getPrice).//
-				reduce((left, right) -> left.add(right)).orElse(Currencies.ZERO_EURO);
+		return Streamable.of(priced).stream()//
+				.map(Priced::getPrice)//
+				.reduce((left, right) -> left.add(right)) //
+				.orElse(Currencies.ZERO_EURO);
 	}
 }
