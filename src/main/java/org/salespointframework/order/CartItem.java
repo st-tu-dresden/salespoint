@@ -20,7 +20,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import lombok.experimental.Wither;
 
 import java.util.UUID;
 
@@ -44,7 +43,7 @@ public class CartItem implements Priced {
 
 	private final String id;
 	private final MonetaryAmount price;
-	private final @Wither(AccessLevel.PRIVATE) Quantity quantity;
+	private final Quantity quantity;
 	private final Product product;
 
 	/**
@@ -54,13 +53,25 @@ public class CartItem implements Priced {
 	 * @param quantity must not be {@literal null}.
 	 */
 	CartItem(Product product, Quantity quantity) {
+		this(UUID.randomUUID().toString(), product, quantity);
+	}
 
+	/**
+	 * Creates a new {@link CartItem}.
+	 * 
+	 * @param id must not be {@literal null}.
+	 * @param product must not be {@literal null}.
+	 * @param quantity must not be {@literal null}.
+	 */
+	private CartItem(String id, Product product, Quantity quantity) {
+
+		Assert.notNull(id, "Identifier must not be null!");
 		Assert.notNull(product, "Product must be not null!");
 		Assert.notNull(quantity, "Quantity must be not null!");
 
 		product.verify(quantity);
 
-		this.id = UUID.randomUUID().toString();
+		this.id = id;
 		this.quantity = quantity;
 		this.price = product.getPrice().multiply(quantity.getAmount());
 		this.product = product;
@@ -85,7 +96,7 @@ public class CartItem implements Priced {
 
 		Assert.notNull(quantity, "Quantity must not be null!");
 
-		return withQuantity(this.quantity.add(quantity));
+		return new CartItem(this.id, this.product, this.quantity.add(quantity));
 	}
 
 	/**
