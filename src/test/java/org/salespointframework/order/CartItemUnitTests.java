@@ -15,8 +15,9 @@
  */
 package org.salespointframework.order;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import org.javamoney.moneta.Money;
 import org.junit.Test;
@@ -79,5 +80,15 @@ public class CartItemUnitTests {
 		assertThat(orderLine, is(notNullValue()));
 		assertThat(orderLine.getProductIdentifier(), is(PRODUCT.getId()));
 		assertThat(orderLine.getQuantity(), is(QUANTITY));
+	}
+
+	@Test // #201
+	public void updateingQuantityCreatesNewCartItemWithCorrectPrice() {
+
+		CartItem item = new CartItem(PRODUCT, QUANTITY);
+		assertThat(item.getPrice()).isEqualTo(PRODUCT.getPrice().multiply(QUANTITY.getAmount()));
+
+		CartItem newItem = item.add(QUANTITY);
+		assertThat(newItem.getPrice()).isEqualTo(PRODUCT.getPrice().multiply(QUANTITY.add(QUANTITY).getAmount()));
 	}
 }
