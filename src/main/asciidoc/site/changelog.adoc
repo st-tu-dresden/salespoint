@@ -4,6 +4,21 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[6.4.2]
+== 6.4.2
+
+Release date: 2018-01-01
+
+- {linkbase}/193[#193] - DataInitializers should run after all components have been initialized.
+- {linkbase}/201[#201] - Changing quantity of a CartItem creates a new item with wrong price.
+- {linkbase}/202[#202] - Upgrade to Spring Boot 1.5.9.
+- {linkbase}/191[#191] - Cart should always return CartItems in insertion order and shouldn't change CartItem identifiers.
+- {linkbase}/200[#200] - Publish Querydsl query classes for Salespoint domain types.
+- {linkbase}/198[#198] - Allow setting up quantities from Product and amount.
+- {linkbase}/189[#189] - BusinessTime needs a way to reset to current time.
+- {linkbase}/195[#195] - Add square meters as Metric.
+
+:numbered!:
 [6.4.1]
 == 6.4.1
 
