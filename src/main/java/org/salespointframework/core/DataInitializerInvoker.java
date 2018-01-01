@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2017-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,15 @@
  */
 package org.salespointframework.core;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 /**
  * Internal component triggering the initialization of all {@link DataInitializer} instances registered in the
@@ -28,18 +32,17 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Component
-class DataInitializerInvoker {
+@RequiredArgsConstructor
+class DataInitializerInvoker implements ApplicationRunner {
 
-	/**
-	 * Creates a new {@link DataInitializerInvoker} with the given {@link DataInitializer} and triggers the
-	 * initialization.
-	 * 
-	 * @param initializers must not be {@literal null}.
+	private final @NonNull List<DataInitializer> initializers;
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.springframework.boot.ApplicationRunner#run(org.springframework.boot.ApplicationArguments)
 	 */
-	public DataInitializerInvoker(List<DataInitializer> initializers) {
-
-		Assert.notNull(initializers, "DataIntializers must not be null!");
-
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
 		initializers.forEach(DataInitializer::initialize);
 	}
 
