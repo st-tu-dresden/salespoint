@@ -27,7 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.salespointframework.useraccount.UserAccountDetailService.UserAccountDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -39,7 +39,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  * @author Oliver Gierke
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class SpringSecurityAuthenticationManagerUnitTests {
 
 	SpringSecurityAuthenticationManager authenticationManager;
@@ -51,7 +51,7 @@ public class SpringSecurityAuthenticationManagerUnitTests {
 	public void setUp() {
 
 		this.account = createAccount();
-		when(repository.findOne(account.getId())).thenReturn(Optional.of(account));
+		when(repository.findById(account.getId())).thenReturn(Optional.of(account));
 
 		this.authenticationManager = new SpringSecurityAuthenticationManager(repository, passwordEncoder);
 	}

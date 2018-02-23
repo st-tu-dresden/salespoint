@@ -15,15 +15,21 @@
  */
 package org.salespointframework;
 
+import java.util.Collections;
+
 import org.salespointframework.inventory.LineItemFilter;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MapPropertySource;
+import org.springframework.core.env.MutablePropertySources;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Application configuration for Salespoint.
@@ -34,7 +40,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAutoConfiguration
 @ComponentScan(excludeFilters = @Filter(value = Configuration.class))
 @EntityScan
-@EnableTransactionManagement(proxyTargetClass = false)
 public class Salespoint {
 
 	@Bean
@@ -45,5 +50,26 @@ public class Salespoint {
 	@Bean
 	public LineItemFilter inventoryLineItemFilter() {
 		return LineItemFilter.handleAll();
+	}
+
+	/**
+	 * Needed until https://github.com/spring-projects/spring-boot/issues/12194 is fixed.
+	 *
+	 * @author Oliver Gierke
+	 */
+	static class EnforceJdkProxiesProcessor implements EnvironmentPostProcessor {
+
+		/* 
+		 * (non-Javadoc)
+		 * @see org.springframework.boot.env.EnvironmentPostProcessor#postProcessEnvironment(org.springframework.core.env.ConfigurableEnvironment, org.springframework.boot.SpringApplication)
+		 */
+		@Override
+		public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
+
+			MutablePropertySources sources = environment.getPropertySources();
+
+			sources.addFirst(new MapPropertySource("salespointDefaults",
+					Collections.singletonMap("spring.aop.proxy-target-class", false)));
+		}
 	}
 }

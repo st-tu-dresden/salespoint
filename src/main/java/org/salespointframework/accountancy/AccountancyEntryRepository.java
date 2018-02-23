@@ -17,8 +17,8 @@ package org.salespointframework.accountancy;
 
 import java.time.LocalDateTime;
 
-import org.salespointframework.core.SalespointRepository;
 import org.salespointframework.time.Interval;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.util.Assert;
 
 /**
@@ -26,7 +26,7 @@ import org.springframework.util.Assert;
  * 
  * @author Oliver Gierke
  */
-interface AccountancyEntryRepository extends SalespointRepository<AccountancyEntry, AccountancyEntryIdentifier> {
+interface AccountancyEntryRepository extends CrudRepository<AccountancyEntry, AccountancyEntryIdentifier> {
 
 	/**
 	 * Returns all {@link AccountancyEntry}s in the given time frame.

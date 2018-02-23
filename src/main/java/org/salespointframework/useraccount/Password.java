@@ -32,7 +32,7 @@ import org.springframework.util.Assert;
  */
 @Embeddable
 @EqualsAndHashCode
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated) )
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated))
 public class Password {
 
 	private @Getter(AccessLevel.PACKAGE) String password;

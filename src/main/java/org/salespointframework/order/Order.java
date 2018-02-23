@@ -43,11 +43,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.salespointframework.core.AbstractEntity;
-import org.salespointframework.core.Streamable;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.data.domain.AfterDomainEventPublication;
 import org.springframework.data.domain.DomainEvents;
+import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
 /**

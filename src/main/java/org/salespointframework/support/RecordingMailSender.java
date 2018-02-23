@@ -18,7 +18,7 @@ package org.salespointframework.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.salespointframework.core.Streamable;
+import org.springframework.data.util.Streamable;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;

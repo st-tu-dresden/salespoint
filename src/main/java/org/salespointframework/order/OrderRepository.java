@@ -17,15 +17,15 @@ package org.salespointframework.order;
 
 import java.time.LocalDateTime;
 
-import org.salespointframework.core.SalespointRepository;
 import org.salespointframework.useraccount.UserAccount;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * Repository interface for {@link Order}s.
  *
  * @author Oliver Gierke
  */
-interface OrderRepository<T extends Order> extends SalespointRepository<T, OrderIdentifier> {
+interface OrderRepository<T extends Order> extends CrudRepository<T, OrderIdentifier> {
 
 	/**
 	 * @param from

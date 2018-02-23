@@ -22,7 +22,6 @@ import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;
 
 @Entity
-@SuppressWarnings("serial")
 public class Cookie extends Product {
 
 	String property;

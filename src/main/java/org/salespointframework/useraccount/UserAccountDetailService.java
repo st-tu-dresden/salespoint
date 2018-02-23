@@ -53,7 +53,7 @@ class UserAccountDetailService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
 
-		Optional<UserAccount> candidate = repository.findOne(new UserAccountIdentifier(name));
+		Optional<UserAccount> candidate = repository.findById(new UserAccountIdentifier(name));
 
 		return new UserAccountDetails(
 				candidate.orElseThrow(() -> new UsernameNotFoundException("Useraccount: " + name + "not found")));

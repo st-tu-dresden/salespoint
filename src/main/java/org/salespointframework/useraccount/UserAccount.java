@@ -31,9 +31,11 @@ import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import org.salespointframework.core.AbstractEntity;
-import org.salespointframework.core.Streamable;
+import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
 /**
@@ -140,9 +142,15 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 	}
 
 	/**
-	 * @return An <code>Iterable/code> with all {@link Role}s of the user
+	 * @return A <code>Streamable/code> with all {@link Role}s of the user
 	 */
 	public Streamable<Role> getRoles() {
 		return Streamable.of(roles);
+	}
+
+	@PrePersist
+	@PreUpdate
+	void verify() {
+		Assert.state(password.isEncrypted(), "Password is not encrypted!");
 	}
 }

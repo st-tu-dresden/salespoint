@@ -17,10 +17,10 @@ package org.salespointframework.order;
 
 import java.util.Optional;
 
-import org.salespointframework.core.Streamable;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
+import org.springframework.data.util.Streamable;
 
 /**
  * A service to manage {@link Order}s.

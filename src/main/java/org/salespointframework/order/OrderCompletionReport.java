@@ -27,8 +27,8 @@ import lombok.experimental.FieldDefaults;
 import java.util.Iterator;
 import java.util.Optional;
 
-import org.salespointframework.core.Streamable;
 import org.salespointframework.order.OrderCompletionReport.OrderLineCompletion;
+import org.springframework.data.util.Streamable;
 
 @ToString
 @EqualsAndHashCode
@@ -49,7 +49,7 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 	public static OrderCompletionReport success(Order order) {
 
 		return OrderCompletionReport.forCompletions(order,
-				Streamable.ofLazy(() -> order.getOrderLines().stream().map(it -> OrderLineCompletion.success(it))));
+				Streamable.of(() -> order.getOrderLines().stream().map(it -> OrderLineCompletion.success(it))));
 	}
 
 	/**
@@ -82,8 +82,10 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 	 */
 	static OrderCompletionReport forCompletions(Order order, Streamable<OrderLineCompletion> completions) {
 
-		return new OrderCompletionReport(order, completions.stream().anyMatch(OrderLineCompletion::isFailure)
-				? CompletionStatus.FAILED : CompletionStatus.SUCCEEDED, completions);
+		return new OrderCompletionReport(order, completions.stream().anyMatch(OrderLineCompletion::isFailure) //
+				? CompletionStatus.FAILED //
+				: CompletionStatus.SUCCEEDED //
+				, completions);
 	}
 
 	/**

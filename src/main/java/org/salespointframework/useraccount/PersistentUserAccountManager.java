@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 
-import org.salespointframework.core.Streamable;
+import org.springframework.data.util.Streamable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,7 +69,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 	public Optional<UserAccount> get(UserAccountIdentifier userAccountIdentifier) {
 
 		Assert.notNull(userAccountIdentifier, "userAccountIdentifier must not be null");
-		return repository.findOne(userAccountIdentifier);
+		return repository.findById(userAccountIdentifier);
 	}
 
 	/*
@@ -140,7 +140,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 	public boolean contains(UserAccountIdentifier userAccountIdentifier) {
 
 		Assert.notNull(userAccountIdentifier, "userAccountIdentifier must not be null");
-		return repository.exists(userAccountIdentifier);
+		return repository.existsById(userAccountIdentifier);
 	}
 
 	/*
@@ -178,6 +178,6 @@ class PersistentUserAccountManager implements UserAccountManager {
 	public Optional<UserAccount> findByUsername(String username) {
 
 		Assert.hasText(username, "Username must not be null or empty!");
-		return repository.findOne(new UserAccountIdentifier(username));
+		return repository.findById(new UserAccountIdentifier(username));
 	}
 }

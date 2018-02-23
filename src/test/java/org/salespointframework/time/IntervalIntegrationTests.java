@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -53,8 +54,8 @@ public class IntervalIntegrationTests extends AbstractIntegrationTests {
 		em.flush();
 		em.clear();
 
-		SomeEntity result = repository.findOne(entity.id);
-		assertThat(result.interval).isEqualTo(entity.interval);
+		Optional<SomeEntity> result = repository.findById(entity.id);
+		assertThat(result).map(it -> it.interval).hasValue(entity.interval);
 	}
 
 	@Data

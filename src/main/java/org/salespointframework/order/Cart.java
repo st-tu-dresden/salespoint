@@ -25,8 +25,8 @@ import javax.money.MonetaryAmount;
 import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
-import org.salespointframework.core.Streamable;
 import org.salespointframework.quantity.Quantity;
+import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
 /**

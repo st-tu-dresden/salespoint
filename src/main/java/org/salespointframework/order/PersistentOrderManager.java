@@ -20,10 +20,10 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 
-import org.salespointframework.core.Streamable;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -66,7 +66,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 		Assert.notNull(orderIdentifier, "orderIdentifier must not be null");
 
-		return orderRepository.findOne(orderIdentifier);
+		return orderRepository.findById(orderIdentifier);
 	}
 
 	/*
@@ -78,7 +78,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 		Assert.notNull(orderIdentifier, "OrderIdentifier must not be null");
 
-		return orderRepository.exists(orderIdentifier);
+		return orderRepository.existsById(orderIdentifier);
 	}
 
 	/*

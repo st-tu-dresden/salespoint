@@ -56,14 +56,14 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 	public void addInInventoryAddsProductInCatalog() {
 
 		inventory.save(item);
-		assertThat(catalog.exists(cookie.getId()), is(true));
+		assertThat(catalog.existsById(cookie.getId()), is(true));
 	}
 
 	@Test
 	public void removeInInventory() {
 
 		inventory.save(item);
-		inventory.delete(item.getId());
+		inventory.deleteById(item.getId());
 	}
 
 	@Test
@@ -71,9 +71,9 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 
 		catalog.save(cookie);
 		inventory.save(item);
-		inventory.delete(item.getId());
+		inventory.deleteById(item.getId());
 
-		catalog.delete(cookie.getId());
+		catalog.deleteById(cookie.getId());
 	}
 
 	@Test
@@ -81,8 +81,8 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 
 		catalog.save(cookie);
 		inventory.save(item);
-		inventory.delete(item.getId());
+		inventory.deleteById(item.getId());
 
-		assertThat(catalog.exists(cookie.getId()), is(true));
+		assertThat(catalog.existsById(cookie.getId()), is(true));
 	}
 }

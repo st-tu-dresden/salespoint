@@ -66,14 +66,12 @@ public class ExtendedInventoryTests extends AbstractIntegrationTests {
 	}
 
 	@Entity
-	@SuppressWarnings("serial")
 	static class Wine extends Product {
 
 		public Wine(String name, MonetaryAmount price) {
 			super(name, price, Metric.LITER);
 		}
 
-		@SuppressWarnings("deprecation")
 		Wine() {}
 	}
 }

@@ -22,7 +22,6 @@ import java.util.UUID;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +54,7 @@ public class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTe
 		this.secondUser = repository.save(secondUser);
 	}
 
-	@Ignore
+	// @Ignore
 	@Test(expected = InvalidDataAccessApiUsageException.class)
 	public void preventsUnencryptedPasswordsFromBeingPersisted() {
 		repository.save(createAccount());
@@ -81,7 +80,11 @@ public class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTe
 
 	@Test(expected = DataIntegrityViolationException.class) // #55
 	public void rejectsUserAccountWithSameUsername() {
-		repository.save(new UserAccount(firstUser.getId(), "someotherPassword"));
+
+		UserAccount userAccount = new UserAccount(firstUser.getId(), "unencrypted");
+		userAccount.setPassword(Password.encrypted("encrypted"));
+
+		repository.save(userAccount);
 	}
 
 	static UserAccount createAccount() {

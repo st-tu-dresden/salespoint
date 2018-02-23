@@ -34,10 +34,10 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
 import org.salespointframework.core.AbstractEntity;
-import org.salespointframework.core.Streamable;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.MetricMismatchException;
 import org.salespointframework.quantity.Quantity;
+import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
 /**

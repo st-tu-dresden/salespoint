@@ -17,7 +17,7 @@ package org.salespointframework.useraccount;
 
 import java.util.Optional;
 
-import org.salespointframework.core.Streamable;
+import org.springframework.data.util.Streamable;
 
 /**
  * Central service to manager {@link UserAccount} instances.

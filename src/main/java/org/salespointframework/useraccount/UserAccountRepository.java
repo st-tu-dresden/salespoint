@@ -15,14 +15,14 @@
  */
 package org.salespointframework.useraccount;
 
-import org.salespointframework.core.SalespointRepository;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * Repository to persist {@link UserAccount} instances.
  * 
  * @author Oliver Gierke
  */
-interface UserAccountRepository extends SalespointRepository<UserAccount, UserAccountIdentifier> {
+interface UserAccountRepository extends CrudRepository<UserAccount, UserAccountIdentifier> {
 
 	/**
 	 * Returns all enabled {@link UserAccount}s.

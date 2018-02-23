@@ -47,7 +47,7 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager {
 	public Optional<UserAccount> getCurrentUser() {
 
 		return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication()).//
-				flatMap(authentication -> repository.findOne(new UserAccountIdentifier(authentication.getName())));
+				flatMap(authentication -> repository.findById(new UserAccountIdentifier(authentication.getName())));
 	}
 
 	/* 

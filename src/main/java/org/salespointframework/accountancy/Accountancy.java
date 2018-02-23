@@ -22,8 +22,8 @@ import java.util.Optional;
 
 import javax.money.MonetaryAmount;
 
-import org.salespointframework.core.Streamable;
 import org.salespointframework.time.Interval;
+import org.springframework.data.util.Streamable;
 
 /**
  * The {@code Accountancy} interface is implemented by classes offering a basic accounting service. Generally, an

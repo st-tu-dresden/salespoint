@@ -98,10 +98,10 @@ public class QuantityUnitTests {
 	public void printsReasonableToString() {
 
 		assertThat(Quantity.of(5).toString()).isEqualTo("5");
-		assertThat(Quantity.of(5, Metric.LITER).toString()).containsSequence("5", "l");
-		assertThat(Quantity.of(5.0, Metric.LITER).toString()).containsSequence("5", "l").doesNotContain("0");
-		assertThat(Quantity.of(5.1, Metric.LITER).toString()).containsSequence("5", "1", "l");
-		assertThat(Quantity.of(5.11, Metric.LITER).toString()).containsSequence("5", "11", "l");
+		assertThat(Quantity.of(5, Metric.LITER).toString()).containsSubsequence("5", "l");
+		assertThat(Quantity.of(5.0, Metric.LITER).toString()).containsSubsequence("5", "l").doesNotContain("0");
+		assertThat(Quantity.of(5.1, Metric.LITER).toString()).containsSubsequence("5", "1", "l");
+		assertThat(Quantity.of(5.11, Metric.LITER).toString()).containsSubsequence("5", "11", "l");
 	}
 
 	@Test // #129

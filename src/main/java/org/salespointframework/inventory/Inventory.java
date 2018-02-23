@@ -19,9 +19,9 @@ import java.util.Optional;
 
 import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
-import org.salespointframework.core.SalespointRepository;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * Repository interface for {@link InventoryItem}s.
@@ -29,7 +29,7 @@ import org.springframework.data.jpa.repository.Query;
  * @author Oliver Gierke
  */
 // tag::inventory[]
-public interface Inventory<T extends InventoryItem> extends SalespointRepository<T, InventoryItemIdentifier> {
+public interface Inventory<T extends InventoryItem> extends CrudRepository<T, InventoryItemIdentifier> {
 
 	/**
 	 * Returns all {@link InventoryItem}s that are out of stock (i.e. the {@link Quantity}'s amount is equal or less than

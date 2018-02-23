@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.salespointframework.core.Streamable;
+import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
 /**

@@ -67,20 +67,20 @@ public class InventoryTests extends AbstractIntegrationTests {
 	@Test // #34
 	public void deletesItemsCorrectly() {
 
-		inventory.delete(item.getId());
+		inventory.deleteById(item.getId());
 
-		assertThat(inventory.exists(item.getId()), is(false));
+		assertThat(inventory.existsById(item.getId()), is(false));
 	}
 
 	@Test // #34
 	public void testExists() {
-		assertThat(inventory.exists(item.getId()), is(true));
+		assertThat(inventory.existsById(item.getId()), is(true));
 	}
 
 	@Test // #34
 	public void testGet() {
 
-		Optional<InventoryItem> result = inventory.findOne(item.getId());
+		Optional<InventoryItem> result = inventory.findById(item.getId());
 
 		assertThat(result.isPresent(), is(true));
 		assertThat(result.get(), is(item));

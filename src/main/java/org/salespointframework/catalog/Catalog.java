@@ -15,15 +15,15 @@
  */
 package org.salespointframework.catalog;
 
-import org.salespointframework.core.SalespointRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * Repository interface for {@link Product}s
  *
  * @author Oliver Gierke
  */
-public interface Catalog<T extends Product> extends SalespointRepository<T, ProductIdentifier> {
+public interface Catalog<T extends Product> extends CrudRepository<T, ProductIdentifier> {
 
 	/**
 	 * Returns all {@link Product}s assigned to the given category.

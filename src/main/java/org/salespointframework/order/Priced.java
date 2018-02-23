@@ -18,7 +18,7 @@ package org.salespointframework.order;
 import javax.money.MonetaryAmount;
 
 import org.salespointframework.core.Currencies;
-import org.salespointframework.core.Streamable;
+import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
 /**
