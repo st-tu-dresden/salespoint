@@ -3,5 +3,5 @@
  * 
  * @see org.salespointframework.time.BusinessTime
  */
+@org.springframework.lang.NonNullApi
 package org.salespointframework.time;
-

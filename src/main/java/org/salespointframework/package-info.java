@@ -3,5 +3,5 @@
  * 
  * @see org.salespointframework.Salespoint
  */
+@org.springframework.lang.NonNullApi
 package org.salespointframework;
-
