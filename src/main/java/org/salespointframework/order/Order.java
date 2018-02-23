@@ -61,8 +61,6 @@ import org.springframework.util.Assert;
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class Order extends AbstractEntity<OrderIdentifier> {
 
-	private static final long serialVersionUID = 7417079332245151314L;
-
 	@EmbeddedId //
 	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID")) //
 	private OrderIdentifier orderIdentifier = new OrderIdentifier();

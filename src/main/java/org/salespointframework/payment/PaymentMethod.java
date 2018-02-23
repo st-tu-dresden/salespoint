@@ -32,6 +32,8 @@ import java.io.Serializable;
 @RequiredArgsConstructor
 public abstract class PaymentMethod implements Serializable {
 
+	private static final long serialVersionUID = -3827889732758783955L;
+
 	/**
 	 * Description of the <code>PaymentMethod</code> in human-readable form. Is not {@literal null}.
 	 */

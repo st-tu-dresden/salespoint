@@ -45,8 +45,6 @@ import org.springframework.util.Assert;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Priced {
 
-	private static final long serialVersionUID = -4310089726057038893L;
-
 	@EmbeddedId //
 	@AttributeOverride(name = "id", column = @Column(name = "ORDERLINE_ID")) //
 	private OrderLineIdentifier orderLineIdentifier = new OrderLineIdentifier();

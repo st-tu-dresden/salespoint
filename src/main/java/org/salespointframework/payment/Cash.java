@@ -27,6 +27,8 @@ import lombok.Value;
 @EqualsAndHashCode(callSuper = true)
 public class Cash extends PaymentMethod {
 
+	private static final long serialVersionUID = 5087632169177352654L;
+
 	/**
 	 * A convenience instance {@link Cash#CASH} is defined in this class, which can be reused, instead of instantiating a
 	 * new instance every time one is needed.

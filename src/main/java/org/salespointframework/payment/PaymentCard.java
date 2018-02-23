@@ -37,6 +37,7 @@ import org.springframework.util.Assert;
 @EqualsAndHashCode(callSuper = true)
 public abstract class PaymentCard extends PaymentMethod {
 
+	private static final long serialVersionUID = 5634519767181957834L;
 	private static final DateTimeFormatter MONTH_YEAR = DateTimeFormatter.ofPattern("MM/YY");
 
 	/**

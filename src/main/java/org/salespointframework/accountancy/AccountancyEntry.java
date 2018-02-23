@@ -47,8 +47,6 @@ import org.springframework.util.Assert;
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier> {
 
-	private static final long serialVersionUID = 810396540898867801L;
-
 	// TODO: if the column is not renamed, it does not work. instead,
 	// ProductPaymentEntry's USER_ID column becomes PK. This fucks everything
 	// up, if a PersistentAccountancyEntry is retrieved from the database,

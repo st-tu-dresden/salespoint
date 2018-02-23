@@ -33,8 +33,6 @@ import org.salespointframework.core.SalespointIdentifier;
 @Embeddable
 public final class UserAccountIdentifier extends SalespointIdentifier {
 
-	private static final long serialVersionUID = -5156469313158894803L;
-
 	/**
 	 * Creates a new unique identifier for {@link UserAccount}s.
 	 */

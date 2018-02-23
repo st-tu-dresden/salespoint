@@ -37,6 +37,8 @@ import org.springframework.util.Assert;
 @EqualsAndHashCode(callSuper = true)
 public class CreditCard extends PaymentCard {
 
+	private static final long serialVersionUID = -224404292712403773L;
+
 	/**
 	 * The maximum amount of money, the card holder can dispose of within a day.
 	 */

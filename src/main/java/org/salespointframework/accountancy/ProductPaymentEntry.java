@@ -48,8 +48,6 @@ import org.springframework.util.Assert;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class ProductPaymentEntry extends AccountancyEntry {
 
-	private static final long serialVersionUID = 8273712561197143396L;
-
 	/**
 	 * The {@link OrderIdentifier} which this {@link ProductPaymentEntry} refers to.
 	 */

@@ -31,8 +31,6 @@ import org.springframework.util.ObjectUtils;
 @MappedSuperclass
 public abstract class AbstractEntity<ID extends SalespointIdentifier> implements Persistable<ID> {
 
-	private static final long serialVersionUID = -9081339328621393981L;
-
 	private @Transient boolean isNew = true;
 
 	/* 

@@ -34,6 +34,8 @@ import org.springframework.util.Assert;
 @EqualsAndHashCode(callSuper = true)
 public final class Cheque extends PaymentMethod {
 
+	private static final long serialVersionUID = -4365607828348366918L;
+
 	/**
 	 * Name of the account holder.
 	 */

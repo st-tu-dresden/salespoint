@@ -43,8 +43,6 @@ import org.salespointframework.core.AbstractEntity;
 @ToString
 public class ChargeLine extends AbstractEntity<ChargeLineIdentifier> implements Priced {
 
-	private static final long serialVersionUID = 7589903169153242824L;
-
 	@EmbeddedId //
 	@AttributeOverride(name = "id", column = @Column(name = "CHARGELINE_ID")) //
 	private ChargeLineIdentifier chargeLineIdentifier = new ChargeLineIdentifier();

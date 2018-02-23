@@ -51,8 +51,6 @@ import org.springframework.util.Assert;
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class Product extends AbstractEntity<ProductIdentifier> implements Comparable<Product> {
 
-	private static final long serialVersionUID = 6645371648836029780L;
-
 	@EmbeddedId //
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID")) //
 	private ProductIdentifier productIdentifier = new ProductIdentifier();
@@ -149,7 +147,7 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 			throw new MetricMismatchException(String.format("Product %s does not support quantity %s!", this, quantity));
 		}
 	}
-	
+
 	/**
 	 * Creates a {@link Quantity} of the given amount and the current {@link Product}'s underlying {@link Metric}.
 	 * 

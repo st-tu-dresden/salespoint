@@ -49,8 +49,6 @@ import org.springframework.util.Assert;
 @NoArgsConstructor
 public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 
-	private static final long serialVersionUID = -795038599473743418L;
-
 	@EmbeddedId //
 	@AttributeOverride(name = "id", column = @Column(name = "USERACCOUNT_ID")) //
 	private UserAccountIdentifier userAccountIdentifier;

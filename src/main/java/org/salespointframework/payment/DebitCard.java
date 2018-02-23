@@ -37,6 +37,8 @@ import org.javamoney.moneta.Money;
 @EqualsAndHashCode(callSuper = true)
 public class DebitCard extends PaymentCard {
 
+	private static final long serialVersionUID = -5333203494973971263L;
+
 	/**
 	 * Amount of money, the card holder can dispose of within a day.
 	 */
