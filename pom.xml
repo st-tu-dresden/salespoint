@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.0.RC2</version>
+		<version>2.0.2.RELEASE</version>
 		<relativePath />
 	</parent>
 
@@ -188,7 +188,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<additionalparam>-Xdoclint:none</additionalparam>
+					<doclint>none</doclint>
 					<excludePackageNames>org.thymeleaf.*</excludePackageNames>
 					<outputDirectory>${project.build.directory}/site${dev}/api</outputDirectory>
 					<show>package</show>
