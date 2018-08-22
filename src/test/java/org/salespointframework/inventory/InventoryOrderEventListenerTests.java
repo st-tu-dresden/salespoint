@@ -21,7 +21,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.salespointframework.AbstractIntegrationTests;
-import org.salespointframework.EnableSalespoint;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
@@ -55,7 +54,6 @@ public class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 	public @Rule ExpectedException exception = ExpectedException.none();
 
 	// tag::custom-line-item-filter[]
-	@EnableSalespoint
 	static class Config {
 
 		@Bean
