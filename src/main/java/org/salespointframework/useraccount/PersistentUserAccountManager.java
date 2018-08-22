@@ -158,7 +158,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 */
 	@Override
 	public Streamable<UserAccount> findEnabled() {
-		return Streamable.of(repository.findByEnabledTrue());
+		return repository.findByEnabledTrue();
 	}
 
 	/*
@@ -167,7 +167,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 */
 	@Override
 	public Streamable<UserAccount> findDisabled() {
-		return Streamable.of(repository.findByEnabledFalse());
+		return repository.findByEnabledFalse();
 	}
 
 	/* 

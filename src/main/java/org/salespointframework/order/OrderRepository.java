@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
 
 /**
  * Repository interface for {@link Order}s.
@@ -32,19 +33,19 @@ interface OrderRepository<T extends Order> extends CrudRepository<T, OrderIdenti
 	 * @param to
 	 * @return
 	 */
-	Iterable<T> findByDateCreatedBetween(LocalDateTime from, LocalDateTime to);
+	Streamable<T> findByDateCreatedBetween(LocalDateTime from, LocalDateTime to);
 
 	/**
 	 * @param orderStatus
 	 * @return
 	 */
-	Iterable<T> findByOrderStatus(OrderStatus orderStatus);
+	Streamable<T> findByOrderStatus(OrderStatus orderStatus);
 
 	/**
 	 * @param userAccount
 	 * @return
 	 */
-	Iterable<T> findByUserAccount(UserAccount userAccount);
+	Streamable<T> findByUserAccount(UserAccount userAccount);
 
 	/**
 	 * @param userAccount
@@ -52,5 +53,5 @@ interface OrderRepository<T extends Order> extends CrudRepository<T, OrderIdenti
 	 * @param to
 	 * @return
 	 */
-	Iterable<T> findByUserAccountAndDateCreatedBetween(UserAccount userAccount, LocalDateTime from, LocalDateTime to);
+	Streamable<T> findByUserAccountAndDateCreatedBetween(UserAccount userAccount, LocalDateTime from, LocalDateTime to);
 }

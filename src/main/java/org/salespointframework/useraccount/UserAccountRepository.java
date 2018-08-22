@@ -16,6 +16,7 @@
 package org.salespointframework.useraccount;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
 
 /**
  * Repository to persist {@link UserAccount} instances.
@@ -29,12 +30,12 @@ interface UserAccountRepository extends CrudRepository<UserAccount, UserAccountI
 	 * 
 	 * @return
 	 */
-	Iterable<UserAccount> findByEnabledTrue();
+	Streamable<UserAccount> findByEnabledTrue();
 
 	/**
 	 * Returns all disabled {@link UserAccount}s.
 	 * 
 	 * @return
 	 */
-	Iterable<UserAccount> findByEnabledFalse();
+	Streamable<UserAccount> findByEnabledFalse();
 }

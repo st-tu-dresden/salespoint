@@ -17,6 +17,7 @@ package org.salespointframework.catalog;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
 
 /**
  * Repository interface for {@link Product}s
@@ -32,7 +33,7 @@ public interface Catalog<T extends Product> extends CrudRepository<T, ProductIde
 	 * @return
 	 */
 	@Query("select p from #{#entityName} p where :category member of p.categories")
-	Iterable<T> findByCategory(String category);
+	Streamable<T> findByCategory(String category);
 
 	/**
 	 * Returns the {@link Product}s with the given name.
@@ -40,5 +41,5 @@ public interface Catalog<T extends Product> extends CrudRepository<T, ProductIde
 	 * @param name
 	 * @return
 	 */
-	Iterable<T> findByName(String name);
+	Streamable<T> findByName(String name);
 }

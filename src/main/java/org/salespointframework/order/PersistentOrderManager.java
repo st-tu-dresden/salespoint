@@ -87,7 +87,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 */
 	@Override
 	public Streamable<T> findBy(Interval interval) {
-		return Streamable.of(orderRepository.findByDateCreatedBetween(interval.getStart(), interval.getEnd()));
+		return orderRepository.findByDateCreatedBetween(interval.getStart(), interval.getEnd());
 	}
 
 	/*
@@ -99,7 +99,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 		Assert.notNull(orderStatus, "OrderStatus must not be null");
 
-		return Streamable.of(orderRepository.findByOrderStatus(orderStatus));
+		return orderRepository.findByOrderStatus(orderStatus);
 	}
 
 	/*
@@ -111,7 +111,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 		Assert.notNull(userAccount, "UserAccount must not be null");
 
-		return Streamable.of(orderRepository.findByUserAccount(userAccount));
+		return orderRepository.findByUserAccount(userAccount);
 	}
 
 	/*
@@ -124,8 +124,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 		Assert.notNull(userAccount, "UserAccount must not be null");
 		Assert.notNull(interval, "Interval must not be null!");
 
-		return Streamable.of(
-				orderRepository.findByUserAccountAndDateCreatedBetween(userAccount, interval.getStart(), interval.getEnd()));
+		return orderRepository.findByUserAccountAndDateCreatedBetween(userAccount, interval.getStart(), interval.getEnd());
 	}
 
 	/*

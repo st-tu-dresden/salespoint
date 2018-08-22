@@ -22,6 +22,7 @@ import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
 
 /**
  * Repository interface for {@link InventoryItem}s.
@@ -38,7 +39,7 @@ public interface Inventory<T extends InventoryItem> extends CrudRepository<T, In
 	 * @return will never be {@literal null}.
 	 */
 	@Query("select i from InventoryItem i where i.quantity.amount <= 0")
-	Iterable<T> findItemsOutOfStock();
+	Streamable<T> findItemsOutOfStock();
 
 	/**
 	 * Returns the {@link InventoryItem} for the {@link Product} with the given identifier.

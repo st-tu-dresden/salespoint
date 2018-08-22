@@ -98,7 +98,7 @@ class PersistentAccountancy implements Accountancy {
 
 		Assert.notNull(interval, "Interval must not be null!");
 
-		return Streamable.of(repository.findByDateIn(interval));
+		return repository.findByDateIn(interval);
 	}
 
 	/*

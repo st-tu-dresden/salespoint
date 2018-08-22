@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 
 import org.salespointframework.time.Interval;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
 /**
@@ -35,7 +36,7 @@ interface AccountancyEntryRepository extends CrudRepository<AccountancyEntry, Ac
 	 * @param to
 	 * @return
 	 */
-	Iterable<AccountancyEntry> findByDateBetween(LocalDateTime from, LocalDateTime to);
+	Streamable<AccountancyEntry> findByDateBetween(LocalDateTime from, LocalDateTime to);
 
 	/**
 	 * Returns all {@link AccountancyEntry}s within the given {@link Interval}.
@@ -43,7 +44,7 @@ interface AccountancyEntryRepository extends CrudRepository<AccountancyEntry, Ac
 	 * @param interval must not be {@literal null}.
 	 * @return
 	 */
-	default Iterable<AccountancyEntry> findByDateIn(Interval interval) {
+	default Streamable<AccountancyEntry> findByDateIn(Interval interval) {
 
 		Assert.notNull(interval, "Interval must not be null!");
 
