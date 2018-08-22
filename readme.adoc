@@ -4,7 +4,7 @@ image:https://travis-ci.org/st-tu-dresden/salespoint.svg?branch=master["Build St
 
 ## Prerequisites
 
-- Java 8
+- Java 11
 - Git
 - Maven 3.x
 
