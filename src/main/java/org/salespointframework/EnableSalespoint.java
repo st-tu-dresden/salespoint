@@ -15,6 +15,8 @@
  */
 package org.salespointframework;
 
+import de.olivergierke.moduliths.Modulith;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -23,7 +25,6 @@ import java.lang.annotation.Target;
 
 import org.salespointframework.EnableSalespoint.SalespointSecurityAutoConfiguration;
 import org.salespointframework.EnableSalespoint.SalespointWebAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
@@ -54,7 +55,7 @@ import org.springframework.context.annotation.Import;
 @Retention(RetentionPolicy.RUNTIME)
 @Import({ Salespoint.class, SalespointWebAutoConfiguration.class, SalespointSecurityAutoConfiguration.class })
 @EntityScan
-@SpringBootApplication
+@Modulith(additionalPackages = "org.salespointframework", useFullyQualifiedModuleNames = true)
 public @interface EnableSalespoint {
 
 	@Configuration

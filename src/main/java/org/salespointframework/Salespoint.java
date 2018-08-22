@@ -21,11 +21,13 @@ import org.salespointframework.inventory.LineItemFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
@@ -38,7 +40,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(excludeFilters = @Filter(value = Configuration.class))
+@ComponentScan(excludeFilters = { //
+		@Filter(Configuration.class), //
+		@Filter(value = TypeExcludeFilter.class, type = FilterType.CUSTOM) //
+})
 @EntityScan
 public class Salespoint {
 

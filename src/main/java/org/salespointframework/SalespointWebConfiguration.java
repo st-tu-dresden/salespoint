@@ -15,6 +15,7 @@
  */
 package org.salespointframework;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Web-specific configuration for Salespoint. See the individual {@code @Bean} methods for details.
@@ -32,11 +33,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @author Oliver Gierke
  */
 @Configuration
-public class SalespointWebConfiguration extends WebMvcConfigurerAdapter {
+public class SalespointWebConfiguration implements WebMvcConfigurer {
 
-	private @Autowired List<? extends Converter<?, ?>> converters;
-	private @Autowired List<? extends Formatter<?>> formatters;
-	private @Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
+	private @Autowired(required = false) List<? extends Converter<?, ?>> converters = new ArrayList<>();
+	private @Autowired(required = false) List<? extends Formatter<?>> formatters = new ArrayList<>();
+	private @Autowired(required = false) List<HandlerMethodArgumentResolver> argumentResolvers = new ArrayList<>();
 
 	/**
 	 * Registers the {@link Salespoint} specific {@link HandlerMethodArgumentResolver} with Spring MVC.

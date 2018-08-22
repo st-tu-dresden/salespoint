@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 
 import org.javamoney.moneta.Money;
 import org.junit.Test;
+import org.salespointframework.core.MonetaryAmountAttributeConverter;
 
 /**
  * Unit tests for {@link MonetaryAmountAttributeConverter}
