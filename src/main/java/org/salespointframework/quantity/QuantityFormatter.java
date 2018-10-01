@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.support;
+package org.salespointframework.quantity;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -22,8 +22,6 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.salespointframework.quantity.Metric;
-import org.salespointframework.quantity.Quantity;
 import org.springframework.format.Formatter;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.stereotype.Component;

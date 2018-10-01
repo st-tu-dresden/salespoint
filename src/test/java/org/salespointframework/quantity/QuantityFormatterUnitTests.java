@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.support;
+package org.salespointframework.quantity;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -31,6 +31,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.Quantity;
+import org.salespointframework.quantity.QuantityFormatter;
 
 /**
  * Tests for {@link QuantityFormatter}.

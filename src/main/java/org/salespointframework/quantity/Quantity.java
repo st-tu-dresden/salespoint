@@ -100,7 +100,7 @@ public class Quantity {
 	 * @param metric must not be {@literal null}.
 	 * @return
 	 */
-	public static Quantity of(BigDecimal amount, Metric metric) {
+	static Quantity of(BigDecimal amount, Metric metric) {
 		return new Quantity(amount, metric);
 	}
 
