@@ -21,8 +21,8 @@ import static org.mockito.Mockito.*;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.order.OrderLine;
 
 /**
@@ -30,12 +30,12 @@ import org.salespointframework.order.OrderLine;
  * 
  * @author Oliver Gierke
  */
-public class LineItemFilterUnitTests {
+class LineItemFilterUnitTests {
 
 	List<LineItemFilter> filters;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 
 		LineItemFilter first = item -> true;
 		LineItemFilter second = item -> item.getProductName().startsWith("Trigger");
@@ -44,7 +44,7 @@ public class LineItemFilterUnitTests {
 	}
 
 	@Test // #144
-	public void supportsIfAllFiltersMatch() {
+	void supportsIfAllFiltersMatch() {
 
 		OrderLine orderLine = mock(OrderLine.class);
 		doReturn("Trigger").when(orderLine).getProductName();
@@ -53,7 +53,7 @@ public class LineItemFilterUnitTests {
 	}
 
 	@Test // #144
-	public void doesNotSupportIfOneFilterDoesntMatch() {
+	void doesNotSupportIfOneFilterDoesntMatch() {
 
 		OrderLine orderLine = mock(OrderLine.class);
 		doReturn("Some name").when(orderLine).getProductName();

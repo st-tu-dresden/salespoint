@@ -20,4 +20,4 @@ import org.springframework.data.repository.Repository;
 /**
  * @author Oliver Gierke
  */
-public interface DummyRepository extends Repository<DummyEntity, Long> {}
+interface DummyRepository extends Repository<DummyEntity, Long> {}

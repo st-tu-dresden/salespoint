@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.time.LocalDateTime;
 
 import org.javamoney.moneta.Money;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.time.Interval;
@@ -31,12 +31,12 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 
  * @author Oliver Gierke
  */
-public class AccountancyRepositoryTests extends AbstractIntegrationTests {
+class AccountancyRepositoryTests extends AbstractIntegrationTests {
 
 	@Autowired AccountancyEntryRepository repository;
 
 	@Test // #182
-	public void findsEntriesWithinInterval() {
+	void findsEntriesWithinInterval() {
 
 		AccountancyEntry entry = new AccountancyEntry(Money.of(10, Currencies.EURO));
 		entry.setDate(LocalDateTime.now());

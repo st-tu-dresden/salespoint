@@ -16,7 +16,7 @@
 package example;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author Oliver Gierke
  */
 @Controller
-public class ExampleController {
+class ExampleController {
 
 	/**
 	 * Expects the value of the request parameter to be {@code äöü€}.
@@ -39,7 +39,7 @@ public class ExampleController {
 	 * @param response
 	 */
 	@RequestMapping("/encoding")
-	public void parameterEncoding(@RequestParam String value, HttpServletResponse response) {
+	void parameterEncoding(@RequestParam String value, HttpServletResponse response) {
 		assertThat(value, is("äöü€"));
 	}
 }

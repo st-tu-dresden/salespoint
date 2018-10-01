@@ -16,10 +16,10 @@
 package org.salespointframework.inventory;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
@@ -28,7 +28,7 @@ import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
+class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 
 	@Autowired Inventory<InventoryItem> inventory;
 	@Autowired Catalog<Product> catalog;
@@ -38,36 +38,36 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 
 	private static int counter = 0;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 
 		cookie = new Cookie("Superkeks " + (counter++), Currencies.ZERO_EURO);
 		item = new InventoryItem(cookie, Quantity.of(10));
 	}
 
 	@Test
-	public void addInCatalogThenInInventoryThrowsNoException() {
+	void addInCatalogThenInInventoryThrowsNoException() {
 
 		catalog.save(cookie);
 		inventory.save(item);
 	}
 
 	@Test
-	public void addInInventoryAddsProductInCatalog() {
+	void addInInventoryAddsProductInCatalog() {
 
 		inventory.save(item);
 		assertThat(catalog.existsById(cookie.getId()), is(true));
 	}
 
 	@Test
-	public void removeInInventory() {
+	void removeInInventory() {
 
 		inventory.save(item);
 		inventory.deleteById(item.getId());
 	}
 
 	@Test
-	public void removeInInventoryThenRemoveInCatalog() {
+	void removeInInventoryThenRemoveInCatalog() {
 
 		catalog.save(cookie);
 		inventory.save(item);
@@ -77,7 +77,7 @@ public class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	public void removeInInventoryDoesNotRemoveInCatalog() {
+	void removeInInventoryDoesNotRemoveInCatalog() {
 
 		catalog.save(cookie);
 		inventory.save(item);

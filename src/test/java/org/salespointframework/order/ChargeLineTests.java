@@ -15,8 +15,10 @@
  */
 package org.salespointframework.order;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.payment.Cash;
@@ -27,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Integration tests for {@link ChargeLine}. TODO: Improve test cases (assertions, naming).
  */
-public class ChargeLineTests extends AbstractIntegrationTests {
+class ChargeLineTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
 
@@ -35,42 +37,46 @@ public class ChargeLineTests extends AbstractIntegrationTests {
 	Order order;
 	ChargeLine chargeLine;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 		user = userAccountManager.create("userId", "password");
 		order = new Order(user, Cash.CASH);
 		chargeLine = new ChargeLine(Currencies.ZERO_EURO, "gaaar nix");
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void nullTest() {
-		order.add((ChargeLine) null);
-	}
+	@Test
+	void nullTest() {
 
-	@Test(expected = IllegalArgumentException.class)
-	public void nullTest2() {
-		order.remove((ChargeLine) null);
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> order.add((ChargeLine) null));
 	}
 
 	@Test
-	public void addsChargeLineCorrectly() {
+	void nullTest2() {
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> order.remove((ChargeLine) null));
+	}
+
+	@Test
+	void addsChargeLineCorrectly() {
 		order.add(chargeLine);
 	}
 
 	@Test
-	public void addTest2() {
+	void addTest2() {
 		order.add(chargeLine);
 		order.add(chargeLine);
 	}
 
 	@Test
-	public void removeTest() {
+	void removeTest() {
 		order.add(chargeLine);
 		order.remove(chargeLine);
 	}
 
 	@Test
-	public void removeTest2() {
+	void removeTest2() {
 		order.remove(chargeLine);
 	}
 }

@@ -23,4 +23,4 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @author Oliver Gierke
  */
-public interface SomeEntityRepository extends CrudRepository<SomeEntity, Long> {}
+interface SomeEntityRepository extends CrudRepository<SomeEntity, Long> {}

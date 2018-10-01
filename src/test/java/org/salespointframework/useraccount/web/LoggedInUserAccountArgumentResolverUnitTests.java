@@ -15,20 +15,19 @@
  */
 package org.salespointframework.useraccount.web;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.salespointframework.useraccount.AuthenticationManager;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.core.MethodParameter;
@@ -39,44 +38,42 @@ import org.springframework.web.bind.ServletRequestBindingException;
  * 
  * @author Oliver Gierke
  */
-@RunWith(MockitoJUnitRunner.class)
-public class LoggedInUserAccountArgumentResolverUnitTests {
+@ExtendWith(MockitoExtension.class)
+class LoggedInUserAccountArgumentResolverUnitTests {
 
 	@Mock AuthenticationManager authenticationManager;
 	@Mock UserAccount account;
 
 	LoggedInUserAccountArgumentResolver resolver;
 
-	public @Rule ExpectedException exception = ExpectedException.none();
-
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		resolver = new LoggedInUserAccountArgumentResolver(authenticationManager);
 	}
 
 	@Test // #37
-	public void supportsOptionalOfUserAccountAsMethodArgumentType() throws Exception {
+	void supportsOptionalOfUserAccountAsMethodArgumentType() throws Exception {
 
 		Method method = Sample.class.getMethod("valid", Optional.class);
 		assertThat(resolver.supportsParameter(new MethodParameter(method, 0)), is(true));
 	}
 
 	@Test // #37
-	public void rejectsNonAnnotatedOptionalOfUserAccountAsMethodArgumentType() throws Exception {
+	void rejectsNonAnnotatedOptionalOfUserAccountAsMethodArgumentType() throws Exception {
 
 		Method method = Sample.class.getMethod("notAnnotated", Optional.class);
 		assertThat(resolver.supportsParameter(new MethodParameter(method, 0)), is(false));
 	}
 
 	@Test // #37
-	public void rejectsNonOptionalWrappedUserAccountAsMethodArgumentType() throws Exception {
+	void rejectsNonOptionalWrappedUserAccountAsMethodArgumentType() throws Exception {
 
 		Method method = Sample.class.getMethod("notAnnotated", Optional.class);
 		assertThat(resolver.supportsParameter(new MethodParameter(method, 0)), is(false));
 	}
 
 	@Test // #37
-	public void returnsUserAccountProvidedByAuthenticationManager() throws Exception {
+	void returnsUserAccountProvidedByAuthenticationManager() throws Exception {
 
 		Method method = Sample.class.getMethod("valid", Optional.class);
 		when(authenticationManager.getCurrentUser()).thenReturn(Optional.empty());
@@ -84,7 +81,7 @@ public class LoggedInUserAccountArgumentResolverUnitTests {
 	}
 
 	@Test
-	public void supportsAnnotatedUserAccount() throws Exception {
+	void supportsAnnotatedUserAccount() throws Exception {
 
 		Method method = Sample.class.getMethod("noOptional", UserAccount.class);
 		when(authenticationManager.getCurrentUser()).thenReturn(Optional.of(account));
@@ -94,15 +91,14 @@ public class LoggedInUserAccountArgumentResolverUnitTests {
 	}
 
 	@Test
-	public void throwsExceptionIfNoUserAccountAvailableButRequired() throws Exception {
+	void throwsExceptionIfNoUserAccountAvailableButRequired() throws Exception {
 
 		Method method = Sample.class.getMethod("noOptional", UserAccount.class);
 		when(authenticationManager.getCurrentUser()).thenReturn(Optional.empty());
 
-		exception.expect(ServletRequestBindingException.class);
-		exception.expectMessage("Optional<UserAccount>");
-
-		assertThat(resolver.resolveArgument(new MethodParameter(method, 0), null, null, null), is(account));
+		assertThatExceptionOfType(ServletRequestBindingException.class) //
+				.isThrownBy(() -> resolver.resolveArgument(new MethodParameter(method, 0), null, null, null)) //
+				.withMessageContaining("Optional<UserAccount>");
 	}
 
 	static interface Sample {

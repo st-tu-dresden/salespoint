@@ -18,7 +18,7 @@ package org.salespointframework.order;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.order.OrderCompletionReport.OrderLineCompletion;
 
 /**
@@ -26,10 +26,10 @@ import org.salespointframework.order.OrderCompletionReport.OrderLineCompletion;
  * 
  * @author Oliver Gierke
  */
-public class OrderCompletionReportUnitTests {
+class OrderCompletionReportUnitTests {
 
 	@Test // #144
-	public void erroneousCompletionExposesFailure() {
+	void erroneousCompletionExposesFailure() {
 
 		OrderLineCompletion completion = OrderLineCompletion.error(mock(OrderLine.class), "Some message!");
 

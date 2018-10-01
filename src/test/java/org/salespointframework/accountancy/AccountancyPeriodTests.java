@@ -23,8 +23,8 @@ import java.util.Map.Entry;
 import javax.money.MonetaryAmount;
 
 import org.javamoney.moneta.Money;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Order;
@@ -36,7 +36,7 @@ import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 
-public class AccountancyPeriodTests extends AbstractIntegrationTests {
+class AccountancyPeriodTests extends AbstractIntegrationTests {
 
 	@Autowired Accountancy a;
 	@Autowired UserAccountManager userAccountManager;
@@ -44,8 +44,8 @@ public class AccountancyPeriodTests extends AbstractIntegrationTests {
 	LocalDateTime from;
 	LocalDateTime to;
 
-	@Before
-	public void testSetup() throws Exception {
+	@BeforeEach
+	void testSetup() throws Exception {
 
 		UserAccount account = userAccountManager.create("username", "password");
 		OrderIdentifier orderIdentifier = new Order(account).getId();
@@ -65,7 +65,7 @@ public class AccountancyPeriodTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	public void periodSetTest() {
+	void periodSetTest() {
 
 		Interval interval = Interval.from(from).to(to);
 
@@ -76,7 +76,7 @@ public class AccountancyPeriodTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	public void singlePeriodTest() {
+	void singlePeriodTest() {
 
 		Interval interval = Interval.from(from).to(to);
 
@@ -87,7 +87,7 @@ public class AccountancyPeriodTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	public void periodMoneyTest() {
+	void periodMoneyTest() {
 		MonetaryAmount total;
 
 		Interval interval = Interval.from(from).to(to);

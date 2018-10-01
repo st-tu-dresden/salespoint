@@ -15,8 +15,9 @@
  */
 package org.salespointframework.inventory;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import java.util.Optional;
 
@@ -24,10 +25,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
 import org.hibernate.exception.ConstraintViolationException;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
@@ -41,9 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Oliver Gierke
  */
-public class InventoryTests extends AbstractIntegrationTests {
-
-	public @Rule ExpectedException exception = ExpectedException.none();
+class InventoryTests extends AbstractIntegrationTests {
 
 	@Autowired Inventory<InventoryItem> inventory;
 	@Autowired Catalog<Product> catalog;
@@ -52,20 +49,20 @@ public class InventoryTests extends AbstractIntegrationTests {
 	Cookie cookie;
 	InventoryItem item;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 
 		cookie = catalog.save(new Cookie("Add Superkeks", Currencies.ZERO_EURO));
 		item = inventory.save(new InventoryItem(cookie, Quantity.of(10)));
 	}
 
 	@Test
-	public void savesItemsCorrectly() {
+	void savesItemsCorrectly() {
 		assertThat(inventory.save(item).getId(), is(notNullValue()));
 	}
 
 	@Test // #34
-	public void deletesItemsCorrectly() {
+	void deletesItemsCorrectly() {
 
 		inventory.deleteById(item.getId());
 
@@ -73,12 +70,12 @@ public class InventoryTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #34
-	public void testExists() {
+	void testExists() {
 		assertThat(inventory.existsById(item.getId()), is(true));
 	}
 
 	@Test // #34
-	public void testGet() {
+	void testGet() {
 
 		Optional<InventoryItem> result = inventory.findById(item.getId());
 
@@ -87,7 +84,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #34
-	public void testFindItemsByProduct() {
+	void testFindItemsByProduct() {
 
 		Optional<InventoryItem> result = inventory.findByProduct(cookie);
 
@@ -96,7 +93,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #34
-	public void testFindItemsByProductId() {
+	void testFindItemsByProductId() {
 
 		Optional<InventoryItem> result = inventory.findByProductIdentifier(cookie.getId());
 
@@ -105,7 +102,7 @@ public class InventoryTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #34
-	public void decreasesItemAndPersistsIt() {
+	void decreasesItemAndPersistsIt() {
 
 		InventoryItem item = inventory.findByProduct(cookie).get();
 		item.decreaseQuantity(Quantity.of(1));
@@ -120,18 +117,17 @@ public class InventoryTests extends AbstractIntegrationTests {
 	/**
 	 * @see #68
 	 */
-	public void rejectsNewInventoryItemForExistingProducts() {
-
-		exception.expect(PersistenceException.class);
-		exception.expectCause(is(instanceOf(ConstraintViolationException.class)));
+	void rejectsNewInventoryItemForExistingProducts() {
 
 		inventory.save(new InventoryItem(cookie, Quantity.of(10)));
 
-		em.flush();
+		assertThatExceptionOfType(PersistenceException.class) //
+				.isThrownBy(() -> em.flush()) //
+				.withCauseExactlyInstanceOf(ConstraintViolationException.class);
 	}
 
 	@Test // #142
-	public void findsInventoryItemsOutOfStock() {
+	void findsInventoryItemsOutOfStock() {
 
 		assertThat(inventory.findItemsOutOfStock(), is(emptyIterable()));
 

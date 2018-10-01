@@ -16,16 +16,14 @@
 package org.salespointframework;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 /**
@@ -33,26 +31,25 @@ import org.springframework.web.filter.CharacterEncodingFilter;
  * 
  * @author Oliver Gierke
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = { SalespointWebConfiguration.class, Salespoint.class })
-public class SalespointWebApplicationConfigurationTests {
+class SalespointWebApplicationConfigurationTests {
 
 	@Autowired ConversionService conversionService;
 	@Autowired CharacterEncodingFilter encodingFilter;
 	@Autowired PasswordEncoder passwordEncoder;
 
 	@Test
-	public void conversionServicePrepared() {
+	void conversionServicePrepared() {
 		assertThat(conversionService.canConvert(String.class, ProductIdentifier.class), is(true));
 	}
 
 	@Test
-	public void encodingFilterRegistered() {
+	void encodingFilterRegistered() {
 		assertThat(encodingFilter, is(notNullValue()));
 	}
 
 	@Test
-	public void passwordEncoderRegistered() {
+	void passwordEncoderRegistered() {
 		assertThat(passwordEncoder, is(notNullValue()));
 	}
 }

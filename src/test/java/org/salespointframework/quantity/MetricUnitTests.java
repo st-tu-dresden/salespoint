@@ -17,7 +17,7 @@ package org.salespointframework.quantity;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link Metric}.
@@ -25,22 +25,22 @@ import org.junit.Test;
  * @author Oliver Gierke
  * @soundtrack Dave Matthews Band - JTR (DMB Live 25)
  */
-public class MetricUnitTests {
+class MetricUnitTests {
 
 	@Test // #185
-	public void parsesMetricFromSource() {
+	void parsesMetricFromSource() {
 
 		assertThat(Metric.from("l")).isEqualTo(Metric.LITER);
 		assertThat(Metric.from("  l  ")).isEqualTo(Metric.LITER);
 	}
 
 	@Test // #195
-	public void parsesMetricFromAdditionalAbbreviations() {
+	void parsesMetricFromAdditionalAbbreviations() {
 		assertThat(Metric.from("m2")).isEqualTo(Metric.SQUARE_METER);
 	}
 
 	@Test // #195
-	public void rejectsNullAbbreviationSource() {
+	void rejectsNullAbbreviationSource() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> Metric.from(null));
 	}
 }

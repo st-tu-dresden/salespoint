@@ -16,10 +16,10 @@
 package org.salespointframework.support;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 
 import org.javamoney.moneta.Money;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
@@ -32,7 +32,7 @@ import org.springframework.core.convert.TypeDescriptor;
  *
  * @author Oliver Gierke
  */
-public class JpaEntityConverterIntegrationTests extends AbstractIntegrationTests {
+class JpaEntityConverterIntegrationTests extends AbstractIntegrationTests {
 
 	static final TypeDescriptor PRODUCT_TYPE = TypeDescriptor.valueOf(Product.class);
 	static final TypeDescriptor STRING_TYPE = TypeDescriptor.valueOf(String.class);
@@ -41,7 +41,7 @@ public class JpaEntityConverterIntegrationTests extends AbstractIntegrationTests
 	@Autowired Catalog<Product> catalog;
 
 	@Test
-	public void convertsStringIdToProduct() {
+	void convertsStringIdToProduct() {
 
 		Product product = catalog.save(new Product("iPad", Money.of(400, Currencies.EURO)));
 		String identifier = product.getId().getIdentifier();

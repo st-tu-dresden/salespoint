@@ -15,18 +15,17 @@
  */
 package org.salespointframework.order;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.hamcrest.collection.IsIterableWithSize;
 import org.javamoney.moneta.Money;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
@@ -48,9 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Paul Henke
  * @author Oliver Gierke
  */
-public class OrderManagerTests extends AbstractIntegrationTests {
-
-	public @Rule ExpectedException exception = ExpectedException.none();
+class OrderManagerTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired OrderManager<Order> orderManager;
@@ -61,31 +58,33 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 	UserAccount user;
 	Order order;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 		user = userAccountManager.create("userId", "password");
 		userAccountManager.save(user);
 		order = new Order(user, Cash.CASH);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void nullAddtest() {
-		orderManager.save(null);
+	@Test
+	void nullAddtest() {
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> orderManager.save(null));
 	}
 
 	@Test
-	public void addTest() {
+	void addTest() {
 		orderManager.save(order);
 	}
 
 	@Test
-	public void testContains() {
+	void testContains() {
 		orderManager.save(order);
-		assertTrue(orderManager.contains(order.getId()));
+		assertThat(orderManager.contains(order.getId()), is(true));
 	}
 
 	@Test
-	public void testGet() {
+	void testGet() {
 
 		order = orderManager.save(order);
 
@@ -96,7 +95,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #38
-	public void completesOrderIfAllLineItemsAreAvailableInSufficientQuantity() {
+	void completesOrderIfAllLineItemsAreAvailableInSufficientQuantity() {
 
 		Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
 		inventory.save(new InventoryItem(cookie, Quantity.of(100)));
@@ -107,7 +106,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #38
-	public void failsOrderCompletionIfLineItemsAreNotAvailableInSufficientQuantity() {
+	void failsOrderCompletionIfLineItemsAreNotAvailableInSufficientQuantity() {
 
 		Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
 		inventory.save(new InventoryItem(cookie, Quantity.of(1)));
@@ -115,13 +114,12 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 
 		orderManager.payOrder(order);
 
-		exception.expect(OrderCompletionFailure.class);
-
-		orderManager.completeOrder(order);
+		assertThatExceptionOfType(OrderCompletionFailure.class) //
+				.isThrownBy(() -> orderManager.completeOrder(order));
 	}
 
 	@Test // #61
-	public void findOrdersBetween() {
+	void findOrdersBetween() {
 
 		order = orderManager.save(order);
 		LocalDateTime dateCreated = order.getDateCreated();
@@ -133,7 +131,7 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #61
-	public void findOrdersBetweenWhenFromToEqual() {
+	void findOrdersBetweenWhenFromToEqual() {
 
 		order = orderManager.save(order);
 		LocalDateTime dateCreated = order.getDateCreated();
@@ -144,17 +142,18 @@ public class OrderManagerTests extends AbstractIntegrationTests {
 		assertThat(result.iterator().next(), is(order));
 	}
 
-	@Test(expected = IllegalArgumentException.class) // #61
-	public void findOrdersBetweenWhenToLowerThenFrom() {
+	@Test
+	void findOrdersBetweenWhenToLowerThenFrom() {
 
 		order = orderManager.save(order);
 		LocalDateTime dateCreated = order.getDateCreated();
 
-		orderManager.findBy(Interval.from(dateCreated).to(dateCreated.minusHours(1L)));
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> orderManager.findBy(Interval.from(dateCreated).to(dateCreated.minusHours(1L))));
 	}
 
 	@Test // #61
-	public void findOrdersByOrderStatus_OPEN() {
+	void findOrdersByOrderStatus_OPEN() {
 
 		Order openOrder = new Order(user, Cash.CASH);
 		openOrder = orderManager.save(openOrder);

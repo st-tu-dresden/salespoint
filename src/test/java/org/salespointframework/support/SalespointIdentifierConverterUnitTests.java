@@ -16,9 +16,9 @@
 package org.salespointframework.support;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.core.SalespointIdentifier;
 import org.springframework.core.convert.TypeDescriptor;
@@ -28,7 +28,7 @@ import org.springframework.core.convert.TypeDescriptor;
  *
  * @author Oliver Gierke
  */
-public class SalespointIdentifierConverterUnitTests {
+class SalespointIdentifierConverterUnitTests {
 
 	private static final TypeDescriptor PRODUCT_IDENTIFIER_DESCRIPTOR = TypeDescriptor.valueOf(ProductIdentifier.class);
 	private static final TypeDescriptor STRING_DESCRIPTOR = TypeDescriptor.valueOf(String.class);
@@ -37,22 +37,22 @@ public class SalespointIdentifierConverterUnitTests {
 	SalespointIdentifierConverter converter = new SalespointIdentifierConverter();
 
 	@Test
-	public void matchesForStringSourceSalespointIdentifierTarget() {
+	void matchesForStringSourceSalespointIdentifierTarget() {
 		assertThat(converter.matches(STRING_DESCRIPTOR, PRODUCT_IDENTIFIER_DESCRIPTOR), is(true));
 	}
 
 	@Test
-	public void doesNotMatchForNonStringSource() {
+	void doesNotMatchForNonStringSource() {
 		assertThat(converter.matches(OBJECT_DESCRIPTOR, PRODUCT_IDENTIFIER_DESCRIPTOR), is(false));
 	}
 
 	@Test
-	public void doesNotMatchForNonSalespointIdentifierTarget() {
+	void doesNotMatchForNonSalespointIdentifierTarget() {
 		assertThat(converter.matches(STRING_DESCRIPTOR, OBJECT_DESCRIPTOR), is(false));
 	}
 
 	@Test
-	public void convertsStringToProductIdentifier() {
+	void convertsStringToProductIdentifier() {
 
 		SalespointIdentifier result = converter.convert("5", STRING_DESCRIPTOR, PRODUCT_IDENTIFIER_DESCRIPTOR);
 
@@ -61,7 +61,7 @@ public class SalespointIdentifierConverterUnitTests {
 	}
 
 	@Test // #46
-	public void createsIdentifierInstanceFromPrivateConstructor() {
+	void createsIdentifierInstanceFromPrivateConstructor() {
 
 		Object result = converter.convert("5", STRING_DESCRIPTOR, TypeDescriptor.valueOf(MySalespointIdentifier.class));
 		assertThat(result, is(instanceOf(MySalespointIdentifier.class)));
@@ -71,7 +71,7 @@ public class SalespointIdentifierConverterUnitTests {
 
 		private static final long serialVersionUID = 1419011598975206455L;
 
-		public MySalespointIdentifier() {
+		MySalespointIdentifier() {
 			super();
 		}
 

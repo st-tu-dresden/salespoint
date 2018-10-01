@@ -18,8 +18,8 @@ package org.salespointframework.accountancy;
 import java.time.LocalDateTime;
 
 import org.javamoney.moneta.Money;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Order;
@@ -31,7 +31,7 @@ import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings("javadoc")
-public class AccountancyTests extends AbstractIntegrationTests {
+class AccountancyTests extends AbstractIntegrationTests {
 
 	@Autowired Accountancy accountancyEntries;
 	@Autowired UserAccountManager userAccountManager;
@@ -39,8 +39,8 @@ public class AccountancyTests extends AbstractIntegrationTests {
 	LocalDateTime from;
 	LocalDateTime to;
 
-	@Before
-	public void testSetup() throws Exception {
+	@BeforeEach
+	void testSetup() throws Exception {
 
 		for (int year = 2000; year < 2010; year++) {
 
@@ -65,7 +65,7 @@ public class AccountancyTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	public void select() {
+	void select() {
 
 		Interval interval = Interval.from(from).to(to);
 
@@ -75,7 +75,7 @@ public class AccountancyTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	public void selectType() {
+	void selectType() {
 
 		System.out.println("All entries:");
 		accountancyEntries.find(Interval.from(from).to(to)).forEach(System.out::println);

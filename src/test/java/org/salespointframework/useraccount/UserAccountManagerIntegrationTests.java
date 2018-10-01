@@ -15,14 +15,15 @@
  */
 package org.salespointframework.useraccount;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import java.util.Optional;
 
 import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,32 +34,34 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author Paul Henke
  * @author Oliver Gierke
  */
-public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests {
+class UserAccountManagerIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired PasswordEncoder passwordEncoder;
 
 	UserAccount userAccount;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 		userAccount = userAccountManager.create("userId", "password");
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testAddNull() {
-		userAccountManager.save(null);
+	@Test
+	void testAddNull() {
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> userAccountManager.save(null));
 	}
 
 	@Test
-	public void testAddContains() {
+	void testAddContains() {
 
 		userAccountManager.save(userAccount);
 		assertThat(userAccountManager.contains(userAccount.getId()), is(true));
 	}
 
 	@Test
-	public void testDisable() {
+	void testDisable() {
 
 		UserAccountIdentifier id = userAccount.getId();
 
@@ -71,7 +74,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	}
 
 	@Test
-	public void testFind() {
+	void testFind() {
 
 		userAccountManager.save(userAccount);
 		Iterable<UserAccount> customers = userAccountManager.findAll();
@@ -81,14 +84,14 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	}
 
 	@Test
-	public void testGet() {
+	void testGet() {
 
 		userAccountManager.save(userAccount);
 		assertThat(userAccountManager.get(userAccount.getId()).get(), is(userAccount));
 	}
 
 	@Test
-	public void encryptsPlainTextPassword() {
+	void encryptsPlainTextPassword() {
 
 		UserAccount account = userAccountManager.save(userAccount);
 		Password password = account.getPassword();
@@ -96,7 +99,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	}
 
 	@Test
-	public void doesNotReEncryptEncryptedPassword() {
+	void doesNotReEncryptEncryptedPassword() {
 
 		UserAccount account = userAccountManager.save(userAccount);
 		Password encryptedPassword = Password.encrypted("encrypted");
@@ -107,7 +110,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	}
 
 	@Test
-	public void changesPasswordCorrectly() {
+	void changesPasswordCorrectly() {
 
 		UserAccount acc = userAccountManager.create("Bob", "123", Role.of("ROLE_CHEF"));
 
@@ -118,7 +121,7 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 	}
 
 	@Test // #46
-	public void findsUserByUsername() {
+	void findsUserByUsername() {
 
 		UserAccount reference = userAccountManager.create("Bob", "123", Role.of("ROLE_CHEF"));
 
@@ -128,10 +131,12 @@ public class UserAccountManagerIntegrationTests extends AbstractIntegrationTests
 		assertThat(user.get(), is(reference));
 	}
 
-	@Test(expected = IllegalArgumentException.class) // #55
-	public void rejectsCreationOfUserWithExistingUsername() {
+	@Test // #55
+	void rejectsCreationOfUserWithExistingUsername() {
 
 		userAccountManager.create("username", "password");
-		userAccountManager.create("username", "password");
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> userAccountManager.create("username", "password"));
 	}
 }

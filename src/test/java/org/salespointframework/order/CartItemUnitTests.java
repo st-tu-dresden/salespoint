@@ -15,12 +15,13 @@
  */
 package org.salespointframework.order;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import org.javamoney.moneta.Money;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Metric;
@@ -33,28 +34,34 @@ import org.salespointframework.quantity.Quantity;
  * @author Paul Henke
  * @author Oliver Gierke
  */
-public class CartItemUnitTests {
+class CartItemUnitTests {
 
 	static final Quantity QUANTITY = Quantity.of(10);
 	static final Product PRODUCT = new Product("name", Money.of(1, Currencies.EURO));
 
-	@Test(expected = IllegalArgumentException.class) // #44
-	public void rejectsNullProduct() {
-		new CartItem(null, QUANTITY);
-	}
+	@Test // #44
+	void rejectsNullProduct() {
 
-	@Test(expected = IllegalArgumentException.class) // #44
-	public void rejectsNullQuantity() {
-		new CartItem(PRODUCT, null);
-	}
-
-	@Test(expected = MetricMismatchException.class) // #44
-	public void rejectsQuantityWithInvalidMetric() {
-		new CartItem(PRODUCT, Quantity.of(0, Metric.KILOGRAM));
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> new CartItem(null, QUANTITY));
 	}
 
 	@Test // #44
-	public void returnsCorrectDetails() {
+	void rejectsNullQuantity() {
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> new CartItem(PRODUCT, null));
+	}
+
+	@Test // #44
+	void rejectsQuantityWithInvalidMetric() {
+
+		assertThatExceptionOfType(MetricMismatchException.class) //
+				.isThrownBy(() -> new CartItem(PRODUCT, Quantity.of(0, Metric.KILOGRAM)));
+	}
+
+	@Test // #44
+	void returnsCorrectDetails() {
 
 		CartItem item = new CartItem(PRODUCT, QUANTITY);
 
@@ -65,7 +72,7 @@ public class CartItemUnitTests {
 	}
 
 	@Test // #44
-	public void calculatesPriceCorrectly() {
+	void calculatesPriceCorrectly() {
 
 		CartItem item = new CartItem(PRODUCT, QUANTITY);
 
@@ -73,7 +80,7 @@ public class CartItemUnitTests {
 	}
 
 	@Test // #44
-	public void createsOrderLineCorrectly() {
+	void createsOrderLineCorrectly() {
 
 		OrderLine orderLine = new CartItem(PRODUCT, QUANTITY).toOrderLine();
 
@@ -83,7 +90,7 @@ public class CartItemUnitTests {
 	}
 
 	@Test // #201
-	public void updateingQuantityCreatesNewCartItemWithCorrectPrice() {
+	void updateingQuantityCreatesNewCartItemWithCorrectPrice() {
 
 		CartItem item = new CartItem(PRODUCT, QUANTITY);
 		assertThat(item.getPrice()).isEqualTo(PRODUCT.getPrice().multiply(QUANTITY.getAmount()));

@@ -15,33 +15,38 @@
  */
 package org.salespointframework.time;
 
+import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link Interval}.
  * 
  * @author Oliver Gierke
  */
-public class IntervalUnitTests {
+class IntervalUnitTests {
 
-	@Test(expected = IllegalArgumentException.class) // #8
-	public void preventsNullStart() {
-		Interval.from(null);
-	}
-
-	@Test(expected = IllegalArgumentException.class) // #8
-	public void preventsNullEnd() {
-		Interval.from(LocalDateTime.now()).to(null);
+	@Test // #8
+	void preventsNullStart() {
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> Interval.from(null));
 	}
 
 	@Test // #8
-	public void instancesWithSameStartAndEndAreEqual() {
+	void preventsNullEnd() {
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> Interval.from(LocalDateTime.now()).to(null));
+	}
+
+	@Test // #8
+	void instancesWithSameStartAndEndAreEqual() {
 
 		LocalDateTime start = LocalDateTime.now();
 		LocalDateTime end = start.plusDays(2);
@@ -55,43 +60,43 @@ public class IntervalUnitTests {
 	}
 
 	@Test // #8
-	public void instancesWithDifferentEndsAreNotEqual() {
+	void instancesWithDifferentEndsAreNotEqual() {
 
 		LocalDateTime start = LocalDateTime.now();
 
 		Interval first = Interval.from(start).to(start.plusDays(1));
 		Interval second = Interval.from(start).to(start.plusDays(2));
 
-		assertThat(first, is(not(second)));
-		assertThat(second, is(not(first)));
+		assertThat(first).isNotEqualTo(second);
+		assertThat(second).isNotEqualTo(first);
 	}
 
 	@Test // #8
-	public void instancesWithDifferentStartsAreNotEqual() {
+	void instancesWithDifferentStartsAreNotEqual() {
 
 		LocalDateTime reference = LocalDateTime.now();
 
 		Interval first = Interval.from(reference.minusDays(1)).to(reference);
 		Interval second = Interval.from(reference.minusDays(2)).to(reference);
 
-		assertThat(first, is(not(second)));
-		assertThat(second, is(not(first)));
+		assertThat(first).isNotEqualTo(second);
+		assertThat(second).isNotEqualTo(first);
 	}
 
 	@Test // #8
-	public void instancesWithDifferentStartsAndEndsAreNotEqual() {
+	void instancesWithDifferentStartsAndEndsAreNotEqual() {
 
 		LocalDateTime reference = LocalDateTime.now();
 
 		Interval first = Interval.from(reference.minusDays(1)).to(reference);
 		Interval second = Interval.from(reference.plusDays(1)).to(reference.plusDays(2));
 
-		assertThat(first, is(not(second)));
-		assertThat(second, is(not(first)));
+		assertThat(first).isNotEqualTo(second);
+		assertThat(second).isNotEqualTo(first);
 	}
 
 	@Test // #153
-	public void detectsContainedDateTimes() {
+	void detectsContainedDateTimes() {
 
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime nowTomorrow = now.plusDays(1);
@@ -107,16 +112,17 @@ public class IntervalUnitTests {
 		assertThat(interval.contains(nowTomorrow.plusDays(1)), is(false));
 	}
 
-	@Test(expected = IllegalArgumentException.class) // #153
-	public void rejectsNullForContainsReference() {
+	@Test // #153
+	void rejectsNullForContainsReference() {
 
 		LocalDateTime now = LocalDateTime.now();
 
-		Interval.from(now).to(now.plusDays(1)).contains(null);
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> Interval.from(now).to(now.plusDays(1)).contains(null));
 	}
 
 	@Test // #153
-	public void detectsOverlaps() {
+	void detectsOverlaps() {
 
 		LocalDateTime now = LocalDateTime.now();
 
@@ -138,16 +144,17 @@ public class IntervalUnitTests {
 		assertThat(fourth.overlaps(first), is(false));
 	}
 
-	@Test(expected = IllegalArgumentException.class) // #153
-	public void rejectsNullForOverlapReference() {
+	@Test // #153
+	void rejectsNullForOverlapReference() {
 
 		LocalDateTime now = LocalDateTime.now();
 
-		Interval.from(now).to(now.plusDays(1)).overlaps(null);
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> Interval.from(now).to(now.plusDays(1)).overlaps(null));
 	}
 
 	@Test // #162
-	public void exposesIntervalAsDuration() {
+	void exposesIntervalAsDuration() {
 
 		LocalDateTime now = LocalDateTime.now();
 

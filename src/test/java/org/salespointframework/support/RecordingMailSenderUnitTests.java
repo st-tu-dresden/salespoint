@@ -17,7 +17,7 @@ package org.salespointframework.support;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.mail.SimpleMailMessage;
 
 /**
@@ -25,10 +25,10 @@ import org.springframework.mail.SimpleMailMessage;
  * 
  * @author Oliver Gierke
  */
-public class RecordingMailSenderUnitTests {
+class RecordingMailSenderUnitTests {
 
 	@Test // #149
-	public void exposesSentEmails() {
+	void exposesSentEmails() {
 
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom("me");

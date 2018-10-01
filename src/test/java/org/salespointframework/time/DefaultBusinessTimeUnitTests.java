@@ -21,7 +21,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.stream.IntStream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link DefaultBusinessTime}.
@@ -29,12 +29,12 @@ import org.junit.Test;
  * @author Oliver Gierke
  * @author Rico Bergmann
  */
-public class DefaultBusinessTimeUnitTests {
+class DefaultBusinessTimeUnitTests {
 
 	BusinessTime businessTime = new DefaultBusinessTime();
 
 	@Test // #7
-	public void returnsCurrentTimeByDefault() throws Exception {
+	void returnsCurrentTimeByDefault() throws Exception {
 
 		LocalDateTime time = businessTime.getTime();
 
@@ -45,17 +45,17 @@ public class DefaultBusinessTimeUnitTests {
 	}
 
 	@Test // #7
-	public void shiftsTimeByGivenDuration() throws Exception {
+	void shiftsTimeByGivenDuration() throws Exception {
 		assertTimeShifted(businessTime.getTime(), 2);
 	}
 
 	@Test // #7
-	public void forwardingMultipleTimesAccumulatesOffset() throws Exception {
+	void forwardingMultipleTimesAccumulatesOffset() throws Exception {
 		assertTimeShifted(businessTime.getTime(), 2, 4, 12);
 	}
 
 	@Test // #189
-	public void resetsTime() throws Exception {
+	void resetsTime() throws Exception {
 
 		businessTime.forward(Duration.ofDays(42));
 		businessTime.reset();
@@ -68,7 +68,7 @@ public class DefaultBusinessTimeUnitTests {
 	}
 
 	@Test // #189
-	public void resetsTimeDespiteMultipleForwards() throws Exception {
+	void resetsTimeDespiteMultipleForwards() throws Exception {
 
 		businessTime.forward(Duration.ofDays(42));
 		businessTime.forward(Duration.ofDays(13));
@@ -82,7 +82,7 @@ public class DefaultBusinessTimeUnitTests {
 	}
 
 	@Test // #189
-	public void resetWithoutForwardDoesntBreakTime() throws Exception {
+	void resetWithoutForwardDoesntBreakTime() throws Exception {
 
 		businessTime.reset();
 
@@ -94,7 +94,7 @@ public class DefaultBusinessTimeUnitTests {
 	}
 
 	@Test // #189
-	public void forwardsCorrectlyAfterReset() throws Exception {
+	void forwardsCorrectlyAfterReset() throws Exception {
 
 		businessTime.reset();
 

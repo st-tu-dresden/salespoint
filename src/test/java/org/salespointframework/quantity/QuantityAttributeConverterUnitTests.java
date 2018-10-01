@@ -16,39 +16,39 @@
 package org.salespointframework.quantity;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Oliver Gierke
  */
-public class QuantityAttributeConverterUnitTests {
+class QuantityAttributeConverterUnitTests {
 
 	QuantityAttributeConverter converter = new QuantityAttributeConverter();
 
 	@Test
-	public void convertsValueWithDoubleAndMetric() {
+	void convertsValueWithDoubleAndMetric() {
 		assertCovertedPair(Quantity.of(3.14, Metric.LITER), "3.14 l");
 	}
 
 	@Test
-	public void convertsValueWithLongAndMetric() {
+	void convertsValueWithLongAndMetric() {
 		assertCovertedPair(Quantity.of(3L, Metric.LITER), "3 l");
 	}
 
 	@Test
-	public void convertsValueWithLongWithoutMetric() {
+	void convertsValueWithLongWithoutMetric() {
 		assertCovertedPair(Quantity.of(3L), "3");
 	}
 
 	@Test
-	public void convertsDoubleWithoutMetric() {
+	void convertsDoubleWithoutMetric() {
 		assertCovertedPair(Quantity.of(10d / 3), "3.3333333333333335");
 	}
 
 	@Test
-	public void convertsNullToNull() {
+	void convertsNullToNull() {
 		assertCovertedPair(null, null);
 	}
 

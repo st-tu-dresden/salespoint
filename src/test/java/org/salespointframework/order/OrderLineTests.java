@@ -15,8 +15,10 @@
  */
 package org.salespointframework.order;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
@@ -31,7 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Integration tests for {@link OrderLine}. TODO: Improve test cases (assertions, naming).
  */
-public class OrderLineTests extends AbstractIntegrationTests {
+class OrderLineTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired Catalog<Product> catalog;
@@ -42,8 +44,8 @@ public class OrderLineTests extends AbstractIntegrationTests {
 	private Order order;
 	private OrderLine orderLine;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 
 		Product cookie = new Cookie("OrderLine Cookie " + keksCounter++, Currencies.ZERO_EURO);
 
@@ -54,35 +56,38 @@ public class OrderLineTests extends AbstractIntegrationTests {
 		orderLine = new OrderLine(cookie, Quantity.of(10));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void nullTest() {
-		order.add((OrderLine) null);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void nullTest2() {
-		order.remove((OrderLine) null);
+	@Test
+	void nullTest() {
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> order.add((OrderLine) null));
 	}
 
 	@Test
-	public void addTest() {
+	void nullTest2() {
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> order.remove((OrderLine) null));
+	}
+
+	@Test
+	void addTest() {
 		order.add(orderLine);
 	}
 
 	@Test
-	public void addTest2() {
+	void addTest2() {
 		order.add(orderLine);
 		order.add(orderLine);
 	}
 
 	@Test
-	public void removeTest() {
+	void removeTest() {
 		order.add(orderLine);
 		order.remove(orderLine);
 	}
 
 	@Test
-	public void removeTest2() {
+	void removeTest2() {
 		order.remove(orderLine);
 	}
 }

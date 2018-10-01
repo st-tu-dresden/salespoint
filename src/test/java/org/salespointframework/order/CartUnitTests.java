@@ -20,8 +20,8 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.Optional;
 
 import org.javamoney.moneta.Money;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
@@ -32,20 +32,20 @@ import org.salespointframework.quantity.Quantity;
  * @author Paul Henke
  * @author Oliver Gierke
  */
-public class CartUnitTests {
+class CartUnitTests {
 
 	static final Quantity QUANTITY = Quantity.of(10);
 	static final Product PRODUCT = new Product("name", Money.of(1, Currencies.EURO));
 
 	Cart cart;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		cart = new Cart();
 	}
 
 	@Test // #44
-	public void addsCartItemCorrectly() {
+	void addsCartItemCorrectly() {
 
 		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
@@ -54,28 +54,28 @@ public class CartUnitTests {
 	}
 
 	@Test // #44
-	public void rejectsNullQuantityOnAdding() {
+	void rejectsNullQuantityOnAdding() {
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
 				.isThrownBy(() -> cart.addOrUpdateItem(PRODUCT, null));
 	}
 
 	@Test // #44
-	public void rejectsNullProductOnAdding() {
+	void rejectsNullProductOnAdding() {
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
 				.isThrownBy(() -> cart.addOrUpdateItem(null, QUANTITY));
 	}
 
 	@Test // #44
-	public void rejectsNullOnRemovingAnItem() {
+	void rejectsNullOnRemovingAnItem() {
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
 				.isThrownBy(() -> cart.removeItem(null));
 	}
 
 	@Test // #44
-	public void removesItemsCorrectly() {
+	void removesItemsCorrectly() {
 
 		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 		Optional<CartItem> removed = cart.removeItem(reference.getId());
@@ -85,7 +85,7 @@ public class CartUnitTests {
 	}
 
 	@Test // #44
-	public void providesAccessToCartItem() {
+	void providesAccessToCartItem() {
 
 		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 		Optional<CartItem> item = cart.getItem(reference.getId());
@@ -94,20 +94,22 @@ public class CartUnitTests {
 	}
 
 	@Test // #44
-	public void returnsEmptyOptionalForNonExistingIdentifier() {
+	void returnsEmptyOptionalForNonExistingIdentifier() {
 
 		cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
 		assertThat(cart.getItem("foobar")).isEmpty();
 	}
 
-	@Test(expected = IllegalArgumentException.class) // #44
-	public void rejectsNullIdentifier() {
-		cart.getItem(null);
+	@Test // #44
+	void rejectsNullIdentifier() {
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> cart.getItem(null));
 	}
 
 	@Test // #44
-	public void clearsCartCorrectly() {
+	void clearsCartCorrectly() {
 
 		cart.addOrUpdateItem(PRODUCT, QUANTITY);
 		cart.clear();
@@ -117,7 +119,7 @@ public class CartUnitTests {
 	}
 
 	@Test // #44
-	public void isEmpty() {
+	void isEmpty() {
 
 		assertThat(cart.isEmpty()).isTrue();
 
@@ -126,14 +128,14 @@ public class CartUnitTests {
 	}
 
 	@Test // #44
-	public void toOrderFail() {
+	void toOrderFail() {
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
 				.isThrownBy(() -> cart.addItemsTo(null));
 	}
 
 	@Test // #44
-	public void updatesCartItemIfOneForProductAlreadyExists() {
+	void updatesCartItemIfOneForProductAlreadyExists() {
 
 		CartItem item = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
@@ -150,7 +152,7 @@ public class CartUnitTests {
 	}
 
 	@Test // #198
-	public void addsProductWithLongAmount() {
+	void addsProductWithLongAmount() {
 
 		CartItem cartItem = cart.addOrUpdateItem(PRODUCT, 10L);
 
@@ -158,7 +160,7 @@ public class CartUnitTests {
 	}
 
 	@Test // #198
-	public void addsProductWithDoubleAmount() {
+	void addsProductWithDoubleAmount() {
 
 		CartItem cartItem = cart.addOrUpdateItem(PRODUCT, 10.0);
 
@@ -166,7 +168,7 @@ public class CartUnitTests {
 	}
 
 	@Test // #191
-	public void keepsIdOfUpdatedCartItem() {
+	void keepsIdOfUpdatedCartItem() {
 
 		CartItem cartItem = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 		CartItem updated = cart.addOrUpdateItem(PRODUCT, QUANTITY);
@@ -175,7 +177,7 @@ public class CartUnitTests {
 	}
 
 	@Test // #191
-	public void iteratorKeepsInsertionOrderEvenAfterUpdateItem() {
+	void iteratorKeepsInsertionOrderEvenAfterUpdateItem() {
 
 		Money money = Money.of(1, Currencies.EURO);
 

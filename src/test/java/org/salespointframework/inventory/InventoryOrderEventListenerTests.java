@@ -15,11 +15,11 @@
  */
 package org.salespointframework.inventory;
 
+import static org.assertj.core.api.Assertions.*;
+
 import org.javamoney.moneta.Money;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
@@ -41,7 +41,7 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Oliver Gierke
  */
 @ContextConfiguration(classes = InventoryOrderEventListenerTests.Config.class)
-public class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
+class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 
 	@Autowired InventoryOrderEventListener listener;
 
@@ -51,20 +51,18 @@ public class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 
 	Product iPad, iPadToFilter, macBook;
 
-	public @Rule ExpectedException exception = ExpectedException.none();
-
 	// tag::custom-line-item-filter[]
 	static class Config {
 
 		@Bean
-		public LineItemFilter filter() {
+		LineItemFilter filter() {
 			return item -> !item.getProductName().startsWith("to filter:");
 		}
 	}
 	// end::custom-line-item-filter[]
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 
 		this.iPad = products.save(new Product("iPad", Money.of(499, Currencies.EURO)));
 		this.macBook = products.save(new Product("MacBook", Money.of(999, Currencies.EURO)));
@@ -75,7 +73,7 @@ public class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #144
-	public void triggersExceptionForInsufficientStock() {
+	void triggersExceptionForInsufficientStock() {
 
 		UserAccount user = userAccounts.create("username", "password");
 
@@ -84,8 +82,7 @@ public class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 		order.add(new OrderLine(iPadToFilter, Quantity.of(1)));
 		order.add(new OrderLine(macBook, Quantity.of(2)));
 
-		exception.expect(OrderCompletionFailure.class);
-
-		listener.on(OrderCompleted.of(order));
+		assertThatExceptionOfType(OrderCompletionFailure.class) //
+				.isThrownBy(() -> listener.on(OrderCompleted.of(order)));
 	}
 }

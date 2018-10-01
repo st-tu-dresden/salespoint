@@ -15,11 +15,12 @@
  */
 package org.salespointframework.quantity;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link Quantity}.
@@ -27,51 +28,57 @@ import org.junit.Test;
  * @author Oliver Gierke
  * @author Paul Henke
  */
-public class QuantityUnitTests {
+class QuantityUnitTests {
 
 	@Test // #9
-	public void defaultsToUnitAsMetric() {
+	void defaultsToUnitAsMetric() {
 		assertThat(Quantity.of(1).getMetric(), is(Metric.UNIT));
 	}
 
-	@Test(expected = IllegalArgumentException.class) // #9
-	public void rejectsNullMetric() {
-		Quantity.of(0, null);
+	@Test // #9
+	void rejectsNullMetric() {
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> Quantity.of(0, null));
 	}
 
 	@Test // #9
-	public void rejectsIncompatibleMetric() {
+	void rejectsIncompatibleMetric() {
 
 		assertThat(Quantity.of(1).isCompatibleWith(Metric.UNIT), is(true));
 		assertThat(Quantity.of(1).isCompatibleWith(Metric.KILOGRAM), is(false));
 	}
 
-	@Test(expected = MetricMismatchException.class) // #9
-	public void rejectsIncompatibleQuantityOnAddition() {
-		Quantity.of(1).add(Quantity.of(1, Metric.KILOGRAM));
+	@Test // #9
+	void rejectsIncompatibleQuantityOnAddition() {
+
+		assertThatExceptionOfType(MetricMismatchException.class) //
+				.isThrownBy(() -> Quantity.of(1).add(Quantity.of(1, Metric.KILOGRAM)));
 	}
 
 	@Test // #9
-	public void addsQuantitiesCorrectly() {
+	void addsQuantitiesCorrectly() {
 
 		assertThat(Quantity.of(1).add(Quantity.of(1)), is(Quantity.of(2)));
 		assertThat(Quantity.of(1.5).add(Quantity.of(1.5)), is(Quantity.of(3.0)));
 	}
 
-	@Test(expected = MetricMismatchException.class) // #9
-	public void rejectsIncompatibleQuantityOnSubtraction() {
-		Quantity.of(1).subtract(Quantity.of(1, Metric.KILOGRAM));
+	@Test // #9
+	void rejectsIncompatibleQuantityOnSubtraction() {
+
+		assertThatExceptionOfType(MetricMismatchException.class) //
+				.isThrownBy(() -> Quantity.of(1).subtract(Quantity.of(1, Metric.KILOGRAM)));
 	}
 
 	@Test // #64, #65, #9
-	public void subtractsQuantitiesCorrectly() {
+	void subtractsQuantitiesCorrectly() {
 
 		assertThat(Quantity.of(10).subtract(Quantity.of(1)), is(Quantity.of(9)));
 		assertThat(Quantity.of(10.5).subtract(Quantity.of(7.25)), is(Quantity.of(3.25)));
 	}
 
 	@Test // #34, #9
-	public void comparesQuantitiesCorrectly() {
+	void comparesQuantitiesCorrectly() {
 
 		Quantity five = Quantity.of(5);
 		Quantity ten = Quantity.of(10);
@@ -87,7 +94,7 @@ public class QuantityUnitTests {
 	}
 
 	@Test // #9
-	public void discoversNegativeQuantity() {
+	void discoversNegativeQuantity() {
 
 		assertThat(Quantity.of(-1).isNegative(), is(true));
 		assertThat(Quantity.of(0).isNegative(), is(false));
@@ -95,7 +102,7 @@ public class QuantityUnitTests {
 	}
 
 	@Test // #99, #184
-	public void printsReasonableToString() {
+	void printsReasonableToString() {
 
 		assertThat(Quantity.of(5).toString()).isEqualTo("5");
 		assertThat(Quantity.of(5, Metric.LITER).toString()).containsSubsequence("5", "l");
@@ -105,7 +112,7 @@ public class QuantityUnitTests {
 	}
 
 	@Test // #129
-	public void comparesToZero() {
+	void comparesToZero() {
 
 		Quantity quantity = Quantity.of(5);
 		Quantity zero = Quantity.of(0, Metric.LITER);

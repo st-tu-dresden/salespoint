@@ -15,11 +15,12 @@
  */
 package org.salespointframework.inventory;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
@@ -29,7 +30,7 @@ import org.salespointframework.quantity.Quantity;
  *
  * @author Oliver Gierke
  */
-public class InventoryItemTests {
+class InventoryItemTests {
 
 	private static final Quantity TEN = Quantity.of(10);
 	private static final Quantity TWENTY = TEN.add(TEN);
@@ -37,27 +38,29 @@ public class InventoryItemTests {
 	private Cookie cookie;
 	private InventoryItem item;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 
 		cookie = new Cookie("Superkeks", Currencies.ZERO_EURO);
 		item = new InventoryItem(cookie, TEN);
 	}
 
 	@Test // #34
-	public void increasesQuantityCorrectly() {
+	void increasesQuantityCorrectly() {
 
 		item.increaseQuantity(Quantity.of(1));
 		assertThat(item.getQuantity(), is(Quantity.of(11)));
 	}
 
-	@Test(expected = IllegalArgumentException.class) // #34
-	public void doesNotAllowDecreasingQuantityMoreThanAvailable() {
-		item.decreaseQuantity(TWENTY);
+	@Test // #34
+	void doesNotAllowDecreasingQuantityMoreThanAvailable() {
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> item.decreaseQuantity(TWENTY));
 	}
 
 	@Test // #34
-	public void decreasesQuantityCorrectly() {
+	void decreasesQuantityCorrectly() {
 
 		item.decreaseQuantity(Quantity.of(1));
 

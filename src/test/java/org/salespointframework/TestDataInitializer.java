@@ -16,7 +16,7 @@
 package org.salespointframework;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 
 import org.salespointframework.core.DataInitializer;
 import org.springframework.stereotype.Component;

@@ -15,10 +15,10 @@
  */
 package org.salespointframework.order;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
@@ -30,7 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Paul Henke
  * @author Oliver Gierke
  */
-public class OrderTests extends AbstractIntegrationTests {
+class OrderTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired OrderManager<Order> orderManager;
@@ -40,8 +40,8 @@ public class OrderTests extends AbstractIntegrationTests {
 
 	private static int foobar = 0;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 
 		user = userAccountManager.create("OrderTests " + foobar, "password");
 		order = new Order(user, Cash.CASH);
@@ -49,19 +49,19 @@ public class OrderTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	public void orderStatusOpentest() {
+	void orderStatusOpentest() {
 		assertEquals(OrderStatus.OPEN, order.getOrderStatus());
 	}
 
 	@Test
-	public void cancelOrderTest() {
+	void cancelOrderTest() {
 		boolean result = orderManager.cancelOrder(order);
 		assertEquals(OrderStatus.CANCELLED, order.getOrderStatus());
 		assertTrue(result);
 	}
 
 	@Test
-	public void cancelOrderTest2() {
+	void cancelOrderTest2() {
 		orderManager.cancelOrder(order);
 		boolean result = orderManager.cancelOrder(order);
 		assertEquals(OrderStatus.CANCELLED, order.getOrderStatus());
@@ -69,7 +69,7 @@ public class OrderTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	public void cancelOrderTest3() {
+	void cancelOrderTest3() {
 		orderManager.payOrder(order);
 		boolean result = orderManager.cancelOrder(order);
 		assertEquals(OrderStatus.PAID, order.getOrderStatus());
@@ -77,7 +77,7 @@ public class OrderTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	public void cancelOrderTest4() {
+	void cancelOrderTest4() {
 		orderManager.payOrder(order);
 		orderManager.completeOrder(order);
 		boolean result = orderManager.cancelOrder(order);
@@ -86,14 +86,14 @@ public class OrderTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	public void payOrderTest() {
+	void payOrderTest() {
 		boolean result = orderManager.payOrder(order);
 		assertEquals(OrderStatus.PAID, order.getOrderStatus());
 		assertTrue(result);
 	}
 
 	@Test
-	public void payOrderTest2() {
+	void payOrderTest2() {
 		orderManager.payOrder(order);
 		boolean result = orderManager.payOrder(order);
 		assertEquals(OrderStatus.PAID, order.getOrderStatus());
@@ -101,7 +101,7 @@ public class OrderTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	public void completeOrderTest() {
+	void completeOrderTest() {
 
 		orderManager.payOrder(order);
 		orderManager.completeOrder(order);
@@ -110,7 +110,7 @@ public class OrderTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	public void completeOrderTest2() {
+	void completeOrderTest2() {
 
 		try {
 			orderManager.completeOrder(order);

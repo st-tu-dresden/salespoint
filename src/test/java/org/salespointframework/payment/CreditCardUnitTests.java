@@ -16,12 +16,12 @@
 package org.salespointframework.payment;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 
 import java.time.LocalDateTime;
 
 import org.javamoney.moneta.Money;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.core.Currencies;
 
 /**
@@ -29,7 +29,7 @@ import org.salespointframework.core.Currencies;
  * 
  * @author Oliver Gierke
  */
-public class CreditCardUnitTests {
+class CreditCardUnitTests {
 
 	static final LocalDateTime NOW = LocalDateTime.now();
 	static final Money AMOUNT = Money.of(2000, Currencies.EURO);
@@ -42,7 +42,7 @@ public class CreditCardUnitTests {
 			"Some address", NOW, NOW.plusMonths(12), "567", AMOUNT, AMOUNT);
 
 	@Test // #80
-	public void hasCorrectToString() {
+	void hasCorrectToString() {
 
 		String cardString = VISA.toString();
 
@@ -53,7 +53,7 @@ public class CreditCardUnitTests {
 	}
 
 	@Test // #80
-	public void equalsHashCode() {
+	void equalsHashCode() {
 
 		assertThat(VISA, is(VISA));
 		assertThat(VISA, is(VISA_CLONE));

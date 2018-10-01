@@ -16,10 +16,9 @@
 package example;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.EnableSalespoint;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
@@ -30,7 +29,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.security.access.method.MethodSecurityMetadataSource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 /**
@@ -38,9 +36,8 @@ import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
  * 
  * @author Oliver Gierke
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest
-public class EnableSalespointIntegrationTests {
+class EnableSalespointIntegrationTests {
 
 	@Configuration
 	@EnableSalespoint
@@ -52,7 +49,7 @@ public class EnableSalespointIntegrationTests {
 	@Autowired MethodSecurityMetadataSource securityMetadataSource;
 
 	@Test
-	public void componentsFromSalespointAndExampleAreAvailable() {
+	void componentsFromSalespointAndExampleAreAvailable() {
 
 		assertThat(context, is(notNullValue()));
 		assertThat(repository, is(notNullValue()));
@@ -65,7 +62,7 @@ public class EnableSalespointIntegrationTests {
 	@Autowired FormattingConversionService conversionService;
 
 	@Test // #185
-	public void registersQuantityFormatter() {
+	void registersQuantityFormatter() {
 
 		conversionService.canConvert(Quantity.class, String.class);
 		conversionService.canConvert(String.class, Quantity.class);
@@ -74,7 +71,7 @@ public class EnableSalespointIntegrationTests {
 	@Autowired Java8TimeDialect dialect;
 
 	@Test // #186
-	public void registersJava8ThymeleafDialect() {
+	void registersJava8ThymeleafDialect() {
 		assertThat(dialect, is(notNullValue()));
 	}
 }

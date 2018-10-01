@@ -15,14 +15,15 @@
  */
 package org.salespointframework.useraccount;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import java.util.UUID;
 
 import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -35,14 +36,14 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Oliver Gierke
  */
 @Transactional
-public class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTests {
+class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountRepository repository;
 
 	UserAccount firstUser, secondUser;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 
 		this.firstUser = createAccount();
 		this.firstUser.setPassword(Password.encrypted("encrypted"));
@@ -54,14 +55,15 @@ public class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTe
 		this.secondUser = repository.save(secondUser);
 	}
 
-	// @Ignore
-	@Test(expected = InvalidDataAccessApiUsageException.class)
-	public void preventsUnencryptedPasswordsFromBeingPersisted() {
-		repository.save(createAccount());
+	@Test
+	void preventsUnencryptedPasswordsFromBeingPersisted() {
+
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class) //
+				.isThrownBy(() -> repository.save(createAccount()));
 	}
 
 	@Test
-	public void findsEnabledUsers() {
+	void findsEnabledUsers() {
 
 		Iterable<UserAccount> result = repository.findByEnabledTrue();
 
@@ -70,7 +72,7 @@ public class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTe
 	}
 
 	@Test
-	public void findsDisabledUsers() {
+	void findsDisabledUsers() {
 
 		Iterable<UserAccount> result = repository.findByEnabledFalse();
 
@@ -78,13 +80,14 @@ public class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTe
 		assertThat(result, hasItem(secondUser));
 	}
 
-	@Test(expected = DataIntegrityViolationException.class) // #55
-	public void rejectsUserAccountWithSameUsername() {
+	@Test // #55
+	void rejectsUserAccountWithSameUsername() {
 
 		UserAccount userAccount = new UserAccount(firstUser.getId(), "unencrypted");
 		userAccount.setPassword(Password.encrypted("encrypted"));
 
-		repository.save(userAccount);
+		assertThatExceptionOfType(DataIntegrityViolationException.class) //
+				.isThrownBy(() -> repository.save(userAccount));
 	}
 
 	static UserAccount createAccount() {

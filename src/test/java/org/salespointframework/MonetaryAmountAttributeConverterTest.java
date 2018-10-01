@@ -16,12 +16,12 @@
 package org.salespointframework;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 
 import java.math.BigDecimal;
 
 import org.javamoney.moneta.Money;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.core.MonetaryAmountAttributeConverter;
 
 /**
@@ -29,48 +29,48 @@ import org.salespointframework.core.MonetaryAmountAttributeConverter;
  *
  * @author Oliver Gierke
  */
-public class MonetaryAmountAttributeConverterTest {
+class MonetaryAmountAttributeConverterTest {
 
 	MonetaryAmountAttributeConverter converter = new MonetaryAmountAttributeConverter();
 
 	@Test // #156
-	public void handlesNullValues() {
+	void handlesNullValues() {
 
 		assertThat(converter.convertToDatabaseColumn(null), is(nullValue()));
 		assertThat(converter.convertToEntityAttribute(null), is(nullValue()));
 	}
 
 	@Test // #156
-	public void handlesSimpleValue() {
+	void handlesSimpleValue() {
 
 		assertThat(converter.convertToDatabaseColumn(Money.of(1.23, "EUR")), is("EUR 1.23"));
 		assertThat(converter.convertToEntityAttribute("EUR 1.23"), is(Money.of(1.23, "EUR")));
 	}
 
 	@Test // #156
-	public void handlesNegativeValues() {
+	void handlesNegativeValues() {
 
 		assertThat(converter.convertToDatabaseColumn(Money.of(-1.20, "USD")), is("USD -1.2"));
 		assertThat(converter.convertToEntityAttribute("USD -1.2"), is(Money.of(-1.20, "USD")));
 	}
 
 	@Test // #156
-	public void doesNotRoundValues() {
+	void doesNotRoundValues() {
 		assertThat(converter.convertToDatabaseColumn(Money.of(1.23456, "EUR")), is("EUR 1.23456"));
 	}
 
 	@Test // #156
-	public void doesNotFormatLargeValues() {
+	void doesNotFormatLargeValues() {
 		assertThat(converter.convertToDatabaseColumn(Money.of(123456, "EUR")), is("EUR 123456"));
 	}
 
 	@Test // #156
-	public void deserializesFormattedValues() {
+	void deserializesFormattedValues() {
 		assertThat(converter.convertToEntityAttribute("EUR 123,456.78"), is(Money.of(123456.78, "EUR")));
 	}
 
 	@Test // #156
-	public void convertsValuesWithTrailingZerosCorrectly() {
+	void convertsValuesWithTrailingZerosCorrectly() {
 
 		Money reference = Money.of(100.0, "EUR");
 
@@ -78,7 +78,7 @@ public class MonetaryAmountAttributeConverterTest {
 	}
 
 	@Test // #156
-	public void convertsValuesWithTrailingZerosCorrectly2() {
+	void convertsValuesWithTrailingZerosCorrectly2() {
 
 		Money reference = Money.of(new BigDecimal("100.0"), "EUR");
 

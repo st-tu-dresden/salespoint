@@ -23,7 +23,7 @@ import javax.persistence.Id;
  * @author Oliver Gierke
  */
 @Entity
-public class DummyEntity {
+class DummyEntity {
 
-	public @Id @GeneratedValue Long id;
+	@Id @GeneratedValue Long id;
 }

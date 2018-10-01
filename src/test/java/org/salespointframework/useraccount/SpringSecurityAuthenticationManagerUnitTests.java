@@ -16,18 +16,18 @@
 package org.salespointframework.useraccount;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 import static org.mockito.Mockito.*;
 import static org.salespointframework.useraccount.UserAccountRepositoryIntegrationTests.*;
 
 import java.util.Optional;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.salespointframework.useraccount.UserAccountDetailService.UserAccountDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -39,37 +39,37 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  * @author Oliver Gierke
  */
-@RunWith(MockitoJUnitRunner.Silent.class)
-public class SpringSecurityAuthenticationManagerUnitTests {
+@ExtendWith(MockitoExtension.class)
+class SpringSecurityAuthenticationManagerUnitTests {
 
 	SpringSecurityAuthenticationManager authenticationManager;
 	@Mock UserAccountRepository repository;
 	@Mock PasswordEncoder passwordEncoder;
 	UserAccount account;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 
 		this.account = createAccount();
-		when(repository.findById(account.getId())).thenReturn(Optional.of(account));
-
 		this.authenticationManager = new SpringSecurityAuthenticationManager(repository, passwordEncoder);
 	}
 
-	@After
-	public void resetAuthentication() {
+	@AfterEach
+	void resetAuthentication() {
 		SecurityContextHolder.getContext().setAuthentication(null);
 	}
 
 	@Test // #76
-	public void returnsOptionalEmptyIfNoUserIsAuthenticated() {
+	void returnsOptionalEmptyIfNoUserIsAuthenticated() {
 		assertThat(authenticationManager.getCurrentUser(), is(Optional.empty()));
 	}
 
 	@Test
-	public void returnsCurrentlyAuthenticatedUser() {
+	void returnsCurrentlyAuthenticatedUser() {
 
 		authenticate(account);
+
+		when(repository.findById(account.getId())).thenReturn(Optional.of(account));
 
 		Optional<UserAccount> currentUser = authenticationManager.getCurrentUser();
 
@@ -78,14 +78,13 @@ public class SpringSecurityAuthenticationManagerUnitTests {
 	}
 
 	@Test
-	public void delegatesPasswordMatchCorrectly() {
+	void delegatesPasswordMatchCorrectly() {
 
 		Password existing = Password.encrypted("password");
 		Password matching = Password.unencrypted("password");
 		Password failing = Password.unencrypted("failing");
 
 		when(passwordEncoder.matches("password", "password")).thenReturn(true);
-		when(passwordEncoder.matches("password", "failing")).thenReturn(false);
 
 		assertThat(authenticationManager.matches(matching, existing), is(true));
 		assertThat(authenticationManager.matches(failing, existing), is(false));

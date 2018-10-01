@@ -16,7 +16,7 @@
 package org.salespointframework;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 
 import de.olivergierke.modulith.docs.Documenter;
 import de.olivergierke.moduliths.model.Modules;
@@ -24,7 +24,7 @@ import de.olivergierke.moduliths.model.Modules;
 import java.io.IOException;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.DataInitializer;
@@ -46,7 +46,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
  * 
  * @author Oliver Gierke
  */
-public class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
+class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
 
 	@Autowired Inventory<InventoryItem> inventory;
 	@Autowired OrderManager<Order> orderManager;
@@ -60,7 +60,7 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 	@Autowired List<LineItemFilter> lineItemFilter;
 
 	@Test
-	public void verifyModularity() throws IOException {
+	void verifyModularity() throws IOException {
 
 		// Verify module structure
 		Modules modules = Modules.of(SalespointSample.class);
@@ -72,7 +72,7 @@ public class SalespointApplicationConfigurationTests extends AbstractIntegration
 	}
 
 	@Test
-	public void createsApplicationComponents() {
+	void createsApplicationComponents() {
 
 		assertThat(inventory, is(notNullValue()));
 		assertThat(orderManager, is(notNullValue()));

@@ -15,8 +15,7 @@
  */
 package example;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.EnableSalespoint;
 import org.salespointframework.SalespointSecurityConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +23,6 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -34,9 +32,8 @@ import org.springframework.web.client.RestTemplate;
  * 
  * @author Oliver Gierke
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class ExampleControllerIntegrationTests {
+class ExampleControllerIntegrationTests {
 
 	@LocalServerPort int port;
 
@@ -63,7 +60,7 @@ public class ExampleControllerIntegrationTests {
 	}
 
 	@Test // #72
-	public void usesUtf8ToDecodePayload() {
+	void usesUtf8ToDecodePayload() {
 
 		RestTemplate template = new RestTemplate();
 

@@ -28,7 +28,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,13 +37,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 
  * @author Oliver Gierke
  */
-public class IntervalIntegrationTests extends AbstractIntegrationTests {
+class IntervalIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired SomeEntityRepository repository;
 	@Autowired EntityManager em;
 
 	@Test // #152
-	public void intervalCanBePersistedAsEmbeddable() {
+	void intervalCanBePersistedAsEmbeddable() {
 
 		LocalDateTime now = LocalDateTime.now();
 

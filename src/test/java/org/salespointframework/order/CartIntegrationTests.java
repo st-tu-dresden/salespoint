@@ -16,10 +16,10 @@
 package org.salespointframework.order;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 
 import org.javamoney.moneta.Money;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
@@ -33,12 +33,12 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Paul Henke
  * @author Oliver Gierke
  */
-public class CartIntegrationTests extends AbstractIntegrationTests {
+class CartIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
 
 	@Test // #44
-	public void createsOrderFromCartCorrectly() {
+	void createsOrderFromCartCorrectly() {
 
 		Cart cart = new Cart();
 		CartItem cartItem = cart.addOrUpdateItem(//

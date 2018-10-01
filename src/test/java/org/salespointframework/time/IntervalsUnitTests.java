@@ -16,22 +16,22 @@
 package org.salespointframework.time;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link Intervals}.
  *
  * @author Oliver Gierke
  */
-public class IntervalsUnitTests {
+class IntervalsUnitTests {
 
 	@Test
-	public void setsUpIntervalsCorrectly() {
+	void setsUpIntervalsCorrectly() {
 
 		Interval interval = Interval.from(LocalDateTime.now()).withLength(Duration.ofDays(10));
 		Intervals intervals = Intervals.divide(interval, Duration.ofDays(2));
@@ -40,7 +40,7 @@ public class IntervalsUnitTests {
 	}
 
 	@Test
-	public void setsUpExceedingIntervalsCorrectly() {
+	void setsUpExceedingIntervalsCorrectly() {
 
 		Interval interval = Interval.from(LocalDateTime.now()).withLength(Duration.ofDays(10));
 		Intervals intervals = Intervals.divide(interval, Duration.ofDays(3));

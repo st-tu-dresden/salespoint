@@ -15,62 +15,64 @@
  */
 package org.salespointframework.catalog;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.Random;
 
 import org.javamoney.moneta.Money;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.Quantity;
 
 @SuppressWarnings("javadoc")
-public class ProductTests {
+class ProductTests {
 
 	private Cookie cookie;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 		cookie = new Cookie("Schoooki", Currencies.ZERO_EURO);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void addNullCategory() {
-		cookie.addCategory(null);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void removeNullCategory() {
-		cookie.removeCategory(null);
+	@Test
+	void addNullCategory() {
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> cookie.addCategory(null));
 	}
 
 	@Test
-	public void addCategory() {
-		assertTrue(cookie.addCategory("Sci-Fi"));
+	void removeNullCategory() {
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> cookie.removeCategory(null));
 	}
 
 	@Test
-	public void addCategory2() {
+	void addCategory() {
+		assertThat(cookie.addCategory("Sci-Fi")).isTrue();
+	}
+
+	@Test
+	void addCategory2() {
 		cookie.addCategory("Fantasy");
-		assertFalse(cookie.addCategory("Fantasy"));
+		assertThat(cookie.addCategory("Fantasy")).isFalse();
 	}
 
 	@Test
-	public void removeCategory() {
+	void removeCategory() {
 		cookie.addCategory("Sci-Fi");
-		assertTrue(cookie.removeCategory("Sci-Fi"));
+		assertThat(cookie.removeCategory("Sci-Fi")).isTrue();
 	}
 
 	@Test
-	public void removeCategory2() {
-		assertFalse(cookie.removeCategory(Double.toString(new Random().nextDouble())));
+	void removeCategory2() {
+		assertThat(cookie.removeCategory(Double.toString(new Random().nextDouble()))).isFalse();
 	}
-	
+
 	@Test // #198
-	public void createsQuantity() {
+	void createsQuantity() {
 
 		Product product = new Product("Some name", Money.of(10, Currencies.EURO), Metric.LITER);
 

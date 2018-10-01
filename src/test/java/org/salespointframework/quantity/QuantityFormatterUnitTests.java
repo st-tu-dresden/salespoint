@@ -18,20 +18,14 @@ package org.salespointframework.quantity;
 import static org.assertj.core.api.Assertions.*;
 
 import java.text.ParseException;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Locale;
+import java.util.stream.Stream;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-import org.salespointframework.quantity.Metric;
-import org.salespointframework.quantity.Quantity;
-import org.salespointframework.quantity.QuantityFormatter;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Tests for {@link QuantityFormatter}.
@@ -39,24 +33,20 @@ import org.salespointframework.quantity.QuantityFormatter;
  * @author Oliver Gierke
  * @soundtrack Dave Matthews Band - Bartender (DMB Live 25)
  */
-@RunWith(Suite.class)
-@SuiteClasses({ //
-		QuantityFormatterUnitTests.QuantityFormatterValueTests.class, //
-		QuantityFormatterUnitTests.QuantityFormatterExceptionTests.class //
-})
-public class QuantityFormatterUnitTests {
+class QuantityFormatterUnitTests {
 
 	/**
 	 * Tests to check exceptional cases.
 	 *
 	 * @author Oliver Gierke
 	 */
-	public static class QuantityFormatterExceptionTests {
+	@Nested
+	static class QuantityFormatterExceptionTests {
 
 		QuantityFormatter formatter = new QuantityFormatter();
 
 		@Test // #185
-		public void throwsParseExceptionIfAmountCantBeParsed() {
+		void throwsParseExceptionIfAmountCantBeParsed() {
 
 			assertThatExceptionOfType(ParseException.class) //
 					.isThrownBy(() -> formatter.parse("foo", Locale.GERMAN)) //
@@ -65,7 +55,7 @@ public class QuantityFormatterUnitTests {
 		}
 
 		@Test // #185
-		public void throwsParseExceptionOnInvalidMetric() {
+		void throwsParseExceptionOnInvalidMetric() {
 
 			assertThatExceptionOfType(ParseException.class) //
 					.isThrownBy(() -> formatter.parse("5,1foo", Locale.GERMAN)) //
@@ -74,7 +64,7 @@ public class QuantityFormatterUnitTests {
 		}
 
 		@Test // #185
-		public void rejectsCompletelyInvalidSource() {
+		void rejectsCompletelyInvalidSource() {
 
 			assertThatExceptionOfType(ParseException.class) //
 					.isThrownBy(() -> formatter.parse("?", Locale.GERMAN)) //
@@ -83,12 +73,12 @@ public class QuantityFormatterUnitTests {
 		}
 
 		@Test // #185
-		public void emptyStringParsesToZeroUnit() throws ParseException {
+		void emptyStringParsesToZeroUnit() throws ParseException {
 			assertThat(formatter.parse("", Locale.GERMAN)).isEqualTo(Quantity.of(0));
 		}
 
 		@Test // #185
-		public void ignoresSpacesBetweenAmountAndMetricOnParsing() throws ParseException {
+		void ignoresSpacesBetweenAmountAndMetricOnParsing() throws ParseException {
 			assertThat(formatter.parse("5,1   l", Locale.GERMAN)).isEqualTo(Quantity.of(5.1, Metric.LITER));
 		}
 	}
@@ -98,35 +88,31 @@ public class QuantityFormatterUnitTests {
 	 *
 	 * @author Oliver Gierke
 	 */
-	@RunWith(Parameterized.class)
-	public static class QuantityFormatterValueTests {
+	@Nested
+	static class QuantityFormatterValueTests {
 
 		QuantityFormatter formatter = new QuantityFormatter();
 
-		@Parameters(name = "{0} {1} -> {2}")
-		public static Collection<Object[]> data() {
+		static Stream<Arguments> data() {
 
-			return Arrays.asList(new Object[][] { //
-					{ Quantity.of(5.1, Metric.LITER), Locale.GERMAN, "5,1l" }, //
-					{ Quantity.of(5.1), Locale.GERMAN, "5,1" }, //
-					{ Quantity.of(-5.1, Metric.LITER), Locale.GERMAN, "-5,1l" }, //
-					{ Quantity.of(-5.1, Metric.LITER), Locale.GERMAN, " -5,1l" }, //
-					{ Quantity.of(-5.1, Metric.LITER), Locale.US, "-5.1l" }, //
-					{ Quantity.of(0), Locale.US, "0" } //
-			});
+			return Stream.of(Arguments.of(Quantity.of(5.1, Metric.LITER), Locale.GERMAN, "5,1l"), //
+					Arguments.of(Quantity.of(5.1), Locale.GERMAN, "5,1"), //
+					Arguments.of(Quantity.of(-5.1, Metric.LITER), Locale.GERMAN, "-5,1l"), //
+					Arguments.of(Quantity.of(-5.1, Metric.LITER), Locale.GERMAN, " -5,1l"), //
+					Arguments.of(Quantity.of(-5.1, Metric.LITER), Locale.US, "-5.1l"), //
+					Arguments.of(Quantity.of(0), Locale.US, "0") //
+			);
 		}
 
-		public @Parameter(0) Quantity quantity;
-		public @Parameter(1) Locale locale;
-		public @Parameter(2) String value;
-
-		@Test // #185
-		public void printsValueAsExpected() throws ParseException {
+		@ParameterizedTest // #185
+		@MethodSource("data")
+		void printsValueAsExpected(Quantity quantity, Locale locale, String value) throws ParseException {
 			assertThat(formatter.print(quantity, locale)).isEqualTo(value.trim());
 		}
 
-		@Test // #185
-		public void parsesValueAsExpected() throws ParseException {
+		@ParameterizedTest // #185
+		@MethodSource("data")
+		void parsesValueAsExpected(Quantity quantity, Locale locale, String value) throws ParseException {
 			assertThat(formatter.parse(value, locale)).isEqualTo(quantity);
 		}
 	}

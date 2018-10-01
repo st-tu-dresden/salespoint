@@ -15,10 +15,9 @@
  */
 package org.salespointframework;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import static org.assertj.core.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
@@ -26,25 +25,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * Integration test for security configuration setup.
  * 
  * @author Oliver Gierke
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest
-public class SalespointSecurityConfigurationIntegrationTests {
-
-	public @Rule ExpectedException exception = ExpectedException.none();
+class SalespointSecurityConfigurationIntegrationTests {
 
 	@Configuration
 	@Import({ SalespointSecurityConfiguration.class, Salespoint.class })
 	static class Config {
 
 		@Bean
-		public Controller securedController() {
+		Controller securedController() {
 			return new Controller();
 		}
 	}
@@ -52,10 +47,10 @@ public class SalespointSecurityConfigurationIntegrationTests {
 	@Autowired Controller controller;
 
 	@Test // #41
-	public void preventsInvocationOfSecuredMethodWithoutAuthentication() {
+	void preventsInvocationOfSecuredMethodWithoutAuthentication() {
 
-		exception.expect(AuthenticationCredentialsNotFoundException.class);
-		controller.securedMethod();
+		assertThatExceptionOfType(AuthenticationCredentialsNotFoundException.class) //
+				.isThrownBy(() -> controller.securedMethod());
 	}
 
 	/**
@@ -64,7 +59,7 @@ public class SalespointSecurityConfigurationIntegrationTests {
 	 * @author Oliver Gierke
 	 */
 	@PreAuthorize("hasRole(ROLE_ADMIN)")
-	public static class Controller {
-		public void securedMethod() {}
+	static class Controller {
+		void securedMethod() {}
 	}
 }

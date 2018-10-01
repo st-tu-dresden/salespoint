@@ -16,14 +16,14 @@
 package org.salespointframework.catalog;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.junit.MatcherAssert.*;
 
 import java.util.Optional;
 
 import org.hamcrest.Matchers;
 import org.javamoney.moneta.Money;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Metric;
@@ -34,7 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 
  * @author Oliver Gierke
  */
-public class CatalogIntegrationTests extends AbstractIntegrationTests {
+class CatalogIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired Catalog<Product> catalog;
 	@Autowired Catalog<Cookie> cookies;
@@ -42,13 +42,13 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 
 	Cookie cookie;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 		cookie = new Cookie("Schoki", Currencies.ZERO_EURO);
 	}
 
 	@Test // #19
-	public void findsProductsByCategory() {
+	void findsProductsByCategory() {
 
 		Product product = new Product("MacBook", Money.of(2700.0, Currencies.EURO), Metric.UNIT);
 		product.addCategory("Apple");
@@ -62,7 +62,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #19
-	public void findsSameInstanceOnGenericRepositories() {
+	void findsSameInstanceOnGenericRepositories() {
 
 		catalog.save(cookie);
 
@@ -75,7 +75,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #19
-	public void addTest() {
+	void addTest() {
 
 		Cookie result = catalog.save(cookie);
 		Optional<Product> cookie = catalog.findById(result.getId());
@@ -85,7 +85,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #19
-	public void testRemove() {
+	void testRemove() {
 
 		catalog.save(cookie);
 		catalog.deleteById(cookie.getId());
@@ -94,14 +94,14 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #19
-	public void testContains() {
+	void testContains() {
 
 		Cookie result = catalog.save(cookie);
 		assertThat(catalog.existsById(result.getId()), is(true));
 	}
 
 	@Test // #19
-	public void getTest() {
+	void getTest() {
 
 		Cookie reference = catalog.save(cookie);
 		Optional<Cookie> result = cookies.findById(cookie.getId());
@@ -111,7 +111,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #19
-	public void persistsProductSubtypesCorrectly() {
+	void persistsProductSubtypesCorrectly() {
 
 		Cookie doubleChoc = createCookie();
 
@@ -120,7 +120,7 @@ public class CatalogIntegrationTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #19
-	public void generalRepoInstancesFinds() {
+	void generalRepoInstancesFinds() {
 
 		Cookie doubleChoc = createCookie();
 		Optional<Product> product = catalog.findById(doubleChoc.getId());
