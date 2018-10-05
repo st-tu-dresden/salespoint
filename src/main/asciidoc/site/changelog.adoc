@@ -4,6 +4,25 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[7.0]
+== 7.0
+
+Release date: 2018-10-05
+
+- {linkbase}/199[#199] - Re-evalute cascade operations on InventoryItem.
+- {linkbase}/197[#197] - Reduce visibility of primary OrderLine constructor.
+- {linkbase}/204[#204] - Hide component internals in JavaDoc.
+- {linkbase}/207[#207] - Upgrade to Spring Boot 2.1 M4.
+- {linkbase}/212[#212] - Upgrade to Moduliths 1.0 M1.
+- {linkbase}/208[#208] - Upgrade to JUnit 5.
+- {linkbase}/196[#196] - Improve design in Quantity.
+- {linkbase}/210[#210] - Integrate Moduliths architecture conventions.
+- {linkbase}/211[#211] - Switch repository methods returning Iterables to Streamables.
+- {linkbase}/174[#174] - Upgrade to Spring Boot 2.0.
+- {linkbase}/205[#205] - Extend copyright years to 2018.
+- {linkbase}/206[#206] - Add nullability annotations.
+
+:numbered!:
 [6.4-GA]
 == 6.4 GA
 
