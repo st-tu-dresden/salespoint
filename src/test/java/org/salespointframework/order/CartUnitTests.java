@@ -131,7 +131,7 @@ class CartUnitTests {
 	void toOrderFail() {
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
-				.isThrownBy(() -> cart.addItemsTo(null));
+				.isThrownBy(() -> cart.createOrderFor(null));
 	}
 
 	@Test // #44

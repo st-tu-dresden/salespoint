@@ -24,10 +24,10 @@ import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.order.Cart;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.Order.OrderCompleted;
 import org.salespointframework.order.OrderCompletionFailure;
-import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
@@ -77,10 +77,12 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 
 		UserAccount user = userAccounts.create("username", "password");
 
-		Order order = new Order(user);
-		order.add(new OrderLine(iPad, Quantity.of(1)));
-		order.add(new OrderLine(iPadToFilter, Quantity.of(1)));
-		order.add(new OrderLine(macBook, Quantity.of(2)));
+		Cart cart = new Cart();
+		cart.addOrUpdateItem(iPad, 1);
+		cart.addOrUpdateItem(iPadToFilter, 1);
+		cart.addOrUpdateItem(macBook, 2);
+
+		Order order = cart.createOrderFor(user);
 
 		assertThatExceptionOfType(OrderCompletionFailure.class) //
 				.isThrownBy(() -> listener.on(OrderCompleted.of(order)));

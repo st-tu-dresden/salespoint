@@ -63,7 +63,7 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Pr
 	 * @param product must not be {@literal null}.
 	 * @param quantity must not be {@literal null}.
 	 */
-	public OrderLine(Product product, Quantity quantity) {
+	OrderLine(Product product, Quantity quantity) {
 
 		Assert.notNull(product, "Product must be not null!");
 		Assert.notNull(quantity, "Quantity must be not null!");

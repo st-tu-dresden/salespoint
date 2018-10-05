@@ -44,8 +44,7 @@ class CartIntegrationTests extends AbstractIntegrationTests {
 		CartItem cartItem = cart.addOrUpdateItem(//
 				new Product("name", Money.of(1, Currencies.EURO)), Quantity.of(10));
 
-		Order order = new Order(userAccountManager.create("foobar", "barfoo"));
-		cart.addItemsTo(order);
+		Order order = cart.createOrderFor(userAccountManager.create("foobar", "barfoo"));
 
 		assertThat(order.getOrderedLinesPrice(), is(cartItem.getPrice()));
 		assertThat(order.getOrderLines(), is(iterableWithSize(1)));

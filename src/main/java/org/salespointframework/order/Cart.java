@@ -26,6 +26,7 @@ import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
+import org.salespointframework.useraccount.UserAccount;
 import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
@@ -134,12 +135,29 @@ public class Cart implements Streamable<CartItem>, Priced {
 	 * Turns the current state of the cart into an {@link Order}.
 	 * 
 	 * @param order must not be {@literal null}.
+	 * @return the {@link Order} which all items in the card have been added to.
 	 * @throws IllegalStateException if the given Order is not {@link OrderStatus#OPEN} anymore.
 	 */
-	public void addItemsTo(Order order) {
+	public Order addItemsTo(Order order) {
 
 		Assert.notNull(order, "Order must not be null!");
+
 		items.values().forEach(item -> order.add(item.toOrderLine()));
+
+		return order;
+	}
+
+	/**
+	 * Creates a new Order for the given {@link UserAccount} from the current {@link Cart}.
+	 * 
+	 * @param user must not be {@literal null}.
+	 * @return a new Order for the current {@link Cart} and given {@link UserAccount}.
+	 */
+	public Order createOrderFor(UserAccount user) {
+
+		Assert.notNull(user, "User account must not be null!");
+
+		return addItemsTo(new Order(user));
 	}
 
 	/* 
