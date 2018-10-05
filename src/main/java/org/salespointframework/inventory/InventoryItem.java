@@ -20,7 +20,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -46,7 +45,7 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 
 	@Getter //
 	@JoinColumn(unique = true) //
-	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH }) //
+	@OneToOne //
 	private Product product;
 
 	@Getter //

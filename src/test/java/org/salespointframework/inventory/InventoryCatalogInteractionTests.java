@@ -15,8 +15,9 @@
  */
 package org.salespointframework.inventory;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.*;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,7 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 
@@ -52,11 +54,13 @@ class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 		inventory.save(item);
 	}
 
-	@Test
-	void addInInventoryAddsProductInCatalog() {
+	@Test // #199
+	void addingAnInventoryItemFailsForANotPersistedProduct() {
 
 		inventory.save(item);
-		assertThat(catalog.existsById(cookie.getId()), is(true));
+
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class) //
+				.isThrownBy(() -> catalog.existsById(cookie.getId()));
 	}
 
 	@Test
