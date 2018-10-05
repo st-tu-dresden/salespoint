@@ -258,7 +258,6 @@
 					<doclint>none</doclint>
 					<excludePackageNames>org.thymeleaf.*</excludePackageNames>
 					<outputDirectory>${project.build.directory}/site${dev}/api</outputDirectory>
-					<show>package</show>
 					<sourcepath>target/generated-sources/delombok</sourcepath>
 				</configuration>
 			</plugin>
