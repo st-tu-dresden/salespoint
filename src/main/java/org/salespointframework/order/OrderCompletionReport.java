@@ -20,7 +20,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import lombok.Value;
 import lombok.experimental.FieldDefaults;
 
@@ -30,7 +29,6 @@ import java.util.Optional;
 import org.salespointframework.order.OrderCompletionReport.OrderLineCompletion;
 import org.springframework.data.util.Streamable;
 
-@ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -107,6 +105,24 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 		return completions.iterator();
 	}
 
+	/* 
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+
+		StringBuilder builder = new StringBuilder() //
+				.append(status) //
+				.append(" ") //
+				.append(order);
+
+		completions.forEach(it -> builder.append('\n') //
+				.append("> ").append(it));
+
+		return builder.toString();
+	}
+
 	/**
 	 * The completion status of an {@link OrderLine}.
 	 *
@@ -148,6 +164,22 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 		 */
 		public boolean isFailure() {
 			return CompletionStatus.FAILED.equals(status);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		public String toString() {
+
+			StringBuilder builder = new StringBuilder() //
+					.append(status) //
+					.append(" – ") //
+					.append(orderLine);
+
+			message.ifPresent(it -> builder.append(" - ").append(it));
+
+			return builder.toString();
 		}
 	}
 

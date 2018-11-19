@@ -18,8 +18,11 @@ package org.salespointframework.order;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 import org.salespointframework.order.OrderCompletionReport.OrderLineCompletion;
+import org.salespointframework.useraccount.UserAccount;
 
 /**
  * Unit tests for {@link OrderCompletionReport}.
@@ -37,5 +40,18 @@ class OrderCompletionReportUnitTests {
 		assertThat(completion.getMessage()).hasValueSatisfying(it -> {
 			assertThat(it).isEqualTo("Some message!");
 		});
+	}
+
+	@Test // #215
+	public void toStringRendersHumanReadableOutput() {
+
+		UserAccount account = mock(UserAccount.class);
+		Order order = new Order(account);
+
+		OrderLineCompletion completion = OrderLineCompletion.error(mock(OrderLine.class), "Some message!");
+		OrderCompletionReport report = OrderCompletionReport.forCompletions(order, Arrays.asList(completion));
+
+		// toString() contains message of OrderLineCompletion
+		assertThat(report.toString()).contains("Some message!");
 	}
 }
