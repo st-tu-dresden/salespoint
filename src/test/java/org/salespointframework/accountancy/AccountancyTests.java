@@ -15,12 +15,14 @@
  */
 package org.salespointframework.accountancy;
 
+import de.olivergierke.moduliths.test.ModuleTest;
+import de.olivergierke.moduliths.test.ModuleTest.BootstrapMode;
+
 import java.time.LocalDateTime;
 
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderIdentifier;
@@ -29,9 +31,11 @@ import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
-@SuppressWarnings("javadoc")
-class AccountancyTests extends AbstractIntegrationTests {
+@Transactional
+@ModuleTest(BootstrapMode.DIRECT_DEPENDENCIES)
+class AccountancyTests {
 
 	@Autowired Accountancy accountancyEntries;
 	@Autowired UserAccountManager userAccountManager;

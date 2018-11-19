@@ -18,21 +18,25 @@ package org.salespointframework.support;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.junit.MatcherAssert.*;
 
+import de.olivergierke.moduliths.test.ModuleTest;
+
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
-import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.TypeDescriptor;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for {@link JpaEntityConverter}.
  *
  * @author Oliver Gierke
  */
-class JpaEntityConverterIntegrationTests extends AbstractIntegrationTests {
+@Transactional
+@ModuleTest(extraIncludes = "org.salespointframework.catalog")
+class JpaEntityConverterIntegrationTests {
 
 	static final TypeDescriptor PRODUCT_TYPE = TypeDescriptor.valueOf(Product.class);
 	static final TypeDescriptor STRING_TYPE = TypeDescriptor.valueOf(String.class);

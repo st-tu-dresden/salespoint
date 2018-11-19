@@ -19,6 +19,8 @@ import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 
+import de.olivergierke.moduliths.test.ModuleTest;
+
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -27,20 +29,22 @@ import javax.persistence.PersistenceException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for {@link Inventory}.
  *
  * @author Oliver Gierke
  */
-class InventoryTests extends AbstractIntegrationTests {
+@Transactional
+@ModuleTest(extraIncludes = "org.salespointframework.catalog")
+class InventoryTests {
 
 	@Autowired Inventory<InventoryItem> inventory;
 	@Autowired Catalog<Product> catalog;

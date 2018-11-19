@@ -19,24 +19,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 
+import de.olivergierke.moduliths.test.ModuleTest;
+
 import java.util.Optional;
 
 import org.hamcrest.Matchers;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Metric;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for {@link Catalog}.
  * 
  * @author Oliver Gierke
  */
-class CatalogIntegrationTests extends AbstractIntegrationTests {
+@Transactional
+@ModuleTest
+class CatalogIntegrationTests {
 
 	@Autowired Catalog<Product> catalog;
 	@Autowired Catalog<Cookie> cookies;

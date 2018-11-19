@@ -20,14 +20,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 
+import de.olivergierke.moduliths.test.ModuleTest;
+
 import java.util.Optional;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.salespointframework.AbstractIntegrationTests;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for {@link PersistentUserAccountManager}.
@@ -35,7 +37,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author Paul Henke
  * @author Oliver Gierke
  */
-class UserAccountManagerIntegrationTests extends AbstractIntegrationTests {
+@Transactional
+@ModuleTest
+class UserAccountManagerIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired PasswordEncoder passwordEncoder;

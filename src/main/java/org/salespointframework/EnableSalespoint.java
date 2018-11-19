@@ -55,7 +55,13 @@ import org.springframework.context.annotation.Import;
 @Retention(RetentionPolicy.RUNTIME)
 @Import({ Salespoint.class, SalespointWebAutoConfiguration.class, SalespointSecurityAutoConfiguration.class })
 @EntityScan
-@Modulith(additionalPackages = "org.salespointframework", useFullyQualifiedModuleNames = true)
+@Modulith( //
+		sharedModules = { //
+				"org.salespointframework.core", //
+				"org.salespointframework.support", //
+				"org.salespointframework.useraccount" }, //
+		additionalPackages = "org.salespointframework", //
+		useFullyQualifiedModuleNames = true)
 public @interface EnableSalespoint {
 
 	@Configuration

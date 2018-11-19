@@ -17,6 +17,7 @@ package org.salespointframework.time;
 
 import static org.assertj.core.api.Assertions.*;
 
+import de.olivergierke.moduliths.test.ModuleTest;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -29,15 +30,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.junit.jupiter.api.Test;
-import org.salespointframework.AbstractIntegrationTests;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for {@link Interval}
  * 
  * @author Oliver Gierke
  */
-class IntervalIntegrationTests extends AbstractIntegrationTests {
+@Transactional
+@ModuleTest
+class IntervalIntegrationTests {
 
 	@Autowired SomeEntityRepository repository;
 	@Autowired EntityManager em;

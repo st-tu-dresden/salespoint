@@ -17,20 +17,21 @@ package org.salespointframework.useraccount;
 
 import static org.assertj.core.api.Assertions.*;
 
+import de.olivergierke.moduliths.test.ModuleTest;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.salespointframework.Salespoint;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for {@link UserAccountManager} that do not run in a transaction by default.
  * 
  * @author Oliver Gierke
  */
-@SpringBootTest(classes = Salespoint.class, webEnvironment = WebEnvironment.NONE)
+@Transactional
+@ModuleTest
 @TestPropertySource(properties = "salespoint.authentication.login-via-email=true")
 class NonTransactionalUserAccountManagerIntegrationTests {
 

@@ -18,14 +18,17 @@ package org.salespointframework.order;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.junit.MatcherAssert.*;
 
+import de.olivergierke.moduliths.test.ModuleTest;
+import de.olivergierke.moduliths.test.ModuleTest.BootstrapMode;
+
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
-import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for {@link Cart}.
@@ -33,7 +36,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Paul Henke
  * @author Oliver Gierke
  */
-class CartIntegrationTests extends AbstractIntegrationTests {
+@Transactional
+@ModuleTest(mode = BootstrapMode.DIRECT_DEPENDENCIES)
+class CartIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
 
@@ -46,7 +51,9 @@ class CartIntegrationTests extends AbstractIntegrationTests {
 
 		Order order = cart.createOrderFor(userAccountManager.create("foobar", "barfoo"));
 
-		assertThat(order.getOrderedLinesPrice(), is(cartItem.getPrice()));
-		assertThat(order.getOrderLines(), is(iterableWithSize(1)));
+		Totalable<OrderLine> orderLines = order.getOrderLines();
+
+		assertThat(orderLines.getTotal(), is(cartItem.getPrice()));
+		assertThat(orderLines, is(iterableWithSize(1)));
 	}
 }

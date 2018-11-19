@@ -20,10 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.salespointframework.core.Currencies.*;
 import static org.salespointframework.order.OrderStatus.*;
 
+import de.olivergierke.moduliths.test.ModuleTest;
+import de.olivergierke.moduliths.test.ModuleTest.BootstrapMode;
+
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.order.ChargeLine.AttachedChargeLine;
@@ -32,13 +34,17 @@ import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Hannes Weissbach
  * @author Paul Henke
  * @author Oliver Gierke
  */
-class OrderTests extends AbstractIntegrationTests {
+@Transactional
+@ModuleTest(mode = BootstrapMode.DIRECT_DEPENDENCIES, //
+		extraIncludes = { "org.salespointframework.catalog" })
+class OrderTests {
 
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired OrderManager<Order> orderManager;
