@@ -180,4 +180,18 @@ class PersistentUserAccountManager implements UserAccountManager {
 		Assert.hasText(username, "Username must not be null or empty!");
 		return repository.findById(new UserAccountIdentifier(username));
 	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.useraccount.UserAccountManager#delete(org.salespointframework.useraccount.UserAccount)
+	 */
+	@Override
+	public UserAccount delete(UserAccount account) {
+
+		Assert.notNull(account, "UserAccount must not be null!");
+
+		repository.delete(account);
+
+		return account;
+	}
 }

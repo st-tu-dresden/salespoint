@@ -16,6 +16,7 @@
 package org.salespointframework.useraccount;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 
@@ -138,5 +139,15 @@ class UserAccountManagerIntegrationTests extends AbstractIntegrationTests {
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
 				.isThrownBy(() -> userAccountManager.create("username", "password"));
+	}
+
+	@Test // #218
+	void userAccountsCanBeDeleted() {
+
+		UserAccount reference = userAccountManager.create("username", "password");
+		assertThat(userAccountManager.findByUsername(reference.getUsername())).hasValue(reference);
+
+		userAccountManager.delete(reference);
+		assertThat(userAccountManager.findByUsername(reference.getUsername())).isEmpty();
 	}
 }

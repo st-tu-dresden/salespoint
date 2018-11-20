@@ -112,4 +112,14 @@ public interface UserAccountManager {
 	 * @return
 	 */
 	Optional<UserAccount> findByUsername(String username);
+
+	/**
+	 * Deletes the given {@link UserAccount}. Note, that other aggregates that keep references to a {@link UserAccount}
+	 * have to be deleted before a {@link UserAccount} can be deleted in the first place.
+	 * 
+	 * @param account must not be {@literal null}.
+	 * @return the deleted {@link UserAccount}
+	 * @since 7.1
+	 */
+	UserAccount delete(UserAccount account);
 }
