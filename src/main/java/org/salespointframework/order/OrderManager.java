@@ -117,4 +117,13 @@ public interface OrderManager<T extends Order> {
 	 * @return true if the order could be canceled
 	 */
 	boolean cancelOrder(T order);
+
+	/**
+	 * Deletes the given {@link Order}.
+	 * 
+	 * @param order must not be {@literal null}.
+	 * @return the deleted {@link Order}
+	 * @since 7.1
+	 */
+	T delete(T order);
 }

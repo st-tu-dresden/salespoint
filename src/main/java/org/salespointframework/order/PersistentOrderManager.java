@@ -179,4 +179,17 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 			return false;
 		}
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.OrderManager#delete(org.salespointframework.order.Order)
+	 */
+	public T delete(T order) {
+
+		Assert.notNull(order, "Order must not be null!");
+
+		orderRepository.delete(order);
+
+		return order;
+	}
 }

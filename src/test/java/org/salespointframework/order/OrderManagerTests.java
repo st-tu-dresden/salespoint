@@ -16,6 +16,7 @@
 package org.salespointframework.order;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 
@@ -165,5 +166,15 @@ class OrderManagerTests extends AbstractIntegrationTests {
 
 		assertThat(openOrders, IsIterableWithSize.<Order> iterableWithSize(1));
 		assertThat(openOrders.iterator().next(), is(openOrder));
+	}
+
+	@Test // #219
+	void ordersCanBeDeleted() {
+
+		Order reference = orderManager.save(new Order(user, Cash.CASH));
+		assertThat(orderManager.get(reference.getId())).hasValue(reference);
+
+		orderManager.delete(reference);
+		assertThat(orderManager.get(reference.getId())).isEmpty();
 	}
 }
