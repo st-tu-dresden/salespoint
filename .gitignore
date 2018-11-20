@@ -2,5 +2,6 @@ target/
 .settings/
 .project
 .classpath
+.factorypath
 .springBeans
 env.properties
