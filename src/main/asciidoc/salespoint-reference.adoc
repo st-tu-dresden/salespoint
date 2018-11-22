@@ -33,6 +33,14 @@ To give you an example of what applications built on top of Salespoint can actua
 TIP: The following sections will refer to code of the sample project here and there so it might be useful to have the repository cloned and the project imported into your IDE of choice to quickly be able to navigate these.
 
 [preface]
+
+[[preface.whats-new-in-7.1]]
+== What's new in Salespoint 7.1
+* https://github.com/st-tu-dresden/salespoint/issues/225[#225] – Upgrade to Spring Boot 2.1 GA
+* https://github.com/st-tu-dresden/salespoint/issues/218[#218], https://github.com/st-tu-dresden/salespoint/issues/219[#219] – Added the ability to delete both `UserAccount` and `Order` instances.
+Note that when deleting the former, *all other* aggregate that keep a reference to the `UserAccount` have to be deleted manually first, e.g. all orders associated with this account.
+* https://github.com/st-tu-dresden/salespoint/issues/222[#222] – Added the ability to use a user's email address for login purposes. For more details, see <<modules.useraccount.login.via-email, this section>>.
+
 [[preface.whats-new-in-6.1]]
 == What's new in Salespoint 6.1?
 === Upgrade to Spring Boot 1.2 and Spring 4.1
@@ -201,6 +209,21 @@ A view for a user having an administrator role may display different content -- 
 [[modules.useraccount.login]]
 === Login
 To reduce code repetition, Salespoint {majorversion} contains code to automate the user log in. Using a Thymeleaf template, a special login form is generated, which is handled by an interceptor. The interceptor verifies the user password and associates the current session with the user using `<login>` and `<logoff>`. The session is required, because multiple users can be logged on at the same time.
+
+[[modules.useraccount.login.via-email]]
+As of version 7.1, Salespoint allows the login via a user's registered email address.
+To enable that, set `salespoint.authentication.login-via-email` to `true`.
+
+.Configuring Salespoint to use an email for login purposes (in `application.properties`)
+====
+[source]
+----
+salespoint.authentication.login-via-email=true
+----
+====
+
+If the option is activated, `UserAccountManager.save(…)` will reject `UserAccount` instances that don't have an email address set.
+That means you mandatorily need to provide an email when initially registering, i.e. you'll need to use the overload of `UserAccountManager.create(…)` that takes an email address as parameter.
 
 [[modules.useraccount.limitation]]
 === Limitation
