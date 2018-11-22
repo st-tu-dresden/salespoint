@@ -15,12 +15,19 @@
  */
 package org.salespointframework.order;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.salespointframework.core.Currencies.*;
 
+import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
+import org.salespointframework.catalog.Catalog;
+import org.salespointframework.catalog.Product;
+import org.salespointframework.order.ChargeLine.AttachedChargeLine;
 import org.salespointframework.payment.Cash;
+import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +41,7 @@ class OrderTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired OrderManager<Order> orderManager;
+	@Autowired Catalog<Product> catalog;
 
 	UserAccount user;
 	Order order;
@@ -117,5 +125,47 @@ class OrderTests extends AbstractIntegrationTests {
 		} catch (OrderCompletionFailure o_O) {
 			assertEquals(OrderStatus.OPEN, order.getOrderStatus());
 		}
+	}
+
+	@Test // #226
+	@SuppressWarnings("deprecation")
+	void allowsAttachingAChargeLineToAnOrderLine() {
+
+		Product product = catalog.save(new Product("Some product", Money.of(2700.0, EURO)));
+		OrderLine firstOrderLine = order.add(new OrderLine(product, Quantity.of(10)));
+		OrderLine secondOrderLine = order.add(new OrderLine(product, Quantity.of(15)));
+
+		orderManager.save(order);
+
+		ChargeLine chargeLine = order.addChargeLine(Money.of(42, EURO), "Some description");
+		AttachedChargeLine first = order.addChargeLine(Money.of(15, EURO), "Some service!", 0);
+		AttachedChargeLine second = order.addChargeLine(Money.of(15, EURO), "Some other service!", firstOrderLine);
+		AttachedChargeLine third = order.addChargeLine(Money.of(41, EURO), "Yet another service!", secondOrderLine);
+
+		// Allows lookup of order bound charge lines and all of them
+		assertThat(order.getChargeLines()).containsExactly(chargeLine);
+		assertThat(order.getAllChargeLines()).containsExactlyInAnyOrder(chargeLine, first, second, third);
+
+		// Allows lookup of attached charge lines via order line (index)
+		assertThat(order.getChargeLines(0)).containsExactly(first, second);
+		assertThat(order.getChargeLines(firstOrderLine)).containsExactly(first, second);
+		assertThat(order.getChargeLines(secondOrderLine)).containsExactly(third);
+
+		// Exposes total of looked up charge lines
+		assertThat(order.getChargeLines(firstOrderLine).getTotal()).isEqualTo(Money.of(30, EURO));
+
+		// Overall total of charge lines includes the
+		assertThat(order.getChargeLinesPrice()).isEqualTo(Money.of(113, EURO));
+
+		// Removing attached charge lines works
+		order.removeChargeLinesFor(secondOrderLine);
+		assertThat(order.getChargeLines(secondOrderLine)).isEmpty();
+	}
+
+	@Test // #226
+	void rejectsChargeLineForOrderLineIndexOutOfBounds() {
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> order.addChargeLine(ZERO_EURO, "Description", 0));
 	}
 }

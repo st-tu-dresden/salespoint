@@ -18,6 +18,7 @@ package org.salespointframework.order;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
@@ -26,8 +27,10 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 import org.salespointframework.core.AbstractEntity;
+import org.springframework.util.Assert;
 
 /**
  * A chargeline represents extra expenses like shipping. This class is immutable.
@@ -47,8 +50,8 @@ public class ChargeLine extends AbstractEntity<ChargeLineIdentifier> implements 
 	@AttributeOverride(name = "id", column = @Column(name = "CHARGELINE_ID")) //
 	private ChargeLineIdentifier chargeLineIdentifier = new ChargeLineIdentifier();
 
-	private final MonetaryAmount price;
-	private final String description;
+	private final @NonNull MonetaryAmount price;
+	private final @NonNull String description;
 
 	/*
 	 * (non-Javadoc)
@@ -56,5 +59,50 @@ public class ChargeLine extends AbstractEntity<ChargeLineIdentifier> implements 
 	 */
 	public ChargeLineIdentifier getId() {
 		return chargeLineIdentifier;
+	}
+
+	/**
+	 * A {@link ChargeLine} that's attached to an {@link OrderLine}. Create via
+	 * {@link Order#addChargeLine(MonetaryAmount, String, int)} or
+	 * {@link Order#addChargeLine(MonetaryAmount, String, OrderLine)}.
+	 *
+	 * @author Oliver Gierke
+	 * @since 7.1
+	 */
+	@Entity
+	@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+	@Getter
+	public static class AttachedChargeLine extends ChargeLine {
+
+		private final @ManyToOne(optional = false) OrderLine orderLine;
+
+		/**
+		 * Creates a new {@link AttachedChargeLine} for the given price, description and {@link OrderLine}.
+		 * 
+		 * @param price must not be {@literal null}.
+		 * @param description must not be {@literal null}.
+		 * @param orderLine must not be {@literal null}.
+		 */
+		AttachedChargeLine(MonetaryAmount price, String description, OrderLine orderLine) {
+
+			super(price, description);
+
+			Assert.notNull(orderLine, "Order line must not be null!");
+
+			this.orderLine = orderLine;
+		}
+
+		/**
+		 * Returns whether the {@link AttachedChargeLine} belongs to the given {@link OrderLine}.
+		 * 
+		 * @param oderLine must not be {@literal null}.
+		 * @return
+		 */
+		public boolean belongsTo(OrderLine oderLine) {
+
+			Assert.notNull(oderLine, "Reference order line must not be null!");
+
+			return this.orderLine.equals(oderLine);
+		}
 	}
 }

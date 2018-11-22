@@ -26,17 +26,20 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.*;
 
 import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.order.ChargeLine.AttachedChargeLine;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.data.domain.AfterDomainEventPublication;
 import org.springframework.data.domain.DomainEvents;
+import org.springframework.data.domain.Range;
+import org.springframework.data.domain.Range.Bound;
+import org.springframework.data.util.StreamUtils;
 import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
@@ -73,10 +76,13 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	// end::orderStatus[]
 
 	@OneToMany(cascade = CascadeType.ALL) //
-	private Set<OrderLine> orderLines = new HashSet<OrderLine>();
+	private List<OrderLine> orderLines = new ArrayList<>();
 
 	@OneToMany(cascade = CascadeType.ALL) //
-	private Set<ChargeLine> chargeLines = new HashSet<ChargeLine>();
+	private List<ChargeLine> chargeLines = new ArrayList<>();
+
+	@OneToMany(cascade = CascadeType.ALL) //
+	private List<AttachedChargeLine> attachedChargeLines = new ArrayList<>();
 
 	private transient final Collection<Object> events = new ArrayList<>();
 
@@ -118,24 +124,102 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		return orderIdentifier;
 	}
 
-	public Streamable<OrderLine> getOrderLines() {
-		return Streamable.of(orderLines);
+	/**
+	 * Returns all {@link OrderLine}s of the {@link Order}.
+	 * 
+	 * @return
+	 */
+	public Totalable<OrderLine> getOrderLines() {
+		return Totalable.of(orderLines);
 	}
 
-	public Streamable<ChargeLine> getChargeLines() {
-		return Streamable.of(chargeLines);
+	/**
+	 * Returns all {@link ChargeLine} instances registered for the current {@link Order}.
+	 * 
+	 * @return
+	 */
+	public Totalable<ChargeLine> getChargeLines() {
+		return Totalable.of(chargeLines);
 	}
 
+	/**
+	 * Returns all {@link ChargeLine} instances, i.e. both standard ones and {@link AttachedChargeLine}s.
+	 * 
+	 * @return
+	 */
+	public Totalable<ChargeLine> getAllChargeLines() {
+		return Totalable.of(chargeLines).and(attachedChargeLines);
+	}
+
+	/**
+	 * Returns all {@link AttachedChargeLine}s for the {@link OrderLine} with the given index.
+	 * 
+	 * @param index must be in the range of {@link OrderLine}s.
+	 * @return
+	 * @since 7.1
+	 */
+	public Totalable<AttachedChargeLine> getChargeLines(int index) {
+		return getChargeLines(getRequiredOrderLineByIndex(index));
+	}
+
+	/**
+	 * Returns all {@link AttachedChargeLine}s for the given {@link OrderLine}.
+	 * 
+	 * @param orderLine must not be {@literal null}.
+	 * @return
+	 * @since 7.1
+	 */
+	public Totalable<AttachedChargeLine> getChargeLines(OrderLine orderLine) {
+
+		List<AttachedChargeLine> foo = attachedChargeLines;
+
+		return Totalable.of(Streamable.of(() -> foo.stream() //
+				.filter(it -> it.belongsTo(orderLine))));
+	}
+
+	/**
+	 * Returns the total price of the {@link Order}.
+	 * 
+	 * @return
+	 * @since 7.1
+	 */
+	public MonetaryAmount getTotal() {
+		return getOrderLines().getTotal().add(getAllChargeLines().getTotal());
+	}
+
+	/**
+	 * Returns the total price of the {@link Order}.
+	 * 
+	 * @return
+	 * @deprecated since 7.1, use {@link #getTotal()} instead.
+	 */
+	@Deprecated
 	public MonetaryAmount getTotalPrice() {
-		return getOrderedLinesPrice().add(getChargeLinesPrice());
+		return getTotal();
 	}
 
+	/**
+	 * Returns the total of all {@link OrderLine}s.
+	 * 
+	 * @return
+	 * @deprecated since 7.1, use {@link #getOrderLines()} and call {@link Totalable#getTotal()} on the result.
+	 */
+	@Deprecated
 	public MonetaryAmount getOrderedLinesPrice() {
 		return Priced.sumUp(orderLines);
 	}
 
+	/**
+	 * Returns the total of all charge lines registered with the order and order lines.
+	 * 
+	 * @return
+	 * @deprecated since 7.1, prefer {@link #getChargeLines()}, {@link #getAllChargeLines()} and call
+	 *             {@link PricedTotalable#getTotal()} on the result for fine grained control over which
+	 *             {@link ChargeLine}s to calculate the total for.
+	 */
+	@Deprecated
 	public MonetaryAmount getChargeLinesPrice() {
-		return Priced.sumUp(chargeLines);
+		return Priced.sumUp(getAllChargeLines());
 	}
 
 	/**
@@ -145,12 +229,14 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	 * @return true if the orderline was added, else {@literal false}.
 	 * @throws IllegalArgumentException if orderLine is {@literal null}.
 	 */
-	public void add(OrderLine orderLine) {
+	public OrderLine add(OrderLine orderLine) {
 
 		Assert.notNull(orderLine, "OrderLine must not be null!");
 		assertOrderIsOpen();
 
 		this.orderLines.add(orderLine);
+
+		return orderLine;
 	}
 
 	public void remove(OrderLine orderLine) {
@@ -161,12 +247,85 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		this.orderLines.remove(orderLine);
 	}
 
-	public void add(ChargeLine chargeLine) {
+	/**
+	 * Adds a charge line to the {@link Order}.
+	 * 
+	 * @param chargeLine
+	 * @deprecated since 7.1, use {@link #addChargeLine(MonetaryAmount, String)} instead
+	 */
+	@Deprecated
+	public ChargeLine add(ChargeLine chargeLine) {
 
 		Assert.notNull(chargeLine, "ChargeLine must not be null!");
 		assertOrderIsOpen();
 
 		this.chargeLines.add(chargeLine);
+
+		return chargeLine;
+	}
+
+	/**
+	 * Adds a {@link ChargeLine} with the given price and description to the {@link Order}.
+	 * 
+	 * @param price must not be {@literal null}.
+	 * @param description must not be {@literal null}.
+	 * @return the {@link ChargeLine} created.
+	 * @since 7.1
+	 */
+	public ChargeLine addChargeLine(MonetaryAmount price, String description) {
+
+		Assert.notNull(price, "Price must not be null!");
+		Assert.notNull(description, "Description must not be null!");
+
+		ChargeLine chargeLine = new ChargeLine(price, description);
+
+		this.chargeLines.add(chargeLine);
+
+		return chargeLine;
+	}
+
+	/**
+	 * Adds an {@link AttachedChargeLine} with the given price and description to the {@link OrderLine} with the given
+	 * index.
+	 * 
+	 * @param price must not be {@literal null}.
+	 * @param description must not be {@literal null}.
+	 * @param index must be within the range of {@link OrderLine}s already registered.
+	 * @return the {@link AttachedChargeLine} created.
+	 * @since 7.1
+	 */
+	public AttachedChargeLine addChargeLine(MonetaryAmount price, String description, int index) {
+
+		Assert.notNull(price, "Price must not be null!");
+		Assert.notNull(description, "Description must not be null!");
+
+		OrderLine orderLine = getRequiredOrderLineByIndex(index);
+
+		return addChargeLine(price, description, orderLine);
+	}
+
+	/**
+	 * Adds an {@link AttachedChargeLine} with the given price and description to the given {@link OrderLine}.
+	 * 
+	 * @param price must not be {@literal null}.
+	 * @param description must not be {@literal null}.
+	 * @param orderLine must not be {@literal null}.
+	 * @return the {@link AttachedChargeLine} created.
+	 * @since 7.1
+	 */
+	public AttachedChargeLine addChargeLine(MonetaryAmount price, String description, OrderLine orderLine) {
+
+		Assert.notNull(price, "Price must not be null!");
+		Assert.notNull(description, "Description must not be null!");
+		Assert.notNull(orderLine, "Order line must not be null!");
+
+		AttachedChargeLine chargeLine = new AttachedChargeLine(price, description, orderLine);
+
+		assertOrderIsOpen();
+
+		this.attachedChargeLines.add(chargeLine);
+
+		return chargeLine;
 	}
 
 	public void remove(ChargeLine chargeLine) {
@@ -175,6 +334,36 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		assertOrderIsOpen();
 
 		this.chargeLines.remove(chargeLine);
+	}
+
+	/**
+	 * Removes the given {@link AttachedChargeLine} from the {@link Order}.
+	 * 
+	 * @param chargeLine must not be {@literal null}.
+	 * @since 7.1
+	 */
+	public void remove(AttachedChargeLine chargeLine) {
+
+		Assert.notNull(chargeLine, "Attached charge line must not be null!");
+
+		assertOrderIsOpen();
+
+		this.attachedChargeLines.remove(chargeLine);
+	}
+
+	/**
+	 * Removes all {@link AttachedChargeLine}s attached to the given {@link OrderLine}.
+	 * 
+	 * @param orderLine must not be {@literal null}.
+	 * @since 7.1
+	 */
+	public void removeChargeLinesFor(OrderLine orderLine) {
+
+		Assert.notNull(orderLine, "Order line must not be null!");
+
+		getChargeLines(orderLine).stream() //
+				.collect(StreamUtils.toUnmodifiableList()) //
+				.forEach(this::remove);
 	}
 
 	/**
@@ -266,6 +455,17 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		if (!isOpen()) {
 			throw new IllegalStateException("Order is not open anymore! Current state is: " + orderStatus);
 		}
+	}
+
+	private OrderLine getRequiredOrderLineByIndex(int index) {
+
+		Range<Integer> allowedIndexRange = Range.from(Bound.inclusive(0))//
+				.to(Bound.exclusive(orderLines.size()));
+
+		Assert.isTrue(allowedIndexRange.contains(index),
+				String.format("Invalid order line index %s. Required: %s!", index, allowedIndexRange));
+
+		return this.orderLines.get(index);
 	}
 
 	@Value(staticConstructor = "of")
