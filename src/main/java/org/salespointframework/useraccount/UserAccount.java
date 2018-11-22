@@ -60,7 +60,7 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 
 	private @Getter @Setter String firstname;
 	private @Getter @Setter String lastname;
-	private @Getter @Setter String email;
+	private @Getter @Setter @Column(unique = true) String email;
 
 	@ElementCollection(fetch = FetchType.EAGER) //
 	private Set<Role> roles = new TreeSet<Role>();

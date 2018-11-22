@@ -16,6 +16,7 @@
 package org.salespointframework.useraccount;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 
@@ -88,6 +89,44 @@ class UserAccountRepositoryIntegrationTests extends AbstractIntegrationTests {
 
 		assertThatExceptionOfType(DataIntegrityViolationException.class) //
 				.isThrownBy(() -> repository.save(userAccount));
+	}
+
+	@Test // #222
+	void looksUpUserViaEmail() {
+
+		UserAccount account = new UserAccount(new UserAccountIdentifier("username"), "password");
+		account.setPassword(Password.encrypted("encrypted"));
+		account.setEmail("foo@bar.com");
+
+		UserAccount reference = repository.save(account);
+
+		assertThat(repository.findByEmail("foo@bar.com")).hasValue(reference);
+	}
+
+	@Test // #222
+	void rejectsMultipleUsersWithTheSameEmailAddress() {
+
+		String email = "foo@bar.com";
+
+		UserAccount first = createAccount();
+		first.setEmail(email);
+		first.setPassword(Password.encrypted("encrypted"));
+
+		repository.save(first);
+
+		UserAccount second = createAccount();
+		second.setEmail(email);
+		second.setPassword(Password.encrypted("encrypted"));
+
+		assertThatExceptionOfType(DataIntegrityViolationException.class) //
+				.isThrownBy(() -> {
+
+					// Persist second user
+					repository.save(second);
+
+					// Flush to trigger insert
+					repository.findByEmail(email);
+				});
 	}
 
 	static UserAccount createAccount() {

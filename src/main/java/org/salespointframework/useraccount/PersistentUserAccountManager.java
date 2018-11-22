@@ -38,8 +38,11 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor
 class PersistentUserAccountManager implements UserAccountManager {
 
+	private static final String EMAIL_PLACEHOLDER = "¯\\_(ツ)_/¯";
+
 	private final @NonNull UserAccountRepository repository;
 	private final @NonNull PasswordEncoder passwordEncoder;
+	private final @NonNull AuthenticationProperties config;
 
 	/*
 	 * (non-Javadoc)
@@ -48,17 +51,32 @@ class PersistentUserAccountManager implements UserAccountManager {
 	@Override
 	@Transactional
 	public UserAccount create(String userName, String password, Role... roles) {
+		return create(userName, password, EMAIL_PLACEHOLDER, roles);
+	}
 
-		Assert.notNull(userName, "userName must not be null");
-		Assert.notNull(password, "password must not be null");
-		Assert.notNull(roles, "roles must not be null");
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.useraccount.UserAccountManager#create(java.lang.String, java.lang.String, java.lang.String, org.salespointframework.useraccount.Role[])
+	 */
+	@Override
+	@Transactional
+	public UserAccount create(String userName, String password, String emailAddress, Role... roles) {
+
+		Assert.hasText(userName, "Username must not be null or empty!");
+		Assert.hasText(password, "Password must not be null or empty!");
+		Assert.hasText(emailAddress, "Email address must not be null or empty!");
+		Assert.notNull(roles, "Roles must not be null!");
 
 		// Reject username if a user with that name already exists
 		findByUsername(userName).ifPresent(user -> {
 			throw new IllegalArgumentException(String.format("User with name %s already exists!", userName));
 		});
 
-		return save(new UserAccount(new UserAccountIdentifier(userName), password, roles));
+		UserAccount account = new UserAccount(new UserAccountIdentifier(userName), password, roles);
+		account.setEmail(EMAIL_PLACEHOLDER.equals(emailAddress) ? null : emailAddress);
+
+		return save(account);
+
 	}
 
 	/*
@@ -87,6 +105,20 @@ class PersistentUserAccountManager implements UserAccountManager {
 		if (!password.isEncrypted()) {
 			userAccount.setPassword(Password.encrypted(passwordEncoder.encode(password.getPassword())));
 		}
+
+		if (config.isLoginViaEmail()) {
+			Assert.hasText(userAccount.getEmail(),
+					"Email address must not be null or empty if login via email is configured!");
+		}
+
+		// Reject if there's already a different user with the same email address
+		Optional.ofNullable(userAccount.getEmail()) //
+				.flatMap(repository::findByEmail) //
+				.filter(it -> !it.equals(userAccount)) //
+				.ifPresent(it -> {
+					throw new IllegalArgumentException(
+							String.format("A different UserAccount with email %s already exists!", it.getEmail()));
+				});
 
 		return repository.save(userAccount);
 	}

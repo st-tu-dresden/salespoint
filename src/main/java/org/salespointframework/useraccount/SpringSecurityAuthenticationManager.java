@@ -15,13 +15,23 @@
  */
 package org.salespointframework.useraccount;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
+import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -34,10 +44,11 @@ import org.springframework.util.Assert;
  */
 @Component
 @RequiredArgsConstructor
-class SpringSecurityAuthenticationManager implements AuthenticationManager {
+class SpringSecurityAuthenticationManager implements AuthenticationManager, UserDetailsService {
 
 	private final @NonNull UserAccountRepository repository;
 	private final @NonNull PasswordEncoder passwordEncoder;
+	private final @NonNull AuthenticationProperties config;
 
 	/* 
 	 * (non-Javadoc)
@@ -46,8 +57,10 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager {
 	@Override
 	public Optional<UserAccount> getCurrentUser() {
 
-		return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication()).//
-				flatMap(authentication -> repository.findById(new UserAccountIdentifier(authentication.getName())));
+		return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication()) //
+				.map(Authentication::getName) //
+				.map(UserAccountIdentifier::new) //
+				.flatMap(repository::findById);
 	}
 
 	/* 
@@ -62,5 +75,57 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager {
 		return Optional.ofNullable(candidate).//
 				map(c -> passwordEncoder.matches(c.getPassword(), existing.getPassword())).//
 				orElse(false);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
+	 */
+	@Override
+	public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+
+		Optional<UserAccount> candidate = config.isLoginViaEmail() //
+				? repository.findByEmail(name) //
+				: repository.findById(new UserAccountIdentifier(name));
+
+		return new UserAccountDetails(
+				candidate.orElseThrow(() -> new UsernameNotFoundException("Useraccount: " + name + "not found")));
+	}
+
+	@Getter
+	@ToString
+	@EqualsAndHashCode
+	@SuppressWarnings("serial")
+	static class UserAccountDetails implements UserDetails {
+
+		private final String username;
+		private final String password;
+		private final boolean isEnabled;
+		private final Collection<? extends GrantedAuthority> authorities;
+
+		public UserAccountDetails(UserAccount userAccount) {
+
+			this.username = userAccount.getUsername();
+			this.password = userAccount.getPassword().toString();
+			this.isEnabled = userAccount.isEnabled();
+			this.authorities = userAccount.getRoles().stream().//
+					map(role -> new SimpleGrantedAuthority(role.getName())).//
+					collect(Collectors.toList());
+		}
+
+		@Override
+		public boolean isAccountNonExpired() {
+			return true;
+		}
+
+		@Override
+		public boolean isAccountNonLocked() {
+			return true;
+		}
+
+		@Override
+		public boolean isCredentialsNonExpired() {
+			return true;
+		}
 	}
 }

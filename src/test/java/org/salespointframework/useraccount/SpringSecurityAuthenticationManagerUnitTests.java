@@ -17,6 +17,7 @@ package org.salespointframework.useraccount;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.junit.MatcherAssert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.salespointframework.useraccount.UserAccountRepositoryIntegrationTests.*;
 
@@ -28,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.salespointframework.useraccount.UserAccountDetailService.UserAccountDetails;
+import org.salespointframework.useraccount.SpringSecurityAuthenticationManager.UserAccountDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,15 +44,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 class SpringSecurityAuthenticationManagerUnitTests {
 
 	SpringSecurityAuthenticationManager authenticationManager;
+
 	@Mock UserAccountRepository repository;
 	@Mock PasswordEncoder passwordEncoder;
+	AuthenticationProperties config = new AuthenticationProperties(false);
+
 	UserAccount account;
 
 	@BeforeEach
 	void setUp() {
 
 		this.account = createAccount();
-		this.authenticationManager = new SpringSecurityAuthenticationManager(repository, passwordEncoder);
+		this.authenticationManager = new SpringSecurityAuthenticationManager(repository, passwordEncoder, config);
 	}
 
 	@AfterEach
@@ -89,6 +93,20 @@ class SpringSecurityAuthenticationManagerUnitTests {
 		assertThat(authenticationManager.matches(matching, existing), is(true));
 		assertThat(authenticationManager.matches(failing, existing), is(false));
 		assertThat(authenticationManager.matches(null, existing), is(false));
+	}
+
+	@Test // #222
+	void usesByEmailLookupIfConfigured() {
+
+		SpringSecurityAuthenticationManager authenticationManager = new SpringSecurityAuthenticationManager(repository,
+				passwordEncoder, new AuthenticationProperties(true));
+
+		doReturn(Optional.of(account)).when(repository).findByEmail(any());
+
+		authenticationManager.loadUserByUsername("username");
+
+		verify(repository).findByEmail(any());
+		verify(repository, never()).findById(any());
 	}
 
 	private static void authenticate(UserAccount account) {

@@ -34,9 +34,20 @@ public interface UserAccountManager {
 	 * @param password the password
 	 * @param roles zero or more roles
 	 * @return a {@link UserAccount}, will never be {@literal null}.
-	 * @throws NullPointerException if userName, password or roles is null
 	 */
 	UserAccount create(String userName, String password, Role... roles);
+
+	/**
+	 * Creates a new {@link UserAccount} and persists it right away.
+	 * 
+	 * @param userName the unique name of the user, the name is also used as login name.
+	 * @param password the password
+	 * @param emailAddress the email address to be used
+	 * @param roles zero or more roles
+	 * @return a {@link UserAccount}, will never be {@literal null}.
+	 * @since 7.1
+	 */
+	UserAccount create(String userName, String password, String emailAddress, Role... roles);
 
 	/**
 	 * Returns an {@link UserAccount} for a given identifier.

@@ -15,6 +15,8 @@
  */
 package org.salespointframework.useraccount;
 
+import java.util.Optional;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.util.Streamable;
 
@@ -38,4 +40,13 @@ interface UserAccountRepository extends CrudRepository<UserAccount, UserAccountI
 	 * @return
 	 */
 	Streamable<UserAccount> findByEnabledFalse();
+
+	/**
+	 * Returns the {@link UserAccount} with the given email address.
+	 * 
+	 * @param emailAddress must not be {@literal null}.
+	 * @return
+	 * @since 7.1
+	 */
+	Optional<UserAccount> findByEmail(String emailAddress);
 }
