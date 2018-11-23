@@ -19,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -46,11 +47,13 @@ import org.springframework.util.Assert;
  */
 
 @Entity
+@ToString(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 
 	@EmbeddedId //
 	@AttributeOverride(name = "id", column = @Column(name = "USERACCOUNT_ID")) //
+	@ToString.Include //
 	private UserAccountIdentifier userAccountIdentifier;
 
 	@Getter //
