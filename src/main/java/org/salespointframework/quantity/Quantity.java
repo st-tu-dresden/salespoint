@@ -33,6 +33,7 @@ import org.springframework.util.Assert;
  * A value object to represent a quantity.
  * 
  * @author Oliver Gierke
+ * @author Martin Morgenstern
  */
 @Embeddable
 @Value
@@ -43,16 +44,14 @@ public class Quantity {
 	private static final String INCOMPATIBLE = "Quantity %s is incompatible to quantity %s!";
 
 	/**
-	 * The amount of the Quantity. Explicitely set a prefixed column name to avoid name conflicts.
+	 * The amount of the Quantity. Explicitly set a prefixed column name to avoid name conflicts.
 	 */
-	@Column(name = "quantity_amount")
-	private @NonNull final BigDecimal amount;
+	@Column(name = "quantity_amount") private @NonNull final BigDecimal amount;
 
 	/**
-	 * The metric of the Quantity. Explicitely set a prefixed column name to avoid name conflicts.
+	 * The metric of the Quantity. Explicitly set a prefixed column name to avoid name conflicts.
 	 */
-	@Column(name = "quantity_metric")
-	private @NonNull final Metric metric;
+	@Column(name = "quantity_metric") private @NonNull final Metric metric;
 
 	/**
 	 * Creates a new {@link Quantity} of the given amount. Defaults the metric to {@value Metric#UNIT}.
