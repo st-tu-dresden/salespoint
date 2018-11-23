@@ -24,6 +24,7 @@ import lombok.Value;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import org.springframework.util.Assert;
@@ -42,13 +43,15 @@ public class Quantity {
 	private static final String INCOMPATIBLE = "Quantity %s is incompatible to quantity %s!";
 
 	/**
-	 * The amount of the Quantity.
+	 * The amount of the Quantity. Explicitely set a prefixed column name to avoid name conflicts.
 	 */
+	@Column(name = "quantity_amount")
 	private @NonNull final BigDecimal amount;
 
 	/**
-	 * The metric of the Quantity.
+	 * The metric of the Quantity. Explicitely set a prefixed column name to avoid name conflicts.
 	 */
+	@Column(name = "quantity_metric")
 	private @NonNull final Metric metric;
 
 	/**
