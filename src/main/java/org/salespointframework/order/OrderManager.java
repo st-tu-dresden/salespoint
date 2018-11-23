@@ -17,6 +17,9 @@ package org.salespointframework.order;
 
 import java.util.Optional;
 
+import org.salespointframework.order.Order.OrderCancelled;
+import org.salespointframework.order.Order.OrderCompleted;
+import org.salespointframework.order.Order.OrderPaid;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
@@ -99,6 +102,7 @@ public interface OrderManager<T extends Order> {
 	 * 
 	 * @param order the order to complete, must not be {@literal null}.
 	 * @throws OrderCompletionFailure in case the order can't be completed.
+	 * @see OrderCompleted
 	 */
 	void completeOrder(T order) throws OrderCompletionFailure;
 
@@ -106,15 +110,17 @@ public interface OrderManager<T extends Order> {
 	 * Pays the {@link Order}, {@link OrderStatus} must be {@link OrderStatus#OPEN} and {@link PaymentMethod} must be set.
 	 * 
 	 * @param order the order to be payed, must not be {@literal null}.
-	 * @return true if the order could be payed
+	 * @return true if the order could be paid
+	 * @see OrderPaid
 	 */
 	boolean payOrder(T order);
 
 	/**
-	 * Cancels an {@link Order}, it can only be cancelled is {@link OrderStatus} is {@link OrderStatus#OPEN}.
+	 * Cancels an {@link Order}, no matter what state it is in.
 	 * 
 	 * @param order the order to be canceled, must not be {@literal null}.
 	 * @return true if the order could be canceled
+	 * @see OrderCancelled
 	 */
 	boolean cancelOrder(T order);
 

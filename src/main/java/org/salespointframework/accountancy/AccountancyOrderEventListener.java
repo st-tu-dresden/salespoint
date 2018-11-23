@@ -19,7 +19,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import org.salespointframework.order.Order;
+import org.salespointframework.order.Order.OrderCancelled;
 import org.salespointframework.order.Order.OrderCompleted;
+import org.salespointframework.order.Order.OrderPaid;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -36,11 +38,37 @@ public class AccountancyOrderEventListener {
 
 	private final @NonNull Accountancy accountancy;
 
+	/**
+	 * Creates a new revenue {@link ProductPaymentEntry} for the order that has been paid.
+	 * 
+	 * @param event must not be {@literal null}.
+	 */
 	@EventListener
-	public void on(OrderCompleted event) {
+	public void on(OrderPaid event) {
 
 		Order order = event.getOrder();
 
-		accountancy.add(ProductPaymentEntry.of(order, "Rechnung Nr. ".concat(order.getId().toString())));
+		accountancy.add(ProductPaymentEntry.of(order, String.format("Rechnung Nr. %s", order.getId())));
+	}
+
+	/**
+	 * Creates a counter {@link ProductPaymentEntry} for the order that is cancelled if there's a revenue entry for the
+	 * given order already, i.e. the order has been paid before.
+	 * 
+	 * @param event must not be {@literal null}.
+	 * @since 7.1
+	 */
+	@EventListener
+	public void on(OrderCancelled event) {
+
+		Order order = event.getOrder();
+
+		if (accountancy.findAll().stream() //
+				.map(ProductPaymentEntry.class::cast) //
+				.anyMatch(it -> it.belongsTo(order) && it.isRevenue())) {
+
+			accountancy.add(ProductPaymentEntry.rollback(order,
+					String.format("Order %s cancelled! Reason: %s.", order.getId(), event.getReason())));
+		}
 	}
 }

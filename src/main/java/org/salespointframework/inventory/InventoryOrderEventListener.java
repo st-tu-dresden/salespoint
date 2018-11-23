@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Order;
+import org.salespointframework.order.Order.OrderCancelled;
 import org.salespointframework.order.Order.OrderCompleted;
 import org.salespointframework.order.OrderCompletionFailure;
 import org.salespointframework.order.OrderCompletionReport;
@@ -47,7 +48,7 @@ import org.springframework.util.Assert;
  */
 @Component
 @RequiredArgsConstructor
-class InventoryOrderEventListener {
+public class InventoryOrderEventListener {
 
 	private static final String NOT_ENOUGH_STOCK = "Number of items requested by the OrderLine is greater than the number available in the Inventory. Please re-stock.";
 	private static final String NO_INVENTORY_ITEM = "No inventory item with given product indentifier found in inventory. Have you initialized your inventory? Do you need to re-stock it?";
@@ -74,11 +75,27 @@ class InventoryOrderEventListener {
 				.map(this::verify)//
 				.collect(Collectors.toList());
 
-		OrderCompletionReport report = OrderCompletionReport.forCompletions(order, collect);
+		OrderCompletionReport.forCompletions(order, collect) //
+				.onError(OrderCompletionFailure::new);
+	}
 
-		if (report.hasErrors()) {
-			throw new OrderCompletionFailure(report);
+	/**
+	 * Rolls back the stock decreases handled for {@link OrderCompleted} events.
+	 * 
+	 * @param event must not be {@literal null}.
+	 */
+	@EventListener
+	public void on(OrderCancelled event) {
+
+		Order order = event.getOrder();
+
+		if (!order.isCompleted()) {
+			return;
 		}
+
+		order.getOrderLines() //
+				.map(this::updateStockFor) //
+				.forEach(inventory::save);
 	}
 
 	/**
@@ -91,24 +108,32 @@ class InventoryOrderEventListener {
 
 		Assert.notNull(orderLine, "OrderLine must not be null!");
 
-		if (LineItemFilter.shouldBeHandled(orderLine, filters)) {
-
-			ProductIdentifier identifier = orderLine.getProductIdentifier();
-			Optional<InventoryItem> inventoryItem = inventory.findByProductIdentifier(identifier);
-
-			OrderLineCompletion completion = inventoryItem //
-					.map(it -> it.hasSufficientQuantity(orderLine.getQuantity())) //
-					.map(sufficient -> sufficient ? success(orderLine) : error(orderLine, NOT_ENOUGH_STOCK)) //
-					.orElse(error(orderLine, NO_INVENTORY_ITEM));
-
-			if (!completion.isFailure()) {
-				inventoryItem.ifPresent(it -> it.decreaseQuantity(orderLine.getQuantity()));
-			}
-
-			return completion;
-
-		} else {
+		if (!LineItemFilter.shouldBeHandled(orderLine, filters)) {
 			return OrderLineCompletion.success(orderLine);
 		}
+
+		ProductIdentifier identifier = orderLine.getProductIdentifier();
+		Optional<InventoryItem> inventoryItem = inventory.findByProductIdentifier(identifier);
+
+		return inventoryItem //
+				.map(it -> it.hasSufficientQuantity(orderLine.getQuantity())) //
+				.map(sufficient -> sufficient ? success(orderLine) : error(orderLine, NOT_ENOUGH_STOCK)) //
+				.orElse(error(orderLine, NO_INVENTORY_ITEM)) //
+				.onSuccess(it -> {
+
+					inventoryItem //
+							.map(item -> item.decreaseQuantity(it.getQuantity())) //
+							.ifPresent(inventory::save);
+				});
+	}
+
+	private InventoryItem updateStockFor(OrderLine orderLine) {
+
+		ProductIdentifier productIdentifier = orderLine.getProductIdentifier();
+
+		return inventory.findByProductIdentifier(productIdentifier) //
+				.orElseThrow(() -> new IllegalArgumentException(
+						String.format("Couldn't find InventoryItem for product %s!", productIdentifier))) //
+				.increaseQuantity(orderLine.getQuantity());
 	}
 }

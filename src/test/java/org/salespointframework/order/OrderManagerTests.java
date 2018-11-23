@@ -100,7 +100,7 @@ class OrderManagerTests extends AbstractIntegrationTests {
 
 		Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
 		inventory.save(new InventoryItem(cookie, Quantity.of(100)));
-		order.add(new OrderLine(cookie, Quantity.of(10)));
+		order.addOrderLine(cookie, Quantity.of(10));
 
 		orderManager.payOrder(order);
 		orderManager.completeOrder(order);
@@ -111,7 +111,7 @@ class OrderManagerTests extends AbstractIntegrationTests {
 
 		Cookie cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
 		inventory.save(new InventoryItem(cookie, Quantity.of(1)));
-		order.add(new OrderLine(cookie, Quantity.of(10)));
+		order.addOrderLine(cookie, Quantity.of(10));
 
 		orderManager.payOrder(order);
 

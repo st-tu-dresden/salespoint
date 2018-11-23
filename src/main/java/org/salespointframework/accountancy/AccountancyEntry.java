@@ -109,4 +109,24 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	public AccountancyEntryIdentifier getId() {
 		return accountancyEntryIdentifier;
 	}
+
+	/**
+	 * Returns whether the entry is considered revenue, i.e. its value is zero or positive.
+	 * 
+	 * @return
+	 * @since 7.1
+	 */
+	public boolean isRevenue() {
+		return value.isPositiveOrZero();
+	}
+
+	/**
+	 * Returns whether the entry is considered expense, i.e. its value is negative.
+	 * 
+	 * @return
+	 * @since 7.1
+	 */
+	public boolean isExpense() {
+		return value.isNegative();
+	}
 }

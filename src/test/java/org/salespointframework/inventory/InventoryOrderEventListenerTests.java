@@ -16,6 +16,7 @@
 package org.salespointframework.inventory;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,7 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.Order;
+import org.salespointframework.order.Order.OrderCancelled;
 import org.salespointframework.order.Order.OrderCompleted;
 import org.salespointframework.order.OrderCompletionFailure;
 import org.salespointframework.quantity.Quantity;
@@ -86,5 +88,23 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 
 		assertThatExceptionOfType(OrderCompletionFailure.class) //
 				.isThrownBy(() -> listener.on(OrderCompleted.of(order)));
+	}
+
+	@Test // #230
+	void restocksForCompletedOrderOnCancellation() {
+
+		UserAccount user = userAccounts.create("username", "password");
+
+		Cart cart = new Cart();
+		cart.addOrUpdateItem(iPad, 1);
+
+		Order order = spy(cart.createOrderFor(user));
+		when(order.isCompleted()).thenReturn(true);
+
+		listener.on(OrderCancelled.of(order, "No reason!"));
+
+		assertThat(inventory.findByProduct(iPad) //
+				.map(InventoryItem::getQuantity) //
+		).hasValue(Quantity.of(11));
 	}
 }

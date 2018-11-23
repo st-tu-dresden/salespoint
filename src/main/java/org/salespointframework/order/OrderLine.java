@@ -86,4 +86,32 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Pr
 	public OrderLineIdentifier getId() {
 		return orderLineIdentifier;
 	}
+
+	/**
+	 * Returns whether the {@link OrderLine} refers to the given {@link Product}.
+	 * 
+	 * @param product must not be {@literal null}.
+	 * @return
+	 * @since 7.1
+	 */
+	public boolean refersTo(Product product) {
+
+		Assert.notNull(product, "Product must not be null!");
+
+		return this.productIdentifier.equals(product.getId());
+	}
+
+	/**
+	 * Returns whether the {@link OrderLine} refers to the {@link Product} with the given identifier.
+	 * 
+	 * @param identifier must not be {@literal null}.
+	 * @return
+	 * @since 7.1
+	 */
+	public boolean refersTo(ProductIdentifier identifier) {
+
+		Assert.notNull(identifier, "Product identifier must not be null!");
+
+		return this.productIdentifier.equals(identifier);
+	}
 }

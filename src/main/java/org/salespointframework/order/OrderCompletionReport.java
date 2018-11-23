@@ -25,9 +25,12 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.salespointframework.order.OrderCompletionReport.OrderLineCompletion;
 import org.springframework.data.util.Streamable;
+import org.springframework.util.Assert;
 
 @EqualsAndHashCode
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -94,6 +97,21 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 	 */
 	public boolean hasErrors() {
 		return completions.stream().anyMatch(OrderLineCompletion::isFailure);
+	}
+
+	/**
+	 * Applies the given {@link Function} to produce an exception in case the report has errors.
+	 * 
+	 * @param exception must not be {@literal null}.
+	 * @since 7.1
+	 */
+	public void onError(Function<OrderCompletionReport, ? extends RuntimeException> exception) {
+
+		Assert.notNull(exception, "Ex ception mapper must not be null!");
+
+		if (hasErrors()) {
+			throw exception.apply(this);
+		}
 	}
 
 	/* 
@@ -164,6 +182,24 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 		 */
 		public boolean isFailure() {
 			return CompletionStatus.FAILED.equals(status);
+		}
+
+		/**
+		 * Applies the given {@link Consumer} in case the {@link OrderLineCompletion} is successful.
+		 * 
+		 * @param action must not be {@literal null}.
+		 * @return the current {@link OrderLineCompletion}.
+		 * @since 7.1
+		 */
+		public OrderLineCompletion onSuccess(Consumer<OrderLine> action) {
+
+			Assert.notNull(action, "Action must not be null!");
+
+			if (!isFailure()) {
+				action.accept(orderLine);
+			}
+
+			return this;
 		}
 
 		/*

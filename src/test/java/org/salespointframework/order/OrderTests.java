@@ -18,6 +18,7 @@ package org.salespointframework.order;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.salespointframework.core.Currencies.*;
+import static org.salespointframework.order.OrderStatus.*;
 
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,50 +63,55 @@ class OrderTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	void cancelOrderTest() {
-		boolean result = orderManager.cancelOrder(order);
-		assertEquals(OrderStatus.CANCELLED, order.getOrderStatus());
-		assertTrue(result);
+	void cancelsUnpaidOrder() {
+
+		assertThat(orderManager.cancelOrder(order)).isTrue();
+		assertThat(order.getOrderStatus()).isEqualTo(CANCELLED);
 	}
 
 	@Test
-	void cancelOrderTest2() {
-		orderManager.cancelOrder(order);
-		boolean result = orderManager.cancelOrder(order);
-		assertEquals(OrderStatus.CANCELLED, order.getOrderStatus());
-		assertFalse(result);
+	void cancelIsIdempotent() {
+
+		assertThat(orderManager.cancelOrder(order)).isTrue();
+		assertThat(order.getOrderStatus()).isEqualTo(CANCELLED);
+
+		assertThat(orderManager.cancelOrder(order)).isFalse();
+		assertThat(order.getOrderStatus()).isEqualTo(CANCELLED);
 	}
 
 	@Test
-	void cancelOrderTest3() {
+	void allowsCancellingAnAlreadyPaidOrder() {
+
 		orderManager.payOrder(order);
-		boolean result = orderManager.cancelOrder(order);
-		assertEquals(OrderStatus.PAID, order.getOrderStatus());
-		assertFalse(result);
+
+		assertThat(orderManager.cancelOrder(order)).isTrue();
+		assertThat(order.getOrderStatus()).isEqualTo(CANCELLED);
 	}
 
 	@Test
-	void cancelOrderTest4() {
+	void cancelsPaidOrder() {
+
 		orderManager.payOrder(order);
 		orderManager.completeOrder(order);
-		boolean result = orderManager.cancelOrder(order);
-		assertEquals(OrderStatus.COMPLETED, order.getOrderStatus());
-		assertFalse(result);
+
+		assertThat(orderManager.cancelOrder(order)).isTrue();
+		assertThat(order.getOrderStatus()).isEqualTo(CANCELLED);
 	}
 
 	@Test
 	void payOrderTest() {
-		boolean result = orderManager.payOrder(order);
-		assertEquals(OrderStatus.PAID, order.getOrderStatus());
-		assertTrue(result);
+
+		assertThat(orderManager.payOrder(order)).isTrue();
+		assertThat(order.getOrderStatus()).isEqualTo(PAID);
 	}
 
 	@Test
-	void payOrderTest2() {
-		orderManager.payOrder(order);
-		boolean result = orderManager.payOrder(order);
-		assertEquals(OrderStatus.PAID, order.getOrderStatus());
-		assertFalse(result);
+	void payingAnOrderIsIdempotent() {
+
+		assertThat(orderManager.payOrder(order)).isTrue();
+		assertThat(order.getOrderStatus()).isEqualTo(PAID);
+
+		assertThat(orderManager.payOrder(order)).isFalse();
 	}
 
 	@Test
@@ -118,12 +124,12 @@ class OrderTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	void completeOrderTest2() {
+	void doesNotCompleteUnpaidOrder() {
 
 		try {
 			orderManager.completeOrder(order);
 		} catch (OrderCompletionFailure o_O) {
-			assertEquals(OrderStatus.OPEN, order.getOrderStatus());
+			assertThat(order.getOrderStatus()).isEqualTo(OPEN);
 		}
 	}
 

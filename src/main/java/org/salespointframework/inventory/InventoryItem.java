@@ -92,7 +92,7 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 	 * 
 	 * @param quantity must not be {@literal null}.
 	 */
-	public void decreaseQuantity(Quantity quantity) {
+	public InventoryItem decreaseQuantity(Quantity quantity) {
 
 		Assert.notNull(quantity, "Quantity must not be null!");
 		Assert.isTrue(this.quantity.isGreaterThanOrEqualTo(quantity),
@@ -101,6 +101,8 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 		product.verify(quantity);
 
 		this.quantity = this.quantity.subtract(quantity);
+
+		return this;
 	}
 
 	/**
@@ -108,11 +110,13 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 	 * 
 	 * @param quantity must not be {@literal null}.
 	 */
-	public void increaseQuantity(Quantity quantity) {
+	public InventoryItem increaseQuantity(Quantity quantity) {
 
 		Assert.notNull(quantity, "Quantity must not be null!");
 		product.verify(quantity);
 
 		this.quantity = this.quantity.add(quantity);
+
+		return this;
 	}
 }

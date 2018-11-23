@@ -31,9 +31,11 @@ import java.util.List;
 import javax.money.MonetaryAmount;
 import javax.persistence.*;
 
+import org.salespointframework.catalog.Product;
 import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.order.ChargeLine.AttachedChargeLine;
 import org.salespointframework.payment.PaymentMethod;
+import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.data.domain.AfterDomainEventPublication;
 import org.springframework.data.domain.DomainEvents;
@@ -134,6 +136,21 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	}
 
 	/**
+	 * Returns all {@link OrderLine} instances that refer to the given {@link Product}.
+	 * 
+	 * @param product must not be {@literal null}.
+	 * @return
+	 * @since 7.1
+	 */
+	public Totalable<OrderLine> getOrderLines(Product product) {
+
+		Assert.notNull(product, "Product must not be null!");
+
+		return Totalable.of(Streamable.of(() -> orderLines.stream() //
+				.filter(it -> it.refersTo(product))));
+	}
+
+	/**
 	 * Returns all {@link ChargeLine} instances registered for the current {@link Order}.
 	 * 
 	 * @return
@@ -226,13 +243,35 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	 * Adds an {@link OrderLine} to the {@link Order}, the {@link OrderStatus} must be OPEN.
 	 * 
 	 * @param orderLine the {@link OrderLine} to be added.
-	 * @return true if the orderline was added, else {@literal false}.
+	 * @return the {@link OrderLine} added.
 	 * @throws IllegalArgumentException if orderLine is {@literal null}.
+	 * @deprecated since 7.1, use {@link #addOrderLine(Product, Quantity)} instead.
 	 */
+	@Deprecated
 	public OrderLine add(OrderLine orderLine) {
 
 		Assert.notNull(orderLine, "OrderLine must not be null!");
 		assertOrderIsOpen();
+
+		this.orderLines.add(orderLine);
+
+		return orderLine;
+	}
+
+	/**
+	 * Adds an {@link OrderLine} for the given with the given {@link Quantity}.
+	 * 
+	 * @param product must not be {@literal null}.
+	 * @param quantity must not be {@literal null}.
+	 * @return the {@link OrderLine} added.
+	 * @since 7.1
+	 */
+	public OrderLine addOrderLine(Product product, Quantity quantity) {
+
+		Assert.notNull(product, "Product must not be null!");
+		Assert.notNull(quantity, "Quantity must not be null!");
+
+		OrderLine orderLine = new OrderLine(product, quantity);
 
 		this.orderLines.add(orderLine);
 
@@ -277,6 +316,8 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		Assert.notNull(price, "Price must not be null!");
 		Assert.notNull(description, "Description must not be null!");
 
+		assertOrderIsOpen();
+
 		ChargeLine chargeLine = new ChargeLine(price, description);
 
 		this.chargeLines.add(chargeLine);
@@ -299,6 +340,8 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		Assert.notNull(price, "Price must not be null!");
 		Assert.notNull(description, "Description must not be null!");
 
+		assertOrderIsOpen();
+
 		OrderLine orderLine = getRequiredOrderLineByIndex(index);
 
 		return addChargeLine(price, description, orderLine);
@@ -319,9 +362,9 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		Assert.notNull(description, "Description must not be null!");
 		Assert.notNull(orderLine, "Order line must not be null!");
 
-		AttachedChargeLine chargeLine = new AttachedChargeLine(price, description, orderLine);
-
 		assertOrderIsOpen();
+
+		AttachedChargeLine chargeLine = new AttachedChargeLine(price, description, orderLine);
 
 		this.attachedChargeLines.add(chargeLine);
 
@@ -331,6 +374,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	public void remove(ChargeLine chargeLine) {
 
 		Assert.notNull(chargeLine, "ChargeLine must not be null!");
+
 		assertOrderIsOpen();
 
 		this.chargeLines.remove(chargeLine);
@@ -418,6 +462,8 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	Order complete() {
 
+		Assert.isTrue(isPaid(), "An order must be paid to be completed!");
+
 		this.orderStatus = OrderStatus.COMPLETED;
 
 		registerEvent(OrderCompleted.of(this));
@@ -425,8 +471,32 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		return this;
 	}
 
-	void cancel() {
+	/**
+	 * Cancels the current {@link Order}.
+	 * 
+	 * @return
+	 * @deprecated since 7.1, use {@link #cancel(String)} instead.
+	 */
+	Order cancel() {
+		return cancel("¯\\_(ツ)_/¯");
+	}
+
+	/**
+	 * Cancels the current {@link Order} with the given reason. Will publish an {@link OrderCancelled} even
+	 * 
+	 * @param reason must not be {@literal null}.
+	 * @return
+	 */
+	Order cancel(String reason) {
+
+		Assert.isTrue(!isCanceled(), "Order is already cancelled!");
+
 		this.orderStatus = OrderStatus.CANCELLED;
+
+		registerEvent(OrderCompleted.of(this));
+		registerEvent(OrderCancelled.of(this, reason));
+
+		return this;
 	}
 
 	int getNumberOfLineItems() {
@@ -438,6 +508,8 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	}
 
 	Order markPaid() {
+
+		Assert.isTrue(!isPaid(), "Order is already paid!");
 
 		this.orderStatus = OrderStatus.PAID;
 
@@ -493,6 +565,22 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		 */
 		public String toString() {
 			return "OrderPaid";
+		}
+	}
+
+	@Value(staticConstructor = "of")
+	public static class OrderCancelled {
+
+		Order order;
+		String reason;
+
+		/* 
+		 * (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return "OrderCancelled: " + reason;
 		}
 	}
 

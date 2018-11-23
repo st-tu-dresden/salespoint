@@ -28,6 +28,7 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
+import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.payment.PaymentMethod;
@@ -44,7 +45,7 @@ import org.springframework.util.Assert;
  */
 @Entity
 @Getter
-@ToString
+@ToString(callSuper = true)
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class ProductPaymentEntry extends AccountancyEntry {
 
@@ -68,7 +69,26 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	private @Lob PaymentMethod paymentMethod;
 
 	public static ProductPaymentEntry of(Order order, String description) {
-		return new ProductPaymentEntry(order.getId(), order.getUserAccount(), order.getTotalPrice(), description,
+		return new ProductPaymentEntry(order.getId(), order.getUserAccount(), order.getTotal(), description,
+				order.getPaymentMethod());
+	}
+
+	/**
+	 * Creates a new {@link ProductPaymentEntry} that rolls back the payment for the given {@link Order}.
+	 * 
+	 * @param order must not be {@literal null}.
+	 * @param description must not be {@literal null}.
+	 * @return
+	 * @since 7.1
+	 */
+	public static ProductPaymentEntry rollback(Order order, String description) {
+
+		Assert.notNull(order, "Order must not be null!");
+		Assert.notNull(description, "Description must not be null!");
+
+		MonetaryAmount amount = Currencies.ZERO_EURO.subtract(order.getTotal());
+
+		return new ProductPaymentEntry(order.getId(), order.getUserAccount(), amount, description,
 				order.getPaymentMethod());
 	}
 
@@ -96,5 +116,18 @@ public class ProductPaymentEntry extends AccountancyEntry {
 		this.orderIdentifier = orderIdentifier;
 		this.userAccount = userAccount;
 		this.paymentMethod = paymentMethod;
+	}
+
+	/**
+	 * Returns whether the {@link ProductPaymentEntry} belongs to the given {@link Order}.
+	 * 
+	 * @param order must not be {@literal null}.
+	 * @return
+	 */
+	public boolean belongsTo(Order order) {
+
+		Assert.notNull(order, "Order must not be null!");
+
+		return this.orderIdentifier.equals(order.getId());
 	}
 }
