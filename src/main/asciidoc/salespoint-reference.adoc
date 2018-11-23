@@ -33,14 +33,30 @@ To give you an example of what applications built on top of Salespoint can actua
 TIP: The following sections will refer to code of the sample project here and there so it might be useful to have the repository cloned and the project imported into your IDE of choice to quickly be able to navigate these.
 
 [preface]
-
 [[preface.whats-new-in-7.1]]
-== What's new in Salespoint 7.1
-* https://github.com/st-tu-dresden/salespoint/issues/225[#225] – Upgrade to Spring Boot 2.1 GA
-* https://github.com/st-tu-dresden/salespoint/issues/218[#218], https://github.com/st-tu-dresden/salespoint/issues/219[#219] – Added the ability to delete both `UserAccount` and `Order` instances.
-Note that when deleting the former, *all other* aggregate that keep a reference to the `UserAccount` have to be deleted manually first, e.g. all orders associated with this account.
-* https://github.com/st-tu-dresden/salespoint/issues/222[#222] – Added the ability to use a user's email address for login purposes. For more details, see <<modules.useraccount.login.via-email, this section>>.
+== What's new in Salespoint 7.1?
+=== Upgrade to Spring Boot 2.1 GA
+https://github.com/st-tu-dresden/salespoint/issues/225[#225] -- Simple maintenance upgrade as 7.0 still referred to a milestone release of Spring Boot 2.0.
 
+=== Allow deletion of user accounts and orders
+
+https://github.com/st-tu-dresden/salespoint/issues/218[#218], https://github.com/st-tu-dresden/salespoint/issues/219[#219] -- Note that when deleting the former, *all other* aggregate that keep a reference to the `UserAccount` have to be deleted manually first, e.g. all orders associated with this account.
+
+
+=== Allow login via email address
+https://github.com/st-tu-dresden/salespoint/issues/222[#222] -- Added the ability to use a user's email address for login purposes. For more details, see <<modules.useraccount.login.via-email, this section>>.
+
+=== Improvements in the order aggregate and event handling
+https://github.com/st-tu-dresden/salespoint/issues/226[#226] -- We added the ability to register ChargeLine instances for a dedicated OrderLine.
+Read more about that in the updated section of <<modules.order>>.
+
+=== New order cancelled event and fixes in event handling in general
+https://github.com/st-tu-dresden/salespoint/issues/230[#230] -- The creation of a `PaymentAccountancyEntry` has been properly attached to the `OrderPaid` event now.
+An `OrderCancelled` event is now published on order cancellation which triggers a rollback of the inventory updates as well as a compensating `ProductPaymentEntry`.
+Read more on that in the updated section <<modules.order.lifecycle>>.
+
+
+[preface]
 [[preface.whats-new-in-6.1]]
 == What's new in Salespoint 6.1?
 === Upgrade to Spring Boot 1.2 and Spring 4.1
@@ -191,8 +207,6 @@ image::user-account.png[title="User Account Management"]
 While Spring Security is used as primary technology to actually implement application security, there's also a domain abstraction of a user acoount in the form of a `UserAccount` entity.
 That means that `UserAccount` instances created within the system are automatically targets for authentication.
 The primary purpose of a `UserAccount` besides the security integration is the ability to assign other business entities like an order or a reservation to an account.
-As those other business entities often mandate a reference, `UserAccount`s cannot be removed from the system.
-That would render the business entities connected to them invalid.
 A `UserAccount` primarily consists of a `UserAccountIdentifier` whose `String` representation is used as the login name and a `Password` (representing an encrypted or non-encrypted password) value object.
 
 To create `UserAccounts`, the `UserAccountManager`'s method `create(String userName, String password, Role... role)` can be used.
@@ -223,7 +237,7 @@ salespoint.authentication.login-via-email=true
 ====
 
 If the option is activated, `UserAccountManager.save(…)` will reject `UserAccount` instances that don't have an email address set.
-That means you mandatorily need to provide an email when initially registering, i.e. you'll need to use the overload of `UserAccountManager.create(…)` that takes an email address as parameter.
+That means you need to provide an email when initially registering, i.e. you'll need to use the overload of `UserAccountManager.create(…)` that takes an email address as parameter.
 
 [[modules.useraccount.limitation]]
 === Limitation
@@ -282,11 +296,14 @@ The inventory package contains functionality to keep track of the amount of item
 `Inventory` is a simple Spring Data repository, that allows to access `InventoryItem` instances:
 
 .The Inventory
+====
 [source, java, indent=0]
 ----
 include::{source-base}/inventory/Inventory.java[tags=inventory]
 ----
+====
 
+[[modules.inventory.events]]
 === Handling order completion events
 
 The inventory ships with a listener for `OrderCompleted` events (see <<modules.order.lifecycle>> for details) to update the stock for each line item contained in an `Order`.
@@ -307,6 +324,9 @@ include::{source-base-test}/inventory/InventoryOrderEventListenerTests.java[tags
 
 A declaration like this will cause only `OrderLine` instances pointing to `Product` instance with a matching name to be subject for reduction in the inventory.
 
+On `OrderCancelled` the `Inventory` will restock if the `Order` has already been completed.
+See link:{javadoc}/org/salespointframework/inventory/InventoryOrderEventListener.html[the Javadoc of the event listener] for details.
+
 [[modules.accountancy]]
 == Accountancy
 The accountancy package contains functionality supporting book keeping. `AccountancyEntry` is a representation of an accounting entry. `Accountancy` aggregates ``AccountancyEntry``s. Every `AccountancyEntry` is uniquely identified by an ``AccountancyEntryIdentifier``. `AccountancyEntry` extends `AbstractEntity` and serves as persistence entity, while `PersistentAccountancy` implements `Accountancy` and provides transparent access to the JPA layer. `AccountancyEntryIdentifier` is used as primary key attribute, when entities are stored in the database.
@@ -318,14 +338,16 @@ The accountancy package contains functionality supporting book keeping. `Account
 ////
 image::accountancy.png[Accountancy, title="Accountancy"]
 
-By implementing and sub-classing `Accountancy`, the notion of different accounts, as known from double-entry bookkeeping, can be realised.
+By implementing and sub-classing `Accountancy`, the notion of different accounts, as known from double-entry bookkeeping, can be realized.
 
 To create a new account, `AccountancyEntry` has to be sub-classed. Every object of such a class belongs to the same account. Accessing per-account entries is facilitated by specifiying the desired class type when calling `get()` or `find()` methods of `Accountancy`.
 
-[[modules.accountancy.payment-entry]]
+[[modules.accountancy.events]]
 === Handling OrderPaid events
 
 The accountancy subsystem handles `OrderPaid` events by creating a `ProductPaymentEntry` for the order.
+Reversely, it will create a compensating `ProductPaymentEntry` on `OrderCancelled` if theres a revenue `ProductPaymentEntry` available for `Order`.
+See link:{javadoc}/org/salespointframework/accountancy/AccountancyOrderEventListener.html[the Javadoc of the event listener] for details.
 
 [[modules.payment]]
 == Payments
@@ -347,31 +369,77 @@ For the paying transaction, Salespoint provides some payment strategies.
 * `Cash` -- represents a payment, made direct in cash
 
 [[modules.order]]
-== Order
-An `Order` can be considered as a sheet of paper which basically consists of lines, each representing an ordered product. An order can be uniquely identified by an `OrderIdentifier`. Every product of an order is stored in a separate `OrderLine`. An `OrderLine` in turn is uniquely identified by an `OrderLineIdentifier`. An `OrderLine` contains all information to identify a `Product` (see Section <<modules.catalog>> ).
+== Order management
 
-////
-[Order]->[UserAccount]
-[Order]->[PaymentMethod]
-[Order|-id:OrderIdentifier;-orderStatus:OrderStatus;-dateCreated:LocalDateTime]1++-*>[OrderLine]
-[Order]1++-*>[ChargeLine]
-////
-image::order-light.png[title="Order"]
+The order management is centered around the `Order` aggregate that aggregates link:{javadoc}/org/salespointframework/order/OrderLine.html[``OrderLine``]s and link:{javadoc}/org/salespointframework/order/ChargeLine.html[``ChargeLine``]s.
+An `OrderLine` refers to a `Product` from the <<modules.catalog>> in combination with a `Quantity`.
+Note, that the `OrderLine`  creates a copy of the ``Product``s description and price, so that changes to those attributes of a `Product` don't affect existing `Orders`.
+A `ChargeLine` describes any additional charge that can be associated with the `Order`, e.g. discounts, any general service charges and so on.
 
-A `ChargeLine` represents additional costs or discounts and can be applied to an `OrderLine` or an `Order`. A `ChargeLine` is uniquely identified by a `ChargeLineIdentifier`.
+``AttachedChargeLine`` are special ``ChargeLine``s that are attached to an ``OrderLine``.
+Just as a standard `ChargeLine` they can be used to add charged services or discounts but attached to the particular `OrderLine` instead of the overall `Order`.
 
-TIP: For example, ``ChargeLine``s can be used to handle special taxes or handling fees.
+`Order` exposes a variety of methods to lookup 
+
+[[modules.order.class-diagram]]
+.Order domain classes
+====
+[plantuml, order, svg]
+....
+class OrderLine {
++ getProductIdentifier() : ProductIdentifier
++ getDescription() : String
++ getPrice() : MonetaryAmount
+}
+
+class ChargeLine {
++ getPrice() : MonetaryAmount
++ getDescription() : String
+}
+
+class AttachedChargeLine extends ChargeLine
+AttachedChargeLine --> OrderLine
+
+class Order {
++ addOrderLine(…) : OrderLine
++ addChargeLine(…) : ChargeLine
++ addChargeLine(…, OrderLine) : AttachedChargeLine
+}
+
+Order --* OrderLine
+Order --* ChargeLine
+Order --* AttachedChargeLine
+....
+====
 
 [[modules.order.lifecycle]]
 === The Order lifecycle
-image::order-status-lifecycle.png[title="Order status lifecycle state machine"]
 
 An `Order` is an aggregate rootfootnote:[ http://static.olivergierke.de/lectures/ddd-and-spring/#ddd.building-blocks.aggregates[Aggregate root]], which means that state changes to it that have important business meaning trigger events.
+
+[[modules.order.lifecycle-diagram]]
+.Order lifecycle
+====
+[plantuml, order-lifecycle, svg]
+....
+hide empty description
+[*] --> Open
+Open --> Paid : markPaid()
+Open --> Cancelled : cancel(…)
+Paid -> Cancelled : cancel(…)
+Paid -> Completed : complete()
+Completed -> Cancelled : cancel()
+....
+====
+
 These events are then used by other business modules to act on them.
 Currently, the following events are exposed:
 
-* `OrderPaid` -- the event being throw if the order gets paid, usually through a call to `OrderManager.pay(…)`. The <<modules.accountancy>> module makes use of those events as described in <<modules.accountancy.payment-entry>>.
-* `OrderCompleted` -- the event being thrown when the `Order` is about to be completed, usually through a call to `OrderManager.completeOrder(…)`. The <<modules.inventory>> module ships with a listener for the `OrderCompleted` event to update the inventory and reduce the stock of ordered items.
+* `OrderPaid` -- the event being throw if the order gets paid, usually through a call to `OrderManager.pay(…)`. The <<modules.accountancy>> module makes use of those events as described in <<modules.accountancy.events>>.
+* `OrderCompleted` -- the event being thrown when the `Order` is about to be completed, usually through a call to `OrderManager.completeOrder(…)`.
+The <<modules.inventory>> module ships with a listener for the `OrderCompleted` event to update the inventory and reduce the stock of ordered items.
+See <<modules.inventory.events>> for details.
+* `OrderCancelled` -- the event being thrown when an `Order` was cancelled, usually through `OrderManager.cancelOrder(…)`. <<modules.accountancy>> will react by creating a new `AccountancyEntry` that compensates for the revenue entry created for the `OrderPaid` event. <<modules.inventory>> will restore the previously subtracted stock if the order had been cancelled already.
 
 [[modules.order.handling-events]]
 ==== Handling events
