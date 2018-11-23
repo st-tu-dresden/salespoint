@@ -151,4 +151,13 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 	void verify() {
 		Assert.state(password.isEncrypted(), "Password is not encrypted!");
 	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return String.format("UserAccount(\"%s\")", userAccountIdentifier.getIdentifier());
+	}
 }
