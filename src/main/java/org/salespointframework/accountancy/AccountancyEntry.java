@@ -71,7 +71,7 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	}
 
 	/**
-	 * Creates a new <code>PersistentAccountancyEntry</code> with a specific value and a user defined time.
+	 * Creates a new <code>PersistentAccountancyEntry</code> with a specific value and a user defined description.
 	 * 
 	 * @param value The value that is stored in this entry.
 	 * @param description A user-supplied description for this entry.
