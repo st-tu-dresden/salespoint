@@ -166,6 +166,10 @@ class OrderTests extends AbstractIntegrationTests {
 		// Removing attached charge lines works
 		order.removeChargeLinesFor(secondOrderLine);
 		assertThat(order.getChargeLines(secondOrderLine)).isEmpty();
+
+		// Removing an order line removes all attached charge lines
+		order.remove(firstOrderLine);
+		assertThat(order.getChargeLines(firstOrderLine)).isEmpty();
 	}
 
 	@Test // #226

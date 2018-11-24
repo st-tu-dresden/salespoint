@@ -278,10 +278,17 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		return orderLine;
 	}
 
+	/**
+	 * Removes the given {@link OrderLine} as well as all {@link AttachedChargeLine} associated with it.
+	 * 
+	 * @param orderLine must not be {@literal null}.
+	 */
 	public void remove(OrderLine orderLine) {
 
 		Assert.notNull(orderLine, "OrderLine must not be null!");
 		assertOrderIsOpen();
+
+		removeChargeLinesFor(orderLine);
 
 		this.orderLines.remove(orderLine);
 	}
