@@ -406,9 +406,9 @@ class Order {
 + addChargeLine(…, OrderLine) : AttachedChargeLine
 }
 
-Order --* OrderLine
-Order --* ChargeLine
-Order --* AttachedChargeLine
+Order "1" *-- "0..*" OrderLine
+Order "1" *-- "0..*" ChargeLine
+Order "1" *-- "0..*" AttachedChargeLine
 ....
 ====
 
