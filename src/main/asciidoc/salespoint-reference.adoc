@@ -379,7 +379,7 @@ A `ChargeLine` describes any additional charge that can be associated with the `
 ``AttachedChargeLine`` are special ``ChargeLine``s that are attached to an ``OrderLine``.
 Just as a standard `ChargeLine` they can be used to add charged services or discounts but attached to the particular `OrderLine` instead of the overall `Order`.
 
-`Order` exposes a variety of methods to lookup 
+`Order` exposes a variety of methods to lookup
 
 [[modules.order.class-diagram]]
 .Order domain classes
@@ -435,7 +435,7 @@ Completed -> Cancelled : cancel()
 These events are then used by other business modules to act on them.
 Currently, the following events are exposed:
 
-* `OrderPaid` -- the event being throw if the order gets paid, usually through a call to `OrderManager.pay(…)`. The <<modules.accountancy>> module makes use of those events as described in <<modules.accountancy.events>>.
+* `OrderPaid` -- the event being thrown if the order gets paid, usually through a call to `OrderManager.pay(…)`. The <<modules.accountancy>> module makes use of those events as described in <<modules.accountancy.events>>.
 * `OrderCompleted` -- the event being thrown when the `Order` is about to be completed, usually through a call to `OrderManager.completeOrder(…)`.
 The <<modules.inventory>> module ships with a listener for the `OrderCompleted` event to update the inventory and reduce the stock of ordered items.
 See <<modules.inventory.events>> for details.
