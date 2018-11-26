@@ -22,6 +22,7 @@ import java.util.Optional;
 
 import javax.money.MonetaryAmount;
 
+import org.salespointframework.time.BusinessTime;
 import org.salespointframework.time.Interval;
 import org.springframework.data.util.Streamable;
 
@@ -36,9 +37,11 @@ import org.springframework.data.util.Streamable;
 public interface Accountancy {
 
 	/**
-	 * Adds a new {@link AccountancyEntry} to this {@code Accountancy}.
+	 * Adds a new {@link AccountancyEntry} to this {@code Accountancy}. The {@link AccountancyEntry}'s date will be set to
+	 * the value returned by {@link BusinessTime#getTime()} in case it is not set already.
 	 * 
-	 * @param accountancyEntry entry to be added to the accountancy
+	 * @param accountancyEntry entry to be added to the accountancy, must not be {@literal null}.
+	 * @return the added {@link AccountancyEntry}.
 	 */
 	<T extends AccountancyEntry> T add(T accountancyEntry);
 
