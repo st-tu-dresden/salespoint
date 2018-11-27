@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.core;
+package org.salespointframework.support;
 
 import java.util.Locale;
 
@@ -32,7 +32,7 @@ import org.javamoney.moneta.Money;
  * @author Oliver Gierke
  */
 @Converter(autoApply = true)
-public class MonetaryAmountAttributeConverter implements AttributeConverter<MonetaryAmount, String> {
+class MonetaryAmountAttributeConverter implements AttributeConverter<MonetaryAmount, String> {
 
 	private static final MonetaryAmountFormat FORMAT = MonetaryFormats.getAmountFormat(Locale.ROOT);
 

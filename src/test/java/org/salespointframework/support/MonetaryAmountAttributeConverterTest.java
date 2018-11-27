@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework;
+package org.salespointframework.support;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.junit.MatcherAssert.*;
@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
-import org.salespointframework.core.MonetaryAmountAttributeConverter;
+import org.salespointframework.support.MonetaryAmountAttributeConverter;
 
 /**
  * Unit tests for {@link MonetaryAmountAttributeConverter}
