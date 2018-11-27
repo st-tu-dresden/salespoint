@@ -15,8 +15,9 @@
  */
 package org.salespointframework.catalog;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.junit.MatcherAssert.*;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Metric;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Streamable;
 
 /**
  * Integration tests for {@link Catalog}.
@@ -128,6 +130,36 @@ class CatalogIntegrationTests extends AbstractIntegrationTests {
 		assertThat(product.isPresent(), is(true));
 		assertThat(product.get(), is(instanceOf(Cookie.class)));
 		assertThat(product.get(), is(doubleChoc));
+	}
+
+	@Test // #232
+	void findsByAllCategories() {
+
+		Cookie first = createCookie();
+
+		Cookie second = createCookie();
+		second.addCategory("special");
+
+		Streamable<Product> result = catalog.findByAllCategories("chocolate", "special");
+
+		assertThat(result) //
+				.containsExactly(second) //
+				.doesNotContain(first);
+	}
+
+	@Test // #232
+	void findsByAnyCategory() {
+
+		Cookie first = createCookie();
+		first.addCategory("standard");
+
+		Cookie second = createCookie();
+		second.addCategory("special");
+
+		Streamable<Product> result = catalog.findByAnyCategory("standard", "special");
+
+		assertThat(result) //
+				.containsExactlyInAnyOrder(first, second);
 	}
 
 	private Cookie createCookie() {

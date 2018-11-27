@@ -15,6 +15,9 @@
  */
 package org.salespointframework.catalog;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.util.Streamable;
@@ -34,6 +37,51 @@ public interface Catalog<T extends Product> extends CrudRepository<T, ProductIde
 	 */
 	@Query("select p from #{#entityName} p where :category member of p.categories")
 	Streamable<T> findByCategory(String category);
+
+	/**
+	 * Returns all {@link Product} that are assigned to all given categories.
+	 * 
+	 * @param categories must not be {@literal null}.
+	 * @return
+	 * @since 7.1
+	 */
+	default Streamable<T> findByAllCategories(String... categories) {
+		return findByAllCategories(Arrays.asList(categories));
+	}
+
+	/**
+	 * Returns all {@link Product} that are assigned to all given categories.
+	 * 
+	 * @param categories must not be {@literal null}.
+	 * @return
+	 * @since 7.1
+	 */
+	@Query("select  p from #{#entityName} p " + //
+			"where (select count(c.id) " + //
+			"from #{#entityName} p2 inner join p2.categories c " + //
+			"where p2.id = p.id and c.id in :categories) = ?#{#categories.size().longValue()}")
+	Streamable<T> findByAllCategories(Collection<String> categories);
+
+	/**
+	 * Returns all {@link Product}s that are assigned to any of the given categories.
+	 * 
+	 * @param categories must not be {@literal null}.
+	 * @return
+	 * @since 7.1
+	 */
+	default Streamable<T> findByAnyCategory(String... categories) {
+		return findByAnyCategory(Arrays.asList(categories)); // Arrays.stream(categories).collect(StreamUtils.toUnmodifiableSet()));
+	}
+
+	/**
+	 * Returns all {@link Product}s that are assigned to any of the given categories.
+	 * 
+	 * @param categories must not be {@literal null}.
+	 * @return
+	 * @since 7.1
+	 */
+	@Query("select p from #{#entityName} p join p.categories c where c in :categories")
+	Streamable<T> findByAnyCategory(Collection<String> categories);
 
 	/**
 	 * Returns the {@link Product}s with the given name.
