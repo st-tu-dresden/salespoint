@@ -1,1 +1,1 @@
-org.springframework.boot.env.EnvironmentPostProcessor=org.salespointframework.Salespoint.EnforceJdkProxiesProcessor
+org.springframework.boot.env.EnvironmentPostProcessor=org.salespointframework.Salespoint.RequiredPropertiesPostProcessor

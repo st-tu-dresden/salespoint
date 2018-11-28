@@ -15,7 +15,8 @@
  */
 package org.salespointframework;
 
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.salespointframework.inventory.LineItemFilter;
 import org.springframework.boot.SpringApplication;
@@ -62,7 +63,7 @@ public class Salespoint {
 	 *
 	 * @author Oliver Gierke
 	 */
-	static class EnforceJdkProxiesProcessor implements EnvironmentPostProcessor {
+	static class RequiredPropertiesPostProcessor implements EnvironmentPostProcessor {
 
 		/* 
 		 * (non-Javadoc)
@@ -73,8 +74,12 @@ public class Salespoint {
 
 			MutablePropertySources sources = environment.getPropertySources();
 
-			sources.addFirst(new MapPropertySource("salespointDefaults",
-					Collections.singletonMap("spring.aop.proxy-target-class", false)));
+			Map<String, Object> properties = new HashMap<>();
+			properties.put("spring.aop.proxy-target-class", false);
+			properties.put("spring.jpa.properties.hibernate.archive.scanner",
+					"org.hibernate.boot.archive.scan.internal.DisabledScanner");
+
+			sources.addFirst(new MapPropertySource("salespointDefaults", properties));
 		}
 	}
 }
