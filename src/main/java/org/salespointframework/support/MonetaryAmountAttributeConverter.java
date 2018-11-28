@@ -32,7 +32,7 @@ import org.javamoney.moneta.Money;
  * @author Oliver Gierke
  */
 @Converter(autoApply = true)
-class MonetaryAmountAttributeConverter implements AttributeConverter<MonetaryAmount, String> {
+public class MonetaryAmountAttributeConverter implements AttributeConverter<MonetaryAmount, String> {
 
 	private static final MonetaryAmountFormat FORMAT = MonetaryFormats.getAmountFormat(Locale.ROOT);
 
