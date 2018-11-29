@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.support;
+package org.salespointframework.useraccount;
 
-import org.salespointframework.useraccount.Role;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
