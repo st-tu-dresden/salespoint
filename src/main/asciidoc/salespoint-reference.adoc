@@ -3,6 +3,7 @@ Andreas Zaschka; Paul Henke; Oliver Gierke;
 :javadoc: /SalesPoint/{dev}/api
 :source-base: ../../main/java/org/salespointframework
 :source-base-test: ../../test/java/org/salespointframework
+:generated-docs: ../../../target/generated-docs
 :toc:
 :revnumber: {version}
 :revdate: {localdate}
@@ -193,8 +194,20 @@ When used in domain objects, `Money` instances need to be mapped using `@Lob`.
 [[modules]]
 = Business modules
 
+Salespoint ships with a set of business modules that interact with each other.
+The following component diagram shows the overall structure of the setup.
+The relationships are used as follows:
+
+* __uses__ -- The module has a Spring component dependency and actively interacts with the target module. Implies a type dependency into the target module as well.
+* __listens to__ -- The module contains an event listener for events the target modules publishes. Implies a type dependency into the target module as well.
+* __depends on__ -- The module has a general type dependency to the target module, i.e. it uses the target module as library.
+
+plantuml::{generated-docs}/moduliths/components.uml[,,svg,title="Salespoint component overview"]
+
 [[modules.useraccount]]
 == User accounts
+
+plantuml::{generated-docs}/moduliths/module-org.salespointframework.useraccount.uml[,,svg,title="User account component"]
 
 ////
 [User|-enabled:boolean]-0..*>[Role]
@@ -209,7 +222,7 @@ That means that `UserAccount` instances created within the system are automatica
 The primary purpose of a `UserAccount` besides the security integration is the ability to assign other business entities like an order or a reservation to an account.
 A `UserAccount` primarily consists of a `UserAccountIdentifier` whose `String` representation is used as the login name and a `Password` (representing an encrypted or non-encrypted password) value object.
 
-To create `UserAccounts`, the `UserAccountManager`'s method `create(String userName, String password, Role... role)` can be used.
+To create `UserAccounts`, the ``UserAccountManager`'s method `create(String userName, String password, Role... role)` can be used.
 The `String` given as password will be encrypted using Spring Security.
 Also, it makes sure that the login names are unique and a password is always set.
 
@@ -279,6 +292,8 @@ Furthermore, an object of type `Metric` has a description field, to explain the 
 [[modules.catalog]]
 == Catalog
 
+plantuml::{generated-docs}/moduliths/module-org.salespointframework.catalog.uml[,,svg,title="Catalog component"]
+
 Salespoint {majorversion} is intended as framework for point-of-sale applications. Items for sale are called products and represented by instances of the class `Product`. To represent different kinds of products, `Product` can be sub-classed. Products are managed by a `Catalog` implementation (see below). Products are identified using a `ProductIndentifier`.
 
 The `Catalog` interface was designed to manage `Product` instances in the system. It provides functionality to add, remove, and find products. Products can be searched by their name or category. The `PersistentCatalog` is an implementation of the `Catalog` interface.
@@ -291,6 +306,8 @@ image::catalog.png[title="Catalog"]
 
 [[modules.inventory]]
 == Inventory
+
+plantuml::{generated-docs}/moduliths/module-org.salespointframework.inventory.uml[,,svg,title="Inventory component"]
 
 The inventory package contains functionality to keep track of the amount of items we have for a given `Product` (see <<modules.catalog>> for details).
 `Inventory` is a simple Spring Data repository, that allows to access `InventoryItem` instances:
@@ -329,6 +346,9 @@ See link:{javadoc}/org/salespointframework/inventory/InventoryOrderEventListener
 
 [[modules.accountancy]]
 == Accountancy
+
+plantuml::{generated-docs}/moduliths/module-org.salespointframework.accountancy.uml[,,svg,title="Accountancy component"]
+
 The accountancy package contains functionality supporting book keeping. `AccountancyEntry` is a representation of an accounting entry. `Accountancy` aggregates ``AccountancyEntry``s. Every `AccountancyEntry` is uniquely identified by an ``AccountancyEntryIdentifier``. `AccountancyEntry` extends `AbstractEntity` and serves as persistence entity, while `PersistentAccountancy` implements `Accountancy` and provides transparent access to the JPA layer. `AccountancyEntryIdentifier` is used as primary key attribute, when entities are stored in the database.
 
 ////
@@ -370,6 +390,8 @@ For the paying transaction, Salespoint provides some payment strategies.
 
 [[modules.order]]
 == Order management
+
+plantuml::{generated-docs}/moduliths/module-org.salespointframework.order.uml[,,svg,title="Order component"]
 
 The order management is centered around the `Order` aggregate that aggregates link:{javadoc}/org/salespointframework/order/OrderLine.html[``OrderLine``]s and link:{javadoc}/org/salespointframework/order/ChargeLine.html[``ChargeLine``]s.
 An `OrderLine` refers to a `Product` from the <<modules.catalog>> in combination with a `Quantity`.
@@ -423,9 +445,9 @@ An `Order` is an aggregate rootfootnote:[ http://static.olivergierke.de/lectures
 [plantuml, order-lifecycle, svg]
 ....
 hide empty description
-[*] --> Open
-Open --> Paid : markPaid()
-Open --> Cancelled : cancel(…)
+[*] -> Open
+Open -> Paid : markPaid()
+Open -> Cancelled : cancel(…)
 Paid -> Cancelled : cancel(…)
 Paid -> Completed : complete()
 Completed -> Cancelled : cancel()

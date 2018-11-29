@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.*;
 import static org.hamcrest.junit.MatcherAssert.*;
 
 import de.olivergierke.modulith.docs.Documenter;
+import de.olivergierke.modulith.docs.Documenter.Options;
 import de.olivergierke.moduliths.model.Modules;
 
 import java.io.IOException;
@@ -68,7 +69,15 @@ class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
 
 		// Generate documentation
 		Documenter documenter = new Documenter(modules);
-		documenter.writePlantUml();
+
+		Options options = Options.defaults() //
+				.withExclusions(module -> module.getName().matches(".*core|.*support"));
+
+		// Write overall diagram
+		documenter.writeModulesAsPlantUml(options);
+
+		// Write diagrams for each module
+		modules.stream().forEach(it -> documenter.writeModuleAsPlantUml(it, options));
 	}
 
 	@Test
@@ -92,6 +101,6 @@ class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
 		assertThat(impl.getPassword(), is("password"));
 	}
 
-	@EnableSalespoint
+	@EnableSalespoint("Salespoint")
 	static class SalespointSample {}
 }

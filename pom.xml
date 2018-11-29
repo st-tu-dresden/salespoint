@@ -16,7 +16,7 @@
 
 	<properties>
 		<dev>/dev</dev>
-		<moduliths.version>1.0.0.M2</moduliths.version>
+		<moduliths.version>1.0.0.M3</moduliths.version>
 	</properties>
 
 	<profiles>
@@ -287,7 +287,7 @@
 				<executions>
 					<execution>
 						<id>website</id>
-						<phase>generate-resources</phase>
+						<phase>package</phase>
 						<goals>
 							<goal>process-asciidoc</goal>
 						</goals>
@@ -298,7 +298,7 @@
 					</execution>
 					<execution>
 						<id>reference</id>
-						<phase>generate-resources</phase>
+						<phase>package</phase>
 						<goals>
 							<goal>process-asciidoc</goal>
 						</goals>

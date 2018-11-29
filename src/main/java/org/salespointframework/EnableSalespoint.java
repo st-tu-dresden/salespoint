@@ -29,6 +29,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.annotation.AliasFor;
 
 /**
  * Annotation to enable Salespoint for a Spring Boot application. Will make sure that all necessary Salespoint
@@ -63,6 +64,9 @@ import org.springframework.context.annotation.Import;
 		additionalPackages = "org.salespointframework", //
 		useFullyQualifiedModuleNames = true)
 public @interface EnableSalespoint {
+
+	@AliasFor(annotation = Modulith.class, attribute = "systemName")
+	String value() default "";
 
 	@Configuration
 	@ConditionalOnMissingBean(SalespointWebConfiguration.class)
