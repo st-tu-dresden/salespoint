@@ -41,17 +41,20 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Quantity {
 
+	public static final Quantity NONE = Quantity.of(0);
 	private static final String INCOMPATIBLE = "Quantity %s is incompatible to quantity %s!";
 
 	/**
 	 * The amount of the Quantity. Explicitly set a prefixed column name to avoid name conflicts.
 	 */
-	@Column(name = "quantity_amount") private @NonNull final BigDecimal amount;
+	@Column(name = "quantity_amount") //
+	private @NonNull final BigDecimal amount;
 
 	/**
 	 * The metric of the Quantity. Explicitly set a prefixed column name to avoid name conflicts.
 	 */
-	@Column(name = "quantity_metric") private @NonNull final Metric metric;
+	@Column(name = "quantity_metric") //
+	private @NonNull final Metric metric;
 
 	/**
 	 * Creates a new {@link Quantity} of the given amount. Defaults the metric to {@value Metric#UNIT}.
@@ -114,6 +117,10 @@ public class Quantity {
 	 */
 	public boolean isCompatibleWith(Metric metric) {
 
+		if (this == Quantity.NONE) {
+			return true;
+		}
+
 		Assert.notNull(metric, "Metric must not be null!");
 		return this.metric.isCompatibleWith(metric);
 	}
@@ -128,7 +135,16 @@ public class Quantity {
 	 */
 	public Quantity add(Quantity other) {
 
+		if (this == NONE) {
+			return other;
+		}
+
+		if (other == NONE) {
+			return this;
+		}
+
 		assertCompatibility(other);
+
 		return new Quantity(this.amount.add(other.amount), this.metric);
 	}
 
@@ -142,7 +158,16 @@ public class Quantity {
 	 */
 	public Quantity subtract(Quantity other) {
 
+		if (this == NONE) {
+			return other;
+		}
+
+		if (other == NONE) {
+			return this;
+		}
+
 		assertCompatibility(other);
+
 		return new Quantity(this.amount.subtract(other.amount), this.metric);
 	}
 
@@ -238,6 +263,10 @@ public class Quantity {
 	private void assertCompatibility(Quantity quantity) {
 
 		Assert.notNull(quantity, "Quantity must not be null!");
+
+		if (this == NONE || quantity == NONE) {
+			return;
+		}
 
 		if (!isCompatibleWith(quantity.metric)) {
 			throw new MetricMismatchException(String.format(INCOMPATIBLE, this, quantity), metric, quantity.metric);

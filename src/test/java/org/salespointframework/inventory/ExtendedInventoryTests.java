@@ -34,32 +34,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Integration tests for {@link ExtendedInventory}.
- * 
+ *
  * @author Oliver Gierke
  */
 class ExtendedInventoryTests extends AbstractIntegrationTests {
 
-	@Autowired ExtendedInventory inventory;
+	@Autowired ExtendedUniqueInventory inventory;
 	@Autowired Catalog<Product> catalog;
 
 	Cookie cookie;
 	Wine wine;
-	InventoryItem cookieItem, wineItem;
+	UniqueInventoryItem cookieItem, wineItem;
 
 	@BeforeEach
 	void setUp() {
 
 		cookie = catalog.save(new Cookie("Add Superkeks", Currencies.ZERO_EURO));
-		cookieItem = inventory.save(new InventoryItem(cookie, Quantity.of(10)));
+		cookieItem = inventory.save(new UniqueInventoryItem(cookie, Quantity.of(10)));
 
 		wine = catalog.save(new Wine("SomeWine", Currencies.ZERO_EURO));
-		wineItem = inventory.save(new InventoryItem(wine, Quantity.of(10, Metric.LITER)));
+		wineItem = inventory.save(new UniqueInventoryItem(wine, Quantity.of(10, Metric.LITER)));
 	}
 
 	@Test // #114
 	void findsItemsWithSameMetricAndMatchingAmount() {
 
-		Iterable<InventoryItem> result = inventory.findByQuantityGreaterThan(Quantity.of(5, Metric.LITER));
+		Iterable<UniqueInventoryItem> result = inventory.findByQuantityGreaterThan(Quantity.of(5, Metric.LITER));
 
 		assertThat(result, is(iterableWithSize(1)));
 		assertThat(result, hasItem(wineItem));

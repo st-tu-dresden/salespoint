@@ -26,12 +26,10 @@ import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Cart;
-import org.salespointframework.order.Order;
 import org.salespointframework.order.Order.OrderCancelled;
 import org.salespointframework.order.Order.OrderCompleted;
 import org.salespointframework.order.OrderCompletionFailure;
 import org.salespointframework.quantity.Quantity;
-import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +48,7 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccounts;
 	@Autowired Catalog<Product> products;
-	@Autowired Inventory<InventoryItem> inventory;
+	@Autowired UniqueInventory<UniqueInventoryItem> inventory;
 
 	Product iPad, iPadToFilter, macBook;
 
@@ -71,21 +69,21 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 		this.macBook = products.save(new Product("MacBook", Money.of(999, Currencies.EURO)));
 		this.iPadToFilter = products.save(new Product("to filter:iPad", Money.of(499, Currencies.EURO)));
 
-		inventory.save(new InventoryItem(iPad, Quantity.of(10)));
-		inventory.save(new InventoryItem(macBook, Quantity.of(1)));
+		inventory.save(new UniqueInventoryItem(iPad, Quantity.of(10)));
+		inventory.save(new UniqueInventoryItem(macBook, Quantity.of(1)));
 	}
 
 	@Test // #144
 	void triggersExceptionForInsufficientStock() {
 
-		UserAccount user = userAccounts.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
+		var user = userAccounts.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 
-		Cart cart = new Cart();
+		var cart = new Cart();
 		cart.addOrUpdateItem(iPad, 1);
 		cart.addOrUpdateItem(iPadToFilter, 1);
 		cart.addOrUpdateItem(macBook, 2);
 
-		Order order = cart.createOrderFor(user);
+		var order = cart.createOrderFor(user);
 
 		assertThatExceptionOfType(OrderCompletionFailure.class) //
 				.isThrownBy(() -> listener.on(OrderCompleted.of(order)));
@@ -94,18 +92,18 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 	@Test // #230
 	void restocksForCompletedOrderOnCancellation() {
 
-		UserAccount user = userAccounts.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
+		var user = userAccounts.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 
-		Cart cart = new Cart();
+		var cart = new Cart();
 		cart.addOrUpdateItem(iPad, 1);
 
-		Order order = spy(cart.createOrderFor(user));
+		var order = spy(cart.createOrderFor(user));
 		when(order.isCompleted()).thenReturn(true);
 
 		listener.on(OrderCancelled.of(order, "No reason!"));
 
 		assertThat(inventory.findByProduct(iPad) //
-				.map(InventoryItem::getQuantity) //
+				.map(UniqueInventoryItem::getQuantity) //
 		).hasValue(Quantity.of(11));
 	}
 }

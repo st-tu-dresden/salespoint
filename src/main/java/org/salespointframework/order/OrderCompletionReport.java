@@ -154,6 +154,10 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 		@NonNull CompletionStatus status;
 		@NonNull Optional<String> message;
 
+		public static OrderLineCompletion skipped(OrderLine ordeLine) {
+			return new OrderLineCompletion(ordeLine, CompletionStatus.SUCCEEDED, Optional.of("The order line was skipped."));
+		}
+
 		/**
 		 * Creates an {@link OrderLineCompletion} representing the successful completion of an {@link OrderLine}.
 		 * 

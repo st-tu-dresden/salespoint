@@ -32,19 +32,19 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 
-	@Autowired Inventory<InventoryItem> inventory;
+	@Autowired UniqueInventory<UniqueInventoryItem> inventory;
 	@Autowired Catalog<Product> catalog;
 
 	private Cookie cookie;
-	private InventoryItem item;
+	private UniqueInventoryItem item;
 
 	private static int counter = 0;
 
 	@BeforeEach
 	void before() {
 
-		cookie = new Cookie("Superkeks " + (counter++), Currencies.ZERO_EURO);
-		item = new InventoryItem(cookie, Quantity.of(10));
+		cookie = new Cookie("Superkeks " + counter++, Currencies.ZERO_EURO);
+		item = new UniqueInventoryItem(cookie, Quantity.of(10));
 	}
 
 	@Test

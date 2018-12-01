@@ -27,7 +27,7 @@ import org.salespointframework.order.OrderLine;
 
 /**
  * Unit tests for {@link LineItemFilter}.
- * 
+ *
  * @author Oliver Gierke
  */
 class LineItemFilterUnitTests {
@@ -46,7 +46,7 @@ class LineItemFilterUnitTests {
 	@Test // #144
 	void supportsIfAllFiltersMatch() {
 
-		OrderLine orderLine = mock(OrderLine.class);
+		var orderLine = mock(OrderLine.class);
 		doReturn("Trigger").when(orderLine).getProductName();
 
 		assertThat(LineItemFilter.shouldBeHandled(orderLine, filters)).isTrue();
@@ -55,7 +55,7 @@ class LineItemFilterUnitTests {
 	@Test // #144
 	void doesNotSupportIfOneFilterDoesntMatch() {
 
-		OrderLine orderLine = mock(OrderLine.class);
+		var orderLine = mock(OrderLine.class);
 		doReturn("Some name").when(orderLine).getProductName();
 
 		assertThat(LineItemFilter.shouldBeHandled(orderLine, filters)).isFalse();

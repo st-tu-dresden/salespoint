@@ -23,8 +23,7 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.EntityListeners;
 
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.AbstractEntity;
@@ -32,41 +31,40 @@ import org.salespointframework.quantity.Quantity;
 import org.springframework.util.Assert;
 
 /**
+ * An {@link InventoryItem} associates a product with a {@link Quantity} to keep track of how many items per product are
+ * available.
+ *
  * @author Paul Henke
  * @author Oliver Gierke
+ * @see UniqueInventoryItem
+ * @see MultiInventoryItem
+ * @since 7.2
  */
 @Entity
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
-public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
+@EntityListeners(InventoryItemCreationListener.class)
+public abstract class InventoryItem<T extends InventoryItem<T>> extends AbstractEntity<InventoryItemIdentifier> {
 
 	@EmbeddedId //
 	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID")) //
 	private final InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
 
 	@Getter //
-	@JoinColumn(unique = true) //
-	@OneToOne //
-	private Product product;
-
-	@Getter //
 	private Quantity quantity;
 
 	/**
-	 * Creates a new {@link InventoryItem} for the given {@link Product} and {@link Quantity}.
-	 * 
-	 * @param product the {@link Product} for this {@link InventoryItem}, must not be {@literal null}.
-	 * @param quantity the initial {@link Quantity} for this {@link InventoryItem}, must not be {@literal null}.
+	 * Creates a new {@link UniqueInventoryItem} for the given {@link Product} and {@link Quantity}.
+	 *
+	 * @param quantity the initial {@link Quantity} for this {@link UniqueInventoryItem}, must not be {@literal null}.
 	 */
-	public InventoryItem(Product product, Quantity quantity) {
+	protected InventoryItem(Product product, Quantity quantity) {
 
 		Assert.notNull(product, "Product must be not null!");
 		Assert.notNull(quantity, "Quantity must be not null!");
 
 		product.verify(quantity);
 
-		this.product = product;
 		this.quantity = quantity;
-
 	}
 
 	/*
@@ -78,8 +76,8 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 	}
 
 	/**
-	 * Returns whether the {@link InventoryItem} is available in exactly or more of the given quantity.
-	 * 
+	 * Returns whether the {@link UniqueInventoryItem} is available in exactly or more of the given quantity.
+	 *
 	 * @param quantity must not be {@literal null}.
 	 * @return
 	 */
@@ -88,35 +86,72 @@ public class InventoryItem extends AbstractEntity<InventoryItemIdentifier> {
 	}
 
 	/**
-	 * Decreases the quantity of the current {@link InventoryItem} by the given {@link Quantity}.
-	 * 
+	 * Decreases the quantity of the current {@link UniqueInventoryItem} by the given {@link Quantity}.
+	 *
 	 * @param quantity must not be {@literal null}.
 	 */
-	public InventoryItem decreaseQuantity(Quantity quantity) {
+	@SuppressWarnings("unchecked")
+	public T decreaseQuantity(Quantity quantity) {
 
 		Assert.notNull(quantity, "Quantity must not be null!");
 		Assert.isTrue(this.quantity.isGreaterThanOrEqualTo(quantity),
 				String.format("Insufficient quantity! Have %s but was requested to reduce by %s.", this.quantity, quantity));
 
-		product.verify(quantity);
+		getProduct().verify(quantity);
 
 		this.quantity = this.quantity.subtract(quantity);
 
-		return this;
+		return (T) this;
 	}
 
 	/**
-	 * Increases the quantity of the current {@link InventoryItem} by the given {@link Quantity}.
-	 * 
+	 * Increases the quantity of the current {@link UniqueInventoryItem} by the given {@link Quantity}.
+	 *
 	 * @param quantity must not be {@literal null}.
 	 */
-	public InventoryItem increaseQuantity(Quantity quantity) {
+	@SuppressWarnings("unchecked")
+	public T increaseQuantity(Quantity quantity) {
 
 		Assert.notNull(quantity, "Quantity must not be null!");
-		product.verify(quantity);
+		getProduct().verify(quantity);
 
 		this.quantity = this.quantity.add(quantity);
 
-		return this;
+		return (T) this;
+	}
+
+	/**
+	 * Returns whether the {@link InventoryItem} belongs to the given {@link Product}.
+	 *
+	 * @param product must not be {@literal null}.
+	 * @return
+	 */
+	public boolean keepsTrackOf(Product product) {
+		return this.getProduct().equals(product);
+	}
+
+	/**
+	 * Returns whether the given {@link InventoryItem} is a different one but keeping track of the same {@link Product}.
+	 *
+	 * @param other
+	 * @return
+	 */
+	boolean isDifferentItemForSameProduct(InventoryItem<?> other) {
+		return !this.equals(other) && this.keepsTrackOf(other.getProduct());
+	}
+
+	protected abstract Product getProduct();
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+
+		Product product = getProduct();
+
+		return String.format("%s(%s) for Product(%s, \"%s\") with quantity %s", //
+				getClass().getSimpleName(), getId(), product.getId(), product.getName(), getQuantity());
 	}
 }

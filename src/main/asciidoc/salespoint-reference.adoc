@@ -1,5 +1,6 @@
 = Salespoint Framework - Technical Reference
 Andreas Zaschka; Paul Henke; Oliver Gierke;
+:doctype: book
 :javadoc: /SalesPoint/{dev}/api
 :source-base: ../../main/java/org/salespointframework
 :source-base-test: ../../test/java/org/salespointframework
@@ -112,7 +113,7 @@ That means that `UserAccount` instances created within the system are automatica
 The primary purpose of a `UserAccount` besides the security integration is the ability to assign other business entities like an order or a reservation to an account.
 A `UserAccount` primarily consists of a `UserAccountIdentifier` whose `String` representation is used as the login name and a `Password` (representing an encrypted or non-encrypted password) value object.
 
-To create `UserAccounts`, the ``UserAccountManager`'s method `create(String userName, String password, Role... role)` can be used.
+To create `UserAccounts`, the ``UserAccountManager``'s method `create(String userName, String password, Role... role)` can be used.
 The `String` given as password will be encrypted using Spring Security.
 Also, it makes sure that the login names are unique and a password is always set.
 
@@ -225,20 +226,31 @@ image::catalog.png[title="Catalog"]
 plantuml::{generated-docs}/moduliths/module-org.salespointframework.inventory.uml[,,svg,title="Inventory component"]
 
 The inventory package contains functionality to keep track of the amount of items we have for a given `Product` (see <<modules.catalog>> for details).
-`Inventory` is a simple Spring Data repository, that allows to access `InventoryItem` instances:
+`Inventory` is a simple Spring Data repository, that allows to access `InventoryItem` instances and acts as base type for the actual concrete provided inventory interfaces.
+A Salespoint application usually decides for one of the following models and uses one or the other inventory repositories throughout the entire application.
 
-.The Inventory
-====
-[source, java, indent=0]
-----
-include::{source-base}/inventory/Inventory.java[tags=inventory]
-----
-====
+[[modules.inventory.unique]]
+=== UniqueInventory -- one inventory item per product
+
+This model assumes that there is a single `InventoryItem` created per `Product` instance.
+This approach acts like there is a single warehouse keeping track of the stock for a given `Product`.
+It's the easier mode as the `Quantity` provided in the `InventoryItem` is logically equivalent to the number of items available for a given `Product`.
+
+``UniqueInventoryItem``s will also automatically be deducted for order completions (see <<modules.inventory.events>>).
+
+[[modules.inventory.multi]]
+=== MultiInventory -- multiple inventory items per product
+
+In case you need to model multiple warehouses that store products, `MultiInventory` relaxes the relationship between `Product` and `InventoryItem` to a 1:n one.
+This of course results in `…findByProductIdentifier(…)` returning a `InventoryItems` (note the plural) instance which is a collection of all `InventoryItem` instances available.
+`InventoryItems` exposes a `….getTotalQuantity()` to easily obtain the overall number of items available across all ``InventoryItem``s.
+
+`MultiInventoryItems` are not automatically deduced upon order completions as it's not clear, which of the `MultiInventoryItem` instances to reduce the quantity for.
 
 [[modules.inventory.events]]
 === Handling order completion events
 
-The inventory ships with a listener for `OrderCompleted` events (see <<modules.order.lifecycle>> for details) to update the stock for each line item contained in an `Order`.
+The inventory ships with a listener for `OrderCompleted` events (see <<modules.order.lifecycle>> for details) to update the stock for each line item contained in an `Order` that is managed by a `UniqueInventoryItem`.
 By default, an `OrderCompletionFailure` is thrown in case any of the `OrderLine` items aren't available in the required amount.
 The exception contains an `OrderCompletionReport` that can be inspected for the item lacking enough stock.
 

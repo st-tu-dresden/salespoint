@@ -21,6 +21,9 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.EnumSource.Mode;
 
 /**
  * Unit tests for {@link Quantity}.
@@ -121,9 +124,30 @@ class QuantityUnitTests {
 		assertThat(zero.equals(zero.toZero()), is(true));
 	}
 
+	@Test
+	void addingQuantityToNoneIsQuantity() {
+
+		Quantity quantity = Quantity.of(5);
+
+		assertThat(Quantity.NONE.add(quantity)).isEqualTo(quantity);
+		assertThat(quantity.add(Quantity.NONE)).isEqualTo(quantity);
+	}
+
 	@Test // #250
 	void comparesToZeroOrNegativeWithDifferentScale() {
 		assertThat(Quantity.of(0.0, Metric.UNIT).isZeroOrNegative()).isTrue();
+	}
+
+	@ParameterizedTest(name = "{0} is compatible with Quantity.NONE") // #163
+	@EnumSource(Metric.class)
+	void noneQuantityIsCompatibleWithAllMetrics(Metric metric) {
+		assertThat(Quantity.NONE.isCompatibleWith(metric));
+	}
+
+	@ParameterizedTest(name = " 0 {0} is not compatible with unit") // #163
+	@EnumSource(value = Metric.class, names = "UNIT", mode = Mode.EXCLUDE)
+	void zeroMetricIsNotCompatibleWithAnyOther(Metric metric) {
+		assertThat(Quantity.of(0, metric).isCompatibleWith(Metric.UNIT)).isFalse();
 	}
 
 	@Test // #251
