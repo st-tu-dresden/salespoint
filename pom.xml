@@ -38,7 +38,6 @@
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
-			<optional>true</optional>
 		</dependency>
 
 		<dependency>
