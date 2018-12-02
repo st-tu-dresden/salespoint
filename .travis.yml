@@ -3,8 +3,9 @@ language: java
 jdk:
   - oraclejdk8
 
-sudo: false
-
 cache:
   directories:
     - $HOME/.m2
+
+install: mvn -version
+script: mvn clean dependency:list test -U -Dsort -B
