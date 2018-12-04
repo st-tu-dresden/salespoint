@@ -111,7 +111,8 @@ class PersistentAccountancy implements Accountancy {
 		Assert.notNull(interval, "Interval must not be null");
 		Assert.notNull(duration, "TemporalAmount must not be null");
 
-		return Intervals.divide(interval, duration).stream().collect(toMap(identity(), this::find));
+		return Intervals.divide(interval, duration).stream() //
+				.collect(toMap(identity(), this::find));
 	}
 
 	/*

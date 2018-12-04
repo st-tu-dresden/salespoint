@@ -76,6 +76,6 @@ public interface Totalable<T extends Priced> extends Streamable<T> {
 
 		Assert.notNull(priced, "Priced must not be null!");
 
-		return Totalable.of(and(() -> Streamable.of(priced).stream()));
+		return Totalable.of(Streamable.super.and(priced));
 	}
 }

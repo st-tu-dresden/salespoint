@@ -70,7 +70,7 @@ public interface Catalog<T extends Product> extends CrudRepository<T, ProductIde
 	 * @since 7.1
 	 */
 	default Streamable<T> findByAnyCategory(String... categories) {
-		return findByAnyCategory(Arrays.asList(categories)); // Arrays.stream(categories).collect(StreamUtils.toUnmodifiableSet()));
+		return findByAnyCategory(Arrays.asList(categories));
 	}
 
 	/**

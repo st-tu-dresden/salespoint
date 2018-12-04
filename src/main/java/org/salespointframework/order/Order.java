@@ -41,7 +41,6 @@ import org.springframework.data.domain.AfterDomainEventPublication;
 import org.springframework.data.domain.DomainEvents;
 import org.springframework.data.domain.Range;
 import org.springframework.data.domain.Range.Bound;
-import org.springframework.data.util.StreamUtils;
 import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
@@ -412,8 +411,8 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 		Assert.notNull(orderLine, "Order line must not be null!");
 
-		getChargeLines(orderLine).stream() //
-				.collect(StreamUtils.toUnmodifiableList()) //
+		getChargeLines(orderLine) //
+				.toList() //
 				.forEach(this::remove);
 	}
 

@@ -23,7 +23,6 @@ import lombok.ToString;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -108,9 +107,9 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager, User
 			this.username = userAccount.getUsername();
 			this.password = userAccount.getPassword().toString();
 			this.isEnabled = userAccount.isEnabled();
-			this.authorities = userAccount.getRoles().stream().//
-					map(role -> new SimpleGrantedAuthority(role.getName())).//
-					collect(Collectors.toList());
+			this.authorities = userAccount.getRoles() //
+					.map(role -> new SimpleGrantedAuthority(role.getName())) //
+					.toList();
 		}
 
 		@Override
