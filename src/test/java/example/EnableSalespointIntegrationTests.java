@@ -22,6 +22,8 @@ import org.junit.jupiter.api.Test;
 import org.salespointframework.EnableSalespoint;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.catalog.ProductIdentifier;
+import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -66,6 +68,16 @@ class EnableSalespointIntegrationTests {
 
 		conversionService.canConvert(Quantity.class, String.class);
 		conversionService.canConvert(String.class, Quantity.class);
+	}
+
+	@Test // #241
+	void registersSalespointIdentifierConverter() throws Exception {
+
+		// Needs SalespointIdentifierConverter registered
+		conversionService.canConvert(String.class, ProductIdentifier.class);
+
+		// Needs JpaEntityConverter registered -> OrderLine = non-aggregate root
+		conversionService.canConvert(String.class, OrderLine.class);
 	}
 
 	@Autowired Java8TimeDialect dialect;

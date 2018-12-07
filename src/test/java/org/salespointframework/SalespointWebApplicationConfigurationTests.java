@@ -31,7 +31,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
  * 
  * @author Oliver Gierke
  */
-@SpringBootTest(classes = { SalespointWebConfiguration.class, Salespoint.class })
+@SpringBootTest(classes = { Salespoint.class })
 class SalespointWebApplicationConfigurationTests {
 
 	@Autowired ConversionService conversionService;

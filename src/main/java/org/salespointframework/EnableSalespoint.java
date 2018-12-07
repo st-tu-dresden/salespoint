@@ -24,7 +24,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.salespointframework.EnableSalespoint.SalespointSecurityAutoConfiguration;
-import org.salespointframework.EnableSalespoint.SalespointWebAutoConfiguration;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
@@ -54,7 +54,8 @@ import org.springframework.core.annotation.AliasFor;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({ Salespoint.class, SalespointWebAutoConfiguration.class, SalespointSecurityAutoConfiguration.class })
+@Import(Salespoint.class)
+@ImportAutoConfiguration(SalespointSecurityAutoConfiguration.class)
 @EntityScan
 @Modulith( //
 		sharedModules = { //
@@ -67,11 +68,6 @@ public @interface EnableSalespoint {
 
 	@AliasFor(annotation = Modulith.class, attribute = "systemName")
 	String value() default "";
-
-	@Configuration
-	@ConditionalOnMissingBean(SalespointWebConfiguration.class)
-	@Import(SalespointWebConfiguration.class)
-	static class SalespointWebAutoConfiguration {}
 
 	@Configuration
 	@ConditionalOnMissingBean(SalespointSecurityConfiguration.class)
