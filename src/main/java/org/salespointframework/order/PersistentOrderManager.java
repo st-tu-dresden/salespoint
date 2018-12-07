@@ -23,6 +23,8 @@ import java.util.Optional;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -191,5 +193,14 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 		orderRepository.delete(order);
 
 		return order;
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.salespointframework.order.OrderManager#findAll(org.springframework.data.domain.Pageable)
+	 */
+	@Override
+	public Page<T> findAll(Pageable pageable) {
+		return orderRepository.findAll(pageable);
 	}
 }

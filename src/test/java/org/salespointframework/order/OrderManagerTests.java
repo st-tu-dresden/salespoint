@@ -21,7 +21,9 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import org.hamcrest.collection.IsIterableWithSize;
 import org.javamoney.moneta.Money;
@@ -40,6 +42,10 @@ import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.StreamUtils;
 
 /**
  * Integration tests for {@link OrderManager}.
@@ -176,5 +182,19 @@ class OrderManagerTests extends AbstractIntegrationTests {
 
 		orderManager.delete(reference);
 		assertThat(orderManager.get(reference.getId())).isEmpty();
+	}
+
+	@Test // #240
+	void returnsAPageOfOrder() throws Exception {
+
+		List<Order> orders = IntStream.range(0, 19).mapToObj(__ -> new Order(user, Cash.CASH)) //
+				.peek(orderManager::save) //
+				.collect(StreamUtils.toUnmodifiableList());
+
+		Pageable pageable = PageRequest.of(0, 10);
+		Page<Order> result = orderManager.findAll(pageable);
+
+		assertThat(result).containsExactlyInAnyOrderElementsOf(orders.subList(0, 10));
+		assertThat(orderManager.findAll(result.nextPageable())).containsExactlyInAnyOrderElementsOf(orders.subList(10, 19));
 	}
 }

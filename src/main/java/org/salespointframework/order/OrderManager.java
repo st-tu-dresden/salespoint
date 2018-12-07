@@ -23,6 +23,8 @@ import org.salespointframework.order.Order.OrderPaid;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Streamable;
 
 /**
@@ -132,4 +134,12 @@ public interface OrderManager<T extends Order> {
 	 * @since 7.1
 	 */
 	T delete(T order);
+
+	/**
+	 * Returns the {@link Page} of orders specified by the given {@link Pageable}.
+	 * 
+	 * @return the {@link Page} of orders specified by the given {@link Pageable}.
+	 * @since 7.1
+	 */
+	Page<T> findAll(Pageable pageable);
 }

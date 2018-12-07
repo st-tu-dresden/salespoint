@@ -18,7 +18,7 @@ package org.salespointframework.order;
 import java.time.LocalDateTime;
 
 import org.salespointframework.useraccount.UserAccount;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.util.Streamable;
 
 /**
@@ -26,7 +26,7 @@ import org.springframework.data.util.Streamable;
  *
  * @author Oliver Gierke
  */
-interface OrderRepository<T extends Order> extends CrudRepository<T, OrderIdentifier> {
+interface OrderRepository<T extends Order> extends PagingAndSortingRepository<T, OrderIdentifier> {
 
 	/**
 	 * @param from
