@@ -218,6 +218,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 * @see org.salespointframework.useraccount.UserAccountManager#delete(org.salespointframework.useraccount.UserAccount)
 	 */
 	@Override
+	@Transactional
 	public UserAccount delete(UserAccount account) {
 
 		Assert.notNull(account, "UserAccount must not be null!");

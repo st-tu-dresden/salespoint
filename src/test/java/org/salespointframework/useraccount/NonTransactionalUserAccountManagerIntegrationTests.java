@@ -23,14 +23,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for {@link UserAccountManager} that do not run in a transaction by default.
  * 
  * @author Oliver Gierke
  */
-@Transactional
 @ModuleTest
 @TestPropertySource(properties = "salespoint.authentication.login-via-email=true")
 class NonTransactionalUserAccountManagerIntegrationTests {
@@ -60,5 +58,16 @@ class NonTransactionalUserAccountManagerIntegrationTests {
 		assertThatExceptionOfType(IllegalArgumentException.class) //
 				.isThrownBy(() -> userAccountManager.create("username", "password")) //
 				.withMessageContaining("login via email");
+	}
+
+	@Test // #218
+	void userAccountsCanBeDeleted() {
+
+		UserAccount reference = userAccountManager.create("username", "password", "foo@bar.de");
+		assertThat(userAccountManager.findByUsername(reference.getUsername())).hasValue(reference);
+
+		userAccountManager.delete(reference);
+
+		assertThat(userAccountManager.findByUsername(reference.getUsername())).isEmpty();
 	}
 }
