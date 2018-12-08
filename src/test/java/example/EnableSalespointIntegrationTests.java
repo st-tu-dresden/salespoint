@@ -15,8 +15,9 @@
  */
 package example;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.*;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.salespointframework.EnableSalespoint;
@@ -25,12 +26,13 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
+import org.salespointframework.useraccount.web.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.security.access.method.MethodSecurityMetadataSource;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 /**
@@ -41,7 +43,6 @@ import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 @SpringBootTest
 class EnableSalespointIntegrationTests {
 
-	@Configuration
 	@EnableSalespoint
 	static class TestConfiguration {}
 
@@ -49,6 +50,7 @@ class EnableSalespointIntegrationTests {
 	@Autowired Catalog<Product> catalog;
 	@Autowired DummyRepository repository;
 	@Autowired MethodSecurityMetadataSource securityMetadataSource;
+	@Autowired RequestMappingHandlerAdapter adapter;
 
 	@Test
 	void componentsFromSalespointAndExampleAreAvailable() {
@@ -85,5 +87,12 @@ class EnableSalespointIntegrationTests {
 	@Test // #186
 	void registersJava8ThymeleafDialect() {
 		assertThat(dialect, is(notNullValue()));
+	}
+
+	@Test // #243, #241
+	void registersLoggedInHttpMessageConverter() throws Exception {
+
+		assertThat(adapter.getArgumentResolvers()) //
+				.hasAtLeastOneElementOfType(UserAccountTestUtils.getLoggedInArgumentResolverType());
 	}
 }

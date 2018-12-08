@@ -18,6 +18,7 @@ package org.salespointframework.useraccount.web;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.salespointframework.useraccount.AuthenticationManager;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * {@link HandlerMethodArgumentResolver} to inject the {@link UserAccount} of the currently logged in user into Spring
@@ -41,7 +43,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  */
 @Component
 @RequiredArgsConstructor
-class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolver {
+class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolver, WebMvcConfigurer {
 
 	private static final String USER_ACCOUNT_EXPECTED = "Expected to find a current user but none available! If the user does not necessarily have to be logged in, use Optional<UserAccount> instead!";
 	private static final ResolvableType USER_ACCOUNT = ResolvableType.forClass(UserAccount.class);
@@ -78,5 +80,14 @@ class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolv
 
 		ResolvableType type = ResolvableType.forMethodParameter(parameter);
 		return USER_ACCOUNT.isAssignableFrom(type) || OPTIONAL_OF_USER_ACCOUNT.isAssignableFrom(type);
+	}
+
+	/* 
+	 * (non-Javadoc)
+	 * @see org.springframework.web.servlet.config.annotation.WebMvcConfigurer#addArgumentResolvers(java.util.List)
+	 */
+	@Override
+	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+		resolvers.add(this);
 	}
 }
