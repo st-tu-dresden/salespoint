@@ -78,6 +78,7 @@ public class Salespoint {
 			properties.put("spring.aop.proxy-target-class", false);
 			properties.put("spring.jpa.properties.hibernate.archive.scanner",
 					"org.hibernate.boot.archive.scan.internal.DisabledScanner");
+			properties.put("spring.jpa.open-in-view", true);
 
 			sources.addFirst(new MapPropertySource("salespointDefaults", properties));
 		}
