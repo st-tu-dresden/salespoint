@@ -27,6 +27,8 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 
 import org.salespointframework.core.AbstractEntity;
@@ -44,6 +46,7 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor
 @Getter
 @ToString
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class ChargeLine extends AbstractEntity<ChargeLineIdentifier> implements Priced {
 
 	@EmbeddedId //

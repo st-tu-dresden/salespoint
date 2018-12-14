@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+import javax.persistence.EntityManager;
+
 import org.hamcrest.collection.IsIterableWithSize;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,6 +60,7 @@ class OrderManagerTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired OrderManager<Order> orderManager;
+	@Autowired EntityManager em;
 
 	@Autowired Catalog<Product> catalog;
 	@Autowired Inventory<InventoryItem> inventory;
@@ -196,5 +199,15 @@ class OrderManagerTests extends AbstractIntegrationTests {
 
 		assertThat(result).containsExactlyInAnyOrderElementsOf(orders.subList(0, 10));
 		assertThat(orderManager.findAll(result.nextPageable())).containsExactlyInAnyOrderElementsOf(orders.subList(10, 19));
+	}
+
+	@Test // #246
+	void persistsChargeLines() {
+
+		Order order = orderManager.save(new Order(user, Cash.CASH));
+		order.addChargeLine(Money.of(-1.5, Currencies.EURO), "Some discount");
+
+		orderManager.save(order);
+		em.flush();
 	}
 }
