@@ -32,6 +32,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 
 import org.salespointframework.core.AbstractEntity;
 import org.salespointframework.quantity.Metric;
@@ -56,7 +57,7 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 	private ProductIdentifier productIdentifier = new ProductIdentifier();
 	private @NonNull @Getter @Setter String name;
 	private @NonNull @Getter @Setter MonetaryAmount price;
-	private @ElementCollection Set<String> categories = new HashSet<String>();
+	private @ElementCollection(fetch = FetchType.EAGER) Set<String> categories = new HashSet<String>();
 	private Metric metric;
 
 	/**
