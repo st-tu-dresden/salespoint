@@ -4,6 +4,43 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[7.1]
+== 7.1
+
+Release date: 2019-01-08
+
+- {linkbase}/247[#247] - Map `Product.categories` eagerly to avoid `LazyInitializationExceptions` from `….toString()`.
+- {linkbase}/246[#246] - ChargeLine needs an inheritance strategy defined.
+- {linkbase}/245[#245] - Explicitly enable `spring.jpa.open-in-view` to avoid warning.
+- {linkbase}/238[#238] - Tweak Travis build to make sure the first build runs the tests as well.
+- {linkbase}/239[#239] - Upgrade to Spring Data release train Moore.
+- {linkbase}/244[#244] - Upgrade to Spring Boot 2.1.1.
+- {linkbase}/243[#243] - `LoggedInHandlerMethodArgumentResolver` not registered anymore.
+- {linkbase}/242[#242] - Fix transaction settings for `PersistentUserAccountManager.delete(…)`.
+- {linkbase}/241[#241] - Clean up web auto configuration.
+- {linkbase}/240[#240] - Add ability to lookup all orders.
+- {linkbase}/237[#237] - Make Querydsl dependency non-optional.
+- {linkbase}/235[#235] - Move `StringToRoleConverter` into user account module.
+- {linkbase}/236[#236] - Add modulith component diagrams to reference documentation.
+- {linkbase}/234[#234] - Move AttributeConverter for MonetaryAmount to support package.
+- {linkbase}/233[#233] - Upgrade to Moduliths 1.0 M2.
+- {linkbase}/232[#232] - Allow lookup of products that are assigned to a set of categories.
+- {linkbase}/220[#220] - Improve Javadoc of `Accountancy.add(…)` to include not about the entry's date handling.
+- {linkbase}/215[#215] - Create human readable representation in `OrderCompletionReport.toString()`.
+- {linkbase}/214[#214] - Configure Maven Source Plugin to attach sources.
+- {linkbase}/180[#180] - Documentation section on orders is wrong about the usage of ``ChargeLine``s.
+- {linkbase}/228[#228] - Implement `UserAccount.toString()` for easier debugging.
+- {linkbase}/222[#222] - Allow login via email address.
+- {linkbase}/231[#231] - Wrong Javadoc in `AccountancyEntry(MonetaryAmount, String)`.
+- {linkbase}/226[#226] - Add ability to have ``ChargeLine``s that refer to ``OrderLine``s.
+- {linkbase}/230[#230] - Publish event on order cancellation and adapt inventory and accountancy accordingly.
+- {linkbase}/227[#227] - Prefix columns of `Quantity` to avoid name clashes.
+- {linkbase}/229[#229] - Add `.factorypath` to `.gitignore`.
+- {linkbase}/225[#225] - Upgrade to Spring Boot 2.1 GA.
+- {linkbase}/218[#218] - Allow deleting user accounts.
+- {linkbase}/219[#219] - Allow deleting orders.
+
+:numbered!:
 [7.0]
 == 7.0
 
