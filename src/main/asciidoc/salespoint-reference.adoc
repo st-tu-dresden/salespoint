@@ -48,14 +48,13 @@ https://github.com/st-tu-dresden/salespoint/issues/218[#218], https://github.com
 https://github.com/st-tu-dresden/salespoint/issues/222[#222] -- Added the ability to use a user's email address for login purposes. For more details, see <<modules.useraccount.login.via-email, this section>>.
 
 === Improvements in the order aggregate and event handling
-https://github.com/st-tu-dresden/salespoint/issues/226[#226] -- We added the ability to register ChargeLine instances for a dedicated OrderLine.
+https://github.com/st-tu-dresden/salespoint/issues/226[#226] -- We added the ability to register `ChargeLine` instances for a dedicated `OrderLine`.
 Read more about that in the updated section of <<modules.order>>.
 
 === New order cancelled event and fixes in event handling in general
 https://github.com/st-tu-dresden/salespoint/issues/230[#230] -- The creation of a `PaymentAccountancyEntry` has been properly attached to the `OrderPaid` event now.
 An `OrderCancelled` event is now published on order cancellation which triggers a rollback of the inventory updates as well as a compensating `ProductPaymentEntry`.
 Read more on that in the updated section <<modules.order.lifecycle>>.
-
 
 [preface]
 [[preface.whats-new-in-6.1]]
