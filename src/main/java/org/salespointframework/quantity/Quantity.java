@@ -31,7 +31,7 @@ import org.springframework.util.Assert;
 
 /**
  * A value object to represent a quantity.
- * 
+ *
  * @author Oliver Gierke
  * @author Martin Morgenstern
  */
@@ -55,7 +55,7 @@ public class Quantity {
 
 	/**
 	 * Creates a new {@link Quantity} of the given amount. Defaults the metric to {@value Metric#UNIT}.
-	 * 
+	 *
 	 * @param amount must not be {@literal null}.
 	 * @return
 	 */
@@ -65,7 +65,7 @@ public class Quantity {
 
 	/**
 	 * Creates a new {@link Quantity} of the given amount. Defaults the metric to {@value Metric#UNIT}.
-	 * 
+	 *
 	 * @param amount must not be {@literal null}.
 	 * @return
 	 */
@@ -75,7 +75,7 @@ public class Quantity {
 
 	/**
 	 * Creates a new {@link Quantity} of the given amount and {@link Metric}.
-	 * 
+	 *
 	 * @param amount must not be {@literal null}.
 	 * @param metric must not be {@literal null}.
 	 * @return
@@ -86,7 +86,7 @@ public class Quantity {
 
 	/**
 	 * Creates a new {@link Quantity} of the given amount and {@link Metric}.
-	 * 
+	 *
 	 * @param amount must not be {@literal null}.
 	 * @param metric must not be {@literal null}.
 	 * @return
@@ -97,7 +97,7 @@ public class Quantity {
 
 	/**
 	 * Creates a new {@link Quantity} of the given amount and {@link Metric}.
-	 * 
+	 *
 	 * @param amount must not be {@literal null}.
 	 * @param metric must not be {@literal null}.
 	 * @return
@@ -108,7 +108,7 @@ public class Quantity {
 
 	/**
 	 * Returns whether the {@link Quantity} is compatible with the given {@link Metric}.
-	 * 
+	 *
 	 * @param metric must not be {@literal null}.
 	 * @return
 	 */
@@ -120,7 +120,7 @@ public class Quantity {
 
 	/**
 	 * Adds the given {@link Quantity} to the current one.
-	 * 
+	 *
 	 * @param other the {@link Quantity} to add. The given {@link Quantity}'s {@link Metric} must be compatible with the
 	 *          current one.
 	 * @return
@@ -134,7 +134,7 @@ public class Quantity {
 
 	/**
 	 * Subtracts the given Quantity from the current one.
-	 * 
+	 *
 	 * @param other the {@link Quantity} to add. The given {@link Quantity}'s {@link Metric} must be compatible with the
 	 *          current one.
 	 * @return
@@ -148,7 +148,7 @@ public class Quantity {
 
 	/**
 	 * Returns whether the given {@link Quantity} is less than the current one.
-	 * 
+	 *
 	 * @param other must not be {@literal null}. The given {@link Quantity}'s {@link Metric} must be compatible with the
 	 *          current one.
 	 * @return
@@ -162,7 +162,7 @@ public class Quantity {
 
 	/**
 	 * Returns whether the given {@link Quantity} is greater than the current one.
-	 * 
+	 *
 	 * @param other must not be {@literal null}. The given {@link Quantity}'s {@link Metric} must be compatible with the
 	 *          current one.
 	 * @return
@@ -176,7 +176,7 @@ public class Quantity {
 
 	/**
 	 * Returns whether the given {@link Quantity} is greater than or equal to the current one.
-	 * 
+	 *
 	 * @param other must not be {@literal null}. The given {@link Quantity}'s {@link Metric} must be compatible with the
 	 *          current one.
 	 * @return
@@ -190,7 +190,7 @@ public class Quantity {
 
 	/**
 	 * Returns whether the current {@link Quantity} is negative.
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isNegative() {
@@ -208,7 +208,7 @@ public class Quantity {
 
 	/**
 	 * Returns a new {@link Quantity} of zero with the {@link Metric} of the current one.
-	 * 
+	 *
 	 * @return will never be {@literal null}.
 	 */
 	public Quantity toZero() {
@@ -228,6 +228,7 @@ public class Quantity {
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return new DecimalFormat().format(amount).concat(metric.getAbbreviation());
 	}
