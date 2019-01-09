@@ -120,4 +120,9 @@ class QuantityUnitTests {
 		assertThat(quantity.isGreaterThan(quantity.toZero()), is(true));
 		assertThat(zero.equals(zero.toZero()), is(true));
 	}
+
+	@Test // #250
+	public void comparesToZeroOrNegativeWithDifferentScale() {
+		assertThat(Quantity.of(0.0, Metric.UNIT).isZeroOrNegative()).isTrue();
+	}
 }

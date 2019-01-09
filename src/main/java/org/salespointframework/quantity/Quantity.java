@@ -197,8 +197,13 @@ public class Quantity {
 		return this.amount.compareTo(BigDecimal.ZERO) < 0;
 	}
 
+	/**
+	 * Returns whether the current {@link Quantity} is zero or negative.
+	 *
+	 * @return
+	 */
 	public boolean isZeroOrNegative() {
-		return this.equals(toZero()) || isNegative();
+		return !isGreaterThan(toZero());
 	}
 
 	/**
