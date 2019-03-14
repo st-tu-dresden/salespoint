@@ -221,7 +221,7 @@
 			<plugin>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok-maven-plugin</artifactId>
-				<version>1.18.4.0</version>
+				<version>1.18.6.0</version>
 				<configuration>
 					<addOutputDirectory>false</addOutputDirectory>
 					<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
