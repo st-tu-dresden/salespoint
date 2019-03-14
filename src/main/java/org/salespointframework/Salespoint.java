@@ -36,7 +36,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * Application configuration for Salespoint.
- * 
+ *
  * @author Oliver Gierke
  */
 @Configuration
@@ -65,7 +65,7 @@ public class Salespoint {
 	 */
 	static class RequiredPropertiesPostProcessor implements EnvironmentPostProcessor {
 
-		/* 
+		/*
 		 * (non-Javadoc)
 		 * @see org.springframework.boot.env.EnvironmentPostProcessor#postProcessEnvironment(org.springframework.core.env.ConfigurableEnvironment, org.springframework.boot.SpringApplication)
 		 */
@@ -76,8 +76,6 @@ public class Salespoint {
 
 			Map<String, Object> properties = new HashMap<>();
 			properties.put("spring.aop.proxy-target-class", false);
-			properties.put("spring.jpa.properties.hibernate.archive.scanner",
-					"org.hibernate.boot.archive.scan.internal.DisabledScanner");
 			properties.put("spring.jpa.open-in-view", true);
 
 			sources.addFirst(new MapPropertySource("salespointDefaults", properties));
