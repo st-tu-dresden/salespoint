@@ -18,7 +18,7 @@
 		<dev>/dev</dev>
 		<moduliths.version>1.0.0.M3</moduliths.version>
 		<spring-data-releasetrain.version>Moore-M1</spring-data-releasetrain.version>
-		<junit-jupiter.version>5.4.0-M1</junit-jupiter.version>
+		<junit-jupiter.version>5.4.0</junit-jupiter.version>
 	</properties>
 
 	<profiles>
