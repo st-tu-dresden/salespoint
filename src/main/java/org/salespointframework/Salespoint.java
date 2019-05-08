@@ -59,7 +59,8 @@ public class Salespoint {
 	}
 
 	/**
-	 * Needed until https://github.com/spring-projects/spring-boot/issues/12194 is fixed.
+	 * Needed until https://github.com/spring-projects/spring-boot/issues/12194 and
+	 * https://github.com/spring-projects/spring-boot/issues/16747 are fixed.
 	 *
 	 * @author Oliver Gierke
 	 */
@@ -77,6 +78,7 @@ public class Salespoint {
 			Map<String, Object> properties = new HashMap<>();
 			properties.put("spring.aop.proxy-target-class", false);
 			properties.put("spring.jpa.open-in-view", true);
+			properties.put("spring.datasource.generate-unique-name", true);
 
 			sources.addFirst(new MapPropertySource("salespointDefaults", properties));
 		}

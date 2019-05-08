@@ -15,8 +15,10 @@
  */
 package org.salespointframework;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.junit.MatcherAssert.*;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import de.olivergierke.modulith.docs.Documenter;
 import de.olivergierke.modulith.docs.Documenter.Options;
@@ -38,13 +40,14 @@ import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.AuthenticationManager;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 /**
  * Integration test to bootstrap the application configuration.
- * 
+ *
  * @author Oliver Gierke
  */
 class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
@@ -59,6 +62,8 @@ class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
 	@Autowired List<DataInitializer> initializer;
 	@Autowired MailSender mailSender;
 	@Autowired List<LineItemFilter> lineItemFilter;
+
+	@Autowired Environment environment;
 
 	@Test
 	void verifyModularity() throws IOException {
@@ -99,6 +104,11 @@ class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
 		assertThat(impl.getUsername(), is("username"));
 		assertThat(impl.getHost(), is("host"));
 		assertThat(impl.getPassword(), is("password"));
+	}
+
+	@Test // #266
+	void configuresEmbeddedDatabaseWithGeneratedName() {
+		assertThat(environment.getRequiredProperty("spring.datasource.generate-unique-name", boolean.class)).isTrue();
 	}
 
 	@EnableSalespoint("Salespoint")
