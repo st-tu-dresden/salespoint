@@ -16,7 +16,7 @@
 
 	<properties>
 		<dev>/dev</dev>
-		<moduliths.version>1.0.0.M3</moduliths.version>
+		<moduliths.version>1.0.0.BUILD-SNAPSHOT</moduliths.version>
 		<junit-jupiter.version>5.4.0</junit-jupiter.version>
 	</properties>
 
