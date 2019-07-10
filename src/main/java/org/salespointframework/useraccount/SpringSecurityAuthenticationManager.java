@@ -40,7 +40,7 @@ import org.springframework.util.Assert;
 /**
  * {@link AuthenticationManager} using the current SpringSecurity {@link Authentication} to lookup a {@link UserAccount}
  * by the identifier of it.
- * 
+ *
  * @author Oliver Gierke
  */
 @Component
@@ -51,7 +51,7 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager, User
 	private final @NonNull PasswordEncoder passwordEncoder;
 	private final @NonNull AuthenticationProperties config;
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.salespointframework.useraccount.AuthenticationManager#getCurrentUser()
 	 */
@@ -64,7 +64,7 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager, User
 				.flatMap(repository::findById);
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.salespointframework.useraccount.AuthenticationManager#matches(org.salespointframework.useraccount.Password.UnencryptedPassword, org.salespointframework.useraccount.Password.EncryptedPassword)
 	 */

@@ -30,7 +30,7 @@ public interface UserAccountManager {
 
 	/**
 	 * Creates a new {@link UserAccount} and persists it right away.
-	 * 
+	 *
 	 * @param userName the unique name of the user, the name is also used as login name.
 	 * @param password the password
 	 * @param roles zero or more roles
@@ -40,7 +40,7 @@ public interface UserAccountManager {
 
 	/**
 	 * Creates a new {@link UserAccount} and persists it right away.
-	 * 
+	 *
 	 * @param userName the unique name of the user, the name is also used as login name.
 	 * @param password the password
 	 * @param emailAddress the email address to be used
@@ -52,7 +52,7 @@ public interface UserAccountManager {
 
 	/**
 	 * Returns an {@link UserAccount} for a given identifier.
-	 * 
+	 *
 	 * @param userAccountIdentifier
 	 * @return will never be {@literal null}.
 	 */
@@ -60,7 +60,7 @@ public interface UserAccountManager {
 
 	/**
 	 * Saves the {@link UserAccount}
-	 * 
+	 *
 	 * @param userAccount
 	 * @return will never be {@literal null}.
 	 */
@@ -68,21 +68,21 @@ public interface UserAccountManager {
 
 	/**
 	 * Enables the {@link UserAccount}.
-	 * 
+	 *
 	 * @param userAccountIdentifier
 	 */
 	void enable(UserAccountIdentifier userAccountIdentifier);
 
 	/**
 	 * Disables the {@link UserAccount}.
-	 * 
+	 *
 	 * @param userAccountIdentifier
 	 */
 	void disable(UserAccountIdentifier userAccountIdentifier);
 
 	/**
 	 * Changes the password of the {@link UserAccount}.
-	 * 
+	 *
 	 * @param userAccount
 	 * @param password must not be {@literal null}.
 	 */
@@ -90,7 +90,7 @@ public interface UserAccountManager {
 
 	/**
 	 * Checks if an {@link UserAccount} exists.
-	 * 
+	 *
 	 * @param userAccountIdentifier
 	 * @return
 	 */
@@ -98,28 +98,28 @@ public interface UserAccountManager {
 
 	/**
 	 * Finds all {@link UserAccount}s.
-	 * 
+	 *
 	 * @return
 	 */
 	Streamable<UserAccount> findAll();
 
 	/**
 	 * Finds only enabled {@link UserAccount}s.
-	 * 
+	 *
 	 * @return
 	 */
 	Streamable<UserAccount> findEnabled();
 
 	/**
 	 * Finds only disabled {@link UserAccount}s.
-	 * 
+	 *
 	 * @return
 	 */
 	Streamable<UserAccount> findDisabled();
 
 	/**
 	 * Returns the user with the given user name.
-	 * 
+	 *
 	 * @param username must not be {@literal null} or empty.
 	 * @return
 	 */
@@ -128,7 +128,7 @@ public interface UserAccountManager {
 	/**
 	 * Deletes the given {@link UserAccount}. Note, that other aggregates that keep references to a {@link UserAccount}
 	 * have to be deleted before a {@link UserAccount} can be deleted in the first place.
-	 * 
+	 *
 	 * @param account must not be {@literal null}.
 	 * @return the deleted {@link UserAccount}
 	 * @since 7.1

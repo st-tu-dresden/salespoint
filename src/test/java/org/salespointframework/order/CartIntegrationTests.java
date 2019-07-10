@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for {@link Cart}.
- * 
+ *
  * @author Paul Henke
  * @author Oliver Gierke
  */

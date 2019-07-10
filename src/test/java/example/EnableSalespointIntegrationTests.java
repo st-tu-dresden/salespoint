@@ -26,7 +26,7 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
-import org.salespointframework.useraccount.web.UserAccountTestUtils;
+import org.salespointframework.useraccount.web.UserAccountWebTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -37,7 +37,7 @@ import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 /**
  * Integration tests for {@link EnableSalespoint}.
- * 
+ *
  * @author Oliver Gierke
  */
 @SpringBootTest
@@ -93,6 +93,6 @@ class EnableSalespointIntegrationTests {
 	void registersLoggedInHttpMessageConverter() throws Exception {
 
 		assertThat(adapter.getArgumentResolvers()) //
-				.hasAtLeastOneElementOfType(UserAccountTestUtils.getLoggedInArgumentResolverType());
+				.hasAtLeastOneElementOfType(UserAccountWebTestUtils.getLoggedInArgumentResolverType());
 	}
 }

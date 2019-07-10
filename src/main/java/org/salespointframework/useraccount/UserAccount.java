@@ -88,7 +88,7 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 
 	/**
 	 * Get the unique identifier of this {@link UserAccount}.
-	 * 
+	 *
 	 * @return the {@link UserAccountIdentifier} of this <code>UserAccount</code>
 	 */
 	@Override
@@ -98,7 +98,7 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 
 	/**
 	 * Returns the user's username.
-	 * 
+	 *
 	 * @return will never be {@literal null}.
 	 */
 	public String getUsername() {
@@ -107,7 +107,7 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 
 	/**
 	 * Adds a {@link Role} to the {@link UserAccount}.
-	 * 
+	 *
 	 * @param role {@code role} which the {@code user} will receive, must not be {@literal null}.
 	 * @return {@literal true} if successful, {@literal false} otherwise.
 	 */
@@ -118,7 +118,7 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 
 	/**
 	 * Removes a {@link Role} from a {@link UserAccount}.
-	 * 
+	 *
 	 * @param role {@code role} which will be removed from {@code user}, must not be {@literal null}.
 	 * @return {@literal true} if successful, {@literal false} otherwise.
 	 */
@@ -129,7 +129,7 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 
 	/**
 	 * Checks if a {@link UserAccount} has a specific {@link Role}
-	 * 
+	 *
 	 * @param role {@link Role} for which the {@code user} will be checked for, must not be {@literal null}.
 	 * @return {@literal true} if {@code role} was granted to {@code user}
 	 */

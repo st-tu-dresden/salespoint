@@ -27,7 +27,7 @@ import org.springframework.test.context.TestPropertySource;
 
 /**
  * Integration tests for {@link UserAccountManager} that do not run in a transaction by default.
- * 
+ *
  * @author Oliver Gierke
  */
 @ModuleTest
@@ -59,14 +59,14 @@ class NonTransactionalUserAccountManagerIntegrationTests {
 	void rejectsUserWithoutEmailAddress() {
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
-				.isThrownBy(() -> userAccountManager.create("username", "password")) //
+				.isThrownBy(() -> userAccountManager.create("username", PASSWORD)) //
 				.withMessageContaining("login via email");
 	}
 
 	@Test // #218
 	void userAccountsCanBeDeleted() {
 
-		UserAccount reference = userAccountManager.create("username", "password", "foo@bar.de");
+		UserAccount reference = userAccountManager.create("username", PASSWORD, "foo@bar.de");
 		assertThat(userAccountManager.findByUsername(reference.getUsername())).hasValue(reference);
 
 		userAccountManager.delete(reference);

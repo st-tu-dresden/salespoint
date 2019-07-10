@@ -43,7 +43,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	private final @NonNull BusinessTime businessTime;
 	private final @NonNull OrderRepository<T> orderRepository;
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.salespointframework.order.OrderManager#save(org.salespointframework.order.Order)
 	 */
@@ -195,7 +195,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 		return order;
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.salespointframework.order.OrderManager#findAll(org.springframework.data.domain.Pageable)
 	 */

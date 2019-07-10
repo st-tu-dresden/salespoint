@@ -16,6 +16,7 @@
 package org.salespointframework.order;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.salespointframework.useraccount.UserAccountTestUtils.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

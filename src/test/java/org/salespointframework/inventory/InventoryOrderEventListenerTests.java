@@ -40,7 +40,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 /**
  * Integration tests for {@link InventoryOrderEventListener}.
- * 
+ *
  * @author Oliver Gierke
  */
 @ContextConfiguration(classes = InventoryOrderEventListenerTests.Config.class)

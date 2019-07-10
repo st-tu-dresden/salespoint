@@ -26,7 +26,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
  * @author Oliver Gierke
  */
 @UtilityClass
-public class UserAccountTestUtils {
+public class UserAccountWebTestUtils {
 
 	/**
 	 * Returns the type of the {@link HandlerMethodArgumentResolver} resolving {@link LoggedIn} {@link UserAccount}s.

@@ -58,10 +58,12 @@ class AccountancyPeriodTests extends AbstractIntegrationTests {
 			ProductPaymentEntry p = new ProductPaymentEntry(orderIdentifier, account, oneEuro, "Rechnung nr. 3", Cash.CASH);
 			a.add(p);
 
-			if (i == 5)
+			if (i == 5) {
 				from = p.getDate().get();
-			if (i == 15)
+			}
+			if (i == 15) {
 				to = p.getDate().get();
+			}
 		}
 	}
 

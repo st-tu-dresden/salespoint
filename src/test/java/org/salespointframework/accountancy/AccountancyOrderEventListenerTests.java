@@ -37,7 +37,7 @@ import org.springframework.data.util.Streamable;
 
 /**
  * Integration tests for {@link AccountancyOrderEventListener}.
- * 
+ *
  * @author Oliver Gierke
  * @since 7.1
  */

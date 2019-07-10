@@ -31,7 +31,7 @@ import org.springframework.util.Assert;
 /**
  * Implementation of {@link UserAccountManager} using a {@link UserAccountRepository} to persist {@link UserAccount}
  * instances. It also manages password encryption using the configured {@link PasswordEncoder}.
- * 
+ *
  * @author Paul Henke
  * @author Oliver Gierke
  */
@@ -56,7 +56,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 		return create(userName, password, EMAIL_PLACEHOLDER, roles);
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.salespointframework.useraccount.UserAccountManager#create(java.lang.String, org.salespointframework.useraccount.Password.UnencryptedPassword, java.lang.String, org.salespointframework.useraccount.Role[])
 	 */
@@ -199,7 +199,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 		return repository.findByEnabledFalse();
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.salespointframework.useraccount.UserAccountManager#findByUsername(java.lang.String)
 	 */
@@ -210,7 +210,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 		return repository.findById(new UserAccountIdentifier(username));
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.salespointframework.useraccount.UserAccountManager#delete(org.salespointframework.useraccount.UserAccount)
 	 */
