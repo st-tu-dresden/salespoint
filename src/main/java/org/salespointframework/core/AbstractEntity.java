@@ -17,7 +17,7 @@ package org.salespointframework.core;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PostLoad;
-import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
 import org.springframework.data.domain.Persistable;
@@ -45,7 +45,7 @@ public abstract class AbstractEntity<ID extends SalespointIdentifier> implements
 	/**
 	 * Marks the entity as not new not make sure we merge entity instances instead of trying to persist them.
 	 */
-	@PostPersist
+	@PrePersist
 	@PostLoad
 	void markNotNew() {
 		this.isNew = false;
