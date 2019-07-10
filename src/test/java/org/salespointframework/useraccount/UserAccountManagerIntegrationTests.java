@@ -16,17 +16,16 @@
 package org.salespointframework.useraccount;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import de.olivergierke.moduliths.test.ModuleTest;
 
 import java.util.Optional;
 
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.salespointframework.useraccount.Password.EncryptedPassword;
+import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Streamable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,18 +39,13 @@ import org.springframework.transaction.annotation.Transactional;
 @ModuleTest
 class UserAccountManagerIntegrationTests {
 
+	private static final UnencryptedPassword PASSWORD = UserAccountTestUtils.UNENCRYPTED_PASSWORD;
+
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired PasswordEncoder passwordEncoder;
 
-	UserAccount userAccount;
-
-	@BeforeEach
-	void before() {
-		userAccount = userAccountManager.create("userId", "password");
-	}
-
 	@Test
-	void testAddNull() {
+	void rejectsSavingNullUserAccount() {
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
 				.isThrownBy(() -> userAccountManager.save(null));
@@ -60,87 +54,100 @@ class UserAccountManagerIntegrationTests {
 	@Test
 	void testAddContains() {
 
-		userAccountManager.save(userAccount);
-		assertThat(userAccountManager.contains(userAccount.getId()), is(true));
+		UserAccount account = createAccount();
+
+		assertThat(userAccountManager.contains(account.getId())).isTrue();
 	}
 
 	@Test
-	void testDisable() {
+	void disablesUserAccount() {
 
-		UserAccountIdentifier id = userAccount.getId();
+		UserAccount account = createAccount();
+		UserAccountIdentifier id = account.getId();
 
-		userAccount = userAccountManager.save(userAccount);
 		userAccountManager.disable(id);
 
 		Optional<UserAccount> result = userAccountManager.get(id);
-		assertThat(result.isPresent(), is(true));
-		assertThat(result.get().isEnabled(), is(false));
+
+		assertThat(result).hasValueSatisfying(it -> {
+			assertThat(it.isEnabled()).isFalse();
+		});
 	}
 
 	@Test
-	void testFind() {
+	void returnsAllExistingUserAccounts() {
 
-		userAccountManager.save(userAccount);
-		Iterable<UserAccount> customers = userAccountManager.findAll();
+		UserAccount alice = createAccount("Alice");
+		UserAccount bob = createAccount("Bob");
 
-		assertThat(customers, is(Matchers.<UserAccount> iterableWithSize(1)));
-		assertThat(customers, hasItem(userAccount));
+		Streamable<UserAccount> customers = userAccountManager.findAll();
+
+		assertThat(customers).containsExactlyInAnyOrder(alice, bob);
 	}
 
 	@Test
-	void testGet() {
+	void findsUserAccountById() {
 
-		userAccountManager.save(userAccount);
-		assertThat(userAccountManager.get(userAccount.getId()).get(), is(userAccount));
+		UserAccount account = createAccount();
+
+		assertThat(userAccountManager.get(account.getId())).hasValue(account);
 	}
 
 	@Test
 	void encryptsPlainTextPassword() {
 
-		UserAccount account = userAccountManager.save(userAccount);
-		Password password = account.getPassword();
-		assertThat(password.isEncrypted(), is(true));
+		UserAccount account = createAccount();
+		assertThat(account.getPassword()).isInstanceOf(EncryptedPassword.class);
 	}
 
 	@Test
 	void doesNotReEncryptEncryptedPassword() {
 
-		UserAccount account = userAccountManager.save(userAccount);
-		Password encryptedPassword = Password.encrypted("encrypted");
+		UserAccount account = createAccount();
+
+		EncryptedPassword encryptedPassword = EncryptedPassword.of("encrypted");
 		account.setPassword(encryptedPassword);
 
 		UserAccount result = userAccountManager.save(account);
-		assertThat(result.getPassword(), is(encryptedPassword));
+
+		assertThat(result.getPassword()).isEqualTo(encryptedPassword);
 	}
 
 	@Test
 	void changesPasswordCorrectly() {
 
-		UserAccount acc = userAccountManager.create("Bob", "123", Role.of("ROLE_CHEF"));
+		UserAccount acc = userAccountManager.create("Bob", PASSWORD, Role.of("ROLE_CHEF"));
 
-		userAccountManager.changePassword(acc, "asd");
+		userAccountManager.changePassword(acc, UnencryptedPassword.of("asd"));
 
-		assertThat(acc.getPassword().isEncrypted(), is(true));
-		assertThat(passwordEncoder.matches("asd", acc.getPassword().toString()), is(true));
+		assertThat(acc.getPassword()).isInstanceOf(EncryptedPassword.class);
+		assertThat(passwordEncoder.matches("asd", acc.getPassword().asString())).isTrue();
 	}
 
 	@Test // #46
 	void findsUserByUsername() {
 
-		UserAccount reference = userAccountManager.create("Bob", "123", Role.of("ROLE_CHEF"));
+		UserAccount reference = userAccountManager.create("Bob", PASSWORD, Role.of("ROLE_CHEF"));
 
 		Optional<UserAccount> user = userAccountManager.findByUsername("Bob");
 
-		assertThat(user.isPresent(), is(true));
-		assertThat(user.get(), is(reference));
+		assertThat(user).hasValue(reference);
 	}
 
 	@Test // #55
 	void rejectsCreationOfUserWithExistingUsername() {
 
-		userAccountManager.create("username", "password");
+		userAccountManager.create("username", PASSWORD);
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
-				.isThrownBy(() -> userAccountManager.create("username", "password"));
+				.isThrownBy(() -> userAccountManager.create("username", PASSWORD));
+	}
+
+	private UserAccount createAccount() {
+		return createAccount("userId");
+	}
+
+	private UserAccount createAccount(String username) {
+		return userAccountManager.create(username, PASSWORD);
 	}
 }

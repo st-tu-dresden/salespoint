@@ -21,6 +21,7 @@ import de.olivergierke.moduliths.test.ModuleTest;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 
@@ -32,6 +33,8 @@ import org.springframework.test.context.TestPropertySource;
 @ModuleTest
 @TestPropertySource(properties = "salespoint.authentication.login-via-email=true")
 class NonTransactionalUserAccountManagerIntegrationTests {
+
+	private static final UnencryptedPassword PASSWORD = UserAccountTestUtils.UNENCRYPTED_PASSWORD;
 
 	@Autowired UserAccountManager userAccountManager;
 	@Autowired UserAccountRepository repository;
@@ -46,10 +49,10 @@ class NonTransactionalUserAccountManagerIntegrationTests {
 
 		String email = "foo@bar.com";
 
-		userAccountManager.create("username", "password", email);
+		userAccountManager.create("username", PASSWORD, email);
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
-				.isThrownBy(() -> userAccountManager.create("someOtherUsername", "password", email));
+				.isThrownBy(() -> userAccountManager.create("someOtherUsername", PASSWORD, email));
 	}
 
 	@Test // #222 - see property set on class level

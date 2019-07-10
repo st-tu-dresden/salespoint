@@ -16,30 +16,28 @@
 package org.salespointframework.useraccount;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import de.olivergierke.moduliths.test.ModuleTest;
 
 import java.util.UUID;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for {@link UserAccountRepository}.
- * 
+ *
  * @author Oliver Gierke
  */
 @Transactional
 @ModuleTest
 class UserAccountRepositoryIntegrationTests {
+
+	private static final EncryptedPassword PASSWORD = UserAccountTestUtils.ENCRYPTED_PASSWORD;
 
 	@Autowired UserAccountRepository repository;
 
@@ -48,46 +46,28 @@ class UserAccountRepositoryIntegrationTests {
 	@BeforeEach
 	void setUp() {
 
-		this.firstUser = createAccount();
-		this.firstUser.setPassword(Password.encrypted("encrypted"));
+		this.firstUser = createAccount(EncryptedPassword.of("encrypted"));
 		this.firstUser = repository.save(firstUser);
 
-		this.secondUser = createAccount();
-		this.secondUser.setPassword(Password.encrypted("encrypted2"));
+		this.secondUser = createAccount(EncryptedPassword.of("encrypted2"));
 		this.secondUser.setEnabled(false);
 		this.secondUser = repository.save(secondUser);
 	}
 
 	@Test
-	void preventsUnencryptedPasswordsFromBeingPersisted() {
-
-		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class) //
-				.isThrownBy(() -> repository.save(createAccount()));
-	}
-
-	@Test
 	void findsEnabledUsers() {
-
-		Iterable<UserAccount> result = repository.findByEnabledTrue();
-
-		assertThat(result, is(Matchers.<UserAccount> iterableWithSize(1)));
-		assertThat(result, hasItem(firstUser));
+		assertThat(repository.findByEnabledTrue()).containsExactly(firstUser);
 	}
 
 	@Test
 	void findsDisabledUsers() {
-
-		Iterable<UserAccount> result = repository.findByEnabledFalse();
-
-		assertThat(result, is(Matchers.<UserAccount> iterableWithSize(1)));
-		assertThat(result, hasItem(secondUser));
+		assertThat(repository.findByEnabledFalse()).containsExactly(secondUser);
 	}
 
 	@Test // #55
 	void rejectsUserAccountWithSameUsername() {
 
-		UserAccount userAccount = new UserAccount(firstUser.getId(), "unencrypted");
-		userAccount.setPassword(Password.encrypted("encrypted"));
+		UserAccount userAccount = new UserAccount(firstUser.getId(), PASSWORD);
 
 		assertThatExceptionOfType(DataIntegrityViolationException.class) //
 				.isThrownBy(() -> repository.save(userAccount));
@@ -96,8 +76,7 @@ class UserAccountRepositoryIntegrationTests {
 	@Test // #222
 	void looksUpUserViaEmail() {
 
-		UserAccount account = new UserAccount(new UserAccountIdentifier("username"), "password");
-		account.setPassword(Password.encrypted("encrypted"));
+		UserAccount account = new UserAccount(new UserAccountIdentifier("username"), PASSWORD);
 		account.setEmail("foo@bar.com");
 
 		UserAccount reference = repository.save(account);
@@ -112,13 +91,11 @@ class UserAccountRepositoryIntegrationTests {
 
 		UserAccount first = createAccount();
 		first.setEmail(email);
-		first.setPassword(Password.encrypted("encrypted"));
 
 		repository.save(first);
 
 		UserAccount second = createAccount();
 		second.setEmail(email);
-		second.setPassword(Password.encrypted("encrypted"));
 
 		assertThatExceptionOfType(DataIntegrityViolationException.class) //
 				.isThrownBy(() -> {
@@ -132,8 +109,12 @@ class UserAccountRepositoryIntegrationTests {
 	}
 
 	static UserAccount createAccount() {
+		return createAccount(PASSWORD);
+	}
+
+	static UserAccount createAccount(EncryptedPassword encryptedPassword) {
 
 		UserAccountIdentifier identifier = new UserAccountIdentifier(UUID.randomUUID().toString());
-		return new UserAccount(identifier, "password", Role.of("USER"));
+		return new UserAccount(identifier, encryptedPassword, Role.of("USER"));
 	}
 }

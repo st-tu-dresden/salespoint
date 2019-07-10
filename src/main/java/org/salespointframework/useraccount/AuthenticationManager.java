@@ -17,6 +17,9 @@ package org.salespointframework.useraccount;
 
 import java.util.Optional;
 
+import org.salespointframework.useraccount.Password.EncryptedPassword;
+import org.salespointframework.useraccount.Password.UnencryptedPassword;
+
 /**
  * Application component for authentication related use cases.
  * 
@@ -39,5 +42,5 @@ public interface AuthenticationManager {
 	 * @param existing must not be {@literal null}.
 	 * @return
 	 */
-	boolean matches(Password candidate, Password existing);
+	boolean matches(UnencryptedPassword candidate, EncryptedPassword existing);
 }

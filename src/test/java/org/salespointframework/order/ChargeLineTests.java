@@ -39,7 +39,7 @@ class ChargeLineTests extends AbstractIntegrationTests {
 
 	@BeforeEach
 	void before() {
-		user = userAccountManager.create("userId", "password");
+		user = userAccountManager.create("userId", UNENCRYPTED_PASSWORD);
 		order = new Order(user, Cash.CASH);
 		chargeLine = new ChargeLine(Currencies.ZERO_EURO, "gaaar nix");
 	}

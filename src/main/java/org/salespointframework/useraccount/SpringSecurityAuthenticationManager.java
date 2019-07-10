@@ -24,6 +24,8 @@ import lombok.ToString;
 import java.util.Collection;
 import java.util.Optional;
 
+import org.salespointframework.useraccount.Password.EncryptedPassword;
+import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -64,15 +66,15 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager, User
 
 	/* 
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.AuthenticationManager#matches(org.salespointframework.useraccount.Password, org.salespointframework.useraccount.Password)
+	 * @see org.salespointframework.useraccount.AuthenticationManager#matches(org.salespointframework.useraccount.Password.UnencryptedPassword, org.salespointframework.useraccount.Password.EncryptedPassword)
 	 */
 	@Override
-	public boolean matches(Password candidate, Password existing) {
+	public boolean matches(UnencryptedPassword candidate, EncryptedPassword existing) {
 
 		Assert.notNull(existing, "Existing password must not be null!");
 
 		return Optional.ofNullable(candidate).//
-				map(c -> passwordEncoder.matches(c.getPassword(), existing.getPassword())).//
+				map(c -> passwordEncoder.matches(c.asString(), existing.asString())).//
 				orElse(false);
 	}
 

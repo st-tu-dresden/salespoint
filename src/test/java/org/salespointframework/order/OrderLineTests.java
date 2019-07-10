@@ -28,6 +28,7 @@ import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -51,7 +52,7 @@ class OrderLineTests extends AbstractIntegrationTests {
 
 		catalog.save(cookie);
 
-		user = userAccountManager.create("userId", "password");
+		user = userAccountManager.create("userId", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 		order = new Order(user, Cash.CASH);
 		orderLine = new OrderLine(cookie, Quantity.of(10));
 	}

@@ -31,10 +31,9 @@ import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 
 import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
@@ -56,7 +55,7 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 	@Getter //
 	@Setter(AccessLevel.PACKAGE) //
 	@Column(nullable = false) //
-	private Password password;
+	private EncryptedPassword password;
 
 	private @Getter @Setter String firstname;
 	private @Getter @Setter String lastname;
@@ -67,12 +66,12 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 
 	private @Getter @Setter boolean enabled;
 
-	UserAccount(UserAccountIdentifier userAccountIdentifier, String password, Role... roles) {
+	UserAccount(UserAccountIdentifier userAccountIdentifier, EncryptedPassword password, Role... roles) {
 		this(userAccountIdentifier, password, null, null, null, Arrays.asList(roles));
 	}
 
-	UserAccount(UserAccountIdentifier userAccountIdentifier, String password, String firstname, String lastname,
-			String email, Collection<Role> roles) {
+	UserAccount(UserAccountIdentifier userAccountIdentifier, EncryptedPassword password, String firstname,
+			String lastname, String email, Collection<Role> roles) {
 
 		Assert.notNull(userAccountIdentifier, "User account identifier must not be null");
 		Assert.notNull(password, "Password must not be null");
@@ -80,7 +79,7 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 
 		this.enabled = true;
 		this.userAccountIdentifier = userAccountIdentifier;
-		this.password = Password.unencrypted(password);
+		this.password = password;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.email = email;
@@ -146,13 +145,7 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 		return Streamable.of(roles);
 	}
 
-	@PrePersist
-	@PreUpdate
-	void verify() {
-		Assert.state(password.isEncrypted(), "Password is not encrypted!");
-	}
-
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

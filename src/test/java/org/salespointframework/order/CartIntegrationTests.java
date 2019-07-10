@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
+import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +50,7 @@ class CartIntegrationTests {
 		CartItem cartItem = cart.addOrUpdateItem(//
 				new Product("name", Money.of(1, Currencies.EURO)), Quantity.of(10));
 
-		Order order = cart.createOrderFor(userAccountManager.create("foobar", "barfoo"));
+		Order order = cart.createOrderFor(userAccountManager.create("foobar", UnencryptedPassword.of("barfoo")));
 
 		Totalable<OrderLine> orderLines = order.getOrderLines();
 

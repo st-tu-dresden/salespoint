@@ -33,6 +33,7 @@ import org.salespointframework.order.OrderCompletionFailure;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
@@ -77,7 +78,7 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 	@Test // #144
 	void triggersExceptionForInsufficientStock() {
 
-		UserAccount user = userAccounts.create("username", "password");
+		UserAccount user = userAccounts.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 
 		Cart cart = new Cart();
 		cart.addOrUpdateItem(iPad, 1);
@@ -93,7 +94,7 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 	@Test // #230
 	void restocksForCompletedOrderOnCancellation() {
 
-		UserAccount user = userAccounts.create("username", "password");
+		UserAccount user = userAccounts.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 
 		Cart cart = new Cart();
 		cart.addOrUpdateItem(iPad, 1);

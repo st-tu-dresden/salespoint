@@ -30,6 +30,7 @@ import org.salespointframework.payment.Cash;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,8 +49,8 @@ class AccountancyTests {
 
 		for (int year = 2000; year < 2010; year++) {
 
-			if ((year % 2) == 0) {
-				UserAccount user = userAccountManager.create("userId" + year, "password");
+			if (year % 2 == 0) {
+				UserAccount user = userAccountManager.create("userId" + year, UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 				OrderIdentifier orderIdentifier = new Order(user).getId();
 
 				accountancyEntries.add(new ProductPaymentEntry(orderIdentifier, user, Money.of(1, Currencies.EURO),

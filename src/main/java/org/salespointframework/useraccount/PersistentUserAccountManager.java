@@ -20,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 
+import org.salespointframework.useraccount.Password.EncryptedPassword;
+import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.springframework.data.util.Streamable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,24 +48,24 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#create(java.lang.String, java.lang.String, org.salespointframework.useraccount.Role[])
+	 * @see org.salespointframework.useraccount.UserAccountManager#create(java.lang.String, org.salespointframework.useraccount.Password.UnencryptedPassword, org.salespointframework.useraccount.Role[])
 	 */
 	@Override
 	@Transactional
-	public UserAccount create(String userName, String password, Role... roles) {
+	public UserAccount create(String userName, UnencryptedPassword password, Role... roles) {
 		return create(userName, password, EMAIL_PLACEHOLDER, roles);
 	}
 
 	/* 
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#create(java.lang.String, java.lang.String, java.lang.String, org.salespointframework.useraccount.Role[])
+	 * @see org.salespointframework.useraccount.UserAccountManager#create(java.lang.String, org.salespointframework.useraccount.Password.UnencryptedPassword, java.lang.String, org.salespointframework.useraccount.Role[])
 	 */
 	@Override
 	@Transactional
-	public UserAccount create(String userName, String password, String emailAddress, Role... roles) {
+	public UserAccount create(String userName, UnencryptedPassword password, String emailAddress, Role... roles) {
 
 		Assert.hasText(userName, "Username must not be null or empty!");
-		Assert.hasText(password, "Password must not be null or empty!");
+		Assert.notNull(password, "Password must not be null!");
 		Assert.hasText(emailAddress, "Email address must not be null or empty!");
 		Assert.notNull(roles, "Roles must not be null!");
 
@@ -72,7 +74,8 @@ class PersistentUserAccountManager implements UserAccountManager {
 			throw new IllegalArgumentException(String.format("User with name %s already exists!", userName));
 		});
 
-		UserAccount account = new UserAccount(new UserAccountIdentifier(userName), password, roles);
+		EncryptedPassword encryptedPassword = encrypt(password.asString());
+		UserAccount account = new UserAccount(new UserAccountIdentifier(userName), encryptedPassword, roles);
 		account.setEmail(EMAIL_PLACEHOLDER.equals(emailAddress) ? null : emailAddress);
 
 		return save(account);
@@ -99,12 +102,6 @@ class PersistentUserAccountManager implements UserAccountManager {
 	public UserAccount save(UserAccount userAccount) {
 
 		Assert.notNull(userAccount, "UserAccount must not be null!");
-
-		Password password = userAccount.getPassword();
-
-		if (!password.isEncrypted()) {
-			userAccount.setPassword(Password.encrypted(passwordEncoder.encode(password.getPassword())));
-		}
 
 		if (config.isLoginViaEmail()) {
 			Assert.hasText(userAccount.getEmail(),
@@ -155,12 +152,12 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 */
 	@Override
 	@Transactional
-	public void changePassword(UserAccount userAccount, String password) {
+	public void changePassword(UserAccount userAccount, UnencryptedPassword password) {
 
 		Assert.notNull(userAccount, "userAccount must not be null");
 		Assert.notNull(password, "password must not be null");
 
-		userAccount.setPassword(Password.unencrypted(password));
+		userAccount.setPassword(encrypt(password.asString()));
 		save(userAccount);
 	}
 
@@ -226,5 +223,18 @@ class PersistentUserAccountManager implements UserAccountManager {
 		repository.delete(account);
 
 		return account;
+	}
+
+	/**
+	 * Encrypts the given raw password value.
+	 *
+	 * @param password must not be {@literal null} or empty.
+	 * @return
+	 */
+	private EncryptedPassword encrypt(String password) {
+
+		Assert.hasText(password, "Password must not be null or empty!");
+
+		return EncryptedPassword.of(passwordEncoder.encode(password));
 	}
 }

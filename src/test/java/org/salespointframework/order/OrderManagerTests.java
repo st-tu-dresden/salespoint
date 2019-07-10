@@ -43,6 +43,7 @@ import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -70,7 +71,7 @@ class OrderManagerTests extends AbstractIntegrationTests {
 
 	@BeforeEach
 	void before() {
-		user = userAccountManager.create("userId", "password");
+		user = userAccountManager.create("userId", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 		userAccountManager.save(user);
 		order = new Order(user, Cash.CASH);
 	}

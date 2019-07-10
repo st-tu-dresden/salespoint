@@ -33,6 +33,7 @@ import org.salespointframework.payment.Cash;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 
@@ -47,7 +48,7 @@ class AccountancyPeriodTests extends AbstractIntegrationTests {
 	@BeforeEach
 	void testSetup() throws Exception {
 
-		UserAccount account = userAccountManager.create("username", "password");
+		UserAccount account = userAccountManager.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 		OrderIdentifier orderIdentifier = new Order(account).getId();
 
 		Money oneEuro = Money.of(1, Currencies.EURO);

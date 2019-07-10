@@ -29,6 +29,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.salespointframework.useraccount.Password.EncryptedPassword;
+import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.salespointframework.useraccount.SpringSecurityAuthenticationManager.UserAccountDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -84,9 +86,9 @@ class SpringSecurityAuthenticationManagerUnitTests {
 	@Test
 	void delegatesPasswordMatchCorrectly() {
 
-		Password existing = Password.encrypted("password");
-		Password matching = Password.unencrypted("password");
-		Password failing = Password.unencrypted("failing");
+		EncryptedPassword existing = EncryptedPassword.of("password");
+		UnencryptedPassword matching = UnencryptedPassword.of("password");
+		UnencryptedPassword failing = UnencryptedPassword.of("failing");
 
 		when(passwordEncoder.matches("password", "password")).thenReturn(true);
 

@@ -33,6 +33,7 @@ import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,7 +59,7 @@ class OrderTests {
 	@BeforeEach
 	void before() {
 
-		user = userAccountManager.create("OrderTests " + foobar, "password");
+		user = userAccountManager.create("OrderTests " + foobar, UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 		order = new Order(user, Cash.CASH);
 		foobar++;
 	}

@@ -31,6 +31,7 @@ import org.salespointframework.order.Order.OrderPaid;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 
@@ -51,7 +52,7 @@ class AccountancyOrderEventListenerTests extends AbstractIntegrationTests {
 	@BeforeEach
 	void init() {
 
-		UserAccount account = users.create("username", "password");
+		UserAccount account = users.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 
 		this.order = spy(new Order(account, Cash.CASH));
 

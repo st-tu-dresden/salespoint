@@ -17,6 +17,7 @@ package org.salespointframework.useraccount;
 
 import java.util.Optional;
 
+import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.springframework.data.util.Streamable;
 
 /**
@@ -35,7 +36,7 @@ public interface UserAccountManager {
 	 * @param roles zero or more roles
 	 * @return a {@link UserAccount}, will never be {@literal null}.
 	 */
-	UserAccount create(String userName, String password, Role... roles);
+	UserAccount create(String userName, UnencryptedPassword password, Role... roles);
 
 	/**
 	 * Creates a new {@link UserAccount} and persists it right away.
@@ -47,7 +48,7 @@ public interface UserAccountManager {
 	 * @return a {@link UserAccount}, will never be {@literal null}.
 	 * @since 7.1
 	 */
-	UserAccount create(String userName, String password, String emailAddress, Role... roles);
+	UserAccount create(String userName, UnencryptedPassword password, String emailAddress, Role... roles);
 
 	/**
 	 * Returns an {@link UserAccount} for a given identifier.
@@ -83,9 +84,9 @@ public interface UserAccountManager {
 	 * Changes the password of the {@link UserAccount}.
 	 * 
 	 * @param userAccount
-	 * @param password
+	 * @param password must not be {@literal null}.
 	 */
-	void changePassword(UserAccount userAccount, String password);
+	void changePassword(UserAccount userAccount, UnencryptedPassword password);
 
 	/**
 	 * Checks if an {@link UserAccount} exists.

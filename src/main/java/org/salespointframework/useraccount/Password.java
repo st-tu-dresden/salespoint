@@ -17,11 +17,10 @@ package org.salespointframework.useraccount;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Embeddable;
-import javax.persistence.Transient;
 
 import org.springframework.util.Assert;
 
@@ -30,56 +29,93 @@ import org.springframework.util.Assert;
  * @author Paul Henke
  * @author Oliver Gierke
  */
-@Embeddable
-@EqualsAndHashCode
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated))
-public class Password {
-
-	private @Getter(AccessLevel.PACKAGE) String password;
+public abstract class Password {
 
 	/**
-	 * Whether the password is encrypted.
-	 */
-	private @Transient @Getter boolean encrypted = true;
-
-	/**
-	 * Creates a new password. The password can be provided in encrypted form, marked by the {@code encrypted} parameter.
+	 * Returns the password's raw {@link String} value.
 	 *
-	 * @param password the password string, must not be {@literal null} or empty.
-	 * @param encrypted whether the password is already encrypted
+	 * @return
 	 */
-	private Password(String password, boolean encrypted) {
+	abstract String asString();
 
-		Assert.hasText(password, "Password must not be null or empty!");
+	@Embeddable
+	@EqualsAndHashCode(callSuper = false)
+	@RequiredArgsConstructor(staticName = "of", access = AccessLevel.PACKAGE)
+	@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated))
+	public static class EncryptedPassword extends Password {
 
-		this.password = password;
-		this.encrypted = encrypted;
+		private final String value;
+
+		/*
+		 * (non-Javadoc)
+		 * @see org.salespointframework.useraccount.Password#asString()
+		 */
+		@Override
+		String asString() {
+			return value;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see org.salespointframework.useraccount.Password#toString()
+		 */
+		@Override
+		public String toString() {
+			return value;
+		}
 	}
 
 	/**
-	 * Creates a new password. The password is marked as 'not encrypted'.
+	 * An unencrypted password.
 	 *
-	 * @param password the password string, must not be {@literal null} or empty.
+	 * @author Oliver Drotbohm
 	 */
-	public static Password unencrypted(String password) {
-		return new Password(password, false);
-	}
+	@EqualsAndHashCode(callSuper = false)
+	public static class UnencryptedPassword extends Password {
 
-	/**
-	 * Creates a new encrypted password.
-	 *
-	 * @param password the password string, must not be {@literal null} or empty.
-	 */
-	static Password encrypted(String password) {
-		return new Password(password, true);
-	}
+		private final String value;
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return encrypted ? password : "********";
+		/**
+		 * Creates a new {@link UnencryptedPassword} for the given raw {@link String} value.
+		 *
+		 * @param password must not be {@literal null} or empty.
+		 */
+		private UnencryptedPassword(String password) {
+
+			Assert.hasText(password, "Password must not be null or empty!");
+
+			this.value = password;
+		}
+
+		public static UnencryptedPassword of(String password) {
+			return new UnencryptedPassword(password);
+		}
+
+		/**
+		 * Returns the length of the password.
+		 *
+		 * @return
+		 */
+		public int getLength() {
+			return value.length();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see org.salespointframework.useraccount.Password#asString()
+		 */
+		@Override
+		String asString() {
+			return value;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see org.salespointframework.useraccount.Password#toString()
+		 */
+		@Override
+		public String toString() {
+			return "********";
+		}
 	}
 }
