@@ -33,7 +33,7 @@ public abstract class AbstractEntity<ID extends SalespointIdentifier> implements
 
 	private @Transient boolean isNew = true;
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.springframework.data.domain.Persistable#isNew()
 	 */
@@ -51,7 +51,7 @@ public abstract class AbstractEntity<ID extends SalespointIdentifier> implements
 		this.isNew = false;
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -62,7 +62,7 @@ public abstract class AbstractEntity<ID extends SalespointIdentifier> implements
 			return true;
 		}
 
-		if (obj == null || !(obj.getClass().equals(this.getClass()))) {
+		if (obj == null || !obj.getClass().equals(this.getClass())) {
 			return false;
 		}
 
@@ -71,7 +71,7 @@ public abstract class AbstractEntity<ID extends SalespointIdentifier> implements
 		return ObjectUtils.nullSafeEquals(this.getId(), that.getId());
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
