@@ -74,7 +74,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 			throw new IllegalArgumentException(String.format("User with name %s already exists!", userName));
 		});
 
-		EncryptedPassword encryptedPassword = encrypt(password.asString());
+		EncryptedPassword encryptedPassword = encrypt(password);
 		UserAccount account = new UserAccount(new UserAccountIdentifier(userName), encryptedPassword, roles);
 		account.setEmail(EMAIL_PLACEHOLDER.equals(emailAddress) ? null : emailAddress);
 
@@ -157,7 +157,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 		Assert.notNull(userAccount, "userAccount must not be null");
 		Assert.notNull(password, "password must not be null");
 
-		userAccount.setPassword(encrypt(password.asString()));
+		userAccount.setPassword(encrypt(password));
 		save(userAccount);
 	}
 
@@ -228,13 +228,13 @@ class PersistentUserAccountManager implements UserAccountManager {
 	/**
 	 * Encrypts the given raw password value.
 	 *
-	 * @param password must not be {@literal null} or empty.
+	 * @param password must not be {@literal null}.
 	 * @return
 	 */
-	private EncryptedPassword encrypt(String password) {
+	private EncryptedPassword encrypt(UnencryptedPassword password) {
 
-		Assert.hasText(password, "Password must not be null or empty!");
+		Assert.notNull(password, "Password must not be null!");
 
-		return EncryptedPassword.of(passwordEncoder.encode(password));
+		return EncryptedPassword.of(passwordEncoder.encode(password.asString()));
 	}
 }
