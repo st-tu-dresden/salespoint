@@ -15,7 +15,7 @@
  */
 package org.salespointframework;
 
-import de.olivergierke.moduliths.Modulith;
+import de.olivergierke.moduliths.Modulithic;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -25,6 +25,7 @@ import java.lang.annotation.Target;
 
 import org.salespointframework.EnableSalespoint.SalespointSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
@@ -48,7 +49,7 @@ import org.springframework.core.annotation.AliasFor;
  * </ul>
  * To customize the web or security configuration setup, declare classes extending {@link SalespointWebConfiguration} or
  * {@link SalespointSecurityConfiguration} inside your configuration class. See the Videoshop sample for details.
- * 
+ *
  * @author Oliver Gierke
  */
 @Documented
@@ -57,16 +58,17 @@ import org.springframework.core.annotation.AliasFor;
 @Import(Salespoint.class)
 @ImportAutoConfiguration(SalespointSecurityAutoConfiguration.class)
 @EntityScan
-@Modulith( //
+@Modulithic( //
 		sharedModules = { //
 				"org.salespointframework.core", //
 				"org.salespointframework.support", //
 				"org.salespointframework.useraccount" }, //
 		additionalPackages = "org.salespointframework", //
 		useFullyQualifiedModuleNames = true)
+@SpringBootApplication
 public @interface EnableSalespoint {
 
-	@AliasFor(annotation = Modulith.class, attribute = "systemName")
+	@AliasFor(annotation = Modulithic.class, attribute = "systemName")
 	String value() default "";
 
 	@Configuration

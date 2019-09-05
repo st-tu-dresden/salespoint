@@ -23,6 +23,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.TypeExcludeFilter;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -46,6 +47,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 		@Filter(value = TypeExcludeFilter.class, type = FilterType.CUSTOM) //
 })
 @EntityScan
+@ConfigurationPropertiesScan
 public class Salespoint {
 
 	@Bean

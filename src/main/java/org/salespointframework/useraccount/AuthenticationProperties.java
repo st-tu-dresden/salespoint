@@ -15,24 +15,18 @@
  */
 package org.salespointframework.useraccount;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 /**
  * Properties to configure Salespoint authentication. Declare {@code salespoint.authentication.…} in application
  * properties to tweak settings.
- * 
+ *
  * @author Oliver Gierke
  * @since 7.1
  */
-@Data
-@NoArgsConstructor(force = true)
-@AllArgsConstructor
-@Component
+@Value
 @ConfigurationProperties("salespoint.authentication")
 class AuthenticationProperties {
 
