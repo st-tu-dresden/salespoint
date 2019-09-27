@@ -122,7 +122,7 @@ class QuantityUnitTests {
 	}
 
 	@Test // #250
-	public void comparesToZeroOrNegativeWithDifferentScale() {
+	void comparesToZeroOrNegativeWithDifferentScale() {
 		assertThat(Quantity.of(0.0, Metric.UNIT).isZeroOrNegative()).isTrue();
 	}
 
