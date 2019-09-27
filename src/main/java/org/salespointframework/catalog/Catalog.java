@@ -21,17 +21,19 @@ import java.util.Collection;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.util.Streamable;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository interface for {@link Product}s
  *
  * @author Oliver Gierke
  */
+@Repository
 public interface Catalog<T extends Product> extends CrudRepository<T, ProductIdentifier> {
 
 	/**
 	 * Returns all {@link Product}s assigned to the given category.
-	 * 
+	 *
 	 * @param category
 	 * @return
 	 */
@@ -40,7 +42,7 @@ public interface Catalog<T extends Product> extends CrudRepository<T, ProductIde
 
 	/**
 	 * Returns all {@link Product} that are assigned to all given categories.
-	 * 
+	 *
 	 * @param categories must not be {@literal null}.
 	 * @return
 	 * @since 7.1
@@ -51,7 +53,7 @@ public interface Catalog<T extends Product> extends CrudRepository<T, ProductIde
 
 	/**
 	 * Returns all {@link Product} that are assigned to all given categories.
-	 * 
+	 *
 	 * @param categories must not be {@literal null}.
 	 * @return
 	 * @since 7.1
@@ -64,7 +66,7 @@ public interface Catalog<T extends Product> extends CrudRepository<T, ProductIde
 
 	/**
 	 * Returns all {@link Product}s that are assigned to any of the given categories.
-	 * 
+	 *
 	 * @param categories must not be {@literal null}.
 	 * @return
 	 * @since 7.1
@@ -75,7 +77,7 @@ public interface Catalog<T extends Product> extends CrudRepository<T, ProductIde
 
 	/**
 	 * Returns all {@link Product}s that are assigned to any of the given categories.
-	 * 
+	 *
 	 * @param categories must not be {@literal null}.
 	 * @return
 	 * @since 7.1
@@ -85,7 +87,7 @@ public interface Catalog<T extends Product> extends CrudRepository<T, ProductIde
 
 	/**
 	 * Returns the {@link Product}s with the given name.
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 */

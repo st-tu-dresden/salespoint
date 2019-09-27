@@ -23,19 +23,21 @@ import org.salespointframework.quantity.Quantity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.util.Streamable;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository interface for {@link InventoryItem}s.
- * 
+ *
  * @author Oliver Gierke
  */
 // tag::inventory[]
+@Repository
 public interface Inventory<T extends InventoryItem> extends CrudRepository<T, InventoryItemIdentifier> {
 
 	/**
 	 * Returns all {@link InventoryItem}s that are out of stock (i.e. the {@link Quantity}'s amount is equal or less than
 	 * zero).
-	 * 
+	 *
 	 * @return will never be {@literal null}.
 	 */
 	@Query("select i from InventoryItem i where i.quantity.amount <= 0")
@@ -43,7 +45,7 @@ public interface Inventory<T extends InventoryItem> extends CrudRepository<T, In
 
 	/**
 	 * Returns the {@link InventoryItem} for the {@link Product} with the given identifier.
-	 * 
+	 *
 	 * @param productIdentifier must not be {@literal null}.
 	 * @return will never be {@literal null}.
 	 */
@@ -52,7 +54,7 @@ public interface Inventory<T extends InventoryItem> extends CrudRepository<T, In
 
 	/**
 	 * Returns the {@link InventoryItem} for the given {@link Product}.
-	 * 
+	 *
 	 * @param product must not be {@literal null}.
 	 * @return will never be {@literal null}.
 	 */

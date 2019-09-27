@@ -18,6 +18,8 @@ package org.salespointframework.time;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import org.springframework.stereotype.Service;
+
 /**
  * Component to allow access to the current business time. It will usually return the current system time but allows
  * manually forwarding it by a certain {@link Duration} for testing and simulation purposes.
@@ -26,6 +28,7 @@ import java.time.LocalDateTime;
  * @author Oliver Gierke
  * @author Rico Bergmann
  */
+@Service
 public interface BusinessTime {
 
 	/**
@@ -50,7 +53,7 @@ public interface BusinessTime {
 	 * @return
 	 */
 	Duration getOffset();
-	
+
 	/**
 	 * Undoes any forwarding. Afterwards any call to {@link #getTime()} will be equivalent to the system's time again.
 	 */

@@ -19,12 +19,14 @@ import java.util.Optional;
 
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
+import org.springframework.stereotype.Service;
 
 /**
  * Application component for authentication related use cases.
  *
  * @author Oliver Gierke
  */
+@Service
 public interface AuthenticationManager {
 
 	/**

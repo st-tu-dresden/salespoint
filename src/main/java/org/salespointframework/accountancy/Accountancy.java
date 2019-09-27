@@ -25,21 +25,23 @@ import javax.money.MonetaryAmount;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.time.Interval;
 import org.springframework.data.util.Streamable;
+import org.springframework.stereotype.Service;
 
 /**
  * The {@code Accountancy} interface is implemented by classes offering a basic accounting service. Generally, an
  * {@code Accountancy} aggregates objects of the type {@link AccountancyEntry} and subclasses thereof. Additionally, an
  * {@code Accountancy} offers methods for querying of entries and financial statistics.
- * 
+ *
  * @author Hannes Weisbach
  * @author Oliver Gierke
  */
+@Service
 public interface Accountancy {
 
 	/**
 	 * Adds a new {@link AccountancyEntry} to this {@code Accountancy}. The {@link AccountancyEntry}'s date will be set to
 	 * the value returned by {@link BusinessTime#getTime()} in case it is not set already.
-	 * 
+	 *
 	 * @param accountancyEntry entry to be added to the accountancy, must not be {@literal null}.
 	 * @return the added {@link AccountancyEntry}.
 	 */
@@ -48,7 +50,7 @@ public interface Accountancy {
 	/**
 	 * Returns all {@link AccountancyEntry}s of the specified type {@code clazz} and all sub-types, previously added to
 	 * the accountancy. If no entries of the specified type exist, an empty {@code Iterable} is returned.
-	 * 
+	 *
 	 * @param clazz Class object corresponding to the type of the entries to be returned, has to implement
 	 *          {@link AccountancyEntry}
 	 * @return a {@link Streamable} containing all entries of type clazz
@@ -58,7 +60,7 @@ public interface Accountancy {
 	/**
 	 * Returns the {@link AccountancyEntry} of type {@code clazz} and all sub-types, identified by
 	 * {@link AccountancyEntryIdentifier}. {@literal null} is returned, if no entry with the given identifier exists.
-	 * 
+	 *
 	 * @param clazz type of the entry to be returned; has to implement {@link AccountancyEntry}
 	 * @param accountancyEntryIdentifier the {@link AccountancyEntryIdentifier} of the entry to be returned
 	 * @return the {@link AccountancyEntry} or sub type thereof of type {@code clazz} which has the identifier
@@ -70,7 +72,7 @@ public interface Accountancy {
 	 * Returns all {@link AccountancyEntry}s that were created in the given {@link Interval}. So every entry with an time
 	 * stamp <= {@code to} and >= {@code from} is returned. If no entries within the specified time span exist, or no
 	 * entries of the specified class type exist, an empty {@link Streamable} is returned.
-	 * 
+	 *
 	 * @param interval the {@link Interval} we want to find {@link AccountancyEntry} instances for.
 	 * @return a {@link Streamable} containing all entries in the given {@link Interval}.
 	 */
@@ -83,7 +85,7 @@ public interface Accountancy {
 	 * {@link Duration}. Returned is a map, having a {@link Interval} objects as its key, and an {@link Streamable} as
 	 * value. The {@link Streamable} contains all entries of the specific type with its date in the interval specified by
 	 * the key.
-	 * 
+	 *
 	 * @param <T> common super type of all entries returned
 	 * @param clazz class type of the requested entries; has to implement {@link AccountancyEntry}
 	 * @param from all returned entries will have a time stamp after {@code from}
@@ -104,7 +106,7 @@ public interface Accountancy {
 	 * {@link MonetaryAmount} object's value is equal to the sum of all entries' {@code amount}-field, with a date within
 	 * the key- {@link Interval}. If within an interval no entries of the specified type exist, a {@link MonetaryAmount}
 	 * object with a value of zero is added as value for that interval.
-	 * 
+	 *
 	 * @param from all returned entries will have a time stamp after {@code from}.
 	 * @param to all returned entries will have a time stamp before {@code to}.
 	 * @param duration length of the time intervals, the period between {@code from} and {@code to} is divided.

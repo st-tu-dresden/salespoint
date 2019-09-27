@@ -15,6 +15,7 @@
  */
 package org.salespointframework.core;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Oliver Gierke
  */
+@Component
 public interface DataInitializer {
 
 	/**

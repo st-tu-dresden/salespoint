@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.springframework.data.util.Streamable;
+import org.springframework.stereotype.Service;
 
 /**
  * Central service to manager {@link UserAccount} instances.
@@ -26,6 +27,7 @@ import org.springframework.data.util.Streamable;
  * @author Paul Henke
  * @author Oliver Gierke
  */
+@Service
 public interface UserAccountManager {
 
 	/**
