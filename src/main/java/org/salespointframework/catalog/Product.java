@@ -43,7 +43,7 @@ import org.springframework.util.Assert;
 
 /**
  * A product.
- * 
+ *
  * @author Paul Henke
  * @author Oliver Gierke
  */
@@ -62,7 +62,7 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 
 	/**
 	 * Creates a new {@link Product} with the given name and price.
-	 * 
+	 *
 	 * @param name must not be {@literal null} or empty.
 	 * @param price must not be {@literal null}.
 	 */
@@ -72,7 +72,7 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 
 	/**
 	 * Creates a new {@link Product} with the given name, price and {@link Metric}.
-	 * 
+	 *
 	 * @param name the name of the {@link Product}, must not be {@literal null} or empty.
 	 * @param price the price of the {@link Product}, must not be {@literal null}.
 	 * @param metric the {@link Metric} of the {@link Product}, must not be {@literal null}.
@@ -88,7 +88,7 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 		this.metric = metric;
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.springframework.data.domain.Persistable#getId()
 	 */
@@ -99,16 +99,16 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 
 	/**
 	 * Returns the categories the {@link Product} is assigned to.
-	 * 
+	 *
 	 * @return will never be {@literal null}.
 	 */
-	public final Streamable<String> getCategories() {
+	public Streamable<String> getCategories() {
 		return Streamable.of(Collections.unmodifiableSet(categories));
 	}
 
 	/**
 	 * Adds the {@link Product} to the given category.
-	 * 
+	 *
 	 * @param category must not be {@literal null} or empty.
 	 * @return
 	 */
@@ -126,7 +126,7 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 
 	/**
 	 * Returns whether the {@link Product} supports the given {@link Quantity}.
-	 * 
+	 *
 	 * @param quantity
 	 * @return
 	 */
@@ -138,7 +138,7 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 
 	/**
 	 * Verifies the given {@link Quantity} to match the one supported by the current {@link Product}.
-	 * 
+	 *
 	 * @param quantity
 	 * @throws MetricMismatchException in case the {@link Product} does not support the given {@link Quantity}.
 	 */
@@ -151,7 +151,7 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 
 	/**
 	 * Creates a {@link Quantity} of the given amount and the current {@link Product}'s underlying {@link Metric}.
-	 * 
+	 *
 	 * @param amount must not be {@literal null}.
 	 * @return
 	 */
@@ -161,7 +161,7 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 
 	/**
 	 * Creates a {@link Quantity} of the given amount and the current {@link Product}'s underlying {@link Metric}.
-	 * 
+	 *
 	 * @param amount must not be {@literal null}.
 	 * @return
 	 */

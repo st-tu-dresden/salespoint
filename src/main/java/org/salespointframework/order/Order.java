@@ -59,7 +59,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID")) //
 	private OrderIdentifier orderIdentifier = new OrderIdentifier();
 
-	private @Lob PaymentMethod paymentMethod;
+	private @Lob @Getter PaymentMethod paymentMethod;
 
 	@Getter //
 	@OneToOne //
@@ -89,7 +89,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Creates a new Order
-	 * 
+	 *
 	 * @param userAccount The {@link UserAccount} connected to this order, must not be {@literal null}.
 	 */
 	public Order(UserAccount userAccount) {
@@ -102,7 +102,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Creates a new {@link Order} for the given {@link UserAccount} and {@link PaymentMethod}.
-	 * 
+	 *
 	 * @param userAccount The {@link UserAccount} connected to this order, must not be {@literal null}.
 	 * @param paymentMethod The {@link PaymentMethod} connected to this order, must not be {@literal null}.
 	 */
@@ -116,7 +116,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		this.dateCreated = LocalDateTime.now();
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.springframework.data.domain.Persistable#getId()
 	 */
@@ -127,7 +127,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Returns all {@link OrderLine}s of the {@link Order}.
-	 * 
+	 *
 	 * @return
 	 */
 	public Totalable<OrderLine> getOrderLines() {
@@ -136,7 +136,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Returns all {@link OrderLine} instances that refer to the given {@link Product}.
-	 * 
+	 *
 	 * @param product must not be {@literal null}.
 	 * @return
 	 * @since 7.1
@@ -151,7 +151,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Returns all {@link ChargeLine} instances registered for the current {@link Order}.
-	 * 
+	 *
 	 * @return
 	 */
 	public Totalable<ChargeLine> getChargeLines() {
@@ -160,7 +160,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Returns all {@link ChargeLine} instances, i.e. both standard ones and {@link AttachedChargeLine}s.
-	 * 
+	 *
 	 * @return
 	 */
 	public Totalable<ChargeLine> getAllChargeLines() {
@@ -169,7 +169,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Returns all {@link AttachedChargeLine}s for the {@link OrderLine} with the given index.
-	 * 
+	 *
 	 * @param index must be in the range of {@link OrderLine}s.
 	 * @return
 	 * @since 7.1
@@ -180,7 +180,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Returns all {@link AttachedChargeLine}s for the given {@link OrderLine}.
-	 * 
+	 *
 	 * @param orderLine must not be {@literal null}.
 	 * @return
 	 * @since 7.1
@@ -195,7 +195,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Returns the total price of the {@link Order}.
-	 * 
+	 *
 	 * @return
 	 * @since 7.1
 	 */
@@ -205,7 +205,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Returns the total price of the {@link Order}.
-	 * 
+	 *
 	 * @return
 	 * @deprecated since 7.1, use {@link #getTotal()} instead.
 	 */
@@ -216,7 +216,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Returns the total of all {@link OrderLine}s.
-	 * 
+	 *
 	 * @return
 	 * @deprecated since 7.1, use {@link #getOrderLines()} and call {@link Totalable#getTotal()} on the result.
 	 */
@@ -227,7 +227,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Returns the total of all charge lines registered with the order and order lines.
-	 * 
+	 *
 	 * @return
 	 * @deprecated since 7.1, prefer {@link #getChargeLines()}, {@link #getAllChargeLines()} and call
 	 *             {@link PricedTotalable#getTotal()} on the result for fine grained control over which
@@ -240,7 +240,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Adds an {@link OrderLine} to the {@link Order}, the {@link OrderStatus} must be OPEN.
-	 * 
+	 *
 	 * @param orderLine the {@link OrderLine} to be added.
 	 * @return the {@link OrderLine} added.
 	 * @throws IllegalArgumentException if orderLine is {@literal null}.
@@ -259,7 +259,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Adds an {@link OrderLine} for the given with the given {@link Quantity}.
-	 * 
+	 *
 	 * @param product must not be {@literal null}.
 	 * @param quantity must not be {@literal null}.
 	 * @return the {@link OrderLine} added.
@@ -279,7 +279,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Removes the given {@link OrderLine} as well as all {@link AttachedChargeLine} associated with it.
-	 * 
+	 *
 	 * @param orderLine must not be {@literal null}.
 	 */
 	public void remove(OrderLine orderLine) {
@@ -294,7 +294,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Adds a charge line to the {@link Order}.
-	 * 
+	 *
 	 * @param chargeLine
 	 * @deprecated since 7.1, use {@link #addChargeLine(MonetaryAmount, String)} instead
 	 */
@@ -311,7 +311,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Adds a {@link ChargeLine} with the given price and description to the {@link Order}.
-	 * 
+	 *
 	 * @param price must not be {@literal null}.
 	 * @param description must not be {@literal null}.
 	 * @return the {@link ChargeLine} created.
@@ -334,7 +334,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 	/**
 	 * Adds an {@link AttachedChargeLine} with the given price and description to the {@link OrderLine} with the given
 	 * index.
-	 * 
+	 *
 	 * @param price must not be {@literal null}.
 	 * @param description must not be {@literal null}.
 	 * @param index must be within the range of {@link OrderLine}s already registered.
@@ -355,7 +355,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Adds an {@link AttachedChargeLine} with the given price and description to the given {@link OrderLine}.
-	 * 
+	 *
 	 * @param price must not be {@literal null}.
 	 * @param description must not be {@literal null}.
 	 * @param orderLine must not be {@literal null}.
@@ -388,7 +388,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Removes the given {@link AttachedChargeLine} from the {@link Order}.
-	 * 
+	 *
 	 * @param chargeLine must not be {@literal null}.
 	 * @since 7.1
 	 */
@@ -403,7 +403,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Removes all {@link AttachedChargeLine}s attached to the given {@link OrderLine}.
-	 * 
+	 *
 	 * @param orderLine must not be {@literal null}.
 	 * @since 7.1
 	 */
@@ -418,7 +418,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Convenience method for checking if an order has the status PAID
-	 * 
+	 *
 	 * @return true if OrderStatus is PAID, otherwise false
 	 */
 	public boolean isPaid() {
@@ -427,7 +427,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Convenience method for checking if an order has the status CANCELLED
-	 * 
+	 *
 	 * @return true if OrderStatus is CANCELLED, otherwise false
 	 */
 	public boolean isCanceled() {
@@ -436,7 +436,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Convenience method for checking if an order has the status COMPLETED
-	 * 
+	 *
 	 * @return true if OrderStatus is COMPLETED, otherwise false
 	 */
 	public boolean isCompleted() {
@@ -445,15 +445,11 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Convenience method for checking if an order has the status OPEN
-	 * 
+	 *
 	 * @return true if OrderStatus is OPEN, otherwise false
 	 */
 	public boolean isOpen() {
 		return orderStatus == OrderStatus.OPEN;
-	}
-
-	public final PaymentMethod getPaymentMethod() {
-		return paymentMethod;
 	}
 
 	public void setPaymentMethod(PaymentMethod paymentMethod) {
@@ -479,17 +475,18 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 
 	/**
 	 * Cancels the current {@link Order}.
-	 * 
+	 *
 	 * @return
 	 * @deprecated since 7.1, use {@link #cancel(String)} instead.
 	 */
+	@Deprecated
 	Order cancel() {
 		return cancel("¯\\_(ツ)_/¯");
 	}
 
 	/**
 	 * Cancels the current {@link Order} with the given reason. Will publish an {@link OrderCancelled} even
-	 * 
+	 *
 	 * @param reason must not be {@literal null}.
 	 * @return
 	 */
@@ -555,6 +552,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		 * (non-Javadoc)
 		 * @see java.lang.Object#toString()
 		 */
+		@Override
 		public String toString() {
 			return "OrderCompleted";
 		}
@@ -569,6 +567,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		 * (non-Javadoc)
 		 * @see java.lang.Object#toString()
 		 */
+		@Override
 		public String toString() {
 			return "OrderPaid";
 		}
@@ -580,7 +579,7 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		Order order;
 		String reason;
 
-		/* 
+		/*
 		 * (non-Javadoc)
 		 * @see java.lang.Object#toString()
 		 */
