@@ -125,4 +125,11 @@ class QuantityUnitTests {
 	public void comparesToZeroOrNegativeWithDifferentScale() {
 		assertThat(Quantity.of(0.0, Metric.UNIT).isZeroOrNegative()).isTrue();
 	}
+
+	@Test // #251
+	void multipliesCorrectly() {
+
+		assertThat(Quantity.of(5.5).times(2)).isEqualTo(Quantity.of(11.0));
+		assertThat(Quantity.of(5.5).times(2l)).isEqualTo(Quantity.of(11.0));
+	}
 }

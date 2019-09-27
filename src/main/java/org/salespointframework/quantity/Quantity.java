@@ -161,6 +161,26 @@ public class Quantity {
 	}
 
 	/**
+	 * Creates a new {@link Quantity} of the current one multiplied with the given int.
+	 *
+	 * @param multiplier
+	 * @return will never be {@literal null}.
+	 */
+	public Quantity times(int multiplier) {
+		return times((long) multiplier);
+	}
+
+	/**
+	 * Creates a new {@link Quantity} of the current one multiplied with the given long.
+	 *
+	 * @param multiplier
+	 * @return will never be {@literal null}.
+	 */
+	public Quantity times(long multiplier) {
+		return new Quantity(amount.multiply(BigDecimal.valueOf(multiplier)), metric);
+	}
+
+	/**
 	 * Returns whether the given {@link Quantity} is greater than the current one.
 	 *
 	 * @param other must not be {@literal null}. The given {@link Quantity}'s {@link Metric} must be compatible with the
