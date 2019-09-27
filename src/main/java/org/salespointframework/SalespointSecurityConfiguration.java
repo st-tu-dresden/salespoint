@@ -30,7 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * Basic Salespoint security configuration setting up the {@link AuthenticationManagerBuilder} to work with the
  * {@link UserDetailsService} implementation as well as the {@link PasswordEncoder} we provide.
- * 
+ *
  * @author Oliver Gierke
  */
 @Configuration
@@ -51,7 +51,7 @@ public class SalespointSecurityConfiguration extends WebSecurityConfigurerAdapte
 
 	/**
 	 * Overridden to expose the {@link AuthenticationManager} as a Spring bean.
-	 * 
+	 *
 	 * @see WebSecurityConfigurerAdapter#authenticationManagerBean()
 	 */
 	@Bean
@@ -64,7 +64,7 @@ public class SalespointSecurityConfiguration extends WebSecurityConfigurerAdapte
 	 * Allow anonymous access to resources by default.
 	 */
 	@Override
-	public void configure(WebSecurity web) throws Exception {
+	public void configure(WebSecurity web) {
 		web.ignoring().antMatchers("/resources/**");
 	}
 
