@@ -17,7 +17,7 @@ package org.salespointframework.useraccount;
 
 import lombok.Value;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ImmutableConfigurationProperties;
 
 /**
  * Properties to configure Salespoint authentication. Declare {@code salespoint.authentication.…} in application
@@ -27,7 +27,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @since 7.1
  */
 @Value
-@ConfigurationProperties("salespoint.authentication")
+@ImmutableConfigurationProperties("salespoint.authentication")
 class AuthenticationProperties {
 
 	/**
