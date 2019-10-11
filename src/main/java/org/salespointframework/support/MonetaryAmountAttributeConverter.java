@@ -59,7 +59,14 @@ class MonetaryAmountAttributeConverter implements AttributeConverter<MonetaryAmo
 		try {
 			return Money.parse(source);
 		} catch (RuntimeException e) {
-			return Money.parse(source, FORMAT);
+
+			try {
+				return Money.parse(source, FORMAT);
+			} catch (RuntimeException inner) {
+
+				// Propagate the original exception in case the fallback fails
+				throw e;
+			}
 		}
 	}
 }
