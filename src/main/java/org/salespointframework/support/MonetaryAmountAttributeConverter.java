@@ -28,7 +28,7 @@ import org.javamoney.moneta.Money;
 /**
  * JPA {@link AttributeConverter} to serialize {@link MonetaryAmount} instances into a {@link String}. Auto-applied to
  * all entity properties of type {@link MonetaryAmount}.
- * 
+ *
  * @author Oliver Gierke
  */
 @Converter(autoApply = true)
