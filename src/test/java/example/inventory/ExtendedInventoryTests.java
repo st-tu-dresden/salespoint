@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.inventory;
+package example.inventory;
 
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.junit.MatcherAssert.*;
@@ -23,24 +23,29 @@ import javax.persistence.Entity;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.salespointframework.AbstractIntegrationTests;
+import org.salespointframework.EnableSalespoint;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.inventory.UniqueInventoryItem;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for {@link ExtendedInventory}.
  *
  * @author Oliver Gierke
  */
-@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-class ExtendedInventoryTests extends AbstractIntegrationTests {
+@Transactional
+@SpringBootTest
+class ExtendedInventoryTests {
+
+	@EnableSalespoint
+	static class TestConfiguration {}
 
 	@Autowired ExtendedUniqueInventory inventory;
 	@Autowired Catalog<Product> catalog;

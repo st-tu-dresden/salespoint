@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.inventory;
+package example.inventory;
 
+import org.salespointframework.inventory.InventoryItems;
+import org.salespointframework.inventory.UniqueInventory;
+import org.salespointframework.inventory.UniqueInventoryItem;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
-@Repository("uniqueInventory")
 interface ExtendedUniqueInventory extends UniqueInventory<UniqueInventoryItem> {
 
 	/**
