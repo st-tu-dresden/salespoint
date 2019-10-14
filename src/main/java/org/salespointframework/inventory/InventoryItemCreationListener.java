@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import javax.persistence.PrePersist;
 
 import org.salespointframework.catalog.Product;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Component;
 
 /**
@@ -39,8 +40,8 @@ class InventoryItemCreationListener {
 
 	private static final String UNIQUE_ITEM_ALREADY_EXISTS = "Trying to persist unique inventory item for %s. The following item(s) already exist: %s.";
 
-	private final @NonNull UniqueInventory<UniqueInventoryItem> uniqueInventory;
-	private final @NonNull MultiInventory<MultiInventoryItem> inventory;
+	private final @NonNull ObjectProvider<UniqueInventory<UniqueInventoryItem>> uniqueInventory;
+	private final @NonNull ObjectProvider<MultiInventory<MultiInventoryItem>> inventory;
 
 	/**
 	 * Verifies that there's no other {@link UniqueInventoryItem} present for the product that the to be persisted
@@ -56,7 +57,7 @@ class InventoryItemCreationListener {
 
 		if (UniqueInventoryItem.class.isInstance(item)) {
 
-			var existing = inventory.findByProductIdentifier(item.getProduct().getId());
+			var existing = inventory.getObject().findByProductIdentifier(item.getProduct().getId());
 
 			if (existing.isEmpty()) {
 				return;
@@ -70,7 +71,7 @@ class InventoryItemCreationListener {
 
 	private void assertNonUniqueItem(InventoryItem<?> item) {
 
-		uniqueInventory.findByProduct(item.getProduct()) //
+		uniqueInventory.getObject().findByProduct(item.getProduct()) //
 				.filter(it -> it.isDifferentItemForSameProduct(item)) //
 				.ifPresent(existing -> {
 					throw new IllegalStateException(String.format(UNIQUE_ITEM_ALREADY_EXISTS, item, existing));

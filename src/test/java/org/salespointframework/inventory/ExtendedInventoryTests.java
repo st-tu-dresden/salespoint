@@ -31,12 +31,15 @@ import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 /**
  * Integration tests for {@link ExtendedInventory}.
  *
  * @author Oliver Gierke
  */
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class ExtendedInventoryTests extends AbstractIntegrationTests {
 
 	@Autowired ExtendedUniqueInventory inventory;
