@@ -259,7 +259,8 @@ By default, an `OrderCompletionFailure` is thrown in case any of the `OrderLine`
 The exception contains an `OrderCompletionReport` that can be inspected for the item lacking enough stock.
 
 By default, all `OrderLine` instances are processed.
-However, you might want to exclude some of them as the `Product` they point to don't represent a product to keep track of (e.g. some service like "gift wrapping" or the like.
+If you want to disable order updates completely, configure the property `salespoint.inventory.disable-updates` to `true`.
+However, you might want to only exclude some of them as the `Product` they point to don't represent a product to keep track of (e.g. some service like "gift wrapping" or the like.
 The `LineItemFilter` interface allows defining a strategy to decide which of the `OrderLine` instances are supposed to be processed by the inventory.
 
 To customize the strategy, simply declare an implementation of `LineItemFilter` as Spring bean to your application configuration:

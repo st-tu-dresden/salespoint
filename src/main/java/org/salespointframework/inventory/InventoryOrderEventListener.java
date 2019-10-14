@@ -31,6 +31,7 @@ import org.salespointframework.order.OrderCompletionFailure;
 import org.salespointframework.order.OrderCompletionReport;
 import org.salespointframework.order.OrderCompletionReport.OrderLineCompletion;
 import org.salespointframework.order.OrderLine;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.util.Optionals;
@@ -47,6 +48,7 @@ import org.springframework.util.Assert;
  */
 @Component
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = "salespoint.inventory.disable-updates", havingValue = "false", matchIfMissing = true)
 public class InventoryOrderEventListener {
 
 	private static final String NOT_ENOUGH_STOCK = "Number of items requested by the OrderLine is greater than the number available in the Inventory. Please re-stock.";
