@@ -33,41 +33,6 @@ To give you an example of what applications built on top of Salespoint can actua
 
 TIP: The following sections will refer to code of the sample project here and there so it might be useful to have the repository cloned and the project imported into your IDE of choice to quickly be able to navigate these.
 
-[preface]
-[[preface.whats-new-in-7.1]]
-== What's new in Salespoint 7.1?
-=== Upgrade to Spring Boot 2.1 GA
-https://github.com/st-tu-dresden/salespoint/issues/225[#225] -- Simple maintenance upgrade as 7.0 still referred to a milestone release of Spring Boot 2.0.
-
-=== Allow deletion of user accounts and orders
-
-https://github.com/st-tu-dresden/salespoint/issues/218[#218], https://github.com/st-tu-dresden/salespoint/issues/219[#219] -- Note that when deleting the former, *all other* aggregate that keep a reference to the `UserAccount` have to be deleted manually first, e.g. all orders associated with this account.
-
-
-=== Allow login via email address
-https://github.com/st-tu-dresden/salespoint/issues/222[#222] -- Added the ability to use a user's email address for login purposes. For more details, see <<modules.useraccount.login.via-email, this section>>.
-
-=== Improvements in the order aggregate and event handling
-https://github.com/st-tu-dresden/salespoint/issues/226[#226] -- We added the ability to register `ChargeLine` instances for a dedicated `OrderLine`.
-Read more about that in the updated section of <<modules.order>>.
-
-=== New order cancelled event and fixes in event handling in general
-https://github.com/st-tu-dresden/salespoint/issues/230[#230] -- The creation of a `PaymentAccountancyEntry` has been properly attached to the `OrderPaid` event now.
-An `OrderCancelled` event is now published on order cancellation which triggers a rollback of the inventory updates as well as a compensating `ProductPaymentEntry`.
-Read more on that in the updated section <<modules.order.lifecycle>>.
-
-[preface]
-[[preface.whats-new-in-6.1]]
-== What's new in Salespoint 6.1?
-=== Upgrade to Spring Boot 1.2 and Spring 4.1
-For Salespoint 6.1 we upgraded to Spring Boot 1.2, which transitively updates a few third party dependencies, most notably Spring 4.1. Read more on the new features of Spring Boot in its http://docs.spring.io/spring-boot/docs/1.2.x/reference/htmlsingle[reference documentation] and skim through the https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-1.2-Release-Notes#upgrading-from-spring-boot-11[upgrade notes] as well. The new features of Spring 4.1 are described http://docs.spring.io/spring-framework/docs/4.1.x/spring-framework-reference/htmlsingle/#new-in-4.1[here].
-
-=== New @EnableSalespoint annotation to simplify configuration
-Activating Salespoint in a web application has been quite cumbersome so far and required a dedicated set of annotations and imports of configuration classes. To simplify this, Salespoint 6.1 introduces `@EnableSalespoint` to take care of the previously manual steps. For more information on what gets acivated and imported, see the link:{javadoc}/org/salespointframework/EnableSalespoint.html[JavaDoc of the annotation].
-
-=== Usage of the mail autoconfiguration shipping with Spring Boot 1.2
-As Salespoint 6.1 upgrades to Spring Boot 1.2 we now use the email auto-configuration settings shipping with that release. This most notably means that you slightly have to alter your properties to configure the mail user, password and host. See Boot's http://docs.spring.io/spring-boot/docs/1.2.x/reference/htmlsingle/#boot-features-email[reference documentation] and the http://docs.spring.io/spring-boot/docs/1.2.0.RC2/reference/htmlsingle/#common-application-properties[list of current application properties] for details.
-
 [[architecture]]
 = Technical Architecture
 
@@ -115,80 +80,6 @@ In contrast to earlier versions of the Salespoint Framework, Salespoint {majorve
 Salespoint {majorversion} is designed as foundation for development of web applications, using the Spring Framework to implement views, controllers and business services abstracting the domain your application-to-be-created is applied to. To ease this development, Salespoint includes a few extensions to the Spring Framework that will avoid you having to implement very tedious tasks over and over again. Read more about this in <<stack.spring>>.
 
 As a big new approach in development with JPA, the Spring Framework with its repository interfaces can make the work very fast, clean and easy. The Crudrepository provides the basic methods for working with the database (CRUD stands for Create, Read, Update and Delete).
-
-[[architecture.configuration]]
-==	Configuration of Salespoint {version}
-
-The configuration for an application can be modified on the application class in the root package (e.g.  videoshop.Videoshop for the videoshop project). Methods, annotated with `@Configuration`, will be scanned at the beginning of the deployment on the application server (in this case Spring Boot). This configuration files will tell the application server the settings for the application. By overriding the configuration method, you can specify the login behaviour or security functions. For a basic login strategy the videoshop is a good start. There you can see, that with authorizeRequests() an authorization will be set. Following by matchers, you can specify the pages, this authorization is made on. Further, you can easily set an login page with formLogin() and the path to the login page with loginProcessingUrl("/login"). Analogue the logout settings works like login system.
-
-[[stack]]
-= Technical Stack
-
-[[stack.spring-boot]]
-== Spring Boot
-
-Rapid application development framework based on Spring (see below).
-
-- http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle[Reference documentation]
-- https://spring.io/guides[Getting started guides]
-- http://projects.spring.io/spring-boot[Project home]
-
-[[stack.spring]]
-== Spring 4
-
-The de-facto standard Java application framework.
-
-- https://spring.io/guides[Getting started guides]
-- http://projects.spring.io/spring-framework[Project home]
-
-////
-[[stack.spring.core-concepts]]
-=== Core concepts
-
-TODO
-
-[[stack.spring.core-concepts.dependency-injection]]
-==== Dependency injection
-
-TODO
-
-[[stack.spring.core-concepts.components]]
-==== Components and component scanning
-
-TODO
-////
-
-[[stack.spring-data-jpa]]
-== Spring Data JPA
-
-Spring module to easily build data acess layers using JPA 2.1 (Java Persistence API).
-
-- https://spring.io/guides?filter=jpa[Getting started guides]
-- http://projects.spring.io/spring-data-jpa[Project home]
-
-[[stack.thymeleaf]]
-== Thymeleaf
-
-Library to build HTML web views using natural templating.
-
-- https://spring.io/guides/gs/serving-web-content[Getting stared guide]
-- http://www.thymeleaf.org/doc/usingthymeleaf.html[Tutorial]
-
-[[stack.java-money]]
-==  Java Money
-With Salespoint {majorversion} `Money` class and its related components were replaced by the Java Money library. Prices and other monetary values are represented as `org.javamoney.moneta.Money` objects. Due to the fact that all representing objects are immutable, all arithmetic functions produce a new instance.
-
-.Example for Money operations
-====
-[source, java]
-----
-Money first = Money.parse(“USD 23.07”);
-Money second = Money.parse(“USD 18.07”);
-Money sum = first.plus(second);
-----
-====
-
-When used in domain objects, `Money` instances need to be mapped using `@Lob`.
 
 [[modules]]
 = Business modules
@@ -518,7 +409,111 @@ Besides the business modules, Salespoint containes a few <<glossary.spi,SPIs>> t
 
 Every application should be tested, so an easy way is, to use test data. Salespoint provides an SPI called `DataInitializer` for you to implement. If your implementation is registered as Spring bean (e.g. by annotating it with `@Component`), it will automatically be found and `initialize()` will be called at application startup. As shown in the Videoshop project, a `DataInitializer` class is registered and creates a lot of data and finally adds this data to the application.
 
+[[stack]]
+= Technical Stack
+
+[[stack.spring-boot]]
+== Spring Boot
+
+Rapid application development framework based on Spring (see below).
+
+- http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle[Reference documentation]
+- https://spring.io/guides[Getting started guides]
+- http://projects.spring.io/spring-boot[Project home]
+
+[[stack.spring]]
+== Spring 5
+
+The de-facto standard Java application framework.
+
+- https://spring.io/guides[Getting started guides]
+- http://projects.spring.io/spring-framework[Project home]
+
+////
+[[stack.spring.core-concepts]]
+=== Core concepts
+
+TODO
+
+[[stack.spring.core-concepts.dependency-injection]]
+==== Dependency injection
+
+TODO
+
+[[stack.spring.core-concepts.components]]
+==== Components and component scanning
+
+TODO
+////
+
+[[stack.spring-data-jpa]]
+== Spring Data JPA
+
+Spring module to easily build data acess layers using JPA 2.1 (Java Persistence API).
+
+- https://spring.io/guides?filter=jpa[Getting started guides]
+- http://projects.spring.io/spring-data-jpa[Project home]
+
+[[stack.thymeleaf]]
+== Thymeleaf
+
+Library to build HTML web views using natural templating.
+
+- https://spring.io/guides/gs/serving-web-content[Getting stared guide]
+- http://www.thymeleaf.org/doc/usingthymeleaf.html[Tutorial]
+
+[[stack.java-money]]
+==  Java Money
+With Salespoint {majorversion} `Money` class and its related components were replaced by the Java Money library. Prices and other monetary values are represented as `org.javamoney.moneta.Money` objects. Due to the fact that all representing objects are immutable, all arithmetic functions produce a new instance.
+
+.Example for Money operations
+====
+[source, java]
+----
+Money first = Money.parse(“USD 23.07”);
+Money second = Money.parse(“USD 18.07”);
+Money sum = first.plus(second);
+----
+====
+
+When used in domain objects, `Money` instances need to be mapped using `@Lob`.
+
 = Appendix
+
+[appendix]
+[[new-and-noteworthy]]
+== New and Noteworthy
+
+[[new-and-noteworthy.whats-new-in-7.1]]
+=== What's new in Salespoint 7.1?
+==== Upgrade to Spring Boot 2.1 GA
+https://github.com/st-tu-dresden/salespoint/issues/225[#225] -- Simple maintenance upgrade as 7.0 still referred to a milestone release of Spring Boot 2.0.
+
+==== Allow deletion of user accounts and orders
+https://github.com/st-tu-dresden/salespoint/issues/218[#218], https://github.com/st-tu-dresden/salespoint/issues/219[#219] -- Note that when deleting the former, *all other* aggregate that keep a reference to the `UserAccount` have to be deleted manually first, e.g. all orders associated with this account.
+
+==== Allow login via email address
+https://github.com/st-tu-dresden/salespoint/issues/222[#222] -- Added the ability to use a user's email address for login purposes. For more details, see <<modules.useraccount.login.via-email, this section>>.
+
+==== Improvements in the order aggregate and event handling
+https://github.com/st-tu-dresden/salespoint/issues/226[#226] -- We added the ability to register `ChargeLine` instances for a dedicated `OrderLine`.
+Read more about that in the updated section of <<modules.order>>.
+
+==== New order cancelled event and fixes in event handling in general
+https://github.com/st-tu-dresden/salespoint/issues/230[#230] -- The creation of a `PaymentAccountancyEntry` has been properly attached to the `OrderPaid` event now.
+An `OrderCancelled` event is now published on order cancellation which triggers a rollback of the inventory updates as well as a compensating `ProductPaymentEntry`.
+Read more on that in the updated section <<modules.order.lifecycle>>.
+
+[[new-and-noteworthy.whats-new-in-6.1]]
+=== What's new in Salespoint 6.1?
+==== Upgrade to Spring Boot 1.2 and Spring 4.1
+For Salespoint 6.1 we upgraded to Spring Boot 1.2, which transitively updates a few third party dependencies, most notably Spring 4.1. Read more on the new features of Spring Boot in its http://docs.spring.io/spring-boot/docs/1.2.x/reference/htmlsingle[reference documentation] and skim through the https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-1.2-Release-Notes#upgrading-from-spring-boot-11[upgrade notes] as well. The new features of Spring 4.1 are described http://docs.spring.io/spring-framework/docs/4.1.x/spring-framework-reference/htmlsingle/#new-in-4.1[here].
+
+==== New @EnableSalespoint annotation to simplify configuration
+Activating Salespoint in a web application has been quite cumbersome so far and required a dedicated set of annotations and imports of configuration classes. To simplify this, Salespoint 6.1 introduces `@EnableSalespoint` to take care of the previously manual steps. For more information on what gets acivated and imported, see the link:{javadoc}/org/salespointframework/EnableSalespoint.html[JavaDoc of the annotation].
+
+==== Usage of the mail autoconfiguration shipping with Spring Boot 1.2
+As Salespoint 6.1 upgrades to Spring Boot 1.2 we now use the email auto-configuration settings shipping with that release. This most notably means that you slightly have to alter your properties to configure the mail user, password and host. See Boot's http://docs.spring.io/spring-boot/docs/1.2.x/reference/htmlsingle/#boot-features-email[reference documentation] and the http://docs.spring.io/spring-boot/docs/1.2.0.RC2/reference/htmlsingle/#common-application-properties[list of current application properties] for details.
 
 [appendix]
 == FAQ
