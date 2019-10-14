@@ -142,6 +142,31 @@ salespoint.authentication.login-via-email=true
 If the option is activated, `UserAccountManager.save(…)` will reject `UserAccount` instances that don't have an email address set.
 That means you need to provide an email when initially registering, i.e. you'll need to use the overload of `UserAccountManager.create(…)` that takes an email address as parameter.
 
+[[modules.useraccount.loggedin]]
+=== @LoggedIn annotation
+The `@LoggedIn` annotation can be used to inject the currently logged in `UserAccount` into controller method parameters. The type of the annotated paramater can either be
+`Optional<UserAccount>` for methods that should support non-authenticated access, or `UserAccount`. With the former variant, `Optional.map()` can be conveniently used to react
+to the presence of the user account in a functional programming style:
+
+.Example of a controller method parameter annotated with @LoggedIn
+====
+[source, java]
+----
+@Controller
+public class ExampleController {
+    @GetMapping("/example")
+    String example(@LoggedIn Optional<UserAccount> userAccount) {
+        // functional style using map and lambda expression:
+        return userAccount.map(account -> {
+            // things to be done if the user account is present
+            return "...";
+        }).orElse("redirect:/");  // if the user account is *not* present
+    }
+}
+----
+====
+
+
 [[modules.useraccount.limitation]]
 === Limitation
 The `org.salespointframework.useraccount.UserAccount` is limited to the given attributes and methods.
