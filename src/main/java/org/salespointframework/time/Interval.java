@@ -28,9 +28,11 @@ import java.time.temporal.TemporalAmount;
 import org.springframework.util.Assert;
 
 /**
- * Simple value object to represent time intervals.
+ * Simple value object to represent time intervals. Note that whether the endpoints are included
+ * or not can vary between the offered methods.
  * 
- * @author Oliver Gierke
+ * @author Oliver Drotbohm
+ * @author Martin Morgenstern
  */
 @Value
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
@@ -73,7 +75,7 @@ public final class Interval {
 	}
 
 	/**
-	 * Returns the duration of the interval.
+	 * Returns the duration of the interval, with the end excluded.
 	 * 
 	 * @return will never be {@literal null}.
 	 */
@@ -83,6 +85,7 @@ public final class Interval {
 
 	/**
 	 * Returns whether the given {@link LocalDateTime} is contained in the current {@link Interval}.
+	 * The comparison includes start and end, i.e., the method treats this interval as closed.
 	 * 
 	 * @param reference must not be {@literal null}.
 	 * @return
@@ -98,7 +101,8 @@ public final class Interval {
 	}
 
 	/**
-	 * Returns whether the current {@link Interval} overlaps with the given one.
+	 * Returns whether the current {@link Interval} overlaps with the given one. The
+	 * comparison excludes start and end, i.e., the method treats both intervals as open.
 	 * 
 	 * @param reference must not be {@literal null}.
 	 * @return
@@ -114,11 +118,12 @@ public final class Interval {
 	}
 
 	/**
-	 * Returns the {@link Duration} represented by the given {@link Interval}.
+	 * Returns the {@link Duration} represented by the given {@link Interval}, with the
+	 * end excluded.
 	 * 
 	 * @return
 	 */
-	public Object toDuration() {
+	public Duration toDuration() {
 		return Duration.between(start, end);
 	}
 
