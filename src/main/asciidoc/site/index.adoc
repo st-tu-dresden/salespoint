@@ -20,7 +20,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 == Resources
 
 [[resources.latest]]
-=== Latest release version - 7.1.0
+=== Latest release version - 7.2.1
 * link:salespoint-reference.html[Reference documentation]
 * link:api[JavaDoc]
 * link:changelog.html[Changelog]
@@ -40,12 +40,12 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 <dependency>
   <groupId>de.tudresden.inf.st</groupId>
   <artifactId>salespoint-framework</artifactId>
-  <version>7.1.0.RELEASE</version>
+  <version>7.2.1.RELEASE</version>
 </dependency>
 ----
 
 [[resources.development]]
-=== Current development snapshot - 7.2.x snapshots
+=== Current development snapshot - 7.2.x / 7.3.x snapshots
 * link:dev/salespoint-reference.html[Reference documentation]
 * link:dev/api[JavaDoc]
 * Maven repository declaration:
@@ -64,7 +64,15 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 <dependency>
   <groupId>de.tudresden.inf.st</groupId>
   <artifactId>salespoint-framework</artifactId>
-  <version>7.2.0.BUILD-SNAPSHOT</version>
+  <version>7.2.2.BUILD-SNAPSHOT</version>
+</dependency>
+
+<-- or -->
+
+<dependency>
+  <groupId>de.tudresden.inf.st</groupId>
+  <artifactId>salespoint-framework</artifactId>
+  <version>7.3.0.BUILD-SNAPSHOT</version>
 </dependency>
 ----
 
@@ -86,6 +94,7 @@ If you want to familiarize your self with the technology stack that Salespoint l
 [[archive]]
 == Archive
 
+* Version 7.1 - link:v7.1/salespoint-reference.html[Reference], link:v7.1/api[JavaDoc]
 * Version 7.0 - link:v7.0/salespoint-reference.html[Reference], link:v7.0/api[JavaDoc]
 * Version 6.4 - link:v6.4/salespoint-reference.html[Reference], link:v6.4/api[JavaDoc]
 * Version 6.3 - link:v6.3/salespoint-reference.html[Reference], link:v6.3/api[JavaDoc]
