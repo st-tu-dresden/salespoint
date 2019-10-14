@@ -4,6 +4,40 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[7.2]
+== 7.2
+
+Release date: 2019-10-14
+
+- {linkbase}/163[#163] - Relax 1:1 relationship between InventoryItem and Product.
+- {linkbase}/216[#216] - Document usage of @LoggedIn annotation.
+- {linkbase}/255[#255] - Is Interval open or closed?.
+- {linkbase}/276[#276] - Reorganize reference docs.
+- {linkbase}/267[#267] - Upgrade to Moduliths 1.0 RC2.
+- {linkbase}/259[#259] - Upgrade to Spring Boot 2.2 RC1.
+- {linkbase}/254[#254] - Use explicit module names to avoid clashes with user-level projects.
+- {linkbase}/257[#257] - Upgrade to Java 11.
+- {linkbase}/278[#278] - MonetaryAmountAttributeConverter should report original exception in case the fallback parsing fails.
+- {linkbase}/251[#251] - Add Quantity.times(…) to multiply with scalars.
+- {linkbase}/190[#190] - "Getters of lazy classes cannot be final" during server start after Update to 6.4.1.
+- {linkbase}/221[#221] - Make sure Spring components can be clearly identified in the Javadoc.
+- {linkbase}/272[#272] - Let PersistentUserAccountManager consistently work with UnencryptedPassword.
+- {linkbase}/273[#273] - Switch to OpenJDK for Travis build.
+- {linkbase}/274[#274] - Adapt to changes in configuration properties scanning in Spring Boot 2.2.
+- {linkbase}/269[#269] - Make sure AbstractEntity sets isNew flag in @PrePersist.
+- {linkbase}/270[#270] - Model (Un)EncryptedPassword explicitly.
+- {linkbase}/271[#271] - Lower log output for test cases.
+- {linkbase}/265[#265] - Upgrade to Asciidoctor Maven plugin to 2.0.
+- {linkbase}/268[#268] - Upgrade to JUnit 5.4.2.
+- {linkbase}/266[#266] - Default spring.datasource.generate-unique-name to true.
+- {linkbase}/264[#264] - Tweak Lombok setup to exclude generated code from test coverage reports.
+- {linkbase}/261[#261] - Add explicit module display names.
+- {linkbase}/262[#262] - Upgrade to Lombok Maven Plugin 1.18.6.0.
+- {linkbase}/263[#263] - Upgrade Asciidoctor Maven Plugin dependencies.
+- {linkbase}/258[#258] - Upgrade to JUnit 5.4.
+- {linkbase}/250[#250] - Quantity.isZeroOrNegative() is false for amounts with decimal digits.
+
+:numbered!:
 [7.1]
 == 7.1
 
