@@ -17,7 +17,6 @@
 	<properties>
 		<dev>/dev</dev>
 		<java.version>11</java.version>
-		<junit-jupiter.version>5.4.2</junit-jupiter.version>
 		<moduliths.version>1.0.0.RC2</moduliths.version>
 	</properties>
 
@@ -97,12 +96,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-junit</artifactId>
 			<version>2.0.0.0</version>
@@ -113,12 +106,6 @@
 					<artifactId>junit</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-junit-jupiter</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -134,12 +121,6 @@
 		</dependency>
 
 		<!-- For changelog creation -->
-
-		<dependency>
-			<groupId>com.jayway.jsonpath</groupId>
-			<artifactId>json-path</artifactId>
-			<scope>test</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
