@@ -17,8 +17,8 @@
 	<properties>
 		<dev>/dev</dev>
 		<java.version>11</java.version>
-		<moduliths.version>1.0.0.BUILD-SNAPSHOT</moduliths.version>
 		<junit-jupiter.version>5.4.2</junit-jupiter.version>
+		<moduliths.version>1.0.0.RC2</moduliths.version>
 	</properties>
 
 	<profiles>
