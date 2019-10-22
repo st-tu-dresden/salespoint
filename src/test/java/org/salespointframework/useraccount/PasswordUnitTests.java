@@ -25,7 +25,7 @@ import org.salespointframework.useraccount.Password.UnencryptedPassword;
  *
  * @author Oliver Drotbohm
  */
-public class PasswordUnitTests {
+class PasswordUnitTests {
 
 	@Test // #270
 	void passwordsAreEqualForSameValue() throws Exception {
