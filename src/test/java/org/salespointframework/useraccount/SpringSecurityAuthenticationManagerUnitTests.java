@@ -15,8 +15,9 @@
  */
 package org.salespointframework.useraccount;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.*;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.salespointframework.useraccount.UserAccountRepositoryIntegrationTests.*;
@@ -109,6 +110,23 @@ class SpringSecurityAuthenticationManagerUnitTests {
 
 		verify(repository).findByEmail(any());
 		verify(repository, never()).findById(any());
+	}
+
+	@Test // # 280
+	void exposesRolesAsRoleUnderscorePrefixedAuthorities() {
+
+		Role customerRole = Role.of("CUSTOMER");
+		Role adminRole = Role.of("ROLE_ADMIN");
+
+		UserAccountIdentifier identifier = new UserAccountIdentifier("4711");
+		var userAccount = new UserAccount(identifier, EncryptedPassword.of("encrypted"), customerRole, adminRole);
+
+		doReturn(Optional.of(userAccount)).when(repository).findById(identifier);
+
+		var userDetails = authenticationManager.loadUserByUsername("4711");
+
+		assertThat(userDetails.getAuthorities()) //
+				.allMatch(it -> it.getAuthority().startsWith("ROLE_"));
 	}
 
 	private static void authenticate(UserAccount account) {

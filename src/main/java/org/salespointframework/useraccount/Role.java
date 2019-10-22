@@ -27,7 +27,7 @@ import javax.persistence.Embeddable;
 
 /**
  * A Role is only identified by a name. This class is immutable.
- * 
+ *
  * @author Christopher Bellmann
  * @author Paul Henke
  */
@@ -38,6 +38,7 @@ import javax.persistence.Embeddable;
 public final class Role implements Serializable, Comparable<Role> {
 
 	private static final long serialVersionUID = 5440415491197908839L;
+	private static final String ROLE_PREFIX = "ROLE_";
 
 	/**
 	 * The name of the role.
@@ -46,11 +47,21 @@ public final class Role implements Serializable, Comparable<Role> {
 
 	/**
 	 * Creates a new {@link Role} instance with the given name.
-	 * 
+	 *
 	 * @param name the name of the Role, must not be {@literal null} or empty.
 	 */
 	public static Role of(String name) {
 		return new Role(name);
+	}
+
+	/**
+	 * Returns the {@link Role}'s name as Spring Security authority token so that it can be used in {@code hasRole('…')}
+	 * expressions.
+	 *
+	 * @return
+	 */
+	String toAuthority() {
+		return name.startsWith(ROLE_PREFIX) ? name : ROLE_PREFIX.concat(name);
 	}
 
 	/*
