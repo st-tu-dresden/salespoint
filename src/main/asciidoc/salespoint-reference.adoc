@@ -124,6 +124,10 @@ A view for a user having an administrator role may display different content -- 
 
 `Role` is a value typefootnoteref:[value-objects, http://blog.joda.org/2014/03/valjos-value-java-objects.html[Value Objects]] and thus instances are created using a factory method: `Role.of("ROLE_ADMIN");`.
 
+Up until Salespoint 7.2.0, roles' names had to start with `ROLE_`, so that they could be used for verifications in Spring Security expressions in Thymeleaf templates (via `sec:authorize` attributes) or on methods (using the `@PreAuthorize` annotation) with their plain name.
+I.e. users had to be created with `Role.of("ROLE_CUSTOMER")` but the verifications would have used `hasRole("CUSTOMER")` expressions.
+This asymmetry has been fixed with Salespoint 7.2.1 in which the role itself can also be set up using an unprefixed name like `CUSTOMER`.
+
 [[modules.useraccount.login]]
 === Login
 To reduce code repetition, Salespoint {majorversion} contains code to automate the user log in. Using a Thymeleaf template, a special login form is generated, which is handled by an interceptor. The interceptor verifies the user password and associates the current session with the user using `<login>` and `<logoff>`. The session is required, because multiple users can be logged on at the same time.

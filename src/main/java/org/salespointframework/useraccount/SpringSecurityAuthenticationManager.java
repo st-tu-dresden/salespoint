@@ -110,7 +110,7 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager, User
 			this.password = userAccount.getPassword().toString();
 			this.isEnabled = userAccount.isEnabled();
 			this.authorities = userAccount.getRoles() //
-					.map(role -> new SimpleGrantedAuthority(role.getName())) //
+					.map(role -> new SimpleGrantedAuthority(role.toAuthority())) //
 					.toList();
 		}
 
