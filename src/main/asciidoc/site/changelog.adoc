@@ -4,6 +4,14 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[7.2.1]
+== 7.2.1
+
+Release date: 2019-10-23
+
+- {linkbase}/280[#280] - Make sure roles are properly translated into Spring Security role authorities.
+
+:numbered!:
 [7.2]
 == 7.2
 
