@@ -3,7 +3,7 @@
 
 	<groupId>de.tudresden.inf.st</groupId>
 	<artifactId>salespoint-framework</artifactId>
-	<version>7.2.1.BUILD-SNAPSHOT</version>
+	<version>7.2.1.RELEASE</version>
 
 	<name>Salespoint</name>
 
@@ -338,7 +338,7 @@
 	<scm>
 		<url>https://github.com/st-tu-dresden/salespoint</url>
 		<connection>scm:git:https://github.com/st-tu-dresden/salespoint</connection>
-		<tag>7.2.x</tag>
+		<tag>7.2.1.RELEASE</tag>
 	</scm>
 
 	<distributionManagement>
