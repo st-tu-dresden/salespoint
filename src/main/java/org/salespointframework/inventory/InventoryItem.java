@@ -35,7 +35,8 @@ import org.springframework.util.Assert;
  * available.
  *
  * @author Paul Henke
- * @author Oliver Gierke
+ * @author Oliver Drotbohm
+ * @author Martin Morgenstern
  * @see UniqueInventoryItem
  * @see MultiInventoryItem
  * @since 7.2
@@ -53,9 +54,9 @@ public abstract class InventoryItem<T extends InventoryItem<T>> extends Abstract
 	private Quantity quantity;
 
 	/**
-	 * Creates a new {@link UniqueInventoryItem} for the given {@link Product} and {@link Quantity}.
+	 * Creates a new {@link InventoryItem} for the given {@link Product} and {@link Quantity}.
 	 *
-	 * @param quantity the initial {@link Quantity} for this {@link UniqueInventoryItem}, must not be {@literal null}.
+	 * @param quantity the initial {@link Quantity} for this {@link InventoryItem}, must not be {@literal null}.
 	 */
 	protected InventoryItem(Product product, Quantity quantity) {
 
@@ -76,7 +77,7 @@ public abstract class InventoryItem<T extends InventoryItem<T>> extends Abstract
 	}
 
 	/**
-	 * Returns whether the {@link UniqueInventoryItem} is available in exactly or more of the given quantity.
+	 * Returns whether the {@link InventoryItem} is available in exactly or more of the given quantity.
 	 *
 	 * @param quantity must not be {@literal null}.
 	 * @return
@@ -86,7 +87,7 @@ public abstract class InventoryItem<T extends InventoryItem<T>> extends Abstract
 	}
 
 	/**
-	 * Decreases the quantity of the current {@link UniqueInventoryItem} by the given {@link Quantity}.
+	 * Decreases the quantity of the current {@link InventoryItem} by the given {@link Quantity}.
 	 *
 	 * @param quantity must not be {@literal null}.
 	 */
@@ -105,7 +106,7 @@ public abstract class InventoryItem<T extends InventoryItem<T>> extends Abstract
 	}
 
 	/**
-	 * Increases the quantity of the current {@link UniqueInventoryItem} by the given {@link Quantity}.
+	 * Increases the quantity of the current {@link InventoryItem} by the given {@link Quantity}.
 	 *
 	 * @param quantity must not be {@literal null}.
 	 */
