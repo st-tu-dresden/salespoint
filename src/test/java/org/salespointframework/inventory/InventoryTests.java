@@ -22,6 +22,7 @@ import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import de.olivergierke.moduliths.test.ModuleTest;
 
+import java.util.Map;
 import java.util.function.Function;
 
 import javax.persistence.EntityManager;
@@ -31,6 +32,8 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
@@ -38,6 +41,7 @@ import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -52,7 +56,9 @@ class InventoryTests {
 	@Autowired UniqueInventory<UniqueInventoryItem> unique;
 	@Autowired MultiInventory<MultiInventoryItem> multiple;
 	@Autowired Catalog<Product> catalog;
+
 	@Autowired EntityManager em;
+	@Autowired NamedParameterJdbcOperations jdbc;
 
 	Cookie cookie;
 	UniqueInventoryItem item;
@@ -192,6 +198,15 @@ class InventoryTests {
 		MultiInventoryItem second = new MultiInventoryItem(otherCookie, Quantity.of(5));
 
 		assertRejectsSecond(first, it -> unique.save(it), second, it -> multiple.save(it));
+	}
+
+	@ParameterizedTest // #283
+	@ValueSource(strings = { "MULTI_INVENTORY_ITEM", "UNIQUE_INVENTORY_ITEM" })
+	void createsIndividualTablesForEntities(String tableName) {
+
+		var sql = "SELECT COUNT(*) AS count FROM information_schema.tables WHERE table_name = :tableName";
+
+		assertThat(jdbc.queryForObject(sql, Map.of("tableName", tableName), int.class)).isEqualTo(1);
 	}
 
 	private <S extends InventoryItem<S>, T extends InventoryItem<T>> void assertRejectsSecond(S first,
