@@ -22,8 +22,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.MappedSuperclass;
 
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.AbstractEntity;
@@ -40,7 +40,7 @@ import org.springframework.util.Assert;
  * @see MultiInventoryItem
  * @since 7.2
  */
-@Entity
+@MappedSuperclass
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 @EntityListeners(InventoryItemCreationListener.class)
 public abstract class InventoryItem<T extends InventoryItem<T>> extends AbstractEntity<InventoryItemIdentifier> {
