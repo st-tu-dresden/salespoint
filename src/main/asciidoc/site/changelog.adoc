@@ -4,6 +4,17 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[7.2.2]
+== 7.2.2
+
+Release date: 2019-11-26
+
+- {linkbase}/284[#284] - Exact Quantity.equals(…) comparison is inconsistent with Quantity.toString().
+- {linkbase}/253[#253] - Allow to explictly disable the inventory update via property.
+- {linkbase}/282[#282] - Document aggregate identification features.
+- {linkbase}/283[#283] - Constraint violation when creating MultiInventoryItems with same Product.
+
+:numbered!:
 [7.2.1]
 == 7.2.1
 
