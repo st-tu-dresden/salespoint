@@ -450,6 +450,59 @@ Besides the business modules, Salespoint containes a few <<glossary.spi,SPIs>> t
 
 Every application should be tested, so an easy way is, to use test data. Salespoint provides an SPI called `DataInitializer` for you to implement. If your implementation is registered as Spring bean (e.g. by annotating it with `@Component`), it will automatically be found and `initialize()` will be called at application startup. As shown in the Videoshop project, a `DataInitializer` class is registered and creates a lot of data and finally adds this data to the application.
 
+[[modules.technical-apis.webmvc-entity-binding]]
+=== Entity binding in WebMVC controller methods
+
+Controller methods can bind request parameters and path variables to entity instances directly if the value to be bound is an identifier of the entity to bind.
+Assuming a controller method displaying a form registers an entity with the model:
+
+[source, java]
+----
+@Controller
+class MyController {
+
+  @GetMapping("/myform")
+  String displayForm(Model model) {
+
+    Order order = … // Order with id 4711.
+
+    model.addAttribute("order", order);
+
+    return "myform";
+  }
+}
+----
+
+The identifier of the order can be used in anchors and form values like this.
+
+[source, hmtl]
+----
+<!-- Expands to /orders/4711 -->
+<a th:href="@{/orders/{id}(id=${order.id})}" …>…</a>
+
+<form th:object="${myForm}" …>
+  <input type="hidden" name="order" th:value="${order.id}" />
+  …
+</form>
+----
+
+When following the link or submitting the form the identifier can be bound to the backing entity type directly:
+
+[source, java]
+----
+@Controller
+class MyController {
+
+  @GetMapping("/order/{order}")
+  String displayForm(Order order) { … }
+}
+----
+
+Note how we do not use a `String` or e.g. `Long` parameter type as controller method parameter but the entity type directly.
+This is achieved by Spring MVC trying to convert the source `String` value submitted through the request into the identifier type of the entity in the first place as well as a subsequent repository lookup using the identifier value just created.
+In the above example we'd convert `"4711"` to a `Long` 4711 (assuming the identifier of `Order` is declared as `Long`).
+That in turn gets converted into an `Order` instance by calling `OrderRepository.findById(Long)` with the just converted value.
+
 [[stack]]
 = Technical Stack
 
