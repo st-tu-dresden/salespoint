@@ -295,6 +295,10 @@ public class Quantity {
 	 */
 	@Override
 	public String toString() {
-		return new DecimalFormat().format(amount).concat(metric.getAbbreviation());
+
+		DecimalFormat format = new DecimalFormat();
+		format.setMinimumFractionDigits(amount.scale());
+
+		return format.format(amount).concat(metric.getAbbreviation());
 	}
 }
