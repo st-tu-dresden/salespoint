@@ -206,6 +206,22 @@ public class Quantity {
 	}
 
 	/**
+	 * Returns whether the current {@link Quantity} is equal to the given one negelecting potential differences in
+	 * precision of the underlying amount. I.e. an amount of 1 is considered equal to an amount of 1.0.
+	 *
+	 * @param other must not be {@literal null}.
+	 * @return
+	 * @since 7.2.2
+	 */
+	public boolean isEqualTo(Quantity other) {
+
+		Assert.notNull(other, "Quantity must not be null!");
+
+		return metric.isCompatibleWith(other.metric) //
+				&& this.amount.compareTo(other.amount) == 0;
+	}
+
+	/**
 	 * Returns whether the given {@link Quantity} is greater than the current one.
 	 *
 	 * @param other must not be {@literal null}. The given {@link Quantity}'s {@link Metric} must be compatible with the

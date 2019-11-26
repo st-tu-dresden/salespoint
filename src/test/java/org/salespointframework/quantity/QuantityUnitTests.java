@@ -156,4 +156,14 @@ class QuantityUnitTests {
 		assertThat(Quantity.of(5.5).times(2)).isEqualTo(Quantity.of(11.0));
 		assertThat(Quantity.of(5.5).times(2l)).isEqualTo(Quantity.of(11.0));
 	}
+
+	@Test // #284
+	void considersValuesOfDifferentPrecisionStructurallyEqual() {
+
+		Quantity left = Quantity.of(1);
+		Quantity right = Quantity.of(1.0);
+
+		assertThat(left.isEqualTo(right)).isTrue();
+		assertThat(left).isNotEqualTo(right);
+	}
 }
