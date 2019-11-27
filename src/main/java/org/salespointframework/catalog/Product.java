@@ -20,7 +20,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -48,9 +47,10 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Entity
-@ToString(doNotUseGetters = true)
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class Product extends AbstractEntity<ProductIdentifier> implements Comparable<Product> {
+
+	private static final String INVALID_METRIC = "Product %s does not support quantity %s using metric %s!";
 
 	@EmbeddedId //
 	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID")) //
@@ -145,7 +145,7 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 	public void verify(Quantity quantity) {
 
 		if (!supports(quantity)) {
-			throw new MetricMismatchException(String.format("Product %s does not support quantity %s!", this, quantity));
+			throw new MetricMismatchException(String.format(INVALID_METRIC, this, quantity, quantity.getMetric()));
 		}
 	}
 
@@ -176,5 +176,14 @@ public class Product extends AbstractEntity<ProductIdentifier> implements Compar
 	@Override
 	public int compareTo(Product other) {
 		return this.name.compareTo(other.name);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return String.format("%s, %s, %s, handled in %s", name, productIdentifier, price, metric);
 	}
 }

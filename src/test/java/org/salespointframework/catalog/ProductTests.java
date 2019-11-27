@@ -24,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Metric;
+import org.salespointframework.quantity.MetricMismatchException;
 import org.salespointframework.quantity.Quantity;
 
 @SuppressWarnings("javadoc")
@@ -78,5 +79,16 @@ class ProductTests {
 
 		assertThat(product.createQuantity(10L)).isEqualTo(Quantity.of(10L, Metric.LITER));
 		assertThat(product.createQuantity(10.0)).isEqualTo(Quantity.of(10.0, Metric.LITER));
+	}
+
+	@Test // #289
+	void invalidQuantityExposesMetricsExplicitly() {
+
+		Product product = new Product("Sample", Money.of(10, Currencies.EURO));
+
+		assertThatExceptionOfType(MetricMismatchException.class) //
+				.isThrownBy(() -> product.verify(Quantity.of(5, Metric.LITER))) //
+				.withMessageContaining(Metric.LITER.toString()) //
+				.withMessageContaining(Metric.UNIT.toString());
 	}
 }
