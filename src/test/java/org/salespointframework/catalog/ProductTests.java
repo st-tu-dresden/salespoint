@@ -27,7 +27,6 @@ import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.MetricMismatchException;
 import org.salespointframework.quantity.Quantity;
 
-@SuppressWarnings("javadoc")
 class ProductTests {
 
 	private Cookie cookie;
