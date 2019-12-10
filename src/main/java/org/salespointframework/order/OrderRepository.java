@@ -18,6 +18,10 @@ package org.salespointframework.order;
 import java.time.LocalDateTime;
 
 import org.salespointframework.useraccount.UserAccount;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.util.Streamable;
 
@@ -27,6 +31,18 @@ import org.springframework.data.util.Streamable;
  * @author Oliver Gierke
  */
 interface OrderRepository<T extends Order> extends PagingAndSortingRepository<T, OrderIdentifier> {
+
+	/**
+	 * Re-declaration of the method actually already contained in {@link PagingAndSortingRepository} to use the JPQL based
+	 * variant of {@link Sort} binding, as only that allows the definition of expressions referencing properties of
+	 * sub-types of {@link Order}, too.
+	 *
+	 * @param pageable must not be {@literal null}.
+	 * @return
+	 */
+	@Override
+	@Query("select o from #{#entityName} o")
+	Page<T> findAll(Pageable pageable);
 
 	/**
 	 * @param from
