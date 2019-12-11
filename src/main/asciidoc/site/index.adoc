@@ -45,7 +45,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 ----
 
 [[resources.development]]
-=== Current development snapshot - 7.2.x / 7.3.x snapshots
+=== Current development snapshot - 7.2.x / 8.0.x snapshots
 * link:dev/salespoint-reference.html[Reference documentation]
 * link:dev/api[JavaDoc]
 * Maven repository declaration:
@@ -72,7 +72,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 <dependency>
   <groupId>de.tudresden.inf.st</groupId>
   <artifactId>salespoint-framework</artifactId>
-  <version>7.3.0.BUILD-SNAPSHOT</version>
+  <version>8.0.0.BUILD-SNAPSHOT</version>
 </dependency>
 ----
 
