@@ -178,7 +178,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 	 */
 	@Override
 	public Streamable<UserAccount> findAll() {
-		return Streamable.of(repository.findAll());
+		return repository.findAll();
 	}
 
 	/*

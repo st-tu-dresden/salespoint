@@ -17,8 +17,8 @@ package org.salespointframework.inventory;
 
 import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
+import org.salespointframework.core.SalespointRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.util.Assert;
 
 /**
@@ -29,7 +29,7 @@ import org.springframework.util.Assert;
  * @since 7.2
  */
 public interface MultiInventory<T extends MultiInventoryItem>
-		extends Inventory<MultiInventoryItem>, CrudRepository<T, InventoryItemIdentifier> {
+		extends Inventory<MultiInventoryItem>, SalespointRepository<T, InventoryItemIdentifier> {
 
 	/**
 	 * Returns all {@link InventoryItems} available for a given {@link ProductIdentifier}.

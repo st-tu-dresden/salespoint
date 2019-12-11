@@ -209,6 +209,17 @@ class InventoryTests {
 		assertThat(jdbc.queryForObject(sql, Map.of("tableName", tableName), int.class)).isEqualTo(1);
 	}
 
+	@Test // #293
+	void allowsConcatenatingInventoryItems() {
+
+		var otherCookie = catalog.save(new Cookie("Other cookie", Money.of(3, Currencies.EURO)));
+
+		MultiInventoryItem otherItem = multiple.save(new MultiInventoryItem(otherCookie, Quantity.of(5)));
+
+		assertThat(unique.streamAll().and(multiple.streamAll())).containsExactly(item, otherItem);
+		assertThat(multiple.streamAll().and(unique.streamAll())).containsExactly(otherItem, item);
+	}
+
 	private <S extends InventoryItem<S>, T extends InventoryItem<T>> void assertRejectsSecond(S first,
 			Function<S, S> firstSaver, T second, Function<T, T> secondSaver) {
 

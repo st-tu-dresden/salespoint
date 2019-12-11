@@ -18,8 +18,8 @@ package org.salespointframework.catalog;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.salespointframework.core.SalespointRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Repository;
 
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Repository;
  * @author Oliver Gierke
  */
 @Repository
-public interface Catalog<T extends Product> extends CrudRepository<T, ProductIdentifier> {
+public interface Catalog<T extends Product> extends SalespointRepository<T, ProductIdentifier> {
 
 	/**
 	 * Returns all {@link Product}s assigned to the given category.

@@ -86,7 +86,7 @@ class PersistentAccountancy implements Accountancy {
 	 */
 	@Override
 	public final Streamable<AccountancyEntry> findAll() {
-		return Streamable.of(repository.findAll());
+		return repository.findAll();
 	}
 
 	/*

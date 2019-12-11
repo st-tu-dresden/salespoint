@@ -17,6 +17,7 @@ package org.salespointframework.inventory;
 
 import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
+import org.salespointframework.core.SalespointRepository;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -44,6 +45,18 @@ import org.springframework.data.util.Streamable;
  */
 @NoRepositoryBean
 public interface Inventory<T extends InventoryItem<?>> {
+
+	/**
+	 * Returns all {@link InventoryItem}s as {@link Streamable} usually to concatenate with other {@link Streamable}s of
+	 * {@link InventoryItem}s. For dedicated access to the concrete sub-type of {@link InventoryItem} use
+	 * {@link SalespointRepository#findAll()}.
+	 *
+	 * @return
+	 * @see SalespointRepository#findAll()
+	 * @since 8.0
+	 */
+	@Query("select i from #{#entityName} i")
+	Streamable<InventoryItem<?>> streamAll();
 
 	/**
 	 * Returns all {@link UniqueInventoryItem}s that are out of stock (i.e. the {@link Quantity}'s amount is equal or less

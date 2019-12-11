@@ -19,10 +19,10 @@ import java.util.Optional;
 
 import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
+import org.salespointframework.core.SalespointRepository;
 import org.salespointframework.order.Order;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * A {@link UniqueInventory} manages {@link UniqueInventoryItem}s, i.e. only a single {@link InventoryItem} can exist
@@ -37,7 +37,7 @@ import org.springframework.data.repository.CrudRepository;
  * @see MultiInventoryItem
  */
 public interface UniqueInventory<T extends UniqueInventoryItem>
-		extends Inventory<T>, CrudRepository<T, InventoryItemIdentifier> {
+		extends Inventory<T>, SalespointRepository<T, InventoryItemIdentifier> {
 
 	/**
 	 * Returns the {@link InventoryItem} for the given {@link ProductIdentifier}.

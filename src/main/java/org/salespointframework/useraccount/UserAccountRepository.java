@@ -17,7 +17,7 @@ package org.salespointframework.useraccount;
 
 import java.util.Optional;
 
-import org.springframework.data.repository.CrudRepository;
+import org.salespointframework.core.SalespointRepository;
 import org.springframework.data.util.Streamable;
 
 /**
@@ -25,7 +25,7 @@ import org.springframework.data.util.Streamable;
  * 
  * @author Oliver Gierke
  */
-interface UserAccountRepository extends CrudRepository<UserAccount, UserAccountIdentifier> {
+interface UserAccountRepository extends SalespointRepository<UserAccount, UserAccountIdentifier> {
 
 	/**
 	 * Returns all enabled {@link UserAccount}s.
