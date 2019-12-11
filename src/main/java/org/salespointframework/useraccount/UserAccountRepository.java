@@ -22,28 +22,28 @@ import org.springframework.data.util.Streamable;
 
 /**
  * Repository to persist {@link UserAccount} instances.
- * 
+ *
  * @author Oliver Gierke
  */
 interface UserAccountRepository extends SalespointRepository<UserAccount, UserAccountIdentifier> {
 
 	/**
 	 * Returns all enabled {@link UserAccount}s.
-	 * 
+	 *
 	 * @return
 	 */
 	Streamable<UserAccount> findByEnabledTrue();
 
 	/**
 	 * Returns all disabled {@link UserAccount}s.
-	 * 
+	 *
 	 * @return
 	 */
 	Streamable<UserAccount> findByEnabledFalse();
 
 	/**
 	 * Returns the {@link UserAccount} with the given email address.
-	 * 
+	 *
 	 * @param emailAddress must not be {@literal null}.
 	 * @return
 	 * @since 7.1

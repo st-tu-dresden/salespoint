@@ -24,14 +24,14 @@ import org.springframework.util.Assert;
 
 /**
  * Repository for {@link AccountancyEntry}s.
- * 
+ *
  * @author Oliver Gierke
  */
 interface AccountancyEntryRepository extends SalespointRepository<AccountancyEntry, AccountancyEntryIdentifier> {
 
 	/**
 	 * Returns all {@link AccountancyEntry}s in the given time frame.
-	 * 
+	 *
 	 * @param from
 	 * @param to
 	 * @return
@@ -40,7 +40,7 @@ interface AccountancyEntryRepository extends SalespointRepository<AccountancyEnt
 
 	/**
 	 * Returns all {@link AccountancyEntry}s within the given {@link Interval}.
-	 * 
+	 *
 	 * @param interval must not be {@literal null}.
 	 * @return
 	 */

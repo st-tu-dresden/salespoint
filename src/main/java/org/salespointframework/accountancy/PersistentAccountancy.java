@@ -40,7 +40,7 @@ import org.springframework.util.Assert;
 
 /**
  * This class represents an accountancy. An accountancy aggregates of {@link AccountancyEntry}s.
- * 
+ *
  * @author Hannes Weisbach
  * @author Thomas Dedek
  * @author Oliver Gierke
