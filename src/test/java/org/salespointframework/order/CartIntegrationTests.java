@@ -18,11 +18,10 @@ package org.salespointframework.order;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.junit.MatcherAssert.*;
 
-import de.olivergierke.moduliths.test.ModuleTest;
-import de.olivergierke.moduliths.test.ModuleTest.BootstrapMode;
-
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
+import org.moduliths.test.ModuleTest;
+import org.moduliths.test.ModuleTest.BootstrapMode;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;

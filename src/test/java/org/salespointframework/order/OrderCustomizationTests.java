@@ -17,11 +17,11 @@ package org.salespointframework.order;
 
 import static org.assertj.core.api.Assertions.*;
 
-import de.olivergierke.moduliths.test.ModuleTest;
-import de.olivergierke.moduliths.test.ModuleTest.BootstrapMode;
 import lombok.RequiredArgsConstructor;
 
 import org.junit.jupiter.api.Test;
+import org.moduliths.test.ModuleTest;
+import org.moduliths.test.ModuleTest.BootstrapMode;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;

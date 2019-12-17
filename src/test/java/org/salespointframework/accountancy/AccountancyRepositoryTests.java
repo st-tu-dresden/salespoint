@@ -17,13 +17,12 @@ package org.salespointframework.accountancy;
 
 import static org.assertj.core.api.Assertions.*;
 
-import de.olivergierke.moduliths.test.ModuleTest;
-import de.olivergierke.moduliths.test.ModuleTest.BootstrapMode;
-
 import java.time.LocalDateTime;
 
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
+import org.moduliths.test.ModuleTest;
+import org.moduliths.test.ModuleTest.BootstrapMode;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for {@link AccountancyEntryRepository}.
- * 
+ *
  * @author Oliver Gierke
  */
 @Transactional

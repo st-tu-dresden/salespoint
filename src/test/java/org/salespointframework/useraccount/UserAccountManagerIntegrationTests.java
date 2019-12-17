@@ -17,11 +17,10 @@ package org.salespointframework.useraccount;
 
 import static org.assertj.core.api.Assertions.*;
 
-import de.olivergierke.moduliths.test.ModuleTest;
-
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
+import org.moduliths.test.ModuleTest;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.springframework.beans.factory.annotation.Autowired;

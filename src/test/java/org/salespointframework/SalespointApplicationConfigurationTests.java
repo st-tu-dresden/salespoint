@@ -20,14 +20,13 @@ import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 
-import de.olivergierke.modulith.docs.Documenter;
-import de.olivergierke.modulith.docs.Documenter.Options;
-import de.olivergierke.moduliths.model.Modules;
-
 import java.io.IOException;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.modulith.docs.Documenter;
+import org.modulith.docs.Documenter.Options;
+import org.moduliths.model.Modules;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.DataInitializer;

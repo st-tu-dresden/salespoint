@@ -17,7 +17,6 @@ package org.salespointframework.time;
 
 import static org.assertj.core.api.Assertions.*;
 
-import de.olivergierke.moduliths.test.ModuleTest;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -30,6 +29,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.junit.jupiter.api.Test;
+import org.moduliths.test.ModuleTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 

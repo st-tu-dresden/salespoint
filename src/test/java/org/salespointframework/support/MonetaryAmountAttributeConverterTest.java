@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
-import org.salespointframework.support.MonetaryAmountAttributeConverter;
 
 /**
  * Unit tests for {@link MonetaryAmountAttributeConverter}

@@ -18,10 +18,9 @@ package org.salespointframework.support;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.junit.MatcherAssert.*;
 
-import de.olivergierke.moduliths.test.ModuleTest;
-
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
+import org.moduliths.test.ModuleTest;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;

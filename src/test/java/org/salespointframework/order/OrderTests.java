@@ -20,12 +20,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.salespointframework.core.Currencies.*;
 import static org.salespointframework.order.OrderStatus.*;
 
-import de.olivergierke.moduliths.test.ModuleTest;
-import de.olivergierke.moduliths.test.ModuleTest.BootstrapMode;
-
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.moduliths.test.ModuleTest;
+import org.moduliths.test.ModuleTest.BootstrapMode;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.order.ChargeLine.AttachedChargeLine;

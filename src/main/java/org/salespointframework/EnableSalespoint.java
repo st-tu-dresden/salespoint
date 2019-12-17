@@ -15,14 +15,13 @@
  */
 package org.salespointframework;
 
-import de.olivergierke.moduliths.Modulithic;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.moduliths.Modulithic;
 import org.salespointframework.EnableSalespoint.SalespointSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

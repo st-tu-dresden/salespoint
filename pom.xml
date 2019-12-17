@@ -17,7 +17,7 @@
 	<properties>
 		<dev>/dev</dev>
 		<java.version>11</java.version>
-		<moduliths.version>1.0.0.RC2</moduliths.version>
+		<moduliths.version>1.0.0.BUILD-SNAPSHOT</moduliths.version>
 	</properties>
 
 	<profiles>
@@ -140,20 +140,20 @@
 		</dependency>
 
 		<dependency>
-			<groupId>de.olivergierke.moduliths</groupId>
+			<groupId>org.moduliths</groupId>
 			<artifactId>moduliths-core</artifactId>
 			<version>${moduliths.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>de.olivergierke.moduliths</groupId>
+			<groupId>org.moduliths</groupId>
 			<artifactId>moduliths-test</artifactId>
 			<version>${moduliths.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>de.olivergierke.moduliths</groupId>
+			<groupId>org.moduliths</groupId>
 			<artifactId>moduliths-docs</artifactId>
 			<version>${moduliths.version}</version>
 			<scope>test</scope>
@@ -354,8 +354,8 @@
 
 	<repositories>
 		<repository>
-			<id>spring-libs-milestone</id>
-			<url>https://repo.spring.io/libs-milestone</url>
+			<id>spring-libs-snapshot</id>
+			<url>https://repo.spring.io/libs-snapshot</url>
 		</repository>
 		<repository>
 			<id>salespointframework</id>
