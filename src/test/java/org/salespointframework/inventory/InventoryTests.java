@@ -219,6 +219,20 @@ class InventoryTests {
 		assertThat(multiple.streamAll().and(unique.streamAll())).containsExactly(otherItem, item);
 	}
 
+	@Test // #300
+	void properlyLoadsLongBasedQuantity() {
+
+		var otherCookie = catalog.save(new Cookie("Other cookie", Money.of(3, Currencies.EURO)));
+		var item = unique.save(new UniqueInventoryItem(otherCookie, Quantity.of(5)));
+
+		em.flush();
+		em.clear();
+
+		assertThat(unique.findById(item.getId())).hasValueSatisfying(it -> {
+			assertThat(it.getQuantity()).isEqualTo(item.getQuantity());
+		});
+	}
+
 	private <S extends InventoryItem<S>, T extends InventoryItem<T>> void assertRejectsSecond(S first,
 			Function<S, S> firstSaver, T second, Function<T, T> secondSaver) {
 

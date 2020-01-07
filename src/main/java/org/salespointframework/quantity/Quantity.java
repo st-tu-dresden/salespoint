@@ -16,16 +16,20 @@
 package org.salespointframework.quantity;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
 import org.springframework.util.Assert;
 
@@ -36,9 +40,10 @@ import org.springframework.util.Assert;
  * @author Martin Morgenstern
  */
 @Embeddable
-@Value
+@EqualsAndHashCode
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@Access(AccessType.PROPERTY)
 public class Quantity {
 
 	public static final Quantity NONE = Quantity.of(0);
@@ -47,14 +52,14 @@ public class Quantity {
 	/**
 	 * The amount of the Quantity. Explicitly set a prefixed column name to avoid name conflicts.
 	 */
-	@Column(name = "quantity_amount") //
-	private @NonNull final BigDecimal amount;
+	@Getter(onMethod = @__(@Column(name = "quantity_amount"))) //
+	private @NonNull BigDecimal amount;
 
 	/**
 	 * The metric of the Quantity. Explicitly set a prefixed column name to avoid name conflicts.
 	 */
-	@Column(name = "quantity_metric") //
-	private @NonNull final Metric metric;
+	@Getter(onMethod = @__(@Column(name = "quantity_metric"))) //
+	private @NonNull Metric metric;
 
 	/**
 	 * Creates a new {@link Quantity} of the given amount. Defaults the metric to {@value Metric#UNIT}.
@@ -254,6 +259,7 @@ public class Quantity {
 	 *
 	 * @return
 	 */
+	@Transient
 	public boolean isNegative() {
 		return this.amount.compareTo(BigDecimal.ZERO) < 0;
 	}
@@ -263,6 +269,7 @@ public class Quantity {
 	 *
 	 * @return
 	 */
+	@Transient
 	public boolean isZeroOrNegative() {
 		return !isGreaterThan(toZero());
 	}
@@ -286,6 +293,26 @@ public class Quantity {
 
 		if (!isCompatibleWith(quantity.metric)) {
 			throw new MetricMismatchException(String.format(INCOMPATIBLE, this, quantity), metric, quantity.metric);
+		}
+	}
+
+	// Tweaks to properly support long-based Quantities for UNIT metric
+
+	void setMetric(Metric metric) {
+
+		this.metric = metric;
+
+		if (amount != null && Metric.UNIT == metric) {
+			this.amount = BigDecimal.valueOf(amount.longValue());
+		}
+	}
+
+	void setAmount(BigDecimal amount) {
+
+		this.amount = amount;
+
+		if (Metric.UNIT == this.metric) {
+			this.amount = BigDecimal.valueOf(amount.longValue());
 		}
 	}
 
