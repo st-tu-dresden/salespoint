@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.modulith.docs.Documenter;
-import org.modulith.docs.Documenter.Options;
+import org.moduliths.docs.Documenter;
+import org.moduliths.docs.Documenter.Options;
 import org.moduliths.model.Modules;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
