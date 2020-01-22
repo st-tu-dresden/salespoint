@@ -25,9 +25,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.moduliths.test.ModuleTest;
 import org.moduliths.test.ModuleTest.BootstrapMode;
+import org.moduliths.test.PublishedEvents;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.order.ChargeLine.AttachedChargeLine;
+import org.salespointframework.order.Order.OrderCancelled;
+import org.salespointframework.order.Order.OrderCompleted;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
@@ -95,13 +98,16 @@ class OrderTests {
 	}
 
 	@Test
-	void cancelsPaidOrder() {
+	void cancelsPaidOrder(PublishedEvents events) {
 
 		orderManager.payOrder(order);
 		orderManager.completeOrder(order);
 
 		assertThat(orderManager.cancelOrder(order, "Some reason.")).isTrue();
 		assertThat(order.getOrderStatus()).isEqualTo(CANCELLED);
+
+		assertThat(events.ofType(OrderCompleted.class)).hasSize(1);
+		assertThat(events.ofType(OrderCancelled.class)).hasSize(1);
 	}
 
 	@Test

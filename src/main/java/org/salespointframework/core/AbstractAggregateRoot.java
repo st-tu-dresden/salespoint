@@ -34,7 +34,7 @@ import org.springframework.util.Assert;
  * @author Oliver Drotbohm
  * @see <a href="https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#core.domain-events">Publishing
  *      domain events from aggregate roots</a>
- * @since 8.0
+ * @since 7.3
  * @soundtrack Dave Matthews Band - #41 (Live at Hollywood Bowl)
  */
 @MappedSuperclass

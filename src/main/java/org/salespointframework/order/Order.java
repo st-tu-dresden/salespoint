@@ -24,7 +24,6 @@ import lombok.Value;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.money.MonetaryAmount;
@@ -82,8 +81,6 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 
 	@OneToMany(cascade = CascadeType.ALL) //
 	private List<AttachedChargeLine> attachedChargeLines = new ArrayList<>();
-
-	private transient final Collection<Object> events = new ArrayList<>();
 
 	/**
 	 * Creates a new Order
@@ -492,9 +489,12 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 
 		Assert.isTrue(!isCanceled(), "Order is already cancelled!");
 
+		if (!isCompleted()) {
+			registerEvent(OrderCompleted.of(this));
+		}
+
 		this.orderStatus = OrderStatus.CANCELLED;
 
-		registerEvent(OrderCompleted.of(this));
 		registerEvent(OrderCancelled.of(this, reason));
 
 		return this;

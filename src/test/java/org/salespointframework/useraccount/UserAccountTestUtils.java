@@ -32,4 +32,13 @@ public class UserAccountTestUtils {
 	public static UnencryptedPassword UNENCRYPTED_PASSWORD = UnencryptedPassword.of("password");
 
 	static EncryptedPassword ENCRYPTED_PASSWORD = EncryptedPassword.of("encrypted");
+
+	/**
+	 * Creates a dummy {@link UserAccount}.
+	 *
+	 * @return
+	 */
+	public static UserAccount createUserAccount() {
+		return new UserAccount(new UserAccountIdentifier(), ENCRYPTED_PASSWORD);
+	}
 }

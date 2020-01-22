@@ -170,12 +170,13 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 	 * @see org.salespointframework.order.OrderManager#cancelOrder(org.salespointframework.order.Order, java.lang.String)
 	 */
 	@Override
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	public boolean cancelOrder(T order, String reason) {
 
 		Assert.notNull(order, "Order must not be null");
 
 		if (!order.isCanceled()) {
-			order.cancel(reason);
+			save((T) order.cancel(reason));
 			return true;
 		} else {
 			return false;

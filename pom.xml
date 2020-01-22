@@ -18,7 +18,7 @@
 		<dev>/dev</dev>
 		<java.version>11</java.version>
 		<jddd.version>0.1.0</jddd.version>
-		<moduliths.version>1.0.0</moduliths.version>
+		<moduliths.version>1.1.0-SNAPSHOT</moduliths.version>
 		<refdocs.dir>${project.build.directory}/refdocs</refdocs.dir>
 	</properties>
 
@@ -286,7 +286,7 @@
 			<version>${moduliths.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.jddd</groupId>
 			<artifactId>jddd-events</artifactId>
