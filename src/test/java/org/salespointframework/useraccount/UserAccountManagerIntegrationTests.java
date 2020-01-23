@@ -21,8 +21,10 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.moduliths.test.ModuleTest;
+import org.moduliths.test.PublishedEvents;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
+import org.salespointframework.useraccount.UserAccount.UserAccountCreated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -140,6 +142,16 @@ class UserAccountManagerIntegrationTests {
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
 				.isThrownBy(() -> userAccountManager.create("username", PASSWORD));
+	}
+
+	@Test // #313
+	void publishesUserAccountCreatedEventOnCreation(PublishedEvents events) {
+
+		UserAccount account = userAccountManager.create("username", PASSWORD);
+
+		assertThat(events.ofType(UserAccountCreated.class)) //
+				.hasSize(1) //
+				.anyMatch(it -> it.getAccount().equals(account));
 	}
 
 	private UserAccount createAccount() {

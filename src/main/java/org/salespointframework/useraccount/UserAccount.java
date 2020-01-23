@@ -19,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Value;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,8 +32,9 @@ import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.PrePersist;
 
-import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.core.AbstractAggregateRoot;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
@@ -46,7 +48,7 @@ import org.springframework.util.Assert;
 
 @Entity
 @NoArgsConstructor
-public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
+public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 
 	@EmbeddedId //
 	@AttributeOverride(name = "id", column = @Column(name = "USERACCOUNT_ID")) //
@@ -145,6 +147,11 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 		return Streamable.of(roles);
 	}
 
+	@PrePersist
+	void onCreate() {
+		registerEvent(UserAccountCreated.of(this));
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -152,5 +159,10 @@ public class UserAccount extends AbstractEntity<UserAccountIdentifier> {
 	@Override
 	public String toString() {
 		return String.format("UserAccount(\"%s\")", userAccountIdentifier.getIdentifier());
+	}
+
+	@Value(staticConstructor = "of")
+	public static class UserAccountCreated {
+		UserAccount account;
 	}
 }
