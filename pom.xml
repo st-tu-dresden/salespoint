@@ -141,7 +141,7 @@
 
 		<dependency>
 			<groupId>org.moduliths</groupId>
-			<artifactId>moduliths-core</artifactId>
+			<artifactId>moduliths-api</artifactId>
 			<version>${moduliths.version}</version>
 		</dependency>
 
