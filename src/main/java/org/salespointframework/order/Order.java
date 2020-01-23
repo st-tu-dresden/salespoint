@@ -25,20 +25,17 @@ import lombok.Value;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.*;
 
 import org.salespointframework.catalog.Product;
-import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.core.AbstractAggregateRoot;
 import org.salespointframework.order.ChargeLine.AttachedChargeLine;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
-import org.springframework.data.domain.AfterDomainEventPublication;
-import org.springframework.data.domain.DomainEvents;
 import org.springframework.data.domain.Range;
 import org.springframework.data.domain.Range.Bound;
 import org.springframework.data.util.Streamable;
@@ -53,7 +50,7 @@ import org.springframework.util.Assert;
 @Table(name = "ORDERS")
 @ToString(doNotUseGetters = true)
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
-public class Order extends AbstractEntity<OrderIdentifier> {
+public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 
 	@EmbeddedId //
 	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID")) //
@@ -587,22 +584,5 @@ public class Order extends AbstractEntity<OrderIdentifier> {
 		public String toString() {
 			return "OrderCancelled: " + reason;
 		}
-	}
-
-	private <T> T registerEvent(T event) {
-
-		this.events.add(event);
-
-		return event;
-	}
-
-	@DomainEvents
-	Collection<Object> getEvents() {
-		return Collections.unmodifiableCollection(events);
-	}
-
-	@AfterDomainEventPublication
-	void wipeEvents() {
-		this.events.clear();
 	}
 }
