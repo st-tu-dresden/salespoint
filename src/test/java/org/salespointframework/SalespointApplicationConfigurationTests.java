@@ -82,6 +82,9 @@ class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
 
 		// Write diagrams for each module
 		modules.stream().forEach(it -> documenter.writeModuleAsPlantUml(it, options));
+
+		// Write module canvases
+		documenter.writeModuleCanvases("{javadoc}");
 	}
 
 	@Test

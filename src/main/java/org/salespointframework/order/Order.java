@@ -30,6 +30,7 @@ import java.util.List;
 import javax.money.MonetaryAmount;
 import javax.persistence.*;
 
+import org.moduliths.Event;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.AbstractAggregateRoot;
 import org.salespointframework.order.ChargeLine.AttachedChargeLine;
@@ -540,6 +541,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 		return this.orderLines.get(index);
 	}
 
+	@Event
 	@Value(staticConstructor = "of")
 	public static class OrderCompleted {
 
@@ -555,6 +557,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 		}
 	}
 
+	@Event
 	@Value(staticConstructor = "of")
 	public static class OrderPaid {
 
@@ -570,6 +573,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 		}
 	}
 
+	@Event
 	@Value(staticConstructor = "of")
 	public static class OrderCancelled {
 
