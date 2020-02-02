@@ -18,6 +18,7 @@
 		<dev>/dev</dev>
 		<java.version>11</java.version>
 		<moduliths.version>1.0.0.BUILD-SNAPSHOT</moduliths.version>
+		<refdocs.dir>${project.build.directory}/refdocs</refdocs.dir>
 	</properties>
 
 	<profiles>
@@ -139,6 +140,8 @@
 			<artifactId>jaxb-api</artifactId>
 		</dependency>
 
+		<!-- Architecture -->
+
 		<dependency>
 			<groupId>org.moduliths</groupId>
 			<artifactId>moduliths-api</artifactId>
@@ -157,6 +160,16 @@
 			<artifactId>moduliths-docs</artifactId>
 			<version>${moduliths.version}</version>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- Documentation -->
+
+		<dependency>
+			<groupId>io.spring.docresources</groupId>
+			<artifactId>spring-doc-resources</artifactId>
+			<version>0.1.0.RELEASE</version>
+			<type>zip</type>
+			<optional>true</optional>
 		</dependency>
 
 	</dependencies>
@@ -227,6 +240,29 @@
 				</executions>
 			</plugin>
 
+			<!-- Use Spring documentation resources -->
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-doc-resources</id>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<includeGroupIds>io.spring.docresources</includeGroupIds>
+							<includeArtifactIds>spring-doc-resources</includeArtifactIds>
+							<includeTypes>zip</includeTypes>
+							<excludeTransitive>true</excludeTransitive>
+							<outputDirectory>${refdocs.dir}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -255,12 +291,12 @@
 					<dependency>
 						<groupId>org.asciidoctor</groupId>
 						<artifactId>asciidoctorj</artifactId>
-						<version>2.0.0</version>
+						<version>2.2.0</version>
 					</dependency>
 					<dependency>
 						<groupId>org.asciidoctor</groupId>
 						<artifactId>asciidoctorj-diagram</artifactId>
-						<version>1.5.16</version>
+						<version>2.0.1</version>
 					</dependency>
 				</dependencies>
 				<executions>
@@ -293,16 +329,31 @@
 				<configuration>
 					<doctype>book</doctype>
 					<backend>html5</backend>
-					<sourceHighlighter>prettify</sourceHighlighter>
-					<outputDirectory>${project.build.directory}/site</outputDirectory>
+					<sourceHighlighter>highlight.js</sourceHighlighter>
+
+					<resources>
+						<!-- Copy our own resources first to make sure they trump the others -->
+						<resource>
+							<directory>src/main/asciidoc</directory>
+						</resource>
+						<resource>
+							<directory>${refdocs.dir}</directory>
+						</resource>
+					</resources>
 					<attributes>
-						<version>${project.version}</version>
-						<majorversion>6</majorversion>
+						<dev>${dev}</dev>
+						<docinfo>shared</docinfo>
+						<docinfodir>${refdocs.dir}</docinfodir>
+						<highlightjsdir>js/highlight</highlightjsdir>
+						<highlightjs-theme>atom-one-dark-reasonable</highlightjs-theme>
+						<icons>font</icons>
 						<linkcss>true</linkcss>
 						<numbered>true</numbered>
-						<icons>font</icons>
 						<sectanchors>true</sectanchors>
-						<dev>${dev}</dev>
+						<stylesdir>css/</stylesdir>
+						<stylesheet>salespoint.css</stylesheet>
+						<toc>left</toc>
+						<version>${project.version}</version>
 					</attributes>
 				</configuration>
 			</plugin>

@@ -52,8 +52,9 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 
 	Product iPad, iPadToFilter, macBook;
 
+	static
 	// tag::custom-line-item-filter[]
-	static class Config {
+	class Config {
 
 		@Bean
 		LineItemFilter filter() {

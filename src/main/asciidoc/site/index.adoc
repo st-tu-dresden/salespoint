@@ -1,14 +1,12 @@
 = Salespoint Framework
-Paul Henke, Andreas Zaschka, Oliver Gierke
+Paul Henke, Andreas Zaschka, Oliver Drotbohm
 :revdate: {localdate}
-:toc:
-:toc-placement!:
 
 Salespoint is a Java-based application framework to develop point of sales (PoS) applications using Spring Framework and Spring Boot. It consists of a variety of business modules that allows users to implement sophisticated web applications on top of them.
 
 toc::[]
 
-The framework generally consists of:
+The framework fundamentally consists of:
 
 * 6 business modules - accountancy, inventory, catalog, orders, business time and user accounts.
 * Domain types (entities and value objects) as well as Spring based repository and service implementations to provide Java APIs to be extended by (web) application developers.

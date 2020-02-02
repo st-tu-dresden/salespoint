@@ -1,0 +1,47 @@
+@import "spring.css";
+
+body {
+    font-size: 1.1em;
+}
+
+/* Hide Spring header */
+body.toc2 {
+    padding: 0;
+}
+
+/* Custom TOC header */
+
+#toc::before {
+    content: "Salespoint";
+    padding: 9em 0em 0.75em 0.4em;
+    margin: 0em 3.5em 0em 1.6em;
+    display: block;
+    border-bottom: 1px solid #ddddd8;
+    font-weight: bold;
+}
+
+/* Code links */
+
+a > code {
+    color: #097dff;
+}
+
+.admonitionblock {
+    border-width: 0px 0px 0px 5px !important;
+}
+
+.stretch {
+    width: 100%;
+}
+
+#content {
+    padding-right: 3em;
+}
+
+.imageblock, .imageblock > .title {
+    text-align: center;
+}
+
+th {
+    white-space: nowrap;
+}
