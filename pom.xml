@@ -188,6 +188,27 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.0.0-M3</version>
+				<executions>
+					<execution>
+						<id>enforce-versions</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireJavaVersion>
+									<version>13</version>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<source>${java.version}</source>
@@ -277,9 +298,16 @@
 				</executions>
 				<configuration>
 					<doclint>none</doclint>
-					<excludePackageNames>org.thymeleaf.*</excludePackageNames>
+					<quiet>true</quiet>
 					<outputDirectory>${project.build.directory}/site${dev}/api</outputDirectory>
 					<sourcepath>target/generated-sources/delombok</sourcepath>
+					<links>
+						<link>https://docs.spring.io/spring-data/commons/docs/current/api</link>
+						<link>https://javamoney.github.io/apidocs</link>
+						<link>https://docs.spring.io/spring-framework/docs/${spring-framework.version}/javadoc-api/</link>
+						<!-- Adding this breaks Javadoc generation -->
+						<!--<link>https://docs.oracle.com/javaee/7/api</link>-->
+					</links>
 				</configuration>
 			</plugin>
 
