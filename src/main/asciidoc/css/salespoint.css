@@ -13,8 +13,8 @@ body.toc2 {
 
 #toc::before {
     content: "Salespoint";
-    padding: 9em 0em 0.75em 0.4em;
-    margin: 0em 3.5em 0em 1.6em;
+    padding: 2em 0em 0.75em 0.7em;
+    margin: 0em 3.5em 0em 0.5em;
     display: block;
     border-bottom: 1px solid #ddddd8;
     font-weight: bold;
@@ -35,7 +35,11 @@ a > code {
 }
 
 #content {
-    padding-right: 3em;
+    padding-right: 5%;
+}
+
+body.toc2 #header, body.toc2 #content, body.toc2 #footnotes, body.toc2 #footer {
+    max-width: 1500px;
 }
 
 .imageblock, .imageblock > .title {

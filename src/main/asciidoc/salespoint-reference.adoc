@@ -483,7 +483,7 @@ class MyController {
 
 The identifier of the order can be used in anchors and form values like this.
 
-[source, hmtl]
+[source, html]
 ----
 <!-- Expands to /orders/4711 -->
 <a th:href="@{/orders/{id}(id=${order.id})}" …>…</a>
