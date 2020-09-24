@@ -1,14 +1,14 @@
-# Salespoint Framework
+= Salespoint Framework
 
 image:https://travis-ci.org/st-tu-dresden/salespoint.svg?branch=master["Build Status", link="https://travis-ci.org/st-tu-dresden/salespoint"]
 
-## Prerequisites
+== Prerequisites
 
-- Java 11
+- Java 13
 - Git
 - Maven 3.x
 
-## Building the project
+== Building the project
 
 .Building the project
 [source, bash]
@@ -18,31 +18,31 @@ $ cd salespoint
 $ mvn clean install
 ----
 
-## Documentation
+== Documentation
 
 The reference documentation is written in Asciidoc and built using Asciidoctor. The main documentation source file is located in `src/main/asciidoc`.
 
-To build the reference documentation simply run `mvn generate-resources` on the command line. This generates the following HTML files:
+To build the reference documentation simply run `mvn -Pdocs package` on the command line. This generates the following HTML files:
 
 * the Salespoint website in `target/generated-docs/index.html`.
 * the Salespoint reference in `target/generated-docs/salespoint-reference.html`.
 
-## Deployment
+== Deployment
 
-To deploy artifacts to the salespoint repository, simply run `mvn clean deploy`. This requires your `settings.xml` (located in `~/.m2`) to contain a server defintion with the credentials to access the Salespoint server via SFTP:
+To deploy artifacts to the salespoint repository, simply run `mvn clean deploy`. This requires your `settings.xml` (located in `~/.m2` ) to contain a server definition with the credentials to access the Salespoint server via SFTP:
 
 [source, xml]
 ----
 <server>
-    <id>salespoint</id>
-    <username>…</username>
-    <password>…</password>
+  <id>salespoint</id>
+  <username>…</username>
+  <password>…</password>
 </server>
 ----
 
-To deploy the website and reference documentation, run `mvn site:deploy`.
+To deploy the website and reference documentation, run `mvn -Pdocs site:deploy`.
 
-## Release
+== Release
 
 1. Make sure all tickets are closed, except the release one.
 2. Tweak `ChangelogCreator` (in `src/test/java`) to point to the milestone to be released. Run the creator. Copy console output into `src/main/asciidoc/site/changelog.adoc`.
@@ -51,4 +51,4 @@ To deploy the website and reference documentation, run `mvn site:deploy`.
 5. Edit commits to match commit message format, re-create tag.
 6. Push changes & tag.
 7. Check out tag.
-8. Run `mvn clean deploy site:deploy -Prelease -DskipTests`.
+8. Run `mvn clean deploy -Prelease -DskipTests && mvn site:deploy -Pdocs`.

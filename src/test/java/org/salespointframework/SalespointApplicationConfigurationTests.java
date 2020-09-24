@@ -24,8 +24,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.moduliths.docs.Documenter;
-import org.moduliths.docs.Documenter.Options;
 import org.moduliths.model.Modules;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
@@ -51,40 +49,33 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
  */
 class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
 
-	@Autowired UniqueInventory<UniqueInventoryItem> inventory;
-	@Autowired OrderManager<Order> orderManager;
-	@Autowired Catalog<Product> product;
-	@Autowired BusinessTime businessTime;
-	@Autowired UserAccountManager userAccountManager;
-	@Autowired AuthenticationManager authenticationManager;
-	@Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
-	@Autowired List<DataInitializer> initializer;
-	@Autowired MailSender mailSender;
-	@Autowired List<LineItemFilter> lineItemFilter;
+	@Autowired
+	UniqueInventory<UniqueInventoryItem> inventory;
+	@Autowired
+	OrderManager<Order> orderManager;
+	@Autowired
+	Catalog<Product> product;
+	@Autowired
+	BusinessTime businessTime;
+	@Autowired
+	UserAccountManager userAccountManager;
+	@Autowired
+	AuthenticationManager authenticationManager;
+	@Autowired
+	List<HandlerMethodArgumentResolver> argumentResolvers;
+	@Autowired
+	List<DataInitializer> initializer;
+	@Autowired
+	MailSender mailSender;
+	@Autowired
+	List<LineItemFilter> lineItemFilter;
 
-	@Autowired Environment environment;
+	@Autowired
+	Environment environment;
 
 	@Test
 	void verifyModularity() throws IOException {
-
-		// Verify module structure
-		Modules modules = Modules.of(SalespointSample.class);
-		modules.verify();
-
-		// Generate documentation
-		Documenter documenter = new Documenter(modules);
-
-		Options options = Options.defaults() //
-				.withExclusions(module -> module.getName().matches(".*core|.*support"));
-
-		// Write overall diagram
-		documenter.writeModulesAsPlantUml(options);
-
-		// Write diagrams for each module
-		modules.stream().forEach(it -> documenter.writeModuleAsPlantUml(it, options));
-
-		// Write module canvases
-		documenter.writeModuleCanvases("{javadoc}");
+		Modules.of(SalespointSample.class).verify();
 	}
 
 	@Test

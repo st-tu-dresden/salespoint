@@ -28,6 +28,130 @@
 				<dev />
 			</properties>
 		</profile>
+		<profile>
+			<id>docs</id>
+			<build>
+				<plugins>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration combine.self="override">
+							<includes>
+								<include>**/DocumentationTests.java</include>
+							</includes>
+						</configuration>
+					</plugin>
+
+					<!-- Use Spring documentation resources -->
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>unpack-doc-resources</id>
+								<goals>
+									<goal>unpack-dependencies</goal>
+								</goals>
+								<phase>generate-resources</phase>
+								<configuration>
+									<includeGroupIds>io.spring.docresources</includeGroupIds>
+									<includeArtifactIds>spring-doc-resources</includeArtifactIds>
+									<includeTypes>zip</includeTypes>
+									<excludeTransitive>true</excludeTransitive>
+									<outputDirectory>${refdocs.dir}</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctor-maven-plugin</artifactId>
+						<version>2.1.0</version>
+						<dependencies>
+							<dependency>
+								<groupId>org.asciidoctor</groupId>
+								<artifactId>asciidoctorj</artifactId>
+								<version>2.4.1</version>
+							</dependency>
+							<dependency>
+								<groupId>org.asciidoctor</groupId>
+								<artifactId>asciidoctorj-diagram</artifactId>
+								<version>2.0.2</version>
+							</dependency>
+						</dependencies>
+						<executions>
+							<execution>
+								<id>website</id>
+								<phase>package</phase>
+								<goals>
+									<goal>process-asciidoc</goal>
+								</goals>
+								<configuration>
+									<sourceDirectory>src/main/asciidoc/site</sourceDirectory>
+									<outputDirectory>${project.build.directory}/site</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>reference</id>
+								<phase>package</phase>
+								<goals>
+									<goal>process-asciidoc</goal>
+								</goals>
+								<configuration>
+									<sourceDirectory>src/main/asciidoc</sourceDirectory>
+									<sourceDocumentName>salespoint-reference.adoc</sourceDocumentName>
+									<outputDirectory>${project.build.directory}/site${dev}</outputDirectory>
+									<requires>
+										<require>asciidoctor-diagram</require>
+									</requires>
+								</configuration>
+							</execution>
+						</executions>
+						<configuration>
+							<doctype>book</doctype>
+							<backend>html5</backend>
+							<sourceHighlighter>highlight.js</sourceHighlighter>
+
+							<resources>
+								<!-- Copy our own resources first to make sure they trump the others -->
+								<resource>
+									<directory>src/main/asciidoc</directory>
+								</resource>
+								<resource>
+									<directory>${refdocs.dir}</directory>
+								</resource>
+							</resources>
+							<attributes>
+								<dev>${dev}</dev>
+								<docinfo>shared</docinfo>
+								<docinfodir>${refdocs.dir}</docinfodir>
+								<highlightjsdir>js/highlight</highlightjsdir>
+								<icons>font</icons>
+								<linkcss>true</linkcss>
+								<numbered>true</numbered>
+								<sectanchors>true</sectanchors>
+								<stylesdir>css/</stylesdir>
+								<stylesheet>salespoint.css</stylesheet>
+								<toc>left</toc>
+								<version>${project.version}</version>
+							</attributes>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-site-plugin</artifactId>
+						<configuration>
+							<chmod>false</chmod>
+						</configuration>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 
 	<dependencies>
@@ -180,7 +304,7 @@
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-ssh</artifactId>
-				<version>3.3.1</version>
+				<version>3.4.1</version>
 			</extension>
 		</extensions>
 
@@ -232,6 +356,16 @@
 				</dependencies>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/DocumentationTests.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
 			<!-- Delombok sources to make sure generated methods can be picked up by JavaDoc -->
 			<plugin>
 				<groupId>org.projectlombok</groupId>
@@ -247,29 +381,6 @@
 						<goals>
 							<goal>delombok</goal>
 						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- Use Spring documentation resources -->
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>unpack-doc-resources</id>
-						<goals>
-							<goal>unpack-dependencies</goal>
-						</goals>
-						<phase>generate-resources</phase>
-						<configuration>
-							<includeGroupIds>io.spring.docresources</includeGroupIds>
-							<includeArtifactIds>spring-doc-resources</includeArtifactIds>
-							<includeTypes>zip</includeTypes>
-							<excludeTransitive>true</excludeTransitive>
-							<outputDirectory>${refdocs.dir}</outputDirectory>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -296,89 +407,15 @@
 						<link>https://docs.spring.io/spring-framework/docs/${spring-framework.version}/javadoc-api/</link>
 						<!--
 							Adding this breaks Javadoc generation
-						
+
 						- https://bugs.openjdk.java.net/browse/JDK-8240169 (fixed in JDK 15 but…)
 						- https://github.com/rzwitserloot/lombok/issues/2586
-						
+
 						<link>https://javamoney.github.io/apidocs</link>
 						<link>https://docs.oracle.com/javaee/7/api</link>
-						
+
 						-->
 					</links>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.asciidoctor</groupId>
-				<artifactId>asciidoctor-maven-plugin</artifactId>
-				<version>2.1.0</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.asciidoctor</groupId>
-						<artifactId>asciidoctorj</artifactId>
-						<version>2.4.1</version>
-					</dependency>
-					<dependency>
-						<groupId>org.asciidoctor</groupId>
-						<artifactId>asciidoctorj-diagram</artifactId>
-						<version>2.0.2</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<id>website</id>
-						<phase>package</phase>
-						<goals>
-							<goal>process-asciidoc</goal>
-						</goals>
-						<configuration>
-							<sourceDirectory>src/main/asciidoc/site</sourceDirectory>
-							<outputDirectory>${project.build.directory}/site</outputDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>reference</id>
-						<phase>package</phase>
-						<goals>
-							<goal>process-asciidoc</goal>
-						</goals>
-						<configuration>
-							<sourceDocumentName>salespoint-reference.adoc</sourceDocumentName>
-							<outputDirectory>${project.build.directory}/site${dev}</outputDirectory>
-							<requires>
-								<require>asciidoctor-diagram</require>
-							</requires>
-						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<doctype>book</doctype>
-					<backend>html5</backend>
-					<sourceHighlighter>highlight.js</sourceHighlighter>
-
-					<resources>
-						<!-- Copy our own resources first to make sure they trump the others -->
-						<resource>
-							<directory>src/main/asciidoc</directory>
-						</resource>
-						<resource>
-							<directory>${refdocs.dir}</directory>
-						</resource>
-					</resources>
-					<attributes>
-						<dev>${dev}</dev>
-						<docinfo>shared</docinfo>
-						<docinfodir>${refdocs.dir}</docinfodir>
-						<highlightjsdir>js/highlight</highlightjsdir>
-						<icons>font</icons>
-						<linkcss>true</linkcss>
-						<numbered>true</numbered>
-						<sectanchors>true</sectanchors>
-						<stylesdir>css/</stylesdir>
-						<stylesheet>salespoint.css</stylesheet>
-						<toc>left</toc>
-						<version>${project.version}</version>
-					</attributes>
 				</configuration>
 			</plugin>
 
@@ -401,7 +438,7 @@
 					<execution>
 						<id>attach-sources</id>
 						<goals>
-							<goal>jar</goal>
+							<goal>jar-no-fork</goal>
 						</goals>
 					</execution>
 				</executions>
