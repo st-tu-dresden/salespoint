@@ -123,10 +123,11 @@ public interface OrderManager<T extends Order> {
 	 * Cancels an {@link Order}, no matter what state it is in.
 	 *
 	 * @param order the order to be canceled, must not be {@literal null}.
+	 * @param reason the reason the order was cancelled.
 	 * @return true if the order could be canceled
 	 * @see OrderCancelled
 	 */
-	boolean cancelOrder(T order);
+	boolean cancelOrder(T order, String reason);
 
 	/**
 	 * Deletes the given {@link Order}.
