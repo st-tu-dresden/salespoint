@@ -1,6 +1,6 @@
 = Salespoint Framework
 
-image:https://travis-ci.org/st-tu-dresden/salespoint.svg?branch=master["Build Status", link="https://travis-ci.org/st-tu-dresden/salespoint"]
+image:https://github.com/st-tu-dresden/salespoint/workflows/CI%20build/badge.svg["CI Build", link="https://github.com/st-tu-dresden/salespoint/actions"]
 
 == Prerequisites
 
