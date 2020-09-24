@@ -2,7 +2,7 @@ name: Deploy docs and website
 
 on:
   schedule:
-    - cron '0 0 * * * *'
+    - cron: '0 0 * * *'
 
 jobs:
 
