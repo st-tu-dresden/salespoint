@@ -167,7 +167,7 @@
 		<dependency>
 			<groupId>io.spring.docresources</groupId>
 			<artifactId>spring-doc-resources</artifactId>
-			<version>0.1.3.RELEASE</version>
+			<version>0.2.2.RELEASE</version>
 			<type>zip</type>
 			<optional>true</optional>
 		</dependency>
