@@ -17,7 +17,7 @@
 	<properties>
 		<dev>/dev</dev>
 		<java.version>11</java.version>
-		<moduliths.version>1.0.0.BUILD-SNAPSHOT</moduliths.version>
+		<moduliths.version>1.0.0</moduliths.version>
 		<refdocs.dir>${project.build.directory}/refdocs</refdocs.dir>
 	</properties>
 

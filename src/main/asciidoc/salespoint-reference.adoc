@@ -4,7 +4,7 @@ Andreas Zaschka; Paul Henke; Oliver Drotbohm;
 :javadoc: https://st.inf.tu-dresden.de/SalesPoint{dev}/api/
 :source-base: ../../main/java/org/salespointframework
 :source-base-test: ../../test/java/org/salespointframework
-:generated-docs: ../../../target/generated-docs
+:generated-docs: ../../../target/moduliths-docs
 :revnumber: {version}
 :revdate: {localdate}
 :imagesdir: ./images
@@ -93,13 +93,13 @@ The relationships are used as follows:
 * __listens to__ -- The module contains an event listener for events the target modules publishes. Implies a type dependency into the target module as well.
 * __depends on__ -- The module has a general type dependency to the target module, i.e. it uses the target module as library.
 
-plantuml::{generated-docs}/moduliths/components.uml[,,svg,title="Salespoint component overview"]
+plantuml::{generated-docs}/components.uml[,,svg,title="Salespoint component overview"]
 
 [[modules.useraccount]]
 == User accounts
 
-plantuml::{generated-docs}/moduliths/module-org.salespointframework.useraccount.uml[,,svg,title="User account component"]
-include::{generated-docs}/moduliths/module-org.salespointframework.useraccount.adoc[]
+plantuml::{generated-docs}/module-org.salespointframework.useraccount.uml[,,svg,title="User account component"]
+include::{generated-docs}/module-org.salespointframework.useraccount.adoc[]
 
 ////
 [User|-enabled:boolean]-0..*>[Role]
@@ -213,8 +213,8 @@ Furthermore, an object of type `Metric` has a description field, to explain the 
 [[modules.catalog]]
 == Catalog
 
-plantuml::{generated-docs}/moduliths/module-org.salespointframework.catalog.uml[,,svg,title="Catalog component"]
-include::{generated-docs}/moduliths/module-org.salespointframework.catalog.adoc[]
+plantuml::{generated-docs}/module-org.salespointframework.catalog.uml[,,svg,title="Catalog component"]
+include::{generated-docs}/module-org.salespointframework.catalog.adoc[]
 
 Salespoint is intended as framework for point-of-sale applications. Items for sale are called products and represented by instances of the class `Product`. To represent different kinds of products, `Product` can be sub-classed. Products are managed by a `Catalog` implementation (see below). Products are identified using a `ProductIndentifier`.
 
@@ -229,8 +229,8 @@ image::catalog.png[title="Catalog"]
 [[modules.inventory]]
 == Inventory
 
-plantuml::{generated-docs}/moduliths/module-org.salespointframework.inventory.uml[,,svg,title="Inventory component"]
-include::{generated-docs}/moduliths/module-org.salespointframework.inventory.adoc[]
+plantuml::{generated-docs}/module-org.salespointframework.inventory.uml[,,svg,title="Inventory component"]
+include::{generated-docs}/module-org.salespointframework.inventory.adoc[]
 
 The inventory package contains functionality to keep track of the amount of items we have for a given `Product` (see <<modules.catalog>> for details).
 `Inventory` is a simple Spring Data repository, that allows to access `InventoryItem` instances and acts as base type for the actual concrete provided inventory interfaces.
@@ -282,8 +282,8 @@ See link:{javadoc}/org/salespointframework/inventory/InventoryOrderEventListener
 [[modules.accountancy]]
 == Accountancy
 
-plantuml::{generated-docs}/moduliths/module-org.salespointframework.accountancy.uml[,,svg,title="Accountancy component"]
-include::{generated-docs}/moduliths/module-org.salespointframework.accountancy.adoc[]
+plantuml::{generated-docs}/module-org.salespointframework.accountancy.uml[,,svg,title="Accountancy component"]
+include::{generated-docs}/module-org.salespointframework.accountancy.adoc[]
 
 The accountancy package contains functionality supporting book keeping. `AccountancyEntry` is a representation of an accounting entry. `Accountancy` aggregates ``AccountancyEntry``s. Every `AccountancyEntry` is uniquely identified by an ``AccountancyEntryIdentifier``. `AccountancyEntry` extends `AbstractEntity` and serves as persistence entity, while `PersistentAccountancy` implements `Accountancy` and provides transparent access to the JPA layer. `AccountancyEntryIdentifier` is used as primary key attribute, when entities are stored in the database.
 
@@ -327,8 +327,8 @@ For the paying transaction, Salespoint provides some payment strategies.
 [[modules.order]]
 == Order management
 
-plantuml::{generated-docs}/moduliths/module-org.salespointframework.order.uml[,,svg,title="Order component"]
-include::{generated-docs}/moduliths/module-org.salespointframework.order.adoc[leveloffset=1]
+plantuml::{generated-docs}/module-org.salespointframework.order.uml[,,svg,title="Order component"]
+include::{generated-docs}/module-org.salespointframework.order.adoc[leveloffset=1]
 
 The order management is centered around the `Order` aggregate that aggregates link:{javadoc}/org/salespointframework/order/OrderLine.html[``OrderLine``]s and link:{javadoc}/org/salespointframework/order/ChargeLine.html[``ChargeLine``]s.
 An `OrderLine` refers to a `Product` from the <<modules.catalog>> in combination with a `Quantity`.
@@ -435,7 +435,7 @@ That in turn means, that the listener has no chance to abort that action.
 [[modules.business-time]]
 == Business time
 
-include::{generated-docs}/moduliths/module-org.salespointframework.time.adoc[]
+include::{generated-docs}/module-org.salespointframework.time.adoc[]
 
 To be able to simulate the state of the system in a given point in time all components in the system that set a point in time on entities or lookup the current time use the `BusinessTime` interface.
 
