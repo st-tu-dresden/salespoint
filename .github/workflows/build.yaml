@@ -52,4 +52,4 @@ jobs:
       env:
         FTP_USER: ${{ secrets.FTP_USER }}
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-      run: mvn -B deploy -DskipTests --file pom.xml
+      run: mvn -B deploy site:deploy -DskipTests --file pom.xml
