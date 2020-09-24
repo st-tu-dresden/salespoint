@@ -303,10 +303,17 @@
 					<sourcepath>target/generated-sources/delombok</sourcepath>
 					<links>
 						<link>https://docs.spring.io/spring-data/commons/docs/current/api</link>
-						<link>https://javamoney.github.io/apidocs</link>
 						<link>https://docs.spring.io/spring-framework/docs/${spring-framework.version}/javadoc-api/</link>
-						<!-- Adding this breaks Javadoc generation -->
-						<!--<link>https://docs.oracle.com/javaee/7/api</link>-->
+						<!--
+							Adding this breaks Javadoc generation
+						
+						- https://bugs.openjdk.java.net/browse/JDK-8240169 (fixed in JDK 15 but…)
+						- https://github.com/rzwitserloot/lombok/issues/2586
+						
+						<link>https://javamoney.github.io/apidocs</link>
+						<link>https://docs.oracle.com/javaee/7/api</link>
+						
+						-->
 					</links>
 				</configuration>
 			</plugin>
