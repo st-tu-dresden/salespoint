@@ -34,7 +34,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.PrePersist;
 
-import org.moduliths.Event;
+import org.jddd.event.types.DomainEvent;
 import org.salespointframework.core.AbstractAggregateRoot;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.springframework.data.util.Streamable;
@@ -162,9 +162,8 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 		return String.format("UserAccount(\"%s\")", userAccountIdentifier.getIdentifier());
 	}
 
-	@Event
 	@Value(staticConstructor = "of")
-	public static class UserAccountCreated {
+	public static class UserAccountCreated implements DomainEvent {
 		UserAccount account;
 	}
 }
