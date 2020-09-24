@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 
 import org.salespointframework.catalog.Product;
 import org.salespointframework.order.Order;
-import org.salespointframework.order.Order.OrderCancelled;
+import org.salespointframework.order.Order.OrderCanceled;
 import org.salespointframework.order.Order.OrderCompleted;
 import org.salespointframework.order.OrderCompletionFailure;
 import org.salespointframework.order.OrderCompletionReport;
@@ -87,7 +87,7 @@ public class InventoryOrderEventListener {
 	 * @param event must not be {@literal null}.
 	 */
 	@EventListener
-	public void on(OrderCancelled event) {
+	public void on(OrderCanceled event) {
 
 		var order = event.getOrder();
 

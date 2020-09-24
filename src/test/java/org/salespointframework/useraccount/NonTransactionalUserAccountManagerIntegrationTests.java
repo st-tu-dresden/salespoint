@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 the original author or authors.
+ * Copyright 2018-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ class NonTransactionalUserAccountManagerIntegrationTests {
 
 	private static final UnencryptedPassword PASSWORD = UserAccountTestUtils.UNENCRYPTED_PASSWORD;
 
-	@Autowired UserAccountManager userAccountManager;
+	@Autowired UserAccountManagement users;
 	@Autowired UserAccountRepository repository;
 
 	@AfterEach
@@ -46,30 +46,30 @@ class NonTransactionalUserAccountManagerIntegrationTests {
 	@Test // #222
 	void rejectsDifferentUserWithSameEmail() {
 
-		String email = "foo@bar.com";
+		var email = "foo@bar.com";
 
-		userAccountManager.create("username", PASSWORD, email);
+		users.create("username", PASSWORD, email);
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
-				.isThrownBy(() -> userAccountManager.create("someOtherUsername", PASSWORD, email));
+				.isThrownBy(() -> users.create("someOtherUsername", PASSWORD, email));
 	}
 
 	@Test // #222 - see property set on class level
 	void rejectsUserWithoutEmailAddress() {
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
-				.isThrownBy(() -> userAccountManager.create("username", PASSWORD)) //
+				.isThrownBy(() -> users.create("username", PASSWORD)) //
 				.withMessageContaining("login via email");
 	}
 
 	@Test // #218
 	void userAccountsCanBeDeleted() {
 
-		UserAccount reference = userAccountManager.create("username", PASSWORD, "foo@bar.de");
-		assertThat(userAccountManager.findByUsername(reference.getUsername())).hasValue(reference);
+		var reference = users.create("username", PASSWORD, "foo@bar.de");
+		assertThat(users.findByUsername(reference.getUsername())).hasValue(reference);
 
-		userAccountManager.delete(reference);
+		users.delete(reference);
 
-		assertThat(userAccountManager.findByUsername(reference.getUsername())).isEmpty();
+		assertThat(users.findByUsername(reference.getUsername())).isEmpty();
 	}
 }

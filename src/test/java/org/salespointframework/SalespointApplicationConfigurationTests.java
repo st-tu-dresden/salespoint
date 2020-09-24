@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,10 +32,10 @@ import org.salespointframework.inventory.LineItemFilter;
 import org.salespointframework.inventory.UniqueInventory;
 import org.salespointframework.inventory.UniqueInventoryItem;
 import org.salespointframework.order.Order;
-import org.salespointframework.order.OrderManager;
+import org.salespointframework.order.OrderManagement;
 import org.salespointframework.time.BusinessTime;
-import org.salespointframework.useraccount.AuthenticationManager;
-import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.AuthenticationManagement;
+import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailSender;
@@ -49,29 +49,18 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
  */
 class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
 
-	@Autowired
-	UniqueInventory<UniqueInventoryItem> inventory;
-	@Autowired
-	OrderManager<Order> orderManager;
-	@Autowired
-	Catalog<Product> product;
-	@Autowired
-	BusinessTime businessTime;
-	@Autowired
-	UserAccountManager userAccountManager;
-	@Autowired
-	AuthenticationManager authenticationManager;
-	@Autowired
-	List<HandlerMethodArgumentResolver> argumentResolvers;
-	@Autowired
-	List<DataInitializer> initializer;
-	@Autowired
-	MailSender mailSender;
-	@Autowired
-	List<LineItemFilter> lineItemFilter;
+	@Autowired UniqueInventory<UniqueInventoryItem> inventory;
+	@Autowired OrderManagement<Order> orderManager;
+	@Autowired Catalog<Product> product;
+	@Autowired BusinessTime businessTime;
+	@Autowired UserAccountManagement userAccountManagement;
+	@Autowired AuthenticationManagement authenticationManagement;
+	@Autowired List<HandlerMethodArgumentResolver> argumentResolvers;
+	@Autowired List<DataInitializer> initializer;
+	@Autowired MailSender mailSender;
+	@Autowired List<LineItemFilter> lineItemFilter;
 
-	@Autowired
-	Environment environment;
+	@Autowired Environment environment;
 
 	@Test
 	void verifyModularity() throws IOException {
@@ -84,9 +73,9 @@ class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
 		assertThat(inventory, is(notNullValue()));
 		assertThat(orderManager, is(notNullValue()));
 		assertThat(product, is(notNullValue()));
-		assertThat(userAccountManager, is(notNullValue()));
+		assertThat(userAccountManagement, is(notNullValue()));
 		assertThat(businessTime, is(notNullValue()));
-		assertThat(authenticationManager, is(notNullValue()));
+		assertThat(authenticationManagement, is(notNullValue()));
 		assertThat(argumentResolvers, hasSize(1));
 		assertThat(initializer, is(not(emptyIterable())));
 		assertThat(lineItemFilter, hasSize(1));

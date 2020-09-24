@@ -199,41 +199,6 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	}
 
 	/**
-	 * Returns the total price of the {@link Order}.
-	 *
-	 * @return
-	 * @deprecated since 7.1, use {@link #getTotal()} instead.
-	 */
-	@Deprecated
-	public MonetaryAmount getTotalPrice() {
-		return getTotal();
-	}
-
-	/**
-	 * Returns the total of all {@link OrderLine}s.
-	 *
-	 * @return
-	 * @deprecated since 7.1, use {@link #getOrderLines()} and call {@link Totalable#getTotal()} on the result.
-	 */
-	@Deprecated
-	public MonetaryAmount getOrderedLinesPrice() {
-		return Priced.sumUp(orderLines);
-	}
-
-	/**
-	 * Returns the total of all charge lines registered with the order and order lines.
-	 *
-	 * @return
-	 * @deprecated since 7.1, prefer {@link #getChargeLines()}, {@link #getAllChargeLines()} and call
-	 *             {@link PricedTotalable#getTotal()} on the result for fine grained control over which
-	 *             {@link ChargeLine}s to calculate the total for.
-	 */
-	@Deprecated
-	public MonetaryAmount getChargeLinesPrice() {
-		return Priced.sumUp(getAllChargeLines());
-	}
-
-	/**
 	 * Adds an {@link OrderLine} to the {@link Order}, the {@link OrderStatus} must be OPEN.
 	 *
 	 * @param orderLine the {@link OrderLine} to be added.
@@ -242,7 +207,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	 * @deprecated since 7.1, use {@link #addOrderLine(Product, Quantity)} instead.
 	 */
 	@Deprecated
-	public OrderLine add(OrderLine orderLine) {
+	OrderLine add(OrderLine orderLine) {
 
 		Assert.notNull(orderLine, "OrderLine must not be null!");
 		assertOrderIsOpen();
@@ -294,7 +259,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	 * @deprecated since 7.1, use {@link #addChargeLine(MonetaryAmount, String)} instead
 	 */
 	@Deprecated
-	public ChargeLine add(ChargeLine chargeLine) {
+	ChargeLine add(ChargeLine chargeLine) {
 
 		Assert.notNull(chargeLine, "ChargeLine must not be null!");
 		assertOrderIsOpen();
@@ -469,18 +434,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	}
 
 	/**
-	 * Cancels the current {@link Order}.
-	 *
-	 * @return
-	 * @deprecated since 7.1, use {@link #cancel(String)} instead.
-	 */
-	@Deprecated
-	Order cancel() {
-		return cancel("¯\\_(ツ)_/¯");
-	}
-
-	/**
-	 * Cancels the current {@link Order} with the given reason. Will publish an {@link OrderCancelled} even
+	 * Cancels the current {@link Order} with the given reason. Will publish an {@link OrderCanceled} even
 	 *
 	 * @param reason must not be {@literal null}.
 	 * @return
@@ -495,7 +449,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 
 		this.orderStatus = OrderStatus.CANCELLED;
 
-		registerEvent(OrderCancelled.of(this, reason));
+		registerEvent(OrderCanceled.of(this, reason));
 
 		return this;
 	}
@@ -572,7 +526,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	}
 
 	@Value(staticConstructor = "of")
-	public static class OrderCancelled implements DomainEvent {
+	public static class OrderCanceled implements DomainEvent {
 
 		Order order;
 		String reason;
@@ -583,7 +537,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 		 */
 		@Override
 		public String toString() {
-			return "OrderCancelled: " + reason;
+			return "OrderCanceled: " + reason;
 		}
 	}
 }

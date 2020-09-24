@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,14 +38,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 /**
- * {@link AuthenticationManager} using the current SpringSecurity {@link Authentication} to lookup a {@link UserAccount}
- * by the identifier of it.
+ * {@link AuthenticationManagement} using the current SpringSecurity {@link Authentication} to lookup a
+ * {@link UserAccount} by the identifier of it.
  *
  * @author Oliver Gierke
  */
 @Component
 @RequiredArgsConstructor
-class SpringSecurityAuthenticationManager implements AuthenticationManager, UserDetailsService {
+class SpringSecurityAuthenticationManagement implements AuthenticationManagement, UserDetailsService {
 
 	private final @NonNull UserAccountRepository repository;
 	private final @NonNull PasswordEncoder passwordEncoder;
@@ -53,7 +53,7 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager, User
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.AuthenticationManager#getCurrentUser()
+	 * @see org.salespointframework.useraccount.AuthenticationManagement#getCurrentUser()
 	 */
 	@Override
 	public Optional<UserAccount> getCurrentUser() {
@@ -66,7 +66,7 @@ class SpringSecurityAuthenticationManager implements AuthenticationManager, User
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.AuthenticationManager#matches(org.salespointframework.useraccount.Password.UnencryptedPassword, org.salespointframework.useraccount.Password.EncryptedPassword)
+	 * @see org.salespointframework.useraccount.AuthenticationManagement#matches(org.salespointframework.useraccount.Password.UnencryptedPassword, org.salespointframework.useraccount.Password.EncryptedPassword)
 	 */
 	@Override
 	public boolean matches(UnencryptedPassword candidate, EncryptedPassword existing) {

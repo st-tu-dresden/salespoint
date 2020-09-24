@@ -32,21 +32,21 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
-import org.salespointframework.useraccount.SpringSecurityAuthenticationManager.UserAccountDetails;
+import org.salespointframework.useraccount.SpringSecurityAuthenticationManagement.UserAccountDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * Units tests for {@link SpringSecurityAuthenticationManager}.
+ * Units tests for {@link SpringSecurityAuthenticationManagement}.
  *
  * @author Oliver Gierke
  */
 @ExtendWith(MockitoExtension.class)
 class SpringSecurityAuthenticationManagerUnitTests {
 
-	SpringSecurityAuthenticationManager authenticationManager;
+	SpringSecurityAuthenticationManagement authenticationManager;
 
 	@Mock UserAccountRepository repository;
 	@Mock PasswordEncoder passwordEncoder;
@@ -58,7 +58,7 @@ class SpringSecurityAuthenticationManagerUnitTests {
 	void setUp() {
 
 		this.account = createAccount();
-		this.authenticationManager = new SpringSecurityAuthenticationManager(repository, passwordEncoder, config);
+		this.authenticationManager = new SpringSecurityAuthenticationManagement(repository, passwordEncoder, config);
 	}
 
 	@AfterEach
@@ -101,7 +101,7 @@ class SpringSecurityAuthenticationManagerUnitTests {
 	@Test // #222
 	void usesByEmailLookupIfConfigured() {
 
-		SpringSecurityAuthenticationManager authenticationManager = new SpringSecurityAuthenticationManager(repository,
+		SpringSecurityAuthenticationManagement authenticationManager = new SpringSecurityAuthenticationManagement(repository,
 				passwordEncoder, new AuthenticationProperties(true));
 
 		doReturn(Optional.of(account)).when(repository).findByEmail(any());

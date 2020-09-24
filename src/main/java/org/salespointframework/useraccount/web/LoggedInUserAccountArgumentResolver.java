@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Optional;
 
-import org.salespointframework.useraccount.AuthenticationManager;
+import org.salespointframework.useraccount.AuthenticationManagement;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
@@ -50,7 +50,7 @@ class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolv
 	private static final ResolvableType OPTIONAL_OF_USER_ACCOUNT = ResolvableType.forClassWithGenerics(Optional.class,
 			UserAccount.class);
 
-	private final @NonNull AuthenticationManager authenticationManager;
+	private final @NonNull AuthenticationManagement authenticationManager;
 
 	/*
 	 * (non-Javadoc)

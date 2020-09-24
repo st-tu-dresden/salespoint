@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 the original author or authors.
+ * Copyright 2018-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,15 +25,15 @@ import org.springframework.util.Assert;
 /**
  * An extension of{@link Streamable} of {@link Priced} objects that expose a {@link #getTotal()} method so that the
  * combined price can be calculated easily.
- * 
- * @author Oliver Gierke*
+ *
+ * @author Oliver Gierke
  * @since 7.1
  */
 public interface Totalable<T extends Priced> extends Streamable<T> {
 
 	/**
 	 * Creates a new {@link Totalable} for the given {@link Iterable} of {@link Priced} elements.
-	 * 
+	 *
 	 * @param priced must not be {@literal null}.
 	 * @return
 	 */
@@ -43,7 +43,7 @@ public interface Totalable<T extends Priced> extends Streamable<T> {
 
 		return new Totalable<T>() {
 
-			/* 
+			/*
 			 * (non-Javadoc)
 			 * @see org.salespointframework.order.Totalable#getTotal()
 			 */
@@ -61,14 +61,14 @@ public interface Totalable<T extends Priced> extends Streamable<T> {
 
 	/**
 	 * Returns the total of all the {@link Priced} elements contained in this {@link Totalable}.
-	 * 
+	 *
 	 * @return
 	 */
 	MonetaryAmount getTotal();
 
 	/**
 	 * Creates a new {@link Totalable} with the given one added to the current one.
-	 * 
+	 *
 	 * @param priced must not be {@literal null}.
 	 * @return
 	 */

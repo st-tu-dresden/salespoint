@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package org.salespointframework.order;
 
 import java.util.Optional;
 
-import org.salespointframework.order.Order.OrderCancelled;
+import org.salespointframework.order.Order.OrderCanceled;
 import org.salespointframework.order.Order.OrderCompleted;
 import org.salespointframework.order.Order.OrderPaid;
 import org.salespointframework.payment.PaymentMethod;
@@ -36,7 +36,7 @@ import org.springframework.stereotype.Service;
  * @author Oliver Gierke
  */
 @Service
-public interface OrderManager<T extends Order> {
+public interface OrderManagement<T extends Order> {
 
 	/**
 	 * Saves the given {@link Order} or persists changes to it.
@@ -55,7 +55,7 @@ public interface OrderManager<T extends Order> {
 	Optional<T> get(OrderIdentifier orderIdentifier);
 
 	/**
-	 * Checks if this {@link OrderManager} contains an order.
+	 * Checks if this {@link OrderManagement} contains an order.
 	 *
 	 * @param orderIdentifier the {@link OrderIdentifier} of the {@link Order}, must not be {@literal null}.
 	 * @return {@literal true} if the OrderManager contains the order, {@literal false} otherwise.
@@ -125,7 +125,7 @@ public interface OrderManager<T extends Order> {
 	 * @param order the order to be canceled, must not be {@literal null}.
 	 * @param reason the reason the order was cancelled.
 	 * @return true if the order could be canceled
-	 * @see OrderCancelled
+	 * @see OrderCanceled
 	 */
 	boolean cancelOrder(T order, String reason);
 

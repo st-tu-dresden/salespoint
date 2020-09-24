@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,11 @@ import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Cart;
-import org.salespointframework.order.Order.OrderCancelled;
+import org.salespointframework.order.Order.OrderCanceled;
 import org.salespointframework.order.Order.OrderCompleted;
 import org.salespointframework.order.OrderCompletionFailure;
 import org.salespointframework.quantity.Quantity;
-import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.UserAccountManagement;
 import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -46,7 +46,7 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 
 	@Autowired InventoryOrderEventListener listener;
 
-	@Autowired UserAccountManager userAccounts;
+	@Autowired UserAccountManagement users;
 	@Autowired Catalog<Product> products;
 	@Autowired UniqueInventory<UniqueInventoryItem> inventory;
 
@@ -77,7 +77,7 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 	@Test // #144
 	void triggersExceptionForInsufficientStock() {
 
-		var user = userAccounts.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
+		var user = users.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 
 		var cart = new Cart();
 		cart.addOrUpdateItem(iPad, 1);
@@ -93,7 +93,7 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 	@Test // #230
 	void restocksForCompletedOrderOnCancellation() {
 
-		var user = userAccounts.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
+		var user = users.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 
 		var cart = new Cart();
 		cart.addOrUpdateItem(iPad, 1);
@@ -101,7 +101,7 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 		var order = spy(cart.createOrderFor(user));
 		when(order.isCompleted()).thenReturn(true);
 
-		listener.on(OrderCancelled.of(order, "No reason!"));
+		listener.on(OrderCanceled.of(order, "No reason!"));
 
 		assertThat(inventory.findByProduct(iPad) //
 				.map(UniqueInventoryItem::getQuantity) //

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ public class Cart implements Streamable<CartItem>, Priced {
 	 * Creates a {@link CartItem} for the given {@link Product} and {@link Quantity}. If a {@link CartItem} for the given
 	 * {@link Product} already exists the {@link Cart} will be updated to reflect the combined {@link Quantity} for the
 	 * backing {@link CartItem}.
-	 * 
+	 *
 	 * @param product must not be {@literal null}
 	 * @param quantity must not be {@literal null}
 	 * @return The created {@link CartItem}.
@@ -64,7 +64,7 @@ public class Cart implements Streamable<CartItem>, Priced {
 	 * Creates a {@link CartItem} for the given {@link Product} and amount. If a {@link CartItem} for the given
 	 * {@link Product} already exists the {@link Cart} will be updated to reflect the combined {@link Quantity} for the
 	 * backing {@link CartItem}.
-	 * 
+	 *
 	 * @param product must not be {@literal null}.
 	 * @param amount must not be {@literal null}.
 	 * @return
@@ -77,7 +77,7 @@ public class Cart implements Streamable<CartItem>, Priced {
 	 * Creates a {@link CartItem} for the given {@link Product} and amount. If a {@link CartItem} for the given
 	 * {@link Product} already exists the {@link Cart} will be updated to reflect the combined {@link Quantity} for the
 	 * backing {@link CartItem}.
-	 * 
+	 *
 	 * @param product must not be {@literal null}.
 	 * @param amount must not be {@literal null}.
 	 * @return
@@ -88,7 +88,7 @@ public class Cart implements Streamable<CartItem>, Priced {
 
 	/**
 	 * Removes the {@link CartItem} with the given identifier.
-	 * 
+	 *
 	 * @param identifier must not be {@literal null}.
 	 * @return
 	 */
@@ -102,7 +102,7 @@ public class Cart implements Streamable<CartItem>, Priced {
 
 	/**
 	 * Returns the CartItem for the given identifier.
-	 * 
+	 *
 	 * @param identifier must not be {@literal null}.
 	 * @return
 	 */
@@ -124,7 +124,7 @@ public class Cart implements Streamable<CartItem>, Priced {
 
 	/**
 	 * Returns whether the {@link Cart} is currently empty.
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isEmpty() {
@@ -133,7 +133,7 @@ public class Cart implements Streamable<CartItem>, Priced {
 
 	/**
 	 * Turns the current state of the cart into an {@link Order}.
-	 * 
+	 *
 	 * @param order must not be {@literal null}.
 	 * @return the {@link Order} which all items in the card have been added to.
 	 * @throws IllegalStateException if the given Order is not {@link OrderStatus#OPEN} anymore.
@@ -142,14 +142,14 @@ public class Cart implements Streamable<CartItem>, Priced {
 
 		Assert.notNull(order, "Order must not be null!");
 
-		items.values().forEach(item -> order.add(item.toOrderLine()));
+		items.values().forEach(item -> order.addOrderLine(item.getProduct(), item.getQuantity()));
 
 		return order;
 	}
 
 	/**
 	 * Creates a new Order for the given {@link UserAccount} from the current {@link Cart}.
-	 * 
+	 *
 	 * @param user must not be {@literal null}.
 	 * @return a new Order for the current {@link Cart} and given {@link UserAccount}.
 	 */
@@ -160,7 +160,7 @@ public class Cart implements Streamable<CartItem>, Priced {
 		return addItemsTo(new Order(user));
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.salespointframework.order.Priced#getPrice()
 	 */
@@ -173,7 +173,7 @@ public class Cart implements Streamable<CartItem>, Priced {
 				.orElse(Money.of(0, Currencies.EURO));
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Iterable#iterator()
 	 */

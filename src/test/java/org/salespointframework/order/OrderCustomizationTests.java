@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2019-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.moduliths.test.ModuleTest;
 import org.moduliths.test.ModuleTest.BootstrapMode;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -41,8 +41,8 @@ import org.springframework.test.context.TestConstructor.AutowireMode;
 @RequiredArgsConstructor
 public class OrderCustomizationTests {
 
-	private final OrderManager<CustomOrder> orders;
-	private final UserAccountManager users;
+	private final OrderManagement<CustomOrder> orders;
+	private final UserAccountManagement users;
 
 	@Test // #292
 	void sortsByPropertyOfCustomOrder() {

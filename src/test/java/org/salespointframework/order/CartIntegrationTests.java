@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,7 @@
  */
 package org.salespointframework.order;
 
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.junit.MatcherAssert.*;
+import static org.assertj.core.api.Assertions.*;
 
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
@@ -26,7 +25,7 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
-import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,20 +39,19 @@ import org.springframework.transaction.annotation.Transactional;
 @ModuleTest(mode = BootstrapMode.DIRECT_DEPENDENCIES)
 class CartIntegrationTests {
 
-	@Autowired UserAccountManager userAccountManager;
+	@Autowired UserAccountManagement users;
 
 	@Test // #44
 	void createsOrderFromCartCorrectly() {
 
-		Cart cart = new Cart();
-		CartItem cartItem = cart.addOrUpdateItem(//
-				new Product("name", Money.of(1, Currencies.EURO)), Quantity.of(10));
+		var cart = new Cart();
+		var cartItem = cart.addOrUpdateItem(new Product("name", Money.of(1, Currencies.EURO)), Quantity.of(10));
 
-		Order order = cart.createOrderFor(userAccountManager.create("foobar", UnencryptedPassword.of("barfoo")));
+		var order = cart.createOrderFor(users.create("foobar", UnencryptedPassword.of("barfoo")));
 
-		Totalable<OrderLine> orderLines = order.getOrderLines();
+		var orderLines = order.getOrderLines();
 
-		assertThat(orderLines.getTotal(), is(cartItem.getPrice()));
-		assertThat(orderLines, is(iterableWithSize(1)));
+		assertThat(orderLines.getTotal()).isEqualTo(cartItem.getPrice());
+		assertThat(orderLines).hasSize(1);
 	}
 }

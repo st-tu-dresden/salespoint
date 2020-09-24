@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,6 @@ package org.salespointframework.accountancy;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.money.MonetaryAmount;
 
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,15 +28,14 @@ import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.UserAccountManagement;
 import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Streamable;
 
 class AccountancyPeriodTests extends AbstractIntegrationTests {
 
 	@Autowired Accountancy a;
-	@Autowired UserAccountManager userAccountManager;
+	@Autowired UserAccountManagement users;
 
 	LocalDateTime from;
 	LocalDateTime to;
@@ -48,7 +43,7 @@ class AccountancyPeriodTests extends AbstractIntegrationTests {
 	@BeforeEach
 	void testSetup() throws Exception {
 
-		UserAccount account = userAccountManager.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
+		UserAccount account = users.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 		OrderIdentifier orderIdentifier = new Order(account).getId();
 
 		Money oneEuro = Money.of(1, Currencies.EURO);
@@ -70,42 +65,44 @@ class AccountancyPeriodTests extends AbstractIntegrationTests {
 	@Test
 	void periodSetTest() {
 
-		Interval interval = Interval.from(from).to(to);
+		var interval = Interval.from(from).to(to);
+		var m = a.find(interval, Duration.ofMillis(200));
 
-		Map<Interval, Streamable<AccountancyEntry>> m = a.find(interval, Duration.ofMillis(200));
-		for (Entry<Interval, Streamable<AccountancyEntry>> e : m.entrySet()) {
-			for (AccountancyEntry p : e.getValue()) {}
+		for (var e : m.entrySet()) {
+			for (var p : e.getValue()) {}
 		}
 	}
 
 	@Test
 	void singlePeriodTest() {
 
-		Interval interval = Interval.from(from).to(to);
+		var interval = Interval.from(from).to(to);
+		var m = a.find(interval, interval.getDuration());
 
-		Map<Interval, Streamable<AccountancyEntry>> m = a.find(interval, interval.getDuration());
-		for (Entry<Interval, Streamable<AccountancyEntry>> e : m.entrySet()) {
-			for (AccountancyEntry p : e.getValue()) {}
+		for (var e : m.entrySet()) {
+			for (var p : e.getValue()) {}
 		}
 	}
 
 	@Test
 	void periodMoneyTest() {
-		MonetaryAmount total;
 
-		Interval interval = Interval.from(from).to(to);
+		var total = Currencies.ZERO_EURO;
+		var interval = Interval.from(from).to(to);
+		var m = a.find(interval, Duration.ofMillis(200));
 
-		Map<Interval, Streamable<AccountancyEntry>> m = a.find(interval, Duration.ofMillis(200));
-		for (Entry<Interval, Streamable<AccountancyEntry>> e : m.entrySet()) {
+		for (var e : m.entrySet()) {
+
 			total = Currencies.ZERO_EURO;
-			for (AccountancyEntry p : e.getValue()) {
+
+			for (var p : e.getValue()) {
 				total = total.add(p.getValue());
 			}
 		}
 
-		Map<Interval, MonetaryAmount> sales = a.salesVolume(interval, Duration.ofMillis(200));
+		var sales = a.salesVolume(interval, Duration.ofMillis(200));
 
-		for (Entry<Interval, MonetaryAmount> e : sales.entrySet()) {
+		for (var e : sales.entrySet()) {
 			System.out.println("MonetaryAmount for interval " + e.getKey() + ": " + e.getValue());
 		}
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,14 +38,14 @@ import org.springframework.util.Assert;
 @Service
 @Transactional
 @RequiredArgsConstructor
-class PersistentOrderManager<T extends Order> implements OrderManager<T> {
+class PersistentOrderManagement<T extends Order> implements OrderManagement<T> {
 
 	private final @NonNull BusinessTime businessTime;
 	private final @NonNull OrderRepository<T> orderRepository;
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#save(org.salespointframework.order.Order)
+	 * @see org.salespointframework.order.OrderManagement#save(org.salespointframework.order.Order)
 	 */
 	@Override
 	public T save(T order) {
@@ -61,7 +61,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#get(org.salespointframework.order.OrderIdentifier)
+	 * @see org.salespointframework.order.OrderManagement#get(org.salespointframework.order.OrderIdentifier)
 	 */
 	@Override
 	public Optional<T> get(OrderIdentifier orderIdentifier) {
@@ -73,7 +73,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#contains(org.salespointframework.order.OrderIdentifier)
+	 * @see org.salespointframework.order.OrderManagement#contains(org.salespointframework.order.OrderIdentifier)
 	 */
 	@Override
 	public boolean contains(OrderIdentifier orderIdentifier) {
@@ -85,7 +85,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#findBy(org.salespointframework.time.Interval)
+	 * @see org.salespointframework.order.OrderManagement#findBy(org.salespointframework.time.Interval)
 	 */
 	@Override
 	public Streamable<T> findBy(Interval interval) {
@@ -94,7 +94,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#findBy(org.salespointframework.order.OrderStatus)
+	 * @see org.salespointframework.order.OrderManagement#findBy(org.salespointframework.order.OrderStatus)
 	 */
 	@Override
 	public Streamable<T> findBy(OrderStatus orderStatus) {
@@ -106,7 +106,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#findBy(org.salespointframework.useraccount.UserAccount)
+	 * @see org.salespointframework.order.OrderManagement#findBy(org.salespointframework.useraccount.UserAccount)
 	 */
 	@Override
 	public Streamable<T> findBy(UserAccount userAccount) {
@@ -118,7 +118,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#findBy(org.salespointframework.useraccount.UserAccount, org.salespointframework.time.Interval)
+	 * @see org.salespointframework.order.OrderManagement#findBy(org.salespointframework.useraccount.UserAccount, org.salespointframework.time.Interval)
 	 */
 	@Override
 	public Streamable<T> findBy(UserAccount userAccount, Interval interval) {
@@ -131,7 +131,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#completeOrder(org.salespointframework.order.Order)
+	 * @see org.salespointframework.order.OrderManagement#completeOrder(org.salespointframework.order.Order)
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
@@ -148,7 +148,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#pay(org.salespointframework.order.Order)
+	 * @see org.salespointframework.order.OrderManagement#payOrder(org.salespointframework.order.Order)
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
@@ -167,10 +167,10 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#cancelOrder(org.salespointframework.order.Order, java.lang.String)
+	 * @see org.salespointframework.order.OrderManagement#cancelOrder(org.salespointframework.order.Order, java.lang.String)
 	 */
 	@Override
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings("unchecked")
 	public boolean cancelOrder(T order, String reason) {
 
 		Assert.notNull(order, "Order must not be null");
@@ -185,7 +185,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#delete(org.salespointframework.order.Order)
+	 * @see org.salespointframework.order.OrderManagement#delete(org.salespointframework.order.Order)
 	 */
 	public T delete(T order) {
 
@@ -198,7 +198,7 @@ class PersistentOrderManager<T extends Order> implements OrderManager<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.order.OrderManager#findAll(org.springframework.data.domain.Pageable)
+	 * @see org.salespointframework.order.OrderManagement#findAll(org.springframework.data.domain.Pageable)
 	 */
 	@Override
 	public Page<T> findAll(Pageable pageable) {

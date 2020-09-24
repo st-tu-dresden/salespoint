@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 the original author or authors.
+ * Copyright 2018-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,14 +26,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.order.Order;
-import org.salespointframework.order.Order.OrderCancelled;
+import org.salespointframework.order.Order.OrderCanceled;
 import org.salespointframework.order.Order.OrderPaid;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.UserAccountManagement;
 import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Streamable;
 
 /**
  * Integration tests for {@link AccountancyOrderEventListener}.
@@ -44,7 +43,7 @@ import org.springframework.data.util.Streamable;
 class AccountancyOrderEventListenerTests extends AbstractIntegrationTests {
 
 	@Autowired AccountancyOrderEventListener listener;
-	@Autowired UserAccountManager users;
+	@Autowired UserAccountManagement users;
 	@Autowired Accountancy accountancy;
 
 	Order order;
@@ -71,9 +70,9 @@ class AccountancyOrderEventListenerTests extends AbstractIntegrationTests {
 	void createsRollingBackEntryOnOrderCancellation() {
 
 		listener.on(OrderPaid.of(order));
-		listener.on(OrderCancelled.of(order, "Testing"));
+		listener.on(OrderCanceled.of(order, "Testing"));
 
-		Streamable<AccountancyEntry> entries = accountancy.findAll();
+		var entries = accountancy.findAll();
 
 		assertThat(entries).hasSize(2);
 		assertThat(entries.stream() //

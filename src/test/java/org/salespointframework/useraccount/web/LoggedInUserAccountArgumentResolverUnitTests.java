@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.salespointframework.useraccount.AuthenticationManager;
+import org.salespointframework.useraccount.AuthenticationManagement;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.ServletRequestBindingException;
@@ -41,7 +41,7 @@ import org.springframework.web.bind.ServletRequestBindingException;
 @ExtendWith(MockitoExtension.class)
 class LoggedInUserAccountArgumentResolverUnitTests {
 
-	@Mock AuthenticationManager authenticationManager;
+	@Mock AuthenticationManagement authenticationManager;
 	@Mock UserAccount account;
 
 	LoggedInUserAccountArgumentResolver resolver;

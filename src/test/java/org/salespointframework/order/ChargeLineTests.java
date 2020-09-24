@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -32,7 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 class ChargeLineTests extends AbstractIntegrationTests {
 
-	@Autowired UserAccountManager userAccountManager;
+	@Autowired UserAccountManagement users;
 
 	UserAccount user;
 	Order order;
@@ -40,7 +40,7 @@ class ChargeLineTests extends AbstractIntegrationTests {
 
 	@BeforeEach
 	void before() {
-		user = userAccountManager.create("userId", UNENCRYPTED_PASSWORD);
+		user = users.create("userId", UNENCRYPTED_PASSWORD);
 		order = new Order(user, Cash.CASH);
 		chargeLine = new ChargeLine(Currencies.ZERO_EURO, "gaaar nix");
 	}

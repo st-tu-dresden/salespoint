@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.springframework.util.Assert;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-class PersistentUserAccountManager implements UserAccountManager {
+class PersistentUserAccountManagement implements UserAccountManagement {
 
 	private static final String EMAIL_PLACEHOLDER = "¯\\_(ツ)_/¯";
 
@@ -48,7 +48,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#create(java.lang.String, org.salespointframework.useraccount.Password.UnencryptedPassword, org.salespointframework.useraccount.Role[])
+	 * @see org.salespointframework.useraccount.UserAccountManagement#create(java.lang.String, org.salespointframework.useraccount.Password.UnencryptedPassword, org.salespointframework.useraccount.Role[])
 	 */
 	@Override
 	@Transactional
@@ -58,7 +58,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#create(java.lang.String, org.salespointframework.useraccount.Password.UnencryptedPassword, java.lang.String, org.salespointframework.useraccount.Role[])
+	 * @see org.salespointframework.useraccount.UserAccountManagement#create(java.lang.String, org.salespointframework.useraccount.Password.UnencryptedPassword, java.lang.String, org.salespointframework.useraccount.Role[])
 	 */
 	@Override
 	@Transactional
@@ -84,7 +84,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#get(org.salespointframework.useraccount.UserAccountIdentifier)
+	 * @see org.salespointframework.useraccount.UserAccountManagement#get(org.salespointframework.useraccount.UserAccountIdentifier)
 	 */
 	@Override
 	public Optional<UserAccount> get(UserAccountIdentifier userAccountIdentifier) {
@@ -95,7 +95,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#save(org.salespointframework.useraccount.UserAccount)
+	 * @see org.salespointframework.useraccount.UserAccountManagement#save(org.salespointframework.useraccount.UserAccount)
 	 */
 	@Override
 	@Transactional
@@ -122,7 +122,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#enable(org.salespointframework.useraccount.UserAccountIdentifier)
+	 * @see org.salespointframework.useraccount.UserAccountManagement#enable(org.salespointframework.useraccount.UserAccountIdentifier)
 	 */
 	@Override
 	@Transactional
@@ -135,7 +135,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#disable(org.salespointframework.useraccount.UserAccountIdentifier)
+	 * @see org.salespointframework.useraccount.UserAccountManagement#disable(org.salespointframework.useraccount.UserAccountIdentifier)
 	 */
 	@Override
 	@Transactional
@@ -148,7 +148,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#changePassword(org.salespointframework.useraccount.UserAccount, java.lang.String)
+	 * @see org.salespointframework.useraccount.UserAccountManagement#changePassword(org.salespointframework.useraccount.UserAccount, org.salespointframework.useraccount.Password.UnencryptedPassword)
 	 */
 	@Override
 	@Transactional
@@ -163,7 +163,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#contains(org.salespointframework.useraccount.UserAccountIdentifier)
+	 * @see org.salespointframework.useraccount.UserAccountManagement#contains(org.salespointframework.useraccount.UserAccountIdentifier)
 	 */
 	@Override
 	public boolean contains(UserAccountIdentifier userAccountIdentifier) {
@@ -174,7 +174,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#findAll()
+	 * @see org.salespointframework.useraccount.UserAccountManagement#findAll()
 	 */
 	@Override
 	public Streamable<UserAccount> findAll() {
@@ -183,7 +183,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#findEnabled()
+	 * @see org.salespointframework.useraccount.UserAccountManagement#findEnabled()
 	 */
 	@Override
 	public Streamable<UserAccount> findEnabled() {
@@ -192,7 +192,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#findDisabled()
+	 * @see org.salespointframework.useraccount.UserAccountManagement#findDisabled()
 	 */
 	@Override
 	public Streamable<UserAccount> findDisabled() {
@@ -201,7 +201,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#findByUsername(java.lang.String)
+	 * @see org.salespointframework.useraccount.UserAccountManagement#findByUsername(java.lang.String)
 	 */
 	@Override
 	public Optional<UserAccount> findByUsername(String username) {
@@ -212,7 +212,7 @@ class PersistentUserAccountManager implements UserAccountManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.salespointframework.useraccount.UserAccountManager#delete(org.salespointframework.useraccount.UserAccount)
+	 * @see org.salespointframework.useraccount.UserAccountManagement#delete(org.salespointframework.useraccount.UserAccount)
 	 */
 	@Override
 	@Transactional

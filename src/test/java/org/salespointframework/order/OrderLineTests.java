@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import org.salespointframework.core.Currencies;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.UserAccountManagement;
 import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,7 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 class OrderLineTests extends AbstractIntegrationTests {
 
-	@Autowired UserAccountManager userAccountManager;
+	@Autowired UserAccountManagement users;
 	@Autowired Catalog<Product> catalog;
 
 	private static int keksCounter = 0;
@@ -52,7 +52,7 @@ class OrderLineTests extends AbstractIntegrationTests {
 
 		catalog.save(cookie);
 
-		user = userAccountManager.create("userId", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
+		user = users.create("userId", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 		order = new Order(user, Cash.CASH);
 		orderLine = new OrderLine(cookie, Quantity.of(10));
 	}
