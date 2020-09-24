@@ -3,7 +3,7 @@
 
 	<groupId>de.tudresden.inf.st</groupId>
 	<artifactId>salespoint-framework</artifactId>
-	<version>8.0.0.BUILD-SNAPSHOT</version>
+	<version>7.3.0-SNAPSHOT</version>
 
 	<name>Salespoint</name>
 
@@ -204,16 +204,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<compilerArgument>-parameters</compilerArgument>
-				</configuration>
 			</plugin>
 
 			<plugin>
