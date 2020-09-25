@@ -105,13 +105,15 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 	 * @param exception must not be {@literal null}.
 	 * @since 7.1
 	 */
-	public void onError(Function<OrderCompletionReport, ? extends RuntimeException> exception) {
+	public OrderCompletionReport onError(Function<OrderCompletionReport, ? extends RuntimeException> exception) {
 
 		Assert.notNull(exception, "Ex ception mapper must not be null!");
 
 		if (hasErrors()) {
 			throw exception.apply(this);
 		}
+
+		return this;
 	}
 
 	/* 

@@ -33,10 +33,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.moduliths.test.ModuleTest;
+import org.moduliths.test.PublishedEvents;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.inventory.InventoryEvents.QuantityReduced;
+import org.salespointframework.inventory.InventoryEvents.StockShort;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -231,6 +234,33 @@ class InventoryTests {
 		assertThat(unique.findById(item.getId())).hasValueSatisfying(it -> {
 			assertThat(it.getQuantity()).isEqualTo(item.getQuantity());
 		});
+	}
+
+	@Test // #252
+	void emitsQuantityReducedEvent(PublishedEvents events) {
+
+		var otherCookie = catalog.save(new Cookie("Other cookie", Money.of(3, Currencies.EURO)));
+		var item = unique.save(new UniqueInventoryItem(otherCookie, Quantity.of(5)));
+
+		unique.save(item.decreaseQuantity(Quantity.of(2)));
+
+		// Expect QuantityReduced but no StockShort because we're not below the threshold
+		assertThat(events.ofType(QuantityReduced.class)
+				.matchingMapped(QuantityReduced::getItem, item::equals)).hasSize(1);
+		assertThat(events.ofType(StockShort.class)).isEmpty();
+
+		unique.save(item.decreaseQuantity(Quantity.of(2)));
+
+		// Expect QuantityReduced *and* StockShort because we went below the threshold
+		assertThat(events.ofType(QuantityReduced.class)
+				.matchingMapped(QuantityReduced::getItem, item::equals)).hasSize(2);
+		assertThat(events.ofType(StockShort.class)
+				.matchingMapped(StockShort::getProductId, otherCookie::hasId)).hasSize(1)
+						.element(0)
+						.satisfies(it -> {
+							assertThat(it.getCurrentQuantity()).isEqualTo(Quantity.of(1));
+							assertThat(it.getThreshold()).isEqualTo(Quantity.of(3));
+						});
 	}
 
 	private <S extends InventoryItem<S>, T extends InventoryItem<T>> void assertRejectsSecond(S first,

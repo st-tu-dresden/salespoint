@@ -61,6 +61,7 @@ import org.springframework.core.annotation.AliasFor;
 		sharedModules = { //
 				"org.salespointframework.core", //
 				"org.salespointframework.support", //
+				"org.salespointframework.quantity", //
 				"org.salespointframework.useraccount" }, //
 		additionalPackages = "org.salespointframework", //
 		useFullyQualifiedModuleNames = true)

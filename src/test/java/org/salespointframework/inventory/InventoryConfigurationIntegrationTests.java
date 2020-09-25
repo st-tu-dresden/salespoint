@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.salespointframework.Salespoint;
+import org.salespointframework.inventory.InventoryListeners.InventoryOrderEventListener;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 /**

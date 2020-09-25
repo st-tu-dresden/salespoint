@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,8 @@ import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 
 import org.salespointframework.catalog.Product;
-import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.core.AbstractAggregateRoot;
+import org.salespointframework.inventory.InventoryEvents.QuantityReduced;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.util.Assert;
 
@@ -44,7 +45,7 @@ import org.springframework.util.Assert;
 @MappedSuperclass
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 @EntityListeners(InventoryItemCreationListener.class)
-public abstract class InventoryItem<T extends InventoryItem<T>> extends AbstractEntity<InventoryItemIdentifier> {
+public abstract class InventoryItem<T extends InventoryItem<T>> extends AbstractAggregateRoot<InventoryItemIdentifier> {
 
 	@EmbeddedId //
 	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID")) //
@@ -101,6 +102,8 @@ public abstract class InventoryItem<T extends InventoryItem<T>> extends Abstract
 		getProduct().verify(quantity);
 
 		this.quantity = this.quantity.subtract(quantity);
+
+		registerEvent(QuantityReduced.of(this));
 
 		return (T) this;
 	}

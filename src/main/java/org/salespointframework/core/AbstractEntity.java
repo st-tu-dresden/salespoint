@@ -21,6 +21,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
 import org.springframework.data.domain.Persistable;
+import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -32,6 +33,19 @@ import org.springframework.util.ObjectUtils;
 public abstract class AbstractEntity<ID extends SalespointIdentifier> implements Persistable<ID> {
 
 	private @Transient boolean isNew = true;
+
+	/**
+	 * Returns whether the entity has the given identifier.
+	 *
+	 * @param id must not be {@literal null}.
+	 * @return
+	 */
+	public boolean hasId(ID id) {
+
+		Assert.notNull(id, "Identifier must not be null!");
+
+		return getId().equals(id);
+	}
 
 	/*
 	 * (non-Javadoc)

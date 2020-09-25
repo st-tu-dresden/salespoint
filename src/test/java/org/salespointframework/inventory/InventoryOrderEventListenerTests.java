@@ -25,6 +25,7 @@ import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.inventory.InventoryListeners.InventoryOrderEventListener;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.Order.OrderCanceled;
 import org.salespointframework.order.Order.OrderCompleted;

@@ -33,7 +33,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 
-import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.core.AbstractAggregateRoot;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.MetricMismatchException;
 import org.salespointframework.quantity.Quantity;
@@ -48,7 +48,7 @@ import org.springframework.util.Assert;
  */
 @Entity
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
-public class Product extends AbstractEntity<ProductIdentifier> implements Comparable<Product> {
+public class Product extends AbstractAggregateRoot<ProductIdentifier> implements Comparable<Product> {
 
 	private static final String INVALID_METRIC = "Product %s does not support quantity %s using metric %s!";
 
