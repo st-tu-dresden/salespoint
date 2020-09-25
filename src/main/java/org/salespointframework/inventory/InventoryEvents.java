@@ -47,7 +47,7 @@ public class InventoryEvents {
 		private final ProductIdentifier productId;
 		private final Quantity currentQuantity, threshold;
 
-		public static StockShort of(InventoryItem<?> item, Quantity quantity) {
+		static StockShort of(InventoryItem<?> item, Quantity quantity) {
 			return new StockShort(item.getProduct().getId(), item.getQuantity(), quantity);
 		}
 	}
