@@ -43,7 +43,7 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 
 	/**
 	 * Creates an {@link OrderCompletionReport} representing a successful verification of the given {@link Order}.
-	 * 
+	 *
 	 * @param order must not be {@literal null}.
 	 * @return will never be {@literal null}.
 	 */
@@ -55,7 +55,7 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 
 	/**
 	 * Creates an {@link OrderCompletionReport} for an {@link Order} that's marked as failed.
-	 * 
+	 *
 	 * @param order must not be {@literal null}.
 	 * @return will never be {@literal null}.
 	 */
@@ -65,7 +65,7 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 
 	/**
 	 * Creates a new {@link OrderCompletionReport} for the given {@link Order} and {@link OrderLineCompletion}s.
-	 * 
+	 *
 	 * @param order must not be {@literal null}.
 	 * @param completions must not be {@literal null}.
 	 * @return will never be {@literal null}.
@@ -76,7 +76,7 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 
 	/**
 	 * Creates a new {@link OrderCompletionReport} for the given {@link Order} and {@link OrderLineCompletion}s.
-	 * 
+	 *
 	 * @param order must not be {@literal null}.
 	 * @param completions must not be {@literal null}.
 	 * @return will never be {@literal null}.
@@ -92,7 +92,7 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 	/**
 	 * Returns whether there report contains any errors. If {@literal true}, clients should go ahead and inspect the
 	 * report for {@link OrderLineCompletion} (e.g. using {@link #stream()} to access the individual completions).
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean hasErrors() {
@@ -101,7 +101,7 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 
 	/**
 	 * Applies the given {@link Function} to produce an exception in case the report has errors.
-	 * 
+	 *
 	 * @param exception must not be {@literal null}.
 	 * @since 7.1
 	 */
@@ -116,7 +116,7 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 		return this;
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Iterable#iterator()
 	 */
@@ -125,7 +125,7 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 		return completions.iterator();
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -162,7 +162,7 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 
 		/**
 		 * Creates an {@link OrderLineCompletion} representing the successful completion of an {@link OrderLine}.
-		 * 
+		 *
 		 * @param orderLine must not be {@literal null}.
 		 * @return
 		 */
@@ -172,7 +172,7 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 
 		/**
 		 * Creates an {@link OrderLineCompletion} representing an erroneous {@link OrderLine} alongside an error message.
-		 * 
+		 *
 		 * @param orderLine must not be {@literal null}.
 		 * @param message must not be {@literal null}.
 		 * @return
@@ -183,7 +183,7 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 
 		/**
 		 * Returns whether the {@link OrderLineCompletion} represents a failure.
-		 * 
+		 *
 		 * @return
 		 */
 		public boolean isFailure() {
@@ -192,7 +192,7 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 
 		/**
 		 * Applies the given {@link Consumer} in case the {@link OrderLineCompletion} is successful.
-		 * 
+		 *
 		 * @param action must not be {@literal null}.
 		 * @return the current {@link OrderLineCompletion}.
 		 * @since 7.1
@@ -212,6 +212,7 @@ public class OrderCompletionReport implements Streamable<OrderLineCompletion> {
 		 * (non-Javadoc)
 		 * @see java.lang.Object#toString()
 		 */
+		@Override
 		public String toString() {
 
 			StringBuilder builder = new StringBuilder() //

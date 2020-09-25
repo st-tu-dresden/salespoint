@@ -34,7 +34,7 @@ import org.springframework.util.StringUtils;
 /**
  * A dedicated Spring {@link Formatter} to print and parse {@link Quantity} instances. Uses a
  * {@link NumberStyleFormatter} for parsing of the amount.
- * 
+ *
  * @author Oliver Gierke
  * @see NumberStyleFormatter
  * @since 6.4.1
@@ -63,7 +63,7 @@ class QuantityFormatter implements Converter<String, Quantity>, Formatter<Quanti
 		QUANTITY_PATTERN = Pattern.compile(builder.toString());
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.springframework.format.Printer#print(java.lang.Object, java.util.Locale)
 	 */
@@ -74,7 +74,7 @@ class QuantityFormatter implements Converter<String, Quantity>, Formatter<Quanti
 				object.getMetric().getAbbreviation());
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.springframework.format.Parser#parse(java.lang.String, java.util.Locale)
 	 */
@@ -123,7 +123,7 @@ class QuantityFormatter implements Converter<String, Quantity>, Formatter<Quanti
 	/**
 	 * Tries to create a {@link Metric} from the given source and reports invalid attempts as {@link ParseException}
 	 * applying the given exception mapper.
-	 * 
+	 *
 	 * @param source the source value that symbolizes the {@link Metric}
 	 * @param index the index at which the metric part was
 	 * @return
