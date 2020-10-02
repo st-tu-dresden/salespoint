@@ -24,7 +24,7 @@ import org.springframework.data.util.Streamable;
  * override {@link #findAll()} to return a {@link Streamable} out of the box.
  *
  * @author Oliver Drotbohm
- * @since 8.0
+ * @since 7.3
  */
 @NoRepositoryBean
 public interface SalespointRepository<T, ID extends SalespointIdentifier> extends CrudRepository<T, ID> {

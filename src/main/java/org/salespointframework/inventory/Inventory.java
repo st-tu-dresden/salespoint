@@ -32,7 +32,8 @@ import org.springframework.data.util.Streamable;
  * warehouse. That's simple and allows to look up the {@link UniqueInventoryItem} by {@link ProductIdentifier}. I.e. the
  * {@link Quantity} contained in that {@link UniqueInventoryItem} is equivalent to the overall quantity in the system.
  * This is the simpler model in general and should be preferred. {@link Product}s held in {@link UniqueInventoryItem}s
- * are suspect to automatic inventory updates on order completion. See {@link InventoryOrderEventListener} for details.
+ * are suspect to automatic inventory updates on order completion. See
+ * {@link org.salespointframework.inventory.InventoryListeners.InventoryOrderEventListener} for details.
  * <p>
  * If you absolutely need to model {@link Product}s managed in multiple warehouses, use {@link MultiInventoryItem}
  * alongside {@link MultiInventory}. {@link MultiInventory#findByProductIdentifier(ProductIdentifier)} rather returns an
@@ -53,7 +54,7 @@ public interface Inventory<T extends InventoryItem<?>> {
 	 *
 	 * @return
 	 * @see SalespointRepository#findAll()
-	 * @since 8.0
+	 * @since 7.3
 	 */
 	@Query("select i from #{#entityName} i")
 	Streamable<InventoryItem<?>> streamAll();
