@@ -49,7 +49,7 @@ import org.springframework.util.Assert;
 @Entity
 @Table(name = "ORDERS")
 @ToString(doNotUseGetters = true)
-@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
+@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED, onConstructor = @__(@Deprecated))
 public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 
 	@EmbeddedId //
@@ -471,6 +471,16 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 		registerEvent(OrderPaid.of(this));
 
 		return this;
+	}
+
+	/**
+	 * Manual verification that invariants are met as JPA requires us to expose a default constructor that also needs to
+	 * be callable from sub-classes as they need to declare one as well.
+	 */
+	@PrePersist
+	void verifyConstraints() {
+		Assert.state(userAccount != null,
+				"No user account set. Make sure you have created the order by calling a non-default constructor!");
 	}
 
 	/**

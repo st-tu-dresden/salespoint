@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.PrePersist;
 
 import org.salespointframework.core.AbstractAggregateRoot;
 import org.salespointframework.quantity.Metric;
@@ -47,7 +48,7 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  */
 @Entity
-@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
+@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED, onConstructor = @__(@Deprecated))
 public class Product extends AbstractAggregateRoot<ProductIdentifier> implements Comparable<Product> {
 
 	private static final String INVALID_METRIC = "Product %s does not support quantity %s using metric %s!";
@@ -185,5 +186,16 @@ public class Product extends AbstractAggregateRoot<ProductIdentifier> implements
 	@Override
 	public String toString() {
 		return String.format("%s, %s, %s, handled in %s", name, productIdentifier, price, metric);
+	}
+
+	/**
+	 * Manual verification that invariants are met as JPA requires us to expose a default constructor that also needs to
+	 * be callable from sub-classes as they need to declare one as well.
+	 */
+	@PrePersist
+	void verifyConstraints() {
+
+		Assert.state(metric != null,
+				"No metric set! Make sure you have created the product by calling a non-default constructor!");
 	}
 }

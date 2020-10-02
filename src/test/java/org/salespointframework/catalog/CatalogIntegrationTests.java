@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,12 @@
  */
 package org.salespointframework.catalog;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
+
+import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 
@@ -28,22 +31,23 @@ import org.junit.jupiter.api.Test;
 import org.moduliths.test.ModuleTest;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Metric;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.util.Streamable;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for {@link Catalog}.
- * 
+ *
  * @author Oliver Gierke
  */
 @Transactional
 @ModuleTest
+@RequiredArgsConstructor
 class CatalogIntegrationTests {
 
-	@Autowired Catalog<Product> catalog;
-	@Autowired Catalog<Cookie> cookies;
-	@Autowired CookieCatalog cookieCatalog;
+	private final Catalog<Product> catalog;
+	private final Catalog<Cookie> cookies;
+	private final CookieCatalog cookieCatalog;
 
 	Cookie cookie;
 
@@ -163,6 +167,14 @@ class CatalogIntegrationTests {
 
 		assertThat(result) //
 				.containsExactlyInAnyOrder(first, second);
+	}
+
+	@Test // #304
+	@SuppressWarnings("deprecation")
+	void rejectsInstanceCreatedViaDefaultConstructor() {
+
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class) //
+				.isThrownBy(() -> catalog.save(new Product()));
 	}
 
 	private Cookie createCookie() {

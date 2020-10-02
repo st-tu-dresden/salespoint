@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,9 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.PrePersist;
 
 import org.salespointframework.core.AbstractEntity;
-import org.salespointframework.core.Currencies;
 import org.springframework.util.Assert;
 
 /**
@@ -44,22 +44,15 @@ import org.springframework.util.Assert;
  */
 @Entity
 @ToString
-@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
+@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED, onConstructor = @__(@Deprecated))
 public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier> {
 
-	// TODO: if the column is not renamed, it does not work. instead,
-	// ProductPaymentEntry's USER_ID column becomes PK. This fucks everything
-	// up, if a PersistentAccountancyEntry is retrieved from the database,
-	// because its "PK" (USER_ID) would be NULL. Renaming keeps ENTRY_ID the PK.
-	// IdClass annotation did not work. Maybe Using a DescriptorCustomizer can
-	// be used, to correct the mappings (don't forget to sacrifice a chicken, if
-	// it does).
 	@EmbeddedId @AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID", nullable = false)) //
 	private AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();
 
-	private @Getter MonetaryAmount value = Currencies.ZERO_EURO;
+	private @Getter MonetaryAmount value;
 	private @Setter(AccessLevel.PACKAGE) LocalDateTime date = null;
-	private @Getter String description = "";
+	private @Getter String description;
 
 	/**
 	 * Creates a new <code>PersistentAccountancyEntry</code> with a specific value.
@@ -128,5 +121,15 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	 */
 	public boolean isExpense() {
 		return value.isNegative();
+	}
+
+	/**
+	 * Manual verification that invariants are met as JPA requires us to expose a default constructor that also needs to
+	 * be callable from sub-classes as they need to declare one as well.
+	 */
+	@PrePersist
+	void verifyConstraints() {
+		Assert.state(value != null,
+				"No value set! Make sure you have created the accountancy entry by calling a non-default constructor!");
 	}
 }

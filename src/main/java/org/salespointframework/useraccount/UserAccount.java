@@ -46,9 +46,8 @@ import org.springframework.util.Assert;
  * @author Oliver Gierke
  * @author Paul Henke
  */
-
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 
 	@EmbeddedId //

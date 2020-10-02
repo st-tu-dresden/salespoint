@@ -24,6 +24,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.AbstractAggregateRoot;
@@ -144,6 +145,22 @@ public abstract class InventoryItem<T extends InventoryItem<T>> extends Abstract
 		return !this.equals(other) && this.keepsTrackOf(other.getProduct());
 	}
 
+	/**
+	 * Manual verification that invariants are met as JPA requires us to expose a default constructor that also needs to
+	 * be callable from sub-classes as they need to declare one as well.
+	 */
+	@PrePersist
+	void verifyConstraints() {
+
+		Assert.state(quantity != null,
+				"No quantity set! Make sure you have created the product by calling a non-default constructor!");
+	}
+
+	/**
+	 * Returns the {@link Product} this {@link InventoryItem} belongs to.
+	 *
+	 * @return must not be {@literal null}.
+	 */
 	protected abstract Product getProduct();
 
 	/*

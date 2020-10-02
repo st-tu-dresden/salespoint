@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@ package org.salespointframework.accountancy;
 
 import static org.assertj.core.api.Assertions.*;
 
+import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDateTime;
 
 import org.javamoney.moneta.Money;
@@ -25,7 +27,7 @@ import org.moduliths.test.ModuleTest;
 import org.moduliths.test.ModuleTest.BootstrapMode;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.time.Interval;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -35,9 +37,10 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 @ModuleTest(BootstrapMode.DIRECT_DEPENDENCIES)
+@RequiredArgsConstructor
 class AccountancyRepositoryTests {
 
-	@Autowired AccountancyEntryRepository repository;
+	private final AccountancyEntryRepository repository;
 
 	@Test // #182
 	void findsEntriesWithinInterval() {
@@ -58,5 +61,13 @@ class AccountancyRepositoryTests {
 
 		Interval nextMonth = Interval.from(firstOfMonth.plusMonths(1)).to(now.plusMonths(1));
 		assertThat(repository.findByDateIn(nextMonth)).doesNotContain(entry);
+	}
+
+	@Test // #304
+	@SuppressWarnings("deprecation")
+	void rejectsInstanceCreatedViaDefaultConstructor() {
+
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class) //
+				.isThrownBy(() -> repository.save(new AccountancyEntry()));
 	}
 }
