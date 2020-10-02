@@ -22,10 +22,6 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
-import org.springframework.core.convert.ConversionFailedException;
-import org.springframework.core.convert.TypeDescriptor;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.Formatter;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.stereotype.Component;
@@ -41,8 +37,7 @@ import org.springframework.util.StringUtils;
  * @soundtrack Dave Matthews Band - Bartender (DMB Live 25)
  */
 @Component
-@ConfigurationPropertiesBinding
-class QuantityFormatter implements Converter<String, Quantity>, Formatter<Quantity> {
+class QuantityFormatter implements Formatter<Quantity> {
 
 	private static final Pattern QUANTITY_PATTERN;
 	private static final NumberStyleFormatter NUMBER_FORMATTER = new NumberStyleFormatter();
@@ -98,26 +93,6 @@ class QuantityFormatter implements Converter<String, Quantity>, Formatter<Quanti
 		return number instanceof BigDecimal //
 				? Quantity.of((BigDecimal) number, metric) //
 				: Quantity.of(number.doubleValue(), metric);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.springframework.core.convert.converter.Converter#convert(java.lang.Object)
-	 */
-	@Override
-	public Quantity convert(String source) {
-
-		try {
-
-			return parse(source, Locale.US);
-
-		} catch (ParseException o_O) {
-
-			var sourceDescriptor = TypeDescriptor.valueOf(String.class);
-			var targetDescriptor = TypeDescriptor.valueOf(Quantity.class);
-
-			throw new ConversionFailedException(sourceDescriptor, targetDescriptor, source, o_O);
-		}
 	}
 
 	/**
