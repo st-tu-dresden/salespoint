@@ -47,7 +47,7 @@ interface Priced {
 
 		return Streamable.of(priced).stream()//
 				.map(Priced::getPrice)//
-				.reduce((left, right) -> left.add(right)) //
+				.reduce(MonetaryAmount::add) //
 				.orElse(Currencies.ZERO_EURO);
 	}
 }
