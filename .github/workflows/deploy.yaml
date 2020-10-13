@@ -2,7 +2,12 @@ name: Deploy Maven artifacts
 
 on:
   push:
-    branches: [main]
+    branches:
+    - main
+    - '7.2.*'
+    - '7.3.*'
+    tags:
+    - '*.RELEASE'
 
 jobs:
   build:
