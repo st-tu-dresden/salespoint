@@ -132,10 +132,10 @@ public class Cart implements Streamable<CartItem>, Priced {
 	}
 
 	/**
-	 * Turns the current state of the cart into an {@link Order}.
+	 * Adds all items currently contained in this cart to the given {@link Order}.
 	 *
 	 * @param order must not be {@literal null}.
-	 * @return the {@link Order} which all items in the card have been added to.
+	 * @return the {@link Order} with the added items of this cart
 	 * @throws IllegalStateException if the given Order is not {@link OrderStatus#OPEN} anymore.
 	 */
 	public Order addItemsTo(Order order) {
