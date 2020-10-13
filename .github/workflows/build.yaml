@@ -7,13 +7,12 @@ on:
     branches: [ main ]
 
 jobs:
-
   build:
-    name: Build & deploy artifacts
+    name: Build and test
 
     runs-on: ubuntu-latest
-    steps:
 
+    steps:
     - name: Checkout sources
       uses: actions/checkout@v2
 
@@ -32,21 +31,3 @@ jobs:
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-
-    - name: Create settings.xml
-      uses: whelk-io/maven-settings-xml-action@v12
-      with:
-        servers: '[{ "id": "salespoint", "username": "${env.FTP_USER}", "password": "${env.FTP_PASSWORD}" }]'
-
-    - name: Add TU Dresden to known hosts
-      env:
-        KNOWN_HOSTS: ${{secrets.KNOWN_HOSTS}}
-      run: |
-        mkdir -p ~/.ssh/
-        echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
-
-    - name: Deploy
-      env:
-        FTP_USER: ${{ secrets.FTP_USER }}
-        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-      run: mvn -B deploy -DskipTests --file pom.xml
