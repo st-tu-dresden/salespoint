@@ -332,7 +332,7 @@ include::{generated-docs}/module-org.salespointframework.order.adoc[leveloffset=
 
 The order management is centered around the `Order` aggregate that aggregates link:{javadoc}/org/salespointframework/order/OrderLine.html[``OrderLine``]s and link:{javadoc}/org/salespointframework/order/ChargeLine.html[``ChargeLine``]s.
 An `OrderLine` refers to a `Product` from the <<modules.catalog>> in combination with a `Quantity`.
-Note, that the `OrderLine`  creates a copy of the ``Product``s description and price, so that changes to those attributes of a `Product` don't affect existing `Orders`.
+Note, that the `OrderLine`  creates a copy of the ``Product``s name and price, so that changes to those attributes of a `Product` don't affect existing `Orders`.
 A `ChargeLine` describes any additional charge that can be associated with the `Order`, e.g. discounts, any general service charges and so on.
 
 ``AttachedChargeLine`` are special ``ChargeLine``s that are attached to an ``OrderLine``.
