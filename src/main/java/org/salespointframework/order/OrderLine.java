@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,8 +35,16 @@ import org.salespointframework.quantity.Quantity;
 import org.springframework.util.Assert;
 
 /**
- * An order line
+ * An order line represents the price and the {@link Quantity} of a
+ * {@link Product} that is intended to be purchased as part of an {@link Order}.
+ * <p>
+ * Order lines should not be used to represent expenses for services, such as
+ * shipping. For this purpose, {@link ChargeLine} should be used instead.
+ * <p>
+ * Note that the constructor of this class creates a copy of the product's name
+ * and price, so that changes to those attributes do not affect existing orders.
  * 
+ * @see ChargeLine
  * @author Paul Henke
  * @author Oliver Gierke
  */

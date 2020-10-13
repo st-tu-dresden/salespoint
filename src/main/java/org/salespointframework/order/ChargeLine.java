@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,8 +35,14 @@ import org.salespointframework.core.AbstractEntity;
 import org.springframework.util.Assert;
 
 /**
- * A chargeline represents extra expenses like shipping. This class is immutable.
+ * A charge line represents extra expenses, such as shipping, for an
+ * {@link Order} as a whole. Expenses for an individual {@link OrderLine} can be
+ * modeled using the {@link AttachedChargeLine} sub-class.
+ * <p>
+ * This class is immutable.
  * 
+ * @see AttachedChargeLine
+ * @see OrderLine
  * @author Thomas Dedek
  * @author Paul Henke
  * @author Oliver Gierke
