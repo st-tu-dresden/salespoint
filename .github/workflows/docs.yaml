@@ -1,4 +1,4 @@
-name: Deploy docs and website
+name: Build and deploy docs and website
 
 on:
   schedule:

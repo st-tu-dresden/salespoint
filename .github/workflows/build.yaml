@@ -1,6 +1,14 @@
-name: CI build
+name: Build Maven artifacts
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - !main
+      - !7.2.*
+      - !7.3.*
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
