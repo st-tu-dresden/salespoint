@@ -31,22 +31,22 @@ import org.springframework.stereotype.Service;
 public interface UserAccountManagement {
 
 	/**
-	 * Creates a new {@link UserAccount} and persists it right away.
+	 * Creates a new {@link UserAccount} from the given username, {@link UnencryptedPassword} and roles.
 	 *
 	 * @param userName the unique name of the user, the name is also used as login name.
-	 * @param password the password
-	 * @param roles zero or more roles
+	 * @param password the unencrypted password which will be encrypted.
+	 * @param roles zero or more roles.
 	 * @return a {@link UserAccount}, will never be {@literal null}.
 	 */
 	UserAccount create(String userName, UnencryptedPassword password, Role... roles);
 
 	/**
-	 * Creates a new {@link UserAccount} and persists it right away.
+	 * Creates a new {@link UserAccount} from the given username, {@link UnencryptedPassword}, email address and roles.
 	 *
 	 * @param userName the unique name of the user, the name is also used as login name.
-	 * @param password the password
-	 * @param emailAddress the email address to be used
-	 * @param roles zero or more roles
+	 * @param password the unencrypted password which will be encrypted.
+	 * @param emailAddress the email address to be used.
+	 * @param roles zero or more roles.
 	 * @return a {@link UserAccount}, will never be {@literal null}.
 	 * @since 7.1
 	 */
