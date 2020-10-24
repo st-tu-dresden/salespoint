@@ -4,6 +4,43 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[7.3]
+== 7.3
+
+Release date: 2020-10-24
+
+- {linkbase}/332[#332] - Fix APT setup to generate Querydsl metamodel classes again.
+- {linkbase}/330[#330] - Pull requests trigger the "deploy artifacts" workflow and fail.
+- {linkbase}/303[#303] - Misleading description in Javadoc  for order and cart.
+- {linkbase}/326[#326] - Replace Moduliths' @Event with jMolecule's DomainEvent abstraction.
+- {linkbase}/288[#288] - Javadoc of UserAccountManager.create(…) could mention that the password is automatically encrypted.
+- {linkbase}/304[#304] - Avoid invalid usage of entities due to the need of a default constructor.
+- {linkbase}/310[#310] - OrderLine type-level Javadoc broken.
+- {linkbase}/252[#252] - Fire event on inventory stock change.
+- {linkbase}/328[#328] - Rename …Manager classes to …Management.
+- {linkbase}/327[#327] - Improve testing of events published by Order.
+- {linkbase}/325[#325] - Refactor OrderManager.cancel(…) to take a reason.
+- {linkbase}/319[#319] - Tweak CI build to continuously deploy snapshots and docs.
+- {linkbase}/323[#323] - Switch version back to 7.3.
+- {linkbase}/324[#324] - Upgrade to Maven Asciidoctor Plugin 2.1.
+- {linkbase}/300[#300] - Quantities rendered from database values always contain ….00.
+- {linkbase}/299[#299] - Upgrade to Moduliths 1.0 GA.
+- {linkbase}/321[#321] - Upgrade to Spring Boot 2.3.4.
+- {linkbase}/320[#320] - Fix broken Javadoc generation.
+- {linkbase}/318[#318] - Switch to GitHub action and remove Travis builds.
+- {linkbase}/306[#306] - SalesPoint Javadoc search is not working.
+- {linkbase}/317[#317] - Set up Sonarcloud.
+- {linkbase}/316[#316] - Facelift for website and reference documentation.
+- {linkbase}/315[#315] - Add Moduliths @Event annotation to events.
+- {linkbase}/313[#313] - Creation of a UserAccount should publish event.
+- {linkbase}/311[#311] - Update to Spring Boot 2.3 M1.
+- {linkbase}/312[#312] - Switch to API artifact of Moduliths.
+- {linkbase}/309[#309] - Adapt to package changes in Moduliths.
+- {linkbase}/295[#295] - Switch version to 8.0.
+- {linkbase}/294[#294] - Upgrade to Spring Boot 2.2.2.
+- {linkbase}/293[#293] - Improve usage of Streamable in repositories.
+
+:numbered!:
 [7.2.2]
 == 7.2.2
 
