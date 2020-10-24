@@ -6,8 +6,6 @@ on:
     - main
     - 7.2.*
     - 7.3.*
-    tags:
-    - '**'
 
 jobs:
   build:
