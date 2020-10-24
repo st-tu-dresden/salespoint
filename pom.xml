@@ -17,8 +17,8 @@
 	<properties>
 		<dev>/dev</dev>
 		<java.version>11</java.version>
-		<jddd.version>0.1.0</jddd.version>
-		<moduliths.version>1.1.0-SNAPSHOT</moduliths.version>
+		<jmolecules.version>1.0.0</jmolecules.version>
+		<moduliths.version>1.0.0</moduliths.version>
 		<refdocs.dir>${project.build.directory}/refdocs</refdocs.dir>
 	</properties>
 
@@ -276,7 +276,7 @@
 		<dependency>
 			<groupId>org.moduliths</groupId>
 			<artifactId>moduliths-test</artifactId>
-			<version>${moduliths.version}</version>
+			<version>1.1.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -288,9 +288,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.jddd</groupId>
-			<artifactId>jddd-events</artifactId>
-			<version>${jddd.version}</version>
+			<groupId>org.jmolecules</groupId>
+			<artifactId>jmolecules-events</artifactId>
+			<version>${jmolecules.version}</version>
 		</dependency>
 
 		<!-- Documentation -->

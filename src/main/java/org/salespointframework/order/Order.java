@@ -20,7 +20,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.Value;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,10 +28,12 @@ import java.util.List;
 import javax.money.MonetaryAmount;
 import javax.persistence.*;
 
-import org.jddd.event.types.DomainEvent;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.AbstractAggregateRoot;
 import org.salespointframework.order.ChargeLine.AttachedChargeLine;
+import org.salespointframework.order.OrderEvents.OrderCanceled;
+import org.salespointframework.order.OrderEvents.OrderCompleted;
+import org.salespointframework.order.OrderEvents.OrderPaid;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
@@ -503,51 +504,5 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 				String.format("Invalid order line index %s. Required: %s!", index, allowedIndexRange));
 
 		return this.orderLines.get(index);
-	}
-
-	@Value(staticConstructor = "of")
-	public static class OrderCompleted implements DomainEvent {
-
-		Order order;
-
-		/*
-		 * (non-Javadoc)
-		 * @see java.lang.Object#toString()
-		 */
-		@Override
-		public String toString() {
-			return "OrderCompleted";
-		}
-	}
-
-	@Value(staticConstructor = "of")
-	public static class OrderPaid implements DomainEvent {
-
-		Order order;
-
-		/*
-		 * (non-Javadoc)
-		 * @see java.lang.Object#toString()
-		 */
-		@Override
-		public String toString() {
-			return "OrderPaid";
-		}
-	}
-
-	@Value(staticConstructor = "of")
-	public static class OrderCanceled implements DomainEvent {
-
-		Order order;
-		String reason;
-
-		/*
-		 * (non-Javadoc)
-		 * @see java.lang.Object#toString()
-		 */
-		@Override
-		public String toString() {
-			return "OrderCanceled: " + reason;
-		}
 	}
 }

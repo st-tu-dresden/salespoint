@@ -22,8 +22,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.moduliths.test.AggregateTestUtils;
 import org.moduliths.test.PublishedEvents;
 import org.moduliths.test.PublishedEventsExtension;
-import org.salespointframework.order.Order.OrderCanceled;
-import org.salespointframework.order.Order.OrderCompleted;
+import org.salespointframework.order.OrderEvents.OrderCanceled;
+import org.salespointframework.order.OrderEvents.OrderCompleted;
 import org.salespointframework.useraccount.UserAccountTestUtils;
 
 /**

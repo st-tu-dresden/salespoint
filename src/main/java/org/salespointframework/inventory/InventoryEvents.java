@@ -20,7 +20,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
-import org.jddd.event.types.DomainEvent;
+import org.jmolecules.event.types.DomainEvent;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.quantity.Quantity;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,14 +34,14 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.PrePersist;
 
-import org.jddd.event.types.DomainEvent;
+import org.jmolecules.event.types.DomainEvent;
 import org.salespointframework.core.AbstractAggregateRoot;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
 /**
- * Domain class for a user.
+ * A user account aggregate.
  *
  * @author Oliver Gierke
  * @author Paul Henke
