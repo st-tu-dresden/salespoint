@@ -349,8 +349,10 @@
 						</goals>
 						<configuration>
 							<outputDirectory>target/generated-sources/queries</outputDirectory>
-							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-							<processor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor</processor>
+							<processors>
+								<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+								<processor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor</processor>
+							</processors>
 						</configuration>
 					</execution>
 				</executions>
