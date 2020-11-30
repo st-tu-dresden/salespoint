@@ -114,8 +114,6 @@
 						<configuration>
 							<doctype>book</doctype>
 							<backend>html5</backend>
-							<sourceHighlighter>highlight.js</sourceHighlighter>
-
 							<resources>
 								<!-- Copy our own resources first to make sure they trump the others -->
 								<resource>
@@ -134,6 +132,7 @@
 								<linkcss>true</linkcss>
 								<numbered>true</numbered>
 								<sectanchors>true</sectanchors>
+								<source-highlighter>highlight.js</source-highlighter>
 								<stylesdir>css/</stylesdir>
 								<stylesheet>salespoint.css</stylesheet>
 								<toc>left</toc>
