@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 import org.moduliths.docs.Documenter;
+import org.moduliths.docs.Documenter.CanvasOptions;
 import org.moduliths.docs.Documenter.Options;
 import org.moduliths.model.Modules;
 import org.salespointframework.SalespointApplicationConfigurationTests.SalespointSample;
@@ -52,6 +53,6 @@ class DocumentationTests {
 		modules.stream().forEach(it -> documenter.writeModuleAsPlantUml(it, options));
 
 		// Write module canvases
-		documenter.writeModuleCanvases("{javadoc}");
+		documenter.writeModuleCanvases(CanvasOptions.defaults().withApiBase("{javadoc}"));
 	}
 }
