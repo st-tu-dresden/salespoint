@@ -1,0 +1,8 @@
+namespace org.salespointframework.catalog {
+
+	class Product <<AggregateRoot>>
+
+	interface Catalog<T extends Product> <<Repository>>
+
+	Catalog -left-> Product
+}

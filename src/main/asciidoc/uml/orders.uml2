@@ -1,0 +1,23 @@
+namespace org.salespointframework.time {
+
+  interface BusinessTime
+}
+
+namespace org.salespointframework.orders {
+
+  interface OrderManagement<T extends Order> <<Service>> {
+    + save(T) : T
+  }
+  
+  class PersistentOrderManagement<T extends Order> << (C,#dddddd) Service>> implements OrderManagement
+  
+  interface OrderRepository<T extends Order> << (I,#dddddd) Repository>>
+  
+  class Order <<AggregateRoot>>
+  
+  PersistentOrderManagement -left-> org.salespointframework.time.BusinessTime
+  OrderManagement -right-> Order
+  PersistentOrderManagement -up-> Order
+  OrderRepository -up-> Order
+  PersistentOrderManagement --> OrderRepository
+}

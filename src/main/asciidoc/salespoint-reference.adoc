@@ -448,6 +448,109 @@ This is particularly useful for demoing purposes if e.g. orders can be timed to 
 ////
 image::business-time.png[title="Business time"]
 
+[[modules.extending-salespoint]]
+== Extending Salespoint
+
+Salespoint provides a lot of functionality out of the box but it's very likely that a project built on it will have to extend it.
+The way those extensions have to be implemented depends on which module you'd like to extend, as there are different design and implementation strategies for the modules, because their internal complexity varies in the first place and thus, different ways of encapsulating are in place.
+We're going to look at the different ways of extending Salespoint based on the examples of the <<modules.catalog>> and <<modules.order>> modules.
+Note, that they're primarily chosen as examples of the particular implementation strategy.
+Other modules can be extended the same way.
+
+[[modules.extending-salespoint.catalog]]
+=== Extending the catalog
+
+Let's start with the <<modules.catalog>> module, as it's a pretty simple one.
+It consists of the following building blocks:
+
+* An aggregate root (`Product`).
+* A repository to manage instances of the aggregate root (`Catalog`).
+
+.High-level structure of the catalog module
+plantuml::uml/catalog.uml2[]
+
+This very simple approach works as all business logic that we need for `Product` can be implemented in the aggregate root directly.
+The reason for that in turn is that we don't need access to any other Spring beans to implement that logic.
+The aggregate can solely concentrate on enforcing invariants and providing a high-level API to interact with the it, e.g. through `supports(Quantity)` etc.
+
+Extending `Product` or `Catalog` respectively is straight forward:
+
+.Extending the Salespoint catalog
+[plantuml, extending-catalog, svg]
+....
+!include uml/catalog.uml2
+
+namespace com.acme.myproject #eeeeee {
+  
+  class MyProduct <<AggregateRoot>> extends org.salespointframework.catalog.Product {
+    - customAttribute : String
+  }
+  
+  interface MyCatalog <<Repository>> extends org.salespointframework.catalog.Catalog {
+    + findByCustomAttribute(String) : Streamable<MyProduct>
+  }
+  
+  MyCatalog -left-> MyProduct
+}
+....
+
+1. _Create a dedicated `MyProduct` extending `Product` and add the additional attributes._ -- 
+Be sure to check that the additional attributes do now shadow properties of the parent class.
+I.e. your custom entity should not have attributes named `name`, `price` etc.
+Also, the attributes must not be named after https://www.w3schools.com/SQl/sql_ref_keywords.asp[SQL keywords].
+2. _Create a dedicated repository interface that extends `Catalog`._ -- Declare custom query methods that can refer to custom attributes as needed.
+3. _In your application code, use `MyCatalog` instead of `Catalog`._ -- This possible as `MyCatalog` inherits all basic CRUD functionality from `Catalog`.
+
+[[modules.extending-salespoint.order]] 
+=== Extending the order module
+
+Let's move on to a slightly more complex case.
+The <<modules.order>> module is also centered around an aggregate root but there are business rules that cannot solely be implemented on it.
+The reason for that is, that we need to obtain the date at which an `Order` was created from the <<modules.business-time,`BusinessTime` component>> that allows to customize the current time from a system's point of view.
+Thus, the structure of the module looks as follows:
+
+.High-level structure of the orders module
+plantuml::uml/orders.uml2[]
+
+* It exposes an aggregate root (`Order`) and a service interface (`OrderManagement`, *not* a repository).
+* It contains a package protected implementation of that service interface (`PersistentOrderManagement`) and repository (`OrderRepository`), used by the service implementation.
+
+In that arrangement, the repository is hidden inside the package and not usable -- and thus not extendable -- from the outside.
+We need to do this, to avoid code being able to save `Order` instances directly which would bypass the interaction with `BusinessTime` to gather the correct date to be set on the `Order`.
+If we cannot extend the repository directly, how do we create a custom `MyOrder`?
+Let's have a look at the steps involved:
+
+.Extending order
+[plantuml, extending-order, svg]
+....
+
+!include uml/orders.uml2
+namespace com.acme.myproject #eeeeee {
+
+  class MyOrder {
+    - customAttribute : String
+  }
+  
+  interface MyOrderRepository {
+    + findByCustomAttribute(String) : Streamable<MyOrder>
+  }
+  
+  MyOrder -down-|> org.salespointframework.orders.Order 
+  
+  MyOrderRepository -up-|> org.springframework.data.repository.Repository
+  MyOrderRepository -left-> MyOrder
+}
+....
+
+1. _Create a dedicated `MyOrder` extending `Order` and add the additional attributes._ -- 
+Be sure to check that the additional attributes do now shadow properties of the parent class.
+I.e. your custom entity should not have attributes named `paymentMethod`, `orderStatus` etc.
+2. _Create a custom `MyOrderRepository` extending Spring Data's `org.springframework.data.repository.Repository` interface._ -- Type it to `MyOrder` (domain type) and `OrderIdentifier` (identifier type).
+Make sure you choose the right `Repository` interface from the Spring Data package, because there are other types that are named the same.
+Declare custom query methods that can refer to custom attributes as needed.
+3. _Use `MyOrderRepository` right besides `OrderManagement` in controllers or other client code._ -- Operations available on the service interface like `save(…)` can be still be used as is.
+Queries for custom attributes would then be executed on the newly introduced repository. 
+
 [[modules.technical-apis]]
 == Technical APIs
 
