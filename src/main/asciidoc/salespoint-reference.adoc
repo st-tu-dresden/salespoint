@@ -23,7 +23,7 @@ Models and design patterns employed in Salespoint are inspired by _Enterprise Pa
 [preface]
 [[preface.prerequisites]]
 == Prerequisites
-Working with Salespoint requires some basic knowledge of the underlying technologies such as the Spring Framework as well as JPA to implement the persistence layer. http://static.olivergierke.de/spring-webapps/index.html[This script] gives you an introduction into these technologies. Also the https://github.com/st-tu-dresden/guestbook[Guestbook] sample project is a good starting point to get familiar with the technology stack.
+Working with Salespoint requires some basic knowledge of the underlying technologies such as the Spring Framework as well as JPA to implement the persistence layer. http://static.odrotbohm.de/spring-webapps/index.html[This script] gives you an introduction into these technologies. Also the https://github.com/st-tu-dresden/guestbook[Guestbook] sample project is a good starting point to get familiar with the technology stack.
 
 === The Videoshop sample project
 To give you an example of what applications built on top of Salespoint can actually look like, we provide the https://github.com/st-tu-dresden/videoshop[Videoshop] sample project that covers a few key areas:
@@ -374,23 +374,25 @@ Order "1" *-- "0..*" AttachedChargeLine
 [[modules.order.lifecycle]]
 === The Order lifecycle
 
-An `Order` is an aggregate rootfootnote:[ http://static.olivergierke.de/lectures/ddd-and-spring/#ddd.building-blocks.aggregates[Aggregate root]], which means that state changes to it that have important business meaning trigger events.
+An `Order` is an aggregate rootfootnote:[ http://static.odrotbohm.de/lectures/ddd-and-spring/#ddd.building-blocks.aggregates[Aggregate root]], which means that state changes to it that have important business meaning trigger events.
 
 [[modules.order.lifecycle-diagram]]
 .Order lifecycle
-====
 [plantuml, order-lifecycle, svg]
 ....
 hide empty description
+
 [*] -> Open
 Open -> Paid : markPaid()
 Open -> Cancelled : cancel(…)
 Paid -> Cancelled : cancel(…)
 Paid -> Completed : complete()
-Completed -> Cancelled : cancel()
+Completed --> Cancelled : cancel()
+Cancelled -right-> [*]
+Completed --> [*]
 ....
-====
 
+For every state that is not `Open`, an event will be published.
 These events are then used by other business modules to act on them.
 Currently, the following events are exposed:
 
