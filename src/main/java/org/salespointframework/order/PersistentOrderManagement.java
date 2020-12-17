@@ -52,7 +52,7 @@ class PersistentOrderManagement<T extends Order> implements OrderManagement<T> {
 
 		Assert.notNull(order, "Order must be not null");
 
-		if (!order.isNew()) {
+		if (order.isNew()) {
 			order.setDateCreated(businessTime.getTime());
 		}
 

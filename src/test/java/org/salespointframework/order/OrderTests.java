@@ -187,4 +187,15 @@ class OrderTests {
 		assertThatExceptionOfType(IllegalArgumentException.class) //
 				.isThrownBy(() -> order.addChargeLine(ZERO_EURO, "Description", 0));
 	}
+
+	@Test // #338
+	void keepsOrderCreationgDateWhenSavingAnOrder() throws Exception {
+
+		var order = orders.save(new Order(user));
+		var reference = order.getDateCreated();
+
+		Thread.sleep(50);
+
+		assertThat(orders.save(order).getDateCreated()).isEqualTo(reference);
+	}
 }
