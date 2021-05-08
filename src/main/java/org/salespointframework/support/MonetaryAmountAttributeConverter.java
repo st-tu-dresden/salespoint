@@ -42,7 +42,7 @@ class MonetaryAmountAttributeConverter implements AttributeConverter<MonetaryAmo
 	 */
 	@Override
 	public String convertToDatabaseColumn(MonetaryAmount amount) {
-		return amount == null ? null : amount.toString();
+		return amount == null ? null : String.format("%s %s", amount.getCurrency().getCurrencyCode(), amount.getNumber());
 	}
 
 	/*

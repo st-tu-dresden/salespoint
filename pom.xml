@@ -242,7 +242,7 @@
 		<dependency>
 			<groupId>org.javamoney.moneta</groupId>
 			<artifactId>moneta-core</artifactId>
-			<version>1.4-tud</version>
+			<version>1.4.2</version>
 		</dependency>
 
 		<!-- For changelog creation -->
