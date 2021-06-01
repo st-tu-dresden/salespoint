@@ -18,7 +18,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 == Resources
 
 [[resources.latest]]
-=== Latest release version - 7.3
+=== Latest release version - 7.3.1
 * link:salespoint-reference.html[Reference documentation]
 * link:api[JavaDoc]
 * link:changelog.html[Changelog]
@@ -38,7 +38,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 <dependency>
   <groupId>de.tudresden.inf.st</groupId>
   <artifactId>salespoint-framework</artifactId>
-  <version>7.3.0</version>
+  <version>7.3.1</version>
 </dependency>
 ----
 
@@ -62,7 +62,7 @@ Read more details about Salespoint in the link:salespoint-reference.html[referen
 <dependency>
   <groupId>de.tudresden.inf.st</groupId>
   <artifactId>salespoint-framework</artifactId>
-  <version>7.3.1-SNAPSHOT</version>
+  <version>7.3.2-SNAPSHOT</version>
 </dependency>
 ----
 
