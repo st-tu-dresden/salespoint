@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,26 +15,15 @@
  */
 package org.salespointframework.util;
 
-import net.minidev.json.JSONArray;
-
 import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.AuthCache;
 import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.BasicAuthCache;
-import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HttpContext;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.support.ResourcePropertySource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -42,10 +31,12 @@ import org.springframework.web.client.RestTemplate;
 
 import com.jayway.jsonpath.JsonPath;
 
+import net.minidev.json.JSONArray;
+
 /**
  * Little helper to build a changelog from the tickets of a particular milestone.
  *
- * @author Oliver Gierke
+ * @author Oliver Drotbohm
  */
 public class ChangelogCreator {
 
@@ -66,7 +57,7 @@ public class ChangelogCreator {
 		Iterator<Object> ids = ((JSONArray) idPath.read(response)).iterator();
 
 		String date = DateTimeFormatter.ISO_LOCAL_DATE.format(LocalDate.now());
-		String milestone = JsonPath.read(response, "$[1].milestone.title").toString();
+		String milestone = JsonPath.read(response, "$[0].milestone.title").toString();
 
 		System.out.println(":numbered!:");
 		System.out.println(String.format("[%s]", milestone.replace(" ", "-")));
@@ -85,21 +76,7 @@ public class ChangelogCreator {
 	}
 
 	private static RestTemplate setUpRestTemplate() throws IOException {
-
-		FileSystemResource resource = new FileSystemResource("env.properties");
-		ResourcePropertySource propertySource = new ResourcePropertySource(resource);
-		String username = propertySource.getProperty("github.username").toString();
-		String password = propertySource.getProperty("github.password").toString();
-
-		BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-		credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
-
-		AuthCache authCache = new BasicAuthCache();
-		authCache.put(new HttpHost("api.github.com", 443, "https"), new BasicScheme());
-
 		final HttpClientContext context = HttpClientContext.create();
-		context.setCredentialsProvider(credentialsProvider);
-		context.setAuthCache(authCache);
 
 		ClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().build()) {
 
