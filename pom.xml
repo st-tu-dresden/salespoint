@@ -296,6 +296,8 @@
 
 	<build>
 
+		<defaultGoal>verify</defaultGoal>
+
 		<extensions>
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
