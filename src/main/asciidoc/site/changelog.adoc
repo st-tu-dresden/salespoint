@@ -4,6 +4,37 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[7.4]
+== 7.4
+
+Release date: 2021-10-05
+
+- {linkbase}/363[#363] - Upgrade to Moduliths 1.2.1.
+- {linkbase}/362[#362] - Upgrade to Spring Boot 2.5.5.
+- {linkbase}/356[#356] - Upgrade Asciidoctor Maven Plugin to 2.2.1.
+- {linkbase}/357[#357] - Remove superfluous JUnit exclusions.
+- {linkbase}/358[#358] - Make `verify` the default build goal.
+- {linkbase}/359[#359] - Upgrade to Spring Docs resources 0.2.5.
+- {linkbase}/360[#360] - Upgrade Maven Wagon to 3.4.3.
+- {linkbase}/361[#361] - Update .gitignore to exclude IntelliJ IDEA project files.
+- {linkbase}/355[#355] - Upgrade to Moduliths 1.2.
+- {linkbase}/354[#354] - Upgrade to jMolecules 1.3.
+- {linkbase}/353[#353] - Upgrade to Spring Boot 2.5.4.
+- {linkbase}/352[#352] - Upgrade to Moduliths 1.2 M1.
+- {linkbase}/351[#351] - Upgrade to Spring Boot 2.5.2.
+- {linkbase}/350[#350] - Upgrade to Spring Boot 2.5.1.
+- {linkbase}/345[#345] - Upgrade to Moneta 1.4.2.
+- {linkbase}/342[#342] - Upgrade to Spring Boot 2.5.
+- {linkbase}/343[#343] - Upgrade to Moduliths 1.1 RC1.
+- {linkbase}/344[#344] - Upgrade to jMolecules 1.2.
+- {linkbase}/334[#334] - Fix source highlighting in reference documentation.
+- {linkbase}/339[#339] - Upgrade to Spring Boot 2.4.1.
+- {linkbase}/338[#338] - OrderManagement.save(…) updates order creation date under the wrong condition.
+- {linkbase}/336[#336] - Fix minor issues and some typos in the reference docs.
+- {linkbase}/335[#335] - Document different extension models and why they exist in the first place.
+- {linkbase}/333[#333] - Upgrade to Moduliths 1.1 M1.
+
+:numbered!:
 [7.3.1]
 == 7.3.1
 

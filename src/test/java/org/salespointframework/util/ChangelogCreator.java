@@ -15,6 +15,8 @@
  */
 package org.salespointframework.util;
 
+import net.minidev.json.JSONArray;
+
 import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
@@ -31,8 +33,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.jayway.jsonpath.JsonPath;
 
-import net.minidev.json.JSONArray;
-
 /**
  * Little helper to build a changelog from the tickets of a particular milestone.
  *
@@ -40,7 +40,7 @@ import net.minidev.json.JSONArray;
  */
 public class ChangelogCreator {
 
-	private static final String MILESTONE_ID = "22";
+	private static final String MILESTONE_ID = "26";
 	private static final String URI_TEMPLATE = "https://api.github.com/repos/st-tu-dresden/salespoint/issues?milestone={id}&state=closed&sort=updated";
 	private static final String TICKET_TEMPLATE = "- {linkbase}/%s[#%s] - %s";
 
