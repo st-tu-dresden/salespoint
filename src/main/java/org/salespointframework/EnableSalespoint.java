@@ -27,7 +27,6 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
@@ -71,7 +70,6 @@ public @interface EnableSalespoint {
 	@AliasFor(annotation = Modulithic.class, attribute = "systemName")
 	String value() default "";
 
-	@Configuration
 	@ConditionalOnMissingBean(SalespointSecurityConfiguration.class)
 	@Import(SalespointSecurityConfiguration.class)
 	static class SalespointSecurityAutoConfiguration {}

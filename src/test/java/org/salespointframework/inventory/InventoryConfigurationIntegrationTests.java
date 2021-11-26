@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2019-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,10 @@ package org.salespointframework.inventory;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.Map;
-
 import org.junit.jupiter.api.Test;
 import org.salespointframework.Salespoint;
 import org.salespointframework.inventory.InventoryListeners.InventoryOrderEventListener;
-import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 /**
  * Integration tests for configuration of the inventory module.
@@ -34,12 +32,11 @@ class InventoryConfigurationIntegrationTests {
 	@Test
 	void doesNotRegisterEventListenerIfDisabledViaConfiguration() {
 
-		var application = new SpringApplicationBuilder(Salespoint.class) //
-				.properties(Map.of("salespoint.inventory.disable-updates", true)) //
-				.build();
-
-		try (var context = application.run()) {
-			assertThat(context.getBeanProvider(InventoryOrderEventListener.class).stream()).isEmpty();
-		}
+		new ApplicationContextRunner()
+				.withUserConfiguration(Salespoint.class)
+				.withPropertyValues("salespoint.inventory.disable-updates=true")
+				.run(context -> {
+					assertThat(context).doesNotHaveBean(InventoryOrderEventListener.class);
+				});
 	}
 }

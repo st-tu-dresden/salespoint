@@ -16,12 +16,24 @@
 package org.salespointframework.time;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.stream.IntStream;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.salespointframework.time.BusinessTime.DayHasPassed;
+import org.salespointframework.time.BusinessTime.MonthHasPassed;
+import org.springframework.context.ApplicationEventPublisher;
 
 /**
  * Unit tests for {@link DefaultBusinessTime}.
@@ -29,9 +41,16 @@ import org.junit.jupiter.api.Test;
  * @author Oliver Gierke
  * @author Rico Bergmann
  */
+@ExtendWith(MockitoExtension.class)
 class DefaultBusinessTimeUnitTests {
 
-	BusinessTime businessTime = new DefaultBusinessTime();
+	@InjectMocks DefaultBusinessTime businessTime;
+	@Mock ApplicationEventPublisher events;
+
+	@BeforeEach
+	void reset() {
+		businessTime.reset();
+	}
 
 	@Test // #7
 	void returnsCurrentTimeByDefault() throws Exception {
@@ -84,8 +103,6 @@ class DefaultBusinessTimeUnitTests {
 	@Test // #189
 	void resetWithoutForwardDoesntBreakTime() throws Exception {
 
-		businessTime.reset();
-
 		LocalDateTime businessNow = businessTime.getTime();
 		LocalDateTime now = LocalDateTime.now();
 
@@ -96,9 +113,27 @@ class DefaultBusinessTimeUnitTests {
 	@Test // #189
 	void forwardsCorrectlyAfterReset() throws Exception {
 
-		businessTime.reset();
-
 		assertTimeShifted(businessTime.getTime(), 42);
+	}
+
+	@Test // #371
+	void emitsDayHasPassedEventOnForwarding() {
+
+		businessTime.forward(Duration.ofDays(1));
+
+		verify(events, times(1)).publishEvent(DayHasPassed.of(LocalDate.now()));
+	}
+
+	@Test // #371
+	void emitsMonthHasPassedEventOnForwardingAcrossMonthBoundary() {
+
+		var today = LocalDate.now();
+		var lengthOfMonth = today.lengthOfMonth();
+
+		businessTime.forward(Duration.ofDays(lengthOfMonth));
+
+		verify(events, times(lengthOfMonth)).publishEvent(any(DayHasPassed.class));
+		verify(events, times(1)).publishEvent(MonthHasPassed.of(YearMonth.from(today)));
 	}
 
 	private void assertTimeShifted(LocalDateTime reference, int... days) throws Exception {

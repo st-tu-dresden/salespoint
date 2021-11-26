@@ -15,15 +15,21 @@
  */
 package org.salespointframework.time;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
+import lombok.Value;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+
+import org.jmolecules.event.types.DomainEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 /**
  * Component to allow access to the current business time. It will usually return the current system time but allows
  * manually forwarding it by a certain {@link Duration} for testing and simulation purposes.
- * 
+ *
  * @author Paul Henke
  * @author Oliver Gierke
  * @author Rico Bergmann
@@ -34,22 +40,24 @@ public interface BusinessTime {
 	/**
 	 * Returns the current business time. This will be the time of the system the application is running on by default but
 	 * can be adjusted by calling {@link #forward(Duration)}.
-	 * 
+	 *
 	 * @return
 	 */
 	LocalDateTime getTime();
 
 	/**
 	 * Forwards the current time with the given {@link Duration}. Calling the method multiple times will accumulate
-	 * durations.
-	 * 
-	 * @param duration
+	 * durations. For each day passed during the foward a {@link DayHasPassed} event will be published for application
+	 * components to react to (e.g. via {@link EventListener}). Also, for each month passed, a {@link MonthHasPassed}
+	 * event will be published the same way.
+	 *
+	 * @param duration must not be {@literal null}.
 	 */
 	void forward(Duration duration);
 
 	/**
 	 * Returns the current offset between the real time and the virtual one created by calling {@link #forward(Duration)}.
-	 * 
+	 *
 	 * @return
 	 */
 	Duration getOffset();
@@ -58,4 +66,36 @@ public interface BusinessTime {
 	 * Undoes any forwarding. Afterwards any call to {@link #getTime()} will be equivalent to the system's time again.
 	 */
 	void reset();
+
+	/**
+	 * A {@link DomainEvent} published on each day. Implement an {@link EventListener} to trigger functionality that has
+	 * to run each day.
+	 *
+	 * @author Oliver Drotbohm
+	 * @since 7.5
+	 */
+	@Value(staticConstructor = "of")
+	public class DayHasPassed implements DomainEvent {
+
+		/**
+		 * The day that has just passed.
+		 */
+		private final LocalDate date;
+	}
+
+	/**
+	 * A {@link DomainEvent} published on the last day of the month. Implement an {@link EventListener} to trigger
+	 * functionality that has to run each month.
+	 *
+	 * @author Oliver Drotbohm
+	 * @since 7.5
+	 */
+	@Value(staticConstructor = "of")
+	public class MonthHasPassed implements DomainEvent {
+
+		/**
+		 * The month that has just passed.
+		 */
+		private final YearMonth month;
+	}
 }

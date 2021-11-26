@@ -445,6 +445,39 @@ By default, the implementation will just return the current system date. However
 
 This is particularly useful for demoing purposes if e.g. orders can be timed to a certain date, credit cards become invalid after a certain point in time etc.
 
+[[modules.business-time.events]]
+=== Timed events
+
+`BusinessTime` will publish events for particular time progressions that allow business functionality to be triggered via event listeners:
+
+* `DayHasPassed` -- will be published for each day.
+* `MonthHasPasses` -- will be published at the last day of each month.
+
+The events will be published on calls to `BusinessTime.forward(…)` if the provided `Duration` exceeds the day.
+If you want to see those events also triggered for applications running in production, set `salespoint.scheduling.enabled` to `true`.
+This is disabled by default as it might cause issues when running tests.
+Note, that the events cannot be "unpublished" when handing negative values to `….forward(…)`.
+That means that event listeners have to be implemented assuming that such events could be received multiple times.
+
+Here's an example of how to implement an event listener that can react to these events:
+
+[source, java]
+----
+@Component
+class TimedEventListener {
+
+  @EventListener
+  void on(DayHasPassed event) {
+    // Code to be triggered daily goes here
+  }
+
+  @EventListener
+  void on(MonthHasPassed event) {
+    // Code to be triggered monthly goes here
+  }
+}
+----
+
 ////
 [<<Interface>> BusinessTime]^[DefaultBusinessTime]
 ////
