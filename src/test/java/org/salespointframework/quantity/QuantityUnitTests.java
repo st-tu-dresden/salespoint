@@ -166,4 +166,9 @@ class QuantityUnitTests {
 		assertThat(left.isEqualTo(right)).isTrue();
 		assertThat(left).isNotEqualTo(right);
 	}
+
+	@Test // #368
+	void substractsFromNoneCorrectly() {
+		assertThat(Quantity.NONE.subtract(Quantity.of(5))).isEqualTo(Quantity.of(-5));
+	}
 }

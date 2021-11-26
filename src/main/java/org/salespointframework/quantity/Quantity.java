@@ -164,7 +164,7 @@ public class Quantity {
 	public Quantity subtract(Quantity other) {
 
 		if (this == NONE) {
-			return other;
+			return other.negate();
 		}
 
 		if (other == NONE) {
@@ -281,6 +281,16 @@ public class Quantity {
 	 */
 	public Quantity toZero() {
 		return Quantity.of(0, metric);
+	}
+
+	/**
+	 * Returns the negated {@link Quantity}.
+	 *
+	 * @return will never be {@literal null}.
+	 * @since 7.5
+	 */
+	public Quantity negate() {
+		return new Quantity(amount.negate(), metric);
 	}
 
 	private void assertCompatibility(Quantity quantity) {
