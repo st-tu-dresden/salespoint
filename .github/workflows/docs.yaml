@@ -15,18 +15,17 @@ jobs:
     - name: Checkout sources
       uses: actions/checkout@v2
 
+    steps:
+    - uses: actions/checkout@v2
     - name: Set up JDK 13
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
-        java-version: 13
+        distribution: 'temurin'
+        java-version: '13'
+        cache: 'maven'
 
-    - name: Configure cache
-      uses: actions/cache@v1
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
+    - name: Build with Maven
+      run: mvn -B verify --file pom.xml
 
     - name: Setup Graphviz
       uses: ts-graphviz/setup-graphviz@v1
