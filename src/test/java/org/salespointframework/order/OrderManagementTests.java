@@ -142,7 +142,11 @@ class OrderManagementTests extends AbstractIntegrationTests {
 		order = orders.save(order);
 		var dateCreated = order.getDateCreated();
 
-		var result = orders.findBy(Interval.from(dateCreated).to(dateCreated));
+		var interval = Interval
+				.from(dateCreated.minusSeconds(1))
+				.to(dateCreated.plusSeconds(1));
+
+		var result = orders.findBy(interval);
 
 		assertThat(result, IsIterableWithSize.<Order> iterableWithSize(1));
 		assertThat(result.iterator().next(), is(order));

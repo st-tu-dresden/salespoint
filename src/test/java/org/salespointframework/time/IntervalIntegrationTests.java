@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import javax.persistence.Embedded;
@@ -35,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for {@link Interval}
- * 
+ *
  * @author Oliver Gierke
  */
 @Transactional
@@ -48,7 +49,10 @@ class IntervalIntegrationTests {
 	@Test // #152
 	void intervalCanBePersistedAsEmbeddable() {
 
-		LocalDateTime now = LocalDateTime.now();
+		// Make sure we only use microseconds precision as H2 will only work
+		// with that by default, the OS might run at a higher precision and we
+		// would like to use ….equals(…) comparisons further below.
+		LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MICROS);
 
 		SomeEntity entity = new SomeEntity();
 		entity.interval = Interval.from(now).to(now.plusDays(1));
