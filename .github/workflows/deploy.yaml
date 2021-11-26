@@ -23,7 +23,7 @@ jobs:
         cache: 'maven'
 
     - name: Build with Maven
-      run: mvn -B verify --file pom.xml
+      run: ./mvnw -B verify --file pom.xml
 
     - name: Create settings.xml
       uses: whelk-io/maven-settings-xml-action@v12
@@ -41,4 +41,4 @@ jobs:
       env:
         FTP_USER: ${{ secrets.FTP_USER }}
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-      run: mvn -B deploy -DskipTests --file pom.xml
+      run: ./mvnw -B deploy -DskipTests --file pom.xml

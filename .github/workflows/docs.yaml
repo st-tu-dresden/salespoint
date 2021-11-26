@@ -25,7 +25,7 @@ jobs:
         cache: 'maven'
 
     - name: Build with Maven
-      run: mvn -B verify --file pom.xml
+      run: ./mvnw -B verify --file pom.xml
 
     - name: Setup Graphviz
       uses: ts-graphviz/setup-graphviz@v1
@@ -46,4 +46,4 @@ jobs:
       env:
         FTP_USER: ${{ secrets.FTP_USER }}
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-      run: mvn -Pdocs -B package site:deploy --file pom.xml
+      run: ./mvnw -Pdocs -B package site:deploy --file pom.xml
