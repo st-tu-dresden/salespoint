@@ -16,16 +16,12 @@
 package org.salespointframework.order;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.persistence.EntityManager;
 
-import org.hamcrest.collection.IsIterableWithSize;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -85,8 +81,10 @@ class OrderManagementTests extends AbstractIntegrationTests {
 
 	@Test
 	void testContains() {
+
 		orders.save(order);
-		assertThat(orders.contains(order.getId()), is(true));
+
+		assertThat(orders.contains(order.getId())).isTrue();
 	}
 
 	@Test
@@ -96,8 +94,7 @@ class OrderManagementTests extends AbstractIntegrationTests {
 
 		var result = orders.get(order.getId());
 
-		assertThat(result.isPresent(), is(true));
-		assertThat(result.get(), is(order));
+		assertThat(result).hasValue(order);
 	}
 
 	@Test // #38
@@ -130,10 +127,10 @@ class OrderManagementTests extends AbstractIntegrationTests {
 		order = orders.save(order);
 		var dateCreated = order.getDateCreated();
 
-		var result = orders.findBy(Interval.from(dateCreated).to(dateCreated.plusHours(1L)));
+		var interval = Interval.from(dateCreated.minusSeconds(1)).to(dateCreated.plusSeconds(1));
+		var result = orders.findBy(interval);
 
-		assertThat(result, IsIterableWithSize.<Order> iterableWithSize(1));
-		assertThat(result.iterator().next(), is(order));
+		assertThat(result).containsExactly(order);
 	}
 
 	@Test // #61
@@ -148,8 +145,7 @@ class OrderManagementTests extends AbstractIntegrationTests {
 
 		var result = orders.findBy(interval);
 
-		assertThat(result, IsIterableWithSize.<Order> iterableWithSize(1));
-		assertThat(result.iterator().next(), is(order));
+		assertThat(result).containsExactly(order);
 	}
 
 	@Test
@@ -172,8 +168,7 @@ class OrderManagementTests extends AbstractIntegrationTests {
 
 		var openOrders = orders.findBy(OrderStatus.OPEN);
 
-		assertThat(openOrders, IsIterableWithSize.<Order> iterableWithSize(1));
-		assertThat(openOrders.iterator().next(), is(openOrder));
+		assertThat(openOrders).containsExactly(openOrder);
 	}
 
 	@Test // #219
