@@ -17,6 +17,8 @@ package org.salespointframework.useraccount;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.moduliths.test.ModuleTest;
 import org.moduliths.test.PublishedEvents;
@@ -119,7 +121,7 @@ class UserAccountManagerIntegrationTests {
 	@Test // #46
 	void findsUserByUsername() {
 
-		var reference = users.create("Bob", PASSWORD, Role.of("ROLE_CHEF"));
+		var reference = users.create("Bob", PASSWORD, List.of(Role.of("ROLE_CHEF")));
 
 		var user = users.findByUsername("Bob");
 

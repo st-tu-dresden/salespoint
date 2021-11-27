@@ -18,6 +18,7 @@ package org.salespointframework.useraccount;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.salespointframework.useraccount.Password.EncryptedPassword;
@@ -53,6 +54,16 @@ class PersistentUserAccountManagement implements UserAccountManagement {
 	@Override
 	@Transactional
 	public UserAccount create(String userName, UnencryptedPassword password, Role... roles) {
+		return create(userName, password, List.of(roles));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.useraccount.UserAccountManagement#create(java.lang.String, org.salespointframework.useraccount.Password.UnencryptedPassword, java.lang.Iterable)
+	 */
+	@Override
+	@Transactional
+	public UserAccount create(String userName, UnencryptedPassword password, Iterable<Role> roles) {
 		return create(userName, password, EMAIL_PLACEHOLDER, roles);
 	}
 
@@ -63,6 +74,16 @@ class PersistentUserAccountManagement implements UserAccountManagement {
 	@Override
 	@Transactional
 	public UserAccount create(String userName, UnencryptedPassword password, String emailAddress, Role... roles) {
+		return create(userName, password, emailAddress, List.of(roles));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.useraccount.UserAccountManagement#create(java.lang.String, org.salespointframework.useraccount.Password.UnencryptedPassword, java.lang.String, java.lang.Iterable)
+	 */
+	@Override
+	@Transactional
+	public UserAccount create(String userName, UnencryptedPassword password, String emailAddress, Iterable<Role> roles) {
 
 		Assert.hasText(userName, "Username must not be null or empty!");
 		Assert.notNull(password, "Password must not be null!");

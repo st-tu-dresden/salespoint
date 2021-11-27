@@ -21,8 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Value;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -69,11 +68,15 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 	private @Getter @Setter boolean enabled;
 
 	UserAccount(UserAccountIdentifier userAccountIdentifier, EncryptedPassword password, Role... roles) {
-		this(userAccountIdentifier, password, null, null, null, Arrays.asList(roles));
+		this(userAccountIdentifier, password, null, null, null, List.of(roles));
+	}
+
+	UserAccount(UserAccountIdentifier userAccountIdentifier, EncryptedPassword password, Iterable<Role> roles) {
+		this(userAccountIdentifier, password, null, null, null, roles);
 	}
 
 	UserAccount(UserAccountIdentifier userAccountIdentifier, EncryptedPassword password, String firstname,
-			String lastname, String email, Collection<Role> roles) {
+			String lastname, String email, Iterable<Role> roles) {
 
 		Assert.notNull(userAccountIdentifier, "User account identifier must not be null");
 		Assert.notNull(password, "Password must not be null");
@@ -85,7 +88,7 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.email = email;
-		this.roles.addAll(roles);
+		roles.forEach(this.roles::add);
 	}
 
 	/**
