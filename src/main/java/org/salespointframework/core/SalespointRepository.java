@@ -15,8 +15,10 @@
  */
 package org.salespointframework.core;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.util.Streamable;
 
 /**
@@ -27,7 +29,7 @@ import org.springframework.data.util.Streamable;
  * @since 7.3
  */
 @NoRepositoryBean
-public interface SalespointRepository<T, ID extends SalespointIdentifier> extends CrudRepository<T, ID> {
+public interface SalespointRepository<T, ID extends SalespointIdentifier> extends PagingAndSortingRepository<T, ID> {
 
 	/**
 	 * Re-declaration of {@link CrudRepository#findAll()} to return {@link Streamable} instead of {@link Iterable} for
@@ -36,4 +38,25 @@ public interface SalespointRepository<T, ID extends SalespointIdentifier> extend
 	 * @return all aggregates managed by the repository.
 	 */
 	Streamable<T> findAll();
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.springframework.data.repository.PagingAndSortingRepository#findAll(org.springframework.data.domain.Sort)
+	 */
+	@Override
+	Streamable<T> findAll(Sort sort);
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.springframework.data.repository.CrudRepository#findAllById(java.lang.Iterable)
+	 */
+	@Override
+	Streamable<T> findAllById(Iterable<ID> ids);
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.springframework.data.repository.CrudRepository#saveAll(java.lang.Iterable)
+	 */
+	@Override
+	<S extends T> Streamable<S> saveAll(Iterable<S> entities);
 }
