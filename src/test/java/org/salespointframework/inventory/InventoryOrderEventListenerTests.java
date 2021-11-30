@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 the original author or authors.
+ * Copyright 2017-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -92,7 +92,7 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #230
-	void restocksForCompletedOrderOnCancellation() {
+	void restocksForCanceledOrder() {
 
 		var user = users.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 
@@ -100,7 +100,7 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 		cart.addOrUpdateItem(iPad, 1);
 
 		var order = spy(cart.createOrderFor(user));
-		when(order.isCompleted()).thenReturn(true);
+		when(order.isCanceled()).thenReturn(true);
 
 		listener.on(OrderCanceled.of(order, "No reason!"));
 
