@@ -33,6 +33,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 /**
+ * A simple facade to trigger updates to the inventory implementations.
+ *
  * @author Oliver Drotbohm
  * @since 7.3
  */
@@ -47,7 +49,15 @@ class InventoryManagement {
 	private final @NonNull UniqueInventory<UniqueInventoryItem> uniqueInventory;
 	private final @NonNull List<LineItemFilter> filters;
 
+	/**
+	 * Verifies the stock for the products referenced from {@link OrderLine} items and updates the inventory accordingly.
+	 *
+	 * @param order must not be {@literal null}.
+	 * @return will never be {@literal null}.
+	 */
 	public OrderCompletionReport verifyAndUpdate(Order order) {
+
+		Assert.notNull(order, "Order must not be null!");
 
 		var collect = order.getOrderLines() //
 				.map(this::verify)//
@@ -57,7 +67,14 @@ class InventoryManagement {
 				.onError(OrderCompletionFailure::new);
 	}
 
-	public void cancelOrder(Order order) {
+	/**
+	 * Updates the stock for the {@link OrderLine} items in the given, cancelled {@link Order}.
+	 *
+	 * @param order must not be {@literal null}.
+	 */
+	public void updateStockForCancelledOrder(Order order) {
+
+		Assert.notNull(order, "Order must not be null!");
 
 		if (!order.isCanceled()) {
 			return;
@@ -72,7 +89,7 @@ class InventoryManagement {
 	 * Verifies the given {@link OrderLine} for sufficient stock in the {@link UniqueInventory}.
 	 *
 	 * @param orderLine must not be {@literal null}.
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	private OrderLineCompletion verify(OrderLine orderLine) {
 
@@ -90,11 +107,12 @@ class InventoryManagement {
 	}
 
 	/**
-	 * Verifies that the given UI
+	 * Verifies that the the given {@link UniqueInventoryItem}'s stock is high enough to satisfy the requested quantity of
+	 * the given {@link OrderLine}. Decreases the {@link UniqueInventoryItem}'s quantity if so.
 	 *
-	 * @param item
-	 * @param orderLine
-	 * @return
+	 * @param item must not be {@literal null}.
+	 * @param orderLine must not be {@literal null}.
+	 * @return will never be {@literal null}.
 	 */
 	private OrderLineCompletion verifyAndUpdateUnique(UniqueInventoryItem item, OrderLine orderLine) {
 		return hasSufficientQuantity(item, orderLine)
@@ -105,7 +123,7 @@ class InventoryManagement {
 	 * Creates a new {@link OrderLineCompletion} verifying that at least one {@link MultiInventoryItem} exists.
 	 *
 	 * @param orderLine must not be {@literal null}.
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	private OrderLineCompletion assertAtLeastOneExists(OrderLine orderLine) {
 
