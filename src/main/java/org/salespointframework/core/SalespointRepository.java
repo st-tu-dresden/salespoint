@@ -15,6 +15,7 @@
  */
 package org.salespointframework.core;
 
+import org.jmolecules.ddd.types.Identifier;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -29,7 +30,7 @@ import org.springframework.data.util.Streamable;
  * @since 7.3
  */
 @NoRepositoryBean
-public interface SalespointRepository<T, ID extends SalespointIdentifier> extends PagingAndSortingRepository<T, ID> {
+public interface SalespointRepository<T, ID extends Identifier> extends PagingAndSortingRepository<T, ID> {
 
 	/**
 	 * Re-declaration of {@link CrudRepository#findAll()} to return {@link Streamable} instead of {@link Iterable} for

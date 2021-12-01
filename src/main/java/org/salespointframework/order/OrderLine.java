@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 the original author or authors.
+ * Copyright 2017-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,34 +16,40 @@
 package org.salespointframework.order;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
+import java.util.Map;
+import java.util.UUID;
+
 import javax.money.MonetaryAmount;
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
+import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import org.jmolecules.ddd.types.Identifier;
 import org.salespointframework.catalog.Product;
-import org.salespointframework.catalog.ProductIdentifier;
+import org.salespointframework.catalog.Product.ProductIdentifier;
 import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.order.OrderLine.OrderLineIdentifier;
 import org.salespointframework.quantity.MetricMismatchException;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.util.Assert;
 
 /**
- * An order line represents the price and the {@link Quantity} of a
- * {@link Product} that is intended to be purchased as part of an {@link Order}.
+ * An order line represents the price and the {@link Quantity} of a {@link Product} that is intended to be purchased as
+ * part of an {@link Order}.
  * <p>
- * Order lines should not be used to represent expenses for services, such as
- * shipping. For this purpose, {@link ChargeLine} should be used instead.
+ * Order lines should not be used to represent expenses for services, such as shipping. For this purpose,
+ * {@link ChargeLine} should be used instead.
  * <p>
- * Note that the constructor of this class creates a copy of the product's name
- * and price, so that changes to those attributes do not affect existing orders.
- * 
+ * Note that the constructor of this class creates a copy of the product's name and price, so that changes to those
+ * attributes do not affect existing orders.
+ *
  * @see ChargeLine
  * @author Paul Henke
  * @author Oliver Gierke
@@ -53,21 +59,16 @@ import org.springframework.util.Assert;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Priced {
 
-	@EmbeddedId //
-	@AttributeOverride(name = "id", column = @Column(name = "ORDERLINE_ID")) //
-	private OrderLineIdentifier orderLineIdentifier = new OrderLineIdentifier();
+	private @EmbeddedId OrderLineIdentifier orderLineIdentifier = OrderLineIdentifier.of(UUID.randomUUID().toString());
 
-	@Embedded //
-	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID")) //
 	private @Getter ProductIdentifier productIdentifier;
-
 	private @Getter MonetaryAmount price;
 	private @Getter Quantity quantity;
 	private @Getter String productName;
 
 	/**
 	 * Creates a new {@link OrderLine} for the given {@link Product} and {@link Quantity}.
-	 * 
+	 *
 	 * @param product must not be {@literal null}.
 	 * @param quantity must not be {@literal null}.
 	 */
@@ -86,7 +87,7 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Pr
 		this.productName = product.getName();
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.springframework.data.domain.Persistable#getId()
 	 */
@@ -97,7 +98,7 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Pr
 
 	/**
 	 * Returns whether the {@link OrderLine} refers to the given {@link Product}.
-	 * 
+	 *
 	 * @param product must not be {@literal null}.
 	 * @return
 	 * @since 7.1
@@ -111,7 +112,7 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Pr
 
 	/**
 	 * Returns whether the {@link OrderLine} refers to the {@link Product} with the given identifier.
-	 * 
+	 *
 	 * @param identifier must not be {@literal null}.
 	 * @return
 	 * @since 7.1
@@ -121,5 +122,34 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Pr
 		Assert.notNull(identifier, "Product identifier must not be null!");
 
 		return this.productIdentifier.equals(identifier);
+	}
+
+	/**
+	 * {@link OrderLineIdentifier} serves as an identifier type for {@link OrderLine} objects. The main reason for its
+	 * existence is type safety for identifier across the Salespoint Framework. <br />
+	 * {@link OrderLineIdentifier} instances serve as primary key attribute in {@link OrderLine}, but can also be used as
+	 * a key for non-persistent, {@link Map}-based implementations.
+	 *
+	 * @author Thomas Dedek
+	 * @author Oliver Gierke
+	 */
+	@Embeddable
+	@EqualsAndHashCode
+	@RequiredArgsConstructor(staticName = "of")
+	@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+	static class OrderLineIdentifier implements Identifier, Serializable {
+
+		private static final long serialVersionUID = 2978461586574769497L;
+
+		private final String orderLineId;
+
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return orderLineId;
+		}
 	}
 }

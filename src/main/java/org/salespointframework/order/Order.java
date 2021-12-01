@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,28 @@
 package org.salespointframework.order;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.*;
 
+import org.jmolecules.ddd.types.Identifier;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.AbstractAggregateRoot;
 import org.salespointframework.order.ChargeLine.AttachedChargeLine;
+import org.salespointframework.order.Order.OrderIdentifier;
 import org.salespointframework.order.OrderEvents.OrderCanceled;
 import org.salespointframework.order.OrderEvents.OrderCompleted;
 import org.salespointframework.order.OrderEvents.OrderPaid;
@@ -53,9 +60,7 @@ import org.springframework.util.Assert;
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED, onConstructor = @__(@Deprecated))
 public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 
-	@EmbeddedId //
-	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID")) //
-	private OrderIdentifier orderIdentifier = new OrderIdentifier();
+	private @EmbeddedId OrderIdentifier orderIdentifier = OrderIdentifier.of(UUID.randomUUID().toString());
 
 	private @Lob @Getter PaymentMethod paymentMethod;
 
@@ -504,5 +509,33 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 				String.format("Invalid order line index %s. Required: %s!", index, allowedIndexRange));
 
 		return this.orderLines.get(index);
+	}
+
+	/**
+	 * {@link OrderIdentifier} serves as an identifier type for {@link Order} objects. The main reason for its existence
+	 * is type safety for identifier across the Salespoint Framework. <br />
+	 * {@link OrderIdentifier} instances serve as primary key attribute in {@link Order}, but can also be used as a key
+	 * for non-persistent, {@link Map}-based implementations.
+	 *
+	 * @author Thomas Dedek
+	 */
+	@Embeddable
+	@EqualsAndHashCode
+	@RequiredArgsConstructor(staticName = "of")
+	@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+	public static class OrderIdentifier implements Identifier, Serializable {
+
+		private static final long serialVersionUID = 7243092788875480705L;
+
+		private final String orderId;
+
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return orderId;
+		}
 	}
 }

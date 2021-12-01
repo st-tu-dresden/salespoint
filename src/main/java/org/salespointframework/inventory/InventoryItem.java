@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 the original author or authors.
+ * Copyright 2017-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,25 @@
 package org.salespointframework.inventory;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
+import java.io.Serializable;
+import java.util.UUID;
+
+import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 
+import org.jmolecules.ddd.types.Identifier;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.AbstractAggregateRoot;
 import org.salespointframework.inventory.InventoryEvents.QuantityReduced;
+import org.salespointframework.inventory.InventoryItem.InventoryItemIdentifier;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.util.Assert;
 
@@ -48,9 +54,8 @@ import org.springframework.util.Assert;
 @EntityListeners(InventoryItemCreationListener.class)
 public abstract class InventoryItem<T extends InventoryItem<T>> extends AbstractAggregateRoot<InventoryItemIdentifier> {
 
-	@EmbeddedId //
-	@AttributeOverride(name = "id", column = @Column(name = "ITEM_ID")) //
-	private final InventoryItemIdentifier inventoryItemIdentifier = new InventoryItemIdentifier();
+	private final @EmbeddedId InventoryItemIdentifier inventoryItemIdentifier = InventoryItemIdentifier
+			.of(UUID.randomUUID().toString());
 
 	@Getter //
 	private Quantity quantity;
@@ -174,5 +179,34 @@ public abstract class InventoryItem<T extends InventoryItem<T>> extends Abstract
 
 		return String.format("%s(%s) for Product(%s, \"%s\") with quantity %s", //
 				getClass().getSimpleName(), getId(), product.getId(), product.getName(), getQuantity());
+	}
+
+	/**
+	 * {@code InventoryItemIdentifier} serves as an identifier type for {@link UniqueInventoryItem} objects. The main
+	 * reason for its existence is type safety for identifier across the Salespoint Framework. <br />
+	 * {@code InventoryItemIdentifier} instances serve as primary key attribute in {@link UniqueInventoryItem}, but can
+	 * also be used as a key for non-persistent, <code>Map</code>-based implementations.
+	 *
+	 * @author Paul Henke
+	 * @author Oliver Gierke
+	 */
+	@Embeddable
+	@EqualsAndHashCode
+	@RequiredArgsConstructor(staticName = "of")
+	@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+	public static class InventoryItemIdentifier implements Identifier, Serializable {
+
+		private static final long serialVersionUID = -3309444549353766703L;
+
+		private final String inventoryItemId;
+
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return inventoryItemId;
+		}
 	}
 }

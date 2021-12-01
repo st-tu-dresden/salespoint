@@ -18,6 +18,7 @@ package org.salespointframework.inventory;
 import java.util.Collection;
 import java.util.function.Predicate;
 
+import org.salespointframework.inventory.InventoryListeners.InventoryOrderEventListener;
 import org.salespointframework.order.OrderLine;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;

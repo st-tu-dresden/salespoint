@@ -20,6 +20,7 @@ import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
+import org.jmolecules.ddd.types.Identifier;
 import org.springframework.data.domain.Persistable;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
@@ -30,7 +31,7 @@ import org.springframework.util.ObjectUtils;
  * @author Oliver Gierke
  */
 @MappedSuperclass
-public abstract class AbstractEntity<ID extends SalespointIdentifier> implements Persistable<ID> {
+public abstract class AbstractEntity<ID extends Identifier> implements Persistable<ID> {
 
 	private @Transient boolean isNew = true;
 

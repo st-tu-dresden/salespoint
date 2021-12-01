@@ -18,6 +18,7 @@ package org.salespointframework.catalog;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.salespointframework.catalog.Product.ProductIdentifier;
 import org.salespointframework.core.SalespointRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;

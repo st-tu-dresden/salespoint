@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.salespointframework.EnableSalespoint;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
-import org.salespointframework.catalog.ProductIdentifier;
+import org.salespointframework.catalog.Product.ProductIdentifier;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.web.UserAccountWebTestUtils;

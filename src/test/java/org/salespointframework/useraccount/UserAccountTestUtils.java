@@ -19,6 +19,7 @@ import lombok.experimental.UtilityClass;
 
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 
 /**
  * Testing utilities when working with {@link UserAccount}s.
@@ -39,6 +40,6 @@ public class UserAccountTestUtils {
 	 * @return
 	 */
 	public static UserAccount createUserAccount() {
-		return new UserAccount(new UserAccountIdentifier(), ENCRYPTED_PASSWORD);
+		return new UserAccount(UserAccountIdentifier.of("4711"), ENCRYPTED_PASSWORD);
 	}
 }

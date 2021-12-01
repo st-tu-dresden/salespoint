@@ -30,15 +30,15 @@ import javax.persistence.OneToOne;
 
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Order;
-import org.salespointframework.order.OrderIdentifier;
+import org.salespointframework.order.Order.OrderIdentifier;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountIdentifier;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.util.Assert;
 
 /**
  * A {@link ProductPaymentEntry} is used to store information of payments of orders.
- * 
+ *
  * @author Hannes Weisbach
  * @author Thomas Dedek
  * @author Oliver Gierke
@@ -75,7 +75,7 @@ public class ProductPaymentEntry extends AccountancyEntry {
 
 	/**
 	 * Creates a new {@link ProductPaymentEntry} that rolls back the payment for the given {@link Order}.
-	 * 
+	 *
 	 * @param order must not be {@literal null}.
 	 * @param description must not be {@literal null}.
 	 * @return
@@ -95,7 +95,7 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	/**
 	 * A {@code ProductPaymentEntry} is constructed for a specific {@link OrderIdentifier} attached to it. This entry
 	 * saves also the {@link UserAccountIdentifier} and the specified amount that was paid.
-	 * 
+	 *
 	 * @param orderIdentifier the {@link OrderIdentifier} to which this {@link ProductPaymentEntry} will refer to, must
 	 *          not be {@literal null}.
 	 * @param userAccount the {@link UserAccount} to which this {@link ProductPaymentEntry} will refer to, must not be
@@ -120,7 +120,7 @@ public class ProductPaymentEntry extends AccountancyEntry {
 
 	/**
 	 * Returns whether the {@link ProductPaymentEntry} belongs to the given {@link Order}.
-	 * 
+	 *
 	 * @param order must not be {@literal null}.
 	 * @return
 	 */

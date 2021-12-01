@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 the original author or authors.
+ * Copyright 2017-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package org.salespointframework.support;
 
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Collections;
 import java.util.Set;
@@ -24,23 +23,41 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 
+import org.jmolecules.spring.PrimitivesToIdentifierConverter;
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 /**
  * {@link Converter} that can convert {@link String}s into JPA managed domain types. We expect the identifier types to
  * have a constructor that takes a {@link String} as arguments.
- * 
+ *
  * @author Oliver Gierke
  */
 @Component
-@RequiredArgsConstructor
 class JpaEntityConverter implements ConditionalGenericConverter {
 
-	private final @NonNull SalespointIdentifierConverter identifierConverter;
+	private final @NonNull PrimitivesToIdentifierConverter identifierConverter;
 	private final @NonNull EntityManager em;
+
+	/**
+	 * Creates a new {@link JpaEntityConverter} for the given {@link EntityManager} and {@link ConversionService}.
+	 *
+	 * @param em must not be {@literal null}.
+	 * @param conversionService must not be {@literal null}.
+	 */
+	public JpaEntityConverter(EntityManager em, ObjectFactory<ConversionService> conversionService) {
+
+		Assert.notNull(conversionService, "EntityManager must not be null!");
+		Assert.notNull(conversionService, "ConversionService must not be null!");
+
+		this.em = em;
+		this.identifierConverter = new PrimitivesToIdentifierConverter(() -> conversionService.getObject());
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -64,7 +81,7 @@ class JpaEntityConverter implements ConditionalGenericConverter {
 		}
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.springframework.core.convert.converter.GenericConverter#convert(java.lang.Object, org.springframework.core.convert.TypeDescriptor, org.springframework.core.convert.TypeDescriptor)
 	 */

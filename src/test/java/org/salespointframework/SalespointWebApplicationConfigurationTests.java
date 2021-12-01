@@ -19,7 +19,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.junit.MatcherAssert.*;
 
 import org.junit.jupiter.api.Test;
-import org.salespointframework.catalog.ProductIdentifier;
+import org.salespointframework.catalog.Product.ProductIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;

@@ -23,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.moduliths.test.ModuleTest;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,7 +76,7 @@ class UserAccountRepositoryIntegrationTests {
 	@Test // #222
 	void looksUpUserViaEmail() {
 
-		UserAccount account = new UserAccount(new UserAccountIdentifier("username"), PASSWORD);
+		UserAccount account = new UserAccount(UserAccountIdentifier.of("username"), PASSWORD);
 		account.setEmail("foo@bar.com");
 
 		UserAccount reference = repository.save(account);
@@ -113,7 +114,7 @@ class UserAccountRepositoryIntegrationTests {
 
 	static UserAccount createAccount(EncryptedPassword encryptedPassword) {
 
-		UserAccountIdentifier identifier = new UserAccountIdentifier(UUID.randomUUID().toString());
+		UserAccountIdentifier identifier = UserAccountIdentifier.of(UUID.randomUUID().toString());
 		return new UserAccount(identifier, encryptedPassword, Role.of("USER"));
 	}
 }

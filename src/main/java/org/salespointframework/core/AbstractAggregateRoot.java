@@ -21,6 +21,7 @@ import java.util.Collections;
 
 import javax.persistence.MappedSuperclass;
 
+import org.jmolecules.ddd.types.Identifier;
 import org.springframework.data.domain.AfterDomainEventPublication;
 import org.springframework.data.domain.DomainEvents;
 import org.springframework.data.repository.CrudRepository;
@@ -38,7 +39,7 @@ import org.springframework.util.Assert;
  * @soundtrack Dave Matthews Band - #41 (Live at Hollywood Bowl)
  */
 @MappedSuperclass
-public abstract class AbstractAggregateRoot<ID extends SalespointIdentifier> extends AbstractEntity<ID> {
+public abstract class AbstractAggregateRoot<ID extends Identifier> extends AbstractEntity<ID> {
 
 	private transient final Collection<Object> events = new ArrayList<>();
 

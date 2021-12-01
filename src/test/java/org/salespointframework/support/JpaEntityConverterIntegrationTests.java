@@ -25,6 +25,7 @@ import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,12 +43,13 @@ class JpaEntityConverterIntegrationTests {
 
 	@Autowired JpaEntityConverter converter;
 	@Autowired Catalog<Product> catalog;
+	@Autowired ApplicationContext context;
 
 	@Test
 	void convertsStringIdToProduct() {
 
 		Product product = catalog.save(new Product("iPad", Money.of(400, Currencies.EURO)));
-		String identifier = product.getId().getIdentifier();
+		String identifier = product.getId().toString();
 
 		assertThat(converter.convert(identifier, STRING_TYPE, PRODUCT_TYPE), is((Object) product));
 	}

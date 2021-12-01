@@ -16,7 +16,7 @@
 package org.salespointframework.inventory;
 
 import org.salespointframework.catalog.Product;
-import org.salespointframework.catalog.ProductIdentifier;
+import org.salespointframework.catalog.Product.ProductIdentifier;
 import org.salespointframework.core.SalespointRepository;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.data.jpa.repository.Query;

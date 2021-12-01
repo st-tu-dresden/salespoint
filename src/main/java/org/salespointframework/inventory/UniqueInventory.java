@@ -18,8 +18,9 @@ package org.salespointframework.inventory;
 import java.util.Optional;
 
 import org.salespointframework.catalog.Product;
-import org.salespointframework.catalog.ProductIdentifier;
+import org.salespointframework.catalog.Product.ProductIdentifier;
 import org.salespointframework.core.SalespointRepository;
+import org.salespointframework.inventory.InventoryItem.InventoryItemIdentifier;
 import org.salespointframework.order.Order;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.data.jpa.repository.Query;

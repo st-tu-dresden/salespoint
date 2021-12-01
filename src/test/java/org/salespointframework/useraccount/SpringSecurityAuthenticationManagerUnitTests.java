@@ -33,6 +33,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.salespointframework.useraccount.SpringSecurityAuthenticationManagement.UserAccountDetails;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -101,7 +102,8 @@ class SpringSecurityAuthenticationManagerUnitTests {
 	@Test // #222
 	void usesByEmailLookupIfConfigured() {
 
-		SpringSecurityAuthenticationManagement authenticationManager = new SpringSecurityAuthenticationManagement(repository,
+		SpringSecurityAuthenticationManagement authenticationManager = new SpringSecurityAuthenticationManagement(
+				repository,
 				passwordEncoder, new AuthenticationProperties(true));
 
 		doReturn(Optional.of(account)).when(repository).findByEmail(any());
@@ -118,7 +120,7 @@ class SpringSecurityAuthenticationManagerUnitTests {
 		Role customerRole = Role.of("CUSTOMER");
 		Role adminRole = Role.of("ROLE_ADMIN");
 
-		UserAccountIdentifier identifier = new UserAccountIdentifier("4711");
+		UserAccountIdentifier identifier = UserAccountIdentifier.of("4711");
 		var userAccount = new UserAccount(identifier, EncryptedPassword.of("encrypted"), customerRole, adminRole);
 
 		doReturn(Optional.of(userAccount)).when(repository).findById(identifier);

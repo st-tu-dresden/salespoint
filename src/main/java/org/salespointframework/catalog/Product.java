@@ -16,24 +16,30 @@
 package org.salespointframework.catalog;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.PrePersist;
 
+import org.jmolecules.ddd.types.Identifier;
+import org.salespointframework.catalog.Product.ProductIdentifier;
 import org.salespointframework.core.AbstractAggregateRoot;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.MetricMismatchException;
@@ -53,9 +59,7 @@ public class Product extends AbstractAggregateRoot<ProductIdentifier> implements
 
 	private static final String INVALID_METRIC = "Product %s does not support quantity %s using metric %s!";
 
-	@EmbeddedId //
-	@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID")) //
-	private ProductIdentifier productIdentifier = new ProductIdentifier();
+	private @EmbeddedId ProductIdentifier id = ProductIdentifier.of(UUID.randomUUID().toString());
 	private @NonNull @Getter @Setter String name;
 	private @NonNull @Getter @Setter MonetaryAmount price;
 	private @ElementCollection(fetch = FetchType.EAGER) Set<String> categories = new HashSet<String>();
@@ -95,7 +99,7 @@ public class Product extends AbstractAggregateRoot<ProductIdentifier> implements
 	 */
 	@Override
 	public ProductIdentifier getId() {
-		return productIdentifier;
+		return id;
 	}
 
 	/**
@@ -185,7 +189,7 @@ public class Product extends AbstractAggregateRoot<ProductIdentifier> implements
 	 */
 	@Override
 	public String toString() {
-		return String.format("%s, %s, %s, handled in %s", name, productIdentifier, price, metric);
+		return String.format("%s, %s, %s, handled in %s", name, id, price, metric);
 	}
 
 	/**
@@ -197,5 +201,34 @@ public class Product extends AbstractAggregateRoot<ProductIdentifier> implements
 
 		Assert.state(metric != null,
 				"No metric set! Make sure you have created the product by calling a non-default constructor!");
+	}
+
+	/**
+	 * {link ProductIdentifier} serves as an identifier type for {@link Product} objects. The main reason for its
+	 * existence is type safety for identifier across the Salespoint Framework. <br />
+	 * {@link ProductIdentifier} instances serve as primary key attribute in {@link Product}, but can also be used as a
+	 * key for non-persistent, {@link Map}-based implementations.
+	 *
+	 * @author Paul Henke
+	 * @author Oliver Gierke
+	 */
+	@Embeddable
+	@EqualsAndHashCode
+	@RequiredArgsConstructor(staticName = "of")
+	@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+	public static class ProductIdentifier implements Identifier, Serializable {
+
+		private static final long serialVersionUID = 67875667760921725L;
+
+		private final String productId;
+
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return productId;
+		}
 	}
 }

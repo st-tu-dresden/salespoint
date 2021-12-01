@@ -22,6 +22,7 @@ import java.util.Optional;
 
 import javax.money.MonetaryAmount;
 
+import org.salespointframework.accountancy.AccountancyEntry.AccountancyEntryIdentifier;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.time.Interval;
 import org.springframework.data.util.Streamable;

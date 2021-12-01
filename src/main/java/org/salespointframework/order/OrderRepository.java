@@ -17,6 +17,7 @@ package org.salespointframework.order;
 
 import java.time.LocalDateTime;
 
+import org.salespointframework.order.Order.OrderIdentifier;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

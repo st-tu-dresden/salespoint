@@ -17,6 +17,7 @@ package org.salespointframework.accountancy;
 
 import java.time.LocalDateTime;
 
+import org.salespointframework.accountancy.AccountancyEntry.AccountancyEntryIdentifier;
 import org.salespointframework.core.SalespointRepository;
 import org.salespointframework.time.Interval;
 import org.springframework.data.util.Streamable;

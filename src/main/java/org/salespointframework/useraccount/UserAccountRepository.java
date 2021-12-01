@@ -18,6 +18,7 @@ package org.salespointframework.useraccount;
 import java.util.Optional;
 
 import org.salespointframework.core.SalespointRepository;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.data.util.Streamable;
 
 /**

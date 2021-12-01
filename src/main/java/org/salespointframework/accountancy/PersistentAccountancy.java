@@ -29,6 +29,7 @@ import java.util.Optional;
 import javax.money.MonetaryAmount;
 
 import org.javamoney.moneta.Money;
+import org.salespointframework.accountancy.AccountancyEntry.AccountancyEntryIdentifier;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.time.Interval;

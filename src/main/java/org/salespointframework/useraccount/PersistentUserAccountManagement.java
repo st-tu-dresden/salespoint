@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.data.util.Streamable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -96,7 +97,7 @@ class PersistentUserAccountManagement implements UserAccountManagement {
 		});
 
 		EncryptedPassword encryptedPassword = encrypt(password);
-		UserAccount account = new UserAccount(new UserAccountIdentifier(userName), encryptedPassword, roles);
+		UserAccount account = new UserAccount(UserAccountIdentifier.of(userName), encryptedPassword, roles);
 		account.setEmail(EMAIL_PLACEHOLDER.equals(emailAddress) ? null : emailAddress);
 
 		return save(account);
@@ -228,7 +229,7 @@ class PersistentUserAccountManagement implements UserAccountManagement {
 	public Optional<UserAccount> findByUsername(String username) {
 
 		Assert.hasText(username, "Username must not be null or empty!");
-		return repository.findById(new UserAccountIdentifier(username));
+		return repository.findById(UserAccountIdentifier.of(username));
 	}
 
 	/*

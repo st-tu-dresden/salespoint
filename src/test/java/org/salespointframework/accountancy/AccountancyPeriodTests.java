@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Order;
-import org.salespointframework.order.OrderIdentifier;
+import org.salespointframework.order.Order.OrderIdentifier;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;

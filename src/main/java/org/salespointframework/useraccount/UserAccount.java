@@ -16,26 +16,32 @@
 package org.salespointframework.useraccount;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.Value;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.PrePersist;
 
+import org.jmolecules.ddd.types.Identifier;
 import org.jmolecules.event.types.DomainEvent;
 import org.salespointframework.core.AbstractAggregateRoot;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
@@ -49,9 +55,7 @@ import org.springframework.util.Assert;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 
-	@EmbeddedId //
-	@AttributeOverride(name = "id", column = @Column(name = "USERACCOUNT_ID")) //
-	private UserAccountIdentifier userAccountIdentifier;
+	private @EmbeddedId UserAccountIdentifier id;
 
 	@Getter //
 	@Setter(AccessLevel.PACKAGE) //
@@ -83,7 +87,7 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 		Assert.notNull(roles, "Roles must not be null");
 
 		this.enabled = true;
-		this.userAccountIdentifier = userAccountIdentifier;
+		this.id = userAccountIdentifier;
 		this.password = password;
 		this.firstname = firstname;
 		this.lastname = lastname;
@@ -98,7 +102,7 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 	 */
 	@Override
 	public UserAccountIdentifier getId() {
-		return userAccountIdentifier;
+		return id;
 	}
 
 	/**
@@ -107,7 +111,7 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 	 * @return will never be {@literal null}.
 	 */
 	public String getUsername() {
-		return userAccountIdentifier.getIdentifier();
+		return id.toString();
 	}
 
 	/**
@@ -161,7 +165,36 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 	 */
 	@Override
 	public String toString() {
-		return String.format("UserAccount(\"%s\")", userAccountIdentifier.getIdentifier());
+		return String.format("UserAccount(\"%s\")", id);
+	}
+
+	/**
+	 * {@link UserAccountIdentifier} serves as an identifier type for {@link UserAccount} objects. The main reason for its
+	 * existence is type safety for identifier across the Salespoint Framework. <br />
+	 * {@link UserAccountIdentifier} instances serve as primary key attribute in {@link UserAccount}, but can also be used
+	 * as a key for non-persistent, {@link Map}-based implementations.
+	 *
+	 * @author Hannes Weisbach
+	 * @author Oliver Gierke
+	 */
+	@Embeddable
+	@EqualsAndHashCode
+	@RequiredArgsConstructor(staticName = "of")
+	@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+	public static class UserAccountIdentifier implements Identifier, Serializable {
+
+		private static final long serialVersionUID = -3010760283726584012L;
+
+		private final String userAccountId;
+
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return userAccountId;
+		}
 	}
 
 	@Value(staticConstructor = "of")

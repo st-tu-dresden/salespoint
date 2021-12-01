@@ -16,22 +16,28 @@
 package org.salespointframework.accountancy;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.PrePersist;
 
+import org.jmolecules.ddd.types.Identifier;
+import org.salespointframework.accountancy.AccountancyEntry.AccountancyEntryIdentifier;
 import org.salespointframework.core.AbstractEntity;
 import org.springframework.util.Assert;
 
@@ -47,8 +53,8 @@ import org.springframework.util.Assert;
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED, onConstructor = @__(@Deprecated))
 public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier> {
 
-	@EmbeddedId @AttributeOverride(name = "id", column = @Column(name = "ENTRY_ID", nullable = false)) //
-	private AccountancyEntryIdentifier accountancyEntryIdentifier = new AccountancyEntryIdentifier();
+	private @EmbeddedId AccountancyEntryIdentifier accountancyEntryIdentifier = AccountancyEntryIdentifier
+			.of(UUID.randomUUID().toString());
 
 	private @Getter MonetaryAmount value;
 	private @Setter(AccessLevel.PACKAGE) LocalDateTime date = null;
@@ -131,5 +137,34 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	void verifyConstraints() {
 		Assert.state(value != null,
 				"No value set! Make sure you have created the accountancy entry by calling a non-default constructor!");
+	}
+
+	/**
+	 * {@link AccountancyEntryIdentifier} serves as an identifier type for {@link AccountancyEntry} objects. The main
+	 * reason for its existence is type safety for identifier across the Salespoint Framework. <br />
+	 * {@link AccountancyEntryIdentifier} instances serve as primary key attribute in {@link PersistentAccountancyEntry} ,
+	 * but can also be used as a key for non-persistent, {@link Map}-based implementations.
+	 *
+	 * @author Hannes Weisbach
+	 * @author Oliver Gierke
+	 */
+	@Embeddable
+	@EqualsAndHashCode
+	@RequiredArgsConstructor(staticName = "of")
+	@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+	public static class AccountancyEntryIdentifier implements Identifier, Serializable {
+
+		private static final long serialVersionUID = -7802218428666489137L;
+
+		private final String accountancyEntryId;
+
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return accountancyEntryId;
+		}
 	}
 }

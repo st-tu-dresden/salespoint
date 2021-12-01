@@ -17,6 +17,7 @@ package org.salespointframework.order;
 
 import java.util.Optional;
 
+import org.salespointframework.order.Order.OrderIdentifier;
 import org.salespointframework.order.OrderEvents.OrderCanceled;
 import org.salespointframework.order.OrderEvents.OrderCompleted;
 import org.salespointframework.order.OrderEvents.OrderPaid;

@@ -21,26 +21,30 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import lombok.Value;
+
+import java.io.Serializable;
+import java.util.UUID;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 
+import org.jmolecules.ddd.types.Identifier;
 import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.order.ChargeLine.ChargeLineIdentifier;
 import org.springframework.util.Assert;
 
 /**
- * A charge line represents extra expenses, such as shipping, for an
- * {@link Order} as a whole. Expenses for an individual {@link OrderLine} can be
- * modeled using the {@link AttachedChargeLine} sub-class.
+ * A charge line represents extra expenses, such as shipping, for an {@link Order} as a whole. Expenses for an
+ * individual {@link OrderLine} can be modeled using the {@link AttachedChargeLine} sub-class.
  * <p>
  * This class is immutable.
- * 
+ *
  * @see AttachedChargeLine
  * @see OrderLine
  * @author Thomas Dedek
@@ -55,9 +59,7 @@ import org.springframework.util.Assert;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class ChargeLine extends AbstractEntity<ChargeLineIdentifier> implements Priced {
 
-	@EmbeddedId //
-	@AttributeOverride(name = "id", column = @Column(name = "CHARGELINE_ID")) //
-	private ChargeLineIdentifier chargeLineIdentifier = new ChargeLineIdentifier();
+	private @EmbeddedId ChargeLineIdentifier chargeLineIdentifier = ChargeLineIdentifier.of(UUID.randomUUID().toString());
 
 	private final @NonNull MonetaryAmount price;
 	private final @NonNull String description;
@@ -68,6 +70,24 @@ public class ChargeLine extends AbstractEntity<ChargeLineIdentifier> implements 
 	 */
 	public ChargeLineIdentifier getId() {
 		return chargeLineIdentifier;
+	}
+
+	/**
+	 * {@link ChargeLineIdentifier} serves as an identifier type for {@link ChargeLine} objects. The main reason for its
+	 * existence is type safety for identifier across the Salespoint Framework.
+	 *
+	 * @author Paul Henke
+	 * @author Oliver Gierke
+	 */
+	@Embeddable
+	@Value
+	@RequiredArgsConstructor(staticName = "of")
+	@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+	public static class ChargeLineIdentifier implements Identifier, Serializable {
+
+		private static final long serialVersionUID = -2971693909958003661L;
+
+		String id;
 	}
 
 	/**
@@ -87,7 +107,7 @@ public class ChargeLine extends AbstractEntity<ChargeLineIdentifier> implements 
 
 		/**
 		 * Creates a new {@link AttachedChargeLine} for the given price, description and {@link OrderLine}.
-		 * 
+		 *
 		 * @param price must not be {@literal null}.
 		 * @param description must not be {@literal null}.
 		 * @param orderLine must not be {@literal null}.
@@ -103,7 +123,7 @@ public class ChargeLine extends AbstractEntity<ChargeLineIdentifier> implements 
 
 		/**
 		 * Returns whether the {@link AttachedChargeLine} belongs to the given {@link OrderLine}.
-		 * 
+		 *
 		 * @param oderLine must not be {@literal null}.
 		 * @return
 		 */

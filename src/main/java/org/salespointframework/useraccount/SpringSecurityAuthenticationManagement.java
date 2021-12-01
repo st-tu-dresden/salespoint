@@ -26,6 +26,7 @@ import java.util.Optional;
 
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -60,7 +61,7 @@ class SpringSecurityAuthenticationManagement implements AuthenticationManagement
 
 		return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication()) //
 				.map(Authentication::getName) //
-				.map(UserAccountIdentifier::new) //
+				.map(UserAccountIdentifier::of) //
 				.flatMap(repository::findById);
 	}
 
@@ -87,7 +88,7 @@ class SpringSecurityAuthenticationManagement implements AuthenticationManagement
 
 		Optional<UserAccount> candidate = config.isLoginViaEmail() //
 				? repository.findByEmail(name) //
-				: repository.findById(new UserAccountIdentifier(name));
+				: repository.findById(UserAccountIdentifier.of(name));
 
 		return new UserAccountDetails(
 				candidate.orElseThrow(() -> new UsernameNotFoundException("Useraccount: " + name + "not found")));

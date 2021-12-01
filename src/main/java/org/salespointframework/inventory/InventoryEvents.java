@@ -22,7 +22,7 @@ import lombok.Value;
 
 import org.jmolecules.event.types.DomainEvent;
 import org.salespointframework.catalog.Product;
-import org.salespointframework.catalog.ProductIdentifier;
+import org.salespointframework.catalog.Product.ProductIdentifier;
 import org.salespointframework.quantity.Quantity;
 
 /**
