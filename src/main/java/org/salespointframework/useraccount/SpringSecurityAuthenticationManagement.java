@@ -27,6 +27,7 @@ import java.util.Optional;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -77,6 +78,19 @@ class SpringSecurityAuthenticationManagement implements AuthenticationManagement
 		return Optional.ofNullable(candidate).//
 				map(c -> passwordEncoder.matches(c.asString(), existing.asString())).//
 				orElse(false);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.useraccount.AuthenticationManagement#updateAuthentication(org.salespointframework.useraccount.UserAccount)
+	 */
+	@Override
+	public void updateAuthentication(UserAccount account) {
+
+		var details = new UserAccountDetails(account);
+		var token = new UsernamePasswordAuthenticationToken(details, details.getPassword(), details.getAuthorities());
+
+		SecurityContextHolder.getContext().setAuthentication(token);
 	}
 
 	/*

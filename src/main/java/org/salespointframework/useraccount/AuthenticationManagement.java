@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 the original author or authors.
+ * Copyright 2017-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,4 +45,12 @@ public interface AuthenticationManagement {
 	 * @return
 	 */
 	boolean matches(UnencryptedPassword candidate, EncryptedPassword existing);
+
+	/**
+	 * Updates the current authentication to the given {@link UserAccount}.
+	 *
+	 * @param account must not be {@literal null}.
+	 * @since 7.5
+	 */
+	void updateAuthentication(UserAccount account);
 }
