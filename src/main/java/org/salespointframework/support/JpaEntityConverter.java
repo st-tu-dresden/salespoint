@@ -24,11 +24,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 
 import org.jmolecules.spring.PrimitivesToIdentifierConverter;
-import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -50,13 +51,14 @@ class JpaEntityConverter implements ConditionalGenericConverter {
 	 * @param em must not be {@literal null}.
 	 * @param conversionService must not be {@literal null}.
 	 */
-	public JpaEntityConverter(EntityManager em, ObjectFactory<ConversionService> conversionService) {
+	public JpaEntityConverter(EntityManager em, ObjectProvider<ConversionService> conversionService) {
 
 		Assert.notNull(conversionService, "EntityManager must not be null!");
 		Assert.notNull(conversionService, "ConversionService must not be null!");
 
 		this.em = em;
-		this.identifierConverter = new PrimitivesToIdentifierConverter(() -> conversionService.getObject());
+		this.identifierConverter = new PrimitivesToIdentifierConverter(
+				() -> conversionService.getIfAvailable(DefaultConversionService::new));
 	}
 
 	/*
