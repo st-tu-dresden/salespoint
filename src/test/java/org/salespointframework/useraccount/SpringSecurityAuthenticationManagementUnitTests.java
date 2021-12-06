@@ -35,7 +35,6 @@ import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.salespointframework.useraccount.SpringSecurityAuthenticationManagement.UserAccountDetails;
 import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -45,7 +44,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author Oliver Gierke
  */
 @ExtendWith(MockitoExtension.class)
-class SpringSecurityAuthenticationManagerUnitTests {
+class SpringSecurityAuthenticationManagementUnitTests {
 
 	SpringSecurityAuthenticationManagement authenticationManager;
 
@@ -79,7 +78,7 @@ class SpringSecurityAuthenticationManagerUnitTests {
 
 		when(repository.findById(account.getId())).thenReturn(Optional.of(account));
 
-		Optional<UserAccount> currentUser = authenticationManager.getCurrentUser();
+		var currentUser = authenticationManager.getCurrentUser();
 
 		assertThat(currentUser.isPresent(), is(true));
 		assertThat(currentUser.get(), is(account));
@@ -88,9 +87,9 @@ class SpringSecurityAuthenticationManagerUnitTests {
 	@Test
 	void delegatesPasswordMatchCorrectly() {
 
-		EncryptedPassword existing = EncryptedPassword.of("password");
-		UnencryptedPassword matching = UnencryptedPassword.of("password");
-		UnencryptedPassword failing = UnencryptedPassword.of("failing");
+		var existing = EncryptedPassword.of("password");
+		var matching = UnencryptedPassword.of("password");
+		var failing = UnencryptedPassword.of("failing");
 
 		when(passwordEncoder.matches("password", "password")).thenReturn(true);
 
@@ -102,8 +101,7 @@ class SpringSecurityAuthenticationManagerUnitTests {
 	@Test // #222
 	void usesByEmailLookupIfConfigured() {
 
-		SpringSecurityAuthenticationManagement authenticationManager = new SpringSecurityAuthenticationManagement(
-				repository,
+		var authenticationManager = new SpringSecurityAuthenticationManagement(repository,
 				passwordEncoder, new AuthenticationProperties(true));
 
 		doReturn(Optional.of(account)).when(repository).findByEmail(any());
@@ -114,13 +112,13 @@ class SpringSecurityAuthenticationManagerUnitTests {
 		verify(repository, never()).findById(any());
 	}
 
-	@Test // # 280
+	@Test // #280
 	void exposesRolesAsRoleUnderscorePrefixedAuthorities() {
 
-		Role customerRole = Role.of("CUSTOMER");
-		Role adminRole = Role.of("ROLE_ADMIN");
+		var customerRole = Role.of("CUSTOMER");
+		var adminRole = Role.of("ROLE_ADMIN");
 
-		UserAccountIdentifier identifier = UserAccountIdentifier.of("4711");
+		var identifier = UserAccountIdentifier.of("4711");
 		var userAccount = new UserAccount(identifier, EncryptedPassword.of("encrypted"), customerRole, adminRole);
 
 		doReturn(Optional.of(userAccount)).when(repository).findById(identifier);
@@ -148,10 +146,9 @@ class SpringSecurityAuthenticationManagerUnitTests {
 
 	private static void authenticate(UserAccount account) {
 
-		UserAccountDetails accountDetails = new UserAccountDetails(account);
+		var details = new UserAccountDetails(account);
+		var authentication = new UsernamePasswordAuthenticationToken(details, account, details.getAuthorities());
 
-		Authentication authentication = new UsernamePasswordAuthenticationToken(accountDetails, account,
-				accountDetails.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 }
