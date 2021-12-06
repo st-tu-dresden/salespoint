@@ -131,6 +131,21 @@ class SpringSecurityAuthenticationManagerUnitTests {
 				.allMatch(it -> it.getAuthority().startsWith("ROLE_"));
 	}
 
+	@Test // #379
+	void updatesAuthentication() {
+
+		assertThat(authenticationManager.getCurrentUser()).isEmpty();
+
+		var identifier = UserAccountIdentifier.of("4711");
+		var account = new UserAccount(identifier, EncryptedPassword.of("encrypted"), Role.of("ADMIN"));
+
+		doReturn(Optional.of(account)).when(repository).findById(identifier);
+
+		authenticationManager.updateAuthentication(account);
+
+		assertThat(authenticationManager.getCurrentUser()).hasValue(account);
+	}
+
 	private static void authenticate(UserAccount account) {
 
 		UserAccountDetails accountDetails = new UserAccountDetails(account);
