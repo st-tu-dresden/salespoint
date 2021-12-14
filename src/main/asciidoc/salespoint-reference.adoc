@@ -483,6 +483,13 @@ class TimedEventListener {
 ////
 image::business-time.png[title="Business time"]
 
+
+[[modules.storage]]
+== Storage
+
+plantuml::{generated-docs}/module-org.salespointframework.storage.uml[,,svg,title="Storage component"]
+include::{generated-docs}/module-org.salespointframework.storage.adoc[]
+
 [[modules.extending-salespoint]]
 == Extending Salespoint
 
