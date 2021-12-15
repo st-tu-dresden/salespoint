@@ -124,14 +124,14 @@ public class ChargeLine extends AbstractEntity<ChargeLineIdentifier> implements 
 		/**
 		 * Returns whether the {@link AttachedChargeLine} belongs to the given {@link OrderLine}.
 		 *
-		 * @param oderLine must not be {@literal null}.
+		 * @param orderLine must not be {@literal null}.
 		 * @return
 		 */
-		public boolean belongsTo(OrderLine oderLine) {
+		public boolean belongsTo(OrderLine orderLine) {
 
-			Assert.notNull(oderLine, "Reference order line must not be null!");
+			Assert.notNull(orderLine, "Reference order line must not be null!");
 
-			return this.orderLine.equals(oderLine);
+			return this.orderLine.equals(orderLine);
 		}
 	}
 }
