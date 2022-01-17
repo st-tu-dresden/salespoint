@@ -17,7 +17,7 @@
 	<properties>
 		<dev>/dev</dev>
 		<java.version>11</java.version>
-		<jmolecules.version>2021.1.0</jmolecules.version>
+		<jmolecules.version>2021.2.2</jmolecules.version>
 		<moduliths.version>1.3.0-M1</moduliths.version>
 		<refdocs.dir>${project.build.directory}/refdocs</refdocs.dir>
 	</properties>
