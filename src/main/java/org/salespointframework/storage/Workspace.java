@@ -41,9 +41,9 @@ import org.springframework.util.FileSystemUtils;
 class Workspace implements InitializingBean {
 
 	/**
-	 * Folder location for storing files
+	 * Folder location for storing files.
 	 */
-	private final Path root;
+	private final Path location;
 
 	/**
 	 * Creates a new {@link Workspace} at the given location.
@@ -54,7 +54,7 @@ class Workspace implements InitializingBean {
 
 		Assert.notNull(location, "Location must not be null!");
 
-		this.root = location;
+		this.location = location;
 	}
 
 	/**
@@ -67,7 +67,7 @@ class Workspace implements InitializingBean {
 
 		Assert.hasText(subFolder, "Sub folder must not be null or empty!");
 
-		return new Workspace(root.resolve(subFolder)).init();
+		return new Workspace(location.resolve(subFolder)).init();
 	}
 
 	/**
@@ -79,7 +79,7 @@ class Workspace implements InitializingBean {
 
 		try {
 
-			return Files.walk(root, 1)
+			return Files.walk(location, 1)
 					.filter(it -> !Files.isDirectory(it));
 
 		} catch (IOException o_O) {
@@ -100,7 +100,7 @@ class Workspace implements InitializingBean {
 
 		var sanitized = filename.substring(Math.max(filename.lastIndexOf('/'), 0));
 
-		return root.resolve(sanitized).normalize().toAbsolutePath();
+		return location.resolve(sanitized).normalize().toAbsolutePath();
 	}
 
 	/**
@@ -110,7 +110,7 @@ class Workspace implements InitializingBean {
 	 */
 	public Workspace deleteAll() {
 
-		FileSystemUtils.deleteRecursively(root.toFile());
+		FileSystemUtils.deleteRecursively(location.toFile());
 		return this;
 	}
 
@@ -120,7 +120,7 @@ class Workspace implements InitializingBean {
 	 * @return
 	 */
 	public Path asPath() {
-		return root;
+		return location;
 	}
 
 	/*
@@ -136,7 +136,7 @@ class Workspace implements InitializingBean {
 
 		try {
 
-			Path created = Files.createDirectories(root);
+			Path created = Files.createDirectories(location);
 
 			Assert.isTrue(created.toFile().exists(), "Foo!");
 
