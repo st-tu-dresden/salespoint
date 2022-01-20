@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 the original author or authors.
+ * Copyright 2021-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,23 @@ class Workspace implements InitializingBean {
 
 		Assert.notNull(location, "Location must not be null!");
 
-		this.location = location;
+		this.location = getDefaultedPath(location);
+	}
+
+	/**
+	 * Workaround for https://github.com/spring-projects/spring-boot/issues/29495.
+	 *
+	 * @param location must not be {@literal null}.
+	 * @return will never be {@literal null}.
+	 */
+	private static Path getDefaultedPath(Path location) {
+
+		var path = location.toString();
+
+		return !path.contains("${user.home}") //
+				? location //
+				: Path.of(location.toString()
+						.replaceAll("\\$\\{user\\.home\\}", System.getProperty("user.home")));
 	}
 
 	/**
@@ -138,7 +154,8 @@ class Workspace implements InitializingBean {
 
 			Path created = Files.createDirectories(location);
 
-			Assert.isTrue(created.toFile().exists(), "Foo!");
+			Assert.isTrue(created.toFile().exists(),
+					() -> String.format("Could not create or find Salespoint storage location at %s!", created));
 
 			return this;
 		} catch (IOException o_O) {
