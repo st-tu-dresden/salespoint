@@ -96,8 +96,8 @@ class PersistentUserAccountManagement implements UserAccountManagement {
 			throw new IllegalArgumentException(String.format("User with name %s already exists!", userName));
 		});
 
-		EncryptedPassword encryptedPassword = encrypt(password);
-		UserAccount account = new UserAccount(UserAccountIdentifier.of(userName), encryptedPassword, roles);
+		var encryptedPassword = encrypt(password);
+		var account = new UserAccount(UserAccountIdentifier.of(userName), encryptedPassword, roles);
 		account.setEmail(EMAIL_PLACEHOLDER.equals(emailAddress) ? null : emailAddress);
 
 		return save(account);

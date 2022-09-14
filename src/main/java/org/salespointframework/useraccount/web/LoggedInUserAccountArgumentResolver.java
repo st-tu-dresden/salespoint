@@ -37,7 +37,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * {@link HandlerMethodArgumentResolver} to inject the {@link UserAccount} of the currently logged in user into Spring
  * MVC controller method parameters annotated with {@link LoggedIn}. The parameter can also use {@link Optional} as
  * wrapper for {@link UserAccount} to indicate that an anonymous invocation is possible.
- * 
+ *
  * @author Paul Henke
  * @author Oliver Gierke
  */
@@ -60,8 +60,8 @@ class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolv
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
-		Optional<UserAccount> user = authenticationManager.getCurrentUser();
-		ResolvableType parameterType = ResolvableType.forMethodParameter(parameter);
+		var user = authenticationManager.getCurrentUser();
+		var parameterType = ResolvableType.forMethodParameter(parameter);
 
 		return OPTIONAL_OF_USER_ACCOUNT.isAssignableFrom(parameterType) ? user
 				: user.orElseThrow(() -> new ServletRequestBindingException(USER_ACCOUNT_EXPECTED));
@@ -78,11 +78,12 @@ class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolv
 			return false;
 		}
 
-		ResolvableType type = ResolvableType.forMethodParameter(parameter);
+		var type = ResolvableType.forMethodParameter(parameter);
+
 		return USER_ACCOUNT.isAssignableFrom(type) || OPTIONAL_OF_USER_ACCOUNT.isAssignableFrom(type);
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.springframework.web.servlet.config.annotation.WebMvcConfigurer#addArgumentResolvers(java.util.List)
 	 */

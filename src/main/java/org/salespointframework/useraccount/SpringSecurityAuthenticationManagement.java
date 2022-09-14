@@ -100,7 +100,7 @@ class SpringSecurityAuthenticationManagement implements AuthenticationManagement
 	@Override
 	public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
 
-		Optional<UserAccount> candidate = config.isLoginViaEmail() //
+		var candidate = config.isLoginViaEmail() //
 				? repository.findByEmail(name) //
 				: repository.findById(UserAccountIdentifier.of(name));
 
