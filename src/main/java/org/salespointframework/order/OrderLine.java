@@ -15,6 +15,9 @@
  */
 package org.salespointframework.order;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -27,9 +30,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
 
 import org.jmolecules.ddd.types.Identifier;
 import org.salespointframework.catalog.Product;

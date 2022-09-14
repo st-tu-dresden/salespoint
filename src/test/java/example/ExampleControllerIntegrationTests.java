@@ -20,16 +20,15 @@ import org.salespointframework.EnableSalespoint;
 import org.salespointframework.SalespointSecurityConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * Integration tests for sample components.
- * 
+ *
  * @author Oliver Gierke
  */
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -62,9 +61,8 @@ class ExampleControllerIntegrationTests {
 	@Test // #72
 	void usesUtf8ToDecodePayload() {
 
-		RestTemplate template = new RestTemplate();
-
-		MultiValueMap<Object, Object> parameters = new LinkedMultiValueMap<>();
+		var template = new RestTemplate();
+		var parameters = new LinkedMultiValueMap<>();
 		parameters.add("value", "äöü€");
 
 		template.postForLocation(String.format("http://localhost:%s/encoding", port), parameters);

@@ -18,8 +18,9 @@ package example.inventory;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.junit.MatcherAssert.*;
 
+import jakarta.persistence.Entity;
+
 import javax.money.MonetaryAmount;
-import javax.persistence.Entity;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

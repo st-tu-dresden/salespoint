@@ -17,17 +17,16 @@ package org.salespointframework.time;
 
 import static org.assertj.core.api.Assertions.*;
 
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
-
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 import org.junit.jupiter.api.Test;
 import org.moduliths.test.ModuleTest;

@@ -15,6 +15,12 @@
  */
 package org.salespointframework.catalog;
 
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.PrePersist;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,12 +37,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.PrePersist;
 
 import org.jmolecules.ddd.types.Identifier;
 import org.salespointframework.catalog.Product.ProductIdentifier;
@@ -189,7 +189,7 @@ public class Product extends AbstractAggregateRoot<ProductIdentifier> implements
 	 */
 	@Override
 	public String toString() {
-		return String.format("%s, %s, %s, handled in %s", name, id, price, metric);
+		return String.format("%s, %s, %s, handled in %s, categories %s", name, id, price, metric, categories);
 	}
 
 	/**

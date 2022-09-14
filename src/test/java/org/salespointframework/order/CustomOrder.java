@@ -15,10 +15,9 @@
  */
 package org.salespointframework.order;
 
+import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.Entity;
 
 import org.salespointframework.useraccount.UserAccount;
 

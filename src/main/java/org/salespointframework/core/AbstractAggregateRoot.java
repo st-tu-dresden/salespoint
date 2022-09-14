@@ -15,11 +15,11 @@
  */
 package org.salespointframework.core;
 
+import jakarta.persistence.MappedSuperclass;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-
-import javax.persistence.MappedSuperclass;
 
 import org.jmolecules.ddd.types.Identifier;
 import org.springframework.data.domain.AfterDomainEventPublication;

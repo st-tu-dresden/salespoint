@@ -15,6 +15,11 @@
  */
 package org.salespointframework.quantity;
 
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,12 +29,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Transient;
 
 import org.springframework.util.Assert;
 

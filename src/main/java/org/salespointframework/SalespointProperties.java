@@ -15,6 +15,7 @@
  */
 package org.salespointframework;
 
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -28,7 +29,7 @@ import org.springframework.scheduling.annotation.Scheduled;
  * @since 7.5
  */
 @Value
-@ConstructorBinding
+@RequiredArgsConstructor(onConstructor = @__(@ConstructorBinding))
 @ConfigurationProperties("salespoint")
 class SalespointProperties {
 

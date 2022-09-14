@@ -15,6 +15,7 @@
  */
 package org.salespointframework.useraccount;
 
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -28,7 +29,7 @@ import org.springframework.boot.context.properties.ConstructorBinding;
  * @since 7.1
  */
 @Value
-@ConstructorBinding
+@RequiredArgsConstructor(onConstructor = @__(@ConstructorBinding))
 @ConfigurationProperties("salespoint.authentication")
 class AuthenticationProperties {
 

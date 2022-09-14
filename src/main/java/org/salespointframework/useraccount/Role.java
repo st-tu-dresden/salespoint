@@ -15,6 +15,7 @@
  */
 package org.salespointframework.useraccount;
 
+import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,6 @@ import lombok.NonNull;
 import lombok.Value;
 
 import java.io.Serializable;
-
-import javax.persistence.Embeddable;
 
 /**
  * A Role is only identified by a name. This class is immutable.

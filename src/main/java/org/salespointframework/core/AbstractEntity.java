@@ -15,10 +15,10 @@
  */
 package org.salespointframework.core;
 
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PostLoad;
-import javax.persistence.PrePersist;
-import javax.persistence.Transient;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PostLoad;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Transient;
 
 import org.jmolecules.ddd.types.Identifier;
 import org.springframework.data.domain.Persistable;

@@ -15,6 +15,12 @@
  */
 package org.salespointframework.order;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,12 +33,6 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
 
 import org.jmolecules.ddd.types.Identifier;
 import org.salespointframework.core.AbstractEntity;

@@ -15,12 +15,11 @@
  */
 package org.salespointframework.inventory;
 
+import jakarta.persistence.PrePersist;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.stream.Collectors;
-
-import javax.persistence.PrePersist;
 
 import org.salespointframework.catalog.Product;
 import org.springframework.beans.factory.ObjectProvider;

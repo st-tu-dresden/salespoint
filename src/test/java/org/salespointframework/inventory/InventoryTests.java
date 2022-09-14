@@ -20,11 +20,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceException;
+
 import java.util.Map;
 import java.util.function.Function;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceException;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.javamoney.moneta.Money;

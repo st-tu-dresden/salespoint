@@ -30,7 +30,8 @@ import org.springframework.data.util.Streamable;
  * @since 7.3
  */
 @NoRepositoryBean
-public interface SalespointRepository<T, ID extends Identifier> extends PagingAndSortingRepository<T, ID> {
+public interface SalespointRepository<T, ID extends Identifier>
+		extends CrudRepository<T, ID>, PagingAndSortingRepository<T, ID> {
 
 	/**
 	 * Re-declaration of {@link CrudRepository#findAll()} to return {@link Streamable} instead of {@link Iterable} for

@@ -15,8 +15,9 @@
  */
 package org.salespointframework.catalog;
 
+import jakarta.persistence.Entity;
+
 import javax.money.MonetaryAmount;
-import javax.persistence.Entity;
 
 import org.javamoney.moneta.Money;
 import org.salespointframework.core.Currencies;

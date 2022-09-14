@@ -17,10 +17,10 @@ package org.salespointframework.order;
 
 import static org.assertj.core.api.Assertions.*;
 
+import jakarta.persistence.EntityManager;
+
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import javax.persistence.EntityManager;
 
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;

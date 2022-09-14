@@ -15,13 +15,14 @@
  */
 package org.salespointframework.support;
 
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
+
 import java.util.Locale;
 
 import javax.money.MonetaryAmount;
 import javax.money.format.MonetaryAmountFormat;
 import javax.money.format.MonetaryFormats;
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
 
 import org.javamoney.moneta.Money;
 
@@ -38,7 +39,7 @@ class MonetaryAmountAttributeConverter implements AttributeConverter<MonetaryAmo
 
 	/*
 	 * (non-Javadoc)
-	 * @see javax.persistence.AttributeConverter#convertToDatabaseColumn(java.lang.Object)
+	 * @see jakarta.persistence.AttributeConverter#convertToDatabaseColumn(java.lang.Object)
 	 */
 	@Override
 	public String convertToDatabaseColumn(MonetaryAmount amount) {
@@ -47,7 +48,7 @@ class MonetaryAmountAttributeConverter implements AttributeConverter<MonetaryAmo
 
 	/*
 	 * (non-Javadoc)
-	 * @see javax.persistence.AttributeConverter#convertToEntityAttribute(java.lang.Object)
+	 * @see jakarta.persistence.AttributeConverter#convertToEntityAttribute(java.lang.Object)
 	 */
 	@Override
 	public MonetaryAmount convertToEntityAttribute(String source) {

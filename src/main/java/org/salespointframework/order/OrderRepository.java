@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.util.Streamable;
 
@@ -31,7 +32,8 @@ import org.springframework.data.util.Streamable;
  *
  * @author Oliver Gierke
  */
-interface OrderRepository<T extends Order> extends PagingAndSortingRepository<T, OrderIdentifier> {
+interface OrderRepository<T extends Order>
+		extends CrudRepository<T, OrderIdentifier>, PagingAndSortingRepository<T, OrderIdentifier> {
 
 	/**
 	 * Re-declaration of the method actually already contained in {@link PagingAndSortingRepository} to use the JPQL based

@@ -15,6 +15,7 @@
  */
 package org.salespointframework.order;
 
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,7 +32,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.*;
 
 import org.jmolecules.ddd.types.Identifier;
 import org.salespointframework.catalog.Product;

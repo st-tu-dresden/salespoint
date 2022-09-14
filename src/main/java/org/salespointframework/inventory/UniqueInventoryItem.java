@@ -15,12 +15,11 @@
  */
 package org.salespointframework.inventory;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 
 import org.salespointframework.catalog.Product;
 import org.salespointframework.quantity.Quantity;

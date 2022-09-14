@@ -15,12 +15,11 @@
  */
 package org.salespointframework.useraccount;
 
+import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-
-import javax.persistence.Embeddable;
 
 import org.springframework.util.Assert;
 

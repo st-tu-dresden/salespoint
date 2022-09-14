@@ -36,7 +36,6 @@ import org.springframework.util.FileSystemUtils;
  * @author Oliver Drotbohm
  */
 @EqualsAndHashCode
-@ConstructorBinding
 @ConfigurationProperties("salespoint.storage")
 class Workspace implements InitializingBean {
 
@@ -50,6 +49,7 @@ class Workspace implements InitializingBean {
 	 *
 	 * @param location must not be {@literal null}.
 	 */
+	@ConstructorBinding
 	Workspace(@DefaultValue("${user.home}/.salespoint/uploads") Path location) {
 
 		Assert.notNull(location, "Location must not be null!");

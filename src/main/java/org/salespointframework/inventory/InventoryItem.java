@@ -15,6 +15,11 @@
  */
 package org.salespointframework.inventory;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PrePersist;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,12 +28,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
 import java.util.UUID;
-
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
 
 import org.jmolecules.ddd.types.Identifier;
 import org.salespointframework.catalog.Product;

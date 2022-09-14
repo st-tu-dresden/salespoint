@@ -15,13 +15,12 @@
  */
 package org.salespointframework.support;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.metamodel.EntityType;
 import lombok.NonNull;
 
 import java.util.Collections;
 import java.util.Set;
-
-import javax.persistence.EntityManager;
-import javax.persistence.metamodel.EntityType;
 
 import org.jmolecules.spring.PrimitivesToIdentifierConverter;
 import org.springframework.beans.factory.ObjectProvider;

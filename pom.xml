@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.4</version>
+		<version>3.0.0-M5</version>
 		<relativePath />
 	</parent>
 
@@ -176,6 +176,8 @@
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
+			<classifier>jakarta</classifier>
+			<version>${querydsl.version}</version>
 		</dependency>
 
 		<dependency>
@@ -206,7 +208,7 @@
 
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
-			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
+			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
 		</dependency>
 
 		<dependency>
@@ -260,11 +262,6 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
 		</dependency>
 
 		<!-- Architecture -->
@@ -373,6 +370,7 @@
 					<dependency>
 						<groupId>com.querydsl</groupId>
 						<artifactId>querydsl-apt</artifactId>
+						<classifier>jakarta</classifier>
 						<version>${querydsl.version}</version>
 					</dependency>
 				</dependencies>
@@ -487,6 +485,13 @@
 	</distributionManagement>
 
 	<repositories>
+		<repository>
+			<id>spring-milestone</id>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 		<repository>
 			<id>spring-release</id>
 			<url>https://repo.spring.io/release</url>

@@ -15,6 +15,10 @@
  */
 package org.salespointframework.accountancy;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.PrePersist;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,10 +35,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.PrePersist;
 
 import org.jmolecules.ddd.types.Identifier;
 import org.salespointframework.accountancy.AccountancyEntry.AccountancyEntryIdentifier;

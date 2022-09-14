@@ -31,7 +31,6 @@ import org.springframework.lang.Nullable;
  * @since 7.2.2
  */
 @Value
-@ConstructorBinding
 @ConfigurationProperties("salespoint.inventory")
 class InventoryProperties {
 
@@ -45,6 +44,7 @@ class InventoryProperties {
 	 */
 	private Quantity restockThreshold;
 
+	@ConstructorBinding
 	InventoryProperties(boolean disableUpdates, @Nullable Quantity restockThreshold) {
 
 		this.disableUpdates = disableUpdates;
