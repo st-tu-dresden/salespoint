@@ -25,6 +25,7 @@ import org.salespointframework.useraccount.AuthenticationManagement;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -63,7 +64,12 @@ class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolv
 		var user = authenticationManager.getCurrentUser();
 		var parameterType = ResolvableType.forMethodParameter(parameter);
 
-		return OPTIONAL_OF_USER_ACCOUNT.isAssignableFrom(parameterType) ? user
+		if (OPTIONAL_OF_USER_ACCOUNT.isAssignableFrom(parameterType)) {
+			return user;
+		}
+
+		return hasAuthorizationAnnotation(parameter)
+				? user.orElse(null)
 				: user.orElseThrow(() -> new ServletRequestBindingException(USER_ACCOUNT_EXPECTED));
 	}
 
@@ -90,5 +96,9 @@ class LoggedInUserAccountArgumentResolver implements HandlerMethodArgumentResolv
 	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
 		resolvers.add(this);
+	}
+
+	private static boolean hasAuthorizationAnnotation(MethodParameter parameter) {
+		return parameter.hasMethodAnnotation(PreAuthorize.class);
 	}
 }

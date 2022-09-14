@@ -16,6 +16,7 @@
 package org.salespointframework.useraccount.web;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
@@ -31,11 +32,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.salespointframework.useraccount.AuthenticationManagement;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.core.MethodParameter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.ServletRequestBindingException;
 
 /**
  * Unit tests for {@link LoggedInUserAccountArgumentResolver}.
- * 
+ *
  * @author Oliver Gierke
  */
 @ExtendWith(MockitoExtension.class)
@@ -101,6 +103,15 @@ class LoggedInUserAccountArgumentResolverUnitTests {
 				.withMessageContaining("Optional<UserAccount>");
 	}
 
+	@Test // #389, #337
+	void returnsNullForGuardedNoOptional() throws Exception {
+
+		Method method = Sample.class.getMethod("guardedNoOptional", UserAccount.class);
+		when(authenticationManager.getCurrentUser()).thenReturn(Optional.empty());
+
+		assertThat(resolver.resolveArgument(new MethodParameter(method, 0), null, null, null)).isNull();
+	}
+
 	static interface Sample {
 
 		void valid(@LoggedIn Optional<UserAccount> account);
@@ -108,5 +119,8 @@ class LoggedInUserAccountArgumentResolverUnitTests {
 		void notAnnotated(Optional<UserAccount> account);
 
 		void noOptional(@LoggedIn UserAccount account);
+
+		@PreAuthorize("expression")
+		void guardedNoOptional(@LoggedIn UserAccount account);
 	}
 }
