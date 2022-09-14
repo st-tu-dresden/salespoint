@@ -1,6 +1,7 @@
 = Salespoint Framework - Technical Reference
 Andreas Zaschka; Paul Henke; Oliver Drotbohm;
 :doctype: book
+:docinfo: shared
 :javadoc: https://st.inf.tu-dresden.de/SalesPoint{dev}/api/
 :source-base: ../../main/java/org/salespointframework
 :source-base-test: ../../test/java/org/salespointframework

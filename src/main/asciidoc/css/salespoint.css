@@ -9,6 +9,15 @@ body.toc2 {
     padding: 0;
 }
 
+#back-to-index {
+    display: none;
+}
+
+#banner-container {
+    overflow: visible;
+    border: none;
+}
+
 /* Custom TOC header */
 
 #toc::before {
