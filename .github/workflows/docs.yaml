@@ -1,6 +1,7 @@
 name: Build and deploy docs and website
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
 
