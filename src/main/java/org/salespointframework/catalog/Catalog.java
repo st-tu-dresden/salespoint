@@ -38,7 +38,10 @@ public interface Catalog<T extends Product> extends SalespointRepository<T, Prod
 	 * @param category
 	 * @return
 	 */
-	@Query("select p from #{#entityName} p where :category member of p.categories")
+	@Query("""
+			select p from #{#entityName} p
+			 where :category member of p.categories
+			""")
 	Streamable<T> findByCategory(String category);
 
 	/**
@@ -85,7 +88,11 @@ public interface Catalog<T extends Product> extends SalespointRepository<T, Prod
 	 * @return
 	 * @since 7.1
 	 */
-	@Query("select p from #{#entityName} p join p.categories c where c in :categories")
+	@Query("""
+			select p from #{#entityName} p
+			  join p.categories c
+			 where c in :categories
+			""")
 	Streamable<T> findByAnyCategory(Collection<String> categories);
 
 	/**

@@ -46,7 +46,10 @@ public interface UniqueInventory<T extends UniqueInventoryItem>
 	 * @param productIdentifier must not be {@literal null}.
 	 * @return
 	 */
-	@Query("select i from #{#entityName} i where i.product.id = ?1")
+	@Query("""
+			select i from #{#entityName} i
+			 where i.product.id = ?1
+			""")
 	Optional<T> findByProductIdentifier(ProductIdentifier productIdentifier);
 
 	/**

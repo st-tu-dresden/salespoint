@@ -38,7 +38,10 @@ public interface MultiInventory<T extends MultiInventoryItem>
 	 * @param productIdentifier must not be {@literal null}.
 	 * @return
 	 */
-	@Query("select i from #{#entityName} i where i.product.id = ?1")
+	@Query("""
+			select i from #{#entityName} i
+			 where i.product.id = ?1
+			""")
 	InventoryItems<T> findByProductIdentifier(ProductIdentifier productIdentifier);
 
 	/**
