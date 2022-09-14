@@ -93,12 +93,12 @@ The relationships are used as follows:
 * __listens to__ -- The module contains an event listener for events the target modules publishes. Implies a type dependency into the target module as well.
 * __depends on__ -- The module has a general type dependency to the target module, i.e. it uses the target module as library.
 
-plantuml::{generated-docs}/components.uml[,,svg,title="Salespoint component overview"]
+plantuml::{generated-docs}/components.uml[,,format=svg,title="Salespoint component overview"]
 
 [[modules.useraccount]]
 == User accounts
 
-plantuml::{generated-docs}/module-org.salespointframework.useraccount.uml[,,svg,title="User account component"]
+plantuml::{generated-docs}/module-org.salespointframework.useraccount.uml[,,format=svg,title="User account component"]
 include::{generated-docs}/module-org.salespointframework.useraccount.adoc[]
 
 ////
@@ -213,7 +213,7 @@ Furthermore, an object of type `Metric` has a description field, to explain the 
 [[modules.catalog]]
 == Catalog
 
-plantuml::{generated-docs}/module-org.salespointframework.catalog.uml[,,svg,title="Catalog component"]
+plantuml::{generated-docs}/module-org.salespointframework.catalog.uml[,,format=svg,title="Catalog component"]
 include::{generated-docs}/module-org.salespointframework.catalog.adoc[]
 
 Salespoint is intended as framework for point-of-sale applications. Items for sale are called products and represented by instances of the class `Product`. To represent different kinds of products, `Product` can be sub-classed. Products are managed by a `Catalog` implementation (see below). Products are identified using a `ProductIndentifier`.
@@ -229,7 +229,7 @@ image::catalog.png[title="Catalog"]
 [[modules.inventory]]
 == Inventory
 
-plantuml::{generated-docs}/module-org.salespointframework.inventory.uml[,,svg,title="Inventory component"]
+plantuml::{generated-docs}/module-org.salespointframework.inventory.uml[,,format=svg,title="Inventory component"]
 include::{generated-docs}/module-org.salespointframework.inventory.adoc[]
 
 The inventory package contains functionality to keep track of the amount of items we have for a given `Product` (see <<modules.catalog>> for details).
@@ -282,7 +282,7 @@ See link:{javadoc}/org/salespointframework/inventory/InventoryOrderEventListener
 [[modules.accountancy]]
 == Accountancy
 
-plantuml::{generated-docs}/module-org.salespointframework.accountancy.uml[,,svg,title="Accountancy component"]
+plantuml::{generated-docs}/module-org.salespointframework.accountancy.uml[,,format=svg,title="Accountancy component"]
 include::{generated-docs}/module-org.salespointframework.accountancy.adoc[]
 
 The accountancy package contains functionality supporting book keeping. `AccountancyEntry` is a representation of an accounting entry. `Accountancy` aggregates ``AccountancyEntry``s. Every `AccountancyEntry` is uniquely identified by an ``AccountancyEntryIdentifier``. `AccountancyEntry` extends `AbstractEntity` and serves as persistence entity, while `PersistentAccountancy` implements `Accountancy` and provides transparent access to the JPA layer. `AccountancyEntryIdentifier` is used as primary key attribute, when entities are stored in the database.
@@ -327,7 +327,7 @@ For the paying transaction, Salespoint provides some payment strategies.
 [[modules.order]]
 == Order management
 
-plantuml::{generated-docs}/module-org.salespointframework.order.uml[,,svg,title="Order component"]
+plantuml::{generated-docs}/module-org.salespointframework.order.uml[,,format=svg,title="Order component"]
 include::{generated-docs}/module-org.salespointframework.order.adoc[leveloffset=1]
 
 The order management is centered around the `Order` aggregate that aggregates link:{javadoc}/org/salespointframework/order/OrderLine.html[``OrderLine``]s and link:{javadoc}/org/salespointframework/order/ChargeLine.html[``ChargeLine``]s.
@@ -487,7 +487,7 @@ image::business-time.png[title="Business time"]
 [[modules.storage]]
 == Storage
 
-plantuml::{generated-docs}/module-org.salespointframework.storage.uml[,,svg,title="Storage component"]
+plantuml::{generated-docs}/module-org.salespointframework.storage.uml[,,format=svg,title="Storage component"]
 include::{generated-docs}/module-org.salespointframework.storage.adoc[]
 
 [[modules.extending-salespoint]]
@@ -509,7 +509,7 @@ It consists of the following building blocks:
 * A repository to manage instances of the aggregate root (`Catalog`).
 
 .High-level structure of the catalog module
-plantuml::uml/catalog.uml2[]
+plantuml::uml/catalog.uml2[,,format=svg]
 
 This very simple approach works as all business logic that we need for `Product` can be implemented in the aggregate root directly.
 The reason for that in turn is that we don't need access to any other Spring beans to implement that logic.
@@ -552,7 +552,7 @@ The reason for that is, that we need to obtain the date at which an `Order` was 
 Thus, the structure of the module looks as follows:
 
 .High-level structure of the orders module
-plantuml::uml/orders.uml2[]
+plantuml::uml/orders.uml2[,,format=svg]
 
 * It exposes an aggregate root (`Order`) and a service interface (`OrderManagement`, *not* a repository).
 * It contains a package protected implementation of that service interface (`PersistentOrderManagement`) and repository (`OrderRepository`), used by the service implementation.
