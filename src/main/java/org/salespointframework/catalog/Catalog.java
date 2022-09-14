@@ -59,10 +59,12 @@ public interface Catalog<T extends Product> extends SalespointRepository<T, Prod
 	 * @return
 	 * @since 7.1
 	 */
-	@Query("select  p from #{#entityName} p " + //
-			"where (select count(c.id) " + //
-			"from #{#entityName} p2 inner join p2.categories c " + //
-			"where p2.id = p.id and c.id in :categories) = ?#{#categories.size().longValue()}")
+	@Query("""
+			    select p from #{#entityName} p
+			inner join p.categories c
+			     where c in :categories
+			     group by p.id having count(p.id) = ?#{#categories.size().longValue()}
+			""")
 	Streamable<T> findByAllCategories(Collection<String> categories);
 
 	/**
