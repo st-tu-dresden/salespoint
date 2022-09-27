@@ -39,7 +39,7 @@ import org.springframework.test.context.TestConstructor.AutowireMode;
 @ModuleTest(BootstrapMode.ALL_DEPENDENCIES)
 @TestConstructor(autowireMode = AutowireMode.ALL)
 @RequiredArgsConstructor
-public class OrderCustomizationTests {
+class OrderCustomizationTests {
 
 	private final OrderManagement<CustomOrder> orders;
 	private final UserAccountManagement users;

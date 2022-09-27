@@ -32,7 +32,7 @@ import org.springframework.util.Assert;
 
 /**
  * A CartItem consists of a {@link Product} and a {@link Quantity}.
- * 
+ *
  * @author Paul Henke
  * @author Oliver Gierke
  */
@@ -49,7 +49,7 @@ public class CartItem implements Priced {
 
 	/**
 	 * Creates a new {@link CartItem}.
-	 * 
+	 *
 	 * @param product must not be {@literal null}.
 	 * @param quantity must not be {@literal null}.
 	 */
@@ -59,7 +59,7 @@ public class CartItem implements Priced {
 
 	/**
 	 * Creates a new {@link CartItem}.
-	 * 
+	 *
 	 * @param id must not be {@literal null}.
 	 * @param product must not be {@literal null}.
 	 * @param quantity must not be {@literal null}.
@@ -81,7 +81,7 @@ public class CartItem implements Priced {
 
 	/**
 	 * Returns the name of the {@link Product} associated with the {@link CartItem}.
-	 * 
+	 *
 	 * @return
 	 */
 	public final String getProductName() {
@@ -108,7 +108,7 @@ public class CartItem implements Priced {
 
 	/**
 	 * Creates an {@link OrderLine} from this CartItem.
-	 * 
+	 *
 	 * @return
 	 */
 	final OrderLine toOrderLine() {
