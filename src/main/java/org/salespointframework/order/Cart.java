@@ -43,46 +43,54 @@ public class Cart implements Streamable<CartItem>, Priced {
 	/**
 	 * Creates a {@link CartItem} for the given {@link Product} and {@link Quantity}. If a {@link CartItem} for the given
 	 * {@link Product} already exists the {@link Cart} will be updated to reflect the combined {@link Quantity} for the
-	 * backing {@link CartItem}.
+	 * backing {@link CartItem}. If the given {@link Quantity} adds up to zero and the item is removed from the
+	 * {@link Cart}.
 	 *
-	 * @param product must not be {@literal null}
-	 * @param quantity must not be {@literal null}
-	 * @return The created {@link CartItem}.
+	 * @param product must not be {@literal null}.
+	 * @param quantity must not be {@literal null}.
+	 * @return the created {@link CartItem} or an empty {@link Optional} if the given {@link Quantity} adds up to zero and
+	 *         the item is removed from the {@link Cart}.
 	 */
-	public CartItem addOrUpdateItem(Product product, Quantity quantity) {
+	public Optional<CartItem> addOrUpdateItem(Product product, Quantity quantity) {
 
 		Assert.notNull(product, "Product must not be null!");
 		Assert.notNull(quantity, "Quantity must not be null!");
 
-		return this.items.compute(product, //
-				(it, item) -> item == null //
-						? new CartItem(it, quantity) //
-						: item.add(quantity));
+		return Optional.ofNullable(this.items.compute(product, (it, item) -> {
+
+			return item == null
+					? quantity.isZeroOrNegative() ? null : new CartItem(it, quantity)
+					: item.add(quantity);
+		}));
 	}
 
 	/**
 	 * Creates a {@link CartItem} for the given {@link Product} and amount. If a {@link CartItem} for the given
 	 * {@link Product} already exists the {@link Cart} will be updated to reflect the combined {@link Quantity} for the
-	 * backing {@link CartItem}.
+	 * backing {@link CartItem}. If the given {@link Quantity} adds up to zero and the item is removed from the
+	 * {@link Cart}.
 	 *
 	 * @param product must not be {@literal null}.
 	 * @param amount must not be {@literal null}.
-	 * @return
+	 * @return the created {@link CartItem} or an empty {@link Optional} if the given {@link Quantity} adds up to zero and
+	 *         the item is removed from the {@link Cart}.
 	 */
-	public CartItem addOrUpdateItem(Product product, long amount) {
+	public Optional<CartItem> addOrUpdateItem(Product product, long amount) {
 		return addOrUpdateItem(product, product.createQuantity(amount));
 	}
 
 	/**
 	 * Creates a {@link CartItem} for the given {@link Product} and amount. If a {@link CartItem} for the given
 	 * {@link Product} already exists the {@link Cart} will be updated to reflect the combined {@link Quantity} for the
-	 * backing {@link CartItem}.
+	 * backing {@link CartItem}. If the given {@link Quantity} adds up to zero and the item is removed from the
+	 * {@link Cart}.
 	 *
 	 * @param product must not be {@literal null}.
 	 * @param amount must not be {@literal null}.
-	 * @return
+	 * @return the created {@link CartItem} or an empty {@link Optional} if the given {@link Quantity} adds up to zero and
+	 *         the item is removed from the {@link Cart}.
 	 */
-	public CartItem addOrUpdateItem(Product product, double amount) {
+	public Optional<CartItem> addOrUpdateItem(Product product, double amount) {
 		return addOrUpdateItem(product, product.createQuantity(amount));
 	}
 

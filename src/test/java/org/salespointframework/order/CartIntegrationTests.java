@@ -51,7 +51,7 @@ class CartIntegrationTests {
 
 		var orderLines = order.getOrderLines();
 
-		assertThat(orderLines.getTotal()).isEqualTo(cartItem.getPrice());
+		assertThat(cartItem.map(CartItem::getPrice)).hasValue(orderLines.getTotal());
 		assertThat(orderLines).hasSize(1);
 	}
 }

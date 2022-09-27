@@ -27,6 +27,7 @@ import javax.money.MonetaryAmount;
 
 import org.salespointframework.catalog.Product;
 import org.salespointframework.quantity.Quantity;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
@@ -68,6 +69,7 @@ public class CartItem implements Priced {
 		Assert.notNull(id, "Identifier must not be null!");
 		Assert.notNull(product, "Product must be not null!");
 		Assert.notNull(quantity, "Quantity must be not null!");
+		Assert.isTrue(quantity.isPositive(), "Quantity must be positive!");
 
 		product.verify(quantity);
 
@@ -87,16 +89,21 @@ public class CartItem implements Priced {
 	}
 
 	/**
-	 * Returns a new {@link CartItem} that has the given {@link Quantity} added to the current one.
-	 * 
+	 * Returns a new {@link CartItem} that has the given {@link Quantity} added to the current one. Subtracting quantities
+	 * to below zero will normalize the quantity to zero.
+	 *
 	 * @param quantity must not be {@literal null}.
-	 * @return
+	 * @return a {@link CartItem} with the given quantity added or {@literal null} in case the resulting {@link Quantity}
+	 *         is zero or negative.
 	 */
+	@Nullable
 	final CartItem add(Quantity quantity) {
 
 		Assert.notNull(quantity, "Quantity must not be null!");
 
-		return new CartItem(this.id, this.product, this.quantity.add(quantity));
+		var newQuantity = this.quantity.add(quantity);
+
+		return newQuantity.isZeroOrNegative() ? null : new CartItem(id, product, newQuantity);
 	}
 
 	/**

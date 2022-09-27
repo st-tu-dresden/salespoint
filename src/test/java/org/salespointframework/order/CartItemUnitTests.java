@@ -57,7 +57,7 @@ class CartItemUnitTests {
 	void rejectsQuantityWithInvalidMetric() {
 
 		assertThatExceptionOfType(MetricMismatchException.class) //
-				.isThrownBy(() -> new CartItem(PRODUCT, Quantity.of(0, Metric.KILOGRAM)));
+				.isThrownBy(() -> new CartItem(PRODUCT, Quantity.of(1, Metric.KILOGRAM)));
 	}
 
 	@Test // #44
@@ -97,5 +97,12 @@ class CartItemUnitTests {
 
 		CartItem newItem = item.add(QUANTITY);
 		assertThat(newItem.getPrice()).isEqualTo(PRODUCT.getPrice().multiply(QUANTITY.add(QUANTITY).getAmount()));
+	}
+
+	@Test // #365
+	void rejectsNonPositiveAmount() {
+
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> new CartItem(PRODUCT, Quantity.NONE));
 	}
 }

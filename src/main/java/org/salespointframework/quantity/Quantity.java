@@ -255,6 +255,28 @@ public class Quantity {
 	}
 
 	/**
+	 * Returns whether the current {@link Quantity} is positive.
+	 *
+	 * @return
+	 * @since 7.5
+	 */
+	@Transient
+	public boolean isPositive() {
+		return this.amount.compareTo(BigDecimal.ZERO) > 0;
+	}
+
+	/**
+	 * Returns whether the current {@link Quantity} is zero or positive.
+	 *
+	 * @return
+	 * @since 7.5
+	 */
+	@Transient
+	public boolean isZeroOrPositive() {
+		return isGreaterThanOrEqualTo(toZero());
+	}
+
+	/**
 	 * Returns whether the current {@link Quantity} is negative.
 	 *
 	 * @return

@@ -17,8 +17,6 @@ package org.salespointframework.order;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.Optional;
-
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,10 +45,12 @@ class CartUnitTests {
 	@Test // #44
 	void addsCartItemCorrectly() {
 
-		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
+		var reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
-		assertThat(cart).contains(reference);
 		assertThat(cart).hasSize(1);
+		assertThat(reference).hasValueSatisfying(it -> {
+			assertThat(cart).contains(it);
+		});
 	}
 
 	@Test // #44
@@ -77,8 +77,9 @@ class CartUnitTests {
 	@Test // #44
 	void removesItemsCorrectly() {
 
-		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
-		Optional<CartItem> removed = cart.removeItem(reference.getId());
+		var removed = cart.addOrUpdateItem(PRODUCT, QUANTITY) //
+				.map(CartItem::getId) //
+				.flatMap(cart::removeItem);
 
 		assertThat(removed).isNotEmpty();
 		assertThat(cart).hasSize(0);
@@ -87,10 +88,10 @@ class CartUnitTests {
 	@Test // #44
 	void providesAccessToCartItem() {
 
-		CartItem reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
-		Optional<CartItem> item = cart.getItem(reference.getId());
+		var reference = cart.addOrUpdateItem(PRODUCT, QUANTITY);
+		var item = reference.map(CartItem::getId).flatMap(cart::getItem);
 
-		assertThat(item).isNotEmpty().contains(reference);
+		assertThat(item).isEqualTo(reference);
 	}
 
 	@Test // #44
@@ -137,43 +138,53 @@ class CartUnitTests {
 	@Test // #44
 	void updatesCartItemIfOneForProductAlreadyExists() {
 
-		CartItem item = cart.addOrUpdateItem(PRODUCT, QUANTITY);
+		var item = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
-		assertThat(item.getProduct()).isEqualTo(PRODUCT);
-		assertThat(item.getQuantity()).isEqualTo(QUANTITY);
+		assertThat(item).hasValueSatisfying(it -> {
+			assertThat(it.getProduct()).isEqualTo(PRODUCT);
+			assertThat(it.getQuantity()).isEqualTo(QUANTITY);
+		});
+
 		assertThat(cart).hasSize(1);
 
-		CartItem updated = cart.addOrUpdateItem(PRODUCT, QUANTITY);
+		var updated = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
-		assertThat(updated).isNotEqualTo(item);
 		assertThat(cart).hasSize(1);
-		assertThat(updated.getProduct()).isEqualTo(PRODUCT);
-		assertThat(updated.getQuantity()).isEqualTo(QUANTITY.add(QUANTITY));
+		assertThat(updated).hasValueSatisfying(it -> {
+			assertThat(it).isNotEqualTo(item);
+			assertThat(it.getProduct()).isEqualTo(PRODUCT);
+			assertThat(it.getQuantity()).isEqualTo(QUANTITY.add(QUANTITY));
+		});
 	}
 
 	@Test // #198
 	void addsProductWithLongAmount() {
 
-		CartItem cartItem = cart.addOrUpdateItem(PRODUCT, 10L);
+		var cartItem = cart.addOrUpdateItem(PRODUCT, 10L);
 
-		assertThat(cartItem.getQuantity()).isEqualTo(Quantity.of(10L));
+		assertThat(cartItem).hasValueSatisfying(it -> {
+			assertThat(it.getQuantity()).isEqualTo(Quantity.of(10L));
+		});
 	}
 
 	@Test // #198
 	void addsProductWithDoubleAmount() {
 
-		CartItem cartItem = cart.addOrUpdateItem(PRODUCT, 10.0);
+		var cartItem = cart.addOrUpdateItem(PRODUCT, 10.0);
 
-		assertThat(cartItem.getQuantity()).isEqualTo(Quantity.of(10.0));
+		assertThat(cartItem).hasValueSatisfying(it -> {
+			assertThat(it.getQuantity()).isEqualTo(Quantity.of(10.0));
+		});
 	}
 
 	@Test // #191
 	void keepsIdOfUpdatedCartItem() {
 
-		CartItem cartItem = cart.addOrUpdateItem(PRODUCT, QUANTITY);
-		CartItem updated = cart.addOrUpdateItem(PRODUCT, QUANTITY);
+		var cartItem = cart.addOrUpdateItem(PRODUCT, QUANTITY);
+		var updated = cart.addOrUpdateItem(PRODUCT, QUANTITY);
 
-		assertThat(updated.getId()).isEqualTo(cartItem.getId());
+		assertThat(updated.map(CartItem::getId)) //
+				.isEqualTo(cartItem.map(CartItem::getId));
 	}
 
 	@Test // #191
@@ -194,5 +205,27 @@ class CartUnitTests {
 		cart.addOrUpdateItem(product1, QUANTITY);
 
 		assertThat(cart).extracting(CartItem::getProduct).containsExactly(product1, product2, product3);
+	}
+
+	@Test // #365
+	void effectiveQuantityOfZeroRemovesItemFromCart() {
+
+		var product = new Product("product_1", Money.of(1, Currencies.EURO));
+
+		cart.addOrUpdateItem(product, Quantity.of(1));
+		assertThat(cart.isEmpty()).isFalse();
+
+		cart.addOrUpdateItem(product, Quantity.of(-1));
+		assertThat(cart.isEmpty()).isTrue();
+	}
+
+	@Test // #365
+	void addingZeroQuantityDoesNotAddCartItem() {
+
+		var product = new Product("product_1", Money.of(1, Currencies.EURO));
+		var item = cart.addOrUpdateItem(product, Quantity.of(0));
+
+		assertThat(cart.isEmpty()).isTrue();
+		assertThat(item).isEmpty();
 	}
 }

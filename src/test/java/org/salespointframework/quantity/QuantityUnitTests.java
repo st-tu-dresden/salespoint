@@ -171,4 +171,17 @@ class QuantityUnitTests {
 	void substractsFromNoneCorrectly() {
 		assertThat(Quantity.NONE.subtract(Quantity.of(5))).isEqualTo(Quantity.of(-5));
 	}
+
+	@Test // #365
+	void detectsPositiveValues() {
+
+		assertThat(Quantity.of(1).isPositive()).isTrue();
+		assertThat(Quantity.of(1).isZeroOrPositive()).isTrue();
+
+		assertThat(Quantity.NONE.isPositive()).isFalse();
+		assertThat(Quantity.NONE.isZeroOrPositive()).isTrue();
+
+		assertThat(Quantity.of(-1).isPositive()).isFalse();
+		assertThat(Quantity.of(-1).isZeroOrPositive()).isFalse();
+	}
 }
