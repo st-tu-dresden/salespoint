@@ -306,6 +306,16 @@ public class Quantity {
 	}
 
 	/**
+	 * Returns the current {@link Quantity} as units, flattening all non unit metrics into a single unit.
+	 *
+	 * @return will never be {@literal null}.
+	 * @since 7.5
+	 */
+	public Quantity toUnit() {
+		return metric.equals(Metric.UNIT) ? this : Quantity.of(1, Metric.UNIT);
+	}
+
+	/**
 	 * Returns the negated {@link Quantity}.
 	 *
 	 * @return will never be {@literal null}.

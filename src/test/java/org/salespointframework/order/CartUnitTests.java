@@ -22,6 +22,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
+import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.Quantity;
 
 /**
@@ -227,5 +228,61 @@ class CartUnitTests {
 
 		assertThat(cart.isEmpty()).isTrue();
 		assertThat(item).isEmpty();
+	}
+
+	@Test // #366
+	void returnsProductsQuantity() {
+
+		var one = Quantity.of(1);
+		var product = new Product("product_1", Money.of(1, Currencies.EURO));
+
+		cart.addOrUpdateItem(product, one);
+
+		assertThat(cart.getQuantity(product)).isEqualTo(one);
+		assertThat(cart.getQuantity(product.getId())).isEqualTo(one);
+	}
+
+	@Test // #366
+	void returnsZeroQuantityForProductNotContainedInCart() {
+
+		var one = Quantity.of(1);
+		var product = new Product("product_1", Money.of(1, Currencies.EURO));
+
+		cart.addOrUpdateItem(product, one);
+
+		var reference = new Product("product_2", Money.of(1, Currencies.EURO));
+
+		assertThat(cart.getQuantity(reference)).isEqualTo(Quantity.NONE);
+		assertThat(cart.getQuantity(reference.getId())).isEqualTo(Quantity.NONE);
+	}
+
+	@Test // #366
+	void quanitifiesItems() {
+
+		var apples = new Product("Apples", Money.of(0.40d, Currencies.EURO), Metric.UNIT);
+		var wine = new Product("Wine", Money.of(15.00d, Currencies.EURO), Metric.LITER);
+
+		// Unit-based products are reflected by their quantity
+		cart.addOrUpdateItem(apples, 5);
+		assertThat(cart.getNumberOfItems()).isEqualTo(5);
+
+		// Non-unit-based ones simply are considered "one"
+		cart.addOrUpdateItem(wine, Quantity.of(2, Metric.LITER));
+		assertThat(cart.getNumberOfItems()).isEqualTo(6);
+
+		cart.addOrUpdateItem(wine, Quantity.of(2, Metric.LITER));
+		assertThat(cart.getNumberOfItems()).isEqualTo(6);
+	}
+
+	@Test
+	void calculatesCartPrice() {
+
+		var apples = new Product("Apples", Money.of(0.40d, Currencies.EURO), Metric.UNIT);
+		var wine = new Product("Wine", Money.of(15.00d, Currencies.EURO), Metric.LITER);
+
+		cart.addOrUpdateItem(apples, 5);
+		cart.addOrUpdateItem(wine, Quantity.of(2, Metric.LITER));
+
+		assertThat(cart.getPrice()).isEqualTo(Money.of(32, Currencies.EURO));
 	}
 }

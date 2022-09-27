@@ -15,6 +15,7 @@
  */
 package org.salespointframework.order;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,6 +25,7 @@ import javax.money.MonetaryAmount;
 
 import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.catalog.Product.ProductIdentifier;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
@@ -38,7 +40,7 @@ import org.springframework.util.Assert;
  */
 public class Cart implements Streamable<CartItem>, Priced {
 
-	private final Map<Product, CartItem> items = new LinkedHashMap<>();
+	private final Map<ProductIdentifier, CartItem> items = new LinkedHashMap<>();
 
 	/**
 	 * Creates a {@link CartItem} for the given {@link Product} and {@link Quantity}. If a {@link CartItem} for the given
@@ -56,10 +58,10 @@ public class Cart implements Streamable<CartItem>, Priced {
 		Assert.notNull(product, "Product must not be null!");
 		Assert.notNull(quantity, "Quantity must not be null!");
 
-		return Optional.ofNullable(this.items.compute(product, (it, item) -> {
+		return Optional.ofNullable(this.items.compute(product.getId(), (it, item) -> {
 
 			return item == null
-					? quantity.isZeroOrNegative() ? null : new CartItem(it, quantity)
+					? quantity.isZeroOrNegative() ? null : new CartItem(product, quantity)
 					: item.add(quantity);
 		}));
 	}
@@ -105,7 +107,7 @@ public class Cart implements Streamable<CartItem>, Priced {
 		Assert.notNull(identifier, "CartItem identifier must not be null!");
 
 		return getItem(identifier) //
-				.map(item -> items.remove(item.getProduct()));
+				.map(item -> items.remove(item.getProduct().getId()));
 	}
 
 	/**
@@ -166,6 +168,54 @@ public class Cart implements Streamable<CartItem>, Priced {
 		Assert.notNull(user, "User account must not be null!");
 
 		return addItemsTo(new Order(user));
+	}
+
+	/**
+	 * Returns the number of items currently in the cart. Sums up the contained {@link Product}'s units defaulting to a
+	 * single unit in case the {@link Product} is not handled in units.
+	 *
+	 * @return will never be {@literal null}.
+	 * @see Quantity#toUnit()
+	 * @since 7.5
+	 */
+	public int getNumberOfItems() {
+
+		return stream() //
+				.map(CartItem::getQuantity) //
+				.map(Quantity::toUnit) //
+				.map(Quantity::getAmount) //
+				.map(BigDecimal::intValue) //
+				.reduce(0, Integer::sum);
+	}
+
+	/**
+	 * Returns the quantity for the given {@link Product} currently contained in the {@link Cart}.
+	 *
+	 * @param product must not be {@literal null}.
+	 * @return will never be {@literal null}.
+	 * @since 7.5
+	 */
+	public Quantity getQuantity(Product product) {
+
+		Assert.notNull(product, "Product must not be null!");
+
+		return getQuantity(product.getId());
+	}
+
+	/**
+	 * Returns the quantity for the given {@link ProductIdentifier} currently contained in the {@link Cart}.
+	 *
+	 * @param identifier must not be {@literal null}.
+	 * @return will never be {@literal null}.
+	 * @since 7.5
+	 */
+	public Quantity getQuantity(ProductIdentifier identifier) {
+
+		Assert.notNull(identifier, "ProductIdentifier must not be null!");
+
+		var item = items.get(identifier);
+
+		return item == null ? Quantity.NONE : item.getQuantity();
 	}
 
 	/*

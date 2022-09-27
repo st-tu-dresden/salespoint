@@ -184,4 +184,11 @@ class QuantityUnitTests {
 		assertThat(Quantity.of(-1).isPositive()).isFalse();
 		assertThat(Quantity.of(-1).isZeroOrPositive()).isFalse();
 	}
+
+	@Test // #366
+	void unifiesQuantity() {
+
+		assertThat(Quantity.of(5).toUnit()).isEqualTo(Quantity.of(5));
+		assertThat(Quantity.of(5, Metric.LITER).toUnit()).isEqualTo(Quantity.of(1));
+	}
 }
