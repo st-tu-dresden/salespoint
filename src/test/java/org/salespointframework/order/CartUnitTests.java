@@ -78,11 +78,10 @@ class CartUnitTests {
 	@Test // #44
 	void removesItemsCorrectly() {
 
-		var removed = cart.addOrUpdateItem(PRODUCT, QUANTITY) //
+		cart.addOrUpdateItem(PRODUCT, QUANTITY) //
 				.map(CartItem::getId) //
-				.flatMap(cart::removeItem);
+				.ifPresent(cart::removeItem);
 
-		assertThat(removed).isNotEmpty();
 		assertThat(cart).hasSize(0);
 	}
 

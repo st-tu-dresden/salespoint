@@ -102,12 +102,12 @@ public class Cart implements Streamable<CartItem>, Priced {
 	 * @param identifier must not be {@literal null}.
 	 * @return
 	 */
-	public Optional<CartItem> removeItem(String identifier) {
+	public void removeItem(String identifier) {
 
 		Assert.notNull(identifier, "CartItem identifier must not be null!");
 
-		return getItem(identifier) //
-				.map(item -> items.remove(item.getProduct().getId()));
+		getItem(identifier) //
+				.ifPresent(item -> items.remove(item.getProduct().getId()));
 	}
 
 	/**
