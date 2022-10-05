@@ -16,6 +16,7 @@
 
 	<properties>
 		<dev>/dev</dev>
+		<hibernate.version>6.1.4.Final</hibernate.version>
 		<java.version>17</java.version>
 		<jmolecules.version>2022.2.0</jmolecules.version>
 		<moduliths.version>1.3.0</moduliths.version>
