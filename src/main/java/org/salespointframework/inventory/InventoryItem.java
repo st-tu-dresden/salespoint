@@ -50,7 +50,7 @@ import org.springframework.util.Assert;
  * @since 7.2
  */
 @MappedSuperclass
-@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 @EntityListeners(InventoryItemCreationListener.class)
 public abstract class InventoryItem<T extends InventoryItem<T>> extends AbstractAggregateRoot<InventoryItemIdentifier> {
 
@@ -103,7 +103,8 @@ public abstract class InventoryItem<T extends InventoryItem<T>> extends Abstract
 
 		Assert.notNull(quantity, "Quantity must not be null!");
 		Assert.isTrue(this.quantity.isGreaterThanOrEqualTo(quantity),
-				String.format("Insufficient quantity! Have %s but was requested to reduce by %s.", this.quantity, quantity));
+				String.format("Insufficient quantity! Have %s but was requested to reduce by %s.", this.quantity,
+						quantity));
 
 		getProduct().verify(quantity);
 
@@ -193,7 +194,7 @@ public abstract class InventoryItem<T extends InventoryItem<T>> extends Abstract
 	@Embeddable
 	@EqualsAndHashCode
 	@RequiredArgsConstructor(staticName = "of")
-	@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+	@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 	public static class InventoryItemIdentifier implements Identifier, Serializable {
 
 		private static final long serialVersionUID = -3309444549353766703L;

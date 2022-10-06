@@ -215,7 +215,7 @@ public class Product extends AbstractAggregateRoot<ProductIdentifier> implements
 	@Embeddable
 	@EqualsAndHashCode
 	@RequiredArgsConstructor(staticName = "of")
-	@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+	@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 	public static class ProductIdentifier implements Identifier, Serializable {
 
 		private static final long serialVersionUID = 67875667760921725L;

@@ -32,7 +32,7 @@ import org.salespointframework.quantity.Quantity;
  * @since 7.2
  */
 @Entity
-@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class UniqueInventoryItem extends InventoryItem<UniqueInventoryItem> {
 
 	@OneToOne //

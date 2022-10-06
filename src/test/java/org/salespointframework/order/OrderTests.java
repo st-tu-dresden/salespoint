@@ -36,6 +36,7 @@ import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManagement;
 import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -47,6 +48,8 @@ import org.springframework.transaction.annotation.Transactional;
 @ModuleTest(mode = BootstrapMode.DIRECT_DEPENDENCIES, //
 		extraIncludes = { "org.salespointframework.catalog" })
 class OrderTests {
+
+	static final Sort DEFAULT_SORT = Sort.sort(Order.class).by(Order::getId).descending();
 
 	@Autowired UserAccountManagement users;
 	@Autowired OrderManagement<Order> orders;

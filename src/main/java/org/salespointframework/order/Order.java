@@ -490,8 +490,8 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	}
 
 	/**
-	 * Asserts that the {@link Order} is {@link OrderStatus#OPEN}. Usually a precondition to manipulate the {@link Order}
-	 * state internally.
+	 * Asserts that the {@link Order} is {@link OrderStatus#OPEN}. Usually a precondition to manipulate the
+	 * {@link Order} state internally.
 	 */
 	private void assertOrderIsOpen() {
 
@@ -522,7 +522,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	@Embeddable
 	@EqualsAndHashCode
 	@RequiredArgsConstructor(staticName = "of")
-	@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+	@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 	public static class OrderIdentifier implements Identifier, Serializable {
 
 		private static final long serialVersionUID = 7243092788875480705L;

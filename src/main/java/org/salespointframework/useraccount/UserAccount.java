@@ -169,10 +169,10 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 	}
 
 	/**
-	 * {@link UserAccountIdentifier} serves as an identifier type for {@link UserAccount} objects. The main reason for its
-	 * existence is type safety for identifier across the Salespoint Framework. <br />
-	 * {@link UserAccountIdentifier} instances serve as primary key attribute in {@link UserAccount}, but can also be used
-	 * as a key for non-persistent, {@link Map}-based implementations.
+	 * {@link UserAccountIdentifier} serves as an identifier type for {@link UserAccount} objects. The main reason for
+	 * its existence is type safety for identifier across the Salespoint Framework. <br />
+	 * {@link UserAccountIdentifier} instances serve as primary key attribute in {@link UserAccount}, but can also be
+	 * used as a key for non-persistent, {@link Map}-based implementations.
 	 *
 	 * @author Hannes Weisbach
 	 * @author Oliver Gierke
@@ -180,7 +180,7 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 	@Embeddable
 	@EqualsAndHashCode
 	@RequiredArgsConstructor(staticName = "of")
-	@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+	@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 	public static class UserAccountIdentifier implements Identifier, Serializable {
 
 		private static final long serialVersionUID = -3010760283726584012L;

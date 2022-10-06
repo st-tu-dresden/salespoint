@@ -31,7 +31,7 @@ import org.salespointframework.quantity.Quantity;
  * @author Oliver Drotbohm
  */
 @Entity
-@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
+@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class MultiInventoryItem extends InventoryItem<MultiInventoryItem> {
 
 	@ManyToOne //
