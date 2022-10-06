@@ -40,7 +40,7 @@ import com.jayway.jsonpath.JsonPath;
  */
 public class ChangelogCreator {
 
-	private static final String MILESTONE_ID = "26";
+	private static final String MILESTONE_ID = "28";
 	private static final String URI_TEMPLATE = "https://api.github.com/repos/st-tu-dresden/salespoint/issues?milestone={id}&state=closed&sort=updated";
 	private static final String TICKET_TEMPLATE = "- {linkbase}/%s[#%s] - %s";
 
@@ -78,7 +78,8 @@ public class ChangelogCreator {
 	private static RestTemplate setUpRestTemplate() throws IOException {
 		final HttpClientContext context = HttpClientContext.create();
 
-		ClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().build()) {
+		ClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(
+				HttpClientBuilder.create().build()) {
 
 			@Override
 			protected HttpContext createHttpContext(HttpMethod httpMethod, URI uri) {
