@@ -4,6 +4,34 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[8.0]
+== 8.0
+
+Release date: 2022-10-06
+
+- {linkbase}/397[#397], {linkbase}/390[#390], {linkbase}/386[#386], {linkbase}/381[#381], {linkbase}/373[#373] - Upgrade to Spring Boot 3.0 M5.
+- {linkbase}/399[#399] - Make sure that all domain types expose at least one non-private constructor.
+- {linkbase}/401[#401] - Expose `user.web` package as named interface.
+- {linkbase}/367[#367] - `Cart.removeItem(…)` should not return any value.
+- {linkbase}/366[#366] - Introduce `Cart.getQuantityFor(Product)`.
+- {linkbase}/365[#365] - Changing the amount for a `CartItem` to zero or less than zero should remove it from the `Cart`.
+- {linkbase}/398[#398] - Make sure UML component files are rendered as SVG.
+- {linkbase}/337[#337] - Rework access to currently logged in UserAccount.
+- {linkbase}/389[#389] - Method signature leads to error for unauthenticated users.
+- {linkbase}/391[#391] - Upgrade to Java 17.
+- {linkbase}/392[#392], {linkbase}/388[#388] - Upgrade to jMolecules 2022.2.0.
+- {linkbase}/394[#394], {linkbase}/387[#387] - Upgrade to Moduliths 1.3.
+- {linkbase}/379[#379] - Allow `AuthenticationManagement` to update the current authentication to a `UserAccount`.
+- {linkbase}/383[#383] - Typo in ChargeLine Class.
+- {linkbase}/382[#382] - Introduce abstraction for file storage.
+- {linkbase}/376[#376] - `InventoryManagement.cancelOrder(…)` only cancels complete orders.
+- {linkbase}/375[#375] - Add overloads for `UserManagement.create(…)` that take `Iterable<Role>`.
+- {linkbase}/374[#374] - `SalespointRepository` should extend `PagingAndSortingRepository`.
+- {linkbase}/368[#368] - `Quantity.subtract(…)` broken for `Quantity.NONE`.
+- {linkbase}/372[#372] - Add Maven wrapper.
+- {linkbase}/371[#371] - Programming model for functionality to be triggered daily or monthly.
+
+:numbered!:
 [7.4]
 == 7.4
 
