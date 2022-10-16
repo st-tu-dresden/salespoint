@@ -218,6 +218,16 @@ public class Cart implements Streamable<CartItem>, Priced {
 		return item == null ? Quantity.NONE : item.getQuantity();
 	}
 
+	/**
+	 * Returns the size of the {@link Cart}, in other words, the number of items in it.
+	 *
+	 * @return
+	 * @since 8.0.1
+	 */
+	public int size() {
+		return items.size();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.salespointframework.order.Priced#getPrice()

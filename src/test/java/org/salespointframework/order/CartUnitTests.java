@@ -284,4 +284,23 @@ class CartUnitTests {
 
 		assertThat(cart.getPrice()).isEqualTo(Money.of(32, Currencies.EURO));
 	}
+
+	@Test // #402
+	void calculatesCartSize() {
+
+		var item = cart.addOrUpdateItem(PRODUCT, 5);
+		assertThat(cart.size()).isEqualTo(1);
+
+		// Same product, size stays the same
+		cart.addOrUpdateItem(PRODUCT, 5);
+		assertThat(cart.size()).isEqualTo(1);
+
+		// Different product, size increases
+		cart.addOrUpdateItem(new Product("Some product", Money.of(1d, Currencies.EURO)), 5);
+		assertThat(cart.size()).isEqualTo(2);
+
+		// Removing item, size decreases
+		cart.removeItem(item.orElseThrow().getId());
+		assertThat(cart.size()).isEqualTo(1);
+	}
 }
