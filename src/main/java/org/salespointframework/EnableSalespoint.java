@@ -21,14 +21,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.moduliths.Modulithic;
 import org.salespointframework.EnableSalespoint.SalespointSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
+import org.springframework.modulith.Modulithic;
 
 /**
  * Annotation to enable Salespoint for a Spring Boot application. Will make sure that all necessary Salespoint
@@ -70,7 +69,6 @@ public @interface EnableSalespoint {
 	@AliasFor(annotation = Modulithic.class, attribute = "systemName")
 	String value() default "";
 
-	@ConditionalOnMissingBean(SalespointSecurityConfiguration.class)
-	@Import(SalespointSecurityConfiguration.class)
+	@Import(SalespointWebSecurityConfiguration.class)
 	static class SalespointSecurityAutoConfiguration {}
 }

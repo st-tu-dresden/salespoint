@@ -28,11 +28,11 @@ import org.hamcrest.Matchers;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.moduliths.test.ModuleTest;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Metric;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.util.Streamable;
+import org.springframework.modulith.test.ApplicationModuleTest;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Oliver Gierke
  */
 @Transactional
-@ModuleTest
+@ApplicationModuleTest
 @RequiredArgsConstructor
 class CatalogIntegrationTests {
 

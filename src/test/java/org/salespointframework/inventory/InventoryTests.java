@@ -32,8 +32,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.moduliths.test.ModuleTest;
-import org.moduliths.test.PublishedEvents;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Cookie;
 import org.salespointframework.catalog.Product;
@@ -44,6 +42,8 @@ import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.modulith.test.ApplicationModuleTest;
+import org.springframework.modulith.test.PublishedEvents;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -52,7 +52,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Oliver Gierke
  */
 @Transactional
-@ModuleTest(extraIncludes = "org.salespointframework.catalog")
+@ApplicationModuleTest(extraIncludes = "org.salespointframework.catalog")
 class InventoryTests {
 
 	@Autowired UniqueInventory<UniqueInventoryItem> unique;

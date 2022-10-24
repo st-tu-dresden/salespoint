@@ -15,14 +15,18 @@
  */
 package example;
 
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import org.salespointframework.EnableSalespoint;
-import org.salespointframework.SalespointSecurityConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
@@ -44,26 +48,23 @@ class ExampleControllerIntegrationTests {
 	 */
 	@Configuration
 	@EnableSalespoint
-	static class Config extends SalespointSecurityConfiguration {
+	static class Config {
 
-		/*
-		 * (non-Javadoc)
-		 * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
-		 */
-		@Override
-		protected void configure(HttpSecurity http) throws Exception {
+		@Bean
+		SecurityFilterChain testSecurity(HttpSecurity security) throws Exception {
 
-			http.csrf().disable();
-			http.authorizeRequests().antMatchers("/**").permitAll();
+			return security.csrf().disable()
+					.authorizeHttpRequests().requestMatchers("/**").permitAll()
+					.and().build();
 		}
 	}
 
 	@Test // #72
+	@SuppressWarnings("resource")
 	void usesUtf8ToDecodePayload() {
 
 		var template = new RestTemplate();
-		var parameters = new LinkedMultiValueMap<>();
-		parameters.add("value", "äöü€");
+		var parameters = new LinkedMultiValueMap<>(Map.of("value", List.of("äöü€")));
 
 		template.postForLocation(String.format("http://localhost:%s/encoding", port), parameters);
 	}

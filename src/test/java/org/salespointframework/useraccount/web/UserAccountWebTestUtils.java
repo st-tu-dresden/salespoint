@@ -22,7 +22,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 /**
  * Utilities to be able to test user account module.
- * 
+ *
  * @author Oliver Gierke
  */
 @UtilityClass
@@ -30,7 +30,7 @@ public class UserAccountWebTestUtils {
 
 	/**
 	 * Returns the type of the {@link HandlerMethodArgumentResolver} resolving {@link LoggedIn} {@link UserAccount}s.
-	 * 
+	 *
 	 * @return
 	 */
 	public static Class<?> getLoggedInArgumentResolverType() {

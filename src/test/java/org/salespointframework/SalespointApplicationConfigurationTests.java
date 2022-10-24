@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.moduliths.model.Modules;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.DataInitializer;
@@ -40,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.modulith.model.ApplicationModules;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 /**
@@ -64,7 +64,7 @@ class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
 
 	@Test
 	void verifyModularity() throws IOException {
-		Modules.of(SalespointSample.class).verify();
+		ApplicationModules.of(SalespointSample.class).verify();
 	}
 
 	@Test

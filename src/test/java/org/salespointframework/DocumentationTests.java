@@ -21,11 +21,11 @@ import ch.qos.logback.classic.Logger;
 import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
-import org.moduliths.docs.Documenter;
-import org.moduliths.docs.Documenter.CanvasOptions;
-import org.moduliths.docs.Documenter.Options;
-import org.moduliths.model.Modules;
 import org.salespointframework.SalespointApplicationConfigurationTests.SalespointSample;
+import org.springframework.modulith.docs.Documenter;
+import org.springframework.modulith.docs.Documenter.CanvasOptions;
+import org.springframework.modulith.docs.Documenter.DiagramOptions;
+import org.springframework.modulith.model.ApplicationModules;
 
 /**
  * @author Oliver Drotbohm
@@ -38,21 +38,12 @@ class DocumentationTests {
 		((Logger) org.slf4j.LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME)) //
 				.setLevel(Level.ERROR);
 
-		Modules modules = Modules.of(SalespointSample.class);
+		var modules = ApplicationModules.of(SalespointSample.class);
 
-		// Generate documentation
-		Documenter documenter = new Documenter(modules);
-
-		Options options = Options.defaults() //
+		var diagramOptions = DiagramOptions.defaults() //
 				.withExclusions(module -> module.getName().matches(".*core|.*support"));
+		var canvasOptions = CanvasOptions.defaults().withApiBase("{javadoc}");
 
-		// Write overall diagram
-		documenter.writeModulesAsPlantUml(options);
-
-		// Write diagrams for each module
-		modules.stream().forEach(it -> documenter.writeModuleAsPlantUml(it, options));
-
-		// Write module canvases
-		documenter.writeModuleCanvases(CanvasOptions.defaults().withApiBase("{javadoc}"));
+		new Documenter(modules).writeDocumentation(diagramOptions, canvasOptions);
 	}
 }

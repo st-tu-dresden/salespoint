@@ -4,5 +4,5 @@
  * @see org.salespointframework.time.BusinessTime
  */
 @org.springframework.lang.NonNullApi
-@org.moduliths.Module(displayName = "Salespoint :: Time")
+@org.springframework.modulith.ApplicationModule(displayName = "Salespoint :: Time")
 package org.salespointframework.time;

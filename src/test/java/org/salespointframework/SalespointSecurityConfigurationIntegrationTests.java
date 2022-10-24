@@ -28,14 +28,14 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 
 /**
  * Integration test for security configuration setup.
- * 
+ *
  * @author Oliver Gierke
  */
 @SpringBootTest
 class SalespointSecurityConfigurationIntegrationTests {
 
 	@Configuration
-	@Import({ SalespointSecurityConfiguration.class, Salespoint.class })
+	@Import({ Salespoint.class })
 	static class Config {
 
 		@Bean
@@ -58,7 +58,7 @@ class SalespointSecurityConfigurationIntegrationTests {
 	 *
 	 * @author Oliver Gierke
 	 */
-	@PreAuthorize("hasRole(ROLE_ADMIN)")
+	@PreAuthorize("hasRole('ADMIN')")
 	static class Controller {
 		void securedMethod() {}
 	}

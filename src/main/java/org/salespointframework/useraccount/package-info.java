@@ -4,6 +4,5 @@
  * @see org.salespointframework.useraccount.UserAccountManager
  */
 @org.springframework.lang.NonNullApi
-@org.moduliths.Module(displayName = "Salespoint :: User Account")
-@org.moduliths.NamedInterface(value = "user")
+@org.springframework.modulith.ApplicationModule(displayName = "Salespoint :: User Account")
 package org.salespointframework.useraccount;

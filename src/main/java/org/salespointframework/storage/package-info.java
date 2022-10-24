@@ -5,5 +5,5 @@
  * @see org.salespointframework.storage.Storage
  */
 @org.springframework.lang.NonNullApi
-@org.moduliths.Module(displayName = "Salespoint :: Storage")
+@org.springframework.modulith.ApplicationModule(displayName = "Salespoint :: Storage")
 package org.salespointframework.storage;

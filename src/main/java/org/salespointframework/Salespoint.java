@@ -33,6 +33,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -47,6 +48,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 		@Filter(value = TypeExcludeFilter.class, type = FilterType.CUSTOM) //
 })
 @EntityScan
+@EnableMethodSecurity
 @ConfigurationPropertiesScan
 public class Salespoint {
 

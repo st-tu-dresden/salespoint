@@ -20,13 +20,13 @@ import static org.hamcrest.junit.MatcherAssert.*;
 
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
-import org.moduliths.test.ModuleTest;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.convert.TypeDescriptor;
+import org.springframework.modulith.test.ApplicationModuleTest;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Oliver Gierke
  */
 @Transactional
-@ModuleTest(extraIncludes = "org.salespointframework.catalog")
+@ApplicationModuleTest(extraIncludes = "org.salespointframework.catalog")
 class JpaEntityConverterIntegrationTests {
 
 	static final TypeDescriptor PRODUCT_TYPE = TypeDescriptor.valueOf(Product.class);

@@ -20,16 +20,16 @@ import static org.assertj.core.api.Assertions.*;
 import lombok.RequiredArgsConstructor;
 
 import org.junit.jupiter.api.Test;
-import org.moduliths.test.ModuleTest;
-import org.moduliths.test.ModuleTest.BootstrapMode;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.modulith.test.ApplicationModuleTest;
+import org.springframework.modulith.test.ApplicationModuleTest.BootstrapMode;
 
 /**
  * Integration tests for {@link OrderRepository}.
  *
  * @author Oliver Drotbohm
  */
-@ModuleTest(mode = BootstrapMode.DIRECT_DEPENDENCIES)
+@ApplicationModuleTest(mode = BootstrapMode.DIRECT_DEPENDENCIES)
 @RequiredArgsConstructor
 class OrderRepositoryIntegrationTests {
 

@@ -20,8 +20,6 @@ import java.time.LocalDateTime;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.moduliths.test.ModuleTest;
-import org.moduliths.test.ModuleTest.BootstrapMode;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Order;
 import org.salespointframework.payment.Cash;
@@ -29,10 +27,12 @@ import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccountManagement;
 import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.modulith.test.ApplicationModuleTest;
+import org.springframework.modulith.test.ApplicationModuleTest.BootstrapMode;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-@ModuleTest(BootstrapMode.DIRECT_DEPENDENCIES)
+@ApplicationModuleTest(BootstrapMode.DIRECT_DEPENDENCIES)
 class AccountancyTests {
 
 	@Autowired Accountancy accountancy;

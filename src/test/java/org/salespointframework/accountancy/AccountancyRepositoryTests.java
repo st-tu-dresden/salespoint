@@ -23,11 +23,11 @@ import java.time.LocalDateTime;
 
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
-import org.moduliths.test.ModuleTest;
-import org.moduliths.test.ModuleTest.BootstrapMode;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.time.Interval;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.modulith.test.ApplicationModuleTest;
+import org.springframework.modulith.test.ApplicationModuleTest.BootstrapMode;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Oliver Gierke
  */
 @Transactional
-@ModuleTest(BootstrapMode.DIRECT_DEPENDENCIES)
+@ApplicationModuleTest(BootstrapMode.DIRECT_DEPENDENCIES)
 @RequiredArgsConstructor
 class AccountancyRepositoryTests {
 

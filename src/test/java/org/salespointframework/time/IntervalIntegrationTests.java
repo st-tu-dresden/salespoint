@@ -29,8 +29,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.moduliths.test.ModuleTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.modulith.test.ApplicationModuleTest;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -39,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Oliver Gierke
  */
 @Transactional
-@ModuleTest
+@ApplicationModuleTest
 class IntervalIntegrationTests {
 
 	@Autowired SomeEntityRepository repository;

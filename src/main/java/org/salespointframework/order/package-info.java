@@ -4,5 +4,5 @@
  * @see org.salespointframework.order.OrderManagement
  */
 @org.springframework.lang.NonNullApi
-@org.moduliths.Module(displayName = "Salespoint :: Order")
+@org.springframework.modulith.ApplicationModule(displayName = "Salespoint :: Order")
 package org.salespointframework.order;

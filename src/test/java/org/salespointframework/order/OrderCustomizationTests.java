@@ -20,14 +20,14 @@ import static org.assertj.core.api.Assertions.*;
 import lombok.RequiredArgsConstructor;
 
 import org.junit.jupiter.api.Test;
-import org.moduliths.test.ModuleTest;
-import org.moduliths.test.ModuleTest.BootstrapMode;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.modulith.test.ApplicationModuleTest;
+import org.springframework.modulith.test.ApplicationModuleTest.BootstrapMode;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestConstructor.AutowireMode;
 
@@ -36,7 +36,7 @@ import org.springframework.test.context.TestConstructor.AutowireMode;
  *
  * @author Oliver Drotbohm
  */
-@ModuleTest(BootstrapMode.ALL_DEPENDENCIES)
+@ApplicationModuleTest(BootstrapMode.ALL_DEPENDENCIES)
 @TestConstructor(autowireMode = AutowireMode.ALL)
 @RequiredArgsConstructor
 class OrderCustomizationTests {

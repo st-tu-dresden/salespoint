@@ -31,9 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.format.support.FormattingConversionService;
-import org.springframework.security.access.method.MethodSecurityMetadataSource;
+import org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 /**
  * Integration tests for {@link EnableSalespoint}.
@@ -49,7 +48,7 @@ class EnableSalespointIntegrationTests {
 	@Autowired ApplicationContext context;
 	@Autowired Catalog<Product> catalog;
 	@Autowired DummyRepository repository;
-	@Autowired MethodSecurityMetadataSource securityMetadataSource;
+	@Autowired AuthorizationManagerBeforeMethodInterceptor securityMetadataSource;
 	@Autowired RequestMappingHandlerAdapter adapter;
 
 	@Test
@@ -59,7 +58,7 @@ class EnableSalespointIntegrationTests {
 		assertThat(repository, is(notNullValue()));
 		assertThat(catalog, is(notNullValue()));
 
-		// Assert that @EnableGlobalMethodSecurity works
+		// Assert that @EnableMethodSecurity works
 		assertThat(securityMetadataSource, is(notNullValue()));
 	}
 
@@ -80,13 +79,6 @@ class EnableSalespointIntegrationTests {
 
 		// Needs JpaEntityConverter registered -> OrderLine = non-aggregate root
 		conversionService.canConvert(String.class, OrderLine.class);
-	}
-
-	@Autowired Java8TimeDialect dialect;
-
-	@Test // #186
-	void registersJava8ThymeleafDialect() {
-		assertThat(dialect, is(notNullValue()));
 	}
 
 	@Test // #243, #241

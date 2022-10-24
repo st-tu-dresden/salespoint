@@ -17,18 +17,9 @@ package org.salespointframework.util;
 
 import net.minidev.json.JSONArray;
 
-import java.io.IOException;
-import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Iterator;
 
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.protocol.HttpContext;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import com.jayway.jsonpath.JsonPath;
@@ -44,20 +35,19 @@ public class ChangelogCreator {
 	private static final String URI_TEMPLATE = "https://api.github.com/repos/st-tu-dresden/salespoint/issues?milestone={id}&state=closed&sort=updated";
 	private static final String TICKET_TEMPLATE = "- {linkbase}/%s[#%s] - %s";
 
+	@SuppressWarnings("resource")
 	public static void main(String... args) throws Exception {
 
-		RestTemplate template = setUpRestTemplate();
+		var response = new RestTemplate().getForObject(URI_TEMPLATE, String.class, MILESTONE_ID);
 
-		String response = template.getForObject(URI_TEMPLATE, String.class, MILESTONE_ID);
+		var titlePath = JsonPath.compile("$[*].title");
+		var idPath = JsonPath.compile("$[*].number");
 
-		JsonPath titlePath = JsonPath.compile("$[*].title");
-		JsonPath idPath = JsonPath.compile("$[*].number");
+		var titles = titlePath.<JSONArray> read(response);
+		var ids = ((JSONArray) idPath.read(response)).iterator();
 
-		JSONArray titles = titlePath.read(response);
-		Iterator<Object> ids = ((JSONArray) idPath.read(response)).iterator();
-
-		String date = DateTimeFormatter.ISO_LOCAL_DATE.format(LocalDate.now());
-		String milestone = JsonPath.read(response, "$[0].milestone.title").toString();
+		var date = DateTimeFormatter.ISO_LOCAL_DATE.format(LocalDate.now());
+		var milestone = JsonPath.read(response, "$[0].milestone.title").toString();
 
 		System.out.println(":numbered!:");
 		System.out.println(String.format("[%s]", milestone.replace(" ", "-")));
@@ -73,23 +63,5 @@ public class ChangelogCreator {
 
 			System.out.println(ticket);
 		}
-	}
-
-	private static RestTemplate setUpRestTemplate() throws IOException {
-		final HttpClientContext context = HttpClientContext.create();
-
-		ClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(
-				HttpClientBuilder.create().build()) {
-
-			@Override
-			protected HttpContext createHttpContext(HttpMethod httpMethod, URI uri) {
-				return context;
-			}
-		};
-
-		RestTemplate template = new RestTemplate();
-		template.setRequestFactory(factory);
-
-		return template;
 	}
 }

@@ -21,11 +21,11 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.moduliths.test.ModuleTest;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.modulith.test.ApplicationModuleTest;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Oliver Gierke
  */
 @Transactional
-@ModuleTest
+@ApplicationModuleTest
 class UserAccountRepositoryIntegrationTests {
 
 	private static final EncryptedPassword PASSWORD = UserAccountTestUtils.ENCRYPTED_PASSWORD;

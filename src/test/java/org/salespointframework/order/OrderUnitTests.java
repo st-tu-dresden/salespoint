@@ -19,12 +19,12 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.moduliths.test.AggregateTestUtils;
-import org.moduliths.test.PublishedEvents;
-import org.moduliths.test.PublishedEventsExtension;
 import org.salespointframework.order.OrderEvents.OrderCanceled;
 import org.salespointframework.order.OrderEvents.OrderCompleted;
 import org.salespointframework.useraccount.UserAccountTestUtils;
+import org.springframework.modulith.test.AggregateTestUtils;
+import org.springframework.modulith.test.PublishedEvents;
+import org.springframework.modulith.test.PublishedEventsExtension;
 
 /**
  * Unit tests for {@link Order}.

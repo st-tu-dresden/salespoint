@@ -23,9 +23,6 @@ import static org.salespointframework.order.OrderStatus.*;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.moduliths.test.ModuleTest;
-import org.moduliths.test.ModuleTest.BootstrapMode;
-import org.moduliths.test.PublishedEvents;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.order.OrderEvents.OrderCanceled;
@@ -37,6 +34,9 @@ import org.salespointframework.useraccount.UserAccountManagement;
 import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.modulith.test.ApplicationModuleTest;
+import org.springframework.modulith.test.ApplicationModuleTest.BootstrapMode;
+import org.springframework.modulith.test.PublishedEvents;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Oliver Gierke
  */
 @Transactional
-@ModuleTest(mode = BootstrapMode.DIRECT_DEPENDENCIES, //
+@ApplicationModuleTest(mode = BootstrapMode.DIRECT_DEPENDENCIES, //
 		extraIncludes = { "org.salespointframework.catalog" })
 class OrderTests {
 

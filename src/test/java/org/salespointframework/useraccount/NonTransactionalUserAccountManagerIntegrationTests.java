@@ -19,9 +19,9 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.moduliths.test.ModuleTest;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.modulith.test.ApplicationModuleTest;
 import org.springframework.test.context.TestPropertySource;
 
 /**
@@ -29,7 +29,7 @@ import org.springframework.test.context.TestPropertySource;
  *
  * @author Oliver Gierke
  */
-@ModuleTest
+@ApplicationModuleTest
 @TestPropertySource(properties = "salespoint.authentication.login-via-email=true")
 class NonTransactionalUserAccountManagerIntegrationTests {
 

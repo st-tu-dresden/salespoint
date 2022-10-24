@@ -23,10 +23,10 @@ import java.io.IOException;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
-import org.moduliths.test.ModuleTest;
-import org.moduliths.test.PublishedEvents;
 import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.modulith.test.ApplicationModuleTest;
+import org.springframework.modulith.test.PublishedEvents;
 import org.springframework.test.context.TestPropertySource;
 
 /**
@@ -34,7 +34,7 @@ import org.springframework.test.context.TestPropertySource;
  *
  * @author Oliver Drotbohm
  */
-@ModuleTest
+@ApplicationModuleTest
 @TestPropertySource(properties = "salespoint.storage.location=${user.home}/.salespoint/${random.uuid}")
 @RequiredArgsConstructor
 class StorageModuleTests {
