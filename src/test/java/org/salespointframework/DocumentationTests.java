@@ -25,6 +25,7 @@ import org.salespointframework.SalespointApplicationConfigurationTests.Salespoin
 import org.springframework.modulith.docs.Documenter;
 import org.springframework.modulith.docs.Documenter.CanvasOptions;
 import org.springframework.modulith.docs.Documenter.DiagramOptions;
+import org.springframework.modulith.docs.Documenter.DiagramOptions.DiagramStyle;
 import org.springframework.modulith.model.ApplicationModules;
 
 /**
@@ -41,7 +42,9 @@ class DocumentationTests {
 		var modules = ApplicationModules.of(SalespointSample.class);
 
 		var diagramOptions = DiagramOptions.defaults() //
-				.withExclusions(module -> module.getName().matches(".*core|.*support"));
+				.withExclusions(module -> module.getName().matches(".*core|.*support"))
+				.withStyle(DiagramStyle.UML);
+
 		var canvasOptions = CanvasOptions.defaults().withApiBase("{javadoc}");
 
 		new Documenter(modules).writeDocumentation(diagramOptions, canvasOptions);

@@ -4,7 +4,7 @@ Andreas Zaschka; Paul Henke; Oliver Drotbohm;
 :javadoc: https://st.inf.tu-dresden.de/SalesPoint{dev}/api/
 :source-base: ../../main/java/org/salespointframework
 :source-base-test: ../../test/java/org/salespointframework
-:generated-docs: ../../../target/moduliths-docs
+:generated-docs: ../../../target/spring-modulith-docs
 :revnumber: {version}
 :revdate: {localdate}
 :imagesdir: ./images
