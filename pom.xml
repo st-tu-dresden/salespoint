@@ -16,7 +16,6 @@
 
 	<properties>
 		<dev>/dev</dev>
-		<hibernate.version>6.1.4.Final</hibernate.version>
 		<java.version>17</java.version>
 		<jmolecules.version>2022.2.0</jmolecules.version>
 		<spring-modulith.version>0.1.0-SNAPSHOT</spring-modulith.version>
