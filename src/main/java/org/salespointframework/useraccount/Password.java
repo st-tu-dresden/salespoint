@@ -21,6 +21,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+import org.jmolecules.ddd.types.ValueObject;
 import org.springframework.util.Assert;
 
 /**
@@ -41,7 +42,7 @@ public abstract class Password {
 	@EqualsAndHashCode(callSuper = false)
 	@RequiredArgsConstructor(staticName = "of", access = AccessLevel.PACKAGE)
 	@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE, onConstructor = @__(@Deprecated))
-	public static class EncryptedPassword extends Password {
+	public static class EncryptedPassword extends Password implements ValueObject {
 
 		private final String value;
 
@@ -70,7 +71,7 @@ public abstract class Password {
 	 * @author Oliver Drotbohm
 	 */
 	@EqualsAndHashCode(callSuper = false)
-	public static class UnencryptedPassword extends Password {
+	public static class UnencryptedPassword extends Password implements ValueObject {
 
 		private final String value;
 

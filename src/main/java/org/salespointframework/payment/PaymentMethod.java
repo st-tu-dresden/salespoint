@@ -22,15 +22,17 @@ import lombok.ToString;
 
 import java.io.Serializable;
 
+import org.jmolecules.ddd.types.ValueObject;
+
 /**
  * A <code>PaymentMethod</code> specifies a medium by which a payment has or will be made.
- * 
+ *
  * @author Hannes Weisbach
  */
 @ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public abstract class PaymentMethod implements Serializable {
+public abstract class PaymentMethod implements Serializable, ValueObject {
 
 	private static final long serialVersionUID = -3827889732758783955L;
 

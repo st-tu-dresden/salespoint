@@ -24,6 +24,8 @@ import lombok.Value;
 
 import java.io.Serializable;
 
+import org.jmolecules.ddd.types.ValueObject;
+
 /**
  * A Role is only identified by a name. This class is immutable.
  *
@@ -34,7 +36,7 @@ import java.io.Serializable;
 @Embeddable
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public final class Role implements Serializable, Comparable<Role> {
+public final class Role implements Serializable, Comparable<Role>, ValueObject {
 
 	private static final long serialVersionUID = 5440415491197908839L;
 	private static final String ROLE_PREFIX = "ROLE_";

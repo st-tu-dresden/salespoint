@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.jmolecules.ddd.types.ValueObject;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @see #of(Resource)
  * @see #of(MultipartFile)
  */
-public interface NamedBinary {
+public interface NamedBinary extends ValueObject {
 
 	/**
 	 * The name of the file to be stored.
