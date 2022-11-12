@@ -49,3 +49,29 @@ body.toc2 #header, body.toc2 #content, body.toc2 #footnotes, body.toc2 #footer {
 th {
     white-space: nowrap;
 }
+
+td p {
+    margin-bottom: 0;
+}
+
+ul {
+    margin-bottom: 0;
+}
+
+table ul>li p {
+    margin-bottom: 0;
+}
+
+table .ulist .ulist {
+    margin-bottom: 0;
+}
+
+/* Grouped lists in tables */
+
+div.ulist ~ div.paragraph {
+    margin-top: 1em;
+}
+
+div.paragraph ~ div.ulist {
+    margin-top: 0.25em;
+}
