@@ -24,13 +24,13 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.quantity.Quantity;
 
 /**
- * An {@link MultiInventoryItem} that establishes a many-to-one relationship to a {@link Product} instance, i.e. it can be
- * used to keep track of stock for products in e.g. multiple warehouses etc.
+ * An {@link MultiInventoryItem} that establishes a many-to-one relationship to a {@link Product} instance, i.e. it can
+ * be used to keep track of stock for products in e.g. multiple warehouses etc.
  *
  * @author Oliver Drotbohm
  */
 @Entity
-@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
+@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class MultiInventoryItem extends InventoryItem<MultiInventoryItem> {
 
 	@ManyToOne //

@@ -57,6 +57,7 @@ class InventoryTests {
 
 	@Autowired UniqueInventory<UniqueInventoryItem> unique;
 	@Autowired MultiInventory<MultiInventoryItem> multiple;
+	@Autowired MultiInventory<SampleMultiInventoryItem> customMultiple;
 	@Autowired Catalog<Product> catalog;
 
 	@Autowired EntityManager em;
@@ -261,6 +262,18 @@ class InventoryTests {
 							assertThat(it.getCurrentQuantity()).isEqualTo(Quantity.of(1));
 							assertThat(it.getThreshold()).isEqualTo(Quantity.of(3));
 						});
+	}
+
+	@Test // #408
+	void persistsCustomMultInventoryItem() {
+
+		var product = catalog.save(new Product("Sample product", Money.of(1, Currencies.EURO)));
+		var reference = customMultiple.save(new SampleMultiInventoryItem(product, Quantity.NONE));
+
+		em.flush();
+		em.clear();
+
+		assertThat(customMultiple.findById(reference.getId())).hasValue(reference);
 	}
 
 	private <S extends InventoryItem<S>, T extends InventoryItem<T>> void assertRejectsSecond(S first,
