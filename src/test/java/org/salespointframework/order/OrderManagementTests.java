@@ -108,7 +108,7 @@ class OrderManagementTests extends AbstractIntegrationTests {
 		orders.completeOrder(order);
 	}
 
-	@Test // #38
+	@Test // #38, #409
 	void failsOrderCompletionIfLineItemsAreNotAvailableInSufficientQuantity() {
 
 		var cookie = catalog.save(new Cookie("Double choc", Money.of(1.2, Currencies.EURO)));
@@ -119,6 +119,7 @@ class OrderManagementTests extends AbstractIntegrationTests {
 
 		assertThatExceptionOfType(OrderCompletionFailure.class) //
 				.isThrownBy(() -> orders.completeOrder(order));
+		assertThat(order.isCompleted()).isFalse();
 	}
 
 	@Test // #61
