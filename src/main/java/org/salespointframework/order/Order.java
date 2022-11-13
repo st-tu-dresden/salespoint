@@ -440,6 +440,19 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	}
 
 	/**
+	 * Resets the {@link Order}'s state to paid.
+	 *
+	 * @return the current instance.
+	 * @since 8.0.1
+	 */
+	Order uncomplete() {
+
+		this.orderStatus = OrderStatus.PAID;
+
+		return this;
+	}
+
+	/**
 	 * Cancels the current {@link Order} with the given reason. Will publish an {@link OrderCanceled} even
 	 *
 	 * @param reason must not be {@literal null}.
@@ -490,8 +503,8 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	}
 
 	/**
-	 * Asserts that the {@link Order} is {@link OrderStatus#OPEN}. Usually a precondition to manipulate the
-	 * {@link Order} state internally.
+	 * Asserts that the {@link Order} is {@link OrderStatus#OPEN}. Usually a precondition to manipulate the {@link Order}
+	 * state internally.
 	 */
 	private void assertOrderIsOpen() {
 

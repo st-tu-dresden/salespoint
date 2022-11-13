@@ -144,7 +144,16 @@ class PersistentOrderManagement<T extends Order> implements OrderManagement<T> {
 			throw new OrderCompletionFailure(order, "Order is not paid yet!");
 		}
 
-		save((T) order.complete());
+		try {
+
+			save((T) order.complete());
+
+		} catch (RuntimeException o_O) {
+
+			order.uncomplete();
+
+			throw o_O;
+		}
 	}
 
 	/*
