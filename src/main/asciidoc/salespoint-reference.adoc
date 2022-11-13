@@ -149,29 +149,56 @@ If the option is activated, `UserAccountManager.save(…)` will reject `UserAcco
 That means you need to provide an email when initially registering, i.e. you'll need to use the overload of `UserAccountManager.create(…)` that takes an email address as parameter.
 
 [[modules.useraccount.loggedin]]
-=== @LoggedIn annotation
-The `@LoggedIn` annotation can be used to inject the currently logged in `UserAccount` into controller method parameters. The type of the annotated paramater can either be
-`Optional<UserAccount>` for methods that should support non-authenticated access, or `UserAccount`. With the former variant, `Optional.map()` can be conveniently used to react
-to the presence of the user account in a functional programming style:
+=== The `@LoggedIn` annotation
 
-.Example of a controller method parameter annotated with @LoggedIn
+The `@LoggedIn` annotation can be used to inject the currently logged in `UserAccount` into controller method parameters.
+The type of the annotated parameter can either be `Optional<UserAccount>` for methods that should support non-authenticated access, or `UserAccount`.
+With the former variant, `Optional.map()` can be conveniently used to react to the presence of the user account in a functional programming style:
 
+.Example of a controller method parameter annotated with `@LoggedIn`
 [source, java]
 ----
 @Controller
-public class ExampleController {
-    @GetMapping("/example")
-    String example(@LoggedIn Optional<UserAccount> userAccount) {
-        // functional style using map and lambda expression:
-        return userAccount.map(account -> {
-            // things to be done if the user account is present
-            return "...";
-        }).orElse("redirect:/");  // if the user account is *not* present
-    }
+class ExampleController {
+
+  @GetMapping("/example")
+  String example(@LoggedIn Optional<UserAccount> userAccount) {
+
+    // functional style using map and lambda expression:
+    return userAccount.map(account -> {
+      // things to be done if the user account is present
+      return "...";
+    }).orElse("redirect:/");  // if the user account is *not* present
+  }
 }
 ----
 
+During web integration tests implemented using `MockMvc`, the `UserAccount` handed into the method will be defined by the username configured through `@WithMockUser(username = "…")`.
+In other words, the annotation attribute should refer to a `UserAccount` created in a `DataInitializer`.
+See the Videoshop project for an example.
 
+[source, java]
+----
+@SpringBootTest
+@AutoConfigureMockMvc
+class SampleTestCase {
+
+  @Autowired AuthenticationManagement authenticationManagement
+
+  @Test
+  @WithMockUser(username = "boss", roles = "BOSS")
+  void someTestCase() throws Exception {
+
+    // This will be the UserAccount for the user "boss"
+    var currentUser = authenticationManagement.getCurrentUser();
+
+    // This will use the permissions defined in the method's annotation
+    mvc.perform(get("…")).andExpect(…);
+  }
+}
+----
+
+Note, that the roles used to execute the controller method will still have to be defined in the `@WithMockUser` annotation and are *not* derived from the `UserAccount` loaded from the database as the Spring Security `Authentication` will solely be populated with information from the annotation, not through our `UserDetailsService` implementation.
 
 [[modules.useraccount.limitation]]
 === Limitation
