@@ -4,6 +4,16 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[8.0.1]
+== 8.0.1
+
+Release date: 2022-11-14
+
+- {linkbase}/404[#404] - Document how `@LoggedIn UserAccount` controller arguments are resolved in integration tests.
+- {linkbase}/409[#409] - `OrderManagement.completeOrder(…)` still returns completed `Order` on failure.
+- {linkbase}/408[#408] - ``(Unique|Multi)InventoryItem``s no-arg constructors need to be visible outside the `inventory` package.
+
+:numbered!:
 [8.0]
 == 8.0
 
