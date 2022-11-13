@@ -52,5 +52,4 @@ To deploy the website and reference documentation, run `mvn -Pdocs site:deploy`.
 6. Edit commits to match commit message format, re-create tag.
 7. Push changes & tag.
 8. Check out tag and run `mvn clean deploy -Prelease -DskipTests`.
-10. Check out tag and run `mvn clean package site:deploy -Pdocs -Prelease`.
-11. Again, check out `main` and run `mvn clean package site:deploy -Pdocs`.
+9. Check out tag and run `mvn clean package site:deploy -Pdocs,release`.
