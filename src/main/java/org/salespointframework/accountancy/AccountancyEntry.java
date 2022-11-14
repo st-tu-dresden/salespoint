@@ -29,7 +29,6 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,7 +45,7 @@ import org.springframework.util.Assert;
  * accountancy, for example a {@link ProductPaymentEntry}.
  *
  * @author Hannes Weisbach
- * @author Oliver Gierke
+ * @author Oliver Drotbohm
  */
 @Entity
 @ToString
@@ -61,7 +60,7 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	private @Getter String description;
 
 	/**
-	 * Creates a new <code>PersistentAccountancyEntry</code> with a specific value.
+	 * Creates a new <code>AccountancyEntry</code> with a specific value.
 	 *
 	 * @param value The value that is stored in this entry.
 	 */
@@ -70,7 +69,7 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	}
 
 	/**
-	 * Creates a new <code>PersistentAccountancyEntry</code> with a specific value and a user defined description.
+	 * Creates a new <code>AccountancyEntry</code> with a specific value and a user defined description.
 	 *
 	 * @param value The value that is stored in this entry.
 	 * @param description A user-supplied description for this entry.
@@ -85,16 +84,18 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	}
 
 	/**
-	 * Returns whether the {@link AccountancyEntry} already has a {@link Date} set.
+	 * Returns whether this entry already has a {@code date} set.
 	 *
-	 * @return
+	 * @return true if and only if this entry's date is not {@literal null}.
 	 */
 	public boolean hasDate() {
 		return date != null;
 	}
 
 	/**
-	 * @return the {@link DateTime} when this entry was posted.
+	 * Returns the date this entry was posted.
+	 * 
+	 * @return the date when this entry was posted, or an empty {@code Optional} if no date is set.
 	 */
 	public Optional<LocalDateTime> getDate() {
 		return Optional.ofNullable(date);
@@ -140,13 +141,12 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	}
 
 	/**
-	 * {@link AccountancyEntryIdentifier} serves as an identifier type for {@link AccountancyEntry} objects. The main
-	 * reason for its existence is type safety for identifier across the Salespoint Framework. <br />
-	 * {@link AccountancyEntryIdentifier} instances serve as primary key attribute in {@link PersistentAccountancyEntry}
-	 * , but can also be used as a key for non-persistent, {@link Map}-based implementations.
+	 * {@link AccountancyEntryIdentifier} serves as an identifier type and primary key for {@link AccountancyEntry}
+	 * objects. The main reason for its existence is type safety for identifiers across the Salespoint framework.
+	 * However, it can also be used as a key for non-persistent, {@link Map}-based implementations.
 	 *
 	 * @author Hannes Weisbach
-	 * @author Oliver Gierke
+	 * @author Oliver Drotbohm
 	 */
 	@Embeddable
 	@EqualsAndHashCode
