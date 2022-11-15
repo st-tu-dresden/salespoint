@@ -64,7 +64,7 @@ public interface Accountancy {
 	Optional<AccountancyEntry> get(AccountancyEntryIdentifier accountancyEntryIdentifier);
 
 	/**
-	 * Returns all {@link AccountancyEntry}s that have a {@code date} within in the given {@link Interval}.
+	 * Returns all {@link AccountancyEntry}s that have a {@code date} within the given {@link Interval}.
 	 *
 	 * @param interval the interval within which we want to find {@link AccountancyEntry}s, must not be {@literal null}.
 	 * @return a {@link Streamable} containing all entries in the given interval, or an empty {@link Streamable}.
@@ -72,7 +72,7 @@ public interface Accountancy {
 	Streamable<AccountancyEntry> find(Interval interval);
 
 	/**
-	 * Return all {@link AccountancyEntry}s within the given interval, grouped by sub-intervals of the given duration.
+	 * Returns all {@link AccountancyEntry}s within the given interval, grouped by sub-intervals of the given duration.
 	 * These sub-intervals are used as the keys of the returned {@link Map}. Note that the last sub-interval may be
 	 * shorter than the given {@code duration}.
 	 * 
@@ -84,10 +84,10 @@ public interface Accountancy {
 	Map<Interval, Streamable<AccountancyEntry>> find(Interval interval, TemporalAmount duration);
 
 	/**
-	 * Return the sales volume, i.e., the sum of {@link AccountancyEntry#getValue()}, for all {@link AccountancyEntry}s
-	 * within the given interval, grouped by sub-intervals of the given duration. If a sub-interval doesn't contain an
-	 * {@link AccountancyEntry}, its sales volume is zero. Note that the last sub-interval may be shorter than the given
-	 * {@code duration}.
+	 * Computes the sales volume, i.e., the sum of {@link AccountancyEntry#getValue()}, for all
+	 * {@link AccountancyEntry}s within the given interval, grouped by sub-intervals of the given duration. If a
+	 * sub-interval doesn't contain an {@link AccountancyEntry}, its sales volume is zero. Note that the last
+	 * sub-interval may be shorter than the given {@code duration}.
 	 * 
 	 * @param interval the interval within which we want to find {@link AccountancyEntry}s, must not be {@literal null}.
 	 * @param duration the duration of the sub-intervals that are used to group the summation, must not be
