@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
+import org.springframework.boot.context.properties.bind.ConstructorBinding;
 
 /**
  * Properties to configure Salespoint authentication. Declare {@code salespoint.authentication.…} in application
