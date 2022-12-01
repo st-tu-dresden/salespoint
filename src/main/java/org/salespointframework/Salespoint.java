@@ -16,7 +16,6 @@
 package org.salespointframework;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.salespointframework.inventory.LineItemFilter;
 import org.springframework.boot.SpringApplication;
@@ -30,9 +29,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.env.MutablePropertySources;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -50,6 +49,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EntityScan
 @EnableMethodSecurity
 @ConfigurationPropertiesScan
+@PropertySource("classpath:salespoint.properties")
 public class Salespoint {
 
 	@Bean
@@ -77,12 +77,13 @@ public class Salespoint {
 		@Override
 		public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 
-			MutablePropertySources sources = environment.getPropertySources();
+			var sources = environment.getPropertySources();
 
-			Map<String, Object> properties = new HashMap<>();
+			var properties = new HashMap<String, Object>();
 			properties.put("spring.aop.proxy-target-class", false);
-			properties.put("spring.jpa.open-in-view", true);
 			properties.put("spring.datasource.generate-unique-name", true);
+			properties.put("spring.jpa.open-in-view", true);
+			properties.put("spring.jpa.properties.hibernate.auto_quote_keyword", true);
 
 			sources.addFirst(new MapPropertySource("salespointDefaults", properties));
 		}

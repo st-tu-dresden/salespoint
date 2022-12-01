@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.0-RC2</version>
+		<version>3.0.0</version>
 		<relativePath />
 	</parent>
 
@@ -18,7 +18,7 @@
 		<dev>/dev</dev>
 		<java.version>17</java.version>
 		<jmolecules.version>2022.2.0</jmolecules.version>
-		<spring-modulith.version>0.1.0-M2</spring-modulith.version>
+		<spring-modulith.version>0.1.0</spring-modulith.version>
 		<refdocs.dir>${project.build.directory}/refdocs</refdocs.dir>
 	</properties>
 
@@ -235,7 +235,6 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.200</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -474,25 +473,11 @@
 
 	<repositories>
 		<repository>
-			<id>spring-milestone</id>
-			<url>https://repo.spring.io/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
 			<id>spring-release</id>
 			<url>https://repo.spring.io/release</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-		</repository>
-		<repository>
-			<id>spring-snapshot</id>
-			<url>https://repo.spring.io/snapshot</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
 		</repository>
 		<repository>
 			<id>salespointframework</id>
