@@ -100,7 +100,6 @@ public class Cart implements Streamable<CartItem>, Priced {
 	 * Removes the {@link CartItem} with the given identifier.
 	 *
 	 * @param identifier must not be {@literal null}.
-	 * @return
 	 */
 	public void removeItem(String identifier) {
 
