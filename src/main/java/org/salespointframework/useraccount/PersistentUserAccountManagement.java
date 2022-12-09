@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 /**
- * Implementation of {@link UserAccountManager} using a {@link UserAccountRepository} to persist {@link UserAccount}
+ * Implementation of {@link UserAccountManagement} using a {@link UserAccountRepository} to persist {@link UserAccount}
  * instances. It also manages password encryption using the configured {@link PasswordEncoder}.
  *
  * @author Paul Henke
