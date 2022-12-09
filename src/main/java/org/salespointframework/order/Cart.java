@@ -45,8 +45,8 @@ public class Cart implements Streamable<CartItem>, Priced {
 	/**
 	 * Creates a {@link CartItem} for the given {@link Product} and {@link Quantity}. If a {@link CartItem} for the given
 	 * {@link Product} already exists the {@link Cart} will be updated to reflect the combined {@link Quantity} for the
-	 * backing {@link CartItem}. If the given {@link Quantity} adds up to zero and the item is removed from the
-	 * {@link Cart}.
+	 * backing {@link CartItem}. If the resulting {@link Quantity} is less than or equal to zero then the item is removed
+	 * from the {@link Cart}.
 	 *
 	 * @param product must not be {@literal null}.
 	 * @param quantity must not be {@literal null}.
@@ -69,8 +69,8 @@ public class Cart implements Streamable<CartItem>, Priced {
 	/**
 	 * Creates a {@link CartItem} for the given {@link Product} and amount. If a {@link CartItem} for the given
 	 * {@link Product} already exists the {@link Cart} will be updated to reflect the combined {@link Quantity} for the
-	 * backing {@link CartItem}. If the given {@link Quantity} adds up to zero and the item is removed from the
-	 * {@link Cart}.
+	 * backing {@link CartItem}. If the resulting {@link Quantity} is less than or equal to zero then the item is removed
+	 * from the {@link Cart}.
 	 *
 	 * @param product must not be {@literal null}.
 	 * @param amount must not be {@literal null}.
@@ -84,8 +84,8 @@ public class Cart implements Streamable<CartItem>, Priced {
 	/**
 	 * Creates a {@link CartItem} for the given {@link Product} and amount. If a {@link CartItem} for the given
 	 * {@link Product} already exists the {@link Cart} will be updated to reflect the combined {@link Quantity} for the
-	 * backing {@link CartItem}. If the given {@link Quantity} adds up to zero and the item is removed from the
-	 * {@link Cart}.
+	 * backing {@link CartItem}. If the resulting {@link Quantity} is less than or equal to zero then the item is removed
+	 * from the {@link Cart}.
 	 *
 	 * @param product must not be {@literal null}.
 	 * @param amount must not be {@literal null}.
