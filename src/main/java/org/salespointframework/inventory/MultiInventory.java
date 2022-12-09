@@ -23,7 +23,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.util.Assert;
 
 /**
- * An {@link Inventory} that stores {@link MultiInventoryItem}s, i.e. {@link InventoyItem}s for which multiple might
+ * An {@link Inventory} that stores {@link MultiInventoryItem}s, i.e. {@link InventoryItem}s for which multiple might
  * exist per product, e.g. if you need to keep track of an item per warehouse or the like.
  *
  * @author Oliver Drotbohm
