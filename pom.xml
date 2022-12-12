@@ -407,6 +407,8 @@
 				<configuration>
 					<doclint>none</doclint>
 					<quiet>true</quiet>
+					<failOnError>true</failOnError>
+					<failOnWarnings>true</failOnWarnings>
 					<outputDirectory>${project.build.directory}/site${dev}/api</outputDirectory>
 					<sourcepath>target/generated-sources/delombok</sourcepath>
 					<links>
