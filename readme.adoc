@@ -1,6 +1,6 @@
 = Salespoint Framework
 
-image:https://github.com/st-tu-dresden/salespoint/workflows/CI%20build/badge.svg["CI Build", link="https://github.com/st-tu-dresden/salespoint/actions"]
+image:https://github.com/st-tu-dresden/salespoint/actions/workflows/deploy.yaml/badge.svg["Build and deploy Maven artifacts", link="https://github.com/st-tu-dresden/salespoint/actions/workflows/deploy.yaml"]
 
 == Prerequisites
 
@@ -15,21 +15,21 @@ image:https://github.com/st-tu-dresden/salespoint/workflows/CI%20build/badge.svg
 ----
 $ git clone https://github.com/st-tu-dresden/salespoint
 $ cd salespoint
-$ mvn clean install
+$ ./mvnw clean install
 ----
 
 == Documentation
 
 The reference documentation is written in Asciidoc and built using Asciidoctor. The main documentation source file is located in `src/main/asciidoc`.
 
-To build the reference documentation simply run `mvn -Pdocs package` on the command line. This generates the following HTML files:
+To build the reference documentation simply run `./mvnw -Pdocs package` on the command line. This generates the following HTML files:
 
 * the Salespoint website in `target/generated-docs/index.html`.
 * the Salespoint reference in `target/generated-docs/salespoint-reference.html`.
 
 == Deployment
 
-To deploy artifacts to the salespoint repository, simply run `mvn clean deploy`. This requires your `settings.xml` (located in `~/.m2` ) to contain a server definition with the credentials to access the Salespoint server via SFTP:
+To deploy artifacts to the salespoint repository, simply run `./mvnw clean deploy`. This requires your `settings.xml` (located in `~/.m2` ) to contain a server definition with the credentials to access the Salespoint server via SFTP:
 
 [source, xml]
 ----
@@ -40,16 +40,16 @@ To deploy artifacts to the salespoint repository, simply run `mvn clean deploy`.
 </server>
 ----
 
-To deploy the website and reference documentation, run `mvn -Pdocs site:deploy`.
+To deploy the website and reference documentation, run `./mvnw -Pdocs site:deploy`.
 
 == Release
 
 1. Make sure all tickets are closed, except the release one.
 2. Tweak `ChangelogCreator` (in `src/test/java`) to point to the milestone to be released. Run the creator. Copy console output into `src/main/asciidoc/site/changelog.adoc`.
 3. Update version information `index.adoc` (in `src/main/asciidoc/site`).
-4. Commit as `#?? - Prepare release $version.`. If this was on a maintainance branch, also cherry-pick this commit to `main` and resolve any conflicts.
-5. Run `mvn release:prepare`.
+4. Commit as `GH-??? - Prepare release $version.`. If this was on a maintainance branch, also cherry-pick this commit to `main` and resolve any conflicts.
+5. Run `./mvnw release:prepare`.
 6. Edit commits to match commit message format, re-create tag.
 7. Push changes & tag.
-8. Check out tag and run `mvn clean deploy -Prelease -DskipTests`.
-9. Check out tag and run `mvn clean package site:deploy -Pdocs,release`.
+8. Check out tag and run `./mvnw clean deploy -Prelease -DskipTests`.
+9. Check out tag and run `./mvnw clean package site:deploy -Pdocs,release`.
