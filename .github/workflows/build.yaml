@@ -2,10 +2,10 @@ name: Build Maven artifacts
 
 on:
   push:
-    branches:
-      - '!main'
-      - '!7.2.*'
-      - '!7.3.*'
+    branches-ignore:
+      - 'main'
+      - '7.2.*'
+      - '7.3.*'
   pull_request:
     branches:
       - 'main'
