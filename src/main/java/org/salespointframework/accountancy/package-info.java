@@ -1,7 +1,7 @@
 /**
  * Accountancy subsystem with services for accounting and bookkeeping.
  *
- * @see https://en.wikipedia.org/wiki/Accounting
+ * @see <a href="https://en.wikipedia.org/wiki/Accounting">Accounting (Wikipedia)</a>
  */
 @org.springframework.lang.NonNullApi
 @org.springframework.modulith.ApplicationModule(displayName = "Salespoint :: Accountancy")

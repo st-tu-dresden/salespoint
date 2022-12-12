@@ -45,11 +45,11 @@ import org.springframework.mail.SimpleMailMessage;
  * 
  * To use a real {@link MailSender} instead, include the {@code spring-boot-starter-mail} module in your Maven POM file
  * and follow the instructions in the
- * <a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-email">reference
- * documentation</a>.
+ * <a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#io.email">reference documentation</a>.
  * 
  * @author Oliver Gierke
- * @see http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-email
+ * @see <a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#io.email">Sending Email (Spring
+ *      Boot Reference Docs)</a>
  * @see RecordingMailSender
  */
 public class ConsoleWritingMailSender implements MailSender {
