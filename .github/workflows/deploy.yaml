@@ -3,9 +3,9 @@ name: Build and deploy Maven artifacts
 on:
   push:
     branches:
-    - main
-    - 7.2.*
-    - 7.3.*
+    - 'main'
+    - '7.2.*'
+    - '7.3.*'
 
 jobs:
   build:
