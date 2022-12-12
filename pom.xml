@@ -413,7 +413,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<doclint>none</doclint>
+					<doclint>all,-missing</doclint>
 					<quiet>true</quiet>
 					<failOnError>true</failOnError>
 					<failOnWarnings>true</failOnWarnings>
