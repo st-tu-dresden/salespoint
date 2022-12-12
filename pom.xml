@@ -417,6 +417,13 @@
 					<quiet>true</quiet>
 					<failOnError>true</failOnError>
 					<failOnWarnings>true</failOnWarnings>
+					<tags>
+						<!-- @soundtrack doctag can be used, but won't show up in generated docs -->
+						<tag>
+							<name>soundtrack</name>
+							<placement>X</placement>
+						</tag>
+					</tags>
 					<outputDirectory>${project.build.directory}/site${dev}/api</outputDirectory>
 					<sourcepath>target/generated-sources/delombok</sourcepath>
 					<links>
