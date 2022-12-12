@@ -34,7 +34,6 @@ import org.springframework.modulith.Modulithic;
  * configuration is activated:
  * <ul>
  * <li>{@code Salespoint} - to bootstrap core application components, repositories and services.</li>
- * <li>{@code SalespointWebConfiguration} - web specific configuration, extensions to Spring MVC.</li>
  * <li>{@code SalespointSecurityConfiguration} - security specific configuration.</li>
  * </ul>
  * On top of that the annotation also enables the following functionality for the package of the annotated class:
@@ -44,8 +43,8 @@ import org.springframework.modulith.Modulithic;
  * <li>{@code @EnableAutoConfiguration} - Spring auto-configuration, in particular Spring Data JPA repositories and
  * entities.</li>
  * </ul>
- * To customize the web or security configuration setup, declare classes extending {@link SalespointWebConfiguration} or
- * {@link SalespointSecurityConfiguration} inside your configuration class. See the Videoshop sample for details.
+ * To customize the security configuration setup, declare classes extending {@code SalespointSecurityConfiguration}
+ * inside your configuration class. See the Videoshop sample for details.
  *
  * @author Oliver Gierke
  */

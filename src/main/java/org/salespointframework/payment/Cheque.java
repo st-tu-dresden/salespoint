@@ -83,7 +83,7 @@ public final class Cheque extends PaymentMethod {
 	 * @param accountNumber Number of this account on which the cheque is drawn.
 	 * @param chequeNumber Number of this cheque. This is a number uniquely identifying a cheque.
 	 * @param payee Name of the party which receives the cheque.
-	 * @param dateWritten {@link DateTime} object representing the date on which the cheque was written,
+	 * @param dateWritten {@link LocalDateTime} object representing the date on which the cheque was written,
 	 * @param bankName Name of the bank that issued the cheque,
 	 * @param bankAddress Address of the bank that issued the cheque.
 	 * @param bankIdentificationNumber Unique identifier of the bank that issued the cheque. Also known as the bank
