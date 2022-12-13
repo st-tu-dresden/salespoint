@@ -20,6 +20,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import org.salespointframework.useraccount.UserAccount;
+import org.springframework.lang.Nullable;
 
 /**
  * Custom extension of {@link Order}.
@@ -30,7 +31,7 @@ import org.salespointframework.useraccount.UserAccount;
 @Entity
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 class CustomOrder extends Order {
-
+	@Nullable
 	private String customProperty;
 
 	@SuppressWarnings("unused")
@@ -44,7 +45,7 @@ class CustomOrder extends Order {
 	 * @param userAccount must not be {@literal null}.
 	 * @param customProperty can be {@literal null}.
 	 */
-	public CustomOrder(UserAccount userAccount, String customProperty) {
+	public CustomOrder(UserAccount userAccount, @Nullable String customProperty) {
 
 		super(userAccount);
 

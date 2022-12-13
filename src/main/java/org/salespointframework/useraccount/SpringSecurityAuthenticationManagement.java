@@ -28,6 +28,7 @@ import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.data.util.Streamable;
+import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -74,7 +75,7 @@ class SpringSecurityAuthenticationManagement implements AuthenticationManagement
 	 * @see org.salespointframework.useraccount.AuthenticationManagement#matches(org.salespointframework.useraccount.Password.UnencryptedPassword, org.salespointframework.useraccount.Password.EncryptedPassword)
 	 */
 	@Override
-	public boolean matches(UnencryptedPassword candidate, EncryptedPassword existing) {
+	public boolean matches(@Nullable UnencryptedPassword candidate, EncryptedPassword existing) {
 
 		Assert.notNull(existing, "Existing password must not be null!");
 

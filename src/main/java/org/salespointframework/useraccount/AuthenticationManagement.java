@@ -20,6 +20,7 @@ import java.util.Optional;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.springframework.data.util.Streamable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -45,7 +46,7 @@ public interface AuthenticationManagement {
 	 * @param existing must not be {@literal null}.
 	 * @return will never be {@literal null}.
 	 */
-	boolean matches(UnencryptedPassword candidate, EncryptedPassword existing);
+	boolean matches(@Nullable UnencryptedPassword candidate, EncryptedPassword existing);
 
 	/**
 	 * Updates the current authentication to the given {@link UserAccount}.
