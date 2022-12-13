@@ -147,7 +147,7 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 	}
 
 	/**
-	 * @return A <code>Streamable/code> with all {@link Role}s of the user
+	 * @return A {@link Streamable} with all {@link Role}s of the user
 	 */
 	public Streamable<Role> getRoles() {
 		return Streamable.of(roles);

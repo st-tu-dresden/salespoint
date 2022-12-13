@@ -61,7 +61,7 @@ public class Quantity {
 	private @NonNull Metric metric;
 
 	/**
-	 * Creates a new {@link Quantity} of the given amount. Defaults the metric to {@value Metric#UNIT}.
+	 * Creates a new {@link Quantity} of the given amount. Defaults the metric to {@link Metric#UNIT}.
 	 *
 	 * @param amount must not be {@literal null}.
 	 * @return
@@ -71,7 +71,7 @@ public class Quantity {
 	}
 
 	/**
-	 * Creates a new {@link Quantity} of the given amount. Defaults the metric to {@value Metric#UNIT}.
+	 * Creates a new {@link Quantity} of the given amount. Defaults the metric to {@link Metric#UNIT}.
 	 *
 	 * @param amount must not be {@literal null}.
 	 * @return

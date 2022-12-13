@@ -211,6 +211,14 @@
 			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
 		</dependency>
 
+		<!-- Fix "unknown enum constant javax.annotation.meta.When.MAYBE" warnings -->
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>3.0.2</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- Test -->
 
 		<dependency>
@@ -405,8 +413,17 @@
 					</execution>
 				</executions>
 				<configuration>
-					<doclint>none</doclint>
+					<doclint>all,-missing</doclint>
 					<quiet>true</quiet>
+					<failOnError>true</failOnError>
+					<failOnWarnings>true</failOnWarnings>
+					<tags>
+						<!-- @soundtrack doctag can be used, but won't show up in generated docs -->
+						<tag>
+							<name>soundtrack</name>
+							<placement>X</placement>
+						</tag>
+					</tags>
 					<outputDirectory>${project.build.directory}/site${dev}/api</outputDirectory>
 					<sourcepath>target/generated-sources/delombok</sourcepath>
 					<links>
