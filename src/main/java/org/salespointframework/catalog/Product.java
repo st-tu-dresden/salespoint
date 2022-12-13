@@ -93,9 +93,10 @@ public class Product extends AbstractAggregateRoot<ProductIdentifier> implements
 		this.metric = metric;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.springframework.data.domain.Persistable#getId()
+	/**
+	 * Returns the unique id of this {@link Product}.
+	 *
+	 * @return will never be {@literal null}
 	 */
 	@Override
 	public ProductIdentifier getId() {

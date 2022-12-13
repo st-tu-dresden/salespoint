@@ -117,9 +117,10 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 		this.dateCreated = LocalDateTime.now();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.springframework.data.domain.Persistable#getId()
+	/**
+	 * Returns the unique id of this {@link Order}.
+	 * 
+	 * @return will never be {@literal null}
 	 */
 	@Override
 	public OrderIdentifier getId() {

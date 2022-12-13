@@ -101,9 +101,10 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 		return Optional.ofNullable(date);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.springframework.data.domain.Persistable#getId()
+	/**
+	 * Returns the unique identifier of this {@link AccountancyEntry}.
+	 * 
+	 * @return will never be {@literal null}
 	 */
 	@Override
 	public AccountancyEntryIdentifier getId() {

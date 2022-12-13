@@ -95,9 +95,9 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 	}
 
 	/**
-	 * Get the unique identifier of this {@link UserAccount}.
+	 * Returns the unique identifier of this {@link UserAccount}.
 	 *
-	 * @return the {@link UserAccountIdentifier} of this <code>UserAccount</code>
+	 * @return will never be {@literal null}
 	 */
 	@Override
 	public UserAccountIdentifier getId() {

@@ -64,9 +64,10 @@ public class ChargeLine extends AbstractEntity<ChargeLineIdentifier> implements 
 	private final @NonNull MonetaryAmount price;
 	private final @NonNull String description;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.springframework.data.domain.Persistable#getId()
+	/**
+	 * Returns the unique identifier of this {@link ChargeLine}.
+	 * 
+	 * @return will never be {@literal null}
 	 */
 	public ChargeLineIdentifier getId() {
 		return chargeLineIdentifier;

@@ -87,9 +87,10 @@ public class OrderLine extends AbstractEntity<OrderLineIdentifier> implements Pr
 		this.productName = product.getName();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.springframework.data.domain.Persistable#getId()
+	/**
+	 * Returns the unique identifier of this {@link OrderLine}.
+	 *
+	 * @return will never be {@literal null}
 	 */
 	@Override
 	public OrderLineIdentifier getId() {
