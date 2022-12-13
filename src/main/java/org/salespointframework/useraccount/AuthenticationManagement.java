@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -53,4 +54,12 @@ public interface AuthenticationManagement {
 	 * @since 7.5
 	 */
 	void updateAuthentication(UserAccount account);
+
+	/**
+	 * Returns all {@link UserAccount}s for the users currently logged into the system.
+	 *
+	 * @return will never be {@literal null}.
+	 * @since 8.1
+	 */
+	Streamable<UserAccount> getCurrentlyLoggedInUserAccounts();
 }

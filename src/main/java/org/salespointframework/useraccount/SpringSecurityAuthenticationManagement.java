@@ -27,11 +27,13 @@ import java.util.Optional;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
+import org.springframework.data.util.Streamable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,6 +54,7 @@ class SpringSecurityAuthenticationManagement implements AuthenticationManagement
 	private final @NonNull UserAccountRepository repository;
 	private final @NonNull PasswordEncoder passwordEncoder;
 	private final @NonNull AuthenticationProperties config;
+	private final @NonNull SessionRegistry sessions;
 
 	/*
 	 * (non-Javadoc)
@@ -108,12 +111,28 @@ class SpringSecurityAuthenticationManagement implements AuthenticationManagement
 				candidate.orElseThrow(() -> new UsernameNotFoundException("Useraccount: " + name + "not found")));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.useraccount.AuthenticationManagement#getCurrentlyLoggedInUserAccounts()
+	 */
+	@Override
+	public Streamable<UserAccount> getCurrentlyLoggedInUserAccounts() {
+
+		var usernames = sessions.getAllPrincipals().stream()
+				.map(UserAccountDetails.class::cast)
+				.map(UserAccountDetails::getId)
+				.toList();
+
+		return repository.findAllById(usernames);
+	}
+
 	@Getter
 	@ToString
 	@EqualsAndHashCode
 	@SuppressWarnings("serial")
 	static class UserAccountDetails implements UserDetails {
 
+		private final UserAccountIdentifier id;
 		private final String username;
 		private final String password;
 		private final boolean isEnabled;
@@ -121,6 +140,7 @@ class SpringSecurityAuthenticationManagement implements AuthenticationManagement
 
 		public UserAccountDetails(UserAccount userAccount) {
 
+			this.id = userAccount.getId();
 			this.username = userAccount.getUsername();
 			this.password = userAccount.getPassword().toString();
 			this.isEnabled = userAccount.isEnabled();

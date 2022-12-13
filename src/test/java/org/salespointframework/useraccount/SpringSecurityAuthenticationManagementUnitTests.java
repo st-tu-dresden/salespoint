@@ -22,6 +22,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.salespointframework.useraccount.UserAccountRepositoryIntegrationTests.*;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
@@ -34,8 +36,11 @@ import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.salespointframework.useraccount.SpringSecurityAuthenticationManagement.UserAccountDetails;
 import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
+import org.springframework.data.util.Streamable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -51,6 +56,7 @@ class SpringSecurityAuthenticationManagementUnitTests {
 	@Mock UserAccountRepository repository;
 	@Mock PasswordEncoder passwordEncoder;
 	AuthenticationProperties config = new AuthenticationProperties(false);
+	SessionRegistry sessions = new SessionRegistryImpl();
 
 	UserAccount account;
 
@@ -58,7 +64,8 @@ class SpringSecurityAuthenticationManagementUnitTests {
 	void setUp() {
 
 		this.account = createAccount();
-		this.authenticationManager = new SpringSecurityAuthenticationManagement(repository, passwordEncoder, config);
+		this.authenticationManager = new SpringSecurityAuthenticationManagement(repository, passwordEncoder, config,
+				sessions);
 	}
 
 	@AfterEach
@@ -102,7 +109,7 @@ class SpringSecurityAuthenticationManagementUnitTests {
 	void usesByEmailLookupIfConfigured() {
 
 		var authenticationManager = new SpringSecurityAuthenticationManagement(repository,
-				passwordEncoder, new AuthenticationProperties(true));
+				passwordEncoder, new AuthenticationProperties(true), sessions);
 
 		doReturn(Optional.of(account)).when(repository).findByEmail(any());
 
@@ -142,6 +149,25 @@ class SpringSecurityAuthenticationManagementUnitTests {
 		authenticationManager.updateAuthentication(account);
 
 		assertThat(authenticationManager.getCurrentUser()).hasValue(account);
+	}
+
+	@Test // #423
+	void doesNotReturnAnyLoggedInUsersIfNoSessionsAvailable() {
+
+		doReturn(Streamable.empty()).when(repository).findAllById(Collections.emptyList());
+
+		assertThat(authenticationManager.getCurrentlyLoggedInUserAccounts()).isEmpty();
+	}
+
+	@Test // #423
+	void returnsLoggedInUserAccountForRegisteredSession() {
+
+		var account = UserAccountTestUtils.createUserAccount();
+		sessions.registerNewSession("someId", new UserAccountDetails(account));
+
+		doReturn(Streamable.of(account)).when(repository).findAllById(List.of(account.getId()));
+
+		assertThat(authenticationManager.getCurrentlyLoggedInUserAccounts()).containsExactly(account);
 	}
 
 	private static void authenticate(UserAccount account) {
