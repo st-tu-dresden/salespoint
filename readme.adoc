@@ -4,9 +4,8 @@ image:https://github.com/st-tu-dresden/salespoint/actions/workflows/deploy.yaml/
 
 == Prerequisites
 
-- Java 13
+- OpenJDK 17
 - Git
-- Maven 3.x
 
 == Building the project
 
