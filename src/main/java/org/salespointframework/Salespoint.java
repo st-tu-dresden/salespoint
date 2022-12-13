@@ -27,14 +27,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * Application configuration for Salespoint.
  *
- * @author Oliver Gierke
+ * @author Oliver Drotbohm
  */
 @Configuration
 @EnableAutoConfiguration
@@ -46,20 +45,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableMethodSecurity
 @ConfigurationPropertiesScan
 @PropertySource("classpath:salespoint.properties")
-public class Salespoint {
+class Salespoint {
 
 	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
+	BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
 	@Bean
-	SessionRegistry sessionRegistry() {
+	SessionRegistryImpl sessionRegistry() {
 		return new SessionRegistryImpl();
 	}
 
 	@Bean
-	public LineItemFilter inventoryLineItemFilter() {
+	LineItemFilter inventoryLineItemFilter() {
 		return LineItemFilter.handleAll();
 	}
 }

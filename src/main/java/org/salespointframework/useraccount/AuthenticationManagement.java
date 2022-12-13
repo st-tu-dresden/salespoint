@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 /**
  * Application component for authentication related use cases.
  *
- * @author Oliver Gierke
+ * @author Oliver Drotbohm
  */
 @Service
 public interface AuthenticationManagement {
@@ -34,7 +34,7 @@ public interface AuthenticationManagement {
 	 * Returns the {@link UserAccount} of the currently logged in user or {@link Optional#empty()} if no-one is currently
 	 * logged in.
 	 *
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	Optional<UserAccount> getCurrentUser();
 
@@ -43,7 +43,7 @@ public interface AuthenticationManagement {
 	 *
 	 * @param candidate can be {@literal null}.
 	 * @param existing must not be {@literal null}.
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	boolean matches(UnencryptedPassword candidate, EncryptedPassword existing);
 

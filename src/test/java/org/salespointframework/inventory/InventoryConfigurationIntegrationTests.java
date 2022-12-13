@@ -18,7 +18,7 @@ package org.salespointframework.inventory;
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import org.salespointframework.Salespoint;
+import org.salespointframework.TestSalespoint;
 import org.salespointframework.inventory.InventoryListeners.InventoryOrderEventListener;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
@@ -33,7 +33,7 @@ class InventoryConfigurationIntegrationTests {
 	void doesNotRegisterEventListenerIfDisabledViaConfiguration() {
 
 		new ApplicationContextRunner()
-				.withUserConfiguration(Salespoint.class)
+				.withUserConfiguration(TestSalespoint.class)
 				.withPropertyValues("salespoint.inventory.disable-updates=true")
 				.run(context -> {
 					assertThat(context).doesNotHaveBean(InventoryOrderEventListener.class);
