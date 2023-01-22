@@ -38,12 +38,12 @@ class OrderUnitTests {
 	@Test
 	public void publishesEventsForStateTransitions() {
 
-		Order cancelled = new Order(UserAccountTestUtils.createUserAccount()) //
+		Order canceled = new Order(UserAccountTestUtils.createUserAccount()) //
 				.markPaid() //
 				.complete() //
 				.cancel("No reason");
 
-		PublishedEvents events = AggregateTestUtils.eventsOf(cancelled);
+		PublishedEvents events = AggregateTestUtils.eventsOf(canceled);
 
 		assertThat(events.ofType(OrderCompleted.class)).hasSize(1);
 		assertThat(events.ofType(OrderCanceled.class)).hasSize(1);

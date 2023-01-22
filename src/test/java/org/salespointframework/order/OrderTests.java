@@ -77,17 +77,17 @@ class OrderTests {
 	void cancelsUnpaidOrder() {
 
 		assertThat(orders.cancelOrder(order, "Some reason.")).isTrue();
-		assertThat(order.getOrderStatus()).isEqualTo(CANCELLED);
+		assertThat(order.getOrderStatus()).isEqualTo(CANCELED);
 	}
 
 	@Test
 	void cancelIsIdempotent() {
 
 		assertThat(orders.cancelOrder(order, "Some reason.")).isTrue();
-		assertThat(order.getOrderStatus()).isEqualTo(CANCELLED);
+		assertThat(order.getOrderStatus()).isEqualTo(CANCELED);
 
 		assertThat(orders.cancelOrder(order, "Some reason.")).isFalse();
-		assertThat(order.getOrderStatus()).isEqualTo(CANCELLED);
+		assertThat(order.getOrderStatus()).isEqualTo(CANCELED);
 	}
 
 	@Test
@@ -96,7 +96,7 @@ class OrderTests {
 		orders.payOrder(order);
 
 		assertThat(orders.cancelOrder(order, "Some reason.")).isTrue();
-		assertThat(order.getOrderStatus()).isEqualTo(CANCELLED);
+		assertThat(order.getOrderStatus()).isEqualTo(CANCELED);
 	}
 
 	@Test
@@ -106,7 +106,7 @@ class OrderTests {
 		orders.completeOrder(order);
 
 		assertThat(orders.cancelOrder(order, "Some reason.")).isTrue();
-		assertThat(order.getOrderStatus()).isEqualTo(CANCELLED);
+		assertThat(order.getOrderStatus()).isEqualTo(CANCELED);
 
 		assertThat(events.ofType(OrderCompleted.class)).hasSize(1);
 		assertThat(events.ofType(OrderCanceled.class)).hasSize(1);

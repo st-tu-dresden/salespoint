@@ -99,7 +99,7 @@ class InventoryListeners {
 		 */
 		@EventListener
 		public void on(OrderCanceled event) {
-			management.updateStockForCancelledOrder(event.getOrder());
+			management.updateStockForCanceledOrder(event.getOrder());
 		}
 	}
 }

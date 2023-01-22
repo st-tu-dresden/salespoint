@@ -52,7 +52,7 @@ public class AccountancyOrderEventListener {
 	}
 
 	/**
-	 * Creates a counter {@link ProductPaymentEntry} for the order that is cancelled if there's a revenue entry for the
+	 * Creates a counter {@link ProductPaymentEntry} for the order that is canceled if there's a revenue entry for the
 	 * given order already, i.e. the order has been paid before.
 	 *
 	 * @param event must not be {@literal null}.
@@ -68,7 +68,7 @@ public class AccountancyOrderEventListener {
 				.anyMatch(it -> it.belongsTo(order) && it.isRevenue())) {
 
 			accountancy.add(ProductPaymentEntry.rollback(order,
-					String.format("Order %s cancelled! Reason: %s.", order.getId(), event.getReason())));
+					String.format("Order %s canceled! Reason: %s.", order.getId(), event.getReason())));
 		}
 	}
 }

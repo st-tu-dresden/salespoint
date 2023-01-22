@@ -68,11 +68,11 @@ class InventoryManagement {
 	}
 
 	/**
-	 * Updates the stock for the {@link OrderLine} items in the given, cancelled {@link Order}.
+	 * Updates the stock for the {@link OrderLine} items in the given, canceled {@link Order}.
 	 *
 	 * @param order must not be {@literal null}.
 	 */
-	public void updateStockForCancelledOrder(Order order) {
+	public void updateStockForCanceledOrder(Order order) {
 
 		Assert.notNull(order, "Order must not be null!");
 

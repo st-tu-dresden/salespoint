@@ -393,12 +393,12 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	}
 
 	/**
-	 * Convenience method for checking if an order has the status CANCELLED
+	 * Convenience method for checking if an order has the status CANCELED
 	 *
-	 * @return true if OrderStatus is CANCELLED, otherwise false
+	 * @return true if OrderStatus is CANCELED, otherwise false
 	 */
 	public boolean isCanceled() {
-		return orderStatus == OrderStatus.CANCELLED;
+		return orderStatus == OrderStatus.CANCELED;
 	}
 
 	/**
@@ -461,13 +461,13 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	 */
 	Order cancel(String reason) {
 
-		Assert.isTrue(!isCanceled(), "Order is already cancelled!");
+		Assert.isTrue(!isCanceled(), "Order is already canceled!");
 
 		if (!isCompleted()) {
 			registerEvent(OrderCompleted.of(this));
 		}
 
-		this.orderStatus = OrderStatus.CANCELLED;
+		this.orderStatus = OrderStatus.CANCELED;
 
 		registerEvent(OrderCanceled.of(this, reason));
 

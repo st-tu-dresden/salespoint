@@ -125,7 +125,7 @@ public interface OrderManagement<T extends Order> {
 	 * Cancels an {@link Order}, no matter what state it is in.
 	 *
 	 * @param order the order to be canceled, must not be {@literal null}.
-	 * @param reason the reason the order was cancelled.
+	 * @param reason the reason the order was canceled.
 	 * @return true if the order could be canceled
 	 * @see OrderCanceled
 	 */
