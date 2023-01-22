@@ -25,7 +25,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.catalog.Catalog;
 import org.salespointframework.catalog.Product;
-import org.salespointframework.order.OrderEvents.OrderCanceled;
+import org.salespointframework.order.OrderEvents.OrderCancelled;
 import org.salespointframework.order.OrderEvents.OrderCompleted;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
@@ -109,7 +109,7 @@ class OrderTests {
 		assertThat(order.getOrderStatus()).isEqualTo(CANCELLED);
 
 		assertThat(events.ofType(OrderCompleted.class)).hasSize(1);
-		assertThat(events.ofType(OrderCanceled.class)).hasSize(1);
+		assertThat(events.ofType(OrderCancelled.class)).hasSize(1);
 	}
 
 	@Test

@@ -427,7 +427,7 @@ Currently, the following events are exposed:
 * `OrderCompleted` -- the event being thrown when the `Order` is about to be completed, usually through a call to `OrderManagement.completeOrder(…)`.
 The <<modules.inventory>> module ships with a listener for the `OrderCompleted` event to update the inventory and reduce the stock of ordered items.
 See <<modules.inventory.events>> for details.
-* `OrderCanceled` -- the event being thrown when an `Order` was canceled, usually through `OrderManagement.cancelOrder(…)`. <<modules.accountancy>> will react by creating a new `AccountancyEntry` that compensates for the revenue entry created for the `OrderPaid` event. <<modules.inventory>> will restore the previously subtracted stock if the order had been cancelled already.
+* `OrderCancelled` -- the event being thrown when an `Order` was cancelled, usually through `OrderManagement.cancelOrder(…)`. <<modules.accountancy>> will react by creating a new `AccountancyEntry` that compensates for the revenue entry created for the `OrderPaid` event. <<modules.inventory>> will restore the previously subtracted stock if the order had been cancelled already.
 
 [[modules.order.handling-events]]
 ==== Handling events
@@ -456,7 +456,7 @@ class MyEventListener {
 
 The difference between the two methods is when they're actually invoked by the framework.
 The former method is called before the changes to the database are eventually persisted to the database.
-That means, the event listener can throw an exception and the action that caused the event to be published in the first place will be canceled, too.
+That means, the event listener can throw an exception and the action that caused the event to be published in the first place will be cancelled, too.
 On the other hand an `@EventListener` will not be guaranteed that the original action will succeed as it might be rejected if it violates e.g. database constraints.
 In contrast, a `@TransactionalEventListener` will be called after the original action has completed successfully.
 That in turn means, that the listener has no chance to abort that action.

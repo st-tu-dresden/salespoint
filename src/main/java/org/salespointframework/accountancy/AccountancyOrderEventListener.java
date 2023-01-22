@@ -19,7 +19,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import org.salespointframework.order.Order;
-import org.salespointframework.order.OrderEvents.OrderCanceled;
+import org.salespointframework.order.OrderEvents.OrderCancelled;
 import org.salespointframework.order.OrderEvents.OrderCompleted;
 import org.salespointframework.order.OrderEvents.OrderPaid;
 import org.springframework.context.ApplicationListener;
@@ -59,7 +59,7 @@ public class AccountancyOrderEventListener {
 	 * @since 7.1
 	 */
 	@EventListener
-	public void on(OrderCanceled event) {
+	public void on(OrderCancelled event) {
 
 		Order order = event.getOrder();
 

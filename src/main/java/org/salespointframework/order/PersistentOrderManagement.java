@@ -185,7 +185,7 @@ class PersistentOrderManagement<T extends Order> implements OrderManagement<T> {
 
 		Assert.notNull(order, "Order must not be null");
 
-		if (!order.isCanceled()) {
+		if (!order.isCancelled()) {
 			save((T) order.cancel(reason));
 			return true;
 		} else {

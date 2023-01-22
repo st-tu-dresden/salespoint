@@ -28,7 +28,7 @@ import org.salespointframework.core.Currencies;
 import org.salespointframework.inventory.InventoryListeners.InventoryOrderEventListener;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.OrderCompletionFailure;
-import org.salespointframework.order.OrderEvents.OrderCanceled;
+import org.salespointframework.order.OrderEvents.OrderCancelled;
 import org.salespointframework.order.OrderEvents.OrderCompleted;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccountManagement;
@@ -92,7 +92,7 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 	}
 
 	@Test // #230
-	void restocksForCanceledOrder() {
+	void restocksForCancelledOrder() {
 
 		var user = users.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 
@@ -100,9 +100,9 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 		cart.addOrUpdateItem(iPad, 1);
 
 		var order = spy(cart.createOrderFor(user));
-		when(order.isCanceled()).thenReturn(true);
+		when(order.isCancelled()).thenReturn(true);
 
-		listener.on(OrderCanceled.of(order, "No reason!"));
+		listener.on(OrderCancelled.of(order, "No reason!"));
 
 		assertThat(inventory.findByProduct(iPad) //
 				.map(UniqueInventoryItem::getQuantity) //

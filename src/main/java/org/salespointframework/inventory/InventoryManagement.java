@@ -76,7 +76,7 @@ class InventoryManagement {
 
 		Assert.notNull(order, "Order must not be null!");
 
-		if (!order.isCanceled()) {
+		if (!order.isCancelled()) {
 			return;
 		}
 

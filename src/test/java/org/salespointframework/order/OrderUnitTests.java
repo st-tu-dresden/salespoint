@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.salespointframework.order.OrderEvents.OrderCanceled;
+import org.salespointframework.order.OrderEvents.OrderCancelled;
 import org.salespointframework.order.OrderEvents.OrderCompleted;
 import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.modulith.test.AggregateTestUtils;
@@ -46,6 +46,6 @@ class OrderUnitTests {
 		PublishedEvents events = AggregateTestUtils.eventsOf(cancelled);
 
 		assertThat(events.ofType(OrderCompleted.class)).hasSize(1);
-		assertThat(events.ofType(OrderCanceled.class)).hasSize(1);
+		assertThat(events.ofType(OrderCancelled.class)).hasSize(1);
 	}
 }
