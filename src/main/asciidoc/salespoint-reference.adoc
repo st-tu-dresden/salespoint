@@ -312,24 +312,71 @@ See link:{javadoc}/org/salespointframework/inventory/InventoryOrderEventListener
 plantuml::{generated-docs}/module-org.salespointframework.accountancy.puml[,,format=svg,title="Accountancy component"]
 include::{generated-docs}/module-org.salespointframework.accountancy.adoc[]
 
-The accountancy package contains functionality supporting book keeping. `AccountancyEntry` is a representation of an accounting entry. `Accountancy` aggregates ``AccountancyEntry``s. Every `AccountancyEntry` is uniquely identified by an ``AccountancyEntryIdentifier``. `AccountancyEntry` extends `AbstractEntity` and serves as persistence entity, while `PersistentAccountancy` implements `Accountancy` and provides transparent access to the JPA layer. `AccountancyEntryIdentifier` is used as primary key attribute, when entities are stored in the database.
+The accountancy package contains functionality supporting book keeping.
+The `Accountancy` is an application service that is an append-only log of ``AccountancyEntry``s.
+This means, that `AccountancyEntry` instances cannot be changed, once they were added to the `Accountancy`.
+To correct a wrong entry, one would typically submit a compensating one.
+See <<modules.accountancy.events>> for details.
 
-////
-[<<Interface>> Accountancy]^-.-[PersistentAccountancy]
-[PersistentAccountancy]uses-.->[<<Interface>> AccountancyEntryRepository]
-[AccountancyEntry|-id:AccountancyEntryIdentifier]
-////
-image::accountancy.png[Accountancy, title="Accountancy"]
+`AccountancyEntry` is an abstract type.
+The only concrete implementation of that which Salespoint knows about is `OrderPaymentEntry`.
+Those are <<modules.accountancy.events, automatically created>> during the handling of the lifecycle events triggered in the process of handling orders.
 
-By implementing and sub-classing `Accountancy`, the notion of different accounts, as known from double-entry bookkeeping, can be realized.
+It is common to add custom `AccountancyEntry` types to your application represent other types of incomes and expenses.
 
-To create a new account, `AccountancyEntry` has to be sub-classed. Every object of such a class belongs to the same account. Accessing per-account entries is facilitated by specifiying the desired class type when calling `get()` or `find()` methods of `Accountancy`.
+[source, java]
+----
+import org.salespointframework.accountancy.AccountancyEntry;
+
+@Entity
+public class MyCustomAccountancyEntry extends AccountancyEntry {
+
+  // Custom field declarations
+
+  public MyCustomAccountancyEntry(MonetaryAmount amount, String description, …) {
+    super(amount, description);
+    // assign other parameters
+  }
+
+  // Getters, *no* setters.
+}
+----
+
+To manage `AccountancyEntry` instances, you can get access to the `Accountancy` service via dependency injection.
+
+[source, java]
+----
+@Service
+class MyApplicationComponent {
+
+  private final Accountancy accountancy;
+
+  // Getting access to Accountancy via dependency injection.
+  MyApplicationComponent(Accountancy accountancy) {
+
+    Assert.notNull(accountancy, "Accountancy must not be null!"
+
+    this.accountancy = accountancy;
+  }
+
+  void someMethod() {
+
+    var amount = Money.of(50, Currencies.EURO);
+
+    // Add the custom entry to the accountancy
+    var entry = accountancy.add(new MyCustomAccountancyEntry(amount, "Some description."));
+
+    // Obtains only the custom accountancy entries
+    var entries = accountancy.findAll(MyCustomAccountancyEntry.class);
+  }
+}
+----
 
 [[modules.accountancy.events]]
-=== Handling OrderPaid events
+=== Accountancy handling of order-related events
 
-The accountancy subsystem handles `OrderPaid` events by creating a `ProductPaymentEntry` for the order.
-Reversely, it will create a compensating `ProductPaymentEntry` on `OrderCanceled` if theres a revenue `ProductPaymentEntry` available for `Order`.
+The accountancy subsystem handles `OrderPaid` events by creating a `OrderPaymentEntry` for the order.
+Reversely, it will create a compensating `OrderPaymentEntry` on `OrderCanceled` if theres a revenue `OrderPaymentEntry` available for `Order`.
 See link:{javadoc}/org/salespointframework/accountancy/AccountancyOrderEventListener.html[the Javadoc of the event listener] for details.
 
 [[modules.payment]]
@@ -780,7 +827,7 @@ Read more about that in the updated section of <<modules.order>>.
 
 ==== New order canceled event and fixes in event handling in general
 https://github.com/st-tu-dresden/salespoint/issues/230[#230] -- The creation of a `PaymentAccountancyEntry` has been properly attached to the `OrderPaid` event now.
-An `OrderCanceled` event is now published on order cancellation which triggers a rollback of the inventory updates as well as a compensating `ProductPaymentEntry`.
+An `OrderCanceled` event is now published on order cancellation which triggers a rollback of the inventory updates as well as a compensating `OrderPaymentEntry`.
 Read more on that in the updated section <<modules.order.lifecycle>>.
 
 [[new-and-noteworthy.whats-new-in-6.1]]

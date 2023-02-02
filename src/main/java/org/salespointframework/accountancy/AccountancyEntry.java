@@ -15,6 +15,7 @@
  */
 package org.salespointframework.accountancy;
 
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -42,7 +43,7 @@ import org.springframework.util.Assert;
 
 /**
  * This class represents an accountancy entry. It is advisable to sub-class it, to define specific entry types for an
- * accountancy, for example a {@link ProductPaymentEntry}.
+ * accountancy, for example a {@link OrderPaymentEntry}.
  *
  * @author Hannes Weisbach
  * @author Oliver Drotbohm
@@ -50,6 +51,7 @@ import org.springframework.util.Assert;
 @Entity
 @ToString
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED, onConstructor = @__(@Deprecated))
+@DiscriminatorColumn(length = 100)
 public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier> {
 
 	private @EmbeddedId AccountancyEntryIdentifier accountancyEntryIdentifier = AccountancyEntryIdentifier
@@ -94,7 +96,7 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 
 	/**
 	 * Returns the date this entry was posted.
-	 * 
+	 *
 	 * @return the date when this entry was posted, or an empty {@code Optional} if no date is set.
 	 */
 	public Optional<LocalDateTime> getDate() {
@@ -103,7 +105,7 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 
 	/**
 	 * Returns the unique identifier of this {@link AccountancyEntry}.
-	 * 
+	 *
 	 * @return will never be {@literal null}
 	 */
 	@Override
@@ -114,7 +116,7 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	/**
 	 * Returns whether the entry is considered revenue, i.e. its value is zero or positive.
 	 *
-	 * @return
+	 * @return whether the entry is considered revenue, i.e. its value is zero or positive.
 	 * @since 7.1
 	 */
 	public boolean isRevenue() {
@@ -124,7 +126,7 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	/**
 	 * Returns whether the entry is considered expense, i.e. its value is negative.
 	 *
-	 * @return
+	 * @return whether the entry is considered expense, i.e. its value is negative.
 	 * @since 7.1
 	 */
 	public boolean isExpense() {
@@ -143,8 +145,8 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 
 	/**
 	 * {@link AccountancyEntryIdentifier} serves as an identifier type and primary key for {@link AccountancyEntry}
-	 * objects. The main reason for its existence is type safety for identifiers across the Salespoint framework.
-	 * However, it can also be used as a key for non-persistent, {@link Map}-based implementations.
+	 * objects. The main reason for its existence is type safety for identifiers across the Salespoint framework. However,
+	 * it can also be used as a key for non-persistent, {@link Map}-based implementations.
 	 *
 	 * @author Hannes Weisbach
 	 * @author Oliver Drotbohm

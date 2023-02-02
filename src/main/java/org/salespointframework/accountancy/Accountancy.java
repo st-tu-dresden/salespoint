@@ -38,13 +38,13 @@ import org.springframework.stereotype.Service;
 public interface Accountancy {
 
 	/**
-	 * Adds a new {@link AccountancyEntry} to this {@code Accountancy}. The {@link AccountancyEntry}'s date will be set
-	 * to the value returned by {@link BusinessTime#getTime()} in case it is not set already.
+	 * Adds a new {@link AccountancyEntry} to this {@code Accountancy}. The {@link AccountancyEntry}'s date will be set to
+	 * the value returned by {@link BusinessTime#getTime()} in case it is not set already.
 	 *
-	 * @param accountancyEntry entry to be added to the accountancy, must not be {@literal null}.
+	 * @param entry entry to be added to the accountancy, must not be {@literal null}.
 	 * @return the added {@link AccountancyEntry}.
 	 */
-	<T extends AccountancyEntry> T add(T accountancyEntry);
+	<T extends AccountancyEntry> T add(T entry);
 
 	/**
 	 * Returns all {@link AccountancyEntry}s previously added to the accountancy.
@@ -54,14 +54,37 @@ public interface Accountancy {
 	Streamable<AccountancyEntry> findAll();
 
 	/**
+	 * Returns all {@link AccountancyEntry} instances of the given types, and the given types only. This means the asking
+	 * for intermediate types in an inheritance hierarchy is not sufficient. All leaf types of the hierarchy would have to
+	 * be passed in.
+	 *
+	 * @param <T> the concrete subtype of {@link AccountancyEntry}.
+	 * @param type must not be {@literal null}.
+	 * @return will never be {@literal null}.
+	 * @since 9.0
+	 */
+	<T extends AccountancyEntry> Streamable<T> findAll(Class<T> type);
+
+	/**
 	 * Returns the {@link AccountancyEntry} identified by the given {@link AccountancyEntryIdentifier}, if it exists.
 	 *
-	 * @param accountancyEntryIdentifier the {@link AccountancyEntryIdentifier} of the entry to be returned, must not be
-	 *            {@literal null}.
-	 * @return an {@code Optional} with a matching {@link AccountancyEntry}, or an empty {@code Optional} if no match
-	 *         was found.
+	 * @param identifier the {@link AccountancyEntryIdentifier} of the entry to be returned, must not be {@literal null}.
+	 * @return an {@code Optional} with a matching {@link AccountancyEntry}, or an empty {@code Optional} if no match was
+	 *         found.
 	 */
-	Optional<AccountancyEntry> get(AccountancyEntryIdentifier accountancyEntryIdentifier);
+	Optional<AccountancyEntry> get(AccountancyEntryIdentifier identifier);
+
+	/**
+	 * Returns the {@link AccountancyEntry} identified by the given {@link AccountancyEntryIdentifier} of the given type,
+	 * if it exists.
+	 *
+	 * @param identifier the {@link AccountancyEntryIdentifier} of the entry to be returned, must not be {@literal null}.
+	 * @param type the concrete {@link AccountancyEntry} type, must not be {@literal null}.
+	 * @return an {@code Optional} with a matching {@link AccountancyEntry}, or an empty {@code Optional} if no match was
+	 *         found.
+	 * @since 9.0
+	 */
+	<T extends AccountancyEntry> Optional<T> get(AccountancyEntryIdentifier identifier, Class<T> type);
 
 	/**
 	 * Returns all {@link AccountancyEntry}s that have a {@code date} within the given {@link Interval}.
@@ -72,10 +95,21 @@ public interface Accountancy {
 	Streamable<AccountancyEntry> find(Interval interval);
 
 	/**
+	 * Returns all {@link AccountancyEntry}s of the given type for the given {@link Interval}.
+	 *
+	 * @param <T>
+	 * @param interval must not be {@literal null}.
+	 * @param type must not be {@literal null}.
+	 * @return will never be {@literal null}.
+	 * @since 9.0
+	 */
+	<T extends AccountancyEntry> Streamable<T> find(Interval interval, Class<T> type);
+
+	/**
 	 * Returns all {@link AccountancyEntry}s within the given interval, grouped by sub-intervals of the given duration.
 	 * These sub-intervals are used as the keys of the returned {@link Map}. Note that the last sub-interval may be
 	 * shorter than the given {@code duration}.
-	 * 
+	 *
 	 * @param interval the interval within which we want to find {@link AccountancyEntry}s, must not be {@literal null}.
 	 * @param duration the duration of the sub-intervals, must not be {@literal null}.
 	 * @return a {@link Map} containing a {@link Streamable} with zero or more {@link AccountancyEntry}s for each
@@ -84,15 +118,30 @@ public interface Accountancy {
 	Map<Interval, Streamable<AccountancyEntry>> find(Interval interval, TemporalAmount duration);
 
 	/**
-	 * Computes the sales volume, i.e., the sum of {@link AccountancyEntry#getValue()}, for all
-	 * {@link AccountancyEntry}s within the given interval, grouped by sub-intervals of the given duration. If a
-	 * sub-interval doesn't contain an {@link AccountancyEntry}, its sales volume is zero. Note that the last
+	 * Returns all {@link AccountancyEntry}s of the given type within the given interval, grouped by sub-intervals of the
+	 * given duration. These sub-intervals are used as the keys of the returned {@link Map}. Note that the last
 	 * sub-interval may be shorter than the given {@code duration}.
-	 * 
+	 *
+	 * @param interval the interval within which we want to find {@link AccountancyEntry}s, must not be {@literal null}.
+	 * @param duration the duration of the sub-intervals, must not be {@literal null}.
+	 * @param type
+	 * @return a {@link Map} containing a {@link Streamable} with zero or more {@link AccountancyEntry}s for each
+	 *         sub-interval.
+	 * @since 9.0
+	 */
+	<T extends AccountancyEntry> Map<Interval, Streamable<T>> find(Interval interval, TemporalAmount duration,
+			Class<T> type);
+
+	/**
+	 * Computes the sales volume, i.e., the sum of {@link AccountancyEntry#getValue()}, for all {@link AccountancyEntry}s
+	 * within the given interval, grouped by sub-intervals of the given duration. If a sub-interval doesn't contain an
+	 * {@link AccountancyEntry}, its sales volume is zero. Note that the last sub-interval may be shorter than the given
+	 * {@code duration}.
+	 *
 	 * @param interval the interval within which we want to find {@link AccountancyEntry}s, must not be {@literal null}.
 	 * @param duration the duration of the sub-intervals that are used to group the summation, must not be
-	 *            {@literal null}.
-	 * @return a {@link Map} containing the summated {@link MonetaryAmount} for each sub-interval.
+	 *          {@literal null}.
+	 * @return a {@link Map} containing the summed up {@link MonetaryAmount} for each sub-interval.
 	 */
 	Map<Interval, MonetaryAmount> salesVolume(Interval interval, TemporalAmount duration);
 }

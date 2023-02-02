@@ -25,6 +25,7 @@ import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
+import org.salespointframework.accountancy.AccountancyRepositoryTests.CustomAccountancyEntry;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderEvents.OrderCanceled;
 import org.salespointframework.order.OrderEvents.OrderPaid;
@@ -76,5 +77,18 @@ class AccountancyOrderEventListenerTests extends AbstractIntegrationTests {
 				.map(AccountancyEntry::getValue) //
 				.reduce(ZERO_EURO, MonetaryAmount::add)//
 		).isEqualTo(ZERO_EURO);
+	}
+
+	@Test // GH-314
+	void processesCancellationEvenIfCustomAccountancyEntryIsPresent() {
+
+		var before = accountancy.findAll().toList().size();
+
+		accountancy.add(new CustomAccountancyEntry(Money.of(50, EURO)));
+
+		listener.on(OrderPaid.of(order));
+		listener.on(OrderCanceled.of(order, "Testing"));
+
+		assertThat(accountancy.findAll()).hasSize(before + 3);
 	}
 }

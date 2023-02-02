@@ -41,20 +41,18 @@ class AccountancyPeriodTests extends AbstractIntegrationTests {
 
 		var userAccountIdentifier = UserAccountIdentifier.of("username");
 		var orderIdentifier = new Order(userAccountIdentifier).getId();
-
-		Money oneEuro = Money.of(1, Currencies.EURO);
+		var oneEuro = Money.of(1, Currencies.EURO);
 
 		for (int i = 0; i < 20; i++) {
 
-			ProductPaymentEntry p = new ProductPaymentEntry(orderIdentifier, userAccountIdentifier, oneEuro, "Rechnung nr. 3",
-					Cash.CASH);
-			accountancy.add(p);
+			var entry = accountancy
+					.add(new OrderPaymentEntry(orderIdentifier, userAccountIdentifier, oneEuro, "Rechnung nr. 3", Cash.CASH));
 
 			if (i == 5) {
-				from = p.getDate().get();
+				from = entry.getDate().get();
 			}
 			if (i == 15) {
-				to = p.getDate().get();
+				to = entry.getDate().get();
 			}
 		}
 	}

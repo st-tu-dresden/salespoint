@@ -36,7 +36,7 @@ import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.util.Assert;
 
 /**
- * A {@link ProductPaymentEntry} is used to store information of payments of orders.
+ * A {@link OrderPaymentEntry} is used to store information of payments of orders.
  *
  * @author Hannes Weisbach
  * @author Thomas Dedek
@@ -46,46 +46,57 @@ import org.springframework.util.Assert;
 @Getter
 @ToString(callSuper = true)
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-public class ProductPaymentEntry extends AccountancyEntry {
+public class OrderPaymentEntry extends AccountancyEntry {
 
 	/**
-	 * The {@link OrderIdentifier} which this {@link ProductPaymentEntry} refers to.
+	 * The {@link OrderIdentifier} which this {@link OrderPaymentEntry} refers to.
 	 */
 	@Embedded //
 	@AttributeOverride(name = "id", column = @Column(name = "ORDER_ID", nullable = true)) //
 	private OrderIdentifier orderIdentifier;
 
 	/**
-	 * The identifier of the {@link UserAccount} which this {@link ProductPaymentEntry} refers to.
+	 * The identifier of the {@link UserAccount} which this {@link OrderPaymentEntry} refers to.
 	 */
 	private UserAccountIdentifier userAccountIdentifier;
 
 	/**
-	 * The {@link PaymentMethod} chosen for the order belonging to this <code>ProductPaymentEntry</code>
+	 * The {@link PaymentMethod} chosen for the order belonging to this {@link OrderPaymentEntry}.
 	 */
 	private @Lob PaymentMethod paymentMethod;
 
-	public static ProductPaymentEntry of(Order order, String description) {
-		return new ProductPaymentEntry(order.getId(), order.getUserAccountIdentifier(), order.getTotal(), description,
+	/**
+	 * Creates a new {@link OrderPaymentEntry} for the given {@link Order} and description.
+	 *
+	 * @param order must not be {@literal null}.
+	 * @param description must not be {@literal null}.
+	 * @return will never be {@literal null}.
+	 */
+	public static OrderPaymentEntry of(Order order, String description) {
+
+		Assert.notNull(order, "Order must not be null!");
+		Assert.notNull(description, "Description must not be null!");
+
+		return new OrderPaymentEntry(order.getId(), order.getUserAccountIdentifier(), order.getTotal(), description,
 				order.getPaymentMethod());
 	}
 
 	/**
-	 * Creates a new {@link ProductPaymentEntry} that rolls back the payment for the given {@link Order}.
+	 * Creates a new {@link OrderPaymentEntry} that rolls back the payment for the given {@link Order}.
 	 *
 	 * @param order must not be {@literal null}.
 	 * @param description must not be {@literal null}.
-	 * @return
+	 * @return will never be {@literal null}.
 	 * @since 7.1
 	 */
-	public static ProductPaymentEntry rollback(Order order, String description) {
+	public static OrderPaymentEntry rollback(Order order, String description) {
 
 		Assert.notNull(order, "Order must not be null!");
 		Assert.notNull(description, "Description must not be null!");
 
 		MonetaryAmount amount = Currencies.ZERO_EURO.subtract(order.getTotal());
 
-		return new ProductPaymentEntry(order.getId(), order.getUserAccountIdentifier(), amount, description,
+		return new OrderPaymentEntry(order.getId(), order.getUserAccountIdentifier(), amount, description,
 				order.getPaymentMethod());
 	}
 
@@ -93,17 +104,16 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	 * A {@code ProductPaymentEntry} is constructed for a specific {@link OrderIdentifier} attached to it. This entry
 	 * saves also the {@link UserAccountIdentifier} and the specified amount that was paid.
 	 *
-	 * @param orderIdentifier the {@link OrderIdentifier} to which this {@link ProductPaymentEntry} will refer to, must
-	 *          not be {@literal null}.
-	 * @param userAccountIdentifier the identifier of the {@link UserAccount} this {@link ProductPaymentEntry} will refer
+	 * @param orderIdentifier the {@link OrderIdentifier} to which this {@link OrderPaymentEntry} will refer to, must not
+	 *          be {@literal null}.
+	 * @param userAccountIdentifier the identifier of the {@link UserAccount} this {@link OrderPaymentEntry} will refer
 	 *          to, must not be {@literal null}.
 	 * @param amount the {@link MonetaryAmount} that was paid, must not be {@literal null}.
 	 * @param description textual description of the payment entry, must not be {@literal null}.
 	 * @param paymentMethod must not be {@literal null}.
 	 */
-	public ProductPaymentEntry(OrderIdentifier orderIdentifier, UserAccountIdentifier userAccountIdentifier,
-			MonetaryAmount amount,
-			String description, PaymentMethod paymentMethod) {
+	public OrderPaymentEntry(OrderIdentifier orderIdentifier, UserAccountIdentifier userAccountIdentifier,
+			MonetaryAmount amount, String description, PaymentMethod paymentMethod) {
 
 		super(amount, description);
 
@@ -117,10 +127,10 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	}
 
 	/**
-	 * Returns whether the {@link ProductPaymentEntry} belongs to the given {@link Order}.
+	 * Returns whether the {@link OrderPaymentEntry} belongs to the given {@link Order}.
 	 *
 	 * @param order must not be {@literal null}.
-	 * @return
+	 * @return whether the {@link OrderPaymentEntry} belongs to the given {@link Order}.
 	 */
 	public boolean belongsTo(Order order) {
 

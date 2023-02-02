@@ -27,7 +27,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 /**
- * An {@link ApplicationListener} for {@link OrderCompleted} events to create {@link ProductPaymentEntry} for the
+ * An {@link ApplicationListener} for {@link OrderCompleted} events to create {@link OrderPaymentEntry} for the
  * {@link Order}.
  *
  * @author Oliver Gierke
@@ -39,20 +39,20 @@ public class AccountancyOrderEventListener {
 	private final @NonNull Accountancy accountancy;
 
 	/**
-	 * Creates a new revenue {@link ProductPaymentEntry} for the order that has been paid.
+	 * Creates a new revenue {@link OrderPaymentEntry} for the order that has been paid.
 	 *
 	 * @param event must not be {@literal null}.
 	 */
 	@EventListener
 	public void on(OrderPaid event) {
 
-		Order order = event.getOrder();
+		var order = event.getOrder();
 
-		accountancy.add(ProductPaymentEntry.of(order, String.format("Rechnung Nr. %s", order.getId())));
+		accountancy.add(OrderPaymentEntry.of(order, String.format("Rechnung Nr. %s", order.getId())));
 	}
 
 	/**
-	 * Creates a counter {@link ProductPaymentEntry} for the order that is canceled if there's a revenue entry for the
+	 * Creates a counter {@link OrderPaymentEntry} for the order that is canceled if there's a revenue entry for the
 	 * given order already, i.e. the order has been paid before.
 	 *
 	 * @param event must not be {@literal null}.
@@ -61,13 +61,12 @@ public class AccountancyOrderEventListener {
 	@EventListener
 	public void on(OrderCanceled event) {
 
-		Order order = event.getOrder();
+		var order = event.getOrder();
 
-		if (accountancy.findAll().stream() //
-				.map(ProductPaymentEntry.class::cast) //
+		if (accountancy.findAll(OrderPaymentEntry.class).stream() //
 				.anyMatch(it -> it.belongsTo(order) && it.isRevenue())) {
 
-			accountancy.add(ProductPaymentEntry.rollback(order,
+			accountancy.add(OrderPaymentEntry.rollback(order,
 					String.format("Order %s canceled! Reason: %s.", order.getId(), event.getReason())));
 		}
 	}

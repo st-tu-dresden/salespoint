@@ -79,8 +79,25 @@ class PersistentAccountancy implements Accountancy {
 	@Override
 	public final Optional<AccountancyEntry> get(AccountancyEntryIdentifier accountancyEntryIdentifier) {
 
-		Assert.notNull(accountancyEntryIdentifier, "Account entry identifier must not be null!");
+		Assert.notNull(accountancyEntryIdentifier, "Accountancy entry identifier must not be null!");
+
 		return repository.findById(accountancyEntryIdentifier);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.accountancy.Accountancy#get(org.salespointframework.accountancy.AccountancyEntry.AccountancyEntryIdentifier, java.lang.Class)
+	 */
+	@Override
+	public <T extends AccountancyEntry> Optional<T> get(AccountancyEntryIdentifier accountancyEntryIdentifier,
+			Class<T> accountancyEntryType) {
+
+		Assert.notNull(accountancyEntryIdentifier, "Accountancy entry identifier must not be null!");
+		Assert.notNull(accountancyEntryType, "Accountancy entry type must not be null!");
+
+		return get(accountancyEntryIdentifier)
+				.filter(accountancyEntryType::isInstance)
+				.map(accountancyEntryType::cast);
 	}
 
 	/*
@@ -94,6 +111,18 @@ class PersistentAccountancy implements Accountancy {
 
 	/*
 	 * (non-Javadoc)
+	 * @see org.salespointframework.accountancy.Accountancy#findAll(java.lang.Class[])
+	 */
+	@Override
+	public <T extends AccountancyEntry> Streamable<T> findAll(Class<T> accountancyEntryType) {
+
+		Assert.notNull(accountancyEntryType, "Accountancy entry type must not be null!");
+
+		return repository.findAll(accountancyEntryType);
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see org.salespointframework.accountancy.Accountancy#find(java.time.LocalDateTime, java.time.LocalDateTime)
 	 */
 	@Override
@@ -101,7 +130,20 @@ class PersistentAccountancy implements Accountancy {
 
 		Assert.notNull(interval, "Interval must not be null!");
 
-		return repository.findByDateIn(interval);
+		return find(interval, AccountancyEntry.class);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.accountancy.Accountancy#find(org.salespointframework.time.Interval, java.lang.Class)
+	 */
+	@Override
+	public <T extends AccountancyEntry> Streamable<T> find(Interval interval, Class<T> accountancyEntryType) {
+
+		Assert.notNull(interval, "Interval must not be null!");
+		Assert.notNull(accountancyEntryType, "Accountancy entry type must not be null!");
+
+		return repository.findByDateIn(interval, accountancyEntryType);
 	}
 
 	/*
@@ -110,12 +152,23 @@ class PersistentAccountancy implements Accountancy {
 	 */
 	@Override
 	public final Map<Interval, Streamable<AccountancyEntry>> find(Interval interval, TemporalAmount duration) {
+		return find(interval, duration, AccountancyEntry.class);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.accountancy.Accountancy#find(org.salespointframework.time.Interval, java.time.temporal.TemporalAmount, java.lang.Class)
+	 */
+	@Override
+	public <T extends AccountancyEntry> Map<Interval, Streamable<T>> find(Interval interval, TemporalAmount duration,
+			Class<T> accountancyEntryType) {
 
 		Assert.notNull(interval, "Interval must not be null");
 		Assert.notNull(duration, "TemporalAmount must not be null");
+		Assert.notNull(accountancyEntryType, "Accountancy entry type must not be null!");
 
 		return Intervals.divide(interval, duration).stream() //
-				.collect(toMap(identity(), this::find));
+				.collect(toMap(identity(), it -> find(interval, accountancyEntryType)));
 	}
 
 	/*
