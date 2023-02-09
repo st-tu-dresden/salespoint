@@ -38,7 +38,7 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.core.AbstractAggregateRoot;
 import org.salespointframework.order.ChargeLine.AttachedChargeLine;
 import org.salespointframework.order.Order.OrderIdentifier;
-import org.salespointframework.order.OrderEvents.OrderCancelled;
+import org.salespointframework.order.OrderEvents.OrderCanceled;
 import org.salespointframework.order.OrderEvents.OrderCompleted;
 import org.salespointframework.order.OrderEvents.OrderPaid;
 import org.salespointframework.payment.PaymentMethod;
@@ -393,12 +393,12 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	}
 
 	/**
-	 * Convenience method for checking if an order has the status CANCELLED
+	 * Convenience method for checking if an order has the status CANCELED
 	 *
-	 * @return true if OrderStatus is CANCELLED, otherwise false
+	 * @return true if OrderStatus is CANCELED, otherwise false
 	 */
-	public boolean isCancelled() {
-		return orderStatus == OrderStatus.CANCELLED;
+	public boolean isCanceled() {
+		return orderStatus == OrderStatus.CANCELED;
 	}
 
 	/**
@@ -454,22 +454,22 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	}
 
 	/**
-	 * Cancels the current {@link Order} with the given reason. Will publish an {@link OrderCancelled} even
+	 * Cancels the current {@link Order} with the given reason. Will publish an {@link OrderCanceled} even
 	 *
 	 * @param reason must not be {@literal null}.
 	 * @return
 	 */
 	Order cancel(String reason) {
 
-		Assert.isTrue(!isCancelled(), "Order is already cancelled!");
+		Assert.isTrue(!isCanceled(), "Order is already canceled!");
 
 		if (!isCompleted()) {
 			registerEvent(OrderCompleted.of(this));
 		}
 
-		this.orderStatus = OrderStatus.CANCELLED;
+		this.orderStatus = OrderStatus.CANCELED;
 
-		registerEvent(OrderCancelled.of(this, reason));
+		registerEvent(OrderCanceled.of(this, reason));
 
 		return this;
 	}

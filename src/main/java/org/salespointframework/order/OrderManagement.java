@@ -18,7 +18,7 @@ package org.salespointframework.order;
 import java.util.Optional;
 
 import org.salespointframework.order.Order.OrderIdentifier;
-import org.salespointframework.order.OrderEvents.OrderCancelled;
+import org.salespointframework.order.OrderEvents.OrderCanceled;
 import org.salespointframework.order.OrderEvents.OrderCompleted;
 import org.salespointframework.order.OrderEvents.OrderPaid;
 import org.salespointframework.payment.PaymentMethod;
@@ -124,10 +124,10 @@ public interface OrderManagement<T extends Order> {
 	/**
 	 * Cancels an {@link Order}, no matter what state it is in.
 	 *
-	 * @param order the order to be cancelled, must not be {@literal null}.
-	 * @param reason the reason the order was cancelled.
-	 * @return true if the order could be cancelled
-	 * @see OrderCancelled
+	 * @param order the order to be canceled, must not be {@literal null}.
+	 * @param reason the reason the order was canceled.
+	 * @return true if the order could be canceled
+	 * @see OrderCanceled
 	 */
 	boolean cancelOrder(T order, String reason);
 

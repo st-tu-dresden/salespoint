@@ -26,7 +26,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.order.Order;
-import org.salespointframework.order.OrderEvents.OrderCancelled;
+import org.salespointframework.order.OrderEvents.OrderCanceled;
 import org.salespointframework.order.OrderEvents.OrderPaid;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
@@ -70,7 +70,7 @@ class AccountancyOrderEventListenerTests extends AbstractIntegrationTests {
 	void createsRollingBackEntryOnOrderCancellation() {
 
 		listener.on(OrderPaid.of(order));
-		listener.on(OrderCancelled.of(order, "Testing"));
+		listener.on(OrderCanceled.of(order, "Testing"));
 
 		var entries = accountancy.findAll();
 

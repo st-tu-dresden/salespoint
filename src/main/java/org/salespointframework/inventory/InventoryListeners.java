@@ -23,7 +23,7 @@ import org.salespointframework.inventory.InventoryEvents.QuantityReduced;
 import org.salespointframework.inventory.InventoryEvents.StockShort;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderCompletionFailure;
-import org.salespointframework.order.OrderEvents.OrderCancelled;
+import org.salespointframework.order.OrderEvents.OrderCanceled;
 import org.salespointframework.order.OrderEvents.OrderCompleted;
 import org.salespointframework.order.OrderLine;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -98,8 +98,8 @@ class InventoryListeners {
 		 * @param event must not be {@literal null}.
 		 */
 		@EventListener
-		public void on(OrderCancelled event) {
-			management.updateStockForCancelledOrder(event.getOrder());
+		public void on(OrderCanceled event) {
+			management.updateStockForCanceledOrder(event.getOrder());
 		}
 	}
 }

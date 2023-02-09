@@ -37,7 +37,7 @@ State transistions are automatically carried out when certain methods are called
 
 
 As you can see in Figure \ref{order_statemachine}, a PersistentOrder can only be modified in state \code{OPEN}.
-\code{PAYED}, \code{CANCELLED} and \code{COMPLETED} \code{Orders} are immutable.
+\code{PAYED}, \code{CANCELED} and \code{COMPLETED} \code{Orders} are immutable.
 Calling the \code{payOrder()} method changes the state and calls the accountancy to create a \code{ProductPaymentEntry}
 Ordered objects will only be removed from inventory when the \code{completeOrder()} method is called.  
 \code{COMPLETED} is one of the final states and it is not possible to change the state of such orders.

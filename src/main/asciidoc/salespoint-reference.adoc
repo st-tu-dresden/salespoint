@@ -303,7 +303,7 @@ include::{source-base-test}/inventory/InventoryOrderEventListenerTests.java[tags
 
 A declaration like this will cause only `OrderLine` instances pointing to `Product` instance with a matching name to be subject for reduction in the inventory.
 
-On `OrderCancelled` the `Inventory` will restock if the `Order` has already been completed.
+On `OrderCanceled` the `Inventory` will restock if the `Order` has already been completed.
 See link:{javadoc}/org/salespointframework/inventory/InventoryOrderEventListener.html[the Javadoc of the event listener] for details.
 
 [[modules.accountancy]]
@@ -329,7 +329,7 @@ To create a new account, `AccountancyEntry` has to be sub-classed. Every object 
 === Handling OrderPaid events
 
 The accountancy subsystem handles `OrderPaid` events by creating a `ProductPaymentEntry` for the order.
-Reversely, it will create a compensating `ProductPaymentEntry` on `OrderCancelled` if theres a revenue `ProductPaymentEntry` available for `Order`.
+Reversely, it will create a compensating `ProductPaymentEntry` on `OrderCanceled` if theres a revenue `ProductPaymentEntry` available for `Order`.
 See link:{javadoc}/org/salespointframework/accountancy/AccountancyOrderEventListener.html[the Javadoc of the event listener] for details.
 
 [[modules.payment]]
@@ -411,11 +411,11 @@ hide empty description
 
 [*] -> Open
 Open -> Paid : markPaid()
-Open -> Cancelled : cancel(…)
-Paid -> Cancelled : cancel(…)
+Open -> Canceled : cancel(…)
+Paid -> Canceled : cancel(…)
 Paid -> Completed : complete()
-Completed --> Cancelled : cancel()
-Cancelled -right-> [*]
+Completed --> Canceled : cancel()
+Canceled -right-> [*]
 Completed --> [*]
 ....
 
@@ -427,7 +427,7 @@ Currently, the following events are exposed:
 * `OrderCompleted` -- the event being thrown when the `Order` is about to be completed, usually through a call to `OrderManagement.completeOrder(…)`.
 The <<modules.inventory>> module ships with a listener for the `OrderCompleted` event to update the inventory and reduce the stock of ordered items.
 See <<modules.inventory.events>> for details.
-* `OrderCancelled` -- the event being thrown when an `Order` was cancelled, usually through `OrderManagement.cancelOrder(…)`. <<modules.accountancy>> will react by creating a new `AccountancyEntry` that compensates for the revenue entry created for the `OrderPaid` event. <<modules.inventory>> will restore the previously subtracted stock if the order had been cancelled already.
+* `OrderCanceled` -- the event being thrown when an `Order` was canceled, usually through `OrderManagement.cancelOrder(…)`. <<modules.accountancy>> will react by creating a new `AccountancyEntry` that compensates for the revenue entry created for the `OrderPaid` event. <<modules.inventory>> will restore the previously subtracted stock if the order had been canceled already.
 
 [[modules.order.handling-events]]
 ==== Handling events
@@ -456,7 +456,7 @@ class MyEventListener {
 
 The difference between the two methods is when they're actually invoked by the framework.
 The former method is called before the changes to the database are eventually persisted to the database.
-That means, the event listener can throw an exception and the action that caused the event to be published in the first place will be cancelled, too.
+That means, the event listener can throw an exception and the action that caused the event to be published in the first place will be canceled, too.
 On the other hand an `@EventListener` will not be guaranteed that the original action will succeed as it might be rejected if it violates e.g. database constraints.
 In contrast, a `@TransactionalEventListener` will be called after the original action has completed successfully.
 That in turn means, that the listener has no chance to abort that action.
@@ -778,9 +778,9 @@ https://github.com/st-tu-dresden/salespoint/issues/222[#222] -- Added the abilit
 https://github.com/st-tu-dresden/salespoint/issues/226[#226] -- We added the ability to register `ChargeLine` instances for a dedicated `OrderLine`.
 Read more about that in the updated section of <<modules.order>>.
 
-==== New order cancelled event and fixes in event handling in general
+==== New order canceled event and fixes in event handling in general
 https://github.com/st-tu-dresden/salespoint/issues/230[#230] -- The creation of a `PaymentAccountancyEntry` has been properly attached to the `OrderPaid` event now.
-An `OrderCancelled` event is now published on order cancellation which triggers a rollback of the inventory updates as well as a compensating `ProductPaymentEntry`.
+An `OrderCanceled` event is now published on order cancellation which triggers a rollback of the inventory updates as well as a compensating `ProductPaymentEntry`.
 Read more on that in the updated section <<modules.order.lifecycle>>.
 
 [[new-and-noteworthy.whats-new-in-6.1]]

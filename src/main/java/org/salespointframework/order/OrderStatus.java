@@ -22,5 +22,5 @@ package org.salespointframework.order;
 @SuppressWarnings("javadoc")
 public enum OrderStatus {
 
-	OPEN, PAID, COMPLETED, CANCELLED;
+	OPEN, PAID, COMPLETED, CANCELED;
 }

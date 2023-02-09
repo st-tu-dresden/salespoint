@@ -19,7 +19,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import org.salespointframework.order.Order;
-import org.salespointframework.order.OrderEvents.OrderCancelled;
+import org.salespointframework.order.OrderEvents.OrderCanceled;
 import org.salespointframework.order.OrderEvents.OrderCompleted;
 import org.salespointframework.order.OrderEvents.OrderPaid;
 import org.springframework.context.ApplicationListener;
@@ -52,14 +52,14 @@ public class AccountancyOrderEventListener {
 	}
 
 	/**
-	 * Creates a counter {@link ProductPaymentEntry} for the order that is cancelled if there's a revenue entry for the
+	 * Creates a counter {@link ProductPaymentEntry} for the order that is canceled if there's a revenue entry for the
 	 * given order already, i.e. the order has been paid before.
 	 *
 	 * @param event must not be {@literal null}.
 	 * @since 7.1
 	 */
 	@EventListener
-	public void on(OrderCancelled event) {
+	public void on(OrderCanceled event) {
 
 		Order order = event.getOrder();
 
@@ -68,7 +68,7 @@ public class AccountancyOrderEventListener {
 				.anyMatch(it -> it.belongsTo(order) && it.isRevenue())) {
 
 			accountancy.add(ProductPaymentEntry.rollback(order,
-					String.format("Order %s cancelled! Reason: %s.", order.getId(), event.getReason())));
+					String.format("Order %s canceled! Reason: %s.", order.getId(), event.getReason())));
 		}
 	}
 }

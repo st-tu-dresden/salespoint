@@ -49,7 +49,7 @@ In other words: a shoe has a size - exactly one size.
 %\item \code{IllegalArgumentException}: If the \code{Service} begin before the period of \code{ServiceType} has begun.
 %\item \code{IllegalArgumentException}: If the \code{ServiceType} end after the period of \code{ServiceType} was finished.
 %\end{itemize}
-%Also you can cancelled the \code{PersistentService} with the method \code{public void cancelServiceInstance()} and so the end time is now and you can get the 
+%Also you can canceled the \code{PersistentService} with the method \code{public void cancelServiceInstance()} and so the end time is now and you can get the 
 %\code{ServiceDeliveryStatus} of the \code{PersistentService} at every time.
 %  
 %\subsection{\code{ServiceDeliveryStatus}}
@@ -57,8 +57,8 @@ In other words: a shoe has a size - exactly one size.
 %\begin{itemize}
 %\item \code{SCHEDULED}: If the start of the \code{Service} is in the future.
 %\item \code{EXECUTING}: If the \code{Service} is executing now.
-%\item \code{CANCELLED}: If the \code{Service} was cancelled.
-%\item \code{COMPLETED}: If the \code{Service} is completed, so the end of the \code{Service} is in the past and it wasn't cancelled.
+%\item \code{CANCELED}: If the \code{Service} was canceled.
+%\item \code{COMPLETED}: If the \code{Service} is completed, so the end of the \code{Service} is in the past and it wasn't canceled.
 %\end{itemize}
 
 %TODO collapse Product with MeasuredProduct and be done with it.

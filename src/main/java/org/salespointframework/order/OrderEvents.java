@@ -57,7 +57,7 @@ public class OrderEvents {
 	}
 
 	@Value(staticConstructor = "of")
-	public static class OrderCancelled implements DomainEvent {
+	public static class OrderCanceled implements DomainEvent {
 
 		Order order;
 		String reason;
@@ -68,7 +68,7 @@ public class OrderEvents {
 		 */
 		@Override
 		public String toString() {
-			return "OrderCancelled: " + reason;
+			return "OrderCanceled: " + reason;
 		}
 	}
 }
