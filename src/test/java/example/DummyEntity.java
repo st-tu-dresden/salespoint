@@ -15,6 +15,8 @@
  */
 package example;
 
+import org.salespointframework.time.Interval;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -26,4 +28,5 @@ import jakarta.persistence.Id;
 class DummyEntity {
 
 	@Id @GeneratedValue Long id;
+	Interval interval;
 }

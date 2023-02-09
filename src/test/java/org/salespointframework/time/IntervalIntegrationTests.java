@@ -69,6 +69,6 @@ class IntervalIntegrationTests {
 	static class SomeEntity {
 
 		@Id @GeneratedValue Long id;
-		@Embedded Interval interval;
+		Interval interval;
 	}
 }

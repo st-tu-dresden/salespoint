@@ -27,6 +27,8 @@ import java.time.temporal.TemporalAmount;
 
 import org.springframework.util.Assert;
 
+import jakarta.persistence.Embeddable;
+
 /**
  * Simple value object to represent time intervals. Note that whether the endpoints are included
  * or not can vary between the offered methods.
@@ -34,6 +36,7 @@ import org.springframework.util.Assert;
  * @author Oliver Drotbohm
  * @author Martin Morgenstern
  */
+@Embeddable
 @Value
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public final class Interval {
