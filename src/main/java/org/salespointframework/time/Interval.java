@@ -15,6 +15,7 @@
  */
 package org.salespointframework.time;
 
+import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -33,7 +34,9 @@ import org.springframework.util.Assert;
  * 
  * @author Oliver Drotbohm
  * @author Martin Morgenstern
+ * @author Rebecca Uecker
  */
+@Embeddable
 @Value
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public final class Interval {
@@ -50,7 +53,7 @@ public final class Interval {
 
 	/**
 	 * Creates a new {@link Interval} between the given start and end.
-	 * 
+	 *
 	 * @param start must not be {@literal null}.
 	 * @param end must not be {@literal null}.
 	 */
@@ -66,7 +69,7 @@ public final class Interval {
 
 	/**
 	 * Starts building a new {@link Interval} with the given start time.
-	 * 
+	 *
 	 * @param start must not be {@literal null}.
 	 * @return will never be {@literal null}.
 	 */
@@ -76,7 +79,7 @@ public final class Interval {
 
 	/**
 	 * Returns the duration of the interval, with the end excluded.
-	 * 
+	 *
 	 * @return will never be {@literal null}.
 	 */
 	public Duration getDuration() {
@@ -84,9 +87,9 @@ public final class Interval {
 	}
 
 	/**
-	 * Returns whether the given {@link LocalDateTime} is contained in the current {@link Interval}.
-	 * The comparison includes start and end, i.e., the method treats this interval as closed.
-	 * 
+	 * Returns whether the given {@link LocalDateTime} is contained in the current {@link Interval}. The comparison
+	 * includes start and end, i.e., the method treats this interval as closed.
+	 *
 	 * @param reference must not be {@literal null}.
 	 * @return
 	 */
@@ -101,9 +104,9 @@ public final class Interval {
 	}
 
 	/**
-	 * Returns whether the current {@link Interval} overlaps with the given one. The
-	 * comparison excludes start and end, i.e., the method treats both intervals as open.
-	 * 
+	 * Returns whether the current {@link Interval} overlaps with the given one. The comparison excludes start and end,
+	 * i.e., the method treats both intervals as open.
+	 *
 	 * @param reference must not be {@literal null}.
 	 * @return
 	 */
@@ -118,16 +121,15 @@ public final class Interval {
 	}
 
 	/**
-	 * Returns the {@link Duration} represented by the given {@link Interval}, with the
-	 * end excluded.
-	 * 
+	 * Returns the {@link Duration} represented by the given {@link Interval}, with the end excluded.
+	 *
 	 * @return
 	 */
 	public Duration toDuration() {
 		return Duration.between(start, end);
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -143,7 +145,7 @@ public final class Interval {
 
 		/**
 		 * Creates an {@link Interval} from the current start time until the given end time.
-		 * 
+		 *
 		 * @param end must not be {@literal null} and after the current start time or equal to it.
 		 * @return will never be {@literal null}.
 		 */
@@ -153,7 +155,7 @@ public final class Interval {
 
 		/**
 		 * Creates a new {@link Interval} from the current start time adding the given {@link TemporalAmount} to it.
-		 * 
+		 *
 		 * @param amount must not be {@literal null}.
 		 * @return will never be {@literal null}.
 		 * @see Duration

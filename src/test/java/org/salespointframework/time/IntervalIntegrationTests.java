@@ -17,7 +17,6 @@ package org.salespointframework.time;
 
 import static org.assertj.core.api.Assertions.*;
 
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.GeneratedValue;
@@ -37,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for {@link Interval}
  *
  * @author Oliver Gierke
+ * @author Rebecca Uecker
  */
 @Transactional
 @ApplicationModuleTest
@@ -69,6 +69,6 @@ class IntervalIntegrationTests {
 	static class SomeEntity {
 
 		@Id @GeneratedValue Long id;
-		@Embedded Interval interval;
+		Interval interval;
 	}
 }
