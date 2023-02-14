@@ -15,6 +15,8 @@
  */
 package org.salespointframework.accountancy;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.time.LocalDateTime;
 
 import org.javamoney.moneta.Money;
@@ -82,5 +84,12 @@ class AccountancyTests {
 
 		System.out.println("All entries:");
 		accountancy.find(Interval.from(from).to(to)).forEach(System.out::println);
+	}
+
+	@Test
+	void addExistingEntry() {
+		var existingEntry = new AccountancyEntry(Money.of(1.00, Currencies.EURO));
+		accountancy.add(existingEntry);
+		assertThrows(IllegalArgumentException.class, () -> accountancy.add(existingEntry), "Adding the same AccountancyEntry more than once should result in IllegalArgumentException!");
 	}
 }

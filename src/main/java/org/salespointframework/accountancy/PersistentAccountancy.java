@@ -45,6 +45,7 @@ import org.springframework.util.Assert;
  * @author Hannes Weisbach
  * @author Thomas Dedek
  * @author Oliver Gierke
+ * @author Rebecca Uecker
  */
 @Service
 @Transactional
@@ -62,6 +63,7 @@ class PersistentAccountancy implements Accountancy {
 	public final <T extends AccountancyEntry> T add(T accountancyEntry) {
 
 		Assert.notNull(accountancyEntry, "Accountancy entry must not be null!");
+		Assert.isTrue(!repository.existsById(accountancyEntry.getId()), "Accountancy entry must not exist in repository!");
 
 		if (!accountancyEntry.hasDate()) {
 			accountancyEntry.setDate(businessTime.getTime());
