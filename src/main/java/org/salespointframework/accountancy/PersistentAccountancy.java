@@ -63,7 +63,7 @@ class PersistentAccountancy implements Accountancy {
 	public final <T extends AccountancyEntry> T add(T accountancyEntry) {
 
 		Assert.notNull(accountancyEntry, "Accountancy entry must not be null!");
-		Assert.isTrue(!repository.existsById(accountancyEntry.getId()), "Accountancy entry must not exist in repository!");
+		Assert.isTrue(accountancyEntry.isNew(), "An already existing accountancy entry must not be added again!");
 
 		if (!accountancyEntry.hasDate()) {
 			accountancyEntry.setDate(businessTime.getTime());

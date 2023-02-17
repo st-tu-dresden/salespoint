@@ -15,7 +15,7 @@
  */
 package org.salespointframework.accountancy;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
 
@@ -33,6 +33,13 @@ import org.springframework.modulith.test.ApplicationModuleTest;
 import org.springframework.modulith.test.ApplicationModuleTest.BootstrapMode;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Integration tests for {@link Accountancy}.
+ *
+ * @author Paul Henke
+ * @author Oliver Drotbohm
+ * @author Rebecca Uecker
+ */
 @Transactional
 @ApplicationModuleTest(BootstrapMode.DIRECT_DEPENDENCIES)
 class AccountancyTests {
@@ -86,10 +93,13 @@ class AccountancyTests {
 		accountancy.find(Interval.from(from).to(to)).forEach(System.out::println);
 	}
 
-	@Test
-	void addExistingEntry() {
-		var existingEntry = new AccountancyEntry(Money.of(1.00, Currencies.EURO));
-		accountancy.add(existingEntry);
-		assertThrows(IllegalArgumentException.class, () -> accountancy.add(existingEntry), "Adding the same AccountancyEntry more than once should result in IllegalArgumentException!");
+	@Test // #412
+	void doesNotAddExistingEntry() {
+
+		var entry = accountancy.add(new AccountancyEntry(Money.of(1.00, Currencies.EURO)));
+
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> accountancy.add(entry))
+				.as("Adding an exitsing AccountancyEntry should result in IllegalArgumentException!");
 	}
 }
