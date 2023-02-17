@@ -39,7 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.modulith.model.ApplicationModules;
+import org.springframework.modulith.core.ApplicationModules;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 /**
