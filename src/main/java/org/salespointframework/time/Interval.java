@@ -29,9 +29,9 @@ import java.time.temporal.TemporalAmount;
 import org.springframework.util.Assert;
 
 /**
- * Simple value object to represent time intervals. Note that whether the endpoints are included
- * or not can vary between the offered methods.
- * 
+ * Simple value object to represent time intervals. Note that whether the endpoints are included or not can vary between
+ * the offered methods.
+ *
  * @author Oliver Drotbohm
  * @author Martin Morgenstern
  * @author Rebecca Uecker
