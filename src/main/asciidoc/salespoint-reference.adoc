@@ -93,12 +93,12 @@ The relationships are used as follows:
 * __listens to__ -- The module contains an event listener for events the target modules publishes. Implies a type dependency into the target module as well.
 * __depends on__ -- The module has a general type dependency to the target module, i.e. it uses the target module as library.
 
-plantuml::{generated-docs}/components.uml[,,format=svg,title="Salespoint component overview"]
+plantuml::{generated-docs}/components.puml[,,format=svg,title="Salespoint component overview"]
 
 [[modules.useraccount]]
 == User accounts
 
-plantuml::{generated-docs}/module-org.salespointframework.useraccount.uml[,,format=svg,title="User account component"]
+plantuml::{generated-docs}/module-org.salespointframework.useraccount.puml[,,format=svg,title="User account component"]
 include::{generated-docs}/module-org.salespointframework.useraccount.adoc[]
 
 ////
@@ -240,7 +240,7 @@ Furthermore, an object of type `Metric` has a description field, to explain the 
 [[modules.catalog]]
 == Catalog
 
-plantuml::{generated-docs}/module-org.salespointframework.catalog.uml[,,format=svg,title="Catalog component"]
+plantuml::{generated-docs}/module-org.salespointframework.catalog.puml[,,format=svg,title="Catalog component"]
 include::{generated-docs}/module-org.salespointframework.catalog.adoc[]
 
 Salespoint is intended as framework for point-of-sale applications. Items for sale are called products and represented by instances of the class `Product`. To represent different kinds of products, `Product` can be sub-classed. Products are managed by a `Catalog` implementation (see below). Products are identified using a `ProductIndentifier`.
@@ -256,7 +256,7 @@ image::catalog.png[title="Catalog"]
 [[modules.inventory]]
 == Inventory
 
-plantuml::{generated-docs}/module-org.salespointframework.inventory.uml[,,format=svg,title="Inventory component"]
+plantuml::{generated-docs}/module-org.salespointframework.inventory.puml[,,format=svg,title="Inventory component"]
 include::{generated-docs}/module-org.salespointframework.inventory.adoc[]
 
 The inventory package contains functionality to keep track of the amount of items we have for a given `Product` (see <<modules.catalog>> for details).
@@ -309,7 +309,7 @@ See link:{javadoc}/org/salespointframework/inventory/InventoryOrderEventListener
 [[modules.accountancy]]
 == Accountancy
 
-plantuml::{generated-docs}/module-org.salespointframework.accountancy.uml[,,format=svg,title="Accountancy component"]
+plantuml::{generated-docs}/module-org.salespointframework.accountancy.puml[,,format=svg,title="Accountancy component"]
 include::{generated-docs}/module-org.salespointframework.accountancy.adoc[]
 
 The accountancy package contains functionality supporting book keeping. `AccountancyEntry` is a representation of an accounting entry. `Accountancy` aggregates ``AccountancyEntry``s. Every `AccountancyEntry` is uniquely identified by an ``AccountancyEntryIdentifier``. `AccountancyEntry` extends `AbstractEntity` and serves as persistence entity, while `PersistentAccountancy` implements `Accountancy` and provides transparent access to the JPA layer. `AccountancyEntryIdentifier` is used as primary key attribute, when entities are stored in the database.
@@ -354,7 +354,7 @@ For the paying transaction, Salespoint provides some payment strategies.
 [[modules.order]]
 == Order management
 
-plantuml::{generated-docs}/module-org.salespointframework.order.uml[,,format=svg,title="Order component"]
+plantuml::{generated-docs}/module-org.salespointframework.order.puml[,,format=svg,title="Order component"]
 include::{generated-docs}/module-org.salespointframework.order.adoc[leveloffset=1]
 
 The order management is centered around the `Order` aggregate that aggregates link:{javadoc}/org/salespointframework/order/OrderLine.html[``OrderLine``]s and link:{javadoc}/org/salespointframework/order/ChargeLine.html[``ChargeLine``]s.
@@ -514,7 +514,7 @@ image::business-time.png[title="Business time"]
 [[modules.storage]]
 == Storage
 
-plantuml::{generated-docs}/module-org.salespointframework.storage.uml[,,format=svg,title="Storage component"]
+plantuml::{generated-docs}/module-org.salespointframework.storage.puml[,,format=svg,title="Storage component"]
 include::{generated-docs}/module-org.salespointframework.storage.adoc[]
 
 [[modules.extending-salespoint]]
