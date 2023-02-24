@@ -18,7 +18,7 @@
 		<dev>/dev</dev>
 		<java.version>17</java.version>
 		<jmolecules.version>2022.2.2</jmolecules.version>
-		<spring-modulith.version>0.3.0</spring-modulith.version>
+		<spring-modulith.version>0.4.0</spring-modulith.version>
 		<refdocs.dir>${project.build.directory}/refdocs</refdocs.dir>
 	</properties>
 
