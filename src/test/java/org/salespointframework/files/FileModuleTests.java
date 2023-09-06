@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.storage;
+package org.salespointframework.files;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -21,10 +21,11 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.modulith.test.ApplicationModuleTest;
 import org.springframework.modulith.test.PublishedEvents;
 import org.springframework.test.context.TestPropertySource;
@@ -37,14 +38,16 @@ import org.springframework.test.context.TestPropertySource;
 @ApplicationModuleTest
 @TestPropertySource(properties = "salespoint.storage.location=${user.home}/.salespoint/${random.uuid}")
 @RequiredArgsConstructor
-class StorageModuleTests {
+class FileModuleTests {
 
-	private final Storage storage;
+	private final FileStorage storage;
 	private final Workspace workspace;
 
-	@AfterAll
-	void wipeTempDirectory() throws IOException {
+	@AfterEach
+	void wipeTempDirectory() throws Exception {
+
 		storage.deleteAll();
+		workspace.afterPropertiesSet();
 	}
 
 	@Test // #382
@@ -73,14 +76,44 @@ class StorageModuleTests {
 		assertThat(events.ofType(FileStored.class).matching(it -> it.belongsTo(identifier))).isNotEmpty();
 	}
 
-	private static void assertFileStoredAndRetrieved(Storage storage) throws IOException {
+	@Test // GH-430
+	void storesFileWithCustomName() {
 
-		var source = new ClassPathResource("sample.txt", StorageModuleTests.class);
-		var resource = storage.store(NamedBinary.of(source));
+		var source = new ClassPathResource("sample.txt", FileModuleTests.class);
+		var resource = storage.store(NamedBinary.of(source).withName("custom.txt"));
+
+		assertThat(resource.exists()).isTrue();
+		assertThat(resource.isReadable()).isTrue();
+		assertThat(storage.getResource("custom.txt")).hasValue(resource);
+		assertThat(storage.getAllResources()).contains(resource);
+	}
+
+	@Test // GH-430
+	void deletesAParticularFile() {
+
+		var first = storeFileAs("sample.txt", "custom1.txt", storage);
+		var second = storeFileAs("sample.txt", "custom2.txt", storage);
+
+		assertThat(storage.getAllResources()).containsExactlyInAnyOrder(first, second);
+
+		storage.deleteByName("custom1.txt");
+
+		assertThat(storage.getAllResources()).containsExactlyInAnyOrder(second);
+	}
+
+	private static void assertFileStoredAndRetrieved(FileStorage storage) throws IOException {
+
+		var resource = storeFileAs("sample.txt", "sample.txt", storage);
 
 		assertThat(resource.exists()).isTrue();
 		assertThat(resource.isReadable()).isTrue();
 		assertThat(storage.getResource("sample.txt")).hasValue(resource);
 		assertThat(storage.getAllResources()).contains(resource);
+	}
+
+	private static Resource storeFileAs(String source, String name, FileStorage files) {
+
+		var resource = new ClassPathResource(source, FileModuleTests.class);
+		return files.store(NamedBinary.of(resource).withName(name));
 	}
 }

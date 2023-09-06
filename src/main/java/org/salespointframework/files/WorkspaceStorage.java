@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.storage;
+package org.salespointframework.files;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -36,13 +36,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 /**
- * A {@link Storage} implementation based on {@link Workspace}.
+ * A {@link FileStorage} implementation based on {@link Workspace}.
  *
  * @author Oliver Drotbohm
  */
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-class WorkspaceStorage implements Storage {
+class WorkspaceStorage implements FileStorage {
 
 	private final Workspace properties;
 	private final ApplicationEventPublisher publisher;
@@ -58,7 +58,7 @@ class WorkspaceStorage implements Storage {
 	 * @see org.salespointframework.storage.Storage#forUser(org.salespointframework.useraccount.UserAccount.UserAccountIdentifier)
 	 */
 	@Override
-	public Storage forUser(UserAccountIdentifier userAccountIdentifier) {
+	public FileStorage forUser(UserAccountIdentifier userAccountIdentifier) {
 
 		Assert.notNull(userAccountIdentifier, "UserAccountIdentifier must not be null!");
 
@@ -89,8 +89,8 @@ class WorkspaceStorage implements Storage {
 
 			return resource;
 
-		} catch (IOException e) {
-			throw new RuntimeException("Failed to store file.", e);
+		} catch (IOException o_O) {
+			throw new RuntimeException("Failed to store file.", o_O);
 		}
 	}
 
@@ -130,12 +130,28 @@ class WorkspaceStorage implements Storage {
 		properties.deleteAll();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.salespointframework.files.FileStorage#deleteByName(java.lang.String)
+	 */
+	@Override
+	public void deleteByName(String filename) {
+
+		Path path = properties.resolve(filename);
+
+		try {
+			Files.delete(path);
+		} catch (IOException o_O) {
+			throw new RuntimeException("Failed to delete file %s!".formatted(path.getFileName().toUri()), o_O);
+		}
+	}
+
 	private static Resource toResource(Path path) {
 
 		try {
 			return new UrlResource(path.toUri());
 		} catch (MalformedURLException o_O) {
-			throw new IllegalArgumentException("Could not read file: " + path.getFileName().toUri(), o_O);
+			throw new IllegalArgumentException("Could not read file: %s".formatted(path.getFileName().toUri()), o_O);
 		}
 	}
 }

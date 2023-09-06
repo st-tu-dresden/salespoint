@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.storage;
+package org.salespointframework.files;
 
 import java.util.Optional;
 
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
  * @since 7.5
  */
 @Service
-public interface Storage {
+public interface FileStorage {
 
 	/**
 	 * Stores the given {@link NamedBinary}. Publishes a {@link FileStored} event for other interested parties to react to
@@ -57,15 +57,23 @@ public interface Storage {
 	Optional<Resource> getResource(String filename);
 
 	/**
-	 * Deletes all files currently contained in the {@link Storage}.
+	 * Deletes all files currently contained in the {@link FileStorage}.
 	 */
 	void deleteAll();
 
 	/**
-	 * Returns the {@link Storage} for the {@link UserAccount} identified by the given {@link UserAccountIdentifier}.
+	 * Deletes the file with the given name.
+	 *
+	 * @param filename must not be {@literal null} or empty.
+	 * @since 9.0
+	 */
+	void deleteByName(String filename);
+
+	/**
+	 * Returns the {@link FileStorage} for the {@link UserAccount} identified by the given {@link UserAccountIdentifier}.
 	 *
 	 * @param userAccountIdentifier must not be {@literal null}.
 	 * @return will never be {@literal null}.
 	 */
-	Storage forUser(UserAccountIdentifier userAccountIdentifier);
+	FileStorage forUser(UserAccountIdentifier userAccountIdentifier);
 }

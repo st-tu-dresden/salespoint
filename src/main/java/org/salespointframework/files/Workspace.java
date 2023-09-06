@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.storage;
+package org.salespointframework.files;
 
 import lombok.EqualsAndHashCode;
 
@@ -77,7 +77,7 @@ class Workspace implements InitializingBean {
 	 * Returns a new {@link Workspace} for the given sub folder.
 	 *
 	 * @param subFolder must not be {@literal null} or empty.
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	public Workspace forSubFolder(String subFolder) {
 
@@ -89,7 +89,7 @@ class Workspace implements InitializingBean {
 	/**
 	 * Returns all files in the workspace as {@link Path} instances.
 	 *
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	public Stream<Path> allFiles() {
 
@@ -108,7 +108,7 @@ class Workspace implements InitializingBean {
 	 * the workspace root.
 	 *
 	 * @param filename must not be {@literal null} or empty.
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	public Path resolve(String filename) {
 
@@ -122,7 +122,7 @@ class Workspace implements InitializingBean {
 	/**
 	 * Deletes all files in the current workspace.
 	 *
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	public Workspace deleteAll() {
 
@@ -133,7 +133,7 @@ class Workspace implements InitializingBean {
 	/**
 	 * Returns the current workspace as {@link Path}.
 	 *
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	public Path asPath() {
 		return location;

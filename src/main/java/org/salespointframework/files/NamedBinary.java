@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.storage;
+package org.salespointframework.files;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -126,6 +126,33 @@ public interface NamedBinary extends ValueObject {
 			@Override
 			public InputStream getInputStream() throws IOException {
 				return file.getInputStream();
+			}
+		};
+	}
+
+	/**
+	 * Creates a new {@link NamedBinary} instance with the given name. The underlying binary data does not change.
+	 *
+	 * @param name must not be {@literal null} or empty.
+	 * @return will never be {@literal null}.
+	 * @since 9.0
+	 */
+	public default NamedBinary withName(String name) {
+
+		Assert.hasText(name, "Name must not be null or empty!");
+
+		var delegate = this;
+
+		return new NamedBinary() {
+
+			@Override
+			public String getName() {
+				return name;
+			}
+
+			@Override
+			public InputStream getInputStream() throws IOException {
+				return delegate.getInputStream();
 			}
 		};
 	}

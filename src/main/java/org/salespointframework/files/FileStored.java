@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.salespointframework.storage;
+package org.salespointframework.files;
 
 import lombok.Value;
 
@@ -48,7 +48,7 @@ public class FileStored implements DomainEvent {
 	 * Returns whether the file stored belongs to the {@link UserAccount} with the given {@link UserAccountIdentifier}.
 	 *
 	 * @param identifier must not be {@literal null}.
-	 * @return
+	 * @return whether the file stored belongs to the {@link UserAccount} with the given {@link UserAccountIdentifier}.
 	 */
 	public boolean belongsTo(UserAccountIdentifier identifier) {
 
@@ -60,7 +60,7 @@ public class FileStored implements DomainEvent {
 	/**
 	 * Returns whether the file stored is a user-specific file.
 	 *
-	 * @return
+	 * @return whether the file stored is a user-specific file.
 	 */
 	public boolean isUserFile() {
 		return !userAccountIdentifier.isEmpty();
