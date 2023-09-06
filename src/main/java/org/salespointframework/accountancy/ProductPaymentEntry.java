@@ -20,7 +20,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -59,7 +59,7 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	/**
 	 * The {@link UserAccount} which this {@link ProductPaymentEntry} refers to.
 	 */
-	@OneToOne //
+	@ManyToOne //
 	@AttributeOverride(name = "id", column = @Column(name = "USER_ID", nullable = true)) //
 	private UserAccount userAccount;
 

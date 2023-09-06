@@ -65,7 +65,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	private @Lob @Getter PaymentMethod paymentMethod;
 
 	@Getter //
-	@OneToOne //
+	@ManyToOne //
 	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID")) //
 	private UserAccount userAccount;
 
@@ -119,7 +119,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 
 	/**
 	 * Returns the unique id of this {@link Order}.
-	 * 
+	 *
 	 * @return will never be {@literal null}
 	 */
 	@Override
