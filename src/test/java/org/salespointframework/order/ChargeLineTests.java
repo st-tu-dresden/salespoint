@@ -16,14 +16,13 @@
 package org.salespointframework.order;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.salespointframework.useraccount.UserAccountTestUtils.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.payment.Cash;
-import org.salespointframework.useraccount.UserAccount;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,14 +33,12 @@ class ChargeLineTests extends AbstractIntegrationTests {
 
 	@Autowired UserAccountManagement users;
 
-	UserAccount user;
 	Order order;
 	ChargeLine chargeLine;
 
 	@BeforeEach
 	void before() {
-		user = users.create("userId", UNENCRYPTED_PASSWORD);
-		order = new Order(user, Cash.CASH);
+		order = new Order(UserAccountIdentifier.of("userId"), Cash.CASH);
 		chargeLine = new ChargeLine(Currencies.ZERO_EURO, "gaaar nix");
 	}
 

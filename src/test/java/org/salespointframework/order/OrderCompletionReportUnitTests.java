@@ -22,11 +22,11 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 import org.salespointframework.order.OrderCompletionReport.OrderLineCompletion;
-import org.salespointframework.useraccount.UserAccount;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 
 /**
  * Unit tests for {@link OrderCompletionReport}.
- * 
+ *
  * @author Oliver Gierke
  */
 class OrderCompletionReportUnitTests {
@@ -34,7 +34,7 @@ class OrderCompletionReportUnitTests {
 	@Test // #144
 	void erroneousCompletionExposesFailure() {
 
-		OrderLineCompletion completion = OrderLineCompletion.error(mock(OrderLine.class), "Some message!");
+		var completion = OrderLineCompletion.error(mock(OrderLine.class), "Some message!");
 
 		assertThat(completion.isFailure()).isTrue();
 		assertThat(completion.getMessage()).hasValueSatisfying(it -> {
@@ -45,11 +45,10 @@ class OrderCompletionReportUnitTests {
 	@Test // #215
 	public void toStringRendersHumanReadableOutput() {
 
-		UserAccount account = mock(UserAccount.class);
-		Order order = new Order(account);
+		var order = new Order(UserAccountIdentifier.of("user"));
 
-		OrderLineCompletion completion = OrderLineCompletion.error(mock(OrderLine.class), "Some message!");
-		OrderCompletionReport report = OrderCompletionReport.forCompletions(order, Arrays.asList(completion));
+		var completion = OrderLineCompletion.error(mock(OrderLine.class), "Some message!");
+		var report = OrderCompletionReport.forCompletions(order, Arrays.asList(completion));
 
 		// toString() contains message of OrderLineCompletion
 		assertThat(report.toString()).contains("Some message!");

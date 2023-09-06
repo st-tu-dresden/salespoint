@@ -114,7 +114,7 @@ class PersistentOrderManagement<T extends Order> implements OrderManagement<T> {
 
 		Assert.notNull(userAccount, "UserAccount must not be null");
 
-		return orderRepository.findByUserAccount(userAccount);
+		return orderRepository.findByUserAccountIdentifier(userAccount.getId());
 	}
 
 	/*
@@ -127,7 +127,8 @@ class PersistentOrderManagement<T extends Order> implements OrderManagement<T> {
 		Assert.notNull(userAccount, "UserAccount must not be null");
 		Assert.notNull(interval, "Interval must not be null!");
 
-		return orderRepository.findByUserAccountAndDateCreatedBetween(userAccount, interval.getStart(), interval.getEnd());
+		return orderRepository.findByUserAccountIdentifierAndDateCreatedBetween(userAccount.getId(), interval.getStart(),
+				interval.getEnd());
 	}
 
 	/*

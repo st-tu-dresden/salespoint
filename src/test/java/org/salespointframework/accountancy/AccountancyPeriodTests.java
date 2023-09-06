@@ -24,18 +24,14 @@ import org.junit.jupiter.api.Test;
 import org.salespointframework.AbstractIntegrationTests;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Order;
-import org.salespointframework.order.Order.OrderIdentifier;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.time.Interval;
-import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountManagement;
-import org.salespointframework.useraccount.UserAccountTestUtils;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 
 class AccountancyPeriodTests extends AbstractIntegrationTests {
 
-	@Autowired Accountancy a;
-	@Autowired UserAccountManagement users;
+	@Autowired Accountancy accountancy;
 
 	LocalDateTime from;
 	LocalDateTime to;
@@ -43,16 +39,16 @@ class AccountancyPeriodTests extends AbstractIntegrationTests {
 	@BeforeEach
 	void testSetup() throws Exception {
 
-		UserAccount account = users.create("username", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
-		OrderIdentifier orderIdentifier = new Order(account).getId();
+		var userAccountIdentifier = UserAccountIdentifier.of("username");
+		var orderIdentifier = new Order(userAccountIdentifier).getId();
 
 		Money oneEuro = Money.of(1, Currencies.EURO);
 
 		for (int i = 0; i < 20; i++) {
 
-			ProductPaymentEntry p = new ProductPaymentEntry(orderIdentifier, account.getId(), oneEuro, "Rechnung nr. 3",
+			ProductPaymentEntry p = new ProductPaymentEntry(orderIdentifier, userAccountIdentifier, oneEuro, "Rechnung nr. 3",
 					Cash.CASH);
-			a.add(p);
+			accountancy.add(p);
 
 			if (i == 5) {
 				from = p.getDate().get();
@@ -67,7 +63,7 @@ class AccountancyPeriodTests extends AbstractIntegrationTests {
 	void periodSetTest() {
 
 		var interval = Interval.from(from).to(to);
-		var m = a.find(interval, Duration.ofMillis(200));
+		var m = accountancy.find(interval, Duration.ofMillis(200));
 
 		for (var e : m.entrySet()) {
 			for (var p : e.getValue()) {}
@@ -78,7 +74,7 @@ class AccountancyPeriodTests extends AbstractIntegrationTests {
 	void singlePeriodTest() {
 
 		var interval = Interval.from(from).to(to);
-		var m = a.find(interval, interval.getDuration());
+		var m = accountancy.find(interval, interval.getDuration());
 
 		for (var e : m.entrySet()) {
 			for (var p : e.getValue()) {}
@@ -90,7 +86,7 @@ class AccountancyPeriodTests extends AbstractIntegrationTests {
 
 		var total = Currencies.ZERO_EURO;
 		var interval = Interval.from(from).to(to);
-		var m = a.find(interval, Duration.ofMillis(200));
+		var m = accountancy.find(interval, Duration.ofMillis(200));
 
 		for (var e : m.entrySet()) {
 
@@ -101,7 +97,7 @@ class AccountancyPeriodTests extends AbstractIntegrationTests {
 			}
 		}
 
-		var sales = a.salesVolume(interval, Duration.ofMillis(200));
+		var sales = accountancy.salesVolume(interval, Duration.ofMillis(200));
 
 		for (var e : sales.entrySet()) {
 			System.out.println("MonetaryAmount for interval " + e.getKey() + ": " + e.getValue());

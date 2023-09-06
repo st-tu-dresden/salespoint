@@ -35,9 +35,7 @@ import org.salespointframework.inventory.UniqueInventoryItem;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.Interval;
-import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountManagement;
-import org.salespointframework.useraccount.UserAccountTestUtils;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
@@ -50,21 +48,20 @@ import org.springframework.data.domain.PageRequest;
  */
 class OrderManagementTests extends AbstractIntegrationTests {
 
-	@Autowired UserAccountManagement users;
 	@Autowired OrderManagement<Order> orders;
 	@Autowired EntityManager em;
 
 	@Autowired Catalog<Product> catalog;
 	@Autowired UniqueInventory<UniqueInventoryItem> inventory;
 
-	UserAccount user;
 	Order order;
+	UserAccountIdentifier userAccountIdentifier;
 
 	@BeforeEach
 	void before() {
-		user = users.create("userId", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
-		users.save(user);
-		order = new Order(user, Cash.CASH);
+
+		this.userAccountIdentifier = UserAccountIdentifier.of("user");
+		this.order = new Order(userAccountIdentifier, Cash.CASH);
 	}
 
 	@Test
@@ -162,7 +159,7 @@ class OrderManagementTests extends AbstractIntegrationTests {
 	@Test // #61
 	void findOrdersByOrderStatus_OPEN() {
 
-		var openOrder = orders.save(new Order(user, Cash.CASH));
+		var openOrder = orders.save(new Order(userAccountIdentifier, Cash.CASH));
 
 		orders.save(order);
 		orders.payOrder(order);
@@ -175,7 +172,7 @@ class OrderManagementTests extends AbstractIntegrationTests {
 	@Test // #219
 	void ordersCanBeDeleted() {
 
-		var reference = orders.save(new Order(user, Cash.CASH));
+		var reference = orders.save(new Order(userAccountIdentifier, Cash.CASH));
 		assertThat(orders.get(reference.getId())).hasValue(reference);
 
 		orders.delete(reference);
@@ -185,7 +182,7 @@ class OrderManagementTests extends AbstractIntegrationTests {
 	@Test // #240
 	void returnsAPageOfOrder() throws Exception {
 
-		var source = IntStream.range(0, 19).mapToObj(__ -> new Order(user, Cash.CASH)) //
+		var source = IntStream.range(0, 19).mapToObj(__ -> new Order(userAccountIdentifier, Cash.CASH)) //
 				.peek(orders::save) //
 				.collect(Collectors.toUnmodifiableList());
 
@@ -199,7 +196,7 @@ class OrderManagementTests extends AbstractIntegrationTests {
 	@Test // #246
 	void persistsChargeLines() {
 
-		var order = orders.save(new Order(user, Cash.CASH));
+		var order = orders.save(new Order(userAccountIdentifier, Cash.CASH));
 		order.addChargeLine(Money.of(-1.5, Currencies.EURO), "Some discount");
 
 		orders.save(order);

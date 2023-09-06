@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.salespointframework.order.OrderEvents.OrderCanceled;
 import org.salespointframework.order.OrderEvents.OrderCompleted;
-import org.salespointframework.useraccount.UserAccountTestUtils;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.modulith.test.AggregateTestUtils;
 import org.springframework.modulith.test.PublishedEvents;
 import org.springframework.modulith.test.PublishedEventsExtension;
@@ -38,7 +38,7 @@ class OrderUnitTests {
 	@Test
 	public void publishesEventsForStateTransitions() {
 
-		Order canceled = new Order(UserAccountTestUtils.createUserAccount()) //
+		Order canceled = new Order(UserAccountIdentifier.of("4711")) //
 				.markPaid() //
 				.complete() //
 				.cancel("No reason");

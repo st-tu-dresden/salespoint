@@ -26,8 +26,8 @@ import org.salespointframework.core.Currencies;
 import org.salespointframework.order.Order;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.time.Interval;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.salespointframework.useraccount.UserAccountManagement;
-import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.modulith.test.ApplicationModuleTest;
 import org.springframework.modulith.test.ApplicationModuleTest.BootstrapMode;
@@ -57,10 +57,10 @@ class AccountancyTests {
 
 			if (year % 2 == 0) {
 
-				var user = users.create("userId" + year, UserAccountTestUtils.UNENCRYPTED_PASSWORD);
-				var orderIdentifier = new Order(user).getId();
+				var userAccountIdentifier = UserAccountIdentifier.of("userId" + year);
+				var orderIdentifier = new Order(userAccountIdentifier).getId();
 
-				accountancy.add(new ProductPaymentEntry(orderIdentifier, user.getId(), Money.of(1, Currencies.EURO),
+				accountancy.add(new ProductPaymentEntry(orderIdentifier, userAccountIdentifier, Money.of(1, Currencies.EURO),
 						"Rechnung nr " + year, Cash.CASH));
 			} else {
 				accountancy.add(new AccountancyEntry(Money.of(2.22, Currencies.EURO)));

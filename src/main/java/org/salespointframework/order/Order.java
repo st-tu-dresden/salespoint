@@ -44,6 +44,7 @@ import org.salespointframework.order.OrderEvents.OrderPaid;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.data.domain.Range;
 import org.springframework.data.domain.Range.Bound;
 import org.springframework.data.util.Streamable;
@@ -65,9 +66,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	private @Lob @Getter PaymentMethod paymentMethod;
 
 	@Getter //
-	@ManyToOne //
-	@AttributeOverride(name = "id", column = @Column(name = "OWNER_ID")) //
-	private UserAccount userAccount;
+	private UserAccountIdentifier userAccountIdentifier;
 
 	@Getter //
 	@Setter(AccessLevel.PACKAGE) //
@@ -89,15 +88,50 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	private List<AttachedChargeLine> attachedChargeLines = new ArrayList<>();
 
 	/**
-	 * Creates a new Order
+	 * Creates a new Order for the given {@link UserAccountIdentifier}.
+	 *
+	 * @param userAccountIdentifier The identifier of the {@link UserAccount} connected to this order, must not be
+	 *          {@literal null}.
+	 * @since 9.0
+	 */
+	public Order(UserAccountIdentifier userAccountIdentifier) {
+
+		Assert.notNull(userAccountIdentifier, "UserAccountIdentifier must not be null");
+
+		this.userAccountIdentifier = userAccountIdentifier;
+		this.dateCreated = LocalDateTime.now();
+	}
+
+	/**
+	 * Creates a new Order for the given {@link UserAccount}.
 	 *
 	 * @param userAccount The {@link UserAccount} connected to this order, must not be {@literal null}.
+	 * @deprecated since 9.0. Use {@link #Order(UserAccountIdentifier)} instead.
 	 */
+	@Deprecated(forRemoval = true, since = "9.0")
 	public Order(UserAccount userAccount) {
 
-		Assert.notNull(userAccount, "userAccount must not be null");
+		Assert.notNull(userAccount, "UserAccount must not be null");
 
-		this.userAccount = userAccount;
+		this.userAccountIdentifier = userAccount.getId();
+		this.dateCreated = LocalDateTime.now();
+	}
+
+	/**
+	 * Creates a new {@link Order} for the given {@link UserAccount} and {@link PaymentMethod}.
+	 *
+	 * @param userAccountIdentifier The identifier of the {@link UserAccount} connected to this order, must not be
+	 *          {@literal null}.
+	 * @param paymentMethod The {@link PaymentMethod} connected to this order, must not be {@literal null}.
+	 * @since 9.0
+	 */
+	public Order(UserAccountIdentifier userAccountIdentifier, PaymentMethod paymentMethod) {
+
+		Assert.notNull(userAccountIdentifier, "UserAccount must not be null!");
+		Assert.notNull(paymentMethod, "PaymentMethod must not be null!");
+
+		this.userAccountIdentifier = userAccountIdentifier;
+		this.paymentMethod = paymentMethod;
 		this.dateCreated = LocalDateTime.now();
 	}
 
@@ -106,13 +140,15 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	 *
 	 * @param userAccount The {@link UserAccount} connected to this order, must not be {@literal null}.
 	 * @param paymentMethod The {@link PaymentMethod} connected to this order, must not be {@literal null}.
+	 * @deprecated since 9.0. Use {@link #Order(UserAccountIdentifier, PaymentMethod)} instead.
 	 */
+	@Deprecated(forRemoval = true, since = "9.0")
 	public Order(UserAccount userAccount, PaymentMethod paymentMethod) {
 
 		Assert.notNull(userAccount, "UserAccount must not be null!");
 		Assert.notNull(paymentMethod, "PaymentMethod must not be null!");
 
-		this.userAccount = userAccount;
+		this.userAccountIdentifier = userAccount.getId();
 		this.paymentMethod = paymentMethod;
 		this.dateCreated = LocalDateTime.now();
 	}
@@ -499,8 +535,8 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	 */
 	@PrePersist
 	void verifyConstraints() {
-		Assert.state(userAccount != null,
-				"No user account set. Make sure you have created the order by calling a non-default constructor!");
+		Assert.state(userAccountIdentifier != null,
+				"No user account identifier set. Make sure you have created the order by calling a non-default constructor!");
 	}
 
 	/**

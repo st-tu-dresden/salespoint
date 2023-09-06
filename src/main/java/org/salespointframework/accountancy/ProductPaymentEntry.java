@@ -66,7 +66,7 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	private @Lob PaymentMethod paymentMethod;
 
 	public static ProductPaymentEntry of(Order order, String description) {
-		return new ProductPaymentEntry(order.getId(), order.getUserAccount().getId(), order.getTotal(), description,
+		return new ProductPaymentEntry(order.getId(), order.getUserAccountIdentifier(), order.getTotal(), description,
 				order.getPaymentMethod());
 	}
 
@@ -85,7 +85,7 @@ public class ProductPaymentEntry extends AccountancyEntry {
 
 		MonetaryAmount amount = Currencies.ZERO_EURO.subtract(order.getTotal());
 
-		return new ProductPaymentEntry(order.getId(), order.getUserAccount().getId(), amount, description,
+		return new ProductPaymentEntry(order.getId(), order.getUserAccountIdentifier(), amount, description,
 				order.getPaymentMethod());
 	}
 
@@ -95,8 +95,8 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	 *
 	 * @param orderIdentifier the {@link OrderIdentifier} to which this {@link ProductPaymentEntry} will refer to, must
 	 *          not be {@literal null}.
-	 * @param userAccount the {@link UserAccount} to which this {@link ProductPaymentEntry} will refer to, must not be
-	 *          {@literal null}.
+	 * @param userAccountIdentifier the identifier of the {@link UserAccount} this {@link ProductPaymentEntry} will refer
+	 *          to, must not be {@literal null}.
 	 * @param amount the {@link MonetaryAmount} that was paid, must not be {@literal null}.
 	 * @param description textual description of the payment entry, must not be {@literal null}.
 	 * @param paymentMethod must not be {@literal null}.

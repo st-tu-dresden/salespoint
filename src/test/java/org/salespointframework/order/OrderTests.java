@@ -29,9 +29,7 @@ import org.salespointframework.order.OrderEvents.OrderCanceled;
 import org.salespointframework.order.OrderEvents.OrderCompleted;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
-import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountManagement;
-import org.salespointframework.useraccount.UserAccountTestUtils;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.modulith.test.ApplicationModuleTest;
@@ -51,20 +49,19 @@ class OrderTests {
 
 	static final Sort DEFAULT_SORT = Sort.sort(Order.class).by(Order::getId).descending();
 
-	@Autowired UserAccountManagement users;
 	@Autowired OrderManagement<Order> orders;
 	@Autowired Catalog<Product> catalog;
 
-	UserAccount user;
 	Order order;
+	UserAccountIdentifier userAccountIdentifier;
 
 	private static int foobar = 0;
 
 	@BeforeEach
 	void before() {
 
-		user = users.create("OrderTests " + foobar, UserAccountTestUtils.UNENCRYPTED_PASSWORD);
-		order = new Order(user, Cash.CASH);
+		this.userAccountIdentifier = UserAccountIdentifier.of("OrderTests " + foobar);
+		this.order = new Order(userAccountIdentifier, Cash.CASH);
 		foobar++;
 	}
 
@@ -194,7 +191,7 @@ class OrderTests {
 	@Test // #338
 	void keepsOrderCreationgDateWhenSavingAnOrder() throws Exception {
 
-		var order = orders.save(new Order(user));
+		var order = orders.save(new Order(userAccountIdentifier));
 		var reference = order.getDateCreated();
 
 		Thread.sleep(50);

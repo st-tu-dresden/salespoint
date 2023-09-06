@@ -26,9 +26,8 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
-import org.salespointframework.useraccount.UserAccount;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.salespointframework.useraccount.UserAccountManagement;
-import org.salespointframework.useraccount.UserAccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -41,7 +40,6 @@ class OrderLineTests extends AbstractIntegrationTests {
 
 	private static int keksCounter = 0;
 
-	private UserAccount user;
 	private Order order;
 	private OrderLine orderLine;
 
@@ -52,8 +50,7 @@ class OrderLineTests extends AbstractIntegrationTests {
 
 		catalog.save(cookie);
 
-		user = users.create("userId", UserAccountTestUtils.UNENCRYPTED_PASSWORD);
-		order = new Order(user, Cash.CASH);
+		order = new Order(UserAccountIdentifier.of("userId"), Cash.CASH);
 		orderLine = new OrderLine(cookie, Quantity.of(10));
 	}
 

@@ -29,6 +29,7 @@ import org.salespointframework.catalog.Product.ProductIdentifier;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.data.util.Streamable;
 import org.springframework.util.Assert;
 
@@ -161,12 +162,27 @@ public class Cart implements Streamable<CartItem>, Priced {
 	 *
 	 * @param user must not be {@literal null}.
 	 * @return a new Order for the current {@link Cart} and given {@link UserAccount}.
+	 * @deprecated since 9.0, use {@link #createOrderFor(UserAccountIdentifier)} instead.
 	 */
+	@Deprecated(forRemoval = true, since = "9.0")
 	public Order createOrderFor(UserAccount user) {
 
 		Assert.notNull(user, "User account must not be null!");
 
-		return addItemsTo(new Order(user));
+		return createOrderFor(user.getId());
+	}
+
+	/**
+	 * Creates a new Order for the given {@link UserAccountIdentifier} from the current {@link Cart}.
+	 *
+	 * @param identifier must not be {@literal null}.
+	 * @return a new Order for the current {@link Cart} and given {@link UserAccountIdentifier}.
+	 */
+	public Order createOrderFor(UserAccountIdentifier identifier) {
+
+		Assert.notNull(identifier, "User account identifier must not be null!");
+
+		return addItemsTo(new Order(identifier));
 	}
 
 	/**

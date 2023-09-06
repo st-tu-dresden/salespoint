@@ -24,6 +24,7 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.Quantity;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 
 /**
  * Unit tests for {@link Cart}.
@@ -132,7 +133,7 @@ class CartUnitTests {
 	void toOrderFail() {
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
-				.isThrownBy(() -> cart.createOrderFor(null));
+				.isThrownBy(() -> cart.createOrderFor((UserAccountIdentifier) null));
 	}
 
 	@Test // #44

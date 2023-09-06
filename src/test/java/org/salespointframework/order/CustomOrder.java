@@ -19,7 +19,7 @@ import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import org.salespointframework.useraccount.UserAccount;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.lang.Nullable;
 
 /**
@@ -31,8 +31,7 @@ import org.springframework.lang.Nullable;
 @Entity
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 class CustomOrder extends Order {
-	@Nullable
-	private String customProperty;
+	@Nullable private String customProperty;
 
 	@SuppressWarnings("unused")
 	private CustomOrder() {
@@ -40,14 +39,14 @@ class CustomOrder extends Order {
 	}
 
 	/**
-	 * Creates a new {@link CustomOrder} for the given {@link UserAccount} and custom property.
+	 * Creates a new {@link CustomOrder} for the given {@link UserAccountIdentifier} and custom property.
 	 *
-	 * @param userAccount must not be {@literal null}.
+	 * @param userAccountIdentifier must not be {@literal null}.
 	 * @param customProperty can be {@literal null}.
 	 */
-	public CustomOrder(UserAccount userAccount, @Nullable String customProperty) {
+	public CustomOrder(UserAccountIdentifier userAccountIdentifier, @Nullable String customProperty) {
 
-		super(userAccount);
+		super(userAccountIdentifier);
 
 		this.customProperty = customProperty;
 	}

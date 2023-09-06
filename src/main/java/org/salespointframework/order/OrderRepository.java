@@ -18,7 +18,7 @@ package org.salespointframework.order;
 import java.time.LocalDateTime;
 
 import org.salespointframework.order.Order.OrderIdentifier;
-import org.salespointframework.useraccount.UserAccount;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -64,7 +64,7 @@ interface OrderRepository<T extends Order>
 	 * @param userAccount
 	 * @return
 	 */
-	Streamable<T> findByUserAccount(UserAccount userAccount);
+	Streamable<T> findByUserAccountIdentifier(UserAccountIdentifier userAccountIdentifier);
 
 	/**
 	 * @param userAccount
@@ -72,5 +72,6 @@ interface OrderRepository<T extends Order>
 	 * @param to
 	 * @return
 	 */
-	Streamable<T> findByUserAccountAndDateCreatedBetween(UserAccount userAccount, LocalDateTime from, LocalDateTime to);
+	Streamable<T> findByUserAccountIdentifierAndDateCreatedBetween(UserAccountIdentifier userAccountIdentifier,
+			LocalDateTime from, LocalDateTime to);
 }

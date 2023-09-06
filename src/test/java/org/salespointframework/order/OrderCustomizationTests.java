@@ -20,9 +20,7 @@ import static org.assertj.core.api.Assertions.*;
 import lombok.RequiredArgsConstructor;
 
 import org.junit.jupiter.api.Test;
-import org.salespointframework.useraccount.Password.UnencryptedPassword;
-import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountManagement;
+import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -42,14 +40,14 @@ import org.springframework.test.context.TestConstructor.AutowireMode;
 class OrderCustomizationTests {
 
 	private final OrderManagement<CustomOrder> orders;
-	private final UserAccountManagement users;
 
 	@Test // #292
 	void sortsByPropertyOfCustomOrder() {
 
-		UserAccount account = users.create("user", UnencryptedPassword.of("password"));
-		CustomOrder first = orders.save(new CustomOrder(account, "first"));
-		CustomOrder second = orders.save(new CustomOrder(account, "second"));
+		var userAccountIdentifier = UserAccountIdentifier.of("user");
+
+		var first = orders.save(new CustomOrder(userAccountIdentifier, "first"));
+		var second = orders.save(new CustomOrder(userAccountIdentifier, "second"));
 
 		var sort = Sort.by("customProperty");
 
