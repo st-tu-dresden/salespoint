@@ -60,7 +60,7 @@ class AccountancyTests {
 				var user = users.create("userId" + year, UserAccountTestUtils.UNENCRYPTED_PASSWORD);
 				var orderIdentifier = new Order(user).getId();
 
-				accountancy.add(new ProductPaymentEntry(orderIdentifier, user, Money.of(1, Currencies.EURO),
+				accountancy.add(new ProductPaymentEntry(orderIdentifier, user.getId(), Money.of(1, Currencies.EURO),
 						"Rechnung nr " + year, Cash.CASH));
 			} else {
 				accountancy.add(new AccountancyEntry(Money.of(2.22, Currencies.EURO)));

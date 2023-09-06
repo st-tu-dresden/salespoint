@@ -50,7 +50,8 @@ class AccountancyPeriodTests extends AbstractIntegrationTests {
 
 		for (int i = 0; i < 20; i++) {
 
-			ProductPaymentEntry p = new ProductPaymentEntry(orderIdentifier, account, oneEuro, "Rechnung nr. 3", Cash.CASH);
+			ProductPaymentEntry p = new ProductPaymentEntry(orderIdentifier, account.getId(), oneEuro, "Rechnung nr. 3",
+					Cash.CASH);
 			a.add(p);
 
 			if (i == 5) {

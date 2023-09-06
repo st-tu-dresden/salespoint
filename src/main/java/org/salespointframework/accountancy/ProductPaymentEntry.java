@@ -20,7 +20,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,11 +56,9 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	private OrderIdentifier orderIdentifier;
 
 	/**
-	 * The {@link UserAccount} which this {@link ProductPaymentEntry} refers to.
+	 * The identifier of the {@link UserAccount} which this {@link ProductPaymentEntry} refers to.
 	 */
-	@ManyToOne //
-	@AttributeOverride(name = "id", column = @Column(name = "USER_ID", nullable = true)) //
-	private UserAccount userAccount;
+	private UserAccountIdentifier userAccountIdentifier;
 
 	/**
 	 * The {@link PaymentMethod} chosen for the order belonging to this <code>ProductPaymentEntry</code>
@@ -69,7 +66,7 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	private @Lob PaymentMethod paymentMethod;
 
 	public static ProductPaymentEntry of(Order order, String description) {
-		return new ProductPaymentEntry(order.getId(), order.getUserAccount(), order.getTotal(), description,
+		return new ProductPaymentEntry(order.getId(), order.getUserAccount().getId(), order.getTotal(), description,
 				order.getPaymentMethod());
 	}
 
@@ -88,7 +85,7 @@ public class ProductPaymentEntry extends AccountancyEntry {
 
 		MonetaryAmount amount = Currencies.ZERO_EURO.subtract(order.getTotal());
 
-		return new ProductPaymentEntry(order.getId(), order.getUserAccount(), amount, description,
+		return new ProductPaymentEntry(order.getId(), order.getUserAccount().getId(), amount, description,
 				order.getPaymentMethod());
 	}
 
@@ -104,17 +101,18 @@ public class ProductPaymentEntry extends AccountancyEntry {
 	 * @param description textual description of the payment entry, must not be {@literal null}.
 	 * @param paymentMethod must not be {@literal null}.
 	 */
-	public ProductPaymentEntry(OrderIdentifier orderIdentifier, UserAccount userAccount, MonetaryAmount amount,
+	public ProductPaymentEntry(OrderIdentifier orderIdentifier, UserAccountIdentifier userAccountIdentifier,
+			MonetaryAmount amount,
 			String description, PaymentMethod paymentMethod) {
 
 		super(amount, description);
 
 		Assert.notNull(orderIdentifier, "Order identifier must not be null!");
-		Assert.notNull(userAccount, "User account must not be null!");
+		Assert.notNull(userAccountIdentifier, "User account identifier must not be null!");
 		Assert.notNull(paymentMethod, "Payment method must not be null!");
 
 		this.orderIdentifier = orderIdentifier;
-		this.userAccount = userAccount;
+		this.userAccountIdentifier = userAccountIdentifier;
 		this.paymentMethod = paymentMethod;
 	}
 
