@@ -43,13 +43,6 @@ class ChargeLineTests extends AbstractIntegrationTests {
 	}
 
 	@Test
-	void nullTest() {
-
-		assertThatExceptionOfType(IllegalArgumentException.class) //
-				.isThrownBy(() -> order.add((ChargeLine) null));
-	}
-
-	@Test
 	void nullTest2() {
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
@@ -58,18 +51,18 @@ class ChargeLineTests extends AbstractIntegrationTests {
 
 	@Test
 	void addsChargeLineCorrectly() {
-		order.add(chargeLine);
+		order.addChargeLine(Currencies.ZERO_EURO, "gaaar nix");
 	}
 
 	@Test
 	void addTest2() {
-		order.add(chargeLine);
-		order.add(chargeLine);
+		order.addChargeLine(Currencies.ZERO_EURO, "gaaar nix");
+		order.addChargeLine(Currencies.ZERO_EURO, "gaaar nix");
 	}
 
 	@Test
 	void removeTest() {
-		order.add(chargeLine);
+		var chargeLine = order.addChargeLine(Currencies.ZERO_EURO, "gaaar nix");
 		order.remove(chargeLine);
 	}
 

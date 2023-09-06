@@ -166,7 +166,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	/**
 	 * Returns all {@link OrderLine}s of the {@link Order}.
 	 *
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	public Totalable<OrderLine> getOrderLines() {
 		return Totalable.of(orderLines);
@@ -176,7 +176,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	 * Returns all {@link OrderLine} instances that refer to the given {@link Product}.
 	 *
 	 * @param product must not be {@literal null}.
-	 * @return
+	 * @return will never be {@literal null}.
 	 * @since 7.1
 	 */
 	public Totalable<OrderLine> getOrderLines(Product product) {
@@ -190,7 +190,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	/**
 	 * Returns all {@link ChargeLine} instances registered for the current {@link Order}.
 	 *
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	public Totalable<ChargeLine> getChargeLines() {
 		return Totalable.of(chargeLines);
@@ -199,7 +199,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	/**
 	 * Returns all {@link ChargeLine} instances, i.e. both standard ones and {@link AttachedChargeLine}s.
 	 *
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	public Totalable<ChargeLine> getAllChargeLines() {
 		return Totalable.of(chargeLines).and(attachedChargeLines);
@@ -209,7 +209,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	 * Returns all {@link AttachedChargeLine}s for the {@link OrderLine} with the given index.
 	 *
 	 * @param index must be in the range of {@link OrderLine}s.
-	 * @return
+	 * @return will never be {@literal null}.
 	 * @since 7.1
 	 */
 	public Totalable<AttachedChargeLine> getChargeLines(int index) {
@@ -220,7 +220,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	 * Returns all {@link AttachedChargeLine}s for the given {@link OrderLine}.
 	 *
 	 * @param orderLine must not be {@literal null}.
-	 * @return
+	 * @return will never be {@literal null}.
 	 * @since 7.1
 	 */
 	public Totalable<AttachedChargeLine> getChargeLines(OrderLine orderLine) {
@@ -234,7 +234,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	/**
 	 * Returns the total price of the {@link Order}.
 	 *
-	 * @return
+	 * @return will never be {@literal null}.
 	 * @since 7.1
 	 */
 	public MonetaryAmount getTotal() {
@@ -242,30 +242,11 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 	}
 
 	/**
-	 * Adds an {@link OrderLine} to the {@link Order}, the {@link OrderStatus} must be OPEN.
-	 *
-	 * @param orderLine the {@link OrderLine} to be added.
-	 * @return the {@link OrderLine} added.
-	 * @throws IllegalArgumentException if orderLine is {@literal null}.
-	 * @deprecated since 7.1, use {@link #addOrderLine(Product, Quantity)} instead.
-	 */
-	@Deprecated
-	OrderLine add(OrderLine orderLine) {
-
-		Assert.notNull(orderLine, "OrderLine must not be null!");
-		assertOrderIsOpen();
-
-		this.orderLines.add(orderLine);
-
-		return orderLine;
-	}
-
-	/**
 	 * Adds an {@link OrderLine} for the given with the given {@link Quantity}.
 	 *
 	 * @param product must not be {@literal null}.
 	 * @param quantity must not be {@literal null}.
-	 * @return the {@link OrderLine} added.
+	 * @return the {@link OrderLine} added, will never be {@literal null}.
 	 * @since 7.1
 	 */
 	public OrderLine addOrderLine(Product product, Quantity quantity) {
@@ -293,23 +274,6 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 		removeChargeLinesFor(orderLine);
 
 		this.orderLines.remove(orderLine);
-	}
-
-	/**
-	 * Adds a charge line to the {@link Order}.
-	 *
-	 * @param chargeLine
-	 * @deprecated since 7.1, use {@link #addChargeLine(MonetaryAmount, String)} instead
-	 */
-	@Deprecated
-	ChargeLine add(ChargeLine chargeLine) {
-
-		Assert.notNull(chargeLine, "ChargeLine must not be null!");
-		assertOrderIsOpen();
-
-		this.chargeLines.add(chargeLine);
-
-		return chargeLine;
 	}
 
 	/**
@@ -380,6 +344,11 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 		return chargeLine;
 	}
 
+	/**
+	 * Remove the given {@link ChargeLine} from the {@link Order}
+	 *
+	 * @param chargeLine must not be {@literal null}.
+	 */
 	public void remove(ChargeLine chargeLine) {
 
 		Assert.notNull(chargeLine, "ChargeLine must not be null!");
@@ -455,6 +424,11 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 		return orderStatus == OrderStatus.OPEN;
 	}
 
+	/**
+	 * Sets the given {@link PaymentMethod} for the {@link Order}
+	 *
+	 * @param paymentMethod must not be {@literal null}.
+	 */
 	public void setPaymentMethod(PaymentMethod paymentMethod) {
 
 		if (orderStatus != OrderStatus.OPEN) {
@@ -462,6 +436,7 @@ public class Order extends AbstractAggregateRoot<OrderIdentifier> {
 		}
 
 		Assert.notNull(paymentMethod, "PaymentMethod must not be null");
+
 		this.paymentMethod = paymentMethod;
 	}
 

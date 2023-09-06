@@ -41,23 +41,16 @@ class OrderLineTests extends AbstractIntegrationTests {
 	private static int keksCounter = 0;
 
 	private Order order;
-	private OrderLine orderLine;
+	private Product product;
 
 	@BeforeEach
 	void before() {
 
-		Product cookie = new Cookie("OrderLine Cookie " + keksCounter++, Currencies.ZERO_EURO);
+		this.product = new Cookie("OrderLine Cookie " + keksCounter++, Currencies.ZERO_EURO);
 
-		catalog.save(cookie);
+		catalog.save(product);
 
-		order = new Order(UserAccountIdentifier.of("userId"), Cash.CASH);
-		orderLine = new OrderLine(cookie, Quantity.of(10));
-	}
-
-	@Test
-	void nullTest() {
-		assertThatExceptionOfType(IllegalArgumentException.class) //
-				.isThrownBy(() -> order.add((OrderLine) null));
+		this.order = new Order(UserAccountIdentifier.of("userId"), Cash.CASH);
 	}
 
 	@Test
@@ -69,23 +62,18 @@ class OrderLineTests extends AbstractIntegrationTests {
 
 	@Test
 	void addTest() {
-		order.add(orderLine);
+		order.addOrderLine(product, Quantity.of(10));
 	}
 
 	@Test
 	void addTest2() {
-		order.add(orderLine);
-		order.add(orderLine);
+		order.addOrderLine(product, Quantity.of(10));
+		order.addOrderLine(product, Quantity.of(10));
 	}
 
 	@Test
 	void removeTest() {
-		order.add(orderLine);
-		order.remove(orderLine);
-	}
-
-	@Test
-	void removeTest2() {
+		var orderLine = order.addOrderLine(product, Quantity.of(10));
 		order.remove(orderLine);
 	}
 }
