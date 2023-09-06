@@ -17,7 +17,7 @@
 	<properties>
 		<dev>/dev</dev>
 		<java.version>17</java.version>
-		<jmolecules.version>2022.2.3</jmolecules.version>
+		<jmolecules.version>2023.1.0</jmolecules.version>
 		<spring-modulith.version>1.0.0</spring-modulith.version>
 		<refdocs.dir>${project.build.directory}/refdocs</refdocs.dir>
 	</properties>
@@ -282,13 +282,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.jmolecules</groupId>
-			<artifactId>jmolecules-ddd</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jmolecules</groupId>
-			<artifactId>jmolecules-events</artifactId>
+			<groupId>org.jmolecules.integrations</groupId>
+			<artifactId>jmolecules-starter-ddd</artifactId>
 		</dependency>
 
 		<dependency>
