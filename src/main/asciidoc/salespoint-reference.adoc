@@ -562,8 +562,8 @@ image::business-time.png[title="Business time"]
 [[modules.files]]
 == File Storage
 
-plantuml::{generated-docs}/module-org.salespointframework.storage.puml[,,format=svg,title="Storage component"]
-include::{generated-docs}/module-org.salespointframework.storage.adoc[]
+plantuml::{generated-docs}/module-org.salespointframework.files.puml[,,format=svg,title="File Storage Component"]
+include::{generated-docs}/module-org.salespointframework.files.adoc[]
 
 [[modules.extending-salespoint]]
 == Extending Salespoint
@@ -598,15 +598,15 @@ Extending `Product` or `Catalog` respectively is straight forward:
 !include uml/catalog.uml2
 
 namespace com.acme.myproject #eeeeee {
-  
+
   class MyProduct <<AggregateRoot>> extends org.salespointframework.catalog.Product {
     - customAttribute : String
   }
-  
+
   interface MyCatalog <<Repository>> extends org.salespointframework.catalog.Catalog {
     + findByCustomAttribute(String) : Streamable<MyProduct>
   }
-  
+
   MyCatalog -left-> MyProduct
 }
 ....
@@ -618,7 +618,7 @@ Also, the attributes must not be named after https://www.w3schools.com/SQl/sql_r
 2. _Create a dedicated repository interface that extends `Catalog`._ -- Declare custom query methods that can refer to custom attributes as needed.
 3. _In your application code, use `MyCatalog` instead of `Catalog`._ -- This is possible as `MyCatalog` inherits all basic CRUD functionality from `Catalog`.
 
-[[modules.extending-salespoint.order]] 
+[[modules.extending-salespoint.order]]
 === Extending the order module
 
 Let's move on to a slightly more complex case.
