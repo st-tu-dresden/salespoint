@@ -27,8 +27,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 /**
  * Integration tests for sample components.
@@ -51,16 +53,19 @@ class ExampleControllerIntegrationTests {
 	static class Config {
 
 		@Bean
-		SecurityFilterChain testSecurity(HttpSecurity security) throws Exception {
+		SecurityFilterChain testSecurity(HttpSecurity security, HandlerMappingIntrospector introspector) throws Exception {
 
-			return security.csrf().disable()
-					.authorizeHttpRequests().requestMatchers("/**").permitAll()
-					.and().build();
+			var mvc = new MvcRequestMatcher.Builder(introspector);
+
+			return security
+					.authorizeHttpRequests(it -> it.requestMatchers(mvc.pattern("/**")).permitAll()
+							.anyRequest().authenticated())
+					.csrf(it -> it.disable())
+					.build();
 		}
 	}
 
 	@Test // #72
-	@SuppressWarnings("resource")
 	void usesUtf8ToDecodePayload() {
 
 		var template = new RestTemplate();

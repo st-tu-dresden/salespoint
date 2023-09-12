@@ -24,6 +24,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 /**
  * Basic Salespoint security configuration setting up the {@link AuthenticationManagerBuilder} to work with the
@@ -38,11 +40,17 @@ class SalespointWebSecurityConfiguration {
 
 	@Bean
 	@ConditionalOnWebApplication
-	SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
+	MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
+		return new MvcRequestMatcher.Builder(introspector).servletPath("/");
+	}
+
+	@Bean
+	@ConditionalOnWebApplication
+	SecurityFilterChain filterChain(HttpSecurity security, MvcRequestMatcher.Builder mvc) throws Exception {
 
 		return security
 				.userDetailsService(userDetailsService)
-				.authorizeHttpRequests(http -> http.requestMatchers("/resources/**").permitAll())
+				.authorizeHttpRequests(http -> http.requestMatchers(mvc.pattern("/resources/**")).permitAll())
 				.build();
 	}
 }
