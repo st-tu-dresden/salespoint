@@ -118,28 +118,28 @@ public interface UserAccountManagement {
 	 * Checks if an {@link UserAccount} exists.
 	 *
 	 * @param userAccountIdentifier
-	 * @return
+	 * @return whether a {@link UserAccount} with the given identifier exists.
 	 */
 	boolean contains(UserAccountIdentifier userAccountIdentifier);
 
 	/**
 	 * Finds all {@link UserAccount}s.
 	 *
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	Streamable<UserAccount> findAll();
 
 	/**
 	 * Finds only enabled {@link UserAccount}s.
 	 *
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	Streamable<UserAccount> findEnabled();
 
 	/**
 	 * Finds only disabled {@link UserAccount}s.
 	 *
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	Streamable<UserAccount> findDisabled();
 
@@ -147,7 +147,7 @@ public interface UserAccountManagement {
 	 * Returns the user with the given user name.
 	 *
 	 * @param username must not be {@literal null} or empty.
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	Optional<UserAccount> findByUsername(String username);
 

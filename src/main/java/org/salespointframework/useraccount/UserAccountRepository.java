@@ -32,14 +32,14 @@ interface UserAccountRepository
 	/**
 	 * Returns all enabled {@link UserAccount}s.
 	 *
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	Streamable<UserAccount> findByEnabledTrue();
 
 	/**
 	 * Returns all disabled {@link UserAccount}s.
 	 *
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	Streamable<UserAccount> findByEnabledFalse();
 
@@ -47,7 +47,7 @@ interface UserAccountRepository
 	 * Returns the {@link UserAccount} with the given email address.
 	 *
 	 * @param emailAddress must not be {@literal null}.
-	 * @return
+	 * @return will never be {@literal null}.
 	 * @since 7.1
 	 */
 	Optional<UserAccount> findByEmail(String emailAddress);

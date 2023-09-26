@@ -50,6 +50,7 @@ public final class Role implements Serializable, Comparable<Role>, ValueObject {
 	 * Creates a new {@link Role} instance with the given name.
 	 *
 	 * @param name the name of the Role, must not be {@literal null} or empty.
+	 * @return will never be {@literal null}.
 	 */
 	public static Role of(String name) {
 		return new Role(name);

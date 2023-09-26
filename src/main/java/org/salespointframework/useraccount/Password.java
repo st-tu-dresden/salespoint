@@ -38,6 +38,11 @@ public abstract class Password {
 	 */
 	abstract String asString();
 
+	/**
+	 * An encrypted password.
+	 *
+	 * @author Oliver Drotbohm
+	 */
 	@Embeddable
 	@EqualsAndHashCode(callSuper = false)
 	@RequiredArgsConstructor(staticName = "of", access = AccessLevel.PACKAGE)
@@ -87,6 +92,12 @@ public abstract class Password {
 			this.value = password;
 		}
 
+		/**
+		 * Creates a new unencrypted password.
+		 *
+		 * @param password must not be {@literal null} or empty.
+		 * @return will never be {@literal null}.
+		 */
 		public static UnencryptedPassword of(String password) {
 			return new UnencryptedPassword(password);
 		}
@@ -94,7 +105,7 @@ public abstract class Password {
 		/**
 		 * Returns the length of the password.
 		 *
-		 * @return
+		 * @return a positive integer.
 		 */
 		public int getLength() {
 			return value.length();
