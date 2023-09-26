@@ -22,10 +22,10 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
-import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.modulith.test.ApplicationModuleTest;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -65,18 +65,26 @@ class UserAccountRepositoryIntegrationTests {
 	}
 
 	@Test // #55
+	@Transactional(propagation = Propagation.NEVER)
 	void rejectsUserAccountWithSameUsername() {
 
-		UserAccount userAccount = new UserAccount(firstUser.getId(), PASSWORD);
+		repository.deleteAll();
 
-		assertThatExceptionOfType(DataIntegrityViolationException.class) //
-				.isThrownBy(() -> repository.save(userAccount));
+		try {
+
+			repository.save(new UserAccount("username", PASSWORD));
+
+			assertThatExceptionOfType(DataIntegrityViolationException.class) //
+					.isThrownBy(() -> repository.save(new UserAccount("username", PASSWORD)));
+		} finally {
+			repository.deleteAll();
+		}
 	}
 
 	@Test // #222
 	void looksUpUserViaEmail() {
 
-		UserAccount account = new UserAccount(UserAccountIdentifier.of("username"), PASSWORD);
+		UserAccount account = new UserAccount("username", PASSWORD);
 		account.setEmail("foo@bar.com");
 
 		UserAccount reference = repository.save(account);
@@ -113,8 +121,6 @@ class UserAccountRepositoryIntegrationTests {
 	}
 
 	static UserAccount createAccount(EncryptedPassword encryptedPassword) {
-
-		UserAccountIdentifier identifier = UserAccountIdentifier.of(UUID.randomUUID().toString());
-		return new UserAccount(identifier, encryptedPassword, Role.of("USER"));
+		return new UserAccount(UUID.randomUUID().toString(), encryptedPassword, Role.of("USER"));
 	}
 }

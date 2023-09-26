@@ -144,7 +144,20 @@ class UserAccountManagerIntegrationTests {
 
 		assertThat(events.ofType(UserAccountCreated.class)) //
 				.hasSize(1) //
-				.anyMatch(it -> it.getAccount().equals(account));
+				.extracting(UserAccountCreated::getUserAccountIdentifier)
+				.anyMatch(account::hasId);
+	}
+
+	@Test // #55
+	void rejectsChangingUserNameToOneOfExistingAccount() {
+
+		users.create("username", PASSWORD);
+
+		var other = users.create("other username", PASSWORD);
+		other.setUsername("username");
+
+		assertThatExceptionOfType(IllegalArgumentException.class) //
+				.isThrownBy(() -> users.save(other));
 	}
 
 	private UserAccount createAccount() {

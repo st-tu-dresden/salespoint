@@ -19,7 +19,6 @@ import lombok.experimental.UtilityClass;
 
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
-import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 
 /**
  * Testing utilities when working with {@link UserAccount}s.
@@ -30,6 +29,9 @@ import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 @UtilityClass
 public class UserAccountTestUtils {
 
+	/**
+	 * A simple, unencrypted password of {@code password}.
+	 */
 	public static UnencryptedPassword UNENCRYPTED_PASSWORD = UnencryptedPassword.of("password");
 
 	static EncryptedPassword ENCRYPTED_PASSWORD = EncryptedPassword.of("encrypted");
@@ -37,9 +39,9 @@ public class UserAccountTestUtils {
 	/**
 	 * Creates a dummy {@link UserAccount}.
 	 *
-	 * @return
+	 * @return will never be {@literal null}.
 	 */
 	public static UserAccount createUserAccount() {
-		return new UserAccount(UserAccountIdentifier.of("4711"), ENCRYPTED_PASSWORD);
+		return new UserAccount("username", ENCRYPTED_PASSWORD);
 	}
 }

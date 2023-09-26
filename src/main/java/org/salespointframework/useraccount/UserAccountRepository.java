@@ -26,7 +26,8 @@ import org.springframework.data.util.Streamable;
  *
  * @author Oliver Gierke
  */
-interface UserAccountRepository extends SalespointRepository<UserAccount, UserAccountIdentifier> {
+interface UserAccountRepository
+		extends SalespointRepository<UserAccount, UserAccountIdentifier>, DetachingRepository<UserAccount> {
 
 	/**
 	 * Returns all enabled {@link UserAccount}s.
@@ -50,4 +51,23 @@ interface UserAccountRepository extends SalespointRepository<UserAccount, UserAc
 	 * @since 7.1
 	 */
 	Optional<UserAccount> findByEmail(String emailAddress);
+
+	/**
+	 * Returns the {@link UserAccount} for the given username, if one exists.
+	 *
+	 * @param username must not be {@literal null}.
+	 * @return will never be {@literal null}.
+	 * @since 9.0
+	 */
+	Optional<UserAccount> findByUsername(String username);
+
+	/**
+	 * Saves the given {@link UserAccount} and immediately flushes the persistence context.
+	 *
+	 * @param <S> the type of {@link UserAccount}.
+	 * @param entity must not be {@literal null}.
+	 * @return will never be {@literal null}.
+	 * @since 9.0
+	 */
+	<S extends UserAccount> S saveAndFlush(S entity);
 }

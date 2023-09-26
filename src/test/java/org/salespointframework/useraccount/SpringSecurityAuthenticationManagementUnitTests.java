@@ -35,7 +35,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.salespointframework.useraccount.SpringSecurityAuthenticationManagement.UserAccountDetails;
-import org.salespointframework.useraccount.UserAccount.UserAccountIdentifier;
 import org.springframework.data.util.Streamable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -83,7 +82,7 @@ class SpringSecurityAuthenticationManagementUnitTests {
 
 		authenticate(account);
 
-		when(repository.findById(account.getId())).thenReturn(Optional.of(account));
+		doReturn(Optional.of(account)).when(repository).findByUsername(account.getUsername());
 
 		var currentUser = authenticationManager.getCurrentUser();
 
@@ -125,12 +124,11 @@ class SpringSecurityAuthenticationManagementUnitTests {
 		var customerRole = Role.of("CUSTOMER");
 		var adminRole = Role.of("ROLE_ADMIN");
 
-		var identifier = UserAccountIdentifier.of("4711");
-		var userAccount = new UserAccount(identifier, EncryptedPassword.of("encrypted"), customerRole, adminRole);
+		var userAccount = new UserAccount("username", EncryptedPassword.of("encrypted"), customerRole, adminRole);
 
-		doReturn(Optional.of(userAccount)).when(repository).findById(identifier);
+		doReturn(Optional.of(userAccount)).when(repository).findByUsername("username");
 
-		var userDetails = authenticationManager.loadUserByUsername("4711");
+		var userDetails = authenticationManager.loadUserByUsername("username");
 
 		assertThat(userDetails.getAuthorities()) //
 				.allMatch(it -> it.getAuthority().startsWith("ROLE_"));
@@ -141,10 +139,9 @@ class SpringSecurityAuthenticationManagementUnitTests {
 
 		assertThat(authenticationManager.getCurrentUser()).isEmpty();
 
-		var identifier = UserAccountIdentifier.of("4711");
-		var account = new UserAccount(identifier, EncryptedPassword.of("encrypted"), Role.of("ADMIN"));
+		var account = new UserAccount("username", EncryptedPassword.of("encrypted"), Role.of("ADMIN"));
 
-		doReturn(Optional.of(account)).when(repository).findById(identifier);
+		doReturn(Optional.of(account)).when(repository).findByUsername(account.getUsername());
 
 		authenticationManager.updateAuthentication(account);
 

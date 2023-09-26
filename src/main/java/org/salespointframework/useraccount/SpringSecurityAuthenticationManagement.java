@@ -66,8 +66,7 @@ class SpringSecurityAuthenticationManagement implements AuthenticationManagement
 
 		return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication()) //
 				.map(Authentication::getName) //
-				.map(UserAccountIdentifier::of) //
-				.flatMap(repository::findById);
+				.flatMap(repository::findByUsername);
 	}
 
 	/*
@@ -106,10 +105,10 @@ class SpringSecurityAuthenticationManagement implements AuthenticationManagement
 
 		var candidate = config.isLoginViaEmail() //
 				? repository.findByEmail(name) //
-				: repository.findById(UserAccountIdentifier.of(name));
+				: repository.findByUsername(name);
 
 		return new UserAccountDetails(
-				candidate.orElseThrow(() -> new UsernameNotFoundException("Useraccount: " + name + "not found")));
+				candidate.orElseThrow(() -> new UsernameNotFoundException("Useraccount: " + name + " not found")));
 	}
 
 	/*
@@ -119,12 +118,12 @@ class SpringSecurityAuthenticationManagement implements AuthenticationManagement
 	@Override
 	public Streamable<UserAccount> getCurrentlyLoggedInUserAccounts() {
 
-		var usernames = sessions.getAllPrincipals().stream()
+		var identifiers = sessions.getAllPrincipals().stream()
 				.map(UserAccountDetails.class::cast)
 				.map(UserAccountDetails::getId)
 				.toList();
 
-		return repository.findAllById(usernames);
+		return repository.findAllById(identifiers);
 	}
 
 	@Getter

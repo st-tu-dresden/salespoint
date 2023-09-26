@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import org.jmolecules.ddd.types.Identifier;
 import org.jmolecules.event.types.DomainEvent;
@@ -61,32 +62,33 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 	@Column(nullable = false) //
 	private EncryptedPassword password;
 
-	private @Getter @Setter String firstname;
-	private @Getter @Setter String lastname;
+	private @Getter @Setter String firstname, lastname;
 	private @Getter @Setter @Column(unique = true) String email;
+	private @Getter @Setter @Column(nullable = false, unique = true) String username;
 
 	@ElementCollection(fetch = FetchType.EAGER) //
 	private Set<Role> roles = new TreeSet<Role>();
 
 	private @Getter @Setter boolean enabled;
 
-	UserAccount(UserAccountIdentifier userAccountIdentifier, EncryptedPassword password, Role... roles) {
-		this(userAccountIdentifier, password, null, null, null, List.of(roles));
+	UserAccount(String username, EncryptedPassword password, Role... roles) {
+		this(username, password, null, null, null, List.of(roles));
 	}
 
-	UserAccount(UserAccountIdentifier userAccountIdentifier, EncryptedPassword password, Iterable<Role> roles) {
-		this(userAccountIdentifier, password, null, null, null, roles);
+	UserAccount(String username, EncryptedPassword password, Iterable<Role> roles) {
+		this(username, password, null, null, null, roles);
 	}
 
-	UserAccount(UserAccountIdentifier userAccountIdentifier, EncryptedPassword password, String firstname,
+	UserAccount(String username, EncryptedPassword password, String firstname,
 			String lastname, String email, Iterable<Role> roles) {
 
-		Assert.notNull(userAccountIdentifier, "User account identifier must not be null");
+		Assert.notNull(username, "User name must not be null");
 		Assert.notNull(password, "Password must not be null");
 		Assert.notNull(roles, "Roles must not be null");
 
 		this.enabled = true;
-		this.id = userAccountIdentifier;
+		this.id = UserAccountIdentifier.of(UUID.randomUUID().toString());
+		this.username = username;
 		this.password = password;
 		this.firstname = firstname;
 		this.lastname = lastname;
@@ -102,15 +104,6 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 	@Override
 	public UserAccountIdentifier getId() {
 		return id;
-	}
-
-	/**
-	 * Returns the user's username.
-	 *
-	 * @return will never be {@literal null}.
-	 */
-	public String getUsername() {
-		return id.toString();
 	}
 
 	/**
@@ -155,7 +148,7 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 
 	@PrePersist
 	void onCreate() {
-		registerEvent(UserAccountCreated.of(this));
+		registerEvent(UserAccountCreated.of(id));
 	}
 
 	/*
@@ -168,10 +161,10 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 	}
 
 	/**
-	 * {@link UserAccountIdentifier} serves as an identifier type for {@link UserAccount} objects. The main reason for
-	 * its existence is type safety for identifier across the Salespoint Framework. <br />
-	 * {@link UserAccountIdentifier} instances serve as primary key attribute in {@link UserAccount}, but can also be
-	 * used as a key for non-persistent, {@link Map}-based implementations.
+	 * {@link UserAccountIdentifier} serves as an identifier type for {@link UserAccount} objects. The main reason for its
+	 * existence is type safety for identifier across the Salespoint Framework. <br />
+	 * {@link UserAccountIdentifier} instances serve as primary key attribute in {@link UserAccount}, but can also be used
+	 * as a key for non-persistent, {@link Map}-based implementations.
 	 *
 	 * @author Hannes Weisbach
 	 * @author Oliver Gierke
@@ -196,8 +189,11 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 		}
 	}
 
+	/**
+	 * @author Oliver Drotbohm
+	 */
 	@Value(staticConstructor = "of")
 	public static class UserAccountCreated implements DomainEvent {
-		UserAccount account;
+		UserAccountIdentifier userAccountIdentifier;
 	}
 }

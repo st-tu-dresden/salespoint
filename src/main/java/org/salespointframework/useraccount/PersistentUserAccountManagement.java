@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import org.salespointframework.useraccount.Password.EncryptedPassword;
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
@@ -97,11 +98,10 @@ class PersistentUserAccountManagement implements UserAccountManagement {
 		});
 
 		var encryptedPassword = encrypt(password);
-		var account = new UserAccount(UserAccountIdentifier.of(userName), encryptedPassword, roles);
+		var account = new UserAccount(userName, encryptedPassword, roles);
 		account.setEmail(EMAIL_PLACEHOLDER.equals(emailAddress) ? null : emailAddress);
 
 		return save(account);
-
 	}
 
 	/*
@@ -112,7 +112,7 @@ class PersistentUserAccountManagement implements UserAccountManagement {
 	public Optional<UserAccount> get(UserAccountIdentifier userAccountIdentifier) {
 
 		Assert.notNull(userAccountIdentifier, "userAccountIdentifier must not be null");
-		return repository.findById(userAccountIdentifier);
+		return repository.findById(userAccountIdentifier).map(repository::detach);
 	}
 
 	/*
@@ -139,7 +139,15 @@ class PersistentUserAccountManagement implements UserAccountManagement {
 							String.format("A different UserAccount with email %s already exists!", it.getEmail()));
 				});
 
-		return repository.save(userAccount);
+		var username = userAccount.getUsername();
+
+		repository.findByUsername(userAccount.getUsername())
+				.filter(Predicate.not(userAccount::equals))
+				.ifPresent(__ -> {
+					throw new IllegalArgumentException("Username %s already taken!".formatted(username));
+				});
+
+		return repository.detach(repository.saveAndFlush(userAccount));
 	}
 
 	/*
@@ -165,7 +173,9 @@ class PersistentUserAccountManagement implements UserAccountManagement {
 
 		Assert.notNull(userAccountIdentifier, "UserAccountIdentifier must not be null!");
 
-		get(userAccountIdentifier).ifPresent(account -> account.setEnabled(false));
+		get(userAccountIdentifier).ifPresent(account -> {
+			repository.save(account.setEnabled(false));
+		});
 	}
 
 	/*
@@ -229,7 +239,7 @@ class PersistentUserAccountManagement implements UserAccountManagement {
 	public Optional<UserAccount> findByUsername(String username) {
 
 		Assert.hasText(username, "Username must not be null or empty!");
-		return repository.findById(UserAccountIdentifier.of(username));
+		return repository.findByUsername(username).map(repository::detach);
 	}
 
 	/*
@@ -244,7 +254,7 @@ class PersistentUserAccountManagement implements UserAccountManagement {
 
 		repository.delete(account);
 
-		return account;
+		return repository.detach(account);
 	}
 
 	/**
