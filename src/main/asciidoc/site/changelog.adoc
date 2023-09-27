@@ -4,6 +4,43 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[9.0]
+== 9.0
+
+Release date: 2023-09-27
+
+- {linkbase}/305[#305] - As a user I would like to be able to change my username.
+- {linkbase}/448[#448] - Upgrade to Spring Boot 3.1.4.
+- {linkbase}/428[#428] - Rename Storage module to File Storage.
+- {linkbase}/426[#426] - Remove deprecated methods in `Order`.
+- {linkbase}/118[#118] - Accountancy find method fail for subclassed entries.
+- {linkbase}/223[#223] - Fix documentation on how to work with and potentially extend Accountancy(Entry).
+- {linkbase}/430[#430] - Allow removing individual files from `Storage`.
+- {linkbase}/393[#393] - Switch to Spring HTML Asciidoctor backend.
+- {linkbase}/314[#314] - Allow lookup of custom `AccountancyEntry` extensions via `Accountancy`.
+- {linkbase}/439[#439] - Update copyright headers.
+- {linkbase}/441[#441] - Upgrade to Spring Boot 3.1.3.
+- {linkbase}/442[#442] - Upgrade to Spring Modulith 1.0.
+- {linkbase}/443[#443] - Upgrade to jMolecules 2023.1.0.
+- {linkbase}/444[#444] - Enforce aggregate boundaries in `ProductPaymentEntry`.
+- {linkbase}/445[#445] - Enforce aggregate boundaries in `Order`.
+- {linkbase}/446[#446] - Update build plugins.
+- {linkbase}/447[#447] - Update Maven wrapper.
+- {linkbase}/436[#436] - Upgrade to Spring Boot 3.1 M1.
+- {linkbase}/437[#437] - Upgrade to Spring Modulith 0.4.
+- {linkbase}/438[#438] - Upgrade to jMolecules 2022.2.3.
+- {linkbase}/435[#435] - Upgrade to jMolecules BOM 2022.2.2.
+- {linkbase}/412[#412] - Make it clear how to persist updated `AccountancyEntry`s.
+- {linkbase}/433[#433] - Upgrade to Spring Boot 3.0.2.
+- {linkbase}/434[#434] - Upgrade to Spring Modulith 0.3.
+- {linkbase}/385[#385] - Order package uses American and British English variants of 'Canceled / Cancelled' simultaneously.
+- {linkbase}/370[#370] - Annotate `Interval` with `@Embeddable`.
+- {linkbase}/423[#423] - Allow to obtain `UserAccount` instances for all currently logged-in users.
+- {linkbase}/413[#413] - Deprecated actions in GitHub workflows should be upgraded.
+- {linkbase}/417[#417] - Upgrade to Spring Boot 3.0 GA.
+- {linkbase}/407[#407] - Polish CSS for module canvases in reference documentation.
+
+:numbered!:
 [8.0.1]
 == 8.0.1
 
