@@ -67,13 +67,8 @@ interface AccountancyEntryRepository extends SalespointRepository<AccountancyEnt
 	 * @param to must not be {@literal null}.
 	 * @return will never be {@literal null}.
 	 */
-	default Streamable<AccountancyEntry> findByDateBetween(LocalDateTime from, LocalDateTime to) {
-
-		Assert.notNull(from, "Start date must not be null!");
-		Assert.notNull(to, "End date must not be null!");
-
-		return findByDateBetween(from, to, AccountancyEntry.class);
-	}
+	@Query("select ae from AccountancyEntry ae where ae.date > :from and ae.date < :to")
+	Streamable<AccountancyEntry> findByDateBetween(LocalDateTime from, LocalDateTime to);
 
 	/**
 	 * Returns all {@link AccountancyEntry}s within the given {@link Interval}.
@@ -85,7 +80,7 @@ interface AccountancyEntryRepository extends SalespointRepository<AccountancyEnt
 
 		Assert.notNull(interval, "Interval must not be null!");
 
-		return findByDateBetween(interval.getStart(), interval.getEnd());
+		return findByDateIn(interval, AccountancyEntry.class);
 	}
 
 	/**

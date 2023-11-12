@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 import javax.money.MonetaryAmount;
 
@@ -104,12 +105,42 @@ class AccountancyRepositoryTests {
 		assertThat(repository.findAll(CustomAccountancyEntry.class)).containsExactly(customEntry);
 	}
 
+	@Test // GH-450
+	void findsCustomEntryWithinInterval() {
+
+		var now = LocalDateTime.now();
+
+		var entries = Stream.of(
+				new AccountancyEntry(Money.of(10, Currencies.EURO)),
+				new CustomAccountancyEntry(Money.of(10, Currencies.EURO)))
+				.map(it -> it.setDate(now))
+				.map(repository::save)
+				.toList();
+
+		var start = now.minusMinutes(1);
+		var end = now.plusMinutes(1);
+
+		assertThat(repository.findByDateBetween(start, end))
+				.containsExactlyInAnyOrderElementsOf(entries);
+		assertThat(repository.findByDateIn(Interval.from(start).to(end)))
+				.containsExactlyInAnyOrderElementsOf(entries);
+	}
+
 	@Entity
 	@NoArgsConstructor(force = true)
 	static class CustomAccountancyEntry extends AccountancyEntry {
 
 		CustomAccountancyEntry(MonetaryAmount amount) {
 			super(amount);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see org.salespointframework.accountancy.AccountancyEntry#toString()
+		 */
+		@Override
+		public String toString() {
+			return "Custom" + super.toString();
 		}
 	}
 }
