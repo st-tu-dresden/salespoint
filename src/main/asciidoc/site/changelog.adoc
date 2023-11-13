@@ -4,6 +4,15 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[9.0.1]
+== 9.0.1
+
+Release date: 2023-11-13
+
+- {linkbase}/449[#449] - Publish event when accountancy entries are created.
+- {linkbase}/450[#450] - `Accountancy.findByDateIn(Interval)` does not find custom `AccountancyEntry` extensions.
+
+:numbered!:
 [9.0]
 == 9.0
 
