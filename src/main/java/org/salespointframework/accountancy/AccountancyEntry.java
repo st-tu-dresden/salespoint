@@ -30,7 +30,6 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,7 +37,8 @@ import javax.money.MonetaryAmount;
 
 import org.jmolecules.ddd.types.Identifier;
 import org.salespointframework.accountancy.AccountancyEntry.AccountancyEntryIdentifier;
-import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.accountancy.AccountancyEvents.AccountancyEntryCreated;
+import org.salespointframework.core.AbstractAggregateRoot;
 import org.springframework.util.Assert;
 
 /**
@@ -52,7 +52,7 @@ import org.springframework.util.Assert;
 @ToString
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED, onConstructor = @__(@Deprecated))
 @DiscriminatorColumn(length = 100)
-public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier> {
+public class AccountancyEntry extends AbstractAggregateRoot<AccountancyEntryIdentifier> {
 
 	private @EmbeddedId AccountancyEntryIdentifier accountancyEntryIdentifier = AccountancyEntryIdentifier
 			.of(UUID.randomUUID().toString());
@@ -83,6 +83,8 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 
 		this.value = value;
 		this.description = description;
+
+		registerEvent(new AccountancyEntryCreated<>(this));
 	}
 
 	/**
@@ -146,7 +148,7 @@ public class AccountancyEntry extends AbstractEntity<AccountancyEntryIdentifier>
 	/**
 	 * {@link AccountancyEntryIdentifier} serves as an identifier type and primary key for {@link AccountancyEntry}
 	 * objects. The main reason for its existence is type safety for identifiers across the Salespoint framework. However,
-	 * it can also be used as a key for non-persistent, {@link Map}-based implementations.
+	 * it can also be used as a key for non-persistent, {@link java.util.Map}-based implementations.
 	 *
 	 * @author Hannes Weisbach
 	 * @author Oliver Drotbohm
