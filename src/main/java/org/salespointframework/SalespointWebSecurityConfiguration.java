@@ -19,33 +19,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 /**
- * Basic Salespoint security configuration setting up the {@link AuthenticationManagerBuilder} to work with the
- * {@link UserDetailsService} implementation as well as the {@link PasswordEncoder} we provide.
+ * Basic Salespoint security configuration setting up the
+ * {@link org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder} to work
+ * with the {@link UserDetailsService} implementation as well as the
+ * {@link org.springframework.security.crypto.password.PasswordEncoder} we provide.
  *
  * @author Oliver Gierke
  */
 @Configuration
+@ConditionalOnWebApplication
 class SalespointWebSecurityConfiguration {
 
 	@Autowired UserDetailsService userDetailsService;
 
 	@Bean
-	@ConditionalOnWebApplication
 	MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
 		return new MvcRequestMatcher.Builder(introspector).servletPath("/");
 	}
 
 	@Bean
-	@ConditionalOnWebApplication
 	SecurityFilterChain filterChain(HttpSecurity security, MvcRequestMatcher.Builder mvc) throws Exception {
 
 		return security
