@@ -17,7 +17,7 @@
 	<properties>
 		<dev>/dev</dev>
 		<java.version>17</java.version>
-		<jmolecules.version>2023.1.0</jmolecules.version>
+		<jmolecules.version>2023.1.4</jmolecules.version>
 		<spring-modulith.version>1.2.4-SNAPSHOT</spring-modulith.version>
 		<spring-asciidoctor-backends.version>0.0.7</spring-asciidoctor-backends.version>
 	</properties>
