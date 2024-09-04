@@ -30,6 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.ResolvableType;
 import org.springframework.format.support.FormattingConversionService;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 /**
@@ -53,8 +54,8 @@ class EnableSalespointIntegrationTests {
 		assertThat(context.getBeanProvider(ResolvableType.forClassWithGenerics(Catalog.class, Cookie.class))).isNotEmpty();
 
 		// Assert that @EnableMethodSecurity works
-		// Does not work on Boot 3.3 (and 3.2) anymore. Disabled until further notice.
-		// assertThat(context.getBeanProvider(AuthorizationManagerBeforeMethodInterceptor.class)).isNotEmpty();
+		assertThatExceptionOfType(AccessDeniedException.class)
+				.isThrownBy(() -> context.getBean(SecuredComponent.class).someMethod());
 	}
 
 	@Autowired FormattingConversionService conversionService;
