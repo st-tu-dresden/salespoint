@@ -4,7 +4,7 @@ image:https://github.com/st-tu-dresden/salespoint/actions/workflows/deploy.yaml/
 
 == Prerequisites
 
-- OpenJDK 17
+- OpenJDK 21
 - Git
 
 == Building the project
