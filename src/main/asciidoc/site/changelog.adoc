@@ -4,6 +4,21 @@ Paul Henke, Andreas Zaschka, Oliver Gierke
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[10.0]
+== 10.0
+
+Release date: 2024-09-26
+
+- {linkbase}/460[#460] - Upgrade to Maven Wrapper 3.9.9.
+- {linkbase}/454[#454] - Upgrade to Spring Modulith 1.2.4.
+- {linkbase}/459[#459] - Upgrade to Spring Boot 3.3.4.
+- {linkbase}/457[#457] - Upgrade to jMolecules 2023.1.4.
+- {linkbase}/456[#456] - Upgrade build to Java 21.
+- {linkbase}/455[#455] - Upgrade to Moneta 1.4.4.
+- {linkbase}/453[#453] - Upgrade to Spring Boot 3.3.3.
+- {linkbase}/452[#452] - `NoSuchBeanDefinitionException` for tests using `@DataJpaTest`.
+
+:numbered!:
 [9.0]
 == 9.0
 
