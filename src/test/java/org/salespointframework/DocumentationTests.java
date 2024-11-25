@@ -26,7 +26,6 @@ import org.springframework.modulith.core.ApplicationModules;
 import org.springframework.modulith.docs.Documenter;
 import org.springframework.modulith.docs.Documenter.CanvasOptions;
 import org.springframework.modulith.docs.Documenter.DiagramOptions;
-import org.springframework.modulith.docs.Documenter.DiagramOptions.DiagramStyle;
 
 /**
  * @author Oliver Drotbohm
@@ -42,8 +41,7 @@ class DocumentationTests {
 		var modules = ApplicationModules.of(SalespointSample.class);
 
 		var diagramOptions = DiagramOptions.defaults() //
-				.withExclusions(module -> module.getName().matches(".*core|.*support"))
-				.withStyle(DiagramStyle.UML);
+				.withExclusions(module -> module.getIdentifier().toString().matches(".*core|.*support"));
 
 		var canvasOptions = CanvasOptions.defaults().withApiBase("{javadoc}");
 

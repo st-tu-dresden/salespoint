@@ -48,5 +48,10 @@ class SalespointAutoConfigurationTests {
 				.run(context -> {
 					assertThat(context).hasSingleBean(ScheduledAnnotationBeanPostProcessor.class);
 				});
+
+		runner.withPropertyValues("spring.modulith.moments.enabled=true")
+				.run(context -> {
+					assertThat(context).hasSingleBean(ScheduledAnnotationBeanPostProcessor.class);
+				});
 	}
 }
