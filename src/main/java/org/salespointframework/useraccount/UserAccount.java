@@ -190,6 +190,9 @@ public class UserAccount extends AbstractAggregateRoot<UserAccountIdentifier> {
 	}
 
 	/**
+	 * Signals a new {@link UserAccount} having been created. The actual account can be looked up via
+	 * {@link UserAccountManagement}.
+	 *
 	 * @author Oliver Drotbohm
 	 */
 	@Value(staticConstructor = "of")

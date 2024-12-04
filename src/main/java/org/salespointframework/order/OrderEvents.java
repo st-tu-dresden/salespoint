@@ -26,6 +26,13 @@ import org.jmolecules.event.types.DomainEvent;
  */
 public class OrderEvents {
 
+	/**
+	 * Signals the processing of an {@link Order} having been completed, i.e. goods having been sent our, services
+	 * delivered etc. A completed {@link Order} might still be canceled later on.
+	 *
+	 * @author Oliver Drotbohm
+	 * @see OrderCanceled
+	 */
 	@Value(staticConstructor = "of")
 	public static class OrderCompleted implements DomainEvent {
 
@@ -41,6 +48,12 @@ public class OrderEvents {
 		}
 	}
 
+	/**
+	 * Signals an order having been paid. In other words, the step in an {@link Order}'s lifecycle in which we receive the
+	 * customer's money for a particular order.
+	 *
+	 * @author Oliver Drotbohm
+	 */
 	@Value(staticConstructor = "of")
 	public static class OrderPaid implements DomainEvent {
 
@@ -56,6 +69,12 @@ public class OrderEvents {
 		}
 	}
 
+	/**
+	 * Signals an {@link Order} being canceled. Likely to cause other modules in the system to take action to compensate
+	 * for a previously handled {@link OrderCompleted}.
+	 *
+	 * @author Oliver Drotbohm
+	 */
 	@Value(staticConstructor = "of")
 	public static class OrderCanceled implements DomainEvent {
 
