@@ -21,6 +21,10 @@ jobs:
     - name: Checkout sources
       uses: actions/checkout@v4
 
+    - name: Derive appropriate SHAs for base and head
+      id: setSHAs
+      uses: nrwl/nx-set-shas@v4
+
     - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
@@ -29,4 +33,4 @@ jobs:
         cache: 'maven'
 
     - name: Build with Maven
-      run: ./mvnw -B verify --file pom.xml
+      run: ./mvnw -B verify -Dspring.modulith.test.reference-commit=${{ steps.setSHAs.outputs.base }} --file pom.xml
