@@ -15,8 +15,7 @@
  */
 package org.salespointframework.support;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.math.BigDecimal;
 
@@ -35,52 +34,52 @@ class MonetaryAmountAttributeConverterTest {
 	@Test // #156
 	void handlesNullValues() {
 
-		assertThat(converter.convertToDatabaseColumn(null), is(nullValue()));
-		assertThat(converter.convertToEntityAttribute(null), is(nullValue()));
+		assertThat(converter.convertToDatabaseColumn(null)).isNull();
+		assertThat(converter.convertToEntityAttribute(null)).isNull();
 	}
 
 	@Test // #156
 	void handlesSimpleValue() {
 
-		assertThat(converter.convertToDatabaseColumn(Money.of(1.23, "EUR")), is("EUR 1.23"));
-		assertThat(converter.convertToEntityAttribute("EUR 1.23"), is(Money.of(1.23, "EUR")));
+		assertThat(converter.convertToDatabaseColumn(Money.of(1.23, "EUR"))).isEqualTo("EUR 1.23");
+		assertThat(converter.convertToEntityAttribute("EUR 1.23")).isEqualTo(Money.of(1.23, "EUR"));
 	}
 
 	@Test // #156
 	void handlesNegativeValues() {
 
-		assertThat(converter.convertToDatabaseColumn(Money.of(-1.20, "USD")), is("USD -1.2"));
-		assertThat(converter.convertToEntityAttribute("USD -1.2"), is(Money.of(-1.20, "USD")));
+		assertThat(converter.convertToDatabaseColumn(Money.of(-1.20, "USD"))).isEqualTo("USD -1.2");
+		assertThat(converter.convertToEntityAttribute("USD -1.2")).isEqualTo(Money.of(-1.20, "USD"));
 	}
 
 	@Test // #156
 	void doesNotRoundValues() {
-		assertThat(converter.convertToDatabaseColumn(Money.of(1.23456, "EUR")), is("EUR 1.23456"));
+		assertThat(converter.convertToDatabaseColumn(Money.of(1.23456, "EUR"))).isEqualTo("EUR 1.23456");
 	}
 
 	@Test // #156
 	void doesNotFormatLargeValues() {
-		assertThat(converter.convertToDatabaseColumn(Money.of(123456, "EUR")), is("EUR 123456"));
+		assertThat(converter.convertToDatabaseColumn(Money.of(123456, "EUR"))).isEqualTo("EUR 123456");
 	}
 
 	@Test // #156
 	void deserializesFormattedValues() {
-		assertThat(converter.convertToEntityAttribute("EUR 123,456.78"), is(Money.of(123456.78, "EUR")));
+		assertThat(converter.convertToEntityAttribute("EUR 123,456.78")).isEqualTo(Money.of(123456.78, "EUR"));
 	}
 
 	@Test // #156
 	void convertsValuesWithTrailingZerosCorrectly() {
 
-		Money reference = Money.of(100.0, "EUR");
+		var reference = Money.of(100.0, "EUR");
 
-		assertThat(converter.convertToEntityAttribute(converter.convertToDatabaseColumn(reference)), is(reference));
+		assertThat(converter.convertToEntityAttribute(converter.convertToDatabaseColumn(reference))).isEqualTo(reference);
 	}
 
 	@Test // #156
 	void convertsValuesWithTrailingZerosCorrectly2() {
 
-		Money reference = Money.of(new BigDecimal("100.0"), "EUR");
+		var reference = Money.of(new BigDecimal("100.0"), "EUR");
 
-		assertThat(converter.convertToEntityAttribute(converter.convertToDatabaseColumn(reference)), is(reference));
+		assertThat(converter.convertToEntityAttribute(converter.convertToDatabaseColumn(reference))).isEqualTo(reference);
 	}
 }

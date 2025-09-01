@@ -16,9 +16,6 @@
 package org.salespointframework.order;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
@@ -63,39 +60,39 @@ class CartItemUnitTests {
 	@Test // #44
 	void returnsCorrectDetails() {
 
-		CartItem item = new CartItem(PRODUCT, QUANTITY);
+		var item = new CartItem(PRODUCT, QUANTITY);
 
-		assertThat(item.getId(), is(notNullValue()));
-		assertThat(item.getProduct(), is(PRODUCT));
-		assertThat(item.getQuantity(), is(QUANTITY));
-		assertThat(item.getProductName(), is(PRODUCT.getName()));
+		assertThat(item.getId()).isNotNull();
+		assertThat(item.getProduct()).isEqualTo(PRODUCT);
+		assertThat(item.getQuantity()).isEqualTo(QUANTITY);
+		assertThat(item.getProductName()).isEqualTo(PRODUCT.getName());
 	}
 
 	@Test // #44
 	void calculatesPriceCorrectly() {
 
-		CartItem item = new CartItem(PRODUCT, QUANTITY);
+		var item = new CartItem(PRODUCT, QUANTITY);
 
-		assertThat(item.getPrice(), is(PRODUCT.getPrice().multiply(QUANTITY.getAmount())));
+		assertThat(item.getPrice()).isEqualTo(PRODUCT.getPrice().multiply(QUANTITY.getAmount()));
 	}
 
 	@Test // #44
 	void createsOrderLineCorrectly() {
 
-		OrderLine orderLine = new CartItem(PRODUCT, QUANTITY).toOrderLine();
+		var orderLine = new CartItem(PRODUCT, QUANTITY).toOrderLine();
 
-		assertThat(orderLine, is(notNullValue()));
-		assertThat(orderLine.getProductIdentifier(), is(PRODUCT.getId()));
-		assertThat(orderLine.getQuantity(), is(QUANTITY));
+		assertThat(orderLine).isNotNull();
+		assertThat(orderLine.getProductIdentifier()).isEqualTo(PRODUCT.getId());
+		assertThat(orderLine.getQuantity()).isEqualTo(QUANTITY);
 	}
 
 	@Test // #201
 	void updateingQuantityCreatesNewCartItemWithCorrectPrice() {
 
-		CartItem item = new CartItem(PRODUCT, QUANTITY);
+		var item = new CartItem(PRODUCT, QUANTITY);
 		assertThat(item.getPrice()).isEqualTo(PRODUCT.getPrice().multiply(QUANTITY.getAmount()));
 
-		CartItem newItem = item.add(QUANTITY);
+		var newItem = item.add(QUANTITY);
 		assertThat(newItem.getPrice()).isEqualTo(PRODUCT.getPrice().multiply(QUANTITY.add(QUANTITY).getAmount()));
 	}
 

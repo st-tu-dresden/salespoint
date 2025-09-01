@@ -15,8 +15,7 @@
  */
 package org.salespointframework.payment;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
 
@@ -26,7 +25,7 @@ import org.salespointframework.core.Currencies;
 
 /**
  * Unit tests for {@link CreditCard}.
- * 
+ *
  * @author Oliver Gierke
  */
 class CreditCardUnitTests {
@@ -44,22 +43,22 @@ class CreditCardUnitTests {
 	@Test // #80
 	void hasCorrectToString() {
 
-		String cardString = VISA.toString();
+		var cardString = VISA.toString();
 
-		assertThat(cardString, containsString(VISA.getCardNumber()));
-		assertThat(cardString, containsString(VISA.getNameOnCard()));
+		assertThat(cardString).contains(VISA.getCardNumber());
+		assertThat(cardString).contains(VISA.getNameOnCard());
 
-		assertThat(cardString, not(containsString(VISA.getCardVerificationCode())));
+		assertThat(cardString).doesNotContain(VISA.getCardVerificationCode());
 	}
 
 	@Test // #80
 	void equalsHashCode() {
 
-		assertThat(VISA, is(VISA));
-		assertThat(VISA, is(VISA_CLONE));
-		assertThat(VISA_CLONE, is(VISA));
+		assertThat(VISA).isEqualTo(VISA);
+		assertThat(VISA).isEqualTo(VISA_CLONE);
+		assertThat(VISA_CLONE).isEqualTo(VISA);
 
-		assertThat(VISA, is(not(MASTER_CARD)));
-		assertThat(MASTER_CARD, is(not(VISA)));
+		assertThat(VISA).isNotEqualTo(MASTER_CARD);
+		assertThat(MASTER_CARD).isNotEqualTo(VISA);
 	}
 }

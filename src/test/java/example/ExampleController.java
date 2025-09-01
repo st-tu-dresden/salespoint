@@ -15,8 +15,7 @@
  */
 package example;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.*;
+import static org.assertj.core.api.Assertions.*;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -40,6 +39,6 @@ class ExampleController {
 	 */
 	@RequestMapping("/encoding")
 	void parameterEncoding(@RequestParam String value, HttpServletResponse response) {
-		assertThat(value, is("äöü€"));
+		assertThat(value).isEqualTo("äöü€");
 	}
 }

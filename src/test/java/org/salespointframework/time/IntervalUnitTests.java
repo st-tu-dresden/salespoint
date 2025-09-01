@@ -16,9 +16,6 @@
 package org.salespointframework.time;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -27,7 +24,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link Interval}.
- * 
+ *
  * @author Oliver Gierke
  */
 class IntervalUnitTests {
@@ -48,24 +45,24 @@ class IntervalUnitTests {
 	@Test // #8
 	void instancesWithSameStartAndEndAreEqual() {
 
-		LocalDateTime start = LocalDateTime.now();
-		LocalDateTime end = start.plusDays(2);
+		var start = LocalDateTime.now();
+		var end = start.plusDays(2);
 
-		Interval first = Interval.from(start).to(end);
-		Interval second = Interval.from(start).to(end);
+		var first = Interval.from(start).to(end);
+		var second = Interval.from(start).to(end);
 
-		assertThat(first, is(first));
-		assertThat(first, is(second));
-		assertThat(second, is(first));
+		assertThat(first).isEqualTo(first);
+		assertThat(first).isEqualTo(second);
+		assertThat(second).isEqualTo(first);
 	}
 
 	@Test // #8
 	void instancesWithDifferentEndsAreNotEqual() {
 
-		LocalDateTime start = LocalDateTime.now();
+		var start = LocalDateTime.now();
 
-		Interval first = Interval.from(start).to(start.plusDays(1));
-		Interval second = Interval.from(start).to(start.plusDays(2));
+		var first = Interval.from(start).to(start.plusDays(1));
+		var second = Interval.from(start).to(start.plusDays(2));
 
 		assertThat(first).isNotEqualTo(second);
 		assertThat(second).isNotEqualTo(first);
@@ -74,10 +71,10 @@ class IntervalUnitTests {
 	@Test // #8
 	void instancesWithDifferentStartsAreNotEqual() {
 
-		LocalDateTime reference = LocalDateTime.now();
+		var reference = LocalDateTime.now();
 
-		Interval first = Interval.from(reference.minusDays(1)).to(reference);
-		Interval second = Interval.from(reference.minusDays(2)).to(reference);
+		var first = Interval.from(reference.minusDays(1)).to(reference);
+		var second = Interval.from(reference.minusDays(2)).to(reference);
 
 		assertThat(first).isNotEqualTo(second);
 		assertThat(second).isNotEqualTo(first);
@@ -86,10 +83,10 @@ class IntervalUnitTests {
 	@Test // #8
 	void instancesWithDifferentStartsAndEndsAreNotEqual() {
 
-		LocalDateTime reference = LocalDateTime.now();
+		var reference = LocalDateTime.now();
 
-		Interval first = Interval.from(reference.minusDays(1)).to(reference);
-		Interval second = Interval.from(reference.plusDays(1)).to(reference.plusDays(2));
+		var first = Interval.from(reference.minusDays(1)).to(reference);
+		var second = Interval.from(reference.plusDays(1)).to(reference.plusDays(2));
 
 		assertThat(first).isNotEqualTo(second);
 		assertThat(second).isNotEqualTo(first);
@@ -98,24 +95,24 @@ class IntervalUnitTests {
 	@Test // #153
 	void detectsContainedDateTimes() {
 
-		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime nowTomorrow = now.plusDays(1);
-		LocalDateTime nowYesterday = now.minusDays(1);
+		var now = LocalDateTime.now();
+		var nowTomorrow = now.plusDays(1);
+		var nowYesterday = now.minusDays(1);
 
-		Interval interval = Interval.from(nowYesterday).to(nowTomorrow);
+		var interval = Interval.from(nowYesterday).to(nowTomorrow);
 
-		assertThat(interval.contains(now), is(true));
-		assertThat(interval.contains(nowTomorrow), is(true));
-		assertThat(interval.contains(nowYesterday), is(true));
+		assertThat(interval.contains(now)).isTrue();
+		assertThat(interval.contains(nowTomorrow)).isTrue();
+		assertThat(interval.contains(nowYesterday)).isTrue();
 
-		assertThat(interval.contains(nowYesterday.minusDays(1)), is(false));
-		assertThat(interval.contains(nowTomorrow.plusDays(1)), is(false));
+		assertThat(interval.contains(nowYesterday.minusDays(1))).isFalse();
+		assertThat(interval.contains(nowTomorrow.plusDays(1))).isFalse();
 	}
 
 	@Test // #153
 	void rejectsNullForContainsReference() {
 
-		LocalDateTime now = LocalDateTime.now();
+		var now = LocalDateTime.now();
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
 				.isThrownBy(() -> Interval.from(now).to(now.plusDays(1)).contains(null));
@@ -124,30 +121,30 @@ class IntervalUnitTests {
 	@Test // #153
 	void detectsOverlaps() {
 
-		LocalDateTime now = LocalDateTime.now();
+		var now = LocalDateTime.now();
 
-		Interval first = Interval.from(now.minusDays(1)).to(now.plusDays(2));
-		Interval second = Interval.from(now.minusDays(2)).to(now.plusDays(1));
-		Interval third = Interval.from(now).to(now.plusDays(1));
-		Interval fourth = Interval.from(now.minusDays(2)).to(now.minusDays(1));
+		var first = Interval.from(now.minusDays(1)).to(now.plusDays(2));
+		var second = Interval.from(now.minusDays(2)).to(now.plusDays(1));
+		var third = Interval.from(now).to(now.plusDays(1));
+		var fourth = Interval.from(now.minusDays(2)).to(now.minusDays(1));
 
 		// Partial
-		assertThat(first.overlaps(second), is(true));
-		assertThat(second.overlaps(first), is(true));
+		assertThat(first.overlaps(second)).isTrue();
+		assertThat(second.overlaps(first)).isTrue();
 
 		// Containment
-		assertThat(third.overlaps(first), is(true));
-		assertThat(first.overlaps(third), is(true));
+		assertThat(third.overlaps(first)).isTrue();
+		assertThat(first.overlaps(third)).isTrue();
 
 		// No overlap
-		assertThat(first.overlaps(fourth), is(false));
-		assertThat(fourth.overlaps(first), is(false));
+		assertThat(first.overlaps(fourth)).isFalse();
+		assertThat(fourth.overlaps(first)).isFalse();
 	}
 
 	@Test // #153
 	void rejectsNullForOverlapReference() {
 
-		LocalDateTime now = LocalDateTime.now();
+		var now = LocalDateTime.now();
 
 		assertThatExceptionOfType(IllegalArgumentException.class) //
 				.isThrownBy(() -> Interval.from(now).to(now.plusDays(1)).overlaps(null));
@@ -156,8 +153,8 @@ class IntervalUnitTests {
 	@Test // #162
 	void exposesIntervalAsDuration() {
 
-		LocalDateTime now = LocalDateTime.now();
+		var now = LocalDateTime.now();
 
-		assertThat(Interval.from(now).to(now.plusDays(1)).toDuration(), is(Duration.ofDays(1)));
+		assertThat(Interval.from(now).to(now.plusDays(1)).toDuration()).isEqualTo(Duration.ofDays(1));
 	}
 }

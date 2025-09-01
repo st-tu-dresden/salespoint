@@ -15,8 +15,7 @@
  */
 package org.salespointframework;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.*;
+import static org.assertj.core.api.Assertions.*;
 
 import org.salespointframework.core.DataInitializer;
 import org.springframework.stereotype.Component;
@@ -30,12 +29,12 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 @Component
 class TestDataInitializer implements DataInitializer {
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.salespointframework.core.DataInitializer#initialize()
 	 */
 	@Override
 	public void initialize() {
-		assertThat(TransactionSynchronizationManager.isActualTransactionActive(), is(true));
+		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
 	}
 }

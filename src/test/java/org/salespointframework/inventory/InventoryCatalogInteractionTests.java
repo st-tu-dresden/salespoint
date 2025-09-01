@@ -16,8 +16,6 @@
 package org.salespointframework.inventory;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -87,6 +85,6 @@ class InventoryCatalogInteractionTests extends AbstractIntegrationTests {
 		inventory.save(item);
 		inventory.deleteById(item.getId());
 
-		assertThat(catalog.existsById(cookie.getId()), is(true));
+		assertThat(catalog.existsById(cookie.getId())).isTrue();
 	}
 }

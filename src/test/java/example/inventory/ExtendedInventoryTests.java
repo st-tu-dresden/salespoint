@@ -15,8 +15,7 @@
  */
 package example.inventory;
 
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.junit.MatcherAssert.*;
+import static org.assertj.core.api.Assertions.*;
 
 import jakarta.persistence.Entity;
 
@@ -68,10 +67,9 @@ class ExtendedInventoryTests {
 	@Test // #114
 	void findsItemsWithSameMetricAndMatchingAmount() {
 
-		Iterable<UniqueInventoryItem> result = inventory.findByQuantityGreaterThan(Quantity.of(5, Metric.LITER));
-
-		assertThat(result, is(iterableWithSize(1)));
-		assertThat(result, hasItem(wineItem));
+		assertThat(inventory.findByQuantityGreaterThan(Quantity.of(5, Metric.LITER)))
+				.hasSize(1)
+				.containsExactly(wineItem);
 	}
 
 	@Entity

@@ -16,9 +16,6 @@
 package org.salespointframework.quantity;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,7 +32,7 @@ class QuantityUnitTests {
 
 	@Test // #9
 	void defaultsToUnitAsMetric() {
-		assertThat(Quantity.of(1).getMetric(), is(Metric.UNIT));
+		assertThat(Quantity.of(1).getMetric()).isEqualTo(Metric.UNIT);
 	}
 
 	@Test // #9
@@ -48,8 +45,8 @@ class QuantityUnitTests {
 	@Test // #9
 	void rejectsIncompatibleMetric() {
 
-		assertThat(Quantity.of(1).isCompatibleWith(Metric.UNIT), is(true));
-		assertThat(Quantity.of(1).isCompatibleWith(Metric.KILOGRAM), is(false));
+		assertThat(Quantity.of(1).isCompatibleWith(Metric.UNIT)).isTrue();
+		assertThat(Quantity.of(1).isCompatibleWith(Metric.KILOGRAM)).isFalse();
 	}
 
 	@Test // #9
@@ -62,8 +59,8 @@ class QuantityUnitTests {
 	@Test // #9
 	void addsQuantitiesCorrectly() {
 
-		assertThat(Quantity.of(1).add(Quantity.of(1)), is(Quantity.of(2)));
-		assertThat(Quantity.of(1.5).add(Quantity.of(1.5)), is(Quantity.of(3.0)));
+		assertThat(Quantity.of(1).add(Quantity.of(1))).isEqualTo(Quantity.of(2));
+		assertThat(Quantity.of(1.5).add(Quantity.of(1.5))).isEqualTo(Quantity.of(3.0));
 	}
 
 	@Test // #9
@@ -76,32 +73,32 @@ class QuantityUnitTests {
 	@Test // #64, #65, #9
 	void subtractsQuantitiesCorrectly() {
 
-		assertThat(Quantity.of(10).subtract(Quantity.of(1)), is(Quantity.of(9)));
-		assertThat(Quantity.of(10.5).subtract(Quantity.of(7.25)), is(Quantity.of(3.25)));
+		assertThat(Quantity.of(10).subtract(Quantity.of(1))).isEqualTo(Quantity.of(9));
+		assertThat(Quantity.of(10.5).subtract(Quantity.of(7.25))).isEqualTo(Quantity.of(3.25));
 	}
 
 	@Test // #34, #9
 	void comparesQuantitiesCorrectly() {
 
-		Quantity five = Quantity.of(5);
-		Quantity ten = Quantity.of(10);
+		var five = Quantity.of(5);
+		var ten = Quantity.of(10);
 
-		assertThat(five.isLessThan(ten), is(true));
-		assertThat(five.isGreaterThan(ten), is(false));
+		assertThat(five.isLessThan(ten)).isTrue();
+		assertThat(five.isGreaterThan(ten)).isFalse();
 
-		assertThat(ten.isGreaterThan(five), is(true));
-		assertThat(ten.isLessThan(five), is(false));
+		assertThat(ten.isGreaterThan(five)).isTrue();
+		assertThat(ten.isLessThan(five)).isFalse();
 
-		assertThat(ten.isGreaterThanOrEqualTo(ten), is(true));
-		assertThat(ten.isGreaterThanOrEqualTo(five), is(true));
+		assertThat(ten.isGreaterThanOrEqualTo(ten)).isTrue();
+		assertThat(ten.isGreaterThanOrEqualTo(five)).isTrue();
 	}
 
 	@Test // #9
 	void discoversNegativeQuantity() {
 
-		assertThat(Quantity.of(-1).isNegative(), is(true));
-		assertThat(Quantity.of(0).isNegative(), is(false));
-		assertThat(Quantity.of(1).isNegative(), is(false));
+		assertThat(Quantity.of(-1).isNegative()).isTrue();
+		assertThat(Quantity.of(0).isNegative()).isFalse();
+		assertThat(Quantity.of(1).isNegative()).isFalse();
 	}
 
 	@Test // #99, #184
@@ -117,17 +114,17 @@ class QuantityUnitTests {
 	@Test // #129
 	void comparesToZero() {
 
-		Quantity quantity = Quantity.of(5);
-		Quantity zero = Quantity.of(0, Metric.LITER);
+		var quantity = Quantity.of(5);
+		var zero = Quantity.of(0, Metric.LITER);
 
-		assertThat(quantity.isGreaterThan(quantity.toZero()), is(true));
-		assertThat(zero.equals(zero.toZero()), is(true));
+		assertThat(quantity.isGreaterThan(quantity.toZero())).isTrue();
+		assertThat(zero.equals(zero.toZero())).isTrue();
 	}
 
 	@Test
 	void addingQuantityToNoneIsQuantity() {
 
-		Quantity quantity = Quantity.of(5);
+		var quantity = Quantity.of(5);
 
 		assertThat(Quantity.NONE.add(quantity)).isEqualTo(quantity);
 		assertThat(quantity.add(Quantity.NONE)).isEqualTo(quantity);
@@ -160,8 +157,8 @@ class QuantityUnitTests {
 	@Test // #284
 	void considersValuesOfDifferentPrecisionStructurallyEqual() {
 
-		Quantity left = Quantity.of(1);
-		Quantity right = Quantity.of(1.0);
+		var left = Quantity.of(1);
+		var right = Quantity.of(1.0);
 
 		assertThat(left.isEqualTo(right)).isTrue();
 		assertThat(left).isNotEqualTo(right);

@@ -16,22 +16,17 @@
 package org.salespointframework.catalog;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 
-import org.hamcrest.Matchers;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.salespointframework.core.Currencies;
 import org.salespointframework.quantity.Metric;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.data.util.Streamable;
 import org.springframework.modulith.test.ApplicationModuleTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,15 +54,12 @@ class CatalogIntegrationTests {
 	@Test // #19
 	void findsProductsByCategory() {
 
-		Product product = new Product("MacBook", Money.of(2700.0, Currencies.EURO), Metric.UNIT);
+		var product = new Product("MacBook", Money.of(2700.0, Currencies.EURO), Metric.UNIT);
 		product.addCategory("Apple");
 
 		catalog.save(product);
 
-		Iterable<Product> result = catalog.findByCategory("Apple");
-
-		assertThat(result, is(iterableWithSize(1)));
-		assertThat(result, hasItem(product));
+		assertThat(catalog.findByCategory("Apple")).containsExactly(product);
 	}
 
 	@Test // #19
@@ -78,19 +70,20 @@ class CatalogIntegrationTests {
 		Optional<Cookie> kT1 = cookies.findById(cookie.getId());
 		Optional<Product> kT2 = catalog.findById(cookie.getId());
 
-		assertThat(kT1.isPresent(), is(true));
-		assertThat(kT2.isPresent(), is(true));
-		assertThat(kT1.get(), is(kT2.get()));
+		assertThat(kT1).hasValueSatisfying(first -> {
+			assertThat(kT2).hasValueSatisfying(second -> {
+				assertThat(first).isSameAs(second);
+			});
+		});
 	}
 
 	@Test // #19
 	void addTest() {
 
-		Cookie result = catalog.save(cookie);
-		Optional<Product> cookie = catalog.findById(result.getId());
+		var expected = catalog.save(cookie);
+		var cookie = catalog.findById(expected.getId());
 
-		assertThat(cookie.isPresent(), is(true));
-		assertThat(cookie.get(), is(result));
+		assertThat(cookie).hasValue(expected);
 	}
 
 	@Test // #19
@@ -99,30 +92,30 @@ class CatalogIntegrationTests {
 		catalog.save(cookie);
 		catalog.deleteById(cookie.getId());
 
-		assertThat(catalog.existsById(cookie.getId()), is(false));
+		assertThat(catalog.existsById(cookie.getId())).isFalse();
 	}
 
 	@Test // #19
 	void testContains() {
 
-		Cookie result = catalog.save(cookie);
-		assertThat(catalog.existsById(result.getId()), is(true));
+		var result = catalog.save(cookie);
+
+		assertThat(catalog.existsById(result.getId())).isTrue();
 	}
 
 	@Test // #19
 	void getTest() {
 
-		Cookie reference = catalog.save(cookie);
-		Optional<Cookie> result = cookies.findById(cookie.getId());
+		var reference = catalog.save(cookie);
+		var result = cookies.findById(cookie.getId());
 
-		assertThat(result.isPresent(), is(true));
-		assertThat(result.get(), is(reference));
+		assertThat(result).hasValue(reference);
 	}
 
 	@Test // #19
 	void persistsProductSubtypesCorrectly() {
 
-		Cookie doubleChoc = createCookie();
+		var doubleChoc = createCookie();
 
 		assertKeksFound(cookies.findAll(), doubleChoc);
 		assertKeksFound(cookies.findByCategory("chocolate"), doubleChoc);
@@ -131,25 +124,21 @@ class CatalogIntegrationTests {
 	@Test // #19
 	void generalRepoInstancesFinds() {
 
-		Cookie doubleChoc = createCookie();
-		Optional<Product> product = catalog.findById(doubleChoc.getId());
+		var doubleChoc = createCookie();
+		var product = catalog.findById(doubleChoc.getId());
 
-		assertThat(product.isPresent(), is(true));
-		assertThat(product.get(), is(instanceOf(Cookie.class)));
-		assertThat(product.get(), is(doubleChoc));
+		assertThat(product).hasValue(doubleChoc);
 	}
 
 	@Test // #232
 	void findsByAllCategories() {
 
-		Cookie first = createCookie();
+		var first = createCookie();
 
-		Cookie second = createCookie();
+		var second = createCookie();
 		second.addCategory("special");
 
-		Streamable<Product> result = catalog.findByAllCategories("chocolate", "special");
-
-		assertThat(result) //
+		assertThat(catalog.findByAllCategories("chocolate", "special")) //
 				.containsExactly(second) //
 				.doesNotContain(first);
 	}
@@ -157,15 +146,13 @@ class CatalogIntegrationTests {
 	@Test // #232
 	void findsByAnyCategory() {
 
-		Cookie first = createCookie();
+		var first = createCookie();
 		first.addCategory("standard");
 
-		Cookie second = createCookie();
+		var second = createCookie();
 		second.addCategory("special");
 
-		Streamable<Product> result = catalog.findByAnyCategory("standard", "special");
-
-		assertThat(result) //
+		assertThat(catalog.findByAnyCategory("standard", "special")) //
 				.containsExactlyInAnyOrder(first, second);
 	}
 
@@ -179,7 +166,7 @@ class CatalogIntegrationTests {
 
 	private Cookie createCookie() {
 
-		Cookie doubleChoc = new Cookie("DoubleChoc", Money.of(1.25d, Currencies.EURO));
+		var doubleChoc = new Cookie("DoubleChoc", Money.of(1.25d, Currencies.EURO));
 		doubleChoc.addCategory("chocolate");
 		doubleChoc.property = "Yummy!";
 
@@ -188,8 +175,9 @@ class CatalogIntegrationTests {
 
 	private static void assertKeksFound(Iterable<Cookie> result, Cookie cookie) {
 
-		assertThat(result, is(Matchers.<Cookie> iterableWithSize(1)));
-		assertThat(result, hasItem(cookie));
-		assertThat(result.iterator().next().property, is(cookie.property));
+		assertThat(result).containsExactly(cookie)
+				.element(0)
+				.extracting(it -> it.property)
+				.isEqualTo(cookie.property);
 	}
 }

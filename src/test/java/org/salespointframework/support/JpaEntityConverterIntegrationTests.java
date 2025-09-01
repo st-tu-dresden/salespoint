@@ -15,8 +15,7 @@
  */
 package org.salespointframework.support;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.*;
+import static org.assertj.core.api.Assertions.*;
 
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
@@ -48,9 +47,9 @@ class JpaEntityConverterIntegrationTests {
 	@Test
 	void convertsStringIdToProduct() {
 
-		Product product = catalog.save(new Product("iPad", Money.of(400, Currencies.EURO)));
-		String identifier = product.getId().toString();
+		var product = catalog.save(new Product("iPad", Money.of(400, Currencies.EURO)));
+		var identifier = product.getId().toString();
 
-		assertThat(converter.convert(identifier, STRING_TYPE, PRODUCT_TYPE), is((Object) product));
+		assertThat(converter.convert(identifier, STRING_TYPE, PRODUCT_TYPE)).isEqualTo(product);
 	}
 }

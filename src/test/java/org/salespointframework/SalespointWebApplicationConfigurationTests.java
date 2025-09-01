@@ -15,8 +15,7 @@
  */
 package org.salespointframework;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.*;
+import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.salespointframework.catalog.Product.ProductIdentifier;
@@ -28,7 +27,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 /**
  * Integration test for Salespoint web configuration setup.
- * 
+ *
  * @author Oliver Gierke
  */
 @SpringBootTest(classes = { Salespoint.class })
@@ -40,16 +39,16 @@ class SalespointWebApplicationConfigurationTests {
 
 	@Test
 	void conversionServicePrepared() {
-		assertThat(conversionService.canConvert(String.class, ProductIdentifier.class), is(true));
+		assertThat(conversionService.canConvert(String.class, ProductIdentifier.class)).isTrue();
 	}
 
 	@Test
 	void encodingFilterRegistered() {
-		assertThat(encodingFilter, is(notNullValue()));
+		assertThat(encodingFilter).isNotNull();
 	}
 
 	@Test
 	void passwordEncoderRegistered() {
-		assertThat(passwordEncoder, is(notNullValue()));
+		assertThat(passwordEncoder).isNotNull();
 	}
 }

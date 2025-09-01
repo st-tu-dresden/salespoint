@@ -16,9 +16,6 @@
 package org.salespointframework.inventory;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceException;
@@ -75,7 +72,7 @@ class InventoryTests {
 
 	@Test
 	void savesItemsCorrectly() {
-		assertThat(unique.save(item).getId(), is(notNullValue()));
+		assertThat(unique.save(item).getId()).isNotNull();
 	}
 
 	@Test // #34
@@ -83,12 +80,12 @@ class InventoryTests {
 
 		unique.deleteById(item.getId());
 
-		assertThat(unique.existsById(item.getId()), is(false));
+		assertThat(unique.existsById(item.getId())).isFalse();
 	}
 
 	@Test // #34
 	void testExists() {
-		assertThat(unique.existsById(item.getId()), is(true));
+		assertThat(unique.existsById(item.getId())).isTrue();
 	}
 
 	@Test // #34
@@ -96,8 +93,7 @@ class InventoryTests {
 
 		var result = unique.findById(item.getId());
 
-		assertThat(result.isPresent(), is(true));
-		assertThat(result.get(), is(item));
+		assertThat(result).hasValue(item);
 	}
 
 	@Test // #34

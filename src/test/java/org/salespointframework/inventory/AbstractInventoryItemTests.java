@@ -16,8 +16,6 @@
 package org.salespointframework.inventory;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +47,7 @@ class AbstractInventoryItemTests {
 	void increasesQuantityCorrectly() {
 
 		item.increaseQuantity(Quantity.of(1));
-		assertThat(item.getQuantity(), is(Quantity.of(11)));
+		assertThat(item.getQuantity()).isEqualTo(Quantity.of(11));
 	}
 
 	@Test // #34
@@ -64,6 +62,6 @@ class AbstractInventoryItemTests {
 
 		item.decreaseQuantity(Quantity.of(1));
 
-		assertThat(item.getQuantity(), is(TEN.subtract(Quantity.of(1))));
+		assertThat(item.getQuantity()).isEqualTo(TEN.subtract(Quantity.of(1)));
 	}
 }

@@ -15,10 +15,8 @@
  */
 package org.salespointframework.useraccount;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.salespointframework.useraccount.UserAccountRepositoryIntegrationTests.*;
 
@@ -74,7 +72,7 @@ class SpringSecurityAuthenticationManagementUnitTests {
 
 	@Test // #76
 	void returnsOptionalEmptyIfNoUserIsAuthenticated() {
-		assertThat(authenticationManager.getCurrentUser(), is(Optional.empty()));
+		assertThat(authenticationManager.getCurrentUser()).isEmpty();
 	}
 
 	@Test
@@ -86,8 +84,7 @@ class SpringSecurityAuthenticationManagementUnitTests {
 
 		var currentUser = authenticationManager.getCurrentUser();
 
-		assertThat(currentUser.isPresent(), is(true));
-		assertThat(currentUser.get(), is(account));
+		assertThat(currentUser).hasValue(account);
 	}
 
 	@Test
@@ -99,9 +96,9 @@ class SpringSecurityAuthenticationManagementUnitTests {
 
 		when(passwordEncoder.matches("password", "password")).thenReturn(true);
 
-		assertThat(authenticationManager.matches(matching, existing), is(true));
-		assertThat(authenticationManager.matches(failing, existing), is(false));
-		assertThat(authenticationManager.matches(null, existing), is(false));
+		assertThat(authenticationManager.matches(matching, existing)).isTrue();
+		assertThat(authenticationManager.matches(failing, existing)).isFalse();
+		assertThat(authenticationManager.matches(null, existing)).isFalse();
 	}
 
 	@Test // #222

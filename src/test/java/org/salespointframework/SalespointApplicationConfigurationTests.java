@@ -15,10 +15,7 @@
  */
 package org.salespointframework;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.junit.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -70,22 +67,21 @@ class SalespointApplicationConfigurationTests extends AbstractIntegrationTests {
 	@Test
 	void createsApplicationComponents() {
 
-		assertThat(inventory, is(notNullValue()));
-		assertThat(orderManager, is(notNullValue()));
-		assertThat(product, is(notNullValue()));
-		assertThat(userAccountManagement, is(notNullValue()));
-		assertThat(businessTime, is(notNullValue()));
-		assertThat(authenticationManagement, is(notNullValue()));
-		assertThat(argumentResolvers, hasSize(1));
-		assertThat(initializer, is(not(emptyIterable())));
-		assertThat(lineItemFilter, hasSize(1));
+		assertThat(inventory).isNotNull();
+		assertThat(orderManager).isNotNull();
+		assertThat(product).isNotNull();
+		assertThat(userAccountManagement).isNotNull();
+		assertThat(businessTime).isNotNull();
+		assertThat(authenticationManagement).isNotNull();
+		assertThat(argumentResolvers).hasSize(1);
+		assertThat(initializer).isNotEmpty();
+		assertThat(lineItemFilter).hasSize(1);
 
-		assertThat(mailSender, is(instanceOf(JavaMailSenderImpl.class)));
-
-		JavaMailSenderImpl impl = (JavaMailSenderImpl) mailSender;
-		assertThat(impl.getUsername(), is("username"));
-		assertThat(impl.getHost(), is("host"));
-		assertThat(impl.getPassword(), is("password"));
+		assertThat(mailSender).isInstanceOfSatisfying(JavaMailSenderImpl.class, impl -> {
+			assertThat(impl.getUsername()).isEqualTo("username");
+			assertThat(impl.getHost()).isEqualTo("host");
+			assertThat(impl.getPassword()).isEqualTo("password");
+		});
 	}
 
 	@Test // #266

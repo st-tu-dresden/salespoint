@@ -16,9 +16,6 @@
 package org.salespointframework.useraccount.web;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.junit.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
 import java.lang.reflect.Method;
@@ -56,40 +53,49 @@ class LoggedInUserAccountArgumentResolverUnitTests {
 	@Test // #37
 	void supportsOptionalOfUserAccountAsMethodArgumentType() throws Exception {
 
-		Method method = Sample.class.getMethod("valid", Optional.class);
-		assertThat(resolver.supportsParameter(new MethodParameter(method, 0)), is(true));
+		var method = Sample.class.getMethod("valid", Optional.class);
+
+		assertThat(resolver.supportsParameter(new MethodParameter(method, 0))).isTrue();
 	}
 
 	@Test // #37
 	void rejectsNonAnnotatedOptionalOfUserAccountAsMethodArgumentType() throws Exception {
 
-		Method method = Sample.class.getMethod("notAnnotated", Optional.class);
-		assertThat(resolver.supportsParameter(new MethodParameter(method, 0)), is(false));
+		var method = Sample.class.getMethod("notAnnotated", Optional.class);
+
+		assertThat(resolver.supportsParameter(new MethodParameter(method, 0))).isFalse();
 	}
 
 	@Test // #37
 	void rejectsNonOptionalWrappedUserAccountAsMethodArgumentType() throws Exception {
 
-		Method method = Sample.class.getMethod("notAnnotated", Optional.class);
-		assertThat(resolver.supportsParameter(new MethodParameter(method, 0)), is(false));
+		var method = Sample.class.getMethod("notAnnotated", Optional.class);
+
+		assertThat(resolver.supportsParameter(new MethodParameter(method, 0))).isFalse();
 	}
 
 	@Test // #37
 	void returnsUserAccountProvidedByAuthenticationManager() throws Exception {
 
-		Method method = Sample.class.getMethod("valid", Optional.class);
+		var method = Sample.class.getMethod("valid", Optional.class);
+
 		when(authenticationManager.getCurrentUser()).thenReturn(Optional.empty());
-		assertThat(resolver.resolveArgument(new MethodParameter(method, 0), null, null, null), is(Optional.empty()));
+
+		assertThat(resolver.resolveArgument(new MethodParameter(method, 0), null, null, null))
+				.isInstanceOfSatisfying(Optional.class, it -> {
+					assertThat(it).isEmpty();
+				});
 	}
 
 	@Test
 	void supportsAnnotatedUserAccount() throws Exception {
 
-		Method method = Sample.class.getMethod("noOptional", UserAccount.class);
+		var method = Sample.class.getMethod("noOptional", UserAccount.class);
+
 		when(authenticationManager.getCurrentUser()).thenReturn(Optional.of(account));
 
-		assertThat(resolver.supportsParameter(new MethodParameter(method, 0)), is(true));
-		assertThat(resolver.resolveArgument(new MethodParameter(method, 0), null, null, null), is(account));
+		assertThat(resolver.supportsParameter(new MethodParameter(method, 0))).isTrue();
+		assertThat(resolver.resolveArgument(new MethodParameter(method, 0), null, null, null)).isEqualTo(account);
 	}
 
 	@Test
