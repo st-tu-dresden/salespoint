@@ -85,7 +85,7 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 		cart.addOrUpdateItem(iPadToFilter, 1);
 		cart.addOrUpdateItem(macBook, 2);
 
-		var order = cart.createOrderFor(user);
+		var order = cart.createOrderFor(user.getId());
 
 		assertThatExceptionOfType(OrderCompletionFailure.class) //
 				.isThrownBy(() -> listener.on(OrderCompleted.of(order)));
@@ -99,7 +99,7 @@ class InventoryOrderEventListenerTests extends AbstractIntegrationTests {
 		var cart = new Cart();
 		cart.addOrUpdateItem(iPad, 1);
 
-		var order = spy(cart.createOrderFor(user));
+		var order = spy(cart.createOrderFor(user.getId()));
 		when(order.isCanceled()).thenReturn(true);
 
 		listener.on(OrderCanceled.of(order, "No reason!"));

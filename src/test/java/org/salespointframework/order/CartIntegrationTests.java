@@ -47,7 +47,8 @@ class CartIntegrationTests {
 		var cart = new Cart();
 		var cartItem = cart.addOrUpdateItem(new Product("name", Money.of(1, Currencies.EURO)), Quantity.of(10));
 
-		var order = cart.createOrderFor(users.create("foobar", UnencryptedPassword.of("barfoo")));
+		var user = users.create("foobar", UnencryptedPassword.of("barfoo"));
+		var order = cart.createOrderFor(user.getId());
 
 		var orderLines = order.getOrderLines();
 

@@ -75,6 +75,7 @@ class LoggedInUserAccountArgumentResolverUnitTests {
 	}
 
 	@Test // #37
+	@SuppressWarnings("unchecked")
 	void returnsUserAccountProvidedByAuthenticationManager() throws Exception {
 
 		var method = Sample.class.getMethod("valid", Optional.class);

@@ -33,7 +33,7 @@ import org.springframework.lang.Nullable;
 class CustomOrder extends Order {
 	@Nullable private String customProperty;
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "deprecation" })
 	private CustomOrder() {
 		super();
 	}
