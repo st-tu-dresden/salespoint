@@ -23,8 +23,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 /**
  * Basic Salespoint security configuration setting up the
@@ -41,17 +39,12 @@ class SalespointWebSecurityConfiguration {
 	@Autowired UserDetailsService userDetailsService;
 
 	@Bean
-	MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
-		return new MvcRequestMatcher.Builder(introspector).servletPath("/");
-	}
-
-	@Bean
 	@ConditionalOnMissingBean
-	SecurityFilterChain filterChain(HttpSecurity security, MvcRequestMatcher.Builder mvc) throws Exception {
+	SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
 
 		return security
 				.userDetailsService(userDetailsService)
-				.authorizeHttpRequests(http -> http.requestMatchers(mvc.pattern("/resources/**")).permitAll())
+				.authorizeHttpRequests(http -> http.requestMatchers("/resources/**").permitAll())
 				.build();
 	}
 }
