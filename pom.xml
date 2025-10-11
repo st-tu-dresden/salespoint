@@ -60,6 +60,11 @@
 								<version>3.0.1</version>
 							</dependency>
 							<dependency>
+								<groupId>org.asciidoctor</groupId>
+								<artifactId>asciidoctorj-diagram-plantuml</artifactId>
+								<version>1.2025.3</version>
+							</dependency>
+							<dependency>
 								<groupId>io.spring.asciidoctor.backends</groupId>
 								<artifactId>spring-asciidoctor-backends</artifactId>
 								<version>${spring-asciidoctor-backends.version}</version>
