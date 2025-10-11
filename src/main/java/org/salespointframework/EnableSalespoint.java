@@ -21,8 +21,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.salespointframework.EnableSalespoint.SalespointSecurityAutoConfiguration;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Import;
@@ -52,7 +50,6 @@ import org.springframework.modulith.Modulithic;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Import(Salespoint.class)
-@ImportAutoConfiguration(SalespointSecurityAutoConfiguration.class)
 @EntityScan
 @Modulithic( //
 		sharedModules = { //
@@ -67,7 +64,4 @@ public @interface EnableSalespoint {
 
 	@AliasFor(annotation = Modulithic.class, attribute = "systemName")
 	String value() default "";
-
-	@Import(SalespointWebSecurityConfiguration.class)
-	static class SalespointSecurityAutoConfiguration {}
 }
