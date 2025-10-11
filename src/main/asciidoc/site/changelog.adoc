@@ -1,7 +1,26 @@
 = Salespoint Framework Changelog
-Paul Henke, Andreas Zaschka, Oliver Gierke
+Paul Henke, Andreas Zaschka, Oliver Drotbohm
 :revdate: {localdate}
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
+
+:numbered!:
+[10.1]
+== 10.1
+
+Release date: 2025-10-11
+
+- {linkbase}/479[#479] - Turn `SalespointWebSecurityConfiguration` into propert autoconfiguration.
+- {linkbase}/476[#476] - Move off deprecated Spring Security APIs.
+- {linkbase}/477[#477] - Move off general deprecations.
+- {linkbase}/478[#478] - Temporarily move off Modulith JUnit extension.
+- {linkbase}/470[#470] - Move off Hamcrest.
+- {linkbase}/472[#472] - Upgrade to Moneta 1.4.5.
+- {linkbase}/473[#473], {linkbase}/468[#468], {linkbase}/462[#462] - Upgrade to Spring Boot 3.5.6.
+- {linkbase}/475[#475], {linkbase}/464[#464] - Upgrade to jMolecules 2025 RC5.
+- {linkbase}/474[#474], {linkbase}/465[#465], {linkbase}/463[#463] - Upgrade to Spring Modulith 1.4.3.
+- {linkbase}/469[#469] - Add Spring Modulith test optimizations.
+- {linkbase}/467[#467] - Improve documentation of business events published by modules.
+- {linkbase}/461[#461] - Problem with replacement of `${user.home}`.
 
 :numbered!:
 [10.0]
