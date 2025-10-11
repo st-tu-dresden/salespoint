@@ -24,12 +24,12 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.util.Assert;
 
 /**
- * A <code>PaymentCard</code> is used to charge the cost of goods or services to an account, belonging to the party
- * identified on the card. A <code>PaymentCard</code> which has a line of credit is a {@link CreditCard}. A
- * {@link DebitCard} is a {@link PaymentCard} where the associated account is debited immediately. An example for a
- * {@link DebitCard} is an EC-card or MaestroCard. Other forms of {@link PaymentCard}s such as prepaid cards or charge
- * cards are not implemented at the moment.
- * 
+ * A {@code PaymentCard} is used to charge the cost of goods or services to an account, belonging to the party
+ * identified on the card. A {@code PaymentCard} which has a line of credit is a {@link CreditCard}. A {@link DebitCard}
+ * is a {@link PaymentCard} where the associated account is charged immediately. An example for a {@link DebitCard} is
+ * an EC-card or MaestroCard. Other forms of {@link PaymentCard}s such as pre-paid cards or charge cards are not
+ * implemented at the moment.
+ *
  * @author Hannes Weisbach
  * @author Oliver Gierke
  */
@@ -77,7 +77,7 @@ public abstract class PaymentCard extends PaymentMethod {
 
 	/**
 	 * Instantiates a <code>PaymentCard</code>.
-	 * 
+	 *
 	 * @param cardName specific name of this card, e.g. VISA, or MasterCard
 	 * @param cardAssociationName the name of the association which issued the card
 	 * @param cardNumber the number of this card
@@ -109,7 +109,7 @@ public abstract class PaymentCard extends PaymentMethod {
 		this.cardVerificationCode = cardVerificationCode;
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.salespointframework.payment.PaymentMethod#toString()
 	 */
