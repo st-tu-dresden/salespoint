@@ -3,6 +3,6 @@
  *
  * @see org.salespointframework.quantity.Quantity
  */
-@org.springframework.lang.NonNullApi
+@org.jspecify.annotations.NullMarked
 @org.springframework.modulith.ApplicationModule(displayName = "Salespoint :: Quantity")
 package org.salespointframework.quantity;

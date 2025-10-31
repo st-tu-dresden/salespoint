@@ -20,7 +20,7 @@ import lombok.Value;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.ConstructorBinding;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Properties to configure Salespoint's inventory. Declare {@code salespoint.inventory.…} in application properties to
