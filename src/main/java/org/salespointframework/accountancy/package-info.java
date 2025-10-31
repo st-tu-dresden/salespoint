@@ -3,6 +3,6 @@
  *
  * @see <a href="https://en.wikipedia.org/wiki/Accounting">Accounting (Wikipedia)</a>
  */
-@org.springframework.lang.NonNullApi
+@org.jspecify.annotations.NullMarked
 @org.springframework.modulith.ApplicationModule(displayName = "Salespoint :: Accountancy")
 package org.salespointframework.accountancy;

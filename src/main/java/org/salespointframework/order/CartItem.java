@@ -27,7 +27,7 @@ import javax.money.MonetaryAmount;
 
 import org.salespointframework.catalog.Product;
 import org.salespointframework.quantity.Quantity;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 
 /**

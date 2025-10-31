@@ -3,6 +3,6 @@
  *
  * @see org.salespointframework.useraccount.UserAccountManagement
  */
-@org.springframework.lang.NonNullApi
+@org.jspecify.annotations.NullMarked
 @org.springframework.modulith.ApplicationModule(displayName = "Salespoint :: User Account")
 package org.salespointframework.useraccount;

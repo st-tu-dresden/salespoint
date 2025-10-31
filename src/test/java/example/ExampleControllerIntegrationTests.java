@@ -29,7 +29,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 /**
  * Integration tests for sample components.
@@ -52,11 +51,10 @@ class ExampleControllerIntegrationTests {
 	static class Config {
 
 		@Bean
-		SecurityFilterChain testSecurity(HttpSecurity security, HandlerMappingIntrospector introspector) throws Exception {
+		SecurityFilterChain testSecurity(HttpSecurity security) throws Exception {
 
 			return security
-					.authorizeHttpRequests(it -> it.requestMatchers("/**").permitAll()
-							.anyRequest().authenticated())
+					.authorizeHttpRequests(it -> it.requestMatchers("/**").permitAll().anyRequest().authenticated())
 					.csrf(it -> it.disable())
 					.build();
 		}
