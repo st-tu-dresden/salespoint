@@ -29,7 +29,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Tests for {@link QuantityFormatter}.
- * 
+ *
  * @author Oliver Gierke
  * @soundtrack Dave Matthews Band - Bartender (DMB Live 25)
  */
@@ -41,7 +41,7 @@ class QuantityFormatterUnitTests {
 	 * @author Oliver Gierke
 	 */
 	@Nested
-	static class QuantityFormatterExceptionTests {
+	class QuantityFormatterExceptionTests {
 
 		QuantityFormatter formatter = new QuantityFormatter();
 
@@ -89,7 +89,7 @@ class QuantityFormatterUnitTests {
 	 * @author Oliver Gierke
 	 */
 	@Nested
-	static class QuantityFormatterValueTests {
+	class QuantityFormatterValueTests {
 
 		QuantityFormatter formatter = new QuantityFormatter();
 
