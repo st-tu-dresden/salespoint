@@ -17,7 +17,7 @@
 	<properties>
 		<dev>/dev</dev>
 		<java.version>25</java.version>
-		<jmolecules.version>2025.0.0-RC5</jmolecules.version>
+		<jmolecules.version>2025.0.2</jmolecules.version>
 		<spring-modulith.version>2.1.1</spring-modulith.version>
 		<spring-asciidoctor-backends.version>0.0.7</spring-asciidoctor-backends.version>
 
