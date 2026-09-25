@@ -18,7 +18,7 @@
 		<dev>/dev</dev>
 		<java.version>25</java.version>
 		<jmolecules.version>2025.0.0-RC5</jmolecules.version>
-		<spring-modulith.version>1.4.3</spring-modulith.version>
+		<spring-modulith.version>2.1.1</spring-modulith.version>
 		<spring-asciidoctor-backends.version>0.0.7</spring-asciidoctor-backends.version>
 
 		<!-- Enable full annotation processing on Java 23+ -->

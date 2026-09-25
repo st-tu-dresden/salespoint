@@ -242,16 +242,16 @@ class InventoryTests {
 
 		// Expect QuantityReduced but no StockShort because we're not below the threshold
 		assertThat(events.ofType(QuantityReduced.class)
-				.matchingMapped(QuantityReduced::getItem, item::equals)).hasSize(1);
+				.matching(QuantityReduced::getItem, item::equals)).hasSize(1);
 		assertThat(events.ofType(StockShort.class)).isEmpty();
 
 		unique.save(item.decreaseQuantity(Quantity.of(2)));
 
 		// Expect QuantityReduced *and* StockShort because we went below the threshold
 		assertThat(events.ofType(QuantityReduced.class)
-				.matchingMapped(QuantityReduced::getItem, item::equals)).hasSize(2);
+				.matching(QuantityReduced::getItem, item::equals)).hasSize(2);
 		assertThat(events.ofType(StockShort.class)
-				.matchingMapped(StockShort::getProductId, otherCookie::hasId)).hasSize(1)
+				.matching(StockShort::getProductId, otherCookie::hasId)).hasSize(1)
 						.element(0)
 						.satisfies(it -> {
 							assertThat(it.getCurrentQuantity()).isEqualTo(Quantity.of(1));
