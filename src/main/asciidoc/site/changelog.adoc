@@ -4,6 +4,18 @@ Paul Henke, Andreas Zaschka, Oliver Drotbohm
 :linkbase: https://github.com/st-tu-dresden/salespoint/issues/
 
 :numbered!:
+[11]
+== 11
+
+Release date: 2026-10-14
+
+- {linkbase}/481[#481] - Upgrade to Spring Modulith 2.1.1.
+- {linkbase}/482[#482] - Upgrade to jMolecules 2025.0.2.
+- {linkbase}/483[#483] - Upgrade to Java 25.
+- {linkbase}/484[#484] - Upgrade Maven Wrapper to 3.9.16.
+- {linkbase}/480[#480] - Upgrade to Spring Boot 4.1.1.
+
+:numbered!:
 [10.1]
 == 10.1
 
